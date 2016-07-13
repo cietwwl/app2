@@ -1,0 +1,8 @@
+//protocol=10542;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "LeaveTeamReqProto";
+
+//离队
+message LeaveTeamReqMsg {
+
+}

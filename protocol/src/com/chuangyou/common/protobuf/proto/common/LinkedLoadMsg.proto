@@ -1,0 +1,15 @@
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "LinkedLoadMsgProto";
+
+//服务器负载
+message LinkedLoadMsg {
+	optional int32 server_id = 1;        	     //服务器id
+	optional string server_name = 2;     	     //服务器名称
+	optional int32 load = 3;             	     //服务器的负载
+	optional string address = 4;        	     //ip地址
+	optional int32 port = 5;             	     //端口
+	optional string user_server_name = 6;	     //玩家注册的中文站点名称
+	optional int32 type = 7;             	     //端口
+	optional int32 connTimes = 8;                //连接次数
+	optional int32 index = 9;
+}

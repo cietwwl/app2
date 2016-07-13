@@ -1,0 +1,15 @@
+
+option java_package = "com.chuangyou.common.protobuf.pb.email";
+option java_outer_classname = "EmailInfoProto";
+
+
+ //邮件信息
+message EmailInfo{
+
+  	required int32 privateId =1;//ID 号
+	required string  title=2;//	标题
+	required string   content=3;//	内容（正文）
+	required int64 	createTime=4;//	邮件生成时间
+	required int32  status=5;//	状态（邮件状态。0：初始生成状态  1：已读  2：已经提取附件+已读  3：已经删除 ）
+	required string	attachment=6;//	邮件附件 格式“ID，数量;ID，数量;ID，数量;ID，数量”
+}

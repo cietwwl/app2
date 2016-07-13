@@ -1,0 +1,9 @@
+//protocol=114;
+option java_package = "com.chuangyou.common.protobuf.pb.magicwp";
+option java_outer_classname = "MagicwpBanGetInfoRespProto";
+
+import "magicwp/MagicwpBanInfoBeanMsg.proto";
+
+message MagicwpBanGetInfoRespMsg{
+	repeated MagicwpBanInfoBeanMsg bans = 1; // 禁制列表
+}

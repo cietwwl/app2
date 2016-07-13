@@ -1,0 +1,8 @@
+//protocol=147;
+option java_package = "com.chuangyou.common.protobuf.pb.drop";
+option java_outer_classname = "DropItemRemoveProto";
+
+message DropItemRemoveMsg{
+	optional int32 packageId = 1; // 掉落包ID
+	optional int64 dropItemId = 2; // 掉落物ID
+}

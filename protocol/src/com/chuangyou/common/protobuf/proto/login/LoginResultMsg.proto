@@ -1,0 +1,7 @@
+//protocol=3
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "LoginResultMsgProto";						
+message LoginResultMsg{
+	optional int32 result = 1;		// 登录结果  1001成功，1004 失败
+    optional int64 time = 2;                // 当前服务器时间
+}

@@ -1,0 +1,9 @@
+option java_package = "com.chuangyou.common.protobuf.pb.npcDialog";
+option java_outer_classname = "NpcCommandProto";
+
+//Npc Command结构
+message NpcCommand{
+	required int32 commandId = 1; // 命令ID(具体含义查看"NPC对话配置表说明.xlxs")
+	required int32 commandParam  =2;//命令参数
+	required string commandDes = 3;//命令描述
+}

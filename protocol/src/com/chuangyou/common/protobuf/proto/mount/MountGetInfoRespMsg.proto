@@ -1,0 +1,20 @@
+//protocol=101;
+option java_package = "com.chuangyou.common.protobuf.pb.mount";
+option java_outer_classname = "MountGetInfoRespProto";
+
+import "mount/MountEquipBeanMsg.proto";
+import "common/AttributeBeanMsg.proto";
+
+message MountGetInfoRespMsg{
+	optional int32 mountId = 1; // 当前出战坐骑ID
+	optional int32 level = 2; // 坐骑等级
+	optional int64 upLevCd = 3; // 坐骑升级CD
+	optional int32 grade = 4; // 坐骑进阶等级
+	optional int32 bless = 5; // 坐骑进阶祝福值
+	repeated MountEquipBeanMsg equips = 6; // 坐骑装备信息列表
+
+	optional int32 useDanNum = 7; // 坐骑使用属性丹数量
+	optional int32 weaponGrade = 8; // 坐骑神兵进阶等级
+	optional int32 weaponBless = 9; // 坐骑神兵进阶祝福值
+	repeated AttributeBeanMsg atts = 10; // 坐骑属性列表
+}

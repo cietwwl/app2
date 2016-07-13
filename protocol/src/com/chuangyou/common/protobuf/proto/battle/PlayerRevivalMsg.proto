@@ -1,0 +1,8 @@
+//protocol=10401;
+option java_package = "com.chuangyou.common.protobuf.pb.battle";
+option java_outer_classname = "PlayerRevivalMsgProto";
+message PlayerRevivalMsg{
+	optional int64  playerId = 1; //被复活用户的ID
+	optional int32  costType = 2; //复活消耗类型（如 ：钻石，物品等等,暂时不填）
+}
+

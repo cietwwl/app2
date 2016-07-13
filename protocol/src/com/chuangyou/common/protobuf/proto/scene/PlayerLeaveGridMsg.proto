@@ -1,0 +1,8 @@
+//protocol=1523;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerLeaveGridProto";
+
+message PlayerLeaveGridMsg {
+	optional int64 id = 1; //离开自己九宫格区域位置
+}
+

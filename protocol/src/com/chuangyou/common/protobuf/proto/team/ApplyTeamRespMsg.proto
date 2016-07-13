@@ -1,0 +1,9 @@
+//protocol=543;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "ApplyTeamRespProto";
+
+//申请入队
+//成功回复
+message ApplyTeamRespMsg {
+	required int32 teamId=1; //队ID
+}

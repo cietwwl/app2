@@ -1,0 +1,9 @@
+//protocol=128;
+option java_package = "com.chuangyou.common.protobuf.pb.pet";
+option java_outer_classname = "PetActivateRespProto";
+
+import "pet/PetInfoBeanMsg.proto";
+
+message PetActivateRespMsg{
+	optional PetInfoBeanMsg petInfo = 1; // 激活的宠物信息
+}

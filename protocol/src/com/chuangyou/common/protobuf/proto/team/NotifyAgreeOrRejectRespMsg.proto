@@ -1,0 +1,9 @@
+//protocol=546;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "NotifyAgreeOrRejectRespProto";
+
+//通知申请人  队长同意你入队或者拒绝你入队
+message NotifyAgreeOrRejectRespMsg {
+	required int32 teamId=1; //队ID
+	required bool isAgree = 2;//true： 同意  false:拒绝
+}

@@ -1,0 +1,11 @@
+//protocol=10517;
+
+option java_package = "com.chuangyou.common.protobuf.pb.friend";
+option java_outer_classname = "GetRecommendFriendsReqProto";
+
+ //获取推荐好友
+message GetRecommendFriendsReqMsg{
+	required int32 isCity=1;//	是否同城 1：同城 0：其它
+	required int32 isMan =2;//	男  1：勾选此选项  0：未勾选
+ 	required int32 isWoman =3;//女  1：勾选此选项  0：未勾选
+}

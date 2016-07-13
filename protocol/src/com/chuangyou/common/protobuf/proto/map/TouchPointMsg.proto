@@ -1,0 +1,9 @@
+//protocol=20023;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "TouchPointProto";
+
+message TouchPointMsg{
+	optional int32 mapId = 1; // 地图ID
+	optional int32 pointId = 2; // 接触点ID
+	optional int32 spwanId = 3; //节点ID
+}

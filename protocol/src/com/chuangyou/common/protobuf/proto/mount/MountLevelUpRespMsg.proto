@@ -1,0 +1,8 @@
+//protocol=103;
+option java_package = "com.chuangyou.common.protobuf.pb.mount";
+option java_outer_classname = "MountLevelUpRespProto";
+
+message MountLevelUpRespMsg{
+	optional int32 level = 1; // 当前等级
+	optional int64 upLevelCd = 2; // 升级CD时间
+}

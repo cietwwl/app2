@@ -1,0 +1,9 @@
+//protocol=145;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "TouchPointUpdateProto";
+
+message TouchPointUpdateMsg{
+	optional int32 mapId = 1; // 地图ID
+	optional int32 pointId = 2; // 接触点ID
+	optional int32 state = 3; // 接触点状态
+}

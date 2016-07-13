@@ -1,0 +1,10 @@
+//protocol=547;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "NotifyInviteRespProto";
+
+import "team/TeamInfoRespMsg.proto";
+
+//收到队长的邀请通知
+message NotifyInviteRespMsg {
+	required TeamInfoRespMsg teamInfo=1; //队伍信息
+}

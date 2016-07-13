@@ -1,0 +1,7 @@
+//protocol=10107;
+option java_package = "com.chuangyou.common.protobuf.pb.mount";
+option java_outer_classname = "MountFightChooseReqProto";
+
+message MountFightChooseReqMsg{
+	optional int32 mountId = 1; // 要选择出战的坐骑ID
+}

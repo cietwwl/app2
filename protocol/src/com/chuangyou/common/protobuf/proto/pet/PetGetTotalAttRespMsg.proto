@@ -1,0 +1,9 @@
+//protocol=135;
+option java_package = "com.chuangyou.common.protobuf.pb.pet";
+option java_outer_classname = "PetGetTotalAttRespProto";
+
+import "common/AttributeBeanMsg.proto";
+
+message PetGetTotalAttRespMsg{
+	repeated AttributeBeanMsg att = 1; // 宠物属性
+}

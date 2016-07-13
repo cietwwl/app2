@@ -1,0 +1,7 @@
+//protocol=552;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "ClearMatchRespProto";
+
+//取消自动匹配
+message ClearMatchRespMsg {
+}

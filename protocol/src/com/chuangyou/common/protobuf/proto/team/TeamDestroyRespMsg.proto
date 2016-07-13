@@ -1,0 +1,8 @@
+//protocol=538;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "TeamDestroyRespProto";
+
+//队伍消毁
+message TeamDestroyRespMsg {
+	required int32 teamId = 1;           //队伍ID
+}

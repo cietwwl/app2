@@ -1,0 +1,11 @@
+//protocol=500;
+
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "ErrorRespProto";
+
+
+ //错误码提示
+message ErrorRespMsg{
+	required int32 protocolNum =1;//协议号
+	required int32 errorCode = 2;//错误码
+}

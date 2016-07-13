@@ -1,0 +1,10 @@
+//protocol=10513;
+
+option java_package = "com.chuangyou.common.protobuf.pb.friend";
+option java_outer_classname = "AddFriendReqProto";
+
+
+ //请求添加谁为好友
+message AddFriendReqMsg{
+	required int64 friendRoleId =1; //用户ID
+}

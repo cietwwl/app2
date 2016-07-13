@@ -1,0 +1,11 @@
+//protocol=536;
+
+option java_package = "com.chuangyou.common.protobuf.pb.gather";
+option java_outer_classname = "GatherRespProto";
+
+ //采集
+message GatherRespMsg{
+	required int32 mapId =1; // 地图ID
+	required int64 pointId = 2; //采集物ID
+	required int32 type =3;//1：开始采集  2：结束采集
+}

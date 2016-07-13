@@ -1,0 +1,7 @@
+//protocol=10518;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "ReqChangeMapMsgProto";
+import "map/PostionMsg.proto";
+message ReqChangeMapMsg {
+	optional PostionMsg postionMsg = 1; //坐标
+}

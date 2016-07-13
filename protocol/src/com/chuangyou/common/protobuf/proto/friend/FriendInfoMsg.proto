@@ -1,0 +1,17 @@
+
+option java_package = "com.chuangyou.common.protobuf.pb.friend";
+option java_outer_classname = "FriendInfoProto";
+
+
+ //好友用户信息
+message FriendInfoMsg{
+
+required int64 roleId =1;//	用户ID
+required string	roleName=2;//	用户名
+required int32	onlineStatus=3;//	在线状态 1：在线 0：离线
+required int32 vipLevel=4;//	VIP等级
+required int32 	skinId=5;//	skinId
+required int32	level=6;//	玩家等级
+required int32	fight=7;//	战斗力
+
+}

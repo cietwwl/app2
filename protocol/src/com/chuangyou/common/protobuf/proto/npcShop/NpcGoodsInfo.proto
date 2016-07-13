@@ -1,0 +1,20 @@
+
+option java_package = "com.chuangyou.common.protobuf.pb.npcShop";
+option java_outer_classname = "NpcGoodsInfoProto";
+
+
+ // NPC商店。商品信息结构
+message NpcGoodsInfo{
+	required int32 privateId =1;  //商品配置表中的唯一ID
+	required int32 consumeType = 2;//消耗类型  1-money_type 2-itemtype
+	required int32 itemType =3 ;//对应Item表中id
+	required int32 bind = 4;//0-不绑定 1-绑定
+	required int32 moneyType = 5;//对应XNDesign\潜规则\命名规则1\属性 中属性ID字段  如果是消耗物品。这个地方就是物品type
+	required int64 price =6;//单价
+	required int32 amount = 7;//全服限购数量
+	required int32 limitBuynum = 8;//个人限购数量
+	required int64 endTime = 9;//下架时间
+	required int64 resetLast = 10; //重置的UTC到期时间豪秒   -1:为不重置
+	required int32 serverProcured =11;//全服已购数量， 等于-1时代表无限出售
+	required int32 roleProcured =12;  //单个用户已购数量，等于-1时代表不限购
+}

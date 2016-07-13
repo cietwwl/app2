@@ -1,0 +1,8 @@
+//protocol=136;
+option java_package = "com.chuangyou.common.protobuf.pb.pet";
+option java_outer_classname = "PetSoulUpRespProto";
+
+message PetSoulUpRespMsg{
+	optional int32 soulLevel = 1; // 炼魂等级
+	optional int32 soulExp = 2; // 炼魂当前等级经验
+}

@@ -1,0 +1,9 @@
+//protocol=126;
+option java_package = "com.chuangyou.common.protobuf.pb.magicwp";
+option java_outer_classname = "MagicwpGetTotalAttRespProto";
+
+import "common/AttributeBeanMsg.proto";
+
+message MagicwpGetTotalAttRespMsg{
+	repeated AttributeBeanMsg attList = 1; // 属性列表
+}

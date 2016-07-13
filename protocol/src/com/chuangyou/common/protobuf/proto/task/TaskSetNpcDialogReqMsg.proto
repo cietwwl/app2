@@ -1,0 +1,8 @@
+//protocol=10532;
+option java_package = "com.chuangyou.common.protobuf.pb.task";
+option java_outer_classname = "TaskSetNpcDialogReqProto";
+
+//设置NPC对话任务完成
+message TaskSetNpcDialogReqMsg {
+	required int32 taskId = 1;
+}

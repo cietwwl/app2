@@ -1,0 +1,7 @@
+//protocol=117;
+option java_package = "com.chuangyou.common.protobuf.pb.magicwp";
+option java_outer_classname = "MagicwpDanUseRespProto";
+
+message MagicwpDanUseRespMsg{
+	optional int32 totalUseNum = 1; // 使用属性丹总数量
+}

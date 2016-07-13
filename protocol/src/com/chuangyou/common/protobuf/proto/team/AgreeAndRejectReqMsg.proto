@@ -1,0 +1,9 @@
+//protocol=10538;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "AgreeAndRejectReqProto";
+
+//队长同意/拒绝入队
+message AgreeAndRejectReqMsg {
+	required int64 playerId=1; //要同意或拒绝人的ID
+	required bool isAgree = 2;//true： 同意  false:拒绝
+}

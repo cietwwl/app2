@@ -1,0 +1,15 @@
+//protocol=1521;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerAttSnapProto";
+
+import "common/PBVector3.proto";
+
+message PlayerAttSnapMsg {
+	optional int64 playerId = 1;    	//空属性
+	optional int32 type = 2;			//角色类型
+	optional int32 skinId = 3; 			//皮肤
+	optional PBVector3 postion = 4; 		//当前点
+	optional PBVector3 target = 5;		//目标点
+	optional int64 ownerId = 6;			//主人ID，主角不填
+}
+

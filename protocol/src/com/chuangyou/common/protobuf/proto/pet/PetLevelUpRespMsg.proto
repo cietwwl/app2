@@ -1,0 +1,9 @@
+//protocol=131;
+option java_package = "com.chuangyou.common.protobuf.pb.pet";
+option java_outer_classname = "PetLevelUpRespProto";
+
+message PetLevelUpRespMsg{
+	optional int32 petId = 1; // 宠物ID
+	optional int32 level = 2; // 宠物等级
+	optional int32 exp = 3; // 当前等级经验
+}

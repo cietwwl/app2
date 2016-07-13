@@ -1,0 +1,8 @@
+//protocol=10114;
+option java_package = "com.chuangyou.common.protobuf.pb.magicwp";
+option java_outer_classname = "MagicwpBanFragmentUseReqProto";
+
+message MagicwpBanFragmentUseReqMsg{
+	optional int32 banId = 1; // 禁制ID
+	optional int32 fragmentIndex = 2; // 要激活碎片索引
+}

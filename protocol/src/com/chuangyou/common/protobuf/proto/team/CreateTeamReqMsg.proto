@@ -1,0 +1,8 @@
+//protocol=10535;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "CreateTeamReqProto";
+
+//创建队伍
+message CreateTeamReqMsg {
+	required int32 targetId = 1;//队伍目标
+}

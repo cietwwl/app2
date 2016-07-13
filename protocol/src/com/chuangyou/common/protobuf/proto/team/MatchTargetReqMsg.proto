@@ -1,0 +1,8 @@
+//protocol=10546;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "MatchTargetReqProto";
+
+//匹配
+message MatchTargetReqMsg {
+	optional int32 targetId = 1;//匹配目标
+}

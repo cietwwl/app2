@@ -1,0 +1,10 @@
+//protocol=1525;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerStopBoardcastProto";
+
+import "common/PBVector3.proto";
+
+message PlayerStopBoardcastMsg {
+	optional int64 id= 1;    //玩家id
+	optional PBVector3 cur = 2; //当前位置
+}

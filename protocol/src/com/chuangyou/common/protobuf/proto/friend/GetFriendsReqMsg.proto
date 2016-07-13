@@ -1,0 +1,10 @@
+//protocol=10512;
+
+option java_package = "com.chuangyou.common.protobuf.pb.friend";
+option java_outer_classname = "GetFriendsReqProto";
+
+
+ //请求好友列表
+message GetFriendsReqMsg{
+	optional int32 id =1;//无意义
+}

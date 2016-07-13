@@ -1,0 +1,8 @@
+//protocol=119;
+option java_package = "com.chuangyou.common.protobuf.pb.magicwp";
+option java_outer_classname = "MagicwpRefineGradeUpRespProto";
+
+message MagicwpRefineGradeUpRespMsg{
+	optional int32 magicwpId = 1; // 法宝ID
+	optional int32 grade = 2; // 法宝进阶等级
+}

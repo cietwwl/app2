@@ -1,0 +1,9 @@
+//protocol=113;
+option java_package = "com.chuangyou.common.protobuf.pb.magicwp";
+option java_outer_classname = "MagicwpLevelUpRespProto";
+
+message MagicwpLevelUpRespMsg{
+	optional int32 magicwpId = 1; // 法宝ID
+	optional int32 level = 2; // 当前等级
+	optional int64 upLevelCd = 3; // 升级CD
+}

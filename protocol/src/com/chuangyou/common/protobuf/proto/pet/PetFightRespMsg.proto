@@ -1,0 +1,7 @@
+//protocol=129;
+option java_package = "com.chuangyou.common.protobuf.pb.pet";
+option java_outer_classname = "PetFightRespProto";
+
+message PetFightRespMsg{
+	optional int32 fightPetId = 1; // 当前出战的宠物ID
+}

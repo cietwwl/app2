@@ -1,0 +1,8 @@
+//protocol=10119;
+option java_package = "com.chuangyou.common.protobuf.pb.magicwp";
+option java_outer_classname = "MagicwpRefineReqProto";
+
+message MagicwpRefineReqMsg{
+	optional int32 magicwpId = 1; // 法宝ID
+	repeated int32 lockAttType = 2; // 洗炼时要锁定的属性类型列表
+}

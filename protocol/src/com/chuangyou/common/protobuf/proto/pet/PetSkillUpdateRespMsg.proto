@@ -1,0 +1,9 @@
+//protocol=141;
+option java_package = "com.chuangyou.common.protobuf.pb.pet";
+option java_outer_classname = "PetSkillUpdateRespProto";
+
+import "pet/PetSkillBeanMsg.proto";
+
+message PetSkillUpdateRespMsg{
+	repeated PetSkillBeanMsg skillInfo = 1; // 技能信息列表
+}

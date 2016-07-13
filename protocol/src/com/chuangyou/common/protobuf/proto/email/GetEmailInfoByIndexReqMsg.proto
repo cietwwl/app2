@@ -1,0 +1,12 @@
+//protocol=10506;
+
+option java_package = "com.chuangyou.common.protobuf.pb.email";
+option java_outer_classname = "GetEmailInfoByIndexReqProto";
+
+
+ //请求邮件详情
+message GetEmailInfoByIndexReqMsg{
+	required int32	startIndex=1;//	请求邮件开始位置索引（0:代表第一封邮件）（返回数据包括startIndex位置数据）
+	required int32 	endIndex=2;//	请求邮件结束位置索引（返回数据不包括endIndex位置数据
+
+}

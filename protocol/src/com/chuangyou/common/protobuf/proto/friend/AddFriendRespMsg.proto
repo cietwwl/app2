@@ -1,0 +1,13 @@
+//protocol=511;
+
+option java_package = "com.chuangyou.common.protobuf.pb.friend";
+option java_outer_classname = "AddFriendRespProto";
+
+import "friend/FriendInfoMsg.proto";
+
+
+ //请求添加谁为好友
+ //添加成功回复
+message AddFriendRespMsg{
+	required FriendInfoMsg friendInfo = 1; //好友信息
+}

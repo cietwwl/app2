@@ -1,0 +1,7 @@
+//protocol=10134;
+option java_package = "com.chuangyou.common.protobuf.pb.pet";
+option java_outer_classname = "PetGetTotalAttReqProto";
+
+message PetGetTotalAttReqMsg{
+	optional bool empty = 1; // 空消息标记
+}

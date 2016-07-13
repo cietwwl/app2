@@ -1,0 +1,8 @@
+//protocol=10540;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "AgreeInviteReqProto";
+
+//接受队长的邀请
+message AgreeInviteReqMsg {
+	required int32 teamId=1; //队ID
+}

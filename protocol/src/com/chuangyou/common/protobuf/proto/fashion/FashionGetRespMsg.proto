@@ -1,0 +1,9 @@
+//protocol=201;
+option java_package = "com.chuangyou.common.protobuf.pb.fashion";
+option java_outer_classname = "FashionGetRespProto";
+
+import "fashion/FashionBeanMsg.proto";
+
+message FashionGetRespMsg{
+	repeated FashionBeanMsg fashion = 1; // 时间信息
+}

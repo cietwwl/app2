@@ -1,0 +1,7 @@
+//protocol=10603;
+option java_package = "com.chuangyou.common.protobuf.pb.campaign";
+option java_outer_classname = "QuitCampaignMsgProto";
+message QuitCampaignMsg{
+	optional int32 param = 1; //不填，补位属性
+}
+

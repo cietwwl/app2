@@ -1,0 +1,8 @@
+//protocol=10541;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "ChangeLeaderReqProto";
+
+//队长主动移交自己队长的职位
+message ChangeLeaderReqMsg {
+	required int64 newLeaderId = 1;//新队长playerID
+}

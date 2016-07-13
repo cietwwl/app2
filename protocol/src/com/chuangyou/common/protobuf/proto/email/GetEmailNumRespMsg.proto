@@ -1,0 +1,12 @@
+//protocol=502;
+
+option java_package = "com.chuangyou.common.protobuf.pb.email";
+option java_outer_classname = "GetEmailNumRespProto";
+
+
+ //请求邮件数量
+message GetEmailNumRespMsg{
+	required int32 emailNum=1;//	邮件总数量
+	required int32 unReadEmailNum=2;//	未读邮件数量
+
+}

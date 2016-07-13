@@ -1,0 +1,8 @@
+//protocol=130;
+option java_package = "com.chuangyou.common.protobuf.pb.pet";
+option java_outer_classname = "PetTalentUpRespProto";
+
+message PetTalentUpRespMsg{
+	optional int32 petId = 1; // 宠物ID
+	optional int32 talent = 2; // 宠物资质
+}

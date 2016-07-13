@@ -1,0 +1,7 @@
+//protocol=10115;
+option java_package = "com.chuangyou.common.protobuf.pb.magicwp";
+option java_outer_classname = "MagicwpBanLevelUpReqProto";
+
+message MagicwpBanLevelUpReqMsg{
+	optional int32 banId = 1; // 要升级的禁制ID
+}

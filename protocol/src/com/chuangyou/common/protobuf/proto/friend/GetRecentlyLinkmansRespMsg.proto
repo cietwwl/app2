@@ -1,0 +1,13 @@
+//protocol=514;
+
+option java_package = "com.chuangyou.common.protobuf.pb.friend";
+option java_outer_classname = "GetRecentlyLinkmansRespProto";
+
+import "friend/FriendInfoMsg.proto";
+
+
+ //获取最近联系人列表
+ //返回查询到的用户信息
+message GetRecentlyLinkmansRespMsg{
+	repeated FriendInfoMsg roles = 1; //用户信息列表
+}

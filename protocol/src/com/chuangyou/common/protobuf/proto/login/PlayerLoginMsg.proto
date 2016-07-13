@@ -1,0 +1,6 @@
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerLoginMsgProto";
+message PlayerLoginMsg {
+	optional int64	playerId= 1;    //登录角色ID
+}
+

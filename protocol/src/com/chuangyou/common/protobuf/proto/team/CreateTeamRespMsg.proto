@@ -1,0 +1,8 @@
+//protocol=550;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "CreateTeamRespProto";
+
+//创建队伍-回复
+message CreateTeamRespMsg {
+
+}

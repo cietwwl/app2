@@ -1,0 +1,8 @@
+//protocol=529;
+option java_package = "com.chuangyou.common.protobuf.pb.npcDialog";
+option java_outer_classname = "HintRespProto";
+
+//客户端提示
+message HintRespMsg{
+	required string content = 1;//提示内容
+}

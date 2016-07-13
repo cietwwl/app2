@@ -1,0 +1,7 @@
+//protocol=10127;
+option java_package = "com.chuangyou.common.protobuf.pb.pet";
+option java_outer_classname = "PetActivateReqProto";
+
+message PetActivateReqMsg{
+	optional int32 petId = 1; // 要激活的宠物ID
+}

@@ -1,0 +1,10 @@
+//protocol=10510;
+
+option java_package = "com.chuangyou.common.protobuf.pb.email";
+option java_outer_classname = "DelEmailReqProto";
+
+
+ //删除邮件
+message DelEmailReqMsg{
+	required int32 privateId =1;//邮件ID
+}

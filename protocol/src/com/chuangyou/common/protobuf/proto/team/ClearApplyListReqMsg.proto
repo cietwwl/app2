@@ -1,0 +1,7 @@
+//protocol=10547;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "ClearApplyListReqProto";
+
+//队长清空申请队列
+message ClearApplyListReqMsg {
+}

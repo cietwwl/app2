@@ -1,0 +1,8 @@
+//protocol= 10301;
+option java_package = "com.chuangyou.common.protobuf.pb.skill";
+option java_outer_classname = "ReqSkillInfoMsgProto";
+
+//请求已經學習過的技能信息
+message ReqSkillInfoMsg {
+	optional int32 id = 1; //占位
+}

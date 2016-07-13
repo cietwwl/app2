@@ -1,0 +1,14 @@
+option java_package = "com.chuangyou.common.protobuf.pb.pet";
+option java_outer_classname = "PetInfoBeanProto";
+
+message PetInfoBeanMsg{
+	optional int32 petId = 1; // 宠物ID
+	optional int32 talent = 2; // 宠物资质
+	optional int32 level = 3; // 等级
+	optional int32 levelExp = 4; // 当前等级经验
+	optional int32 physique = 5; // 宠物炼体等级
+	optional int32 quality = 6; // 宠物品质
+	optional int32 qualityBless = 7; // 品质提升进度
+	optional int32 grade = 8; // 进阶等级
+	optional int32 gradeBless = 9; // 进阶祝福值
+}

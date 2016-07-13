@@ -1,0 +1,7 @@
+//protocol=601;
+option java_package = "com.chuangyou.common.protobuf.pb.campaign";
+option java_outer_classname = "CampaignResponeMsgProto";
+message CampaignResponeMsg{
+	optional int32 rspCode = 1;    //副本返回码  1001 创建成功  1002 创建失败，找不到数据
+}
+

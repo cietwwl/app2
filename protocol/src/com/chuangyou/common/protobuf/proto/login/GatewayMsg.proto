@@ -1,0 +1,5 @@
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "GatewayMsgProto";						
+message GatewayMsg{
+	optional string notify_msg = 1;				// 提示消息
+}

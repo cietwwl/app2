@@ -1,0 +1,7 @@
+//protocol=10004;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerDataMsgProto";
+message PlayerDataMsg {
+	optional int32 dataType= 1;    //需要加载的数据类型
+}
+

@@ -1,0 +1,10 @@
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerCreateResultInnerProto";
+
+import "login/PlayerInfoListMsg.proto";
+
+message PlayerCreateResultInnerMsg{
+	optional int64 userId = 1;
+	optional int32 resultCode = 2; // 创建角色结果
+	optional PlayerInfoListMsg players = 3;    //角色包
+}

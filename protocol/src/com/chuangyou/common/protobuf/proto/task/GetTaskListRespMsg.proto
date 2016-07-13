@@ -1,0 +1,9 @@
+//protocol=531;
+option java_package = "com.chuangyou.common.protobuf.pb.task";
+option java_outer_classname = "GetTaskListRespProto";
+
+import "task/TaskInfoMsg.proto";
+//任务列表
+message GetTaskListRespMsg {
+	repeated TaskInfoMsg tasks= 1;//列表
+}

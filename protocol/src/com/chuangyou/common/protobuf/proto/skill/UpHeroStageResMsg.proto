@@ -1,0 +1,8 @@
+//protocol=704;
+option java_package = "com.chuangyou.common.protobuf.pb.skill";
+option java_outer_classname = "UpHeroStageResMsgProto";
+
+//升级技能阶段
+message UpHeroStageResMsg {
+	required int32 stage = 1; //技能阶段
+}

@@ -1,0 +1,10 @@
+//protocol=10516;
+
+option java_package = "com.chuangyou.common.protobuf.pb.friend";
+option java_outer_classname = "DelFriendReqProto";
+
+
+ //请求删除好友
+message DelFriendReqMsg{
+	required int64 friendRoleId =1; //用户ID
+}

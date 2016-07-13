@@ -1,0 +1,12 @@
+//protocol=503;
+
+option java_package = "com.chuangyou.common.protobuf.pb.email";
+option java_outer_classname = "GetEmailInfoByIndexRespProto";
+
+import "email/EmailInfo.proto";
+
+
+ //邮件详情
+message GetEmailInfoByIndexRespMsg{
+	repeated EmailInfo emails =1;//邮件列表
+}

@@ -1,0 +1,8 @@
+//protocol=10545;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "GetTeamListReqProto";
+
+// 按目标查找队伍列表
+message GetTeamListReqMsg {
+	required int32 targetId = 1;//targetId
+}

@@ -1,0 +1,8 @@
+//protocol=10543;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "KickTeamReqProto";
+
+//踢人
+message KickTeamReqMsg {
+	required int64 kickPlayerId = 1;//被踢人的ID
+}

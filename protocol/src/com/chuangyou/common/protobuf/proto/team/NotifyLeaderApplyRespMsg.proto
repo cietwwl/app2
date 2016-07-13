@@ -1,0 +1,9 @@
+//protocol=544;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "NotifyLeaderApplyRespProto";
+
+import "team/TeamMemberInfoMsg.proto";
+//通知队长有人申请入队
+message NotifyLeaderApplyRespMsg {
+ 	required TeamMemberInfoMsg member = 1;//申请人
+}

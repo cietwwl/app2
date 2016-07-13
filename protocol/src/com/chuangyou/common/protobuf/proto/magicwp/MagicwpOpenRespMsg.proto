@@ -1,0 +1,8 @@
+//protocol=122;
+option java_package = "com.chuangyou.common.protobuf.pb.magicwp";
+option java_outer_classname = "MagicwpOpenRespProto";
+
+message MagicwpOpenRespMsg{
+	optional int32 magicwpId = 1; // 法宝ID
+	optional int32 level = 2; // 法宝等级
+}

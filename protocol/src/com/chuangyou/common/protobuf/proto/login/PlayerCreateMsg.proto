@@ -1,0 +1,8 @@
+//protocol=25005;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerCreateProto";
+
+message PlayerCreateMsg{
+	optional int32 skin = 1; // 外形
+	optional string nickName = 2; // 名字
+}

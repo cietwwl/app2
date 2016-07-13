@@ -1,0 +1,7 @@
+//protocol=8;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerCreateResultProto";
+
+message PlayerCreateResultMsg{
+	optional int32 resultCode = 1; // 创建角色结果
+}

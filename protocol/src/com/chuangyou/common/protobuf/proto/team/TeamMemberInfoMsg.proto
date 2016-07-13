@@ -1,0 +1,17 @@
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "TeamMemberInfoProto";
+
+//队员信息
+message TeamMemberInfoMsg {
+	required int64 playerId = 1;
+	required string name = 2;
+	required int32 skinId = 3;
+	required int32 level = 4;
+	required int32 fight = 5; //战斗力
+	optional int32 fashionId = 6; //衣服
+	optional int32 weapon    = 7; //武器
+	optional int32 wing      = 8; //翅膀
+	optional bool isOnline = 9; //是否在线
+	optional int32 mapId = 10;//地图唯一ID
+	optional int32 mapKey = 11;//地图模板ID
+}

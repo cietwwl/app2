@@ -1,0 +1,10 @@
+//protocol=10522;
+option java_package = "com.chuangyou.common.protobuf.pb.npcShop";
+option java_outer_classname = "NpcShopBuyGoodReqProto";
+
+
+ //购买商品
+message NpcShopBuyGoodReqMsg{
+	required int32 privateId =1; //配置表ID
+	required int32 count =2;     //购买数量
+}

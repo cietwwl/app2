@@ -1,0 +1,8 @@
+//protocol=10008;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerKillMonsterProto";
+//通知center。玩家杀死怪物
+message PlayerKillMonsterMsg {
+	required int64 playerId = 1;
+	required int32 monsterTemplateId = 2;
+}

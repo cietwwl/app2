@@ -1,0 +1,8 @@
+//protocol=123;
+option java_package = "com.chuangyou.common.protobuf.pb.magicwp";
+option java_outer_classname = "MagicwpBanLevelSetAutoUpRespProto";
+
+message MagicwpBanLevelSetAutoUpRespMsg{
+	optional int32 banId = 1; // 禁制ID
+	optional int32 isAutoUp = 2; // 是否自动升级 1是，0不是
+}

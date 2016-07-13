@@ -1,0 +1,7 @@
+//protocol=108;
+option java_package = "com.chuangyou.common.protobuf.pb.mount";
+option java_outer_classname = "MountFightChooseRespProto";
+
+message MountFightChooseRespMsg{
+	optional int32 mountId = 1; // 当前出战的坐骑ID
+}

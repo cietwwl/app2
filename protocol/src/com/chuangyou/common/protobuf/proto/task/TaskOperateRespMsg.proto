@@ -1,0 +1,9 @@
+//protocol=533;
+option java_package = "com.chuangyou.common.protobuf.pb.task";
+option java_outer_classname = "TaskOperateRespProto";
+
+//任务操作
+message TaskOperateRespMsg {
+	required int32 taskId = 1;
+	required int32 operate = 2; //1：接任务   2：提交任务
+}

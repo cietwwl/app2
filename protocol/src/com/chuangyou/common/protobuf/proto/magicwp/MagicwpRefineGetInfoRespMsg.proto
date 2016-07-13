@@ -1,0 +1,13 @@
+//protocol=118;
+option java_package = "com.chuangyou.common.protobuf.pb.magicwp";
+option java_outer_classname = "MagicwpRefineGetInfoRespProto";
+
+import "common/AttributeBeanMsg.proto";
+
+message MagicwpRefineGetInfoRespMsg{
+	optional int32 magicwpId = 1; // 法宝ID
+	optional int32 grade = 2; // 法宝进阶等级(0未激活)
+	repeated AttributeBeanMsg attList = 3; // 法宝当前洗炼出的总属性列表
+	optional int32 hasUnSaveAtt = 4; // 是否有未保存的洗炼属性
+	repeated AttributeBeanMsg tmpList = 5; // 洗炼后未保存的临时洗炼属性
+}

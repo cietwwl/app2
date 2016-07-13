@@ -1,0 +1,28 @@
+<root>
+	<center_server>
+		<center id="101" name="center" address="127.0.0.1" port="8808" />
+	</center_server>
+
+	<scene_server>
+		<scene id="201" name="scene" address="127.0.0.1" port="7709" />
+	</scene_server>
+
+	<gateway_server>
+		<gateway id="301" name="gateway" address="127.0.0.1" port="9909" />
+	</gateway_server>
+
+	<maindb_server>
+		<db id="401" name="hw_xn_new" address="192.168.1.242" port="3306"
+			user="root" password="123456" />
+	</maindb_server>
+
+	<logdb_server>
+		<db_log id="402" name="xn_new_log" address="192.168.1.242"
+			port="3306" user="root" password="123456" />
+	</logdb_server>
+
+	<admin_server>
+		<admin id="501" name="admin_http" address="127.0.0.1" port="6606" />
+	</admin_server>
+</root>
+

@@ -1,0 +1,9 @@
+//protocol=10507;
+
+option java_package = "com.chuangyou.common.protobuf.pb.email";
+option java_outer_classname = "SetEmailReadedReqProto";
+
+ // 标记邮件为已读
+message SetEmailReadedReqMsg{
+	required int32 privateId =1;//邮件ID
+}

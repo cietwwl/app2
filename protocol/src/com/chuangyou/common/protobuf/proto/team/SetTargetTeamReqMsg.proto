@@ -1,0 +1,8 @@
+//protocol=10544;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "SetTargetTeamReqProto";
+
+//队长设置队伍目标
+message SetTargetTeamReqMsg {
+	required int32 targetId=1; //目标ID
+}

@@ -1,0 +1,16 @@
+
+option java_package = "com.chuangyou.common.protobuf.pb.gather";
+option java_outer_classname = "CreatePrivateMonsterInnerProto";
+
+import "common/PBVector3.proto";
+ //内部通信。命令scene刷一个私有的怪
+message CreatePrivateMonsterInnerMsg{
+
+	required int64 playerId = 1;
+	required int32 monsterId = 2;
+	required int32 leaveTime = 3;
+	optional PBVector3 pos = 4;
+	optional int32 mapId = 5;
+
+
+}

@@ -1,0 +1,10 @@
+option java_package = "com.chuangyou.common.protobuf.pb.task";
+option java_outer_classname = "TaskInfoProto";
+
+//任务信息
+message TaskInfoMsg {
+	required int32 taskId =1; //任务ID
+	required int32 process = 2;//process
+	required int32 state   = 3; //状态 0：未接 1：已接进行中 2：完成未提交 3：已经提交
+	optional int64 createTime = 4;//接任务时间(UTC时间戳单位毫秒)
+}

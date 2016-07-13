@@ -1,0 +1,15 @@
+//protocol=553;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "HpMpMapInfoRespProto";
+
+
+//返回队伍同步信息
+message HpMpMapInfoRespMsg {
+	required int64 playerId = 1;
+	required int64 curBlood = 2;//
+	required int64 maxBlood = 3;
+	required int64 curSoul  = 4;//元魂
+	required int64 maxSoul  = 5;
+	required int32 mapId    = 6;
+	required int32 mapKey   = 7;
+}

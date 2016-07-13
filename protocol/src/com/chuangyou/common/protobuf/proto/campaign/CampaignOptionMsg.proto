@@ -1,0 +1,8 @@
+//10606
+option java_package = "com.chuangyou.common.protobuf.pb.campaign";
+option java_outer_classname = "CampaignOptionMsgProto";
+message CampaignOptionMsg{
+	optional int32  optionType = 1; //操作类型 1 请求副本信息，2 返回副本 3 退出副本
+	optional int32  param1 = 2; //操作参数
+}
+

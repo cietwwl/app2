@@ -1,0 +1,13 @@
+//protocol=127;
+option java_package = "com.chuangyou.common.protobuf.pb.pet";
+option java_outer_classname = "PetGetInfoRespProto";
+
+import "pet/PetInfoBeanMsg.proto";
+
+message PetGetInfoRespMsg{
+	optional int32 fightPetId = 1; // 当前出战宠物ID
+	optional int32 soulLevel = 2; // 宠物炼魂等级
+	optional int32 soulExp = 3; // 当前炼魂等级经验
+	optional int32 gridNum = 4; // 激活的技能格数量
+	repeated PetInfoBeanMsg petInfo = 5; // 宠物信息
+}

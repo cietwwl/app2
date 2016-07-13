@@ -1,0 +1,12 @@
+//protocol=20024;
+option java_package = "com.chuangyou.common.protobuf.pb.battle";
+option java_outer_classname = "AttackOrderProto";
+import "common/PBVector3.proto";
+//输出攻击指令
+message AttackOrderMsg {
+	optional int32 skillActionId = 1; //攻击指令
+	repeated int64 targets = 2; //被攻击目标ID
+	optional PBVector3 current = 3; //释放前的位置
+	optional PBVector3 position = 4; //释放后的位置
+}
+

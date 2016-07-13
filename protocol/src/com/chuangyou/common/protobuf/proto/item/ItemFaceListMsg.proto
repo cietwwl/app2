@@ -1,0 +1,7 @@
+//protocol=143;
+option java_package = "com.chuangyou.common.protobuf.pb.item";
+option java_outer_classname = "ItemFaceListMsgProto";
+import "item/ItemFaceMsg.proto";
+message ItemFaceListMsg {			
+	repeated ItemFaceMsg  itemFace = 1; // 物品外观
+}

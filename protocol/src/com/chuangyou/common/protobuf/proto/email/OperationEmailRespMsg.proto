@@ -1,0 +1,12 @@
+//protocol=505;
+
+option java_package = "com.chuangyou.common.protobuf.pb.email";
+option java_outer_classname = "OperationEmailRespProto";
+
+import "email/EmailInfo.proto";
+
+ //通知邮件变更
+message OperationEmailRespMsg{
+	required int32 type=1;//	1:增加邮件 2：更新邮件  3：删除邮件
+	repeated EmailInfo emails =2;//邮件列表
+}

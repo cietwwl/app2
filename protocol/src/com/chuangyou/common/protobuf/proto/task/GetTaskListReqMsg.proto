@@ -1,0 +1,8 @@
+//protocol=10529;
+option java_package = "com.chuangyou.common.protobuf.pb.task";
+option java_outer_classname = "GetTaskListReqProto";
+
+//请求任务列表
+message GetTaskListReqMsg {
+	optional int64 id=1; // 无用。点位的
+}

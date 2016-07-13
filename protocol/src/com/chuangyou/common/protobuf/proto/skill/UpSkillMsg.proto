@@ -1,0 +1,8 @@
+//protocol= 10302;
+option java_package = "com.chuangyou.common.protobuf.pb.skill";
+option java_outer_classname = "UpSkillMsgProto";
+
+//技能升级
+message UpSkillMsg {
+	required int32 skillId =1; //要升级的技能id
+}

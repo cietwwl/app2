@@ -1,0 +1,9 @@
+//protocol=540;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "TeamUpdateLineRespProto";
+
+//队员在线状态更新
+message TeamUpdateLineRespMsg {
+ 	required int64 memberPlayerId = 1;//新队长ID
+ 	required bool isOnline = 2;//true：在线  false:离线
+}

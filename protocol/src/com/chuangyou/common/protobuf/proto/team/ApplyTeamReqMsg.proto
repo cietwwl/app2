@@ -1,0 +1,8 @@
+//protocol=10536;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "ApplyTeamReqProto";
+
+//申请入队
+message ApplyTeamReqMsg {
+	required int32 teamId=1; //队ID
+}

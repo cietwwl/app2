@@ -1,0 +1,7 @@
+//protocol=522;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "ChangeMap2ClientResultMsgProto";
+
+message ChangeMap2ClientResultMsg{
+	optional int32 result=1;//失败状态 1004 地图模型不存在，1003  旧地图已经被清理
+}

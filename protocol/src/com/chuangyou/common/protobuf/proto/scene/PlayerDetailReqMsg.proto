@@ -1,0 +1,7 @@
+//protocol=20021;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerDetailReqMsgProto";
+
+message PlayerDetailReqMsg {
+	optional int64 living_id=1; //角色ID
+}

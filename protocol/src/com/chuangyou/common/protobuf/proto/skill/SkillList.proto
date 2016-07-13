@@ -1,0 +1,7 @@
+option java_package = "com.chuangyou.common.protobuf.pb.skill";
+option java_outer_classname = "SkillListProto";
+
+//技能数据
+message SkillList {
+	required int32 skillId =1; //已经学习了的技能ID
+}

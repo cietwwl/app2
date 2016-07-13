@@ -1,0 +1,6 @@
+//protocol=20011;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "EnterSceneProto";
+message EnterSceneMsg {
+}
+

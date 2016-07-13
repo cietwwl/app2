@@ -1,0 +1,10 @@
+//protocol=10514;
+
+option java_package = "com.chuangyou.common.protobuf.pb.friend";
+option java_outer_classname = "GetRoleInfoByNameReqProto";
+
+
+ //根据用户名查询用户信息
+message GetRoleInfoByNameReqMsg{
+	required string roleName =1; //用户名
+}

@@ -1,0 +1,7 @@
+//protocol=10125;
+option java_package = "com.chuangyou.common.protobuf.pb.magicwp";
+option java_outer_classname = "MagicwpGetTotalAttReqProto";
+
+message MagicwpGetTotalAttReqMsg{
+	optional bool empty = 1; // 空消息标记
+}

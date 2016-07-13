@@ -1,0 +1,12 @@
+//protocol=111;
+option java_package = "com.chuangyou.common.protobuf.pb.magicwp";
+option java_outer_classname = "MagicwpGetInfoRespProto";
+
+import "magicwp/MagicwpInfoBeanMsg.proto";
+
+message MagicwpGetInfoRespMsg{
+	optional int32 magicwpId = 1; // 法宝ID
+	optional int32 useDanNum = 2; // 使用属性丹数量
+
+	repeated MagicwpInfoBeanMsg infos = 3; // 法宝信息列表
+}

@@ -1,0 +1,10 @@
+//protocol=545;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "GetApplyListRespProto";
+
+import "team/TeamMemberInfoMsg.proto";
+
+//获取申请入队的所有人员列表
+message GetApplyListRespMsg {
+	repeated TeamMemberInfoMsg members=1; //申请人列表
+}

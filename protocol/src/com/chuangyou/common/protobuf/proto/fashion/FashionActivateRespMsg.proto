@@ -1,0 +1,7 @@
+//protocol=205;
+option java_package = "com.chuangyou.common.protobuf.pb.fashion";
+option java_outer_classname = "FashionActivateRespProto";
+
+message FashionActivateRespMsg{
+	optional bool empty = 1; // 空消息标记
+}

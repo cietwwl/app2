@@ -1,0 +1,9 @@
+option java_package = "com.chuangyou.common.protobuf.pb.pet";
+option java_outer_classname = "PetSkillBeanProto";
+
+message PetSkillBeanMsg{
+	optional int32 skillId = 1; // 技能ID
+	optional int32 state = 2; // 技能状态1已获得待激活，2已激活待解封，3已解封待装备，4已装备
+	optional int32 slotIndex = 3; // 在技能槽里的索引
+	optional int32 level = 4; // 技能等级
+}

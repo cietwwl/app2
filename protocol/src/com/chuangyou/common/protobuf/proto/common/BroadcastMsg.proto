@@ -1,0 +1,9 @@
+option java_package = "com.chuangyou.common.protobuf.pb.common";
+option java_outer_classname = "BroadcastMsgProto";
+
+message BroadcastMsg{
+	repeated int64  players=1;
+	optional int32	protocol=2;
+	optional bytes	packet=3;//包
+}
+

@@ -1,0 +1,8 @@
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerCreateInnerProto";
+
+message PlayerCreateInnerMsg{
+	optional int64 userId = 1; // 用户ID
+	optional int32 roleConfigId = 2; // 角色配置id
+	optional string nickName = 3; // 名字
+}

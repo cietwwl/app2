@@ -1,0 +1,7 @@
+//protocol=204;
+option java_package = "com.chuangyou.common.protobuf.pb.fashion";
+option java_outer_classname = "FashionGradeUpRespProto";
+
+message FashionGradeUpRespMsg{
+	optional bool empty = 1; // 空消息标记
+}

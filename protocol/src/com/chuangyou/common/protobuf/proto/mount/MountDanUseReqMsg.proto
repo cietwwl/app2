@@ -1,0 +1,7 @@
+//protocol=10106;
+option java_package = "com.chuangyou.common.protobuf.pb.mount";
+option java_outer_classname = "MountDanUseReqProto";
+
+message MountDanUseReqMsg{
+	optional int32 useNum = 1; // 使用数量
+}

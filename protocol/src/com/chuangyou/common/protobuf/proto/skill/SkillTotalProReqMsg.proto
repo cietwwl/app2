@@ -1,0 +1,8 @@
+//protocol=10303;
+option java_package = "com.chuangyou.common.protobuf.pb.skill";
+option java_outer_classname = "SkillTotalProReqMsgProto";
+
+//技能总属性
+message SkillTotalProReqMsg {
+	optional int32 id = 1; //占位
+}

@@ -1,0 +1,9 @@
+//protocol=701;
+option java_package = "com.chuangyou.common.protobuf.pb.skill";
+option java_outer_classname = "ResSkillInfoMsgProto";
+import "skill/SkillList.proto";
+
+//已經學習過的技能信息
+message ResSkillInfoMsg {
+	repeated SkillList info = 1;//更新信息
+}

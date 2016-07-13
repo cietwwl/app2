@@ -1,0 +1,9 @@
+//protocol=20013;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerMoveSyncProto";
+
+import "common/PBVector3.proto";
+
+message PlayerMoveSyncMsg {
+	optional PBVector3 cur = 1; //当前位置
+}

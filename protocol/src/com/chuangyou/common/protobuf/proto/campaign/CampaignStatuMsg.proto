@@ -1,0 +1,7 @@
+option java_package = "com.chuangyou.common.protobuf.pb.campaign";
+option java_outer_classname = "CampaignStatuMsgProto";
+message CampaignStatuMsg{
+	optional int32  campaignId= 1; //副本ID
+	optional int32  statu = 2; //状态
+}
+

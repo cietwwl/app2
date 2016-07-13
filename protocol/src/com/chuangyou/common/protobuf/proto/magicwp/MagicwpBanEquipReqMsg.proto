@@ -1,0 +1,8 @@
+//protocol=10123;
+option java_package = "com.chuangyou.common.protobuf.pb.magicwp";
+option java_outer_classname = "MagicwpBanEquipReqProto";
+
+message MagicwpBanEquipReqMsg{
+	optional int32 banId = 1; // 禁制ID
+	optional int32 position = 2; // 装备位置
+}

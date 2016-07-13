@@ -1,0 +1,7 @@
+//protocol=140;
+option java_package = "com.chuangyou.common.protobuf.pb.pet";
+option java_outer_classname = "PetSkillEquipRespProto";
+
+message PetSkillEquipRespMsg{
+	optional bool empty = 1; // 空消息标记
+}

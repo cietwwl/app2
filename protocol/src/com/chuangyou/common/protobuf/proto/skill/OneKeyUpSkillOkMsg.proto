@@ -1,0 +1,14 @@
+//protocol= 705;
+option java_package = "com.chuangyou.common.protobuf.pb.skill";
+option java_outer_classname = "OneKeyUpSkillOkMsgProto";
+import "skill/UseGoods.proto";
+
+//一键升级主动技能成功
+message OneKeyUpSkillOkMsg {
+	repeated int32 skillId =1; //已经学习了的技能ID
+	optional UseGoods useGoods=3;//消耗的物品
+	optional int32 needJade =4;//技能升级需要仙玉
+	optional int32 needStone = 5;//技能升级需要灵石
+	optional int32 needRepair = 6;//技能升级需要修为
+	
+}

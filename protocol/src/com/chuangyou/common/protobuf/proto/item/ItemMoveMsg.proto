@@ -1,0 +1,10 @@
+//protocol=10143;
+option java_package = "com.chuangyou.common.protobuf.pb.item";
+option java_outer_classname = "ItemMoveMsgProto";
+message ItemMoveMsg{
+	optional int32 beginBagType = 1; //初始背包类型
+	optional int32 beginPos = 2;	 //初始背包位置
+	optional int32 endBagType = 3;   //目的背包类型
+	optional int32 endPos = 4;		//目背包位置
+	optional int32 count = 5;		 //数量
+}

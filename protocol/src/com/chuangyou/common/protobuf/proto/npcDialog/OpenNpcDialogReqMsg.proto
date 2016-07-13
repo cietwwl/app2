@@ -1,0 +1,8 @@
+//protocol=10527;
+option java_package = "com.chuangyou.common.protobuf.pb.npcDialog";
+option java_outer_classname = "OpenNpcDialogReqProto";
+
+//打开NPC对话
+message OpenNpcDialogReqMsg{
+	required int32 npcType = 1; // NPC静态表中的唯一ID
+}

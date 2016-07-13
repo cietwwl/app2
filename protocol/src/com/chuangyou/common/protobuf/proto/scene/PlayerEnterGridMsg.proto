@@ -1,0 +1,8 @@
+//protocol=524;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerEnterGridProto";
+
+message PlayerEnterGridMsg {
+	optional int64 id = 1; //进入自己九宫格区域位置
+}
+

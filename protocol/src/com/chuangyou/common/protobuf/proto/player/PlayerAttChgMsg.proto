@@ -1,0 +1,8 @@
+//protocol=1520;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerAttChgProto";
+message PlayerAttChgMsg {
+	optional int64 id = 1;    //空属性
+	optional int32 type = 2;	//属性类型
+	optional int64 value = 3; //数据
+}

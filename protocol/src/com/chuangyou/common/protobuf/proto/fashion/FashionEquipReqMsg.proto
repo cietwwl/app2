@@ -1,0 +1,7 @@
+//protocol=10202;
+option java_package = "com.chuangyou.common.protobuf.pb.fashion";
+option java_outer_classname = "FashionEquipReqProto";
+
+message FashionEquipReqMsg{
+	optional int32 fashionId = 1; // 时装ID
+}

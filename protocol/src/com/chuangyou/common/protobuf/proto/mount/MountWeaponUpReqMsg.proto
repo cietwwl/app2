@@ -1,0 +1,7 @@
+//protocol=10108;
+option java_package = "com.chuangyou.common.protobuf.pb.mount";
+option java_outer_classname = "MountWeaponUpReqProto";
+
+message MountWeaponUpReqMsg{
+	optional bool empty = 1; // 空消息标记
+}

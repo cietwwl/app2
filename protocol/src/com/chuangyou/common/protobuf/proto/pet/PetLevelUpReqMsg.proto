@@ -1,0 +1,8 @@
+//protocol=10130;
+option java_package = "com.chuangyou.common.protobuf.pb.pet";
+option java_outer_classname = "PetLevelUpReqProto";
+
+message PetLevelUpReqMsg{
+	optional int32 petId = 1; // 宠物ID
+	optional int32 useItem = 2; // 升级使用的物品
+}

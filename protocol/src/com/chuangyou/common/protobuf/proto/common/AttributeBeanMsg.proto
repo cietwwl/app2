@@ -1,0 +1,7 @@
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "AttributeBeanProto";
+
+message AttributeBeanMsg{
+	optional int32 attType = 1; // 属性类型
+	optional int32 attValue = 2; // 属性值
+}

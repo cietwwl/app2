@@ -1,0 +1,11 @@
+option java_package = "com.chuangyou.common.protobuf.pb.magicwp";
+option java_outer_classname = "MagicwpBanInfoBeanProto";
+
+message MagicwpBanInfoBeanMsg{
+	optional int32 banId = 1; // 禁制ID
+	optional int32 position = 2; // 禁制位置(0是未装备)
+	optional string fragmentStr = 3; // 已经激活的碎片索引，下划线隔开(例:1_3_4)
+	optional int32 level = 4; // 禁制等级
+	optional int32 exp = 5; // 当前经验
+	optional int32 autoUpLev = 6; // 是否自动升级
+}

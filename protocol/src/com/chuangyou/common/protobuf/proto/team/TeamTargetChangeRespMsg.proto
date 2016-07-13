@@ -1,0 +1,8 @@
+//protocol=548;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "TeamTargetChangeRespProto";
+
+//广播队伍目标改变
+message TeamTargetChangeRespMsg {
+	required int32 targetId=1; //目标ID
+}

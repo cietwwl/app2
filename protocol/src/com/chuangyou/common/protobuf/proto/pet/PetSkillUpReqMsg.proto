@@ -1,0 +1,7 @@
+//protocol=10138;
+option java_package = "com.chuangyou.common.protobuf.pb.pet";
+option java_outer_classname = "PetSkillUpReqProto";
+
+message PetSkillUpReqMsg{
+	optional int32 skillId = 1; // 宠物技能ID
+}

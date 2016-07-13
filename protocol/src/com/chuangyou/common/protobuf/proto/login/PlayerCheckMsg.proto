@@ -1,0 +1,10 @@
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerCheckMsgProto";
+import "login/PlayerInfoListMsg.proto";
+message PlayerCheckMsg {
+	optional bool result = 1;    //验证结构
+	optional string key=2;  //key
+	optional int64 user_id=3;  //用户ID
+	optional PlayerInfoListMsg players= 4;    //角色包
+}
+

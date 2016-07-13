@@ -1,0 +1,11 @@
+option java_package = "com.chuangyou.common.protobuf.pb.item";
+option java_outer_classname = "ItemFaceMsgProto";
+
+//物品外观
+message ItemFaceMsg {
+	optional int32 templateId = 1;	// 模板ID
+	optional int32 pos = 2;		// 位置
+	optional int32 bagType = 3;	//背包类型
+	optional bool bind= 4;		//是否绑定
+	optional int32 count=5;		//数量
+}

@@ -1,0 +1,9 @@
+//protocol=7;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerLoadDataMsgProto";
+
+//用户数据加载
+message PlayerLoadDataMsg {
+	optional int32 loadDataType = 1; // 收到加载数据类型
+}
+

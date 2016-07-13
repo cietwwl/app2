@@ -1,0 +1,10 @@
+option java_package = "com.chuangyou.common.protobuf.pb.fashion";
+option java_outer_classname = "FashionBeanProto";
+
+message FashionBeanMsg{
+	optional int32 id = 1; // 时装ID
+	optional int32 quality = 2; // 品质
+	optional int32 level = 3; // 等级
+	optional int32 exp = 4; // 当前等级经验
+	optional int32 isEquiped = 5; // 1:已装备  2：未装备
+}

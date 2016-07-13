@@ -1,0 +1,11 @@
+//protocol=549;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "GetTeamListRespProto";
+
+
+import "team/TeamInfoRespMsg.proto";
+//按目标查找队伍列表
+message GetTeamListRespMsg {
+
+	repeated TeamInfoRespMsg teams = 1;//队伍列表
+}

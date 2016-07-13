@@ -1,0 +1,8 @@
+//protocol=603;
+option java_package = "com.chuangyou.common.protobuf.pb.map";
+option java_outer_classname = "SpawnNodeChangeListMsgProto";
+import "map/SpawnNodeChangeMsg.proto";
+message SpawnNodeChangeListMsg{
+	repeated SpawnNodeChangeMsg list=1;//变更后的节点集
+}
+

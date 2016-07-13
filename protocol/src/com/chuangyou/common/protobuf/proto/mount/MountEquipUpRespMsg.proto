@@ -1,0 +1,8 @@
+//protocol=106;
+option java_package = "com.chuangyou.common.protobuf.pb.mount";
+option java_outer_classname = "MountEquipUpRespProto";
+
+message MountEquipUpRespMsg{
+	optional int32 id = 1; // 装备部位ID
+	optional int32 level = 2; // 当前等级
+}

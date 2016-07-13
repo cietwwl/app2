@@ -1,0 +1,22 @@
+//protocol=144;
+option java_package = "com.chuangyou.common.protobuf.pb.item";
+option java_outer_classname = "ItemFullInfoMsgProto";
+import "army/PropertyMsg.proto";
+
+// 道具物品详包
+message ItemFullInfoMsg {
+	optional int32 templateId = 1;	// 模板ID
+	optional int32 pos = 2;		  	// 位置
+	optional int32 bagType = 3;	  	//背包类型
+	optional bool bind	= 4;	  	//绑定
+	optional bool used	= 5;	  	//是否使用
+	optional int32 count= 6;		// 数量
+	optional int32 validDate= 7;	// 有效时间
+	optional int64 beginDate= 8;	// 生效时间
+	optional bool isNew= 9;		  	// 新物品提示
+
+	optional int32 qualityCoefficient=10;//品质系数
+	repeated PropertyMsg pro=11;	//属性
+	optional int32 grow=12;			//成长系数
+
+}

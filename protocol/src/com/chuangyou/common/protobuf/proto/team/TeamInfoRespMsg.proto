@@ -1,0 +1,14 @@
+//protocol=537;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "TeamInfoRespProto";
+
+import "team/TeamMemberInfoMsg.proto";
+
+//队伍信息
+message TeamInfoRespMsg {
+
+	required int32 teamId = 1;           //队伍ID
+	required int64 leaderPlayerId = 2;   // 队长id
+	required int32 targetId = 3;  //目标ID  0:未选择任何目标
+	repeated TeamMemberInfoMsg infos = 4;//队员
+}

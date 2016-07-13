@@ -1,0 +1,8 @@
+//protocol=10505;
+option java_package = "com.chuangyou.common.protobuf.pb.email";
+option java_outer_classname = "GetEmailNumReqProto";
+
+//请求邮件数量
+message GetEmailNumReqMsg {
+	optional int32 id = 1; //无意义
+}

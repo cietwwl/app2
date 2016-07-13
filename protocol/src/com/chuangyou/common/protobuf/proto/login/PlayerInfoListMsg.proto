@@ -1,0 +1,8 @@
+//protocol=4;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerInfoListMsgProto";
+import "player/PlayerInfoMsg.proto";
+message PlayerInfoListMsg {
+	repeated PlayerInfoMsg players= 1;    //角色列表
+}
+

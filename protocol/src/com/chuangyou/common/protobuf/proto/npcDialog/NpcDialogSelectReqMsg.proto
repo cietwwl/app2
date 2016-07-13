@@ -1,0 +1,9 @@
+//protocol=10528;
+option java_package = "com.chuangyou.common.protobuf.pb.npcDialog";
+option java_outer_classname = "NpcDialogSelectReqProto";
+
+//在NPC对话中选中某个选项
+message NpcDialogSelectReqMsg{
+	required int32 npcType = 1; // NPC静态表中的唯一ID
+	required int32 commandParam = 2;//选项参数
+}

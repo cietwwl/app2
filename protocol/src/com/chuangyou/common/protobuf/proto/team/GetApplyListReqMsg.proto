@@ -1,0 +1,9 @@
+//protocol=10537;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "GetApplyListReqProto";
+
+
+//请求申请队列
+message GetApplyListReqMsg {
+	required int32 teamId=1; //队伍ID
+}

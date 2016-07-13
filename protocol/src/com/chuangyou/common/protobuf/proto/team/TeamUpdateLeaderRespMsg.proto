@@ -1,0 +1,9 @@
+//protocol=539;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "TeamUpdateLeaderRespProto";
+
+//队长变更
+message TeamUpdateLeaderRespMsg {
+ 	required int64 newLeader = 1;//新队长ID
+ 	required int32 teamId = 2;           //队伍ID
+}

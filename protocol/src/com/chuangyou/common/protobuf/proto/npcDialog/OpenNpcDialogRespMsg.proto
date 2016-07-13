@@ -1,0 +1,10 @@
+//protocol=528;
+option java_package = "com.chuangyou.common.protobuf.pb.npcDialog";
+option java_outer_classname = "OpenNpcDialogRespProto";
+
+import "npcDialog/NpcCommand.proto";
+//打开NPC对话
+message OpenNpcDialogRespMsg{
+	required string content = 1;//对话内容
+	repeated NpcCommand commands = 2;//返回给客户端的命令集合
+}

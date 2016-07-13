@@ -1,0 +1,9 @@
+//protocol=206;
+option java_package = "com.chuangyou.common.protobuf.pb.fashion";
+option java_outer_classname = "FashionUpdateRespProto";
+
+import "fashion/FashionBeanMsg.proto";
+
+message FashionUpdateRespMsg{
+	repeated FashionBeanMsg fashion = 1; // 时装信息
+}

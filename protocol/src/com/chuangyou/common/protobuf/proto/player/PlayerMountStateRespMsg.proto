@@ -1,0 +1,8 @@
+//protocol=148;
+option java_package = "com.chuangyou.common.protobuf.pb.player";
+option java_outer_classname = "PlayerMountStateRespProto";
+
+message	PlayerMountStateRespMsg{
+	optional int64 playerId = 1; // 玩家ID
+	optional int32 mountState = 2; // 是否骑乘坐骑 0否 1是
+}

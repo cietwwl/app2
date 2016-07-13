@@ -1,0 +1,13 @@
+//protocol=526;
+option java_package = "com.chuangyou.common.protobuf.pb.npcShop";
+option java_outer_classname = "NpcShopBuyGoodRespProto";
+
+
+
+ //购买商品
+ //成功返回（失败会返回相关错误码）
+message NpcShopBuyGoodRespMsg{
+	required int32 privateId =1;  //商品配置表中的唯一ID
+	required int32 serverProcured =2;//全服已购数量， 等于-1时代表无限出售
+	required int32 roleProcured =3;  //单个用户已购数量，等于-1时代表不限购
+}

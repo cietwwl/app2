@@ -1,0 +1,12 @@
+//protocol=530;
+option java_package = "com.chuangyou.common.protobuf.pb.player";
+option java_outer_classname = "PlayerAttUpdateProto";
+
+import "army/PropertyMsg.proto";
+
+//单个角色属性的更新
+message PlayerAttUpdateMsg {
+	required int64 playerId = 1; //角色ID
+	repeated PropertyMsg att = 2; //需要更新的属性
+
+}

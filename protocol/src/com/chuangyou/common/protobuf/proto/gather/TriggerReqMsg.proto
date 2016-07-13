@@ -1,0 +1,12 @@
+//protocol=10534;
+
+option java_package = "com.chuangyou.common.protobuf.pb.gather";
+option java_outer_classname = "TriggerReqProto";
+
+
+ //trigger  内部通信用的。用于给center通知
+message TriggerReqMsg{
+
+	required int64 playerId = 1;
+	required int32 id = 2; //id
+}

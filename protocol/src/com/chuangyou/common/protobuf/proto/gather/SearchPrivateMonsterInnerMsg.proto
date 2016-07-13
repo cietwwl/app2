@@ -1,0 +1,11 @@
+
+option java_package = "com.chuangyou.common.protobuf.pb.gather";
+option java_outer_classname = "SearchPrivateMonsterInnerProto";
+
+ //内部通信。命令scene查询是否有这种怪 返回也用同样的结构
+message SearchPrivateMonsterInnerMsg{
+	required int64 playerId = 1;
+	required int32 monsterId = 2;
+	required int32 taskId    = 3;
+	optional bool isExisted  = 4; //是否存在
+}

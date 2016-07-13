@@ -1,0 +1,12 @@
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "Vector3Proto";
+
+/**
+ * 
+ */
+message PBVector3{
+
+  	optional int32 X = 1; //当前X
+	optional int32 Y = 2; //当前Y
+	optional int32 Z = 3; //当前Z
+}

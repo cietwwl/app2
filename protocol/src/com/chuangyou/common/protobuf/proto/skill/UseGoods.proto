@@ -1,0 +1,8 @@
+option java_package = "com.chuangyou.common.protobuf.pb.skill";
+option java_outer_classname = "UseGoodsProto";
+
+//一键升级消耗的物品
+message UseGoods {
+	required int32 useGoodsId =1; //一键升级消耗的物品ID
+	required int32 useGoodsNum =2; //一键升级消耗的物品数量
+}

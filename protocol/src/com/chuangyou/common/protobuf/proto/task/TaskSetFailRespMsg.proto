@@ -1,0 +1,9 @@
+//protocol=534;
+option java_package = "com.chuangyou.common.protobuf.pb.task";
+option java_outer_classname = "TaskSetFailRespProto";
+
+//任务操作
+message TaskSetFailRespMsg {
+	required int32 taskId = 1;
+
+}

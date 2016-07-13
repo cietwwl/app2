@@ -1,0 +1,11 @@
+//protocol=507;
+
+option java_package = "com.chuangyou.common.protobuf.pb.email";
+option java_outer_classname = "GetEmailAttachmentBatchRespProto";
+
+
+ //一键提取所有附件
+message GetEmailAttachmentBatchRespMsg{
+	required int32 resultType=1;//	返回结果（1：成功提取所有附件 2：提取部分邮件的附件，因背包满中断）
+
+}

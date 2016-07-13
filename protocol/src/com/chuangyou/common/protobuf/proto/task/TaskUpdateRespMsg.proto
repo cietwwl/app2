@@ -1,0 +1,9 @@
+//protocol=532;
+option java_package = "com.chuangyou.common.protobuf.pb.task";
+option java_outer_classname = "TaskUpdateRespProto";
+
+import "task/TaskInfoMsg.proto";
+//任务更新
+message TaskUpdateRespMsg {
+	required TaskInfoMsg info = 1;//更新信息
+}

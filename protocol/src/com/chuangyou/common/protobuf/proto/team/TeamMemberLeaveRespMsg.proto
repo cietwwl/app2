@@ -1,0 +1,9 @@
+//protocol=541;
+option java_package = "com.chuangyou.common.protobuf.pb.team";
+option java_outer_classname = "TeamMemberLeaveRespProto";
+
+//队员离开队伍
+message TeamMemberLeaveRespMsg {
+ 	required int64 memberPlayerId = 1;//离开队员ID
+ 	required int32 teamId = 2;           //队伍ID
+}

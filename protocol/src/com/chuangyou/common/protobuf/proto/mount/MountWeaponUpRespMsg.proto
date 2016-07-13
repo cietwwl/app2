@@ -1,0 +1,8 @@
+//protocol=109;
+option java_package = "com.chuangyou.common.protobuf.pb.mount";
+option java_outer_classname = "MountWeaponUpRespProto";
+
+message MountWeaponUpRespMsg{
+	optional int32 weaponGrade = 1; // 神兵进阶等级
+	optional int32 weaponBless = 2; // 神兵进阶祝福值
+}

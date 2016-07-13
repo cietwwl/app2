@@ -1,0 +1,8 @@
+//protocol=10129;
+option java_package = "com.chuangyou.common.protobuf.pb.pet";
+option java_outer_classname = "PetTalentUpReqProto";
+
+message PetTalentUpReqMsg{
+	optional int32 petId = 1; // 宠物ID
+	optional int32 useItem = 2; // 要使用的物品
+}

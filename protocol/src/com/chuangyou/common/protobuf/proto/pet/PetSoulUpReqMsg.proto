@@ -1,0 +1,7 @@
+//protocol=10135;
+option java_package = "com.chuangyou.common.protobuf.pb.pet";
+option java_outer_classname = "PetSoulUpReqProto";
+
+message PetSoulUpReqMsg{
+	optional int32 type = 1; // 炼魂模式 0 普通炼魂 1 自动炼魂升1级
+}

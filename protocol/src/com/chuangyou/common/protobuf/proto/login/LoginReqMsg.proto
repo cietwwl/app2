@@ -1,0 +1,9 @@
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "LoginReqMsgProto";
+//protocol=25001
+message LoginReqMsg {
+	optional string userName = 1;        //用户名
+	optional string key = 2;     	     //密码
+	optional int64  userId = 3;     	     //用户ID
+}
+

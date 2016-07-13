@@ -1,0 +1,10 @@
+//protocol=703;
+option java_package = "com.chuangyou.common.protobuf.pb.skill";
+option java_outer_classname = "SkillTotalProResMsgProto";
+import "skill/SkillProperty.proto";
+
+//技能总属性
+message SkillTotalProResMsg {
+	repeated SkillProperty info = 1;//属性
+	optional int32 stage = 2; //技能阶段
+}

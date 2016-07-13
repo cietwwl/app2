@@ -1,0 +1,10 @@
+//protocol=10508;
+
+option java_package = "com.chuangyou.common.protobuf.pb.email";
+option java_outer_classname = "GetEmailAttachmentReqProto";
+
+
+ //提取邮件附件
+message GetEmailAttachmentReqMsg{
+	required int32 privateId =1;//邮件ID
+}

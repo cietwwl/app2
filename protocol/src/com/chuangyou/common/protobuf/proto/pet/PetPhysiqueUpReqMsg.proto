@@ -1,0 +1,7 @@
+//protocol=10131;
+option java_package = "com.chuangyou.common.protobuf.pb.pet";
+option java_outer_classname = "PetPhysiqueUpReqProto";
+
+message PetPhysiqueUpReqMsg{
+	optional int32 petId = 1; // 宠物ID
+}

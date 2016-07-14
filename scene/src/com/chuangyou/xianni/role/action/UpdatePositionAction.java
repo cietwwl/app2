@@ -27,36 +27,34 @@ public class UpdatePositionAction extends DelayAction {
 	private static final int TICK = 100;
 	private ActiveLiving activeLiving;
 	private Selector playerSelector;
-	private int Speed = 6;
+	// private int Speed = 6;
 
 	public UpdatePositionAction(ActiveLiving living) {
 		super(living, TICK);
-		// TODO Auto-generated constructor stub
 		this.activeLiving = living;
 		playerSelector = new PlayerSelectorHelper(this.activeLiving);
 	}
 
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
 		if (!activeLiving.isArrial()) {
-			Vector3 target = MathUtils.GetVector3InDistance(
-					activeLiving.getPostion(), 
-					activeLiving.getGoal(),
-					getStep(Speed));
-			//System.out.println("moveTarget = " + target + " activeLiving.getPostion() = " + activeLiving.getPostion() + " activeLiving.getGoal() = " + activeLiving.getGoal());
-			if (!isValidPoint(target)) // 不可站立的点
-			{
+			Vector3 target = MathUtils.GetVector3InDistance(activeLiving.getPostion(), activeLiving.getGoal(), getStep(activeLiving.getSpeed()));
+			// System.out.println("moveTarget = " + target + " activeLiving.getPostion() = " + activeLiving.getPostion() + " activeLiving.getGoal() = " + activeLiving.getGoal());
+			if (!isValidPoint(target)) { // 不可站立的点
 				this.activeLiving.stop(true);
 				setUpdate();
 				return;
 			}
-			this.activeLiving.setMoveTime(this.activeLiving.getMoveTime()
-					- TICK);
+			this.activeLiving.setMoveTime(this.activeLiving.getMoveTime() - TICK);
 			if (this.activeLiving.getMoveTime() <= 0) {
-				setPostion(activeLiving.getGoal(), playerSelector);	
+				// if (activeLiving.getId() == 1000000000033L)
+				// System.out.println(this.activeLiving.getPostion().toString()+" 到达目标位置：" + target + " this.activeLiving.getMoveTime()： " + this.activeLiving.getMoveTime());
+				setPostion(activeLiving.getGoal(), playerSelector);
 				this.activeLiving.arrial();
 			} else {
+				// if (activeLiving.getId() == 1000000000033L)
+				// System.out.println(this.activeLiving.getPostion().toString()+" 设置位置：" + target + " this.activeLiving.getMoveTime()： " +
+				// this.activeLiving.getMoveTime()+"getStep(Speed): "+getStep(activeLiving.getSpeed()));
 				setPostion(target, playerSelector);
 			}
 		}
@@ -73,13 +71,11 @@ public class UpdatePositionAction extends DelayAction {
 	 */
 	protected void setPostion(Vector3 cur, Selector selector) {
 		Field f = this.activeLiving.getField();
-		GridItem curGI = f.getGrid()
-				.getGridItem(this.activeLiving.getPostion());
+		GridItem curGI = f.getGrid().getGridItem(this.activeLiving.getPostion());
 		GridItem tarGI = f.getGrid().getGridItem(cur);
 		if (curGI == null || tarGI == null)
 			return; // 找不到对应的格子， 返回。。
-		if (curGI.id == tarGI.id)
-		{
+		if (curGI.id == tarGI.id) {
 			this.activeLiving.setPostion(cur);
 			return; // 当前格子与目标格子一致
 		}
@@ -100,15 +96,13 @@ public class UpdatePositionAction extends DelayAction {
 		if (oldNears.size() > 0) {
 			// System.err.println("有玩家离开视野");
 			// notifyLeaveGrid(army, oldNears);
-			PlayerLeaveGridMsg.Builder leaveMsg = PlayerLeaveGridMsg
-					.newBuilder();
+			PlayerLeaveGridMsg.Builder leaveMsg = PlayerLeaveGridMsg.newBuilder();
 			for (Long id : oldNears) {
 				ArmyProxy oldNearArmy = WorldMgr.getArmy(id);
 				if (oldNearArmy == null)
 					continue;
 				leaveMsg.setId(this.activeLiving.getId());
-				PBMessage leavepkgToOther = MessageUtil.buildMessage(
-						Protocol.U_LEAVE_GRID, leaveMsg);
+				PBMessage leavepkgToOther = MessageUtil.buildMessage(Protocol.U_LEAVE_GRID, leaveMsg);
 				oldNearArmy.sendPbMessage(leavepkgToOther);
 			}
 		}
@@ -123,9 +117,7 @@ public class UpdatePositionAction extends DelayAction {
 				ArmyProxy newNearArmy = WorldMgr.getArmy(id);
 				if (newNearArmy == null)
 					continue;
-				newNearArmy.sendPbMessage(MessageUtil.buildMessage(
-						Protocol.U_RESP_ATT_SNAP,
-						this.activeLiving.getAttSnapMsg()));
+				newNearArmy.sendPbMessage(MessageUtil.buildMessage(Protocol.U_RESP_ATT_SNAP, this.activeLiving.getAttSnapMsg()));
 			}
 		}
 	}
@@ -137,8 +129,7 @@ public class UpdatePositionAction extends DelayAction {
 	 * @return
 	 */
 	private boolean isValidPoint(Vector3 point) {
-		NavmeshSeeker seeker = FieldMgr.getIns().GetSeekerTemp(
-				this.activeLiving.getField().getFieldInfo().getResName());
+		NavmeshSeeker seeker = FieldMgr.getIns().GetSeekerTemp(this.activeLiving.getField().getFieldInfo().getResName());
 		NavmeshTriangle tri = seeker.getTriangle(point);
 		return tri != null;
 	}
@@ -152,6 +143,5 @@ public class UpdatePositionAction extends DelayAction {
 	protected float getStep(float speed) {
 		return speed * TICK * 0.001f;
 	}
-
 
 }

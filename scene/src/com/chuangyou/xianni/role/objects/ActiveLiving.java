@@ -6,6 +6,7 @@ import java.util.Set;
 import com.chuangyou.common.protobuf.pb.PlayerMoveBoardcastProto.PlayerMoveBoardcastMsg;
 import com.chuangyou.common.protobuf.pb.PlayerStopBoardcastProto.PlayerStopBoardcastMsg;
 import com.chuangyou.common.util.Log;
+import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -69,8 +70,8 @@ public class ActiveLiving extends Living {
 	public void moveto(Vector3 goal) {
 		this.goal = goal;
 		this.moveTime = (int) ((Vector3.distance(getPostion(), goal) / getSpeed()) * 1000);
-		// if (id == 1000000000035L)
-		// System.out.println("moveto "+id+" " + goal+"this.moveTime: "+this.moveTime+" getSpeed: "+getSpeed());
+//		if (id == 1000000000033L)
+//			System.out.println("moveto " + id + " 目标位：" + goal + " 起始位：" + this.getPostion() + " this.moveTime: " + this.moveTime + " getSpeed: " + getSpeed());
 
 		setTargetPostion(goal);
 		Set<Long> nearPlayers = getNears(new PlayerSelectorHelper(this));
@@ -86,6 +87,18 @@ public class ActiveLiving extends Living {
 			PBMessage pkg = MessageUtil.buildMessage(Protocol.U_BC_MOVE, msg);
 			neararmy.sendPbMessage(pkg);
 
+		}
+	}
+
+	public static void main(String[] args) {
+		Vector3 invalid = new Vector3(40.41069F,1.0F,-119.632835F);
+		Vector3 invalid2 = new Vector3(40.163776F,1.0F,-120.601875F);
+		
+		float a = Vector3.distance(invalid, invalid2);
+		System.out.println(a);
+		for (float i = a * 1000; i > 0; i -= 100) {
+			invalid = MathUtils.GetVector3InDistance(invalid, invalid2, 0.1F);
+			System.out.println(invalid);
 		}
 	}
 
@@ -167,18 +180,17 @@ public class ActiveLiving extends Living {
 	public void setPostion(Vector3 position) {
 		/* 碰撞检测 */
 		// 获取需要检测的对象
-		Set<Long> oldNears = this.getNears(new MonsterSelectorHelper(this));
-		Vector3 cur = getPostion();
-		for (Long id : oldNears) {
-			Living living = field.getLiving(id.intValue());
-			if (living == null)
-				continue;
-			Vector3 livingCur = living.getPostion();
-			
-			
-		}
-		/* end碰撞检测 */
-		
+		// Set<Long> oldNears = this.getNears(new MonsterSelectorHelper(this));
+		// Vector3 cur = getPostion();
+		// for (Long id : oldNears) {
+		// Living living = field.getLiving(id.intValue());
+		// if (living == null)
+		// continue;
+		// Vector3 livingCur = living.getPostion();
+		//
+		// }
+		/* 碰撞检测 */
+	 
 		if (field != null)
 			field.getGrid().moveto(this, position);
 		super.setPostion(position);

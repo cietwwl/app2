@@ -3,6 +3,7 @@ package com.chuangyou.xianni.skill.manager;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,7 +152,7 @@ public class SkillManager {
 		heroSkill.setSkillLV(skillInfo.getLevel());
 		heroSkill.setGrandsonType(skillInfo.getGrandsonType());
 		player.getSkillInventory().addOrUpdate(heroSkill);
-
+		player.getSkillInventory().saveToDatabase();
 		// 技能阶段处理
 		// int skillStage = player.getBasePlayer().getPlayerInfo().getSkillStage() + 1;
 		// boolean isOpen = checkSkillStage(player, skillStage);
@@ -172,6 +173,7 @@ public class SkillManager {
 			log.setPerSkillId(alreadyStudySkill.getSkillId());
 		log.setSkillId(skillInfo.getTemplateId());
 		log.setSkillLV(skillInfo.getLevel());
+		log.setCreateDate(new Date());
 		LogManager.addSkillLog(log);
 		return true;
 	}
@@ -367,7 +369,7 @@ public class SkillManager {
 		heroSkill.setSkillLV(skillInfo.getLevel());
 		heroSkill.setGrandsonType(skillInfo.getGrandsonType());
 		player.getSkillInventory().addOrUpdate(heroSkill);
-
+		player.getSkillInventory().saveToDatabase();
 		// 日志
 		SkillLogInfo log = new SkillLogInfo();
 		log.setPlayerId(player.getPlayerId());
@@ -375,6 +377,7 @@ public class SkillManager {
 			log.setPerSkillId(alreadyStudySkill.getSkillId());
 		log.setSkillId(skillInfo.getTemplateId());
 		log.setSkillLV(skillInfo.getLevel());
+		log.setCreateDate(new Date());
 		LogManager.addSkillLog(log);
 		return true;
 	}

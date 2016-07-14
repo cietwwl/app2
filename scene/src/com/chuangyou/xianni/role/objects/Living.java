@@ -703,6 +703,8 @@ public class Living extends AbstractActionQueue {
 				List<Long> tmp = new ArrayList<Long>();
 				tmp.addAll(entryList);
 				for (int j = 0; j < tmp.size(); j++) {
+					if(tmp.get(j)==null)
+						continue;
 					long other = tmp.get(j);
 					Living nearLiving = field.getLiving(other);
 					if (nearLiving == null) {

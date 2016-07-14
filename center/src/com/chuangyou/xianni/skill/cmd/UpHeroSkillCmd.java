@@ -51,10 +51,10 @@ public class UpHeroSkillCmd extends AbstractCommand {
 //				System.out.println(okMsg);
 				
 				
-				SkillBaseProperty res1 = SkillManager.getTotalPro(player);
-				SkillTotalProResMsg.Builder resMsg = SkillManager.getSkillTotalProResMsg(player, res1);
-				PBMessage pbm = MessageUtil.buildMessage(Protocol.U_HERO_GETSKILLTOLPRO, resMsg);
-				player.sendPbMessage(pbm);
+//				SkillBaseProperty res1 = SkillManager.getTotalPro(player);
+//				SkillTotalProResMsg.Builder resMsg = SkillManager.getSkillTotalProResMsg(player, res1);
+//				PBMessage pbm = MessageUtil.buildMessage(Protocol.U_HERO_GETSKILLTOLPRO, resMsg);
+//				player.sendPbMessage(pbm);
 			}
 		}
 	}

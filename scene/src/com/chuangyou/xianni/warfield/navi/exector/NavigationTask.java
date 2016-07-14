@@ -91,7 +91,8 @@ public class NavigationTask implements Runnable {
 			}
 			if(l instanceof ActiveLiving)
 			{
-				path.remove(0);
+				if(path.size() > 0)
+					path.remove(0);
 				((ActiveLiving)l).navigateComplete(code, path);
 			}
 //			long s = System.currentTimeMillis();

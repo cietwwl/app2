@@ -69,7 +69,7 @@ public class SingleLivingAttack extends AbstractSkillCalc {
 		// 提示类型
 		int tipType = 0;
 		// 计算伤害
-		int damageValue = 1;//calcutor.calcDamage(source, target, tempInfo);
+		int damageValue = calcutor.calcDamage(source, target, tempInfo);
 		// 当释放者处于元魂状态时，伤害增加10%
 		if (source.isSoulState()) {
 			damageValue += damageValue * 0.1;

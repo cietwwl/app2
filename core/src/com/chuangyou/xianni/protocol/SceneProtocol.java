@@ -73,4 +73,8 @@ public interface SceneProtocol {
 	/** 请求队伍信息 */
 	public static final short S_REQ_TEAM_INFO               = 20509;
 	// =======================================================================
+	// =========================>同步战斗模式<===============================
+	/** 变更战斗模式 */
+	public static final short	S_BATTLE_MODE   			= 20601;
+	
 }

@@ -17,7 +17,7 @@ public class SpwanNode {
 	protected int					campaignId;	// 所在副本ID
 	protected CampaignNodeDecorator	decorator;	// 副本功能修饰器
 	protected int					blood;		// 节点血量（适用于需要循环开闭的节点，如传送阵）
-
+	
 	public SpwanNode(SpawnInfo spwanInfo, Field field) {
 		this.spwanInfo = spwanInfo;
 		this.field = field;
@@ -42,7 +42,6 @@ public class SpwanNode {
 		if (campaign != null) {
 			decorator.active(army, campaign, this);
 		}
-
 	}
 
 	public void prepare() {

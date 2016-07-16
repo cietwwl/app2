@@ -11,6 +11,7 @@ import com.chuangyou.common.protobuf.pb.campaign.CampaignStatuMsgProto.CampaignS
 import com.chuangyou.common.protobuf.pb.map.SpawnNodeChangeListMsgProto.SpawnNodeChangeListMsg;
 import com.chuangyou.common.protobuf.pb.map.SpawnNodeChangeMsgProto.SpawnNodeChangeMsg;
 import com.chuangyou.common.protobuf.pb.task.PassFbInnerProto.PassFbInnerMsg;
+import com.chuangyou.common.util.AccessTextFile;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.common.util.Vector3;
@@ -18,11 +19,9 @@ import com.chuangyou.xianni.campaign.action.CampaignEnterAction;
 import com.chuangyou.xianni.campaign.action.CampaignLeaveAction;
 import com.chuangyou.xianni.campaign.action.TransferFieldAction;
 import com.chuangyou.xianni.campaign.state.CampaignState;
-import com.chuangyou.xianni.campaign.state.ClosedState;
 import com.chuangyou.xianni.campaign.state.OpeningState;
 import com.chuangyou.xianni.campaign.state.PrepareState;
 import com.chuangyou.xianni.campaign.state.StopState;
-import com.chuangyou.xianni.constant.EnterMapResult;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.entity.field.FieldInfo;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
@@ -51,6 +50,7 @@ public class Campaign extends AbstractActionQueue {
 	public static final int									END_POIN			= 3;	// 副本终点
 	public static final int									MONSTER_CALLER		= 4;	// 召唤阵
 	public static final int									GROUP_CREATER_NODE	= 5;	// 分组节点
+	public static final int									TERMINATOR			= 6;	// 副本终结者
 
 	protected ThreadSafeRandom								random;						// 副本随机
 	protected int											id;
@@ -64,6 +64,7 @@ public class Campaign extends AbstractActionQueue {
 	protected Map<Integer, Field>							tempFieldMapping;			// 模板ID映射
 	protected Map<Integer, Integer>							indexMapping;				// 序号地图映射
 	protected long											beginTime;					// 开始时间
+	protected long											endTime;					// 结束时间
 	protected CampaignState									state;						// 当前状态
 	protected Map<Integer, SpwanNode>						spwanNodes;					// 副本怪物刷新节点
 	protected SpwanNode										bornNode;					// 当前副本出生点
@@ -88,7 +89,6 @@ public class Campaign extends AbstractActionQueue {
 		this.indexMapping = new HashMap<>();
 		this.teamNodes = new HashMap<>();
 		this.creater = creater.getPlayerId();
-		this.expiredTime = 0;
 		this.random = new ThreadSafeRandom();
 	}
 
@@ -115,6 +115,9 @@ public class Campaign extends AbstractActionQueue {
 			}
 		}
 		this.beginTime = System.currentTimeMillis();
+		this.endTime = beginTime + 2 * 60 * 60 * 1000;
+		CampaignCheckAction action = new CampaignCheckAction(this);
+		enDelayQueue(action);
 	}
 
 	/**
@@ -159,6 +162,12 @@ public class Campaign extends AbstractActionQueue {
 		return armys.size();
 	}
 
+	public List<ArmyProxy> getAllArmys() {
+		List<ArmyProxy> getAll = new ArrayList<>();
+		getAll.addAll(armys.values());
+		return getAll;
+	}
+
 	/**
 	 * 副本结束
 	 */
@@ -166,7 +175,7 @@ public class Campaign extends AbstractActionQueue {
 		state = new StopState(this);
 		PassFbInnerMsg.Builder passFbMsg = PassFbInnerMsg.newBuilder();
 		passFbMsg.setCampaignId(campaignId);
-		
+
 		CampaignStatuMsg.Builder cstatu = CampaignStatuMsg.newBuilder();
 		cstatu.setCampaignId(getIndexId());
 		cstatu.setStatu(0);// 退出
@@ -178,10 +187,10 @@ public class Campaign extends AbstractActionQueue {
 			army.sendPbMessage(statuMsg);
 			passFbMsg.addPlayers(army.getPlayerId());
 		}
-		
+
 		PBMessage passFbpkg = MessageUtil.buildMessage(Protocol.C_REQ_PASS_FB, passFbMsg);
 		GatewayLinkedSet.send2Server(passFbpkg);
-		
+
 		setExpiredTime(System.currentTimeMillis() + 5 * 60 * 1000);
 	}
 
@@ -249,9 +258,11 @@ public class Campaign extends AbstractActionQueue {
 		infoMsg.setCreateTime(beginTime);
 		infoMsg.setState(state.getCode());
 		infoMsg.setTempId(campaignId);
-		infoMsg.setOpenTime(60 * 60 * 1000);
+		int overTm = (int) (endTime - System.currentTimeMillis());
+		infoMsg.setOpenTime(overTm);
 		if (expiredTime != 0) {
-			infoMsg.setBackTime((int) ((expiredTime - System.currentTimeMillis())));
+			int backTm = (int) ((expiredTime - System.currentTimeMillis()));
+			infoMsg.setBackTime(overTm > backTm ? backTm : overTm);
 		}
 		PBMessage message = MessageUtil.buildMessage(Protocol.U_CAMPAIGN_INFO, infoMsg);
 		army.sendPbMessage(message);
@@ -298,7 +309,6 @@ public class Campaign extends AbstractActionQueue {
 		PBMessage message = MessageUtil.buildMessage(ClientProtocol.U_CAMPAIGN_NODE_INFO, list);
 
 		for (ArmyProxy army : armys.values()) {
-
 			army.sendPbMessage(message);
 		}
 		int fieldId = info.getField().id;
@@ -328,8 +338,8 @@ public class Campaign extends AbstractActionQueue {
 		}
 	}
 
-	public void setSpwanNodes(Map<Integer, SpwanNode> spwanNodes) {
-		this.spwanNodes = spwanNodes;
+	public Map<Integer, SpwanNode> getSpwanNodes() {
+		return spwanNodes;
 	}
 
 	public void changeRevivalNode(SpwanNode revivalNode) {
@@ -421,4 +431,30 @@ public class Campaign extends AbstractActionQueue {
 		this.expiredTime = expiredTime;
 	}
 
+	public void changeEndTime(long changeTime) {
+		this.endTime = changeTime;
+		for (ArmyProxy army : armys.values()) {
+			sendCampaignInfo(army);
+		}
+	}
+
+	class CampaignCheckAction extends DelayAction {
+		public CampaignCheckAction(Campaign campaign) {
+			super(campaign, 2000);
+		}
+
+		@Override
+		public void execute() {
+			if (state.getCode() == CampaignState.STOP) {
+				return;
+			}
+			if (System.currentTimeMillis() >= endTime) {
+				over();
+				return;
+			}
+			this.execTime = System.currentTimeMillis() + 2000;
+			this.getActionQueue().enDelayQueue(this);
+		}
+
+	}
 }

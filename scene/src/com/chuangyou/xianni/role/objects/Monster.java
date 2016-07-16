@@ -30,7 +30,7 @@ import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.spawn.MonsterSpawnNode;
 
 public class Monster extends ActiveLiving {
-	private MonsterSpawnNode	node;
+	protected MonsterSpawnNode	node;
 	private MonsterInfo			monsterInfo;
 
 	// 怪物攻击的初始技能，固定写死
@@ -82,11 +82,20 @@ public class Monster extends ActiveLiving {
 	}
 
 	public void onDie(Living killer) {
-		super.onDie(killer);
+		synchronized (dieLock) {
+			if (this.livingState == DIE) {
+				return;
+			}
+			this.livingState = DIE;
+		}
+		clearWorkBuffer();
+		// sendChangeStatuMsg(LIVING, livingState);死亡状态不推，客户端自己判断
+		dieTime = System.currentTimeMillis();
+		System.err.println("living :" + this.armyId + " is die");
 		if (node != null) {
 			node.lvingDie(this);
 		}
-		DropManager.dropFromMonster(this.getSkin(), killer.getArmyId(), this.getId(), this.getPostion());
+		DropManager.dropFromMonster(this.getSkin(), killer.getArmyId(), this.getId(), this.getField().id, this.getPostion());
 		notifyCenter(this.getSkin(), killer.getArmyId());
 	}
 
@@ -103,7 +112,7 @@ public class Monster extends ActiveLiving {
 	 * @param tempId
 	 * @param playerId
 	 */
-	private void notifyCenter(int tempId, long playerId) {
+	protected void notifyCenter(int tempId, long playerId) {
 		PlayerKillMonsterMsg.Builder msg = PlayerKillMonsterMsg.newBuilder();
 		msg.setMonsterTemplateId(tempId);
 		msg.setPlayerId(playerId);
@@ -149,7 +158,7 @@ public class Monster extends ActiveLiving {
 						}
 					}
 				}
-				addCooldown( CoolDownTypes.BE_ATTACK, null, SceneGlobal.AI_BEATTACK_TIME);
+				addCooldown(CoolDownTypes.BE_ATTACK, null, SceneGlobal.AI_BEATTACK_TIME);
 			}
 			Hatred hatred = null;
 			List<Hatred> hatreds = getHatreds();

@@ -17,6 +17,8 @@ public class CampaignNodeDecorator {
 				return new MonsterCallerNode();
 			case Campaign.GROUP_CREATER_NODE:
 				return new GroupCreaterNode();
+			case Campaign.TERMINATOR:
+				return new TerminatorNode();
 			default:
 				break;
 		}

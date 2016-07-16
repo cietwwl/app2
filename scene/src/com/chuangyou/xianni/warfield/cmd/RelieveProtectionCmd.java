@@ -1,9 +1,11 @@
 package com.chuangyou.xianni.warfield.cmd;
 
+import java.util.Date;
 import java.util.Set;
 
 import com.chuangyou.common.protobuf.pb.PlayerAttSnapProto.PlayerAttSnapMsg;
 import com.chuangyou.common.util.Log;
+import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.drop.helper.NotifyDropHalper;
@@ -40,8 +42,13 @@ public class RelieveProtectionCmd extends AbstractCommand {
 
 		// 推送附近场景对象
 		Set<Long> nears = army.getPlayer().getNears(new AllSelectorHelper(army.getPlayer()));
+		
 		System.err.println("RelieveProtectionCmd nears = " + nears.size());
 		for (Long id : nears) {
+			//自己不发送自己
+			if (id == army.getPlayerId()) {
+				continue;
+			}
 			Living l = field.getLiving(id);
 			if (l == null) {
 				continue;
@@ -53,7 +60,7 @@ public class RelieveProtectionCmd extends AbstractCommand {
 			// snap.setSkinId(l.getSkin());
 			// snap.setPostion(Vector3BuilderHelper.build(l.getPostion()));
 			// snap.setTarget(Vector3BuilderHelper.build(l.getTargetPostion()));
-			Log.error(army.getPlayerId() + "(收件人)xxxxxxxx发送快照数据至客户端:" + " PlayerId(发件人):" + id);
+			Log.error(TimeUtil.getDateFormat(new Date()) + army.getPlayerId() + "(收件人)xxxxxxxx发送快照数据至客户端:" + " PlayerId(发件人):" + id);
 			army.sendPbMessage(MessageUtil.buildMessage(Protocol.U_RESP_ATT_SNAP, snap));
 
 			// 通知附近的玩家进入 <--------迁移至进入地图方法---------->

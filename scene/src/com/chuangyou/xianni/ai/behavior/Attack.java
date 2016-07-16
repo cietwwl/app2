@@ -41,17 +41,22 @@ public class Attack extends BaseBehavior {
 			return;
 		}
 		// 判断是否需要追击
-//		System.out.println(getMonster().getId() + "攻击怪物位置：" + getMonster().getPostion() + "怪物目标位置：" + tmpTarget.getPostion() + "距离："
-//				+ Vector3.distance(getMonster().getPostion(), tmpTarget.getPostion()));
+		// System.out.println(getMonster().getId() + "攻击怪物位置：" + getMonster().getPostion() + "怪物目标位置：" + tmpTarget.getPostion() + "距离："
+		// + Vector3.distance(getMonster().getPostion(), tmpTarget.getPostion()));
 
 		int attackRange = SceneGlobal.AI_MONSTER_ATTACK_RANGE;
 		if (getMonster().getMonsterInfo().getAttackRange() > 0)
 			attackRange = getMonster().getMonsterInfo().getAttackRange();
-		if (Vector3.distance(getMonster().getPostion(), tmpTarget.getPostion()) > attackRange)	// 查询攻击距离，这里暂时写死 = 2
-		{
+
+		// if (getMonster().getId() == 1000000000033L)
+		// System.out.println("getMonster().getPostion(): "+getMonster().getPostion().toString()+" tmpTarget.getPostion(): "+tmpTarget.getPostion().toString()+"
+		// 距离："+Vector3.distance(getMonster().getPostion(), tmpTarget.getPostion()));
+
+		if (Vector3.distance(getMonster().getPostion(), tmpTarget.getPostion()) > attackRange) {	// 查询攻击距离，这里暂时写死 = 2
 			needChase = true;
 			return;
 		}
+
 		// 依次判断所有技能是否使用
 		// 1. 判断是否在施法范围
 		// true : 直接处理攻击
@@ -71,7 +76,7 @@ public class Attack extends BaseBehavior {
 		// AttackOrderControler.attackOrder(getMonster(), getMonster().getCurSkillID(), targets, getMonster().getPostion(), tmpTarget.getPostion());
 		Skill skill = getMonster().getRandSkill();
 		AttackOrderControler.attackOrder(getMonster(), skill.getActionId(), targets, getMonster().getPostion(), tmpTarget.getPostion());
-		//SceneManagers.cooldownManager.addCooldown(getMonster(), CoolDownTypes.SKILL, null, SceneGlobal.AI_MONSTER_ATTACK_COOL_DOWN);
+		// SceneManagers.cooldownManager.addCooldown(getMonster(), CoolDownTypes.SKILL, null, SceneGlobal.AI_MONSTER_ATTACK_COOL_DOWN);
 		getMonster().addCooldown(CoolDownTypes.SKILL, null, SceneGlobal.AI_MONSTER_ATTACK_COOL_DOWN);
 	}
 

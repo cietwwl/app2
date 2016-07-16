@@ -10,6 +10,7 @@ import com.chuangyou.xianni.campaign.CampaignTempMgr;
 import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.common.timer.TimerTaskMgr;
 import com.chuangyou.xianni.drop.templete.DropTempleteMgr;
+import com.chuangyou.xianni.mount.MountTempleteMgr;
 import com.chuangyou.xianni.netty.codec.PBMessageDecoder;
 import com.chuangyou.xianni.netty.codec.PBMessageEncoder;
 import com.chuangyou.xianni.netty.server.SceneInboundHandler;
@@ -119,6 +120,10 @@ public class SceneServer extends BaseServer {
 		}
 
 		if (!initComponent(TimerTaskMgr.init(), "初始化定时更新管理器")) {
+			return false;
+		}
+		
+		if(!initComponent(MountTempleteMgr.init(), "坐骑模板初始化")){
 			return false;
 		}
 

@@ -5,13 +5,11 @@ import java.util.Set;
 
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
+import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.socket.Cmd;
-import com.chuangyou.xianni.warfield.FieldMgr;
-import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.helper.NotifyNearHelper;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.world.AbstractCommand;
@@ -29,21 +27,36 @@ public class PlayerAttUpdateCmd extends AbstractCommand {
 
 		// 改变属性的玩家
 		ArmyProxy pArmy = WorldMgr.getArmy(req.getPlayerId());
+		if(pArmy == null) return;
 		
 		// 修改玩家属性
 		List<PropertyMsg> attList = req.getAttList();
 		pArmy.getPlayer().getSimpleInfo().readProperty(attList);
 		
+		//创建同步消息
+		PlayerAttUpdateMsg.Builder resp = PlayerAttUpdateMsg.newBuilder();
+		resp.setPlayerId(req.getPlayerId());
+		resp.addAllAtt(req.getAttList());
+		
+		//如果是更换坐骑，同时也要更新速度
+		for(PropertyMsg property:attList){
+			if(property.getType() == EnumAttr.Mount.getValue()){
+				PropertyMsg.Builder speedMsg = PropertyMsg.newBuilder();
+				speedMsg.setType(EnumAttr.SPEED.getValue());
+				speedMsg.setTotalPoint(pArmy.getPlayer().getProperty(EnumAttr.SPEED.getValue()));
+				resp.addAtt(speedMsg);
+				break;
+			}
+		}
+		
 		// 通知自己
-		PBMessage selfPkg = MessageUtil.buildMessage(Protocol.U_RESP_PLAYER_ATT_UPDATE, req);
-		army.sendPbMessage(selfPkg);
+		PBMessage selfPkg = MessageUtil.buildMessage(Protocol.U_RESP_PLAYER_ATT_UPDATE, resp);
+		pArmy.sendPbMessage(selfPkg);
 
 		// 通知附近玩家
-		Field f = FieldMgr.getIns().getField(pArmy.getFieldId());
-		Living living = f.getLiving(req.getPlayerId());
-		Set<Long> nears = living.getNears(new PlayerSelectorHelper(living));
+		Set<Long> nears = pArmy.getPlayer().getNears(new PlayerSelectorHelper(pArmy.getPlayer()));
 
-		NotifyNearHelper.notifyAttrChange(pArmy, nears, req);
+		NotifyNearHelper.notifyAttrChange(pArmy, nears, resp.build());
 	}
 
 }

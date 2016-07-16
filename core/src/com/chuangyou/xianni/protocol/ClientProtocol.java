@@ -15,7 +15,7 @@ public interface ClientProtocol {
 	public static final short U_G_BATTLEPLAYERINFO = 6; // 发送地图中其他玩家的信息
 	public static final short U_G_DATA_LOAD_STATU = 7; // 通知客户端数据加载请求信息
 	public static final short U_G_PLAYER_CREATE_RESULT = 8; // 通知客户端创建角色结果
-	
+	public static final short U_G_PING_PACKET = 9; // 返回ping包
 	// ===================================================================
 
 	// ===========================>battle<==============================
@@ -51,7 +51,6 @@ public interface ClientProtocol {
 	/** 批量删除邮件 */
 	public static final short U_RESP_DELEMAIL_BATCH = 509;
 
-	
 	// ========================><=========================================
 
 	// ==========================>好友<====================================
@@ -73,7 +72,7 @@ public interface ClientProtocol {
 
 	// ==========================>地图<========================================
 	/** 场景切换，通知客户端切换用户场景 */
-	public static final short	U_CHANGE_MAP					= 1517;
+	public static final short U_CHANGE_MAP = 1517;
 	/** 客户端进请求进入场景结果 */
 	public static final short U_ENTER_MAP_RESPOSE = 1518;
 	/** 广播移动信息 */
@@ -110,7 +109,7 @@ public interface ClientProtocol {
 	// ========================><=========================================
 	/** 更新属性消息(单个) */
 
-	public static final short	U_RESP_PLAYER_ATT_UPDATE		= 530;
+	public static final short U_RESP_PLAYER_ATT_UPDATE = 530;
 
 	// =====================================================================
 	// =============================>任务<======================================
@@ -156,28 +155,28 @@ public interface ClientProtocol {
 	public static final short U_RESP_TEAM_APPLY_LEADER = 544;
 	/** 队长获取申请队列 */
 	public static final short U_RESP_GET_APPLY_LIST = 545;
-	/**通知申请人  队长同意你入队或者拒绝你入队 */
+	/** 通知申请人 队长同意你入队或者拒绝你入队 */
 	public static final short U_RESP_NOTIFY_AGREE_REJECT = 546;
-	/**收到队长的邀请通知  */
+	/** 收到队长的邀请通知 */
 	public static final short U_RESP_NOTIFY_INVITE = 547;
-	/** 队长设置队伍目标   */
-	public static final short U_RESP_TEAM_SET_TARGET             = 548;
-	
-	/** 按目标查找队伍列表  */
-	public static final short U_ERSP_GET_TEAM_LIST               = 549;
-	
+	/** 队长设置队伍目标 */
+	public static final short U_RESP_TEAM_SET_TARGET = 548;
+
+	/** 按目标查找队伍列表 */
+	public static final short U_ERSP_GET_TEAM_LIST = 549;
+
 	/** 创建队伍 */
-	public static final short	U_RESP_CREATE_TEAM				= 550;
+	public static final short U_RESP_CREATE_TEAM = 550;
 	/**
 	 * 队长清空申请列表
 	 */
-	public static final short   U_RESP_TEAM_CLEAR_APPLY_LIST     = 551;
-	
-	/**  取消匹配  */
-	public static final short   U_RESP_TEAM_CLEAR_MATCH          = 552;
-	
-	/**  返回队伍蓝血量   */
-	public static final short U_RESP_TEAM_HP_MP                  = 553;
+	public static final short U_RESP_TEAM_CLEAR_APPLY_LIST = 551;
+
+	/** 取消匹配 */
+	public static final short U_RESP_TEAM_CLEAR_MATCH = 552;
+
+	/** 返回队伍蓝血量 */
+	public static final short U_RESP_TEAM_HP_MP = 553;
 
 	// ==================================================================
 
@@ -284,7 +283,7 @@ public interface ClientProtocol {
 
 	/** 删除掉落物品 */
 	public static final short U_DROP_ITEM_REMOVE = 147;
-	
+
 	public static final short U_PLAYER_MOUNT_STATE_RESP = 148;	// 同步坐骑状态
 
 	/** 获取时装信息 */
@@ -312,10 +311,14 @@ public interface ClientProtocol {
 	public static final short U_HERO_GETSKILLTOLPRO = 703;
 	/** 升级技能阶段 */
 	public static final short U_HERO_UPHEROSTAGECMD = 704;
-	
+
 	/** 一键英雄技能升级 */
 	public static final short U_HERO_ONKEYUPSKILLOK = 705;
 	/** 返回技能列表 */
 	public static final short U_HERO_SKILLLISTOK = 706;
-	// ========================><=========================================
+	// ========================>战斗模式<=========================
+	/** 变更战斗模式 */
+	public static final short U_BATTLE_MODE = 710;
+	/** 脱战 **/
+	public static final short U_LEAVE_FIGHT = 711;
 }

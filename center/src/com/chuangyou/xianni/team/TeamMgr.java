@@ -68,6 +68,8 @@ public class TeamMgr{
 	public static final int TEAM_MAX = 4;
 	/** 最大申请列表  */
 	public static final int TEAM_APPLY_LIST_MAX = 8;
+	/** 无目标虚拟目标ID */
+	public static final int TEAM_NO_TARGET = 100000;
 	
 	
 	private static AddInTeamHandler addInTeamHandler = new AddInTeamHandler();

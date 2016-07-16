@@ -28,6 +28,9 @@ public abstract class BaseProxy extends DelayAction {
 	public void execute() {
 		// TODO Auto-generated method stub
 		exe();
+		if(living.isDie()){
+			return;
+		}
 		this.execTime = System.currentTimeMillis() + this.delay;
 		this.getActionQueue().enDelayQueue(this);
 	}

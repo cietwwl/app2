@@ -1,9 +1,13 @@
 package com.chuangyou.xianni.warfield.spawn;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.chuangyou.common.util.AccessTextFile;
+import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
@@ -14,7 +18,6 @@ import com.chuangyou.xianni.constant.SpwanInfoType;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
-import com.chuangyou.xianni.exec.ActionQueue;
 import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
@@ -64,7 +67,9 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 			if (isOver()) {
 				stateTransition(new OverState(this));
 			} else {
-				field.enDelayQueue(new CreateChildAction());
+				if (spwanInfo.getToalCount() == 0 || toalCount < spwanInfo.getToalCount()) {
+					field.enDelayQueue(new CreateChildAction());
+				}
 			}
 		}
 	}
@@ -81,9 +86,9 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 	}
 
 	private void createChildren() {
-		if (spwanInfo.getToalCount() > 0 && toalCount >= spwanInfo.getToalCount()) {
-			return;
-		}
+		curCount++;
+		toalCount++;
+
 		int randomx = spwanInfo.getBound_x();
 		int randomy = spwanInfo.getBound_y();
 		int randomz = spwanInfo.getBound_z();
@@ -102,8 +107,6 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 		} else {
 			System.err.println(spwanInfo.getId() + "----" + spwanInfo.getEntityId() + " 在MonsterInfo里面未找到配置");
 		}
-		curCount++;
-		toalCount++;
 	}
 
 	/** 浸染 */
@@ -139,6 +142,10 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 				if (skillTempateInfo == null) {
 					continue;
 				}
+				if (BattleTempMgr.getActionInfo(skillTempateInfo.getActionId()) == null) {
+					System.out.println("------");
+					continue;
+				}
 				Skill skill = new Skill(BattleTempMgr.getActionInfo(skillTempateInfo.getActionId()));
 				skill.setSkillTempateInfo(skillTempateInfo);
 				monster.addSkill(skill);
@@ -156,4 +163,22 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 		return spwanInfo.getToalCount() > 0 && toalCount >= spwanInfo.getToalCount() && children.size() == 0;
 	}
 
+	// 获取未刷出的怪物
+	public int getLeftMonster() {
+		int result = spwanInfo.getToalCount() - toalCount;
+		if (result < 0 || result > 10) {
+			Log.error("node get leftMonster error,node info :" + getSpwanId());
+			result = 0;
+		}
+		toalCount = spwanInfo.getToalCount();
+		curCount = spwanInfo.getMaxCount();
+		return result;
+	}
+
+	// 获取当前所有怪物
+	public List<Living> getAlive() {
+		List<Living> aLive = new ArrayList<>();
+		aLive.addAll(children.values());
+		return aLive;
+	}
 }

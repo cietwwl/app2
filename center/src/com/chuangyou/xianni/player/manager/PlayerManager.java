@@ -63,6 +63,7 @@ public class PlayerManager {
 		baseProperty.setDefence(10 + level * 5);
 		baseProperty.setSoulAttack(1 + level * 3);
 		baseProperty.setSoulDefence(1 + level * 3);
+		baseProperty.setSpeed(600);
 		return baseProperty;
 	}
 }

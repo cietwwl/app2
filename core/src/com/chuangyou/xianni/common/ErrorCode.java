@@ -408,4 +408,17 @@ public class ErrorCode {
 	public static final int TEAM_APPLY_LIST_MAX = 6007;
 	/**资源不足,升级失败  */
 	public static final int SKILL_UP_ERROR7 = 6008;
+	/** 等级不足，不能切换 **/
+	public static final int CHANGE_BATTLE = 6009;
+	/** 当前状态，不能切换 **/
+	public static final int CHANGE_BATTLE1 = 6010;
+	/** CD 时间未过，不能切换**/
+	public static final int CHANGE_BATTLE2 = 6011;
+//	public static final int CHANGE_BATTLE3 = 6009;
+//	public static final int CHANGE_BATTLE4 = 6009;
+//	public static final int CHANGE_BATTLE5 = 6009;
+//	public static final int CHANGE_BATTLE6 = 6009;
+//	public static final int CHANGE_BATTLE7 = 6009;
+	
+	
 }

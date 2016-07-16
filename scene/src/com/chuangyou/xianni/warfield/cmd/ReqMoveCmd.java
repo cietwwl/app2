@@ -40,7 +40,7 @@ public class ReqMoveCmd extends AbstractCommand {
 		PlayerMoveReqMsg movemsg = PlayerMoveReqMsg.parseFrom(packet.getBytes());
 		Vector3 current = Vector3BuilderHelper.get(movemsg.getCur());
 		living.setTargetPostion(Vector3BuilderHelper.get(movemsg.getTar()));
-		//System.out.println("玩家当前位置：" + living.getPostion() + " move请求当前位置:" + movemsg.getCur() + " 目标位置：" + movemsg.getTar());
+//		System.out.println("玩家当前位置：" + living.getPostion() + " move前端当前位置:" + movemsg.getCur() + " 目标位置：" + movemsg.getTar());
 
 		// NotifyNearHelper.notifyHelper(f, army, current, NotifyNearHelper.MOVE);
 

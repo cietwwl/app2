@@ -70,7 +70,12 @@ public class Hero extends Living {
 		cur_blood.setType(EnumAttr.CUR_BLOOD.getValue());
 		cur_blood.setTotalPoint(getTotalProperty(Living.BLOOD));
 		propertis.addPropertys(cur_blood);
-
+		//添加pk值
+		PropertyMsg.Builder pkVal = PropertyMsg.newBuilder();
+		pkVal.setType(EnumAttr.PK_VAL.getValue());
+		pkVal.setTotalPoint(getTotalProperty(Living.BLOOD));
+		propertis.addPropertys(pkVal);
+		
 		heroInfo.setPropertis(propertis);
 
 		Map<String, HeroSkill> heroSkills = gamePlayer.getSkillInventory().getHeroSkill();

@@ -60,8 +60,6 @@ public class BagUseItemCmd extends AbstractCommand {
 				return;
 			}
 
-			// 等级宝箱特殊处理 action.wei, 玫瑰花特殊处理
-
 			result = player.getBagInventory().removeItemFromPlayerBag(baseItem.getItemTempInfo().getId(), count,
 					ItemRemoveType.USE);
 			if (!result) {

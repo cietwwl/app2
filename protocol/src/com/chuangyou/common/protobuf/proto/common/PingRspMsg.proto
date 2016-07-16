@@ -1,0 +1,7 @@
+//protocol=9;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PingRspProto";
+
+message PingRspMsg{
+	optional int64 time= 1; //当前时间
+}

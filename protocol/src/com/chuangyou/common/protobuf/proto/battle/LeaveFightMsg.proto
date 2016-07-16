@@ -1,0 +1,10 @@
+//protocol=711;
+option java_package = "com.chuangyou.common.protobuf.pb.battle";
+option java_outer_classname = "LeaveFightMsgProto";
+
+// 脱离战斗状态
+
+message LeaveFightMsg {
+	optional bool isNameFlicker=1; //是否闪烁
+}
+

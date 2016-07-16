@@ -243,18 +243,18 @@ public enum EnumAttr {
 	 * 品质(宠物品质)
 	 */
 	PetQuality(56),
-	
+
 	/**
 	 * 总经验
 	 */
 	TOTALEXP(57),
-	
-	/**  
+
+	/**
 	 * 地图ID
 	 *
 	 **/
 	MAP_ID(58),
-	
+
 	/**
 	 * 地图KEY
 	 */
@@ -285,7 +285,12 @@ public enum EnumAttr {
 	/**
 	 * 修为
 	 */
-	REPAIR(715);
+	REPAIR(715),
+	/**
+	 * PK 值
+	 */
+	PK_VAL(716);
+	
 
 	private int value;
 

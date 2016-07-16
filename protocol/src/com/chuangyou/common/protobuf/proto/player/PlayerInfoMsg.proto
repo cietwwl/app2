@@ -24,4 +24,6 @@ message PlayerInfoMsg{
 	optional PostionMsg postionMsg=18; //当前位置
 	optional int32 cash = 19; // 非绑定仙玉
 	optional int32 repair = 20; // 修为
+	optional int32 battleMode = 21; // 对战模式  1和平模式2对战模式3门派模式
+	
 }

@@ -186,6 +186,7 @@ public abstract class Living {
 		properties[DEFENCE].setTempData(tempData.getDefence());
 		properties[SOUL_ATTACK].setTempData(tempData.getSoulAttack());
 		properties[SOUL_DEFENCE].setTempData(tempData.getSoulDefence());
+		properties[SPEED].setTempData(tempData.getSpeed());
  
 		// // 添加背包百分比加成
 		// properties[SOUL].setTempPer(tempPer.getSoul());
@@ -268,7 +269,7 @@ public abstract class Living {
 		properties[WATER_DEFENCE].setSkillData(tempData.getWaterDefence());
 		properties[FIRE_DEFENCE].setSkillData(tempData.getFireDefence());
 		properties[EARTH_DEFENCE].setSkillData(tempData.getEarthDefence());
-		properties[SPEED].setSkillData(tempData.getSpeed());
+//		properties[SPEED].setSkillData(tempData.getSpeed());
 		// 添加背包百分比加成
 		// properties[SOUL].setTempPer(tempPer.getSoul());
 		// properties[BLOOD].setTempPer(tempPer.getBlood());
@@ -288,6 +289,8 @@ public abstract class Living {
 	public void addMount(Map<Integer, Integer> propertyMap){
 		for(int type: propertyMap.keySet()){
 			if(type <= 0) continue;
+			if(type == EnumAttr.SPEED.getValue()) continue;
+			
 			int value = propertyMap.get(type);
 			
 			if(type > 0 && type <= properties.length){

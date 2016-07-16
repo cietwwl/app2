@@ -19,55 +19,65 @@ import com.chuangyou.xianni.world.WorldMgr;
 
 public class NotifyDropHalper {
 
-	public static void notifyAddDropPackage(DropPackage drop){
+	public static void notifyAddDropPackage(DropPackage drop) {
 		ArmyProxy army = WorldMgr.getArmy(drop.getPlayerId());
+		if (army == null) {
+			return;
+		}
+		short actionType = DropItemConstant.notifyAction.addDrop;
+		if (drop.getDropRoleId() == -1) {
+			actionType = DropItemConstant.notifyAction.synchronizationDrop;
+		}
+
 		Field field = FieldMgr.getIns().getField(army.getFieldId());
-		
+
 		DropInfo dropPoolTemp = DropTempleteMgr.getDropPool().get(drop.getPoolId());
-		army.sendPbMessage(MessageUtil.buildMessage(Protocol.U_DROP_ITEM_PACKAGE, drop.buildProto(DropItemConstant.notifyAction.addDrop)));
-		if(dropPoolTemp.getVisibleType() == DropItemConstant.VisibleType.publicVisible){
+		army.sendPbMessage(MessageUtil.buildMessage(Protocol.U_DROP_ITEM_PACKAGE, drop.buildProto(actionType)));
+		if (dropPoolTemp.getVisibleType() == DropItemConstant.VisibleType.publicVisible) {
 			List<Long> players = field.getLivings();
-			for(long id: players){
+			for (long id : players) {
 				ArmyProxy mapArmy = WorldMgr.getArmy(id);
-				mapArmy.sendPbMessage(MessageUtil.buildMessage(Protocol.U_DROP_ITEM_PACKAGE, drop.buildProto(DropItemConstant.notifyAction.addDrop)));
+				mapArmy.sendPbMessage(MessageUtil.buildMessage(Protocol.U_DROP_ITEM_PACKAGE, drop.buildProto(actionType)));
 			}
 		}
 	}
-	
+
 	/**
 	 * 玩家进入地图时通知该玩家当前地图所有公共可见的掉落物
+	 * 
 	 * @param field
 	 * @param living
 	 */
-	public static void notifyPlayerFieldDropItems(Field field, Living living){
+	public static void notifyPlayerFieldDropItems(Field field, Living living) {
 		Map<Integer, DropPackage> dropItems = field.getDropItems();
-		for(DropPackage drop:dropItems.values()){
-			if(drop.getPlayerId() == living.getArmyId() || drop.getDropTemplete().getVisibleType() == DropItemConstant.VisibleType.publicVisible){
+		for (DropPackage drop : dropItems.values()) {
+			if (drop.getPlayerId() == living.getArmyId() || drop.getDropTemplete().getVisibleType() == DropItemConstant.VisibleType.publicVisible) {
 				ArmyProxy army = WorldMgr.getArmy(living.getArmyId());
 				army.sendPbMessage(MessageUtil.buildMessage(Protocol.U_DROP_ITEM_PACKAGE, drop.buildProto(DropItemConstant.notifyAction.synchronizationDrop)));
 			}
 		}
 	}
-	
+
 	/**
 	 * 删除单个掉落物
+	 * 
 	 * @param field
 	 * @param dropId
 	 * @param dropItemId
 	 */
-	public static void notifyRemoveDropItem(Field field, int dropId, long dropItemId){
+	public static void notifyRemoveDropItem(Field field, int dropId, long dropItemId) {
 		DropPackage drop = field.getDrop(dropId);
 		ArmyProxy army = WorldMgr.getArmy(drop.getPlayerId());
-		
+
 		DropItemRemoveMsg.Builder msg = DropItemRemoveMsg.newBuilder();
 		msg.setPackageId(dropId);
 		msg.setDropItemId(dropItemId);
 		army.sendPbMessage(MessageUtil.buildMessage(Protocol.U_DROP_ITEM_REMOVE, msg));
-		
+
 		DropInfo dropTemp = DropTempleteMgr.getDropPool().get(drop.getPoolId());
-		if(dropTemp.getVisibleType() == DropItemConstant.VisibleType.publicVisible){
+		if (dropTemp.getVisibleType() == DropItemConstant.VisibleType.publicVisible) {
 			List<Long> players = field.getLivings();
-			for(long id: players){
+			for (long id : players) {
 				ArmyProxy mapArmy = WorldMgr.getArmy(id);
 				DropItemRemoveMsg.Builder mapMsg = DropItemRemoveMsg.newBuilder();
 				mapMsg.setPackageId(dropId);
@@ -76,25 +86,27 @@ public class NotifyDropHalper {
 			}
 		}
 	}
-	
+
 	/**
 	 * 删除整个掉落包
+	 * 
 	 * @param field
 	 * @param dropId
 	 */
-	public static void notifyRemoveDropPackage(Field field, DropPackage drop){
+	public static void notifyRemoveDropPackage(Field field, DropPackage drop) {
 		ArmyProxy army = WorldMgr.getArmy(drop.getPlayerId());
-		
-		if(army == null) return;
+
+		if (army == null)
+			return;
 		DropItemRemoveMsg.Builder msg = DropItemRemoveMsg.newBuilder();
 		msg.setPackageId(drop.getDropId());
 		msg.setDropItemId(0);
 		army.sendPbMessage(MessageUtil.buildMessage(Protocol.U_DROP_ITEM_REMOVE, msg));
-		
+
 		DropInfo dropTemp = DropTempleteMgr.getDropPool().get(drop.getPoolId());
-		if(dropTemp.getVisibleType() == DropItemConstant.VisibleType.publicVisible){
+		if (dropTemp.getVisibleType() == DropItemConstant.VisibleType.publicVisible) {
 			List<Long> players = field.getLivings();
-			for(long id: players){
+			for (long id : players) {
 				ArmyProxy mapArmy = WorldMgr.getArmy(id);
 				DropItemRemoveMsg.Builder mapMsg = DropItemRemoveMsg.newBuilder();
 				mapMsg.setPackageId(drop.getDropId());

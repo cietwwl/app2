@@ -1,5 +1,7 @@
 package com.chuangyou.xianni.team;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -25,6 +27,24 @@ public class TeamMgr {
 			return allTeams.get(playerTeamMap.get(playerId));
 		}
 		return null;
+	}
+	
+	/**
+	 * 获取队伍成员列表，如果没有队伍就只返回自己
+	 * @param playerId
+	 * @return
+	 */
+	public static List<Long> getTeamMembers(long playerId){
+		Team team = getTeam(playerId);
+		
+		List<Long> members;
+		if(team == null){
+			members = new ArrayList<>();
+			members.add(playerId);
+		}else{
+			members = team.getMembers();
+		}
+		return members;
 	}
 
 	/**

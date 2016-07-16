@@ -382,13 +382,16 @@ public class GamePlayer extends AbstractEvent {
 
 	public void sendPbMessage(PBMessage message) {
 		if (this.getPlayerState() == PlayerState.OFFLINE) {
+			Log.error("send msg but player is not onLine" + message.getCode());
 			return;
 		}
 
 		if (channel == null || channel.isActive() == false) {
+			Log.error("send msg but player is not onLine1" + message.getCode());
 			return;
 		}
 		if (message == null) {
+			Log.error("send msg but player is not onLine2");
 			return;
 		}
 		message.setPlayerId(getPlayerId());

@@ -40,10 +40,9 @@ public class Property {
 
 	private void fresh() {
 		// 计算总的属性
-
 		int totalData = tempData + bagData + skillData + mountData + magicwpData + petData;
 		int totalPer = tempPer + bagPer + skillPer + mountPer + magicwpPer + petPer;
-		totalJoin = totalData + totalData * totalPer / 100;
+		totalJoin = totalData + totalData * totalPer / 10000;
 
 		// 计算基础属性
 		baseJoin = (tempData) + (tempData) * (tempPer) / 10000;

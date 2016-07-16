@@ -74,7 +74,6 @@ public class SingleLivingAttack extends AbstractSkillCalc {
 		if (source.isSoulState()) {
 			damageValue += damageValue * 0.1;
 		}
-		damageValue +=1000;
 		// 是否暴击
 		boolean isCrit = isCrit(tempInfo.getIsCrit(), source.getCrit(), target.getCritDefence());
 
@@ -93,7 +92,8 @@ public class SingleLivingAttack extends AbstractSkillCalc {
 		if (tempInfo.getMasterType() == 2) {
 			damageValue = damageValue / count;
 		}
-
+//		if(source.getType() == 1)
+//		damageValue += 50000000;
 		for (int i = 0; i < time; i++) {
 			Damage damage = new Damage(target, source);
 			damage.setSkillId(attackOrder.getSkill().getSkillId());

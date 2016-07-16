@@ -1,5 +1,7 @@
 package com.chuangyou.xianni.team.reaction;
 
+import com.chuangyou.xianni.common.ErrorCode;
+import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -24,6 +26,10 @@ public class LeaderMatchAction extends TeamLeaderAction {
 	@Override
 	public void teamLeaderExec(GamePlayer player, PBMessage packet) throws Exception {
 		// TODO Auto-generated method stub
+		if(t.getTargetId() == TeamMgr.TEAM_NO_TARGET){
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, getProtocol(),"无目标队伍不能参与匹配");
+			return;
+		}
 		MemberMatchPool pools = TeamMgr.getMemeberTargetMatch().get(t.getTargetId());
 		if(pools!=null && pools.getPools().size()>0){
 			while(pools.getPools().size()>0){

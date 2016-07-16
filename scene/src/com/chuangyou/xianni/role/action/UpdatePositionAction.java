@@ -52,9 +52,9 @@ public class UpdatePositionAction extends DelayAction {
 				setPostion(activeLiving.getGoal(), playerSelector);
 				this.activeLiving.arrial();
 			} else {
-				// if (activeLiving.getId() == 1000000000033L)
-				// System.out.println(this.activeLiving.getPostion().toString()+" 设置位置：" + target + " this.activeLiving.getMoveTime()： " +
-				// this.activeLiving.getMoveTime()+"getStep(Speed): "+getStep(activeLiving.getSpeed()));
+//				if (activeLiving.getId() == 1000000000033L)
+//					System.out.println(this.activeLiving.getPostion().toString() + " 设置位置：" + target + " this.activeLiving.getMoveTime()： " + this.activeLiving.getMoveTime()
+//							+ "getStep(Speed): " + getStep(activeLiving.getSpeed()));
 				setPostion(target, playerSelector);
 			}
 		}

@@ -1,0 +1,7 @@
+//protocol=25008;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PingReqProto";
+
+message PingReqMsg{
+
+}

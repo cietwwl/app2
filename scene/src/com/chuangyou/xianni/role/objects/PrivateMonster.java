@@ -1,6 +1,7 @@
 package com.chuangyou.xianni.role.objects;
 
 import com.chuangyou.common.protobuf.pb.PlayerLeaveGridProto.PlayerLeaveGridMsg;
+import com.chuangyou.xianni.drop.manager.DropManager;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
@@ -60,7 +61,21 @@ public class PrivateMonster extends Monster {
 	}
 
 	public void onDie(Living killer) {
-		super.onDie(killer);
+		synchronized (dieLock) {
+			if (this.livingState == DIE) {
+				return;
+			}
+			this.livingState = DIE;
+		}
+		clearWorkBuffer();
+		// sendChangeStatuMsg(LIVING, livingState);死亡状态不推，客户端自己判断
+		dieTime = System.currentTimeMillis();
+		System.err.println("living :" + this.armyId + " is die");
+		if (node != null) {
+			node.lvingDie(this);
+		}
+		DropManager.dropFromMonster(this.getSkin(), killer.getArmyId(), this.getId(), this.getField().id, this.getPostion());
+		notifyCenter(this.getSkin(), killer.getArmyId());
 		this.clear();
 		PrivateMonsterMgr.remove(this);
 	}

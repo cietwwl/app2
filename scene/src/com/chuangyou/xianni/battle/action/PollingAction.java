@@ -18,7 +18,7 @@ import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 
 public abstract class PollingAction extends DelayAction {
 	Living					living;
-	protected static int	delay	= 500;
+	protected static int	delay	= 1000;
 
 	public PollingAction(Living queue) {
 		super(queue, delay);

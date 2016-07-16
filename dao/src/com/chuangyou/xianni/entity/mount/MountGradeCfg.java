@@ -33,8 +33,6 @@ public class MountGradeCfg {
 	public int att9;
 	/** 属性10 */
 	public int att10;
-	
-	private List<Integer> attList;
 	/** 获取途径 */
 	private String getMode;
 	/** 升阶所需道具ID */
@@ -51,6 +49,16 @@ public class MountGradeCfg {
 	private int failBlessMax;
 	/** 祝福值阀值，低于阀值时必定失败 */
 	private int blessValve;
+	
+	
+	///////////////////////程序逻辑需要，第一次使用时初始化///////////////////////////
+	/** 属性列表 */
+	private List<Integer> attList;
+	/** 坐骑移动速度加成 */
+	private int speed = 0;
+	private int speedType;
+	private boolean speedInit = false;
+	
 	public int getId() {
 		return id;
 	}
@@ -221,6 +229,26 @@ public class MountGradeCfg {
 		}
 		return this.attList;
 	}
+	
+	public int getSpeed(int type){
+		if(speedInit == false || speedType != type){
+			speedType = type;
+			
+			List<Integer> attList = getAttList();
+			for(int attNum: attList){
+				int attType = (int) (attNum / 1000000);
+				if(attType == speedType){
+					int attValue = attNum % 1000000;
+					speed = attValue;
+					break;
+				}
+			}
+			
+			speedInit = true;
+		}
+		return speed;
+	}
+	
 	@Override
 	public String toString() {
 		return "MountGrade [id=" + id + ", name=" + name + ", grade=" + grade + ", color=" + color + ", att1=" + att1

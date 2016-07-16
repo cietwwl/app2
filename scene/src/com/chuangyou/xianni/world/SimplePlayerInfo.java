@@ -26,6 +26,8 @@ public class SimplePlayerInfo {
 	private int		mountId;		// 坐骑ID
 	private int		magicWeaponId;	// 法宝ID
 	private int		wingId;			// 翅膀ID
+	private int     battleMode;	    // 战斗模式
+//	private int     pkVal;			// pk值
 
 	public void writeProto(PlayerInfoMsg.Builder proto) {
 		proto.setPlayerId(this.getPlayerId());
@@ -44,6 +46,7 @@ public class SimplePlayerInfo {
 		proto.setMountId(this.getMountId());
 		proto.setMagicWeaponId(this.getMagicWeaponId());
 		proto.setWingId(this.getWingId());
+		proto.setBattleMode(this.battleMode);
 	}
 
 	public void readProto(PlayerInfoMsg proto) {
@@ -63,6 +66,7 @@ public class SimplePlayerInfo {
 		this.setMountId(proto.getMountId());
 		this.setMagicWeaponId(proto.getMagicWeaponId());
 		this.setWingId(proto.getWingId());
+		this.setBattleMode(proto.getBattleMode());
 	}
 
 	public long getPlayerId() {
@@ -193,6 +197,14 @@ public class SimplePlayerInfo {
 		this.wingId = wingId;
 	}
 	
+	public int getBattleMode() {
+		return battleMode;
+	}
+
+	public void setBattleMode(int battleMode) {
+		this.battleMode = battleMode;
+	}
+
 	public void readProperty(List<PropertyMsg> properties){
 		for(PropertyMsg p:properties){
 			EnumAttr attr = EnumAttr.getEnumAttrByValue(p.getType());

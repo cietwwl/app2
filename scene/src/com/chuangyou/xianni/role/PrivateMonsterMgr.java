@@ -59,7 +59,9 @@ public class PrivateMonsterMgr {
 		for (PrivateMonster pm : all) {
 			if (pm.expired()) {
 				pm.destory();
-				pm.getField().leaveField(pm);
+				if (pm.getField() != null) {
+					pm.getField().leaveField(pm);
+				}
 			}
 		}
 

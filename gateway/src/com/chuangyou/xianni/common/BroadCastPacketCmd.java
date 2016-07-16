@@ -1,17 +1,7 @@
 package com.chuangyou.xianni.common;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.util.Date;
 import java.util.List;
-
-import com.chuangyou.common.protobuf.pb.battle.AttackBroadcastMsgProto.AttackBroadcastMsg;
 import com.chuangyou.common.protobuf.pb.common.BroadcastMsgProto.BroadcastMsg;
-import com.chuangyou.common.util.Log;
-import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
@@ -31,7 +21,6 @@ public class BroadCastPacketCmd implements Command {
 		short protocol = (short) bmsg.getProtocol();
 		PBMessage message = new PBMessage(protocol);
 		message.setBytes(bmsg.getPacket().toByteArray());
-
 		for (long id : ids) {
 			User user = UserMgr.getOnlineUser(id);
 			if (user != null) {
@@ -40,5 +29,5 @@ public class BroadCastPacketCmd implements Command {
 			}
 		}
 	}
-	
+
 }

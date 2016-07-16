@@ -1,0 +1,8 @@
+//protocol=10501;
+option java_package = "com.chuangyou.common.protobuf.pb.battle";
+option java_outer_classname = "ReqBattleModeMsgProto";
+//变更战斗模式请求
+message ReqBattleModeMsg {
+	optional int32 battleMode=1; //战斗模式   1和平模式2对战模式3门派模式
+}
+

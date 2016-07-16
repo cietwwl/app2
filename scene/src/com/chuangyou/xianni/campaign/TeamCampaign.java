@@ -35,10 +35,7 @@ public class TeamCampaign extends Campaign {
 	 * 副本结束
 	 */
 	public void over() {
-		state = new StopState(this);
-		for (ArmyProxy army : armys.values()) {
-			onPlayerLeave(army);
-		}
+		super.over();
 		Team team = TeamMgr.getTeam(creater);
 		if (team != null) {
 			List<Long> members = team.getMembers();
@@ -50,26 +47,6 @@ public class TeamCampaign extends Campaign {
 			}
 		}
 
-	}
-
-	public void clearCampaignData() {
-		this.clear();
-		this.armys.clear();
-		this.armys.clear();
-		this.armys = null;
-		this.starField = null;
-		for (Field f : allFields.values()) {
-			f.destroy();
-		}
-		this.allFields.clear();
-		this.allFields = null;
-		this.spwanNodes.clear();
-		this.spwanNodes = null;
-		tempFieldMapping.clear();
-		indexMapping.clear();
-		changeNodes.clear();
-		teamNodes.clear();
-		CampaignMgr.remove(id);
 	}
 
 }

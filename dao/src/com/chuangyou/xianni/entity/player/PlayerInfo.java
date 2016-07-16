@@ -57,7 +57,13 @@ public class PlayerInfo extends DataObject {
 	private int skillStage;
 	/** 修为 **/
 	private int repair;
-
+	/** 战斗模式 1和平模式2对战模式3门派模式 */
+	private int battleMode;
+	/** pk 值 **/
+	private int pkVal;
+	/** 战斗模式更新时间  **/
+	private long changeBattleModeTime;
+	
 	public long getPlayerId() {
 		return playerId;
 	}
@@ -194,12 +200,35 @@ public class PlayerInfo extends DataObject {
 		this.repair = repair;
 	}
 
+	public int getBattleMode() {
+		return battleMode;
+	}
+
+	public void setBattleMode(int battleMode) {
+		this.battleMode = battleMode;
+	}
+
+	public int getPkVal() {
+		return pkVal;
+	}
+
+	public void setPkVal(int pkVal) {
+		this.pkVal = pkVal;
+	}
+
+	public long getChangeBattleModeTime() {
+		return changeBattleModeTime;
+	}
+
+	public void setChangeBattleModeTime(long changeBattleModeTime) {
+		this.changeBattleModeTime = changeBattleModeTime;
+	}
+
 	/**
 	 * 写玩家属性消息包
 	 * 
 	 * @param proto
-	 * @param bagInitCount
-	 *            背包初始大小配置
+	 * @param bagInitCount 背包初始大小配置
 	 */
 	public void writeProto(PlayerInfoMsg.Builder proto, int bagInitCount) {
 		proto.setPlayerId(this.getPlayerId());
@@ -221,5 +250,6 @@ public class PlayerInfo extends DataObject {
 		proto.setWeaponId(2110001);
 		proto.setWingId(0);
 		proto.setPBagCount(bagInitCount + this.getpBagCount());
+		proto.setBattleMode(this.getBattleMode());
 	}
 }

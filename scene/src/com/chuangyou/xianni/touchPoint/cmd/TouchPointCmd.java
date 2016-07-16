@@ -36,11 +36,11 @@ public class TouchPointCmd extends AbstractCommand {
 			sn.active(army);
 		}
 		// TODO 需要校验，玩家是否在当前地图中
-		if (sn == null || !(sn instanceof TouchPointSpwanNode)) {
-			return;
-		}
-		TouchPointSpwanNode tp = (TouchPointSpwanNode) sn;
-		tp.action(army);
+//		if (sn == null || !(sn instanceof TouchPointSpwanNode)) {
+//			return;
+//		}
+//		TouchPointSpwanNode tp = (TouchPointSpwanNode) sn;
+//		tp.action(army);
 
 	}
 

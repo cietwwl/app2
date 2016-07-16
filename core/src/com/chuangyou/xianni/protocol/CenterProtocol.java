@@ -294,4 +294,10 @@ public interface CenterProtocol {
 	// =========================><===================================
 	/** 立即复活 */
 	public static final short	C_PLAYER_REVIVAL				= 10401;
+	// =========================>战斗模式<===============================
+	/** 变更战斗模式 */
+	public static final short	C_BATTLE_MODE   				= 10501;
+	
+	
+	
 }

@@ -32,7 +32,7 @@ public class EnterFieldCmd extends AbstractCommand {
 		ReqChangeMapMsg msg = ReqChangeMapMsg.parseFrom(packet.getBytes());
 
 		PostionMsg posMsg = msg.getPostionMsg();
-		int mapId = posMsg.getMapId(); // 如果属于副本地图，切mapId = -1，则为请求创建
+		int mapId = posMsg.getMapId(); // 如果属于副本地图，且mapId = -1，则为请求创建
 		int mapKey = posMsg.getMapKey(); // 副本地图ID
 
 		FieldInfo fieldTemp = FieldTemplateMgr.getFieldTemp(mapKey);

@@ -8,6 +8,10 @@ public class DamageFactory {
 	public static DamageCalculator createCalculator(int calcWay, int job) {
 		DamageCalculator calculator = null;
 		EnumAttr type = EnumAttr.getEnumAttrByValue(calcWay);
+		if(type == null){
+			Log.error("传入计算方式有误, 检查配置; calcWay1: " + calcWay);
+			return new BloodDamageCalculator();
+		}
 		switch (type) {
 			case CUR_SOUL:
 				calculator = new SouDamageCalculator();
@@ -16,7 +20,7 @@ public class DamageFactory {
 				calculator = new BloodDamageCalculator();
 				break;
 			default:
-				calculator = new SouDamageCalculator();
+				calculator = new BloodDamageCalculator();
 				Log.error("传入计算方式有误, 检查配置; calcWay: " + calcWay);
 				break;
 		}

@@ -52,7 +52,7 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 			Log.error("army field is empty ,armyId :" + army.getPlayerId() + " fieldId :" + army.getFieldId());
 			return;
 		}
-
+		int battleMode = player.getSimpleInfo().getBattleMode();
 		// 技能目标
 		List<Living> targets = new ArrayList<>();
 		List<Long> realTargets = new ArrayList<>();
@@ -91,7 +91,13 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 		// }
 		if (!Vector3.Equal(current, target) && player.checkStatus(LivingState.ATTACK_MOVE))
 			NotifyNearHelper.notifyHelper(field, army, target, new AllSelectorHelper(army.getPlayer()));
-
+		/////////
+		
+		
+		
+		
+		
+		
 	}
 
 }

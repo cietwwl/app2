@@ -128,39 +128,9 @@ public class PlayerCreateCmd implements Command {
 			playerJoinInfo.setWaterDefence(0);
 			playerJoinInfo.setFireDefence(0);
 			playerJoinInfo.setEarthDefence(0);
-			playerJoinInfo.setSpeed(1);
+			playerJoinInfo.setSpeed(0);
 
-			// playerJoinInfo.setCurSoul(roleConfig.getCurSoul());
-			// playerJoinInfo.setCurBlood(roleConfig.getCurBlood());
-			// playerJoinInfo.setSoul(roleConfig.getSoul());
-			// playerJoinInfo.setBlood(roleConfig.getBlood());
-			// playerJoinInfo.setAttack(roleConfig.getAttack());
-			// playerJoinInfo.setDefence(roleConfig.getDefence());
-			// playerJoinInfo.setSoulAttack(roleConfig.getSoulAttack());
-			// playerJoinInfo.setSoulDefence(roleConfig.getSoulDefence());
-			// playerJoinInfo.setAccurate(roleConfig.getAccurate());
-			// playerJoinInfo.setDodge(roleConfig.getDodge());
-			// playerJoinInfo.setCrit(roleConfig.getCrit());
-			// playerJoinInfo.setCritDefence(roleConfig.getCritDefence());
-			// playerJoinInfo.setCritAddtion(roleConfig.getCritAddtion());
-			// playerJoinInfo.setCritCut(roleConfig.getCritCut());
-			// playerJoinInfo.setBloodAttackAddtion(roleConfig.getAttackAddtion());
-			// playerJoinInfo.setBloodAttackCut(roleConfig.getAttackCut());
-			// playerJoinInfo.setSoulAttackAddtion(roleConfig.getSoulAttackAddtion());
-			// playerJoinInfo.setSoulAttackCut(roleConfig.getSoulAttackCut());
-			// playerJoinInfo.setRegainSoul(roleConfig.getRegainSoul());
-			// playerJoinInfo.setRegainBlood(roleConfig.getRegainBlood());
-			// playerJoinInfo.setMetal(roleConfig.getMetal());
-			// playerJoinInfo.setWood(roleConfig.getWood());
-			// playerJoinInfo.setWater(roleConfig.getWater());
-			// playerJoinInfo.setFire(roleConfig.getFire());
-			// playerJoinInfo.setEarth(roleConfig.getEarth());
-			// playerJoinInfo.setMetalDefence(roleConfig.getMetalDefence());
-			// playerJoinInfo.setWoodDefence(roleConfig.getWoodDefence());
-			// playerJoinInfo.setWaterDefence(roleConfig.getWaterDefence());
-			// playerJoinInfo.setFireDefence(roleConfig.getFireDefence());
-			// playerJoinInfo.setEarthDefence(roleConfig.getEarthDefence());
-			// playerJoinInfo.setSpeed(roleConfig.getSpeed());
+			
 
 			PlayerTimeInfo playerTimeInfo = new PlayerTimeInfo();
 			playerTimeInfo.setPlayerId(playerInfo.getPlayerId());

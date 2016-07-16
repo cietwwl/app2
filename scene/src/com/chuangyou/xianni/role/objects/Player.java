@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.chuangyou.common.protobuf.pb.PlayerAttSnapProto.PlayerAttSnapMsg;
 import com.chuangyou.common.protobuf.pb.army.HeroInfoMsgProto.HeroInfoMsg;
 import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLivingInfoMsg;
 import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLivingInfoMsg.Builder;
@@ -17,10 +18,13 @@ import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.skill.Skill;
+import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.entity.mount.MountGradeCfg;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.exec.ThreadManager;
+import com.chuangyou.xianni.mount.MountTempleteMgr;
 import com.chuangyou.xianni.proto.BroadcastUtil;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -33,11 +37,11 @@ import com.chuangyou.xianni.world.WorldMgr;
 
 public class Player extends ActiveLiving {
 	/** 是否复活中 */
-	private volatile boolean revivaling = false;
+	private volatile boolean	revivaling	= false;
 	/**
 	 * 玩家坐骑状态 0未乘骑 1乘骑坐骑
 	 */
-	private int mountState = 1;
+	private int					mountState	= 1;
 
 	public Player(long playerId) {
 		super(playerId, playerId);
@@ -62,10 +66,13 @@ public class Player extends ActiveLiving {
 	}
 
 	public void onDie(Living source) {
-		if (this.livingState == DIE) {
-			return;
+		synchronized (dieLock) {
+			if (this.livingState == DIE) {
+				return;
+			}
+			this.livingState = DIE;// 死亡状态不推，客户端自己判断
 		}
-		this.livingState = DIE;// 死亡状态不推，客户端自己判断
+
 		clearWorkBuffer();
 		dieTime = System.currentTimeMillis();
 		System.err.println("living :" + this.armyId + " is die");
@@ -193,6 +200,24 @@ public class Player extends ActiveLiving {
 		return super.getBattlePlayerInfoMsg();
 	}
 
+	// @Override
+	// public PlayerAttSnapMsg.Builder getAttSnapMsg() {
+	// // TODO Auto-generated method stub
+	// if (cacheAttSnapPacker == null) {
+	// cacheAttSnapPacker = PlayerAttSnapMsg.newBuilder();
+	// cacheAttSnapPacker.setPlayerId(id);
+	// }
+	// cacheAttSnapPacker.setType(getType());
+	// cacheAttSnapPacker.setSkinId(getSkin());
+	// cacheAttSnapPacker.setPostion(Vector3BuilderHelper.build(getPostion()));
+	// cacheAttSnapPacker.setTarget(Vector3BuilderHelper.build(getTargetPostion()));
+	// if(simpleInfo != null){
+	// cacheAttSnapPacker.setMountId(simpleInfo.getMountId());
+	// }
+	// cacheAttSnapPacker.setMountState(getMountState());
+	// return cacheAttSnapPacker;
+	// }
+
 	public void clearWorkBuffer() {
 		List<Buffer> allbuffer = new ArrayList<>();
 		synchronized (workBuffers) {
@@ -229,6 +254,21 @@ public class Player extends ActiveLiving {
 
 	public void setMountState(int mountState) {
 		this.mountState = mountState;
+	}
+
+	@Override
+	public int getSpeed() {
+		// TODO Auto-generated method stub
+		int speed = super.getSpeed();
+		if (mountState > 0) {
+			if (this.simpleInfo != null && this.simpleInfo.getMountId() > 0) {
+				MountGradeCfg mountCfg = MountTempleteMgr.getMountTemps().get(this.simpleInfo.getMountId());
+				if (mountCfg != null) {
+					speed += speed * mountCfg.getSpeed(EnumAttr.SPEED.getValue()) / 10000;
+				}
+			}
+		}
+		return speed;
 	}
 
 }

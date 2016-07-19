@@ -48,6 +48,7 @@ public class FieldInfoDaoImpl extends BaseDao implements FieldInfoDao {
 					info.setPosition(new Vector3(rs.getInt("x") / Vector3.Accuracy, rs.getInt("y") / Vector3.Accuracy, rs.getInt("z") / Vector3.Accuracy));
 					info.setInitScriptId(rs.getInt("initScriptId"));
 					info.setResName(rs.getString("resName"));
+					info.setBattle(rs.getBoolean("isBattle"));
 					infos.add(info);
 				}
 			} catch (SQLException e) {

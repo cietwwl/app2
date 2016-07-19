@@ -1,24 +1,27 @@
 package com.chuangyou.xianni.role.objects;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.chuangyou.common.protobuf.pb.PlayerAttSnapProto.PlayerAttSnapMsg;
 import com.chuangyou.common.protobuf.pb.army.HeroInfoMsgProto.HeroInfoMsg;
+import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLivingInfoMsg;
 import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLivingInfoMsg.Builder;
 import com.chuangyou.common.protobuf.pb.battle.BufferMsgProto.BufferMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
 import com.chuangyou.common.util.Log;
+import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.xianni.battle.action.HeroPollingAction;
 import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.skill.Skill;
-import com.chuangyou.xianni.common.Vector3BuilderHelper;
+import com.chuangyou.xianni.constant.BattleModeCode;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.mount.MountGradeCfg;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
@@ -37,11 +40,11 @@ import com.chuangyou.xianni.world.WorldMgr;
 
 public class Player extends ActiveLiving {
 	/** 是否复活中 */
-	private volatile boolean	revivaling	= false;
+	private volatile boolean revivaling = false;
 	/**
 	 * 玩家坐骑状态 0未乘骑 1乘骑坐骑
 	 */
-	private int					mountState	= 1;
+	private int mountState = 1;
 
 	public Player(long playerId) {
 		super(playerId, playerId);
@@ -65,28 +68,113 @@ public class Player extends ActiveLiving {
 		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_G_BATTLEPLAYERINFO, getBattlePlayerInfoMsg().build());
 	}
 
-	public void onDie(Living source) {
-		synchronized (dieLock) {
-			if (this.livingState == DIE) {
-				return;
+	@Override
+	public boolean onDie(Living source) {
+		if (super.onDie(source)) {
+			ArmyProxy army = WorldMgr.getArmy(getArmyId());
+			if (army == null) {
+				Log.error("not find army when player die,playerId :" + getArmyId());
+				return true;
 			}
-			this.livingState = DIE;// 死亡状态不推，客户端自己判断
+			if (revivaling == false) {
+				RevivalPlayerAction revival = new RevivalPlayerAction(army);
+				ThreadManager.actionExecutor.enDelayQueue(revival);
+				revivaling = true;
+			}
+		}
+		
+
+		if (source.getBattleMode() == BattleModeCode.warBattleMode && this.getBattleMode() == BattleModeCode.peaceBattleMode) {// 增加pk值
+			source.setPkVal(source.getPkVal() + 1000);
+			// 通知
+			Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
+			changeMap.put(EnumAttr.PK_VAL.getValue(), (long) source.getPkVal());
+			notifyCenter(changeMap, source.getArmyId());
+
+			List<PropertyMsg> properties = new ArrayList<>();
+			PropertyMsg.Builder p = PropertyMsg.newBuilder();
+			p.setBasePoint((long) source.getPkVal());
+			p.setTotalPoint((long) source.getPkVal());
+			p.setType(EnumAttr.PK_VAL.getValue());
+			properties.add(p.build());
+			updateProperty(source.getArmyId(), properties);
 		}
 
-		clearWorkBuffer();
-		dieTime = System.currentTimeMillis();
-		System.err.println("living :" + this.armyId + " is die");
-		ArmyProxy army = WorldMgr.getArmy(getArmyId());
-		if (army == null) {
-			Log.error("not find army when player die,playerId :" + getArmyId());
-			return;
+		List<PropertyMsg> properties = new ArrayList<>();
+		Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
+
+		int changePkVal = 0;// 减少pk值
+		long exp = 0;// 损失经验
+		if (getColour(this.getPkVal()) == BattleModeCode.yellow) {
+			changePkVal = MathUtils.randomClamp(10, 20);
+			exp = getSimpleInfo().getExp() * (getPkVal() / 500000);
+		} else if (getColour(this.getPkVal()) == BattleModeCode.red) {
+			changePkVal = MathUtils.randomClamp(40, 80);
+			exp = getSimpleInfo().getExp() * (getPkVal() / 100000);
 		}
-		if (revivaling == false) {
-			RevivalPlayerAction revival = new RevivalPlayerAction(army);
-			ThreadManager.actionExecutor.enDelayQueue(revival);
-			revivaling = true;
+
+		if (changePkVal > 0) {
+			changePkVal = this.getPkVal() - changePkVal < 0 ? 0 : this.getPkVal() - changePkVal;
+			this.setPkVal(changePkVal);
+			PropertyMsg.Builder p = PropertyMsg.newBuilder();
+			p.setBasePoint(changePkVal);
+			p.setTotalPoint(changePkVal);
+			p.setType(EnumAttr.PK_VAL.getValue());
+			properties.add(p.build());
+			changeMap.put(EnumAttr.PK_VAL.getValue(), (long) this.getPkVal());
 		}
+		if (exp > 0) {
+			long nowExp = getSimpleInfo().getExp() - exp < 0 ? 0 : getSimpleInfo().getExp() - exp;
+			PropertyMsg.Builder p = PropertyMsg.newBuilder();
+			p.setBasePoint(nowExp);
+			p.setTotalPoint(nowExp);
+			p.setType(EnumAttr.Exp.getValue());
+			properties.add(p.build());
+			changeMap.put(EnumAttr.Exp.getValue(), (long) (exp * -1));
+		}
+		if (changeMap.size() > 0)
+			notifyCenter(changeMap, this.getArmyId());
+		if (properties.size() > 0)
+			updateProperty(this.getArmyId(), properties);
+		
+		
+		return true;
 	}
+
+	/**
+	 * 获取颜色级别
+	 * 
+	 * @param val
+	 * @return
+	 */
+	public int getColour(int val) {
+		if (val >= 1000) {
+			return BattleModeCode.red;
+		} else if (val > 0) {
+			return BattleModeCode.yellow;
+		}
+		return BattleModeCode.white;
+	}
+
+	// /**
+	// * 通知
+	// *
+	// * @param changeMap
+	// * @param playerId
+	// * @return
+	// */
+	// public void notifyCenter(Map<Integer, Long> changeMap, long playerId) {
+	// PlayerAttUpdateMsg.Builder msg = PlayerAttUpdateMsg.newBuilder();
+	// msg.setPlayerId(playerId);
+	// for (int type : changeMap.keySet()) {
+	// PropertyMsg.Builder attMsg = PropertyMsg.newBuilder();
+	// attMsg.setType(type);
+	// attMsg.setTotalPoint(changeMap.get(type));
+	// msg.addAtt(attMsg);
+	// }
+	// PBMessage pkg = MessageUtil.buildMessage(Protocol.C_PLAYER_UPDATA_PRO, msg);
+	// GatewayLinkedSet.send2Server(pkg);
+	// }
 
 	/* 满血复活 */
 	public boolean renascence() {

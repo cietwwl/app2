@@ -238,12 +238,7 @@ public class ItemInfo extends DataObject implements Cloneable {
 		builder.setUsed(this.isUsed);
 		builder.setCount(this.count);
 		builder.setValidDate(this.validDate);
-		if (this.pro > 0) {
-			PropertyMsg.Builder msg = PropertyMsg.newBuilder();
-			msg.setType(this.pro / 1000000);
-			msg.setBasePoint(this.pro % 1000000);
-			builder.addPro(msg);
-		}
+		builder.setPro(this.getPro());
 		builder.setQualityCoefficient(this.getQualityCoefficient());
 		builder.setGrow(this.grow);
 		if (this.beginDate != null) {

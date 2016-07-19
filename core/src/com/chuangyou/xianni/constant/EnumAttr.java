@@ -289,8 +289,11 @@ public enum EnumAttr {
 	/**
 	 * PK 值
 	 */
-	PK_VAL(716);
-	
+	PK_VAL(717),
+	/**
+	 * 攻击模式
+	 */
+	BATTLE_MODE(718);
 
 	private int value;
 

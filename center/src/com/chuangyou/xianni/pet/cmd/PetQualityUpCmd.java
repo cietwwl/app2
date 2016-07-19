@@ -85,8 +85,7 @@ public class PetQualityUpCmd extends AbstractCommand {
 			//宠物总属性改变
 //			PetManager.changePetAtt(roleId);
 			//影响人物属性改变
-			player.getArmyInventory().getArmy().getHero().addPet(PetManager.computePetAtt(player));
-			player.getArmyInventory().updateProperty();
+			player.getPetInventory().updataProperty();
 			
 			//宠物外形广播
 			if(pet.getPetId() == player.getPetInventory().getPetAtt().getFightPetId()){

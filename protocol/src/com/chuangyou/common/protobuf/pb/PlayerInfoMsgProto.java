@@ -13,7 +13,7 @@ public final class PlayerInfoMsgProto {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional int64 player_id = 1;</code>
+     * <code>optional int64 playerId = 1;</code>
      *
      * <pre>
      *角色ID
@@ -21,7 +21,7 @@ public final class PlayerInfoMsgProto {
      */
     boolean hasPlayerId();
     /**
-     * <code>optional int64 player_id = 1;</code>
+     * <code>optional int64 playerId = 1;</code>
      *
      * <pre>
      *角色ID
@@ -124,7 +124,7 @@ public final class PlayerInfoMsgProto {
     long getToalExp();
 
     /**
-     * <code>optional int32 money = 7;</code>
+     * <code>optional int64 money = 7;</code>
      *
      * <pre>
      *金币
@@ -132,13 +132,13 @@ public final class PlayerInfoMsgProto {
      */
     boolean hasMoney();
     /**
-     * <code>optional int32 money = 7;</code>
+     * <code>optional int64 money = 7;</code>
      *
      * <pre>
      *金币
      * </pre>
      */
-    int getMoney();
+    long getMoney();
 
     /**
      * <code>optional int32 bind_cash = 8;</code>
@@ -368,23 +368,6 @@ public final class PlayerInfoMsgProto {
      * </pre>
      */
     int getRepair();
-
-    /**
-     * <code>optional int32 battleMode = 21;</code>
-     *
-     * <pre>
-     * 对战模式  1和平模式2对战模式3门派模式
-     * </pre>
-     */
-    boolean hasBattleMode();
-    /**
-     * <code>optional int32 battleMode = 21;</code>
-     *
-     * <pre>
-     * 对战模式  1和平模式2对战模式3门派模式
-     * </pre>
-     */
-    int getBattleMode();
   }
   /**
    * Protobuf type {@code PlayerInfoMsg}
@@ -471,7 +454,7 @@ public final class PlayerInfoMsgProto {
             }
             case 56: {
               bitField0_ |= 0x00000040;
-              money_ = input.readInt32();
+              money_ = input.readInt64();
               break;
             }
             case 64: {
@@ -547,11 +530,6 @@ public final class PlayerInfoMsgProto {
               repair_ = input.readInt32();
               break;
             }
-            case 168: {
-              bitField0_ |= 0x00100000;
-              battleMode_ = input.readInt32();
-              break;
-            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -592,10 +570,10 @@ public final class PlayerInfoMsgProto {
     }
 
     private int bitField0_;
-    public static final int PLAYER_ID_FIELD_NUMBER = 1;
+    public static final int PLAYERID_FIELD_NUMBER = 1;
     private long playerId_;
     /**
-     * <code>optional int64 player_id = 1;</code>
+     * <code>optional int64 playerId = 1;</code>
      *
      * <pre>
      *角色ID
@@ -605,7 +583,7 @@ public final class PlayerInfoMsgProto {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional int64 player_id = 1;</code>
+     * <code>optional int64 playerId = 1;</code>
      *
      * <pre>
      *角色ID
@@ -762,9 +740,9 @@ public final class PlayerInfoMsgProto {
     }
 
     public static final int MONEY_FIELD_NUMBER = 7;
-    private int money_;
+    private long money_;
     /**
-     * <code>optional int32 money = 7;</code>
+     * <code>optional int64 money = 7;</code>
      *
      * <pre>
      *金币
@@ -774,13 +752,13 @@ public final class PlayerInfoMsgProto {
       return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     /**
-     * <code>optional int32 money = 7;</code>
+     * <code>optional int64 money = 7;</code>
      *
      * <pre>
      *金币
      * </pre>
      */
-    public int getMoney() {
+    public long getMoney() {
       return money_;
     }
 
@@ -1093,29 +1071,6 @@ public final class PlayerInfoMsgProto {
       return repair_;
     }
 
-    public static final int BATTLEMODE_FIELD_NUMBER = 21;
-    private int battleMode_;
-    /**
-     * <code>optional int32 battleMode = 21;</code>
-     *
-     * <pre>
-     * 对战模式  1和平模式2对战模式3门派模式
-     * </pre>
-     */
-    public boolean hasBattleMode() {
-      return ((bitField0_ & 0x00100000) == 0x00100000);
-    }
-    /**
-     * <code>optional int32 battleMode = 21;</code>
-     *
-     * <pre>
-     * 对战模式  1和平模式2对战模式3门派模式
-     * </pre>
-     */
-    public int getBattleMode() {
-      return battleMode_;
-    }
-
     private void initFields() {
       playerId_ = 0L;
       userId_ = 0L;
@@ -1123,7 +1078,7 @@ public final class PlayerInfoMsgProto {
       level_ = 0;
       exp_ = 0L;
       toalExp_ = 0L;
-      money_ = 0;
+      money_ = 0L;
       bindCash_ = 0;
       vipLevel_ = 0;
       fight_ = 0;
@@ -1137,7 +1092,6 @@ public final class PlayerInfoMsgProto {
       postionMsg_ = com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg.getDefaultInstance();
       cash_ = 0;
       repair_ = 0;
-      battleMode_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1171,7 +1125,7 @@ public final class PlayerInfoMsgProto {
         output.writeInt64(6, toalExp_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeInt32(7, money_);
+        output.writeInt64(7, money_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         output.writeInt32(8, bindCash_);
@@ -1212,9 +1166,6 @@ public final class PlayerInfoMsgProto {
       if (((bitField0_ & 0x00080000) == 0x00080000)) {
         output.writeInt32(20, repair_);
       }
-      if (((bitField0_ & 0x00100000) == 0x00100000)) {
-        output.writeInt32(21, battleMode_);
-      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1250,7 +1201,7 @@ public final class PlayerInfoMsgProto {
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(7, money_);
+          .computeInt64Size(7, money_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
@@ -1303,10 +1254,6 @@ public final class PlayerInfoMsgProto {
       if (((bitField0_ & 0x00080000) == 0x00080000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(20, repair_);
-      }
-      if (((bitField0_ & 0x00100000) == 0x00100000)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(21, battleMode_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1438,7 +1385,7 @@ public final class PlayerInfoMsgProto {
         bitField0_ = (bitField0_ & ~0x00000010);
         toalExp_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000020);
-        money_ = 0;
+        money_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000040);
         bindCash_ = 0;
         bitField0_ = (bitField0_ & ~0x00000080);
@@ -1470,8 +1417,6 @@ public final class PlayerInfoMsgProto {
         bitField0_ = (bitField0_ & ~0x00040000);
         repair_ = 0;
         bitField0_ = (bitField0_ & ~0x00080000);
-        battleMode_ = 0;
-        bitField0_ = (bitField0_ & ~0x00100000);
         return this;
       }
 
@@ -1584,10 +1529,6 @@ public final class PlayerInfoMsgProto {
           to_bitField0_ |= 0x00080000;
         }
         result.repair_ = repair_;
-        if (((from_bitField0_ & 0x00100000) == 0x00100000)) {
-          to_bitField0_ |= 0x00100000;
-        }
-        result.battleMode_ = battleMode_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1666,9 +1607,6 @@ public final class PlayerInfoMsgProto {
         if (other.hasRepair()) {
           setRepair(other.getRepair());
         }
-        if (other.hasBattleMode()) {
-          setBattleMode(other.getBattleMode());
-        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -1698,7 +1636,7 @@ public final class PlayerInfoMsgProto {
 
       private long playerId_ ;
       /**
-       * <code>optional int64 player_id = 1;</code>
+       * <code>optional int64 playerId = 1;</code>
        *
        * <pre>
        *角色ID
@@ -1708,7 +1646,7 @@ public final class PlayerInfoMsgProto {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional int64 player_id = 1;</code>
+       * <code>optional int64 playerId = 1;</code>
        *
        * <pre>
        *角色ID
@@ -1718,7 +1656,7 @@ public final class PlayerInfoMsgProto {
         return playerId_;
       }
       /**
-       * <code>optional int64 player_id = 1;</code>
+       * <code>optional int64 playerId = 1;</code>
        *
        * <pre>
        *角色ID
@@ -1731,7 +1669,7 @@ public final class PlayerInfoMsgProto {
         return this;
       }
       /**
-       * <code>optional int64 player_id = 1;</code>
+       * <code>optional int64 playerId = 1;</code>
        *
        * <pre>
        *角色ID
@@ -2036,9 +1974,9 @@ public final class PlayerInfoMsgProto {
         return this;
       }
 
-      private int money_ ;
+      private long money_ ;
       /**
-       * <code>optional int32 money = 7;</code>
+       * <code>optional int64 money = 7;</code>
        *
        * <pre>
        *金币
@@ -2048,30 +1986,30 @@ public final class PlayerInfoMsgProto {
         return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
-       * <code>optional int32 money = 7;</code>
+       * <code>optional int64 money = 7;</code>
        *
        * <pre>
        *金币
        * </pre>
        */
-      public int getMoney() {
+      public long getMoney() {
         return money_;
       }
       /**
-       * <code>optional int32 money = 7;</code>
+       * <code>optional int64 money = 7;</code>
        *
        * <pre>
        *金币
        * </pre>
        */
-      public Builder setMoney(int value) {
+      public Builder setMoney(long value) {
         bitField0_ |= 0x00000040;
         money_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 money = 7;</code>
+       * <code>optional int64 money = 7;</code>
        *
        * <pre>
        *金币
@@ -2079,7 +2017,7 @@ public final class PlayerInfoMsgProto {
        */
       public Builder clearMoney() {
         bitField0_ = (bitField0_ & ~0x00000040);
-        money_ = 0;
+        money_ = 0L;
         onChanged();
         return this;
       }
@@ -2812,54 +2750,6 @@ public final class PlayerInfoMsgProto {
         return this;
       }
 
-      private int battleMode_ ;
-      /**
-       * <code>optional int32 battleMode = 21;</code>
-       *
-       * <pre>
-       * 对战模式  1和平模式2对战模式3门派模式
-       * </pre>
-       */
-      public boolean hasBattleMode() {
-        return ((bitField0_ & 0x00100000) == 0x00100000);
-      }
-      /**
-       * <code>optional int32 battleMode = 21;</code>
-       *
-       * <pre>
-       * 对战模式  1和平模式2对战模式3门派模式
-       * </pre>
-       */
-      public int getBattleMode() {
-        return battleMode_;
-      }
-      /**
-       * <code>optional int32 battleMode = 21;</code>
-       *
-       * <pre>
-       * 对战模式  1和平模式2对战模式3门派模式
-       * </pre>
-       */
-      public Builder setBattleMode(int value) {
-        bitField0_ |= 0x00100000;
-        battleMode_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 battleMode = 21;</code>
-       *
-       * <pre>
-       * 对战模式  1和平模式2对战模式3门派模式
-       * </pre>
-       */
-      public Builder clearBattleMode() {
-        bitField0_ = (bitField0_ & ~0x00100000);
-        battleMode_ = 0;
-        onChanged();
-        return this;
-      }
-
       // @@protoc_insertion_point(builder_scope:PlayerInfoMsg)
     }
 
@@ -2886,18 +2776,18 @@ public final class PlayerInfoMsgProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\032player/PlayerInfoMsg.proto\032\027player/Pos" +
-      "tionMsg.proto\"\221\003\n\rPlayerInfoMsg\022\021\n\tplaye" +
-      "r_id\030\001 \001(\003\022\017\n\007user_id\030\002 \001(\003\022\021\n\tnick_name" +
-      "\030\003 \001(\t\022\r\n\005level\030\004 \001(\005\022\013\n\003exp\030\005 \001(\003\022\020\n\010to" +
-      "al_exp\030\006 \001(\003\022\r\n\005money\030\007 \001(\005\022\021\n\tbind_cash" +
-      "\030\010 \001(\005\022\021\n\tvip_level\030\t \001(\005\022\r\n\005fight\030\n \001(\005" +
-      "\022\016\n\006skinId\030\013 \001(\005\022\022\n\nfashion_id\030\014 \001(\005\022\021\n\t" +
-      "weapon_id\030\r \001(\005\022\020\n\010mount_id\030\016 \001(\005\022\027\n\017mag" +
-      "ic_weapon_id\030\017 \001(\005\022\017\n\007wing_id\030\020 \001(\005\022\021\n\tp" +
-      "BagCount\030\021 \001(\005\022\037\n\npostionMsg\030\022 \001(\0132\013.Pos",
-      "tionMsg\022\014\n\004cash\030\023 \001(\005\022\016\n\006repair\030\024 \001(\005\022\022\n" +
-      "\nbattleMode\030\025 \001(\005B6\n com.chuangyou.commo" +
-      "n.protobuf.pbB\022PlayerInfoMsgProto"
+      "tionMsg.proto\"\374\002\n\rPlayerInfoMsg\022\020\n\010playe" +
+      "rId\030\001 \001(\003\022\017\n\007user_id\030\002 \001(\003\022\021\n\tnick_name\030" +
+      "\003 \001(\t\022\r\n\005level\030\004 \001(\005\022\013\n\003exp\030\005 \001(\003\022\020\n\010toa" +
+      "l_exp\030\006 \001(\003\022\r\n\005money\030\007 \001(\003\022\021\n\tbind_cash\030" +
+      "\010 \001(\005\022\021\n\tvip_level\030\t \001(\005\022\r\n\005fight\030\n \001(\005\022" +
+      "\016\n\006skinId\030\013 \001(\005\022\022\n\nfashion_id\030\014 \001(\005\022\021\n\tw" +
+      "eapon_id\030\r \001(\005\022\020\n\010mount_id\030\016 \001(\005\022\027\n\017magi" +
+      "c_weapon_id\030\017 \001(\005\022\017\n\007wing_id\030\020 \001(\005\022\021\n\tpB" +
+      "agCount\030\021 \001(\005\022\037\n\npostionMsg\030\022 \001(\0132\013.Post",
+      "ionMsg\022\014\n\004cash\030\023 \001(\005\022\016\n\006repair\030\024 \001(\005B6\n " +
+      "com.chuangyou.common.protobuf.pbB\022Player" +
+      "InfoMsgProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2917,7 +2807,7 @@ public final class PlayerInfoMsgProto {
     internal_static_PlayerInfoMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_PlayerInfoMsg_descriptor,
-        new java.lang.String[] { "PlayerId", "UserId", "NickName", "Level", "Exp", "ToalExp", "Money", "BindCash", "VipLevel", "Fight", "SkinId", "FashionId", "WeaponId", "MountId", "MagicWeaponId", "WingId", "PBagCount", "PostionMsg", "Cash", "Repair", "BattleMode", });
+        new java.lang.String[] { "PlayerId", "UserId", "NickName", "Level", "Exp", "ToalExp", "Money", "BindCash", "VipLevel", "Fight", "SkinId", "FashionId", "WeaponId", "MountId", "MagicWeaponId", "WingId", "PBagCount", "PostionMsg", "Cash", "Repair", });
     com.chuangyou.common.protobuf.pb.PostionMsgProto.getDescriptor();
   }
 

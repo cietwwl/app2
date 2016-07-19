@@ -16,6 +16,8 @@ import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerInfoSendCmd;
+import com.chuangyou.xianni.skill.SkillUtil;
+import com.chuangyou.xianni.skill.template.SimpleProperty;
 
 /**
  * 基本背包实现,包括领主道具、领主技能、领主装备、英雄技能
@@ -413,15 +415,19 @@ public class BaseBag extends AbstractBag {
 		for (BaseItem item : items) {
 			// 1.0 物品
 			ItemInfo info = item.getItemInfo();
-			ItemTemplateInfo tempInfo = item.getItemTempInfo();
-			int itemBase = tempInfo.getItemBase();// 基础属性
-			float qualityCoefficient = tempInfo.getQualityCoefficient() / 10000f;// 品质系数
-			float grow = tempInfo.getGrow() / 10000f;// 成长系数
-			int key = itemBase / 1000000;
-			int val = itemBase % 1000000;
-			float proVal = (val + 1 * grow) * (1 + 1 + qualityCoefficient); // 装备属性=（初始属性+装备等级*属性成长值）*（1+装备等级+品质系数）
+			int itemBase = info.getPro();// 基础属性
+			float qualityCoefficient = info.getQualityCoefficient() / 10000f;// 品质系数
+			float grow = info.getGrow() / 10000f;// 成长系数
 
-			assignPro(bagData, key, (int) proVal);
+			SimpleProperty property = SkillUtil.readPro(itemBase);
+
+			float proVal = (property.getValue() + 1 * grow) * (1 + 1 + qualityCoefficient); // 装备属性=（初始属性+装备等级*属性成长值）*（1+装备等级+品质系数）
+
+			if (property.isPre()) {
+				SkillUtil.joinPro(bagPer, property.getType(), (int) proVal);
+			} else {
+				SkillUtil.joinPro(bagData, property.getType(), (int) proVal);
+			}
 
 			// 2.0,装备属性
 			// tempInfo.joinProperty(bagData);
@@ -464,100 +470,4 @@ public class BaseBag extends AbstractBag {
 	public String getSkill() {
 		return null;
 	}
-
-	/** 属性赋值 */
-	public static void assignPro(BaseProperty temp, int key, int val) {
-		switch (key - 1) {
-			case Living.SOUL:
-				temp.setSoul(val);
-				break;
-			case Living.BLOOD:
-				temp.setBlood(val);
-				break;
-			case Living.ATTACK:
-				temp.setAttack(val);
-				break;
-			case Living.DEFENCE:
-				temp.setDefence(val);
-				break;
-			case Living.SOUL_ATTACK:
-				temp.setSoulAttack(val);
-				break;
-			case Living.SOUL_DEFENCE:
-				temp.setSoulDefence(val);
-				break;
-			case Living.ACCURATE:
-				temp.setAccurate(val);
-				break;
-			case Living.DODGE:
-				temp.setDodge(val);
-				break;
-			case Living.CRIT:
-				temp.setCrit(val);
-				break;
-			case Living.CRIT_DEFENCE:
-				temp.setCritDefence(val);
-				break;
-			case Living.CRIT_ADDTION:
-				temp.setCritAddtion(val);
-				break;
-			case Living.CRIT_CUT:
-				temp.setCritCut(val);
-				break;
-			case Living.BLOOD_ATTACK_ADDTION:
-				temp.setBloodAttackAddtion(val);
-				break;
-			case Living.BLOOD_ATTACK_CUT:
-				temp.setBloodAttackCut(val);
-				break;
-			case Living.SOUL_ATTACK_ADDTION:
-				temp.setSoulAttackAddtion(val);
-				break;
-			case Living.SOUL_ATTACK_CUT:
-				temp.setSoulAttackCut(val);
-				break;
-			case Living.REGAIN_SOUL:
-				temp.setRegainSoul(val);
-				break;
-			case Living.REGAIN_BLOOD:
-				temp.setRegainBlood(val);
-				break;
-			case Living.METAL:
-				temp.setMetal(val);
-				break;
-			case Living.WOOD:
-				temp.setWood(val);
-				break;
-			case Living.WATER:
-				temp.setWater(val);
-				break;
-			case Living.FIRE:
-				temp.setFire(val);
-				break;
-			case Living.EARTH:
-				temp.setEarth(val);
-				break;
-			case Living.METAL_DEFENCE:
-				temp.setMetalDefence(val);
-				break;
-			case Living.WOOD_DEFENCE:
-				temp.setWoodDefence(val);
-				break;
-			case Living.WATER_DEFENCE:
-				temp.setWaterDefence(val);
-				break;
-			case Living.FIRE_DEFENCE:
-				temp.setFireDefence(val);
-				break;
-			case Living.EARTH_DEFENCE:
-				temp.setEarthDefence(val);
-				break;
-			case Living.SPEED:
-				temp.setSpeed(val);
-				break;
-			default:
-				break;
-		}
-	}
-
 }

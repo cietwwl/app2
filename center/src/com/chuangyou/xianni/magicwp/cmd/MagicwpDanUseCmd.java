@@ -50,8 +50,7 @@ public class MagicwpDanUseCmd extends AbstractCommand {
 		//法宝总属性改变
 //		MagicwpManager.changeMagicwpAtt(roleId);
 		//影响人物属性变更
-		player.getArmyInventory().getArmy().getHero().addMagicwp(MagicwpManager.computeMagicwpAtt(player));
-		player.getArmyInventory().updateProperty();
+		player.getMagicwpInventory().updataProperty();
 	}
 
 }

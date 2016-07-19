@@ -60,24 +60,18 @@ public class PrivateMonster extends Monster {
 		return creater;
 	}
 
-	public void onDie(Living killer) {
-		synchronized (dieLock) {
-			if (this.livingState == DIE) {
-				return;
+	public boolean onDie(Living killer) {
+		if (super.onDie(killer)) {
+			if (node != null) {
+				node.lvingDie(this);
 			}
-			this.livingState = DIE;
+			DropManager.dropFromMonster(this.getSkin(), killer.getArmyId(), this.getId(), this.getField().id, this.getPostion());
+			notifyCenter(this.getSkin(), killer.getArmyId());
+			this.clear();
+			PrivateMonsterMgr.remove(this);
 		}
-		clearWorkBuffer();
-		// sendChangeStatuMsg(LIVING, livingState);死亡状态不推，客户端自己判断
-		dieTime = System.currentTimeMillis();
-		System.err.println("living :" + this.armyId + " is die");
-		if (node != null) {
-			node.lvingDie(this);
-		}
-		DropManager.dropFromMonster(this.getSkin(), killer.getArmyId(), this.getId(), this.getField().id, this.getPostion());
-		notifyCenter(this.getSkin(), killer.getArmyId());
-		this.clear();
-		PrivateMonsterMgr.remove(this);
+		return true;
+
 	}
 
 	public long getBornTime() {

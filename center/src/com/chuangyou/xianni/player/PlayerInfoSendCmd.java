@@ -20,6 +20,7 @@ import com.chuangyou.xianni.entity.pet.PetAtt;
 import com.chuangyou.xianni.entity.pet.PetInfo;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.player.PlayerPositionInfo;
+import com.chuangyou.xianni.pet.PetInventory;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
@@ -120,6 +121,8 @@ public class PlayerInfoSendCmd {
 		PetInfoMsg.Builder petInfo = PetInfoMsg.newBuilder();
 		petInfo.setPlayerId(player.getPlayerId());
 		
+		PetInventory petInventory = player.getPetInventory();
+		if(petInventory == null) return null;
 		PetAtt petAtt = player.getPetInventory().getPetAtt();
 		petInfo.setPetTempId(petAtt.getFightPetId());
 		petInfo.setPetSoul(petAtt.getSoulLv());

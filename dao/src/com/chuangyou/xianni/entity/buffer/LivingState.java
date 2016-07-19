@@ -30,7 +30,6 @@ public enum LivingState {
 	PERKS(12),
 	/** 是否吃控制 */
 	BE_CONTROL(13);
-
 	private int value;
 
 	private LivingState(int v) {

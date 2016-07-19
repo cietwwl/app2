@@ -25,7 +25,7 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 	public boolean add(PlayerInfo playerInfo) {
 		boolean result = false;
 		playerInfo.beginAdd();
-		String sql = "INSERT INTO tb_u_player_info (playerId,userId,nickname,level,exp,totalExp,money,bindCash,cash,vipLevel,fight,skinId,pBagCount,mountId,magicWeaponId,skillStage,repair) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+		String sql = "INSERT INTO tb_u_player_info (playerId,userId,nickname,level,exp,totalExp,money,bindCash,cash,vipLevel,fight,skinId,pBagCount,mountId,magicWeaponId,skillStage,repair,battleMode,pkVal,changeBattleModeTime) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.BIGINT, playerInfo.getPlayerId()));
 		para.put(2, new DbParameter(Types.BIGINT, playerInfo.getUserId()));
@@ -33,7 +33,7 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		para.put(4, new DbParameter(Types.INTEGER, playerInfo.getLevel()));
 		para.put(5, new DbParameter(Types.BIGINT, playerInfo.getExp()));
 		para.put(6, new DbParameter(Types.BIGINT, playerInfo.getTotalExp()));
-		para.put(7, new DbParameter(Types.INTEGER, playerInfo.getMoney()));
+		para.put(7, new DbParameter(Types.BIGINT, playerInfo.getMoney()));
 		para.put(8, new DbParameter(Types.INTEGER, playerInfo.getBindCash()));
 		para.put(9, new DbParameter(Types.INTEGER, playerInfo.getCash()));
 		para.put(10, new DbParameter(Types.INTEGER, playerInfo.getVipLevel()));
@@ -44,6 +44,9 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		para.put(15, new DbParameter(Types.INTEGER, playerInfo.getMagicWeaponId()));
 		para.put(16, new DbParameter(Types.INTEGER, 0));
 		para.put(17, new DbParameter(Types.INTEGER, playerInfo.getRepair()));
+		para.put(18, new DbParameter(Types.INTEGER, 1));
+		para.put(19, new DbParameter(Types.INTEGER, 0));
+		para.put(20, new DbParameter(Types.BIGINT, 0));
 		result = execNoneQuery(sql, para) > -1 ? true : false;
 		playerInfo.commitAdd(result);
 		return result;
@@ -53,13 +56,13 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 	public boolean update(PlayerInfo playerInfo) {
 		boolean result = false;
 		playerInfo.beginUpdate();
-		String sql = "update tb_u_player_info set nickname=?,level=?,exp=?,totalExp=?,money=?,bindCash=?,cash=?,vipLevel=?,fight=?,skinId=?,pBagCount=?,mountId=?,magicWeaponId=?,skillStage=?,repair=? where playerId=?";
+		String sql = "update tb_u_player_info set nickname=?,level=?,exp=?,totalExp=?,money=?,bindCash=?,cash=?,vipLevel=?,fight=?,skinId=?,pBagCount=?,mountId=?,magicWeaponId=?,skillStage=?,repair=?,battleMode=?,pkVal=?,changeBattleModeTime=? where playerId=?";
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.VARCHAR, playerInfo.getNickName()));
 		para.put(2, new DbParameter(Types.INTEGER, playerInfo.getLevel()));
 		para.put(3, new DbParameter(Types.BIGINT, playerInfo.getExp()));
 		para.put(4, new DbParameter(Types.BIGINT, playerInfo.getTotalExp()));
-		para.put(5, new DbParameter(Types.INTEGER, playerInfo.getMoney()));
+		para.put(5, new DbParameter(Types.BIGINT, playerInfo.getMoney()));
 		para.put(6, new DbParameter(Types.INTEGER, playerInfo.getBindCash()));
 		para.put(7, new DbParameter(Types.INTEGER, playerInfo.getCash()));
 		para.put(8, new DbParameter(Types.INTEGER, playerInfo.getVipLevel()));
@@ -70,7 +73,12 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		para.put(13, new DbParameter(Types.INTEGER, playerInfo.getMagicWeaponId()));
 		para.put(14, new DbParameter(Types.INTEGER, playerInfo.getSkillStage()));
 		para.put(15, new DbParameter(Types.BIGINT, playerInfo.getRepair()));
-		para.put(16, new DbParameter(Types.BIGINT, playerInfo.getPlayerId()));
+		
+		para.put(16, new DbParameter(Types.INTEGER, playerInfo.getBattleMode()));
+		para.put(17, new DbParameter(Types.INTEGER, playerInfo.getPkVal()));
+		para.put(18, new DbParameter(Types.BIGINT, playerInfo.getChangeBattleModeTime()));
+
+		para.put(19, new DbParameter(Types.BIGINT, playerInfo.getPlayerId()));
 		result = execNoneQuery(sql, para) > -1 ? true : false;
 		playerInfo.commitUpdate(result);
 		return result;
@@ -113,7 +121,7 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 					info.setLevel(rs.getInt("level"));
 					info.setExp(rs.getLong("exp"));
 					info.setTotalExp(rs.getLong("totalExp"));
-					info.setMoney(rs.getInt("money"));
+					info.setMoney(rs.getLong("money"));
 					info.setBindCash(rs.getInt("bindCash"));
 					info.setCash(rs.getInt("cash"));
 					info.setVipLevel(rs.getShort("vipLevel"));
@@ -124,6 +132,9 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 					info.setMagicWeaponId(rs.getInt("magicWeaponId"));
 					info.setSkillStage(rs.getInt("skillStage"));
 					info.setRepair(rs.getInt("repair"));
+					info.setBattleMode(rs.getInt("battleMode"));
+					info.setPkVal(rs.getInt("pkVal"));
+					info.setChangeBattleModeTime(rs.getLong("changeBattleModeTime"));
 					infos.add(info);
 				}
 			} catch (SQLException e) {

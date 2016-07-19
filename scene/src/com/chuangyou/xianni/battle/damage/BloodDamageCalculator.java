@@ -16,7 +16,7 @@ public class BloodDamageCalculator implements DamageCalculator {
 		ThreadSafeRandom random = new ThreadSafeRandom();
 		int damageValue = (int) ((Math.max(attack - defence * 1.2, 0) + attack * 0.025) * random.next(80, 120) / 100);
 		damageValue = damageValue * skillTemp.getParamParent1() / 100 + skillTemp.getParamValue1();
-		return damageValue;
+		return damageValue == 0 ? 1 : damageValue;
 	}
 
 }

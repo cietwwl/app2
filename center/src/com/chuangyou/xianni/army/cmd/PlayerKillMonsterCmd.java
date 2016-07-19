@@ -2,6 +2,8 @@ package com.chuangyou.xianni.army.cmd;
 
 import com.chuangyou.common.protobuf.pb.PlayerKillMonsterProto.PlayerKillMonsterMsg;
 import com.chuangyou.xianni.army.template.MonsterInfoTemplateMgr;
+import com.chuangyou.xianni.battleMode.manager.BattleModeManager;
+import com.chuangyou.xianni.constant.BattleModeCode;
 import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.event.ObjectEvent;
@@ -29,7 +31,14 @@ public class PlayerKillMonsterCmd implements Command {
 		if(player!=null){
 			player.notifyListeners(new ObjectEvent(this,monsterId, EventNameType.TASK_KILL_MONSTER));
 			if(monsterInfo!=null){
-				player.getBasePlayer().addExp(monsterInfo.getBeKilledExp());
+				int addExp = monsterInfo.getBeKilledExp();
+				int colour = BattleModeManager.getColour(player.getBasePlayer().getPlayerInfo().getPkVal());
+				if(colour == BattleModeCode.yellow)
+					addExp =(int) (addExp*0.8);
+				else if (colour == BattleModeCode.red) {
+					addExp =(int) (addExp*0.5);
+				}
+				player.getBasePlayer().addExp(addExp);
 			}
 		}
 		

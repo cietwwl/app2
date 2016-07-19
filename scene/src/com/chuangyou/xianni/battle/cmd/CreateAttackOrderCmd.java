@@ -11,10 +11,12 @@ import com.chuangyou.xianni.battle.OrderFactory;
 import com.chuangyou.xianni.battle.action.OrderExecAction;
 import com.chuangyou.xianni.battle.skill.Skill;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
+import com.chuangyou.xianni.constant.BattleModeCode;
 import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
+import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.socket.Cmd;
@@ -31,7 +33,6 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 	@Override
 	public void execute(ArmyProxy army, PBMessage packet) throws Exception {
 		AttackOrderMsg orderMsg = AttackOrderMsg.parseFrom(packet.toByteArray());
-		System.err.println("----------------------------------------------------");
 		int skillActionId = orderMsg.getSkillActionId();
 
 		// 该玩家是否具有此技能
@@ -52,18 +53,36 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 			Log.error("army field is empty ,armyId :" + army.getPlayerId() + " fieldId :" + army.getFieldId());
 			return;
 		}
-		int battleMode = player.getSimpleInfo().getBattleMode();
+
+		int battleMode = player.getBattleMode();
+		boolean isFlicker = false;// 是否闪烁名称
 		// 技能目标
 		List<Living> targets = new ArrayList<>();
-		List<Long> realTargets = new ArrayList<>();
 		for (long targetId : orderMsg.getTargetsList()) {
 			Living living = field.getLiving(targetId);
 			if (living != null) {
 				System.out.println("living.ID = " + living.getId());
+				if (living.getType() == RoleType.player) {
+					if (field.getFieldInfo().isBattle()) {// pk 地图才能攻击
+						if (((Player) living).getSimpleInfo().getLevel() < 35)
+							continue;
+						if (player.getTeamId() == ((Player) living).getTeamId())
+							continue;
+						// if (((Player) living).getColour(living.getPkVal()) == BattleModeCode.white) {// 受地图保护
+						// continue;
+						// }
+					} else {
+						continue;
+					}
+				}
 				targets.add(living);
-				realTargets.add(targetId);
+				if (battleMode == BattleModeCode.warBattleMode && living.getBattleMode() == BattleModeCode.peaceBattleMode && living.getType() == RoleType.player)
+					isFlicker = true;
 			}
 		}
+
+		if (isFlicker)
+			player.changeFlickerName(true);
 
 		long attackId = IDMakerHelper.attackId();
 		// 生成战斗指令
@@ -92,12 +111,7 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 		if (!Vector3.Equal(current, target) && player.checkStatus(LivingState.ATTACK_MOVE))
 			NotifyNearHelper.notifyHelper(field, army, target, new AllSelectorHelper(army.getPlayer()));
 		/////////
-		
-		
-		
-		
-		
-		
+
 	}
 
 }

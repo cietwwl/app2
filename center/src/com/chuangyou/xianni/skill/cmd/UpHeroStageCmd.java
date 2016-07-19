@@ -2,9 +2,8 @@ package com.chuangyou.xianni.skill.cmd;
 
 import com.chuangyou.common.protobuf.pb.skill.SkillTotalProResMsgProto.SkillTotalProResMsg;
 import com.chuangyou.common.protobuf.pb.skill.UpHeroStageReqMsgProto.UpHeroStageReqMsg;
-import com.chuangyou.common.protobuf.pb.skill.UpHeroStageResMsgProto.UpHeroStageResMsg;
 import com.chuangyou.xianni.base.AbstractCommand;
-import com.chuangyou.xianni.entity.property.SkillBaseProperty;
+import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -19,14 +18,18 @@ public class UpHeroStageCmd extends AbstractCommand {
 		UpHeroStageReqMsg msg = UpHeroStageReqMsg.parseFrom(packet.getBytes());
 		int stage = msg.getStage();
 		boolean res = SkillManager.UpSkillStage(player, stage, packet);
-		if (res) {
+		if (res && player.getSkillInventory() != null) {
 			// UpHeroStageResMsg.Builder okMsg = UpHeroStageResMsg.newBuilder();
 			// okMsg.setStage(stage);
-			// PBMessage p = MessageUtil.buildMessage(Protocol.U_HERO_UPHEROSTAGECMD, okMsg);
+			// PBMessage p =
+			// MessageUtil.buildMessage(Protocol.U_HERO_UPHEROSTAGECMD, okMsg);
 			// player.sendPbMessage(p);
-			SkillBaseProperty res1 = SkillManager.getTotalPro(player);
-			SkillTotalProResMsg.Builder okMsg = SkillManager.getSkillTotalProResMsg(player, res1);
-			PBMessage p = MessageUtil.buildMessage(Protocol.U_HERO_GETSKILLTOLPRO, okMsg);
+			BaseProperty skillData = new BaseProperty();
+			BaseProperty skillPer = new BaseProperty();
+			// 加入技能属性
+			player.getSkillInventory().getTotalPro(skillData, skillPer);
+			SkillTotalProResMsg.Builder proMsg = SkillManager.getSkillTotalProResMsg(player, skillData);
+			PBMessage p = MessageUtil.buildMessage(Protocol.U_HERO_GETSKILLTOLPRO, proMsg);
 			player.sendPbMessage(p);
 		}
 	}

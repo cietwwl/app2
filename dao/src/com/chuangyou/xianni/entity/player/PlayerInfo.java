@@ -28,7 +28,7 @@ public class PlayerInfo extends DataObject {
 	private long totalExp;
 
 	/** 金币(灵石) */
-	private int money;
+	private long money;
 
 	/** 绑定元宝(绑定仙玉) */
 	private int bindCash;
@@ -64,6 +64,16 @@ public class PlayerInfo extends DataObject {
 	/** 战斗模式更新时间  **/
 	private long changeBattleModeTime;
 	
+	/** 时装ID */
+	private int fashionId = 0;
+	
+	/** 武器ID */
+	private int weaponId = 0;
+	
+	/** 翅膀ID */
+	private int wingId = 0;
+
+
 	public long getPlayerId() {
 		return playerId;
 	}
@@ -112,11 +122,11 @@ public class PlayerInfo extends DataObject {
 		this.level = level;
 	}
 
-	public int getMoney() {
+	public long getMoney() {
 		return money;
 	}
 
-	public void setMoney(int money) {
+	public void setMoney(long money) {
 		this.money = money;
 	}
 
@@ -200,6 +210,7 @@ public class PlayerInfo extends DataObject {
 		this.repair = repair;
 	}
 
+
 	public int getBattleMode() {
 		return battleMode;
 	}
@@ -224,6 +235,32 @@ public class PlayerInfo extends DataObject {
 		this.changeBattleModeTime = changeBattleModeTime;
 	}
 
+
+	public int getFashionId() {
+		return fashionId;
+	}
+
+	public void setFashionId(int fashionId) {
+		this.fashionId = fashionId;
+	}
+
+	public int getWeaponId() {
+		return weaponId;
+	}
+
+	public void setWeaponId(int weaponId) {
+		this.weaponId = weaponId;
+	}
+
+	public int getWingId() {
+		return wingId;
+	}
+
+	public void setWingId(int wingId) {
+		this.wingId = wingId;
+	}
+
+
 	/**
 	 * 写玩家属性消息包
 	 * 
@@ -245,11 +282,10 @@ public class PlayerInfo extends DataObject {
 		proto.setSkinId(this.getSkinId());
 		proto.setMountId(this.getMountId());
 		proto.setMagicWeaponId(this.getMagicWeaponId());
-		proto.setRepair(this.repair);
-		proto.setFashionId(0);
-		proto.setWeaponId(2110001);
-		proto.setWingId(0);
+		proto.setRepair(this.getRepair());
+		proto.setFashionId(this.getFashionId());
+		proto.setWeaponId(this.getWeaponId());
+		proto.setWingId(this.getWingId());
 		proto.setPBagCount(bagInitCount + this.getpBagCount());
-		proto.setBattleMode(this.getBattleMode());
 	}
 }

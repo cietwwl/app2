@@ -1,27 +1,22 @@
 package com.chuangyou.xianni.army;
 
 import java.util.Random;
-
 import com.chuangyou.common.protobuf.pb.army.HeroInfoMsgProto.HeroInfoMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
 import com.chuangyou.xianni.entity.property.BaseProperty;
-import com.chuangyou.xianni.entity.property.SkillBaseProperty;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.interfaces.UnlineInventory;
-import com.chuangyou.xianni.magicwp.manager.MagicwpManager;
-import com.chuangyou.xianni.mount.manager.MountManager;
 import com.chuangyou.xianni.pet.manager.PetManager;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.manager.PlayerManager;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.skill.manager.SkillManager;
 
 public class ArmyInventory extends AbstractEvent implements UnlineInventory {
-	private GamePlayer player;
-	private Army army;
-	Random random = new Random();
+	private GamePlayer	player;
+	private Army		army;
+	Random				random	= new Random();
 
 	public ArmyInventory(GamePlayer player) {
 		this.player = player;
@@ -31,27 +26,47 @@ public class ArmyInventory extends AbstractEvent implements UnlineInventory {
 		BaseProperty tempData = PlayerManager.getTempProperty(player);
 		Hero hero = army.getHero();
 		hero.addTemp(tempData);
-		// 加入背包属性
-		BaseProperty bagData = new BaseProperty();
-		BaseProperty bagPer = new BaseProperty();
 		if (player.getBagInventory() != null) {
+			// 加入背包属性
+			BaseProperty bagData = new BaseProperty();
+			BaseProperty bagPer = new BaseProperty();
 			player.getBagInventory().getHeroEquipmentBag().getBagJoin(bagData, bagPer);
+			hero.addBag(bagData, bagPer);
 		}
-		hero.addBag(bagData, bagPer);
 
-		// 加入技能属性
-		SkillBaseProperty skillBaseProperty = SkillManager.getTotalPro(player);
-		hero.addSkillPro(skillBaseProperty);
+		if (player.getSkillInventory() != null) {
+			BaseProperty skillData = new BaseProperty();
+			BaseProperty skillPer = new BaseProperty();
+			// 加入技能属性
+			player.getSkillInventory().getTotalPro(skillData, skillPer);
+			hero.addSkillPro(skillData, skillPer);
 
-		// 坐骑属性
-		hero.addMount(MountManager.computeMountAtt(player));
+		}
 
-		// 法宝属性
-		hero.addMagicwp(MagicwpManager.computeMagicwpAtt(player));
+		if (player.getMountInventory() != null) {
+			BaseProperty mountData = new BaseProperty();
+			BaseProperty mountPer = new BaseProperty();
+			// 加入坐骑属性
+			player.getMountInventory().computeMountAtt(mountData, mountPer);
+			// 坐骑属性
+			hero.addMount(mountData, mountPer);
+		}
 
-		// 宠物属性
-		hero.addPet(PetManager.computePetAtt(player));
+		if (player.getMagicwpInventory() != null) {
+			BaseProperty magicwpData = new BaseProperty();
+			BaseProperty magicwpPer = new BaseProperty();
+			// 加入法宝属性
+			player.getMagicwpInventory().computeMagicwpAtt(magicwpData, magicwpPer);
+			hero.addMagicwp(magicwpData, magicwpPer);
+		}
 
+		if (player.getPetInventory() != null) {
+			BaseProperty petData = new BaseProperty();
+			BaseProperty petPer = new BaseProperty();
+			// 加入宠物属性
+			player.getPetInventory().computePetAtt(petData, petPer);
+			hero.addPet(petData, petPer);
+		}
 		// updataHeroInfo();
 	}
 
@@ -93,6 +108,10 @@ public class ArmyInventory extends AbstractEvent implements UnlineInventory {
 
 	public Army getArmy() {
 		return army;
+	}
+
+	public Hero getHero() {
+		return army.getHero();
 	}
 
 	public void setArmy(Army army) {

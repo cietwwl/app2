@@ -3,7 +3,7 @@ package com.chuangyou.xianni.battleMode.cmd;
 import com.chuangyou.common.protobuf.pb.battle.ReqBattleModeMsgProto.ReqBattleModeMsg;
 import com.chuangyou.common.protobuf.pb.battle.ResBattleModeMsgProto.ResBattleModeMsg;
 import com.chuangyou.xianni.base.AbstractCommand;
-import com.chuangyou.xianni.battleMode.manager.battleModeManager;
+import com.chuangyou.xianni.battleMode.manager.BattleModeManager;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -18,7 +18,7 @@ public class ChangeBattleModeCmd extends AbstractCommand {
 		ReqBattleModeMsg req = ReqBattleModeMsg.parseFrom(packet.getBytes());
 		int battleMode = req.getBattleMode();
 
-		boolean result = battleModeManager.changeBattleMode(player, battleMode, packet.getCode());
+		boolean result = BattleModeManager.changeBattleMode(player, battleMode, packet.getCode());
 		if (result) {
 			ResBattleModeMsg.Builder res = ResBattleModeMsg.newBuilder();
 			res.setBattleMode(player.getBasePlayer().getPlayerInfo().getBattleMode());

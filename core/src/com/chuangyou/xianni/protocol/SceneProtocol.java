@@ -77,4 +77,7 @@ public interface SceneProtocol {
 	/** 变更战斗模式 */
 	public static final short	S_BATTLE_MODE   			= 20601;
 	
+	/** 聊天消息内部通讯，通知场景服发给所在场景所有玩家 */
+	public static final short	S_CHAT_INNER_SEND			= 20510;
+	
 }

@@ -284,7 +284,13 @@ public interface ClientProtocol {
 	/** 删除掉落物品 */
 	public static final short U_DROP_ITEM_REMOVE = 147;
 
-	public static final short U_PLAYER_MOUNT_STATE_RESP = 148;	// 同步坐骑状态
+	/** 同步坐骑状态 */
+	public static final short U_PLAYER_MOUNT_STATE_RESP = 148;
+	
+	/** 接收聊天消息 */
+	public static final short U_CHAT_RECEIVE = 149;
+	/** 发送给客户端聊天记录 */
+	public static final short U_CHAT_HISTORY_RESP = 150;
 
 	/** 获取时装信息 */
 	public static short U_FASHION_GET = 201;

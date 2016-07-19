@@ -10,24 +10,24 @@ import com.chuangyou.xianni.constant.EnumAttr;
  * 玩家信息
  */
 public class SimplePlayerInfo {
-	private long	playerId;		// 角色ID
-	private long	userId;			// 用户ID
-	private String	nickName;		// 用户昵称
-	private int		level;			// 等级
-	private long	exp;			// 当前经验
-	private long	toalExp;		// 总经验g
-	private int		money;			// 金币
-	private int		bindCash;		// 绑定仙玉
-	private int		vipLevel;		// VIP等级
-	private int		fight;			// 战斗力
-	private int		skinId;			// 皮肤
-	private int		fashionId;		// 时装ID
-	private int		weaponId;		// 武器ID
-	private int		mountId;		// 坐骑ID
-	private int		magicWeaponId;	// 法宝ID
-	private int		wingId;			// 翅膀ID
-	private int     battleMode;	    // 战斗模式
-//	private int     pkVal;			// pk值
+	private long playerId;		// 角色ID
+	private long userId;			// 用户ID
+	private String nickName;		// 用户昵称
+	private int level;			// 等级
+	private long exp;			// 当前经验
+	private long toalExp;		// 总经验g
+	private long money;			// 金币
+	private int bindCash;		// 绑定仙玉
+	private int vipLevel;		// VIP等级
+	private int fight;			// 战斗力
+	private int skinId;			// 皮肤
+	private int fashionId;		// 时装ID
+	private int weaponId;		// 武器ID
+	private int mountId;		// 坐骑ID
+	private int magicWeaponId;	// 法宝ID
+	private int wingId;			// 翅膀ID
+	// private int battleMode; // 战斗模式
+	// private int pkVal; // pk值
 
 	public void writeProto(PlayerInfoMsg.Builder proto) {
 		proto.setPlayerId(this.getPlayerId());
@@ -46,7 +46,6 @@ public class SimplePlayerInfo {
 		proto.setMountId(this.getMountId());
 		proto.setMagicWeaponId(this.getMagicWeaponId());
 		proto.setWingId(this.getWingId());
-		proto.setBattleMode(this.battleMode);
 	}
 
 	public void readProto(PlayerInfoMsg proto) {
@@ -66,7 +65,6 @@ public class SimplePlayerInfo {
 		this.setMountId(proto.getMountId());
 		this.setMagicWeaponId(proto.getMagicWeaponId());
 		this.setWingId(proto.getWingId());
-		this.setBattleMode(proto.getBattleMode());
 	}
 
 	public long getPlayerId() {
@@ -117,11 +115,11 @@ public class SimplePlayerInfo {
 		this.toalExp = toalExp;
 	}
 
-	public int getMoney() {
+	public long getMoney() {
 		return money;
 	}
 
-	public void setMoney(int money) {
+	public void setMoney(long money) {
 		this.money = money;
 	}
 
@@ -196,32 +194,25 @@ public class SimplePlayerInfo {
 	public void setWingId(int wingId) {
 		this.wingId = wingId;
 	}
-	
-	public int getBattleMode() {
-		return battleMode;
-	}
 
-	public void setBattleMode(int battleMode) {
-		this.battleMode = battleMode;
-	}
 
-	public void readProperty(List<PropertyMsg> properties){
-		for(PropertyMsg p:properties){
+	public void readProperty(List<PropertyMsg> properties) {
+		for (PropertyMsg p : properties) {
 			EnumAttr attr = EnumAttr.getEnumAttrByValue(p.getType());
 			setProperty(attr, p.getTotalPoint());
 		}
 	}
-	
-	public void setProperty(EnumAttr attr, long value){
-		if(value < 0){
+
+	public void setProperty(EnumAttr attr, long value) {
+		if (value < 0) {
 			value = 0;
 		}
-		switch(attr){
+		switch (attr) {
 		case Mount:
-			this.setMountId((int)value);
+			this.setMountId((int) value);
 			break;
 		case FaBao:
-			this.setMagicWeaponId((int)value);
+			this.setMagicWeaponId((int) value);
 			break;
 		case Level:
 			this.setLevel((int) value);

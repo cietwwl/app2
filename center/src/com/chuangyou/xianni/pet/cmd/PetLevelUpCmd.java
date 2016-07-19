@@ -68,8 +68,7 @@ public class PetLevelUpCmd extends AbstractCommand {
 			//宠物总属性改变
 //			PetManager.changePetAtt(roleId);
 			//影响人物属性改变
-			player.getArmyInventory().getArmy().getHero().addPet(PetManager.computePetAtt(player));
-			player.getArmyInventory().updateProperty();
+			player.getPetInventory().updataProperty();
 		}
 	}
 

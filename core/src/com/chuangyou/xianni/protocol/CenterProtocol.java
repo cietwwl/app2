@@ -15,6 +15,7 @@ public interface CenterProtocol {
 	public static final short	C_PLAYER_CREATE					= 10006;	// 创建角色
 	public static final short	C_PLAYER_RELOAD_SCENCE_DATA		= 10007;	// 回写scene服务器数据
 	public static final short	C_PLAYER_KILL_MONSTER			= 10008;	// 收到scene服杀怪通知
+	public static final short	C_PLAYER_UPDATA_PRO				= 10009;	// 收到scene服属性修改
 	// ===========================>邮件<==============================
 	/** 获取邮件数量 */
 	public static final short	C_REQ_GETEMAILS_NUM				= 10505;
@@ -267,6 +268,11 @@ public interface CenterProtocol {
 
 	/** 掉落物拾取 */
 	public static short			C_DROP_PICKUP					= 10146;
+	
+	/** 聊天发送消息 */
+	public static short			C_CHAT_SEND						= 10147;
+	/** 获取聊天记录 */
+	public static short			C_CHAT_HISTORY_REQ				= 10148;
 
 	// =========================>时装<===================================
 	/** 获取时装信息 */

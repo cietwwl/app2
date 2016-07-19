@@ -13,7 +13,7 @@ import com.chuangyou.xianni.protocol.Protocol;
  * 战斗模式
  *
  */
-public class battleModeManager {
+public class BattleModeManager {
 
 //	private static final int peaceBattleMode = 1;// 和平模式
 //	private static final int warBattleMode = 2;// 战争模式
@@ -70,7 +70,7 @@ public class battleModeManager {
 	 * @param val
 	 * @return
 	 */
-	private static int getColour(int val) {
+	public static int getColour(int val) {
 		if (val >= 1000) {
 			return BattleModeCode.red;
 		} else if (val > 0) {

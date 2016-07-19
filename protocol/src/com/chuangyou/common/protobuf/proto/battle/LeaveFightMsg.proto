@@ -5,6 +5,7 @@ option java_outer_classname = "LeaveFightMsgProto";
 // 脱离战斗状态
 
 message LeaveFightMsg {
-	optional bool isNameFlicker=1; //是否闪烁
+	optional int32 playerId=1; 		//被攻击的玩家id
+	optional bool isNameFlicker=2;  //名称是否闪烁
 }
 

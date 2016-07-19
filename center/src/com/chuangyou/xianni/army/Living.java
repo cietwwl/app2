@@ -1,7 +1,5 @@
 package com.chuangyou.xianni.army;
 
-import java.util.Map;
-
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
@@ -10,7 +8,6 @@ import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.player.PlayerJoinInfo;
 import com.chuangyou.xianni.entity.property.BaseProperty;
-import com.chuangyou.xianni.entity.property.SkillBaseProperty;
 import com.chuangyou.xianni.player.GamePlayer;
 
 /**
@@ -19,35 +16,35 @@ import com.chuangyou.xianni.player.GamePlayer;
 public abstract class Living {
 
 	/** 客户端对应属性ID = 服务器属性ID+1 **/
-	public static final int SOUL = 0; // 元魂
-	public static final int BLOOD = 1; // 气血
-	public static final int ATTACK = 2; // 攻击
-	public static final int DEFENCE = 3; // 防御
-	public static final int SOUL_ATTACK = 4; // 魂攻
-	public static final int SOUL_DEFENCE = 5; // 魂防
-	public static final int ACCURATE = 6; // 命中
-	public static final int DODGE = 7; // 闪避
-	public static final int CRIT = 8; // 暴击
-	public static final int CRIT_DEFENCE = 9; // 抗暴
-	public static final int CRIT_ADDTION = 10; // 暴击伤害
-	public static final int CRIT_CUT = 11; // 抗暴减伤
-	public static final int BLOOD_ATTACK_ADDTION = 12; // 气血伤害增加
-	public static final int BLOOD_ATTACK_CUT = 13; // 气血伤害减免
-	public static final int SOUL_ATTACK_ADDTION = 14; // 元魂伤害增加
-	public static final int SOUL_ATTACK_CUT = 15; // 元魂伤害减免
-	public static final int REGAIN_SOUL = 16; // 每10秒回魂
-	public static final int REGAIN_BLOOD = 17; // 每10秒回血
-	public static final int METAL = 18; // 金
-	public static final int WOOD = 19; // 木
-	public static final int WATER = 20; // 水
-	public static final int FIRE = 21; // 火
-	public static final int EARTH = 22; // 土
-	public static final int METAL_DEFENCE = 23; // 金抗
-	public static final int WOOD_DEFENCE = 24; // 木抗
-	public static final int WATER_DEFENCE = 25; // 水抗
-	public static final int FIRE_DEFENCE = 26; // 火抗
-	public static final int EARTH_DEFENCE = 27; // 土抗
-	public static final int SPEED = 28; // 移动速度
+	public static final int	SOUL					= 0;	// 元魂
+	public static final int	BLOOD					= 1;	// 气血
+	public static final int	ATTACK					= 2;	// 攻击
+	public static final int	DEFENCE					= 3;	// 防御
+	public static final int	SOUL_ATTACK				= 4;	// 魂攻
+	public static final int	SOUL_DEFENCE			= 5;	// 魂防
+	public static final int	ACCURATE				= 6;	// 命中
+	public static final int	DODGE					= 7;	// 闪避
+	public static final int	CRIT					= 8;	// 暴击
+	public static final int	CRIT_DEFENCE			= 9;	// 抗暴
+	public static final int	CRIT_ADDTION			= 10;	// 暴击伤害
+	public static final int	CRIT_CUT				= 11;	// 抗暴减伤
+	public static final int	BLOOD_ATTACK_ADDTION	= 12;	// 气血伤害增加
+	public static final int	BLOOD_ATTACK_CUT		= 13;	// 气血伤害减免
+	public static final int	SOUL_ATTACK_ADDTION		= 14;	// 元魂伤害增加
+	public static final int	SOUL_ATTACK_CUT			= 15;	// 元魂伤害减免
+	public static final int	REGAIN_SOUL				= 16;	// 每10秒回魂
+	public static final int	REGAIN_BLOOD			= 17;	// 每10秒回血
+	public static final int	METAL					= 18;	// 金
+	public static final int	WOOD					= 19;	// 木
+	public static final int	WATER					= 20;	// 水
+	public static final int	FIRE					= 21;	// 火
+	public static final int	EARTH					= 22;	// 土
+	public static final int	METAL_DEFENCE			= 23;	// 金抗
+	public static final int	WOOD_DEFENCE			= 24;	// 木抗
+	public static final int	WATER_DEFENCE			= 25;	// 水抗
+	public static final int	FIRE_DEFENCE			= 26;	// 火抗
+	public static final int	EARTH_DEFENCE			= 27;	// 土抗
+	public static final int	SPEED					= 28;	// 移动速度
 
 	// public static final int//当前元魂
 	// public static final int //当前气血
@@ -55,7 +52,7 @@ public abstract class Living {
 	// public static final int //最大元魂
 	// public static final int //最大气血
 
-	protected Property[] properties;
+	protected Property[]	properties;
 
 	public Living() {
 		properties = new Property[29];
@@ -109,6 +106,11 @@ public abstract class Living {
 	}
 
 	public Property getProperty(int property) {
+		return properties[property];
+	}
+
+	public Property getProperty(EnumAttr attr) {
+		int property = attr.getValue() - 1;
 		return properties[property];
 	}
 
@@ -187,7 +189,7 @@ public abstract class Living {
 		properties[SOUL_ATTACK].setTempData(tempData.getSoulAttack());
 		properties[SOUL_DEFENCE].setTempData(tempData.getSoulDefence());
 		properties[SPEED].setTempData(tempData.getSpeed());
- 
+
 		// // 添加背包百分比加成
 		// properties[SOUL].setTempPer(tempPer.getSoul());
 		// properties[BLOOD].setTempPer(tempPer.getBlood());
@@ -218,7 +220,7 @@ public abstract class Living {
 		// properties[FIRE_DEFENCE].setTempPer(tempPer.getFireDefence());
 		// properties[EARTH_DEFENCE].setTempPer(tempPer.getEarthDefence());
 		// properties[SPEED].setTempPer(tempPer.getSpeed());
- 
+
 	}
 
 	/**
@@ -227,113 +229,276 @@ public abstract class Living {
 	 * @param tempData
 	 * @param tempPer
 	 */
-	public void addSkillPro(SkillBaseProperty tempData) {
+	public void addSkillPro(BaseProperty skillData, BaseProperty skillPer) {
 		// 添加技能属性
-		properties[SOUL].setSkillData(tempData.getSoul());
-		properties[BLOOD].setSkillData(tempData.getBlood());
-		properties[ATTACK].setSkillData(tempData.getAttack());
-		properties[DEFENCE].setSkillData(tempData.getDefence());
-		properties[SOUL_ATTACK].setSkillData(tempData.getSoulAttack());
-		properties[SOUL_DEFENCE].setSkillData(tempData.getSoulDefence());
-		properties[ACCURATE].setSkillData(tempData.getAccurate());
-		properties[DODGE].setSkillData(tempData.getDodge());
-		properties[CRIT].setSkillData(tempData.getCrit());
-		properties[CRIT_DEFENCE].setSkillData(tempData.getCritDefence());
-		
-		
-//		properties[SOUL].setBagData(bagData.getSoul());
-//		properties[BLOOD].setBagData(bagData.getBlood());
-//		properties[ATTACK].setBagData(bagData.getAttack());
-//		properties[DEFENCE].setBagData(bagData.getDefence());
-//		properties[SOUL_ATTACK].setBagData(bagData.getSoulAttack());
-//		properties[SOUL_DEFENCE].setBagData(bagData.getSoulDefence());
-//		properties[ACCURATE].setBagData(bagData.getAccurate());
-//		properties[DODGE].setBagData(bagData.getDodge());
-//		properties[CRIT].setBagData(bagData.getCrit());
-//		properties[CRIT_DEFENCE].setBagData(bagData.getCritDefence());
-		properties[CRIT_ADDTION].setSkillData(tempData.getCritAddtion());
-		properties[CRIT_CUT].setSkillData(tempData.getCritCut());
-		properties[BLOOD_ATTACK_ADDTION].setSkillData(tempData.getBloodAttackAddtion());
-		properties[BLOOD_ATTACK_CUT].setSkillData(tempData.getBloodAttackCut());
-		properties[SOUL_ATTACK_ADDTION].setSkillData(tempData.getSoulAttackAddtion());
-		properties[SOUL_ATTACK_CUT].setSkillData(tempData.getBloodAttackCut());
-		properties[REGAIN_SOUL].setSkillData(tempData.getRegainSoul());
-		properties[REGAIN_BLOOD].setSkillData(tempData.getRegainBlood());
-		properties[METAL].setSkillData(tempData.getMetal());
-		properties[WOOD].setSkillData(tempData.getWood());
-		properties[WATER].setSkillData(tempData.getWater());
-		properties[FIRE].setSkillData(tempData.getFire());
-		properties[EARTH].setSkillData(tempData.getEarth());
-		properties[METAL_DEFENCE].setSkillData(tempData.getMetalDefence());
-		properties[WOOD_DEFENCE].setSkillData(tempData.getWoodDefence());
-		properties[WATER_DEFENCE].setSkillData(tempData.getWaterDefence());
-		properties[FIRE_DEFENCE].setSkillData(tempData.getFireDefence());
-		properties[EARTH_DEFENCE].setSkillData(tempData.getEarthDefence());
-//		properties[SPEED].setSkillData(tempData.getSpeed());
-		// 添加背包百分比加成
-		// properties[SOUL].setTempPer(tempPer.getSoul());
-		// properties[BLOOD].setTempPer(tempPer.getBlood());
-		// properties[ATTACK].setTempPer(tempPer.getAttack());
-		// properties[DEFENCE].setTempPer(tempPer.getDefence());
-		// properties[SOUL_ATTACK].setTempPer(tempPer.getSoulAttack());
-		// properties[SOUL_DEFENCE].setTempPer(tempPer.getSoulDefence());
-		// properties[ACCURATE].setTempPer(tempPer.getAccurate());
-		// properties[DODGE].setTempPer(tempPer.getDodge());
-		// properties[CRIT].setTempPer(tempPer.getCrit());
-		// properties[CRIT_DEFENCE].setTempPer(tempPer.getCritDefence());
-	}
-	/**
-	 * 添加坐骑属性
-	 * @param mountData
-	 */
-	public void addMount(Map<Integer, Integer> propertyMap){
-		for(int type: propertyMap.keySet()){
-			if(type <= 0) continue;
-			if(type == EnumAttr.SPEED.getValue()) continue;
-			
-			int value = propertyMap.get(type);
-			
-			if(type > 0 && type <= properties.length){
-				properties[type - 1].setMountData(value);
-			}
-		}
-	}
-	
-	/**
-	 * 添加法宝属性
-	 * @param magicwpData
-	 */
-	public void addMagicwp(Map<Integer, Integer> propertyMap){
-		for(int type: propertyMap.keySet()){
-			if(type <= 0) continue;
-			int value = propertyMap.get(type);
-			
-			if(type > 0 && type <= properties.length){
-				properties[type - 1].setMagicwpData(value);
-			}
-		}
-	}
-	
-	/**
-	 * 添加宠物属性
-	 * @param petData
-	 */
-	public void addPet(Map<Integer, Integer> propertyMap){
-		for(int type: propertyMap.keySet()){
-			if(type <= 0) continue;
-			int value = propertyMap.get(type);
-			
-			if(type > 0 && type <= properties.length){
-				properties[type - 1].setPetData(value);
-			}
-		}
+		properties[SOUL].setSkillData(skillData.getSoul());
+		properties[BLOOD].setSkillData(skillData.getBlood());
+		properties[ATTACK].setSkillData(skillData.getAttack());
+		properties[DEFENCE].setSkillData(skillData.getDefence());
+		properties[SOUL_ATTACK].setSkillData(skillData.getSoulAttack());
+		properties[SOUL_DEFENCE].setSkillData(skillData.getSoulDefence());
+		properties[ACCURATE].setSkillData(skillData.getAccurate());
+		properties[DODGE].setSkillData(skillData.getDodge());
+		properties[CRIT].setSkillData(skillData.getCrit());
+		properties[CRIT_DEFENCE].setSkillData(skillData.getCritDefence());
+		properties[CRIT_ADDTION].setSkillData(skillData.getCritAddtion());
+		properties[CRIT_CUT].setSkillData(skillData.getCritCut());
+		properties[BLOOD_ATTACK_ADDTION].setSkillData(skillData.getBloodAttackAddtion());
+		properties[BLOOD_ATTACK_CUT].setSkillData(skillData.getBloodAttackCut());
+		properties[SOUL_ATTACK_ADDTION].setSkillData(skillData.getSoulAttackAddtion());
+		properties[SOUL_ATTACK_CUT].setSkillData(skillData.getBloodAttackCut());
+		properties[REGAIN_SOUL].setSkillData(skillData.getRegainSoul());
+		properties[REGAIN_BLOOD].setSkillData(skillData.getRegainBlood());
+		properties[METAL].setSkillData(skillData.getMetal());
+		properties[WOOD].setSkillData(skillData.getWood());
+		properties[WATER].setSkillData(skillData.getWater());
+		properties[FIRE].setSkillData(skillData.getFire());
+		properties[EARTH].setSkillData(skillData.getEarth());
+		properties[METAL_DEFENCE].setSkillData(skillData.getMetalDefence());
+		properties[WOOD_DEFENCE].setSkillData(skillData.getWoodDefence());
+		properties[WATER_DEFENCE].setSkillData(skillData.getWaterDefence());
+		properties[FIRE_DEFENCE].setSkillData(skillData.getFireDefence());
+		properties[EARTH_DEFENCE].setSkillData(skillData.getEarthDefence());
+
+		// 技能百分比加成
+		properties[SOUL].setSkillPer(skillPer.getSoul());
+		properties[BLOOD].setSkillPer(skillPer.getBlood());
+		properties[ATTACK].setSkillPer(skillPer.getAttack());
+		properties[DEFENCE].setSkillPer(skillPer.getDefence());
+		properties[SOUL_ATTACK].setSkillPer(skillPer.getSoulAttack());
+		properties[SOUL_DEFENCE].setSkillPer(skillPer.getSoulDefence());
+		properties[ACCURATE].setSkillPer(skillPer.getAccurate());
+		properties[DODGE].setSkillPer(skillPer.getDodge());
+		properties[CRIT].setSkillPer(skillPer.getCrit());
+		properties[CRIT_DEFENCE].setSkillPer(skillPer.getCritDefence());
+		properties[CRIT_ADDTION].setSkillPer(skillPer.getCritAddtion());
+		properties[CRIT_CUT].setSkillPer(skillPer.getCritCut());
+		properties[BLOOD_ATTACK_ADDTION].setSkillPer(skillPer.getBloodAttackAddtion());
+		properties[BLOOD_ATTACK_CUT].setSkillPer(skillPer.getBloodAttackCut());
+		properties[SOUL_ATTACK_ADDTION].setSkillPer(skillPer.getSoulAttackAddtion());
+		properties[SOUL_ATTACK_CUT].setSkillPer(skillPer.getBloodAttackCut());
+		properties[REGAIN_SOUL].setSkillPer(skillPer.getRegainSoul());
+		properties[REGAIN_BLOOD].setSkillPer(skillPer.getRegainBlood());
+		properties[METAL].setSkillPer(skillPer.getMetal());
+		properties[WOOD].setSkillPer(skillPer.getWood());
+		properties[WATER].setSkillPer(skillPer.getWater());
+		properties[FIRE].setSkillPer(skillPer.getFire());
+		properties[EARTH].setSkillPer(skillPer.getEarth());
+		properties[METAL_DEFENCE].setSkillPer(skillPer.getMetalDefence());
+		properties[WOOD_DEFENCE].setSkillPer(skillPer.getWoodDefence());
+		properties[WATER_DEFENCE].setSkillPer(skillPer.getWaterDefence());
+		properties[FIRE_DEFENCE].setSkillPer(skillPer.getFireDefence());
+		properties[EARTH_DEFENCE].setSkillPer(skillPer.getEarthDefence());
+		properties[SPEED].setSkillPer(skillPer.getSpeed());
 	}
 
+	/**
+	 * 添加坐骑属性
+	 * 
+	 * @param mountData
+	 */
+	public void addMount(BaseProperty mountData, BaseProperty mountPer) {
+		// 添加坐骑属性
+		properties[SOUL].setMountData(mountData.getSoul());
+		properties[BLOOD].setMountData(mountData.getBlood());
+		properties[ATTACK].setMountData(mountData.getAttack());
+		properties[DEFENCE].setMountData(mountData.getDefence());
+		properties[SOUL_ATTACK].setMountData(mountData.getSoulAttack());
+		properties[SOUL_DEFENCE].setMountData(mountData.getSoulDefence());
+		properties[ACCURATE].setMountData(mountData.getAccurate());
+		properties[DODGE].setMountData(mountData.getDodge());
+		properties[CRIT].setMountData(mountData.getCrit());
+		properties[CRIT_DEFENCE].setMountData(mountData.getCritDefence());
+		properties[CRIT_ADDTION].setMountData(mountData.getCritAddtion());
+		properties[CRIT_CUT].setMountData(mountData.getCritCut());
+		properties[BLOOD_ATTACK_ADDTION].setMountData(mountData.getBloodAttackAddtion());
+		properties[BLOOD_ATTACK_CUT].setMountData(mountData.getBloodAttackCut());
+		properties[SOUL_ATTACK_ADDTION].setMountData(mountData.getSoulAttackAddtion());
+		properties[SOUL_ATTACK_CUT].setMountData(mountData.getBloodAttackCut());
+		properties[REGAIN_SOUL].setMountData(mountData.getRegainSoul());
+		properties[REGAIN_BLOOD].setMountData(mountData.getRegainBlood());
+		properties[METAL].setMountData(mountData.getMetal());
+		properties[WOOD].setMountData(mountData.getWood());
+		properties[WATER].setMountData(mountData.getWater());
+		properties[FIRE].setMountData(mountData.getFire());
+		properties[EARTH].setMountData(mountData.getEarth());
+		properties[METAL_DEFENCE].setMountData(mountData.getMetalDefence());
+		properties[WOOD_DEFENCE].setMountData(mountData.getWoodDefence());
+		properties[WATER_DEFENCE].setMountData(mountData.getWaterDefence());
+		properties[FIRE_DEFENCE].setMountData(mountData.getFireDefence());
+		properties[EARTH_DEFENCE].setMountData(mountData.getEarthDefence());
+
+		// 坐骑百分比加成
+		properties[SOUL].setMountPer(mountPer.getSoul());
+		properties[BLOOD].setMountPer(mountPer.getBlood());
+		properties[ATTACK].setMountPer(mountPer.getAttack());
+		properties[DEFENCE].setMountPer(mountPer.getDefence());
+		properties[SOUL_ATTACK].setMountPer(mountPer.getSoulAttack());
+		properties[SOUL_DEFENCE].setMountPer(mountPer.getSoulDefence());
+		properties[ACCURATE].setMountPer(mountPer.getAccurate());
+		properties[DODGE].setMountPer(mountPer.getDodge());
+		properties[CRIT].setMountPer(mountPer.getCrit());
+		properties[CRIT_DEFENCE].setMountPer(mountPer.getCritDefence());
+		properties[CRIT_ADDTION].setMountPer(mountPer.getCritAddtion());
+		properties[CRIT_CUT].setMountPer(mountPer.getCritCut());
+		properties[BLOOD_ATTACK_ADDTION].setMountPer(mountPer.getBloodAttackAddtion());
+		properties[BLOOD_ATTACK_CUT].setMountPer(mountPer.getBloodAttackCut());
+		properties[SOUL_ATTACK_ADDTION].setMountPer(mountPer.getSoulAttackAddtion());
+		properties[SOUL_ATTACK_CUT].setMountPer(mountPer.getBloodAttackCut());
+		properties[REGAIN_SOUL].setMountPer(mountPer.getRegainSoul());
+		properties[REGAIN_BLOOD].setMountPer(mountPer.getRegainBlood());
+		properties[METAL].setMountPer(mountPer.getMetal());
+		properties[WOOD].setMountPer(mountPer.getWood());
+		properties[WATER].setMountPer(mountPer.getWater());
+		properties[FIRE].setMountPer(mountPer.getFire());
+		properties[EARTH].setMountPer(mountPer.getEarth());
+		properties[METAL_DEFENCE].setMountPer(mountPer.getMetalDefence());
+		properties[WOOD_DEFENCE].setMountPer(mountPer.getWoodDefence());
+		properties[WATER_DEFENCE].setMountPer(mountPer.getWaterDefence());
+		properties[FIRE_DEFENCE].setMountPer(mountPer.getFireDefence());
+		properties[EARTH_DEFENCE].setMountPer(mountPer.getEarthDefence());
+		properties[SPEED].setMountPer(mountPer.getSpeed());
+	}
+
+	/**
+	 * 添加法宝属性
+	 * 
+	 * @param magicwpData
+	 */
+	public void addMagicwp(BaseProperty magicwpData, BaseProperty magicwpPer) {
+		// 添加法宝属性
+		properties[SOUL].setMagicwpData(magicwpData.getSoul());
+		properties[BLOOD].setMagicwpData(magicwpData.getBlood());
+		properties[ATTACK].setMagicwpData(magicwpData.getAttack());
+		properties[DEFENCE].setMagicwpData(magicwpData.getDefence());
+		properties[SOUL_ATTACK].setMagicwpData(magicwpData.getSoulAttack());
+		properties[SOUL_DEFENCE].setMagicwpData(magicwpData.getSoulDefence());
+		properties[ACCURATE].setMagicwpData(magicwpData.getAccurate());
+		properties[DODGE].setMagicwpData(magicwpData.getDodge());
+		properties[CRIT].setMagicwpData(magicwpData.getCrit());
+		properties[CRIT_DEFENCE].setMagicwpData(magicwpData.getCritDefence());
+		properties[CRIT_ADDTION].setMagicwpData(magicwpData.getCritAddtion());
+		properties[CRIT_CUT].setMagicwpData(magicwpData.getCritCut());
+		properties[BLOOD_ATTACK_ADDTION].setMagicwpData(magicwpData.getBloodAttackAddtion());
+		properties[BLOOD_ATTACK_CUT].setMagicwpData(magicwpData.getBloodAttackCut());
+		properties[SOUL_ATTACK_ADDTION].setMagicwpData(magicwpData.getSoulAttackAddtion());
+		properties[SOUL_ATTACK_CUT].setMagicwpData(magicwpData.getBloodAttackCut());
+		properties[REGAIN_SOUL].setMagicwpData(magicwpData.getRegainSoul());
+		properties[REGAIN_BLOOD].setMagicwpData(magicwpData.getRegainBlood());
+		properties[METAL].setMagicwpData(magicwpData.getMetal());
+		properties[WOOD].setMagicwpData(magicwpData.getWood());
+		properties[WATER].setMagicwpData(magicwpData.getWater());
+		properties[FIRE].setMagicwpData(magicwpData.getFire());
+		properties[EARTH].setMagicwpData(magicwpData.getEarth());
+		properties[METAL_DEFENCE].setMagicwpData(magicwpData.getMetalDefence());
+		properties[WOOD_DEFENCE].setMagicwpData(magicwpData.getWoodDefence());
+		properties[WATER_DEFENCE].setMagicwpData(magicwpData.getWaterDefence());
+		properties[FIRE_DEFENCE].setMagicwpData(magicwpData.getFireDefence());
+		properties[EARTH_DEFENCE].setMagicwpData(magicwpData.getEarthDefence());
+
+		// 法宝百分比加成
+		properties[SOUL].setMagicwpPer(magicwpPer.getSoul());
+		properties[BLOOD].setMagicwpPer(magicwpPer.getBlood());
+		properties[ATTACK].setMagicwpPer(magicwpPer.getAttack());
+		properties[DEFENCE].setMagicwpPer(magicwpPer.getDefence());
+		properties[SOUL_ATTACK].setMagicwpPer(magicwpPer.getSoulAttack());
+		properties[SOUL_DEFENCE].setMagicwpPer(magicwpPer.getSoulDefence());
+		properties[ACCURATE].setMagicwpPer(magicwpPer.getAccurate());
+		properties[DODGE].setMagicwpPer(magicwpPer.getDodge());
+		properties[CRIT].setMagicwpPer(magicwpPer.getCrit());
+		properties[CRIT_DEFENCE].setMagicwpPer(magicwpPer.getCritDefence());
+		properties[CRIT_ADDTION].setMagicwpPer(magicwpPer.getCritAddtion());
+		properties[CRIT_CUT].setMagicwpPer(magicwpPer.getCritCut());
+		properties[BLOOD_ATTACK_ADDTION].setMagicwpPer(magicwpPer.getBloodAttackAddtion());
+		properties[BLOOD_ATTACK_CUT].setMagicwpPer(magicwpPer.getBloodAttackCut());
+		properties[SOUL_ATTACK_ADDTION].setMagicwpPer(magicwpPer.getSoulAttackAddtion());
+		properties[SOUL_ATTACK_CUT].setMagicwpPer(magicwpPer.getBloodAttackCut());
+		properties[REGAIN_SOUL].setMagicwpPer(magicwpPer.getRegainSoul());
+		properties[REGAIN_BLOOD].setMagicwpPer(magicwpPer.getRegainBlood());
+		properties[METAL].setMagicwpPer(magicwpPer.getMetal());
+		properties[WOOD].setMagicwpPer(magicwpPer.getWood());
+		properties[WATER].setMagicwpPer(magicwpPer.getWater());
+		properties[FIRE].setMagicwpPer(magicwpPer.getFire());
+		properties[EARTH].setMagicwpPer(magicwpPer.getEarth());
+		properties[METAL_DEFENCE].setMagicwpPer(magicwpPer.getMetalDefence());
+		properties[WOOD_DEFENCE].setMagicwpPer(magicwpPer.getWoodDefence());
+		properties[WATER_DEFENCE].setMagicwpPer(magicwpPer.getWaterDefence());
+		properties[FIRE_DEFENCE].setMagicwpPer(magicwpPer.getFireDefence());
+		properties[EARTH_DEFENCE].setMagicwpPer(magicwpPer.getEarthDefence());
+		properties[SPEED].setMagicwpPer(magicwpPer.getSpeed());
+	}
+
+	/**
+	 * 添加宠物属性
+	 * 
+	 * @param petData
+	 */
+	public void addPet(BaseProperty petData, BaseProperty petPer) {
+		// 添加宠物属性
+		properties[SOUL].setPetData(petData.getSoul());
+		properties[BLOOD].setPetData(petData.getBlood());
+		properties[ATTACK].setPetData(petData.getAttack());
+		properties[DEFENCE].setPetData(petData.getDefence());
+		properties[SOUL_ATTACK].setPetData(petData.getSoulAttack());
+		properties[SOUL_DEFENCE].setPetData(petData.getSoulDefence());
+		properties[ACCURATE].setPetData(petData.getAccurate());
+		properties[DODGE].setPetData(petData.getDodge());
+		properties[CRIT].setPetData(petData.getCrit());
+		properties[CRIT_DEFENCE].setPetData(petData.getCritDefence());
+		properties[CRIT_ADDTION].setPetData(petData.getCritAddtion());
+		properties[CRIT_CUT].setPetData(petData.getCritCut());
+		properties[BLOOD_ATTACK_ADDTION].setPetData(petData.getBloodAttackAddtion());
+		properties[BLOOD_ATTACK_CUT].setPetData(petData.getBloodAttackCut());
+		properties[SOUL_ATTACK_ADDTION].setPetData(petData.getSoulAttackAddtion());
+		properties[SOUL_ATTACK_CUT].setPetData(petData.getBloodAttackCut());
+		properties[REGAIN_SOUL].setPetData(petData.getRegainSoul());
+		properties[REGAIN_BLOOD].setPetData(petData.getRegainBlood());
+		properties[METAL].setPetData(petData.getMetal());
+		properties[WOOD].setPetData(petData.getWood());
+		properties[WATER].setPetData(petData.getWater());
+		properties[FIRE].setPetData(petData.getFire());
+		properties[EARTH].setPetData(petData.getEarth());
+		properties[METAL_DEFENCE].setPetData(petData.getMetalDefence());
+		properties[WOOD_DEFENCE].setPetData(petData.getWoodDefence());
+		properties[WATER_DEFENCE].setPetData(petData.getWaterDefence());
+		properties[FIRE_DEFENCE].setPetData(petData.getFireDefence());
+		properties[EARTH_DEFENCE].setPetData(petData.getEarthDefence());
+
+		// 宠物百分比加成
+		properties[SOUL].setPetPer(petPer.getSoul());
+		properties[BLOOD].setPetPer(petPer.getBlood());
+		properties[ATTACK].setPetPer(petPer.getAttack());
+		properties[DEFENCE].setPetPer(petPer.getDefence());
+		properties[SOUL_ATTACK].setPetPer(petPer.getSoulAttack());
+		properties[SOUL_DEFENCE].setPetPer(petPer.getSoulDefence());
+		properties[ACCURATE].setPetPer(petPer.getAccurate());
+		properties[DODGE].setPetPer(petPer.getDodge());
+		properties[CRIT].setPetPer(petPer.getCrit());
+		properties[CRIT_DEFENCE].setPetPer(petPer.getCritDefence());
+		properties[CRIT_ADDTION].setPetPer(petPer.getCritAddtion());
+		properties[CRIT_CUT].setPetPer(petPer.getCritCut());
+		properties[BLOOD_ATTACK_ADDTION].setPetPer(petPer.getBloodAttackAddtion());
+		properties[BLOOD_ATTACK_CUT].setPetPer(petPer.getBloodAttackCut());
+		properties[SOUL_ATTACK_ADDTION].setPetPer(petPer.getSoulAttackAddtion());
+		properties[SOUL_ATTACK_CUT].setPetPer(petPer.getBloodAttackCut());
+		properties[REGAIN_SOUL].setPetPer(petPer.getRegainSoul());
+		properties[REGAIN_BLOOD].setPetPer(petPer.getRegainBlood());
+		properties[METAL].setPetPer(petPer.getMetal());
+		properties[WOOD].setPetPer(petPer.getWood());
+		properties[WATER].setPetPer(petPer.getWater());
+		properties[FIRE].setPetPer(petPer.getFire());
+		properties[EARTH].setPetPer(petPer.getEarth());
+		properties[METAL_DEFENCE].setPetPer(petPer.getMetalDefence());
+		properties[WOOD_DEFENCE].setPetPer(petPer.getWoodDefence());
+		properties[WATER_DEFENCE].setPetPer(petPer.getWaterDefence());
+		properties[FIRE_DEFENCE].setPetPer(petPer.getFireDefence());
+		properties[EARTH_DEFENCE].setPetPer(petPer.getEarthDefence());
+		properties[SPEED].setPetPer(petPer.getSpeed());
+	}
 
 	public void setBagPro(int type, int val) {
 		properties[type].setBagData(val);
 	}
-
 
 	public void writeProto(GamePlayer player, PropertyListMsg.Builder propertyMsgs) {
 		PlayerJoinInfo joinInfo = player.getBasePlayer().getPlayerJoinInfo();
@@ -342,7 +507,7 @@ public abstract class Living {
 			Property property = properties[index];
 			if (property != null) {
 				updatePlayer(index, property, joinInfo);
-				
+
 				PropertyMsg.Builder proMsg = PropertyMsg.newBuilder();
 				proMsg.setType(index + 1);
 				property.writeProto(proMsg);
@@ -352,124 +517,121 @@ public abstract class Living {
 			}
 		}
 	}
-	
-	public void writeUpdateProto(GamePlayer player, PlayerAttUpdateMsg.Builder msg){
+
+	public void writeUpdateProto(GamePlayer player, PlayerAttUpdateMsg.Builder msg) {
 		msg.setPlayerId(player.getPlayerId());
 		PlayerJoinInfo joinInfo = player.getBasePlayer().getPlayerJoinInfo();
-		for(int i = 0; i < properties.length; i++){
+		for (int i = 0; i < properties.length; i++) {
 			Property property = properties[i];
-			if(property != null){
-				if(property.isChange()){
+			if (property != null) {
+				if (property.isChange()) {
 					updatePlayer(i, property, joinInfo);
-					
+
 					PropertyMsg.Builder proMsg = PropertyMsg.newBuilder();
 					proMsg.setType(i + 1);
 					property.writeProto(proMsg);
 					msg.addAtt(proMsg);
 				}
-			}else {
+			} else {
 				Log.error("------丢失属性-----丢失属性------丢失属性-------丢失属性---", new Exception("丢失属性"));
 			}
 		}
-		
+
 	}
-	
-	public void updatePlayer(int index, Property property, PlayerJoinInfo joinInfo){
-		switch(index){
-		case SOUL:
-			joinInfo.setSoul(property.getTotalJoin());
-			break;
-		case BLOOD:
-			joinInfo.setBlood(property.getTotalJoin());
-			break;
-		case ATTACK:
-			joinInfo.setAttack(property.getTotalJoin());
-			break;
-		case DEFENCE:
-			joinInfo.setDefence(property.getTotalJoin());
-			break;
-		case SOUL_ATTACK:
-			joinInfo.setSoulAttack(property.getTotalJoin());
-			break;
-		case SOUL_DEFENCE:
-			joinInfo.setSoulDefence(property.getTotalJoin());
-			break;
-		case ACCURATE:
-			joinInfo.setAccurate(property.getTotalJoin());
-			break;
-		case DODGE:
-			joinInfo.setDodge(property.getTotalJoin());
-			break;
-		case CRIT:
-			joinInfo.setCrit(property.getTotalJoin());
-			break;
-		case CRIT_DEFENCE:
-			joinInfo.setCritDefence(property.getTotalJoin());
-			break;
-		case CRIT_ADDTION:
-			joinInfo.setCritAddtion(property.getTotalJoin());
-			break;
-		case CRIT_CUT:
-			joinInfo.setCritCut(property.getTotalJoin());
-			break;
-		case BLOOD_ATTACK_ADDTION:
-			joinInfo.setBloodAttackAddtion(property.getTotalJoin());
-			break;
-		case BLOOD_ATTACK_CUT:
-			joinInfo.setBloodAttackCut(property.getTotalJoin());
-			break;
-		case SOUL_ATTACK_ADDTION:
-			joinInfo.setSoulAttackAddtion(property.getTotalJoin());
-			break;
-		case SOUL_ATTACK_CUT:
-			joinInfo.setSoulAttackCut(property.getTotalJoin());
-			break;
-		case REGAIN_SOUL:
-			joinInfo.setRegainSoul(property.getTotalJoin());
-			break;
-		case REGAIN_BLOOD:
-			joinInfo.setRegainBlood(property.getTotalJoin());
-			break;
-		case METAL:
-			joinInfo.setMetal(property.getTotalJoin());
-			break;
-		case WOOD:
-			joinInfo.setWood(property.getTotalJoin());
-			break;
-		case WATER:
-			joinInfo.setWater(property.getTotalJoin());
-			break;
-		case FIRE:
-			joinInfo.setFire(property.getTotalJoin());
-			break;
-		case EARTH:
-			joinInfo.setEarth(property.getTotalJoin());
-			break;
-		case METAL_DEFENCE:
-			joinInfo.setMetalDefence(property.getTotalJoin());
-			break;
-		case WOOD_DEFENCE:
-			joinInfo.setWoodDefence(property.getTotalJoin());
-			break;
-		case WATER_DEFENCE:
-			joinInfo.setWaterDefence(property.getTotalJoin());
-			break;
-		case FIRE_DEFENCE:
-			joinInfo.setFireDefence(property.getTotalJoin());
-			break;
-		case EARTH_DEFENCE:
-			joinInfo.setEarthDefence(property.getTotalJoin());
-			break;
-		case SPEED:
-			joinInfo.setSpeed(property.getTotalJoin());
-			break;
-		default:
-			break;
+
+	public void updatePlayer(int index, Property property, PlayerJoinInfo joinInfo) {
+		switch (index) {
+			case SOUL:
+				joinInfo.setSoul(property.getTotalJoin());
+				break;
+			case BLOOD:
+				joinInfo.setBlood(property.getTotalJoin());
+				break;
+			case ATTACK:
+				joinInfo.setAttack(property.getTotalJoin());
+				break;
+			case DEFENCE:
+				joinInfo.setDefence(property.getTotalJoin());
+				break;
+			case SOUL_ATTACK:
+				joinInfo.setSoulAttack(property.getTotalJoin());
+				break;
+			case SOUL_DEFENCE:
+				joinInfo.setSoulDefence(property.getTotalJoin());
+				break;
+			case ACCURATE:
+				joinInfo.setAccurate(property.getTotalJoin());
+				break;
+			case DODGE:
+				joinInfo.setDodge(property.getTotalJoin());
+				break;
+			case CRIT:
+				joinInfo.setCrit(property.getTotalJoin());
+				break;
+			case CRIT_DEFENCE:
+				joinInfo.setCritDefence(property.getTotalJoin());
+				break;
+			case CRIT_ADDTION:
+				joinInfo.setCritAddtion(property.getTotalJoin());
+				break;
+			case CRIT_CUT:
+				joinInfo.setCritCut(property.getTotalJoin());
+				break;
+			case BLOOD_ATTACK_ADDTION:
+				joinInfo.setBloodAttackAddtion(property.getTotalJoin());
+				break;
+			case BLOOD_ATTACK_CUT:
+				joinInfo.setBloodAttackCut(property.getTotalJoin());
+				break;
+			case SOUL_ATTACK_ADDTION:
+				joinInfo.setSoulAttackAddtion(property.getTotalJoin());
+				break;
+			case SOUL_ATTACK_CUT:
+				joinInfo.setSoulAttackCut(property.getTotalJoin());
+				break;
+			case REGAIN_SOUL:
+				joinInfo.setRegainSoul(property.getTotalJoin());
+				break;
+			case REGAIN_BLOOD:
+				joinInfo.setRegainBlood(property.getTotalJoin());
+				break;
+			case METAL:
+				joinInfo.setMetal(property.getTotalJoin());
+				break;
+			case WOOD:
+				joinInfo.setWood(property.getTotalJoin());
+				break;
+			case WATER:
+				joinInfo.setWater(property.getTotalJoin());
+				break;
+			case FIRE:
+				joinInfo.setFire(property.getTotalJoin());
+				break;
+			case EARTH:
+				joinInfo.setEarth(property.getTotalJoin());
+				break;
+			case METAL_DEFENCE:
+				joinInfo.setMetalDefence(property.getTotalJoin());
+				break;
+			case WOOD_DEFENCE:
+				joinInfo.setWoodDefence(property.getTotalJoin());
+				break;
+			case WATER_DEFENCE:
+				joinInfo.setWaterDefence(property.getTotalJoin());
+				break;
+			case FIRE_DEFENCE:
+				joinInfo.setFireDefence(property.getTotalJoin());
+				break;
+			case EARTH_DEFENCE:
+				joinInfo.setEarthDefence(property.getTotalJoin());
+				break;
+			case SPEED:
+				joinInfo.setSpeed(property.getTotalJoin());
+				break;
+			default:
+				break;
 		}
 		joinInfo.setOp(Option.Update);
 	}
 
-	
-	
-	
 }

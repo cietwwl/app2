@@ -73,18 +73,11 @@ public class Gather extends Living {
 	}
 
 	@Override
-	public void onDie(Living source) {
-		synchronized (dieLock) {
-			if (this.livingState == DIE) {
-				return;
-			}
-			this.livingState = DIE;
+	public boolean onDie(Living source) {
+		if (super.onDie(source)) {
+			this.playerCdTimers.clear();
 		}
-		clearWorkBuffer();
-		// sendChangeStatuMsg(LIVING, livingState);死亡状态不推，客户端自己判断
-		dieTime = System.currentTimeMillis();
-		System.err.println("living :" + this.armyId + " is die");
-		this.playerCdTimers.clear();
+		return true;
 	}
 
 	/**

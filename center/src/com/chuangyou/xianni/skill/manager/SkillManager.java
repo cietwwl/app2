@@ -23,6 +23,7 @@ import com.chuangyou.xianni.entity.hero.HeroSkill;
 import com.chuangyou.xianni.entity.item.BindType;
 import com.chuangyou.xianni.entity.log.SkillLogInfo;
 import com.chuangyou.xianni.entity.player.PlayerJoinInfo;
+import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.entity.property.SkillBaseProperty;
 import com.chuangyou.xianni.entity.property.SkillPropertyTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillStage;
@@ -40,18 +41,18 @@ import com.chuangyou.xianni.skill.template.SkillTempMgr;
  */
 public class SkillManager {
 	/** 基础技能类型 **/
-	private static final int baseSkillType = 2;
+	public static final int baseSkillType = 2;
 
 	/**
 	 * 英雄技能升级
 	 * 
 	 * @param player
-	 * @param skillId 要升级的技能id
+	 * @param skillId
+	 *            要升级的技能id
 	 * @return
 	 */
 	public static boolean upSkill(GamePlayer player, int skillId, PBMessage packet) {
-		System.out.println(
-				"Repair: " + player.getBasePlayer().getPlayerInfo().getRepair() + " playerId: " + player.getBasePlayer().getPlayerInfo().getPlayerId() + " skillId: " + skillId);
+		System.out.println("Repair: " + player.getBasePlayer().getPlayerInfo().getRepair() + " playerId: " + player.getBasePlayer().getPlayerInfo().getPlayerId() + " skillId: " + skillId);
 		SkillTempateInfo skillInfo = SkillTempMgr.getSkillTemp(skillId);// 要学习的技能配置
 		if (skillInfo == null) { // 已经至最高级
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.SKILL_UP_ERROR5, packet.getCode());
@@ -154,18 +155,15 @@ public class SkillManager {
 		player.getSkillInventory().addOrUpdate(heroSkill);
 		player.getSkillInventory().saveToDatabase();
 		// 技能阶段处理
-		// int skillStage = player.getBasePlayer().getPlayerInfo().getSkillStage() + 1;
+		// int skillStage =
+		// player.getBasePlayer().getPlayerInfo().getSkillStage() + 1;
 		// boolean isOpen = checkSkillStage(player, skillStage);
 		// if (isOpen) {
 		// player.getBasePlayer().getPlayerInfo().setSkillStage(skillStage);
 		// }
-		// 更新技能属性
-		SkillBaseProperty skillTotalPro = getTotalPro(player);
-		player.getArmyInventory().getArmy().getHero().addSkillPro(skillTotalPro);
-
-		// 同步
-		// player.getArmyInventory().updataHeroInfo();
-		player.getArmyInventory().updateHeroInfo();
+		if (player.getSkillInventory() != null) {
+			player.getSkillInventory().updataProperty();
+		}
 		// 日志
 		SkillLogInfo log = new SkillLogInfo();
 		log.setPlayerId(player.getPlayerId());
@@ -220,20 +218,28 @@ public class SkillManager {
 		Map<Integer, Integer> useGoods = new HashMap<>();// 消耗物品
 		ArrayList<Integer> studySkillIds = new ArrayList<>();
 		boolean run = false;
-		for (Entry<String, Integer> entry : infoIds) {
-			String key = entry.getKey();
-			if (map2.containsKey(key)) {
+
+		int falseCount = 0;
+		while (infoIds.size() > falseCount) {
+			// type type = (type) en.nextElement();
+			falseCount = 0;
+			for (Entry<String, Integer> entry : infoIds) {
+				String key = entry.getKey();
 				SkillTempateInfo tempinfo = SkillTempMgr.getSkillTemp(map2.get(key));
 				int nextSkillId = tempinfo.getNextTempId();
 				if (nextSkillId <= 0)
 					continue;
 				boolean res = upSkill(player, nextSkillId, useStone, useRepair, useJade, useGoods);
-				if (res)
+				if (res) {
 					run = true;
+				} else {
+					falseCount++;
+				}
 				System.out.println("skillId: " + map2.get(key) + " nextSkillId:" + nextSkillId + " res:" + res);
 				studySkillIds.add(nextSkillId);
 			}
 		}
+
 		// 同步
 		player.getArmyInventory().updateHeroInfo();
 		// 写协议
@@ -258,7 +264,8 @@ public class SkillManager {
 	/**
 	 * 
 	 * @param player
-	 * @param skillId 要升到的等级
+	 * @param skillId
+	 *            要升到的等级
 	 * @param useStone
 	 * @param useRepair
 	 * @param useJade
@@ -405,7 +412,8 @@ public class SkillManager {
 	 * 升技能阶段
 	 * 
 	 * @param player
-	 * @param stage 要升的技能阶段id
+	 * @param stage
+	 *            要升的技能阶段id
 	 * @return
 	 */
 	public static boolean UpSkillStage(GamePlayer player, int stage, PBMessage packet) {
@@ -415,10 +423,9 @@ public class SkillManager {
 		System.out.println("playerId:" + player.getBasePlayer().getPlayerInfo().getPlayerId() + " skillStage:" + skillStage + " res:" + isOpen);
 		if (isOpen) {
 			player.getBasePlayer().getPlayerInfo().setSkillStage(skillStage);
-			SkillBaseProperty skillTotalPro = getTotalPro(player);
-			player.getArmyInventory().getArmy().getHero().addSkillPro(skillTotalPro);
-			// player.getArmyInventory().updataHeroInfo();
-			player.getArmyInventory().updateProperty();
+			if (player.getSkillInventory() != null) {
+				player.getSkillInventory().updataProperty();
+			}
 		} else {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.SKILL_UP_ERROR6, packet.getCode());
 			return false;
@@ -463,79 +470,10 @@ public class SkillManager {
 	}
 
 	/**
-	 * 获取技能总属性(包括技能阶段的属性)
-	 * 
-	 * @param player
-	 * @return
-	 */
-	public static SkillBaseProperty getTotalPro(GamePlayer player) {
-		SkillBaseProperty proData = new SkillBaseProperty();
-		Map<String, HeroSkill> skillMap = player.getSkillInventory().getHeroSkill(SkillInventory.passiveSkillType, 0);
-		for (Entry<String, HeroSkill> entry : skillMap.entrySet()) {
-			HeroSkill skill = entry.getValue();
-			int skillId = skill.getSkillId();
-			SkillTempateInfo skillInfo = SkillTempMgr.getSkillTemp(skillId);// 技能配置
-			if (skillInfo != null && skillInfo.getMasterType() == baseSkillType) {
-				String propertyIds = skillInfo.getPropertyIds();
-				if (propertyIds != null) {
-					for (String str : propertyIds.split(",")) {
-						int val = Integer.valueOf(str);
-						int type = val / 1000000;
-						int v = val % 1000000;
-						setPro(proData, type - 1, v);
-						// SkillPropertyTemplateInfo skillPro = SkillTempMgr.getSkillProTemp(Integer.valueOf(str));
-						// if (skillPro == null)
-						// continue;
-						// proData.addSoul(skillPro.getSoul());
-						// proData.addBlood(skillPro.getBlood());
-						// proData.addAttack(skillPro.getAttack());
-						// proData.addDefence(skillPro.getDefence());
-						// proData.addSoulAttack(skillPro.getSoulAttack());
-						// proData.addSoulDefence(skillPro.getSoulDefence());
-						// proData.addAccurate(skillPro.getAccurate());
-						// proData.addDodge(skillPro.getDodge());
-						// proData.addCrit(skillPro.getCrit());
-						// proData.addCritDefence(skillPro.getCritDefence());
-					}
-				}
-			}
-		}
-		// 技能阶段
-		int skillStage = player.getBasePlayer().getPlayerInfo().getSkillStage();// 当前技能阶段
-		SkillStage stage = SkillTempMgr.getSkillStage(skillStage);
-		if (stage != null) {
-			proData.addSoul(stage.getSoul());
-			proData.addBlood(stage.getBlood());
-			proData.addAttack(stage.getAttack());
-			proData.addDefence(stage.getDefence());
-			proData.addSoulAttack(stage.getSoulAttack());
-			proData.addSoulDefence(stage.getSoulDefence());
-			proData.addAccurate(stage.getAccurate());
-			proData.addDodge(stage.getDodge());
-			proData.addCrit(stage.getCrit());
-			proData.addCritDefence(stage.getCritDefence());
-
-			// SkillPropertyTemplateInfo template = SkillTempMgr.getSkillProTemp(stage.getAddTemplateId());// 技能配置
-			// if (template != null) {
-			// proData.addSoul(template.getSoul());
-			// proData.addBlood(template.getBlood());
-			// proData.addAttack(template.getAttack());
-			// proData.addDefence(template.getDefence());
-			// proData.addSoulAttack(template.getSoulAttack());
-			// proData.addSoulDefence(template.getSoulDefence());
-			// proData.addAccurate(template.getAccurate());
-			// proData.addDodge(template.getDodge());
-			// proData.addCrit(template.getCrit());
-			// proData.addCritDefence(template.getCritDefence());
-			// }
-		}
-		return proData;
-	}
-
-	/**
 	 * 检测技能阶段是否开启了
 	 * 
-	 * @param stageLv 要检测的节能阶段
+	 * @param stageLv
+	 *            要检测的节能阶段
 	 * @return
 	 */
 	public static boolean checkSkillStage(GamePlayer player, int stageLv) {
@@ -562,7 +500,7 @@ public class SkillManager {
 		return true;
 	}
 
-	public static SkillTotalProResMsg.Builder getSkillTotalProResMsg(GamePlayer player, SkillBaseProperty skillBasePro) {
+	public static SkillTotalProResMsg.Builder getSkillTotalProResMsg(GamePlayer player, BaseProperty skillBasePro) {
 		SkillTotalProResMsg.Builder msg = SkillTotalProResMsg.newBuilder();
 
 		SkillProperty.Builder beanSoul = SkillProperty.newBuilder();
@@ -619,7 +557,7 @@ public class SkillManager {
 		critAddtion.setType(EnumAttr.CRIT_ADDTION.getValue());
 		critAddtion.setPro(skillBasePro.getCritAddtion());
 		msg.addInfo(critAddtion);
-		
+
 		msg.setStage(player.getBasePlayer().getPlayerInfo().getSkillStage());
 
 		return msg;
@@ -628,93 +566,93 @@ public class SkillManager {
 	/** 属性赋值 */
 	public static SkillBaseProperty setPro(SkillBaseProperty proData, int type, int v) {
 		switch (type) {
-		case Living.SOUL:
-			proData.addSoul(v);
-			break;
-		case Living.BLOOD:
-			proData.addBlood(v);
-			break;
-		case Living.ATTACK:
-			proData.addAttack(v);
-			break;
-		case Living.DEFENCE:
-			proData.addDefence(v);
-			break;
-		case Living.SOUL_ATTACK:
-			proData.addSoulAttack(v);
-			break;
-		case Living.SOUL_DEFENCE:
-			proData.addSoulDefence(v);
-			break;
-		case Living.ACCURATE:
-			proData.addAccurate(v);
-			break;
-		case Living.DODGE:
-			proData.addDodge(v);
-			break;
-		case Living.CRIT:
-			proData.addCrit(v);
-			break;
-		case Living.CRIT_DEFENCE:
-			proData.addCritDefence(v);
-			break;
-		case Living.CRIT_ADDTION:
-			proData.addCritAddtion(v);
-			break;
-		case Living.CRIT_CUT:
-			proData.addCritCut(v);
-			break;
-		case Living.BLOOD_ATTACK_ADDTION:
-			proData.addBloodAttackAddtion(v);
-			break;
-		case Living.BLOOD_ATTACK_CUT:
-			proData.addBloodAttackCut(v);
-			break;
-		case Living.SOUL_ATTACK_ADDTION:
-			proData.addSoulAttackAddtion(v);
-			break;
-		case Living.SOUL_ATTACK_CUT:
-			proData.addSoulAttackCut(v);
-			break;
-		case Living.REGAIN_SOUL:
-			proData.addRegainSoul(v);
-			break;
-		case Living.REGAIN_BLOOD:
-			proData.addRegainBlood(v);
-			break;
-		case Living.METAL:
-			proData.addMetal(v);
-			break;
-		case Living.WOOD:
-			proData.addWood(v);
-			break;
-		case Living.WATER:
-			proData.addWater(v);
-			break;
-		case Living.FIRE:
-			proData.addFire(v);
-			break;
-		case Living.EARTH:
-			proData.addEarth(v);
-			break;
-		case Living.METAL_DEFENCE:
-			proData.addMetalDefence(v);
-			break;
-		case Living.WOOD_DEFENCE:
-			proData.addWoodDefence(v);
-			break;
-		case Living.WATER_DEFENCE:
-			proData.addWaterDefence(v);
-			break;
-		case Living.FIRE_DEFENCE:
-			proData.addFireDefence(v);
-			break;
-		case Living.EARTH_DEFENCE:
-			proData.addEarthDefence(v);
-			break;
-		case Living.SPEED:
-			proData.addSpeed(v);
-			break;
+			case Living.SOUL:
+				proData.addSoul(v);
+				break;
+			case Living.BLOOD:
+				proData.addBlood(v);
+				break;
+			case Living.ATTACK:
+				proData.addAttack(v);
+				break;
+			case Living.DEFENCE:
+				proData.addDefence(v);
+				break;
+			case Living.SOUL_ATTACK:
+				proData.addSoulAttack(v);
+				break;
+			case Living.SOUL_DEFENCE:
+				proData.addSoulDefence(v);
+				break;
+			case Living.ACCURATE:
+				proData.addAccurate(v);
+				break;
+			case Living.DODGE:
+				proData.addDodge(v);
+				break;
+			case Living.CRIT:
+				proData.addCrit(v);
+				break;
+			case Living.CRIT_DEFENCE:
+				proData.addCritDefence(v);
+				break;
+			case Living.CRIT_ADDTION:
+				proData.addCritAddtion(v);
+				break;
+			case Living.CRIT_CUT:
+				proData.addCritCut(v);
+				break;
+			case Living.BLOOD_ATTACK_ADDTION:
+				proData.addBloodAttackAddtion(v);
+				break;
+			case Living.BLOOD_ATTACK_CUT:
+				proData.addBloodAttackCut(v);
+				break;
+			case Living.SOUL_ATTACK_ADDTION:
+				proData.addSoulAttackAddtion(v);
+				break;
+			case Living.SOUL_ATTACK_CUT:
+				proData.addSoulAttackCut(v);
+				break;
+			case Living.REGAIN_SOUL:
+				proData.addRegainSoul(v);
+				break;
+			case Living.REGAIN_BLOOD:
+				proData.addRegainBlood(v);
+				break;
+			case Living.METAL:
+				proData.addMetal(v);
+				break;
+			case Living.WOOD:
+				proData.addWood(v);
+				break;
+			case Living.WATER:
+				proData.addWater(v);
+				break;
+			case Living.FIRE:
+				proData.addFire(v);
+				break;
+			case Living.EARTH:
+				proData.addEarth(v);
+				break;
+			case Living.METAL_DEFENCE:
+				proData.addMetalDefence(v);
+				break;
+			case Living.WOOD_DEFENCE:
+				proData.addWoodDefence(v);
+				break;
+			case Living.WATER_DEFENCE:
+				proData.addWaterDefence(v);
+				break;
+			case Living.FIRE_DEFENCE:
+				proData.addFireDefence(v);
+				break;
+			case Living.EARTH_DEFENCE:
+				proData.addEarthDefence(v);
+				break;
+			case Living.SPEED:
+				proData.addSpeed(v);
+				break;
 		}
 		return proData;
 	}

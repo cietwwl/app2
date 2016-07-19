@@ -455,23 +455,6 @@ public final class BattleLivingInfoMsgProto {
      * </pre>
      */
     int getMountState();
-
-    /**
-     * <code>optional int32 battleMode = 22;</code>
-     *
-     * <pre>
-     * 战斗模式   1和平模式2对战模式3门派模式
-     * </pre>
-     */
-    boolean hasBattleMode();
-    /**
-     * <code>optional int32 battleMode = 22;</code>
-     *
-     * <pre>
-     * 战斗模式   1和平模式2对战模式3门派模式
-     * </pre>
-     */
-    int getBattleMode();
   }
   /**
    * Protobuf type {@code BattleLivingInfoMsg}
@@ -667,11 +650,6 @@ public final class BattleLivingInfoMsgProto {
             case 168: {
               bitField0_ |= 0x00020000;
               mountState_ = input.readInt32();
-              break;
-            }
-            case 176: {
-              bitField0_ |= 0x00040000;
-              battleMode_ = input.readInt32();
               break;
             }
           }
@@ -1332,29 +1310,6 @@ public final class BattleLivingInfoMsgProto {
       return mountState_;
     }
 
-    public static final int BATTLEMODE_FIELD_NUMBER = 22;
-    private int battleMode_;
-    /**
-     * <code>optional int32 battleMode = 22;</code>
-     *
-     * <pre>
-     * 战斗模式   1和平模式2对战模式3门派模式
-     * </pre>
-     */
-    public boolean hasBattleMode() {
-      return ((bitField0_ & 0x00040000) == 0x00040000);
-    }
-    /**
-     * <code>optional int32 battleMode = 22;</code>
-     *
-     * <pre>
-     * 战斗模式   1和平模式2对战模式3门派模式
-     * </pre>
-     */
-    public int getBattleMode() {
-      return battleMode_;
-    }
-
     private void initFields() {
       livingId_ = 0L;
       playerId_ = 0L;
@@ -1377,7 +1332,6 @@ public final class BattleLivingInfoMsgProto {
       liveState_ = 0;
       soulState_ = 0;
       mountState_ = 0;
-      battleMode_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1454,9 +1408,6 @@ public final class BattleLivingInfoMsgProto {
       }
       if (((bitField0_ & 0x00020000) == 0x00020000)) {
         output.writeInt32(21, mountState_);
-      }
-      if (((bitField0_ & 0x00040000) == 0x00040000)) {
-        output.writeInt32(22, battleMode_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -1555,10 +1506,6 @@ public final class BattleLivingInfoMsgProto {
       if (((bitField0_ & 0x00020000) == 0x00020000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(21, mountState_);
-      }
-      if (((bitField0_ & 0x00040000) == 0x00040000)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(22, battleMode_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1739,8 +1686,6 @@ public final class BattleLivingInfoMsgProto {
         bitField0_ = (bitField0_ & ~0x00080000);
         mountState_ = 0;
         bitField0_ = (bitField0_ & ~0x00100000);
-        battleMode_ = 0;
-        bitField0_ = (bitField0_ & ~0x00200000);
         return this;
       }
 
@@ -1872,10 +1817,6 @@ public final class BattleLivingInfoMsgProto {
           to_bitField0_ |= 0x00020000;
         }
         result.mountState_ = mountState_;
-        if (((from_bitField0_ & 0x00200000) == 0x00200000)) {
-          to_bitField0_ |= 0x00040000;
-        }
-        result.battleMode_ = battleMode_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2009,9 +1950,6 @@ public final class BattleLivingInfoMsgProto {
         }
         if (other.hasMountState()) {
           setMountState(other.getMountState());
-        }
-        if (other.hasBattleMode()) {
-          setBattleMode(other.getBattleMode());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -3882,54 +3820,6 @@ public final class BattleLivingInfoMsgProto {
         return this;
       }
 
-      private int battleMode_ ;
-      /**
-       * <code>optional int32 battleMode = 22;</code>
-       *
-       * <pre>
-       * 战斗模式   1和平模式2对战模式3门派模式
-       * </pre>
-       */
-      public boolean hasBattleMode() {
-        return ((bitField0_ & 0x00200000) == 0x00200000);
-      }
-      /**
-       * <code>optional int32 battleMode = 22;</code>
-       *
-       * <pre>
-       * 战斗模式   1和平模式2对战模式3门派模式
-       * </pre>
-       */
-      public int getBattleMode() {
-        return battleMode_;
-      }
-      /**
-       * <code>optional int32 battleMode = 22;</code>
-       *
-       * <pre>
-       * 战斗模式   1和平模式2对战模式3门派模式
-       * </pre>
-       */
-      public Builder setBattleMode(int value) {
-        bitField0_ |= 0x00200000;
-        battleMode_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 battleMode = 22;</code>
-       *
-       * <pre>
-       * 战斗模式   1和平模式2对战模式3门派模式
-       * </pre>
-       */
-      public Builder clearBattleMode() {
-        bitField0_ = (bitField0_ & ~0x00200000);
-        battleMode_ = 0;
-        onChanged();
-        return this;
-      }
-
       // @@protoc_insertion_point(builder_scope:BattleLivingInfoMsg)
     }
 
@@ -3957,7 +3847,7 @@ public final class BattleLivingInfoMsgProto {
     java.lang.String[] descriptorData = {
       "\n battle/BattleLivingInfoMsg.proto\032\026comm" +
       "on/PBVector3.proto\032\026battle/BufferMsg.pro" +
-      "to\032\026army/PropertyMsg.proto\"\327\003\n\023BattleLiv" +
+      "to\032\026army/PropertyMsg.proto\"\303\003\n\023BattleLiv" +
       "ingInfoMsg\022\020\n\010livingId\030\001 \001(\003\022\021\n\tplayer_i" +
       "d\030\002 \001(\003\022\021\n\tnick_name\030\003 \001(\t\022\014\n\004type\030\004 \001(\005" +
       "\022\r\n\005level\030\005 \001(\005\022\021\n\tvip_level\030\006 \001(\005\022\r\n\005fi" +
@@ -3969,9 +3859,8 @@ public final class BattleLivingInfoMsgProto {
       "\0132\n.BufferMsg\022\016\n\006skills\030\021 \003(\005\022\037\n\tpropert" +
       "is\030\022 \003(\0132\014.PropertyMsg\022\021\n\tliveState\030\023 \001(" +
       "\005\022\021\n\tsoulState\030\024 \001(\005\022\022\n\nmountState\030\025 \001(\005" +
-      "\022\022\n\nbattleMode\030\026 \001(\005BC\n\'com.chuangyou.co" +
-      "mmon.protobuf.pb.battleB\030BattleLivingInf" +
-      "oMsgProto"
+      "BC\n\'com.chuangyou.common.protobuf.pb.bat" +
+      "tleB\030BattleLivingInfoMsgProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3993,7 +3882,7 @@ public final class BattleLivingInfoMsgProto {
     internal_static_BattleLivingInfoMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BattleLivingInfoMsg_descriptor,
-        new java.lang.String[] { "LivingId", "PlayerId", "NickName", "Type", "Level", "VipLevel", "Fight", "SkinId", "FashionId", "WeaponId", "MountId", "MagicWeaponId", "WingId", "Postion", "Target", "BufferList", "Skills", "Propertis", "LiveState", "SoulState", "MountState", "BattleMode", });
+        new java.lang.String[] { "LivingId", "PlayerId", "NickName", "Type", "Level", "VipLevel", "Fight", "SkinId", "FashionId", "WeaponId", "MountId", "MagicWeaponId", "WingId", "Postion", "Target", "BufferList", "Skills", "Propertis", "LiveState", "SoulState", "MountState", });
     com.chuangyou.common.protobuf.pb.Vector3Proto.getDescriptor();
     com.chuangyou.common.protobuf.pb.battle.BufferMsgProto.getDescriptor();
     com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.getDescriptor();

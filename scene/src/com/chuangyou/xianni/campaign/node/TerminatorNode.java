@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.chuangyou.common.util.AccessTextFile;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.drop.manager.DropManager;
@@ -54,6 +55,7 @@ public class TerminatorNode extends CampaignNodeDecorator {
 			}
 			MonsterSpawnNode sn = (MonsterSpawnNode) n;
 			int leftMonster = sn.getLeftMonster();
+			monsters.addAll(sn.getAlive());
 			if (leftMonster <= 0) {
 				continue;
 			}
@@ -64,9 +66,7 @@ public class TerminatorNode extends CampaignNodeDecorator {
 			}
 			dropMonsters.put(monsterId, leftMonster);
 
-			monsters.addAll(sn.getAlive());
 		}
-
 		// 真实掉落掉落
 		for (Entry<Integer, Integer> entry : dropMonsters.entrySet()) {
 			for (int i = 0; i < entry.getValue(); i++) {
@@ -83,6 +83,7 @@ public class TerminatorNode extends CampaignNodeDecorator {
 		// 杀死所有存活怪
 		for (Living alive : monsters) {
 			alive.suicide();
+			AccessTextFile.saveRecord("alive.suicide():" + alive.getId());
 		}
 		campaign.changeEndTime(System.currentTimeMillis() + 60 * 1000);
 	}

@@ -11,16 +11,16 @@ public class Property {
 	private int		bagPer;				// 背包万分比加成
 
 	private int		skillData	= 0;	// 技能数据加成
-	private int		skillPer	= 0;	// 技能百分比加成
+	private int		skillPer	= 0;	// 技能万分比加成
 
 	private int		mountData	= 0;	// 坐骑数据加成
-	private int		mountPer	= 0;	// 坐骑百分比加成
+	private int		mountPer	= 0;	// 坐骑万分比加成
 
 	private int		magicwpData	= 0;	// 法宝属性加成
-	private int		magicwpPer	= 0;	// 法宝百分比加成
+	private int		magicwpPer	= 0;	// 法宝万分比加成
 
 	private int		petData		= 0;	// 宠物属性加成
-	private int		petPer		= 0;	// 宠物百分比加成
+	private int		petPer		= 0;	// 宠物万分比加成
 
 	private int		totalJoin;			// 总属性值
 	private int		baseJoin;			// 基础值

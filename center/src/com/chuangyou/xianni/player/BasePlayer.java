@@ -59,7 +59,7 @@ public class BasePlayer extends AbstractEvent {
 	 * @param count
 	 * @return
 	 */
-	public boolean addMoney(int count) {
+	public boolean addMoney(long count) {
 		beginChanges();
 		try {
 			if (moneyLock.beginLock()) {
@@ -85,7 +85,7 @@ public class BasePlayer extends AbstractEvent {
 	 * @param count
 	 * @return
 	 */
-	public boolean consumeMoney(int count) {
+	public boolean consumeMoney(long count) {
 		if (playerInfo.getMoney() < count)
 			return false;
 		beginChanges();
@@ -422,9 +422,16 @@ public class BasePlayer extends AbstractEvent {
 		Map<Integer, Long> changeMap = new HashMap<>();
 		boolean hasLevelUp = false;
 		try {
-			this.playerInfo.setTotalExp(playerInfo.getTotalExp() + addValue);
-			this.playerInfo.setExp(this.playerInfo.getExp() + addValue);
-
+			if (addValue > 0) {
+				this.playerInfo.setTotalExp(playerInfo.getTotalExp() + addValue);
+				this.playerInfo.setExp(this.playerInfo.getExp() + addValue);
+			} else {
+				long exp = playerInfo.getExp() + addValue < 0 ? 0 : playerInfo.getExp() + addValue;
+				long totalExp = playerInfo.getTotalExp() + (exp - playerInfo.getExp());
+				this.playerInfo.setExp(exp);
+				this.playerInfo.setTotalExp(totalExp);
+			}
+			
 			LevelUp curLevelTemp = LevelUpTempleteMgr.getPlayerLevelUp(playerInfo.getLevel());
 
 			if (this.playerInfo.getExp() >= curLevelTemp.getExp()) {

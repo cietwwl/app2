@@ -129,23 +129,6 @@ public final class PlayerAttSnapProto {
      * </pre>
      */
     long getOwnerId();
-
-    /**
-     * <code>optional int32 battleMode = 7;</code>
-     *
-     * <pre>
-     *战斗模式
-     * </pre>
-     */
-    boolean hasBattleMode();
-    /**
-     * <code>optional int32 battleMode = 7;</code>
-     *
-     * <pre>
-     *战斗模式
-     * </pre>
-     */
-    int getBattleMode();
   }
   /**
    * Protobuf type {@code PlayerAttSnapMsg}
@@ -243,11 +226,6 @@ public final class PlayerAttSnapProto {
             case 48: {
               bitField0_ |= 0x00000020;
               ownerId_ = input.readInt64();
-              break;
-            }
-            case 56: {
-              bitField0_ |= 0x00000040;
-              battleMode_ = input.readInt32();
               break;
             }
           }
@@ -448,29 +426,6 @@ public final class PlayerAttSnapProto {
       return ownerId_;
     }
 
-    public static final int BATTLEMODE_FIELD_NUMBER = 7;
-    private int battleMode_;
-    /**
-     * <code>optional int32 battleMode = 7;</code>
-     *
-     * <pre>
-     *战斗模式
-     * </pre>
-     */
-    public boolean hasBattleMode() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
-    }
-    /**
-     * <code>optional int32 battleMode = 7;</code>
-     *
-     * <pre>
-     *战斗模式
-     * </pre>
-     */
-    public int getBattleMode() {
-      return battleMode_;
-    }
-
     private void initFields() {
       playerId_ = 0L;
       type_ = 0;
@@ -478,7 +433,6 @@ public final class PlayerAttSnapProto {
       postion_ = com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3.getDefaultInstance();
       target_ = com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3.getDefaultInstance();
       ownerId_ = 0L;
-      battleMode_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -510,9 +464,6 @@ public final class PlayerAttSnapProto {
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         output.writeInt64(6, ownerId_);
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeInt32(7, battleMode_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -546,10 +497,6 @@ public final class PlayerAttSnapProto {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(6, ownerId_);
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(7, battleMode_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -690,8 +637,6 @@ public final class PlayerAttSnapProto {
         bitField0_ = (bitField0_ & ~0x00000010);
         ownerId_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000020);
-        battleMode_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -752,10 +697,6 @@ public final class PlayerAttSnapProto {
           to_bitField0_ |= 0x00000020;
         }
         result.ownerId_ = ownerId_;
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000040;
-        }
-        result.battleMode_ = battleMode_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -789,9 +730,6 @@ public final class PlayerAttSnapProto {
         }
         if (other.hasOwnerId()) {
           setOwnerId(other.getOwnerId());
-        }
-        if (other.hasBattleMode()) {
-          setBattleMode(other.getBattleMode());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1316,54 +1254,6 @@ public final class PlayerAttSnapProto {
         return this;
       }
 
-      private int battleMode_ ;
-      /**
-       * <code>optional int32 battleMode = 7;</code>
-       *
-       * <pre>
-       *战斗模式
-       * </pre>
-       */
-      public boolean hasBattleMode() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
-      }
-      /**
-       * <code>optional int32 battleMode = 7;</code>
-       *
-       * <pre>
-       *战斗模式
-       * </pre>
-       */
-      public int getBattleMode() {
-        return battleMode_;
-      }
-      /**
-       * <code>optional int32 battleMode = 7;</code>
-       *
-       * <pre>
-       *战斗模式
-       * </pre>
-       */
-      public Builder setBattleMode(int value) {
-        bitField0_ |= 0x00000040;
-        battleMode_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 battleMode = 7;</code>
-       *
-       * <pre>
-       *战斗模式
-       * </pre>
-       */
-      public Builder clearBattleMode() {
-        bitField0_ = (bitField0_ & ~0x00000040);
-        battleMode_ = 0;
-        onChanged();
-        return this;
-      }
-
       // @@protoc_insertion_point(builder_scope:PlayerAttSnapMsg)
     }
 
@@ -1390,12 +1280,12 @@ public final class PlayerAttSnapProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\035player/PlayerAttSnapMsg.proto\032\026common/" +
-      "PBVector3.proto\"\240\001\n\020PlayerAttSnapMsg\022\020\n\010" +
+      "PBVector3.proto\"\214\001\n\020PlayerAttSnapMsg\022\020\n\010" +
       "playerId\030\001 \001(\003\022\014\n\004type\030\002 \001(\005\022\016\n\006skinId\030\003" +
       " \001(\005\022\033\n\007postion\030\004 \001(\0132\n.PBVector3\022\032\n\006tar" +
-      "get\030\005 \001(\0132\n.PBVector3\022\017\n\007ownerId\030\006 \001(\003\022\022" +
-      "\n\nbattleMode\030\007 \001(\005B6\n com.chuangyou.comm" +
-      "on.protobuf.pbB\022PlayerAttSnapProto"
+      "get\030\005 \001(\0132\n.PBVector3\022\017\n\007ownerId\030\006 \001(\003B6" +
+      "\n com.chuangyou.common.protobuf.pbB\022Play" +
+      "erAttSnapProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1415,7 +1305,7 @@ public final class PlayerAttSnapProto {
     internal_static_PlayerAttSnapMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_PlayerAttSnapMsg_descriptor,
-        new java.lang.String[] { "PlayerId", "Type", "SkinId", "Postion", "Target", "OwnerId", "BattleMode", });
+        new java.lang.String[] { "PlayerId", "Type", "SkinId", "Postion", "Target", "OwnerId", });
     com.chuangyou.common.protobuf.pb.Vector3Proto.getDescriptor();
   }
 

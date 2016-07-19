@@ -392,6 +392,16 @@ public class ErrorCode {
 	public static final int TASK_UN_FINISH = 5004;
 	/** 任务超时 */
 	public static final int TASK_OUT_OF_DATE = 5005;
+	
+	/** 聊天频道不存在 */
+	public static final int CHAT_CHANNEL_NOT_EXIST = 5006;
+	
+	/** 发言过于频繁 */
+	public static final int CHAT_COOLING = 5007;
+	
+	/** 该频道不可发言 */
+	public static final int CHAT_CHANNEL_NOT_SPEAK = 5008;
+	
 	/** 不可跳级 **/
 	public static final int SKILL_UP_ERROR = 6001;
 	/** 技能配置数据不足 **/

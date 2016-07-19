@@ -4,5 +4,5 @@ import java.util.List;
 import com.chuangyou.xianni.entity.property.SkillPropertyTemplateInfo;
 
 public interface SkillPropertyTemplateInfoDao {
-	public List<SkillPropertyTemplateInfo> load();
+	//public List<SkillPropertyTemplateInfo> load();
 }

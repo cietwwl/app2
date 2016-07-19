@@ -82,8 +82,7 @@ public class MagicwpLevelUpCmd extends AbstractCommand {
 //		MagicwpManager.changeMagicwpAtt(roleId);
 		
 		//影响人物属性变更
-		player.getArmyInventory().getArmy().getHero().addMagicwp(MagicwpManager.computeMagicwpAtt(player));
-		player.getArmyInventory().updateProperty();
+		player.getMagicwpInventory().updataProperty();
 	}
 
 }

@@ -107,17 +107,29 @@ public class BagHeroEquipment extends BaseBag {
 		short pos = 0;
 		if (tempInfo.getMasterType() == 1) {
 			switch (tempInfo.getSonType()) {
-				case 109:// 时装翅膀
-					pos = 8;
+				case 11:// 武器
+					pos = 0;
 					break;
-				case 110:// 时装头发
-					pos = 9;
+				case 12:// 头盔
+					pos = 1;
 					break;
-				case 111:// 时装武器
-					pos = 11;
+				case 13:// 项链
+					pos = 2;
 					break;
-				case 112:// 时装衣服
-					pos = 10;
+				case 14:// 衣服
+					pos = 3;
+					break;
+				case 15:// 戒指
+					pos = 4;
+					break;
+				case 16:// 手套
+					pos = 5;
+					break;
+				case 17:// 玉佩
+					pos = 6;
+					break;
+				case 18:// 鞋子
+					pos = 7;
 					break;
 				default:
 					pos = 0;

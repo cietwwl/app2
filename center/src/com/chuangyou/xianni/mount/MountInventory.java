@@ -1,19 +1,29 @@
 package com.chuangyou.xianni.mount;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import com.chuangyou.xianni.bag.ItemManager;
+import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.entity.Option;
+import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
+import com.chuangyou.xianni.entity.mount.MountEquipCfg;
 import com.chuangyou.xianni.entity.mount.MountEquipInfo;
 import com.chuangyou.xianni.entity.mount.MountGradeCfg;
 import com.chuangyou.xianni.entity.mount.MountInfo;
+import com.chuangyou.xianni.entity.mount.MountLevelCfg;
 import com.chuangyou.xianni.entity.mount.MountSpecialGet;
+import com.chuangyou.xianni.entity.mount.MountWeaponCfg;
+import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.interfaces.IInventory;
 import com.chuangyou.xianni.mount.manager.MountManager;
 import com.chuangyou.xianni.mount.template.MountTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.skill.SkillUtil;
+import com.chuangyou.xianni.skill.template.SimpleProperty;
 import com.chuangyou.xianni.sql.dao.DBManager;
 
 public class MountInventory extends AbstractEvent implements IInventory {
@@ -133,10 +143,9 @@ public class MountInventory extends AbstractEvent implements IInventory {
 		if (this.mountSpecialMap.get(info.getMountId()) == null) {
 			this.mountSpecialMap.put(info.getMountId(), info);
 			info.setOp(Option.Insert);
-			
-			//影响人物属性变更
-			player.getArmyInventory().getArmy().getHero().addMount(MountManager.computeMountAtt(player));
-			player.getArmyInventory().updateProperty();
+
+			// 影响人物属性变更
+			updataProperty();
 		}
 		return true;
 	}
@@ -157,7 +166,7 @@ public class MountInventory extends AbstractEvent implements IInventory {
 		}
 		mountEquipMap = null;
 
-		if(mountSpecialMap != null){
+		if (mountSpecialMap != null) {
 			mountSpecialMap.clear();
 		}
 		mountSpecialMap = null;
@@ -201,4 +210,75 @@ public class MountInventory extends AbstractEvent implements IInventory {
 
 		return true;
 	}
+
+	/**
+	 * 计算坐骑属性值
+	 * 
+	 * @param roleId
+	 */
+	public void computeMountAtt(BaseProperty mountData, BaseProperty mountPer) {
+		MountInfo mount = player.getMountInventory().getMount();
+		List<Integer> toalPro = new ArrayList<>();
+
+		// 等级加成
+		MountLevelCfg mountLevelCfg = MountTemplateMgr.getLevelTemps().get(mount.getLevel());
+		toalPro.addAll(mountLevelCfg.getAttList());
+
+		// 进阶加成
+		MountGradeCfg mountGradeCfg = MountTemplateMgr.getGradeTemps().get(mount.getGrade());
+		toalPro.addAll(mountGradeCfg.getAttList());
+
+		// 装备加成
+		Map<Integer, MountEquipInfo> equips = player.getMountInventory().getMountEquip();
+		for (MountEquipInfo mountEquip : equips.values()) {
+			if (MountTemplateMgr.getEquipTemps().get(mountEquip.getEquipId()) != null) {
+				MountEquipCfg equipCfg = MountTemplateMgr.getEquipTemps().get(mountEquip.getEquipId()).get(mountEquip.getEquipLevel());
+				toalPro.addAll(equipCfg.getAttList());
+			}
+		}
+
+		// 属性丹加成
+		int danId = SystemConfigTemplateMgr.getIntValue("mount.dan.prop.Id");
+		ItemTemplateInfo itemTemplate = ItemManager.findItemTempInfo(danId);
+		if (itemTemplate != null) {
+			toalPro.add(itemTemplate.getStatistics1());
+			toalPro.add(itemTemplate.getStatistics2());
+			toalPro.add(itemTemplate.getStatistics3());
+			toalPro.add(itemTemplate.getStatistics4());
+		}
+
+		// 特殊坐骑属性加成
+		Map<Integer, MountSpecialGet> roleMountGet = player.getMountInventory().getMountSpecialMap();
+		if (roleMountGet != null) {
+			for (MountSpecialGet mountGet : roleMountGet.values()) {
+				mountGradeCfg = MountTemplateMgr.getMountTemps().get(mountGet.getMountId());
+				toalPro.addAll(mountGradeCfg.getAttList());
+			}
+		}
+
+		// 骑兵加成
+		MountWeaponCfg mountWeaponCfg = MountTemplateMgr.getWeaponTemps().get(mount.getWeaponGrade());
+		toalPro.addAll(mountWeaponCfg.getAttList());
+
+		for (Integer pro : toalPro) {
+			SimpleProperty property = SkillUtil.readPro(pro);
+			if (property.isPre()) {
+				SkillUtil.joinPro(mountPer, property.getType(), property.getValue());
+			} else {
+				SkillUtil.joinPro(mountData, property.getType(), property.getValue());
+			}
+		}
+	}
+
+	public void updataProperty() {
+		if (player.getArmyInventory() != null) {
+			BaseProperty skillData = new BaseProperty();
+			BaseProperty skillPer = new BaseProperty();
+			// 加入技能属性
+			computeMountAtt(skillData, skillPer);
+			player.getArmyInventory().getHero().addSkillPro(skillData, skillPer);
+			player.getArmyInventory().updateProperty();
+		}
+	}
+
 }

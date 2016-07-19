@@ -195,6 +195,19 @@ public class TeamMgr{
 		}
 	}
 	
+	/**
+	 * 获取玩家所在队伍，没有队伍返回空
+	 * @param playerId
+	 * @return
+	 */
+	public static Team getPlayerTeam(long playerId){
+		Team team = null;
+		TeamMember tm = getPlayerTeamMap().get(playerId);
+		if(tm != null){
+			team = getAllTeams().get(tm.getTeamId());
+		}
+		return team;
+	}
 
 	
 	public static void main(String[] args) {

@@ -25,8 +25,6 @@ public class ItemFullInfoCmd extends AbstractCommand {
 			ItemFullInfoMsg.Builder fullInfo = ItemFullInfoMsg.newBuilder();
 			item.getItemInfo().writeProto(fullInfo);
 			
-			System.out.println(fullInfo);
-			
 			PBMessage message = MessageUtil.buildMessage(Protocol.U_ITEM_FULL_INFO, fullInfo.build());
 			player.sendPbMessage(message);
 			

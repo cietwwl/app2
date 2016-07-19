@@ -6,7 +6,7 @@ import "battle/BufferMsg.proto";
 import "army/PropertyMsg.proto";
 message BattleLivingInfoMsg {
 	optional int64 livingId = 1; //living唯一ID
-	optional int64 player_id = 2; //角色ID
+	optional int64 playerId = 2; //角色ID
 	optional string nick_name = 3; //昵称
 	optional int32 type = 4; //类型  1 玩家 2 怪物 3 宠物 4 NPC
 	optional int32 level = 5; //等级
@@ -26,5 +26,5 @@ message BattleLivingInfoMsg {
 	optional int32 liveState  = 19; //状态 0 活着   1死亡
 	optional int32  soulState  = 20; //是否是元魂状态 0 气血状态 1 元魂状态
 	optional int32 mountState = 21; // 坐骑状态
-	optional int32 battleMode = 22; // 战斗模式   1和平模式2对战模式3门派模式
+	//optional int32 battleMode = 22; // 战斗模式   1和平模式2对战模式3门派模式
 }

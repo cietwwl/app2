@@ -43,7 +43,6 @@ public class WorldMgr {
 	 */
 	public static GamePlayer getPlayer(long playerId) {
 		if (playerId <= 0) {
-			Log.error("获取玩家数据不存在" + playerId);
 			return null;
 		}
 		// 从内存中查找
@@ -164,6 +163,26 @@ public class WorldMgr {
 			GamePlayer player = it.next();
 			if (player.getPlayerState() == PlayerState.ONLINE) {
 				list.add(player);
+			}
+		}
+		return list;
+	}
+	
+	/**
+	 * 获取所有在线玩家
+	 * @return
+	 */
+	public static List<Long> getPlayerIds(Selector selector){
+		List<Long> list = new ArrayList<Long>();
+		Iterator<GamePlayer> it = getAllPlayers().iterator();
+		while (it.hasNext()) {
+			GamePlayer player = it.next();
+			if(selector == null){
+				list.add(player.getPlayerId());
+			}else{
+				if(selector.selectPlayer(player)){
+					list.add(player.getPlayerId());
+				}
 			}
 		}
 		return list;

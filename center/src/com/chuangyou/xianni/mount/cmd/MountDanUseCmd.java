@@ -63,8 +63,7 @@ public class MountDanUseCmd extends AbstractCommand {
 		player.sendPbMessage(pAtt);
 		
 		//影响人物属性变更
-		player.getArmyInventory().getArmy().getHero().addMount(attMap);
-		player.getArmyInventory().updateProperty();
+		player.getMountInventory().updataProperty();
 	}
 
 }

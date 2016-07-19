@@ -3,26 +3,28 @@ package com.chuangyou.xianni.skill;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.hero.HeroSkill;
+import com.chuangyou.xianni.entity.property.BaseProperty;
+import com.chuangyou.xianni.entity.skill.SkillStage;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.interfaces.IInventory;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.skill.template.SimpleProperty;
 import com.chuangyou.xianni.skill.template.SkillTempMgr;
 import com.chuangyou.xianni.sql.dao.DBManager;
 
 public class SkillInventory extends AbstractEvent implements IInventory {
 	/** 主动技能类型 */
-	public static final int initiativeSkillType = 1;
+	public static final int			initiativeSkillType	= 1;
 	/** 被动技能类型（培养类 */
-	public static final int passiveSkillType = 2;
+	public static final int			passiveSkillType	= 2;
 	/** 普攻技能 */
-	public static final int pugongSkillType = 3;
-	private GamePlayer player;
-	private Map<String, HeroSkill> heroSkill = null;
- 
+	public static final int			pugongSkillType		= 3;
+	private GamePlayer				player;
+	private Map<String, HeroSkill>	heroSkill			= null;
+
 	public SkillInventory(GamePlayer player) {
 		this.player = player;
 	}
@@ -111,8 +113,10 @@ public class SkillInventory extends AbstractEvent implements IInventory {
 		// int type = entry.getValue().getType();
 		// int subType = entry.getValue().getSubType();
 		// int grandsonType = entry.getValue().getGrandsonType();
-		// // SkillTempateInfo skillInfo = SkillTempMgr.getSkillTemp(entry.getValue().getSkillId());// 技能配置
-		// if (skill.getType() == type && skill.getSubType() == subType && skill.getGrandsonType() == grandsonType) {
+		// // SkillTempateInfo skillInfo =
+		// SkillTempMgr.getSkillTemp(entry.getValue().getSkillId());// 技能配置
+		// if (skill.getType() == type && skill.getSubType() == subType &&
+		// skill.getGrandsonType() == grandsonType) {
 		// isInsert = false;
 		// }
 		// }
@@ -124,6 +128,79 @@ public class SkillInventory extends AbstractEvent implements IInventory {
 
 		this.heroSkill.put(key, skill);
 		return true;
+	}
+
+	/**
+	 * 获取技能总属性(包括技能阶段的属性)
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public void getTotalPro(BaseProperty bagData, BaseProperty bagPer) {
+		Map<String, HeroSkill> skillMap = getHeroSkill(passiveSkillType, 0);
+		for (Entry<String, HeroSkill> entry : skillMap.entrySet()) {
+			HeroSkill skill = entry.getValue();
+			int skillId = skill.getSkillId();
+			SkillTempateInfo skillInfo = SkillTempMgr.getSkillTemp(skillId);// 技能配置
+			if (skillInfo != null) {
+				String propertyIds = skillInfo.getPropertyIds();
+				if (propertyIds != null) {
+					for (String str : propertyIds.split(",")) {
+						if (str.trim().equals("")) {
+							continue;
+						}
+						SimpleProperty property = SkillUtil.readPro(Integer.valueOf(str));
+						if (property.isPre()) {
+							SkillUtil.joinPro(bagPer, property.getType(), property.getValue());
+						} else {
+							SkillUtil.joinPro(bagData, property.getType(), property.getValue());
+						}
+
+					}
+				}
+			}
+		}
+		// 技能阶段
+		int skillStage = player.getBasePlayer().getPlayerInfo().getSkillStage();// 当前技能阶段
+		SkillStage stage = SkillTempMgr.getSkillStage(skillStage);
+		if (stage != null) {
+			bagData.addSoul(stage.getSoul());
+			bagData.addBlood(stage.getBlood());
+			bagData.addAttack(stage.getAttack());
+			bagData.addDefence(stage.getDefence());
+			bagData.addSoulAttack(stage.getSoulAttack());
+			bagData.addSoulDefence(stage.getSoulDefence());
+			bagData.addAccurate(stage.getAccurate());
+			bagData.addDodge(stage.getDodge());
+			bagData.addCrit(stage.getCrit());
+			bagData.addCritDefence(stage.getCritDefence());
+
+			// SkillPropertyTemplateInfo template =
+			// SkillTempMgr.getSkillProTemp(stage.getAddTemplateId());// 技能配置
+			// if (template != null) {
+			// proData.addSoul(template.getSoul());
+			// proData.addBlood(template.getBlood());
+			// proData.addAttack(template.getAttack());
+			// proData.addDefence(template.getDefence());
+			// proData.addSoulAttack(template.getSoulAttack());
+			// proData.addSoulDefence(template.getSoulDefence());
+			// proData.addAccurate(template.getAccurate());
+			// proData.addDodge(template.getDodge());
+			// proData.addCrit(template.getCrit());
+			// proData.addCritDefence(template.getCritDefence());
+			// }
+		}
+	}
+
+	public void updataProperty() {
+		if (player.getArmyInventory() != null) {
+			BaseProperty skillData = new BaseProperty();
+			BaseProperty skillPer = new BaseProperty();
+			// 加入技能属性
+			getTotalPro(skillData, skillPer);
+			player.getArmyInventory().getHero().addSkillPro(skillData, skillPer);
+			player.getArmyInventory().updateProperty();
+		}
 	}
 
 }

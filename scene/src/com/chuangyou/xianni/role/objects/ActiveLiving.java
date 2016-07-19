@@ -27,13 +27,13 @@ import com.chuangyou.xianni.world.WorldMgr;
 public class ActiveLiving extends Living {
 
 	/// 目标
-	protected Vector3 goal;
+	protected Vector3		goal;
 	/// 路径
-	protected List<Vector3> path;
+	protected List<Vector3>	path;
 	/// 移动所需要的时间
-	protected int moveTime;
+	protected int			moveTime;
 	/// 寻路等待中
-	protected boolean navWaiting = false;
+	protected boolean		navWaiting	= false;
 
 	public boolean isNavWaiting() {
 		return navWaiting;
@@ -70,8 +70,10 @@ public class ActiveLiving extends Living {
 	public void moveto(Vector3 goal) {
 		this.goal = goal;
 		this.moveTime = (int) ((Vector3.distance(getPostion(), goal) / getSpeed()) * 1000);
-//		if (id == 1000000000033L)
-//			System.out.println("moveto " + id + " 目标位：" + goal + " 起始位：" + this.getPostion() + " this.moveTime: " + this.moveTime + " getSpeed: " + getSpeed());
+		// if (id == 1000000000033L)
+		// System.out.println("moveto " + id + " 目标位：" + goal + " 起始位：" +
+		// this.getPostion() + " this.moveTime: " + this.moveTime + " getSpeed:
+		// " + getSpeed());
 
 		setTargetPostion(goal);
 		Set<Long> nearPlayers = getNears(new PlayerSelectorHelper(this));
@@ -91,9 +93,9 @@ public class ActiveLiving extends Living {
 	}
 
 	public static void main(String[] args) {
-		Vector3 invalid = new Vector3(40.41069F,1.0F,-119.632835F);
-		Vector3 invalid2 = new Vector3(40.163776F,1.0F,-120.601875F);
-		
+		Vector3 invalid = new Vector3(40.41069F, 1.0F, -119.632835F);
+		Vector3 invalid2 = new Vector3(40.163776F, 1.0F, -120.601875F);
+
 		float a = Vector3.distance(invalid, invalid2);
 		System.out.println(a);
 		for (float i = a * 1000; i > 0; i -= 100) {
@@ -141,7 +143,8 @@ public class ActiveLiving extends Living {
 	 */
 	public boolean isArrial() {
 		// if (id == 1000000000035L)
-		// System.out.println("isArrial this.moveTime = "+id+" " + this.moveTime);
+		// System.out.println("isArrial this.moveTime = "+id+" " +
+		// this.moveTime);
 		return this.moveTime <= 0;
 	}
 
@@ -190,7 +193,7 @@ public class ActiveLiving extends Living {
 		//
 		// }
 		/* 碰撞检测 */
-	 
+
 		if (field != null)
 			field.getGrid().moveto(this, position);
 		super.setPostion(position);
@@ -203,6 +206,9 @@ public class ActiveLiving extends Living {
 	 * @return
 	 */
 	protected boolean isValidPoint(Vector3 point) {
+		if (getField() == null) {
+			return false;
+		}
 		try {
 			NavmeshSeeker seeker = FieldMgr.getIns().GetSeekerTemp(getField().getFieldInfo().getResName());
 			NavmeshTriangle tri = seeker.getTriangle(point);

@@ -25,7 +25,7 @@ public class SkillTempateInfo {
 	private String sysBufferIds; // 添加的系统BUFF
 	private String fightBufferIds; // 添加的战斗buff
 	private String description; // 描述
-	private SkillPropertyTemplateInfo proTemp;// 属性模板
+	//private SkillPropertyTemplateInfo proTemp;// 属性模板
 
 	public int getTemplateId() {
 		return templateId;
@@ -187,12 +187,12 @@ public class SkillTempateInfo {
 		this.propertyIds = propertyIds;
 	}
 
-	public SkillPropertyTemplateInfo getProTemp() {
-		return proTemp;
-	}
-
-	public void setProTemp(SkillPropertyTemplateInfo proTemp) {
-		this.proTemp = proTemp;
-	}
+//	public SkillPropertyTemplateInfo getProTemp() {
+//		return proTemp;
+//	}
+//
+//	public void setProTemp(SkillPropertyTemplateInfo proTemp) {
+//		this.proTemp = proTemp;
+//	}
 
 }

@@ -53,6 +53,8 @@ public class BaseItem {
 			getItemInfo().setPlayerId(playerId);
 			getItemInfo().setObjectId(objectId);
 			getItemInfo().setBagType(bagType);
+		}else{
+			Log.error("----------------------");
 		}
 	}
 

@@ -86,8 +86,12 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 	}
 
 	private void createChildren() {
+		if (isOver() || (state != null && state.code >= NodeState.OVER)) {
+			return;
+		}
 		curCount++;
 		toalCount++;
+	
 
 		int randomx = spwanInfo.getBound_x();
 		int randomy = spwanInfo.getBound_y();
@@ -165,13 +169,14 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 
 	// 获取未刷出的怪物
 	public int getLeftMonster() {
-		int result = spwanInfo.getToalCount() - toalCount;
-		if (result < 0 || result > 10) {
+		int result = spwanInfo.getToalCount() - toalCount + children.size();
+		if (result < 0 || result > 20) {
 			Log.error("node get leftMonster error,node info :" + getSpwanId());
 			result = 0;
 		}
 		toalCount = spwanInfo.getToalCount();
 		curCount = spwanInfo.getMaxCount();
+		this.state = new OverState(this);
 		return result;
 	}
 

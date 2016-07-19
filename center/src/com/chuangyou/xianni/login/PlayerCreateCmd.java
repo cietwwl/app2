@@ -93,6 +93,17 @@ public class PlayerCreateCmd implements Command {
 			}
 			playerInfo.setMountId(initMountId);
 			playerInfo.setMagicWeaponId(0);
+			playerInfo.setFashionId(0);
+			playerInfo.setWeaponId(0);
+			playerInfo.setWingId(0);
+			
+			if(req.getRoleConfigId() == 1){
+				playerInfo.setWeaponId(2110001);
+			}else if(req.getRoleConfigId() == 2){
+				
+			}else if(req.getRoleConfigId() == 3){
+				playerInfo.setWeaponId(2110004);
+			}
 
 			PlayerJoinInfo playerJoinInfo = new PlayerJoinInfo();
 			playerJoinInfo.setPlayerId(playerInfo.getPlayerId());

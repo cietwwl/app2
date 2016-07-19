@@ -1,0 +1,14 @@
+//protocol=149;
+option java_package = "com.chuangyou.common.protobuf.pb.chat";
+option java_outer_classname = "ChatReceiveProto";
+
+message ChatReceiveMsg{
+	optional int32 channel = 1;			//频道
+	optional int64 sendTime = 2;		//发送时间
+	optional int64 senderId = 3;		//发送者ID
+	optional string senderName = 4;		//发送者名字
+	optional int32 skinId = 5;			//发送者模型ID
+	optional int32 level = 6;			//发送者等级
+	optional int32 vip = 7;				//发送者VIP等级
+	optional string chatContent = 8;	//聊天内容
+}

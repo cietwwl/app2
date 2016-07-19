@@ -1,0 +1,7 @@
+//protocol=10148;
+option java_package = "com.chuangyou.common.protobuf.pb.chat";
+option java_outer_classname = "ChatHistoryReqProto";
+
+message ChatHistoryReqMsg{
+	optional int32 channel = 1;
+}

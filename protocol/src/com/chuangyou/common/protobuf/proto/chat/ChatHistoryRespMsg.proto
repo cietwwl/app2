@@ -1,0 +1,10 @@
+//protocol=150;
+option java_package = "com.chuangyou.common.protobuf.pb.chat";
+option java_outer_classname = "ChatHistoryRespProto";
+
+import "chat/ChatReceiveMsg.proto";
+
+message ChatHistoryRespMsg{
+	optional int32 channel = 1; //频道
+	repeated ChatReceiveMsg chatMsg = 2; //聊天信息
+}

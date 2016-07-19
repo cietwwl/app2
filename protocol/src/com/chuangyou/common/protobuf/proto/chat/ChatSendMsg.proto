@@ -1,0 +1,9 @@
+//protocol=10147;
+option java_package = "com.chuangyou.common.protobuf.pb.chat";
+option java_outer_classname = "ChatSendProto";
+
+message ChatSendMsg{
+	optional int32 channel = 1;			//聊天频道
+	optional int64 receiverId = 2;		//接收者ID
+	optional string chatContent = 3;	//聊天内容
+}

@@ -79,7 +79,7 @@ public class Hero extends Living {
 		PropertyMsg.Builder battleMode = PropertyMsg.newBuilder();
 		battleMode.setType(EnumAttr.BATTLE_MODE.getValue());
 		battleMode.setTotalPoint(gamePlayer.getBasePlayer().getPlayerInfo().getBattleMode());
-		propertis.addPropertys(pkVal);
+		propertis.addPropertys(battleMode);
 
 		heroInfo.setPropertis(propertis);
 

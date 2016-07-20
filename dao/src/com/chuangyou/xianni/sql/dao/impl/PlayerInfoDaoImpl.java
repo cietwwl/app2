@@ -80,6 +80,10 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 
 		para.put(19, new DbParameter(Types.BIGINT, playerInfo.getPlayerId()));
 		result = execNoneQuery(sql, para) > -1 ? true : false;
+		
+		
+		System.out.println("保存用户数据："+result);
+		
 		playerInfo.commitUpdate(result);
 		return result;
 	}

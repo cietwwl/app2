@@ -13,6 +13,8 @@ public class FieldInfo {
 	private int initScriptId;					// 初始化脚本ID
 	private String resName;						// 资源名称
 	private boolean isBattle;					// 是否pk地图
+	private int startBattleTime;				// pk保护开始时间
+	private int endBattleTime;					// pk保护结束时间
 
 	public String getName() {
 		return name;
@@ -92,6 +94,22 @@ public class FieldInfo {
 
 	public void setBattle(boolean isBattle) {
 		this.isBattle = isBattle;
+	}
+
+	public int getStartBattleTime() {
+		return startBattleTime;
+	}
+
+	public void setStartBattleTime(int startBattleTime) {
+		this.startBattleTime = startBattleTime;
+	}
+
+	public int getEndBattleTime() {
+		return endBattleTime;
+	}
+
+	public void setEndBattleTime(int endBattleTime) {
+		this.endBattleTime = endBattleTime;
 	}
 
 }

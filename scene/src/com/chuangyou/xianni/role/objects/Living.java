@@ -48,6 +48,7 @@ import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.RoleConstants;
+import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.grid.Grid;
 import com.chuangyou.xianni.warfield.grid.GridCoord;
@@ -515,15 +516,16 @@ public class Living extends AbstractActionQueue {
 	 * @param type
 	 * @param value
 	 */
-	public void updateProperty(long playerId, List<PropertyMsg> properties) {
+	public void updateProperty(Living living, List<PropertyMsg> properties) {
 		// 修改玩家属性
-		this.readProperty(properties);
+		living.readProperty(properties);
 		PlayerAttUpdateMsg.Builder msg = PlayerAttUpdateMsg.newBuilder();
-		msg.setPlayerId(playerId);
+		msg.setPlayerId(living.getArmyId());
 		msg.addAllAtt(properties);
 
 		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
-		nears.add(getArmyId());
+		nears.add(living.getArmyId());
+		System.out.println("==========修改 living: " + living + " msg:" + msg.toString());
 		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_RESP_PLAYER_ATT_UPDATE, msg.build());
 
 	}
@@ -662,9 +664,14 @@ public class Living extends AbstractActionQueue {
 			pmsg.setTotalPoint(this.getProperty(attr.getValue()));
 			pmsg.setType(attr.getValue());
 			cachBattleInfoPacket.addPropertis(pmsg);
+
+			// System.out.println("val1: "+this.getProperty(attr.getValue()) + " type: "+attr.getValue());
 		}
 		BattleLivingInfoMsg.Builder msg = this.cachBattleInfoPacket;
 		this.cachBattleInfoPacket = null;
+
+		// System.out.println("----msg: "+msg);
+
 		return msg;
 	}
 
@@ -882,9 +889,11 @@ public class Living extends AbstractActionQueue {
 			break;
 		case PK_VAL:
 			this.setPkVal((int) value);
+			System.out.println("PK_VAL value:" + value);
 			break;
 		case BATTLE_MODE:
 			this.setBattleMode((int) value);
+			System.out.println("BATTLE_MODE value:" + value);
 		default:
 			break;
 		}
@@ -961,6 +970,8 @@ public class Living extends AbstractActionQueue {
 			return this.getSpeed();
 		case TEAM_ID:
 			return this.getTeamId();
+		case PK_VAL:
+			return this.pkVal;
 		case BATTLE_MODE:
 			return this.getBattleMode();
 		default:
@@ -1477,7 +1488,8 @@ public class Living extends AbstractActionQueue {
 
 	/** 脱离战斗 */
 	public void leaveFight() {
-		changeFlickerName(false);
+		if (this.getType() == RoleType.player)
+			changeFlickerName(false);
 
 		if (!fightState) {
 			return;
@@ -1524,14 +1536,14 @@ public class Living extends AbstractActionQueue {
 			Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
 			changeMap.put(EnumAttr.PK_VAL.getValue(), (long) this.getPkVal());
 			notifyCenter(changeMap, this.getArmyId());
-			
+
 			List<PropertyMsg> properties = new ArrayList<>();
 			PropertyMsg.Builder p = PropertyMsg.newBuilder();
 			p.setBasePoint((long) this.getPkVal());
 			p.setTotalPoint((long) this.getPkVal());
 			p.setType(EnumAttr.PK_VAL.getValue());
 			properties.add(p.build());
-			updateProperty(this.getArmyId(), properties);
+			updateProperty(this, properties);
 		}
 	}
 

@@ -26,5 +26,4 @@ public class GetHeroSkillCmd extends AbstractCommand {
 		PBMessage p = MessageUtil.buildMessage(Protocol.U_HERO_GETSKILLINFO, msg);
 		player.sendPbMessage(p);
 	}
-
 }

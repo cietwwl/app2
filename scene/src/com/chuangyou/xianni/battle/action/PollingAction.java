@@ -106,7 +106,7 @@ public abstract class PollingAction extends DelayAction {
 		}
 	}
 
-	/* pk值计算 **/
+	/* pk值计算  **/
 	private void calPkVal() {
 		if (living.getType() == RoleType.player && living.getField() != null) {
 			if (System.currentTimeMillis() - living.getPkValCalTime() >= 10 * 1000 && living.getField().getFieldInfo().isBattle()) {

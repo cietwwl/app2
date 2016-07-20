@@ -49,6 +49,8 @@ public class FieldInfoDaoImpl extends BaseDao implements FieldInfoDao {
 					info.setInitScriptId(rs.getInt("initScriptId"));
 					info.setResName(rs.getString("resName"));
 					info.setBattle(rs.getBoolean("isBattle"));
+					info.setStartBattleTime(rs.getInt("startBattleTime"));
+					info.setEndBattleTime(rs.getInt("endBattleTime"));
 					infos.add(info);
 				}
 			} catch (SQLException e) {

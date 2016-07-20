@@ -81,63 +81,71 @@ public class Player extends ActiveLiving {
 				ThreadManager.actionExecutor.enDelayQueue(revival);
 				revivaling = true;
 			}
-		}
-		
 
-		if (source.getBattleMode() == BattleModeCode.warBattleMode && this.getBattleMode() == BattleModeCode.peaceBattleMode) {// 增加pk值
-			source.setPkVal(source.getPkVal() + 1000);
-			// 通知
-			Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
-			changeMap.put(EnumAttr.PK_VAL.getValue(), (long) source.getPkVal());
-			notifyCenter(changeMap, source.getArmyId());
+			System.out.println("source playerId: " + source.toString() + "  source.getPkVal(): " + source.getPkVal());
+			// 攻击源处理
+			if (source.getBattleMode() == BattleModeCode.warBattleMode && this.getBattleMode() == BattleModeCode.peaceBattleMode) {// 增加pk值
+				source.setPkVal(source.getPkVal() + 1000);
+				// 通知
+				Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
+				changeMap.put(EnumAttr.PK_VAL.getValue(), (long) source.getPkVal());
+				notifyCenter(changeMap, source.getArmyId());
 
+				List<PropertyMsg> properties = new ArrayList<>();
+				PropertyMsg.Builder p = PropertyMsg.newBuilder();
+				p.setBasePoint((long) source.getPkVal());
+				p.setTotalPoint((long) source.getPkVal());
+				p.setType(EnumAttr.PK_VAL.getValue());
+				properties.add(p.build());
+				updateProperty(source, properties);
+			}
+			
+			
+			
+			System.out.println("source playerId: " + source.getArmyId() + "  source.getPkVal(): " + source.getPkVal());
+
+			// 自己
 			List<PropertyMsg> properties = new ArrayList<>();
-			PropertyMsg.Builder p = PropertyMsg.newBuilder();
-			p.setBasePoint((long) source.getPkVal());
-			p.setTotalPoint((long) source.getPkVal());
-			p.setType(EnumAttr.PK_VAL.getValue());
-			properties.add(p.build());
-			updateProperty(source.getArmyId(), properties);
-		}
+			Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
 
-		List<PropertyMsg> properties = new ArrayList<>();
-		Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
+			int changePkVal = 0;// 减少pk值
+			long exp = 0;// 损失经验
+			if (getColour(this.getPkVal()) == BattleModeCode.yellow) {
+				changePkVal = MathUtils.randomClamp(10, 20);
+				exp = getSimpleInfo().getExp() * (getPkVal() / 500000);
+			} else if (getColour(this.getPkVal()) == BattleModeCode.red) {
+				changePkVal = MathUtils.randomClamp(40, 80);
+				exp = getSimpleInfo().getExp() * (getPkVal() / 100000);
+			}
+			System.out.println(" playerId: " + this.getArmyId() + "  exp: " + exp + " changePkVal: " + changePkVal + " this.getPkVal(): " + this.getPkVal());
+			if (changePkVal > 0) {
+				changePkVal = this.getPkVal() - changePkVal < 0 ? 0 : this.getPkVal() - changePkVal;
+				this.setPkVal(changePkVal);
+				PropertyMsg.Builder p = PropertyMsg.newBuilder();
+				p.setBasePoint(changePkVal);
+				p.setTotalPoint(changePkVal);
+				p.setType(EnumAttr.PK_VAL.getValue());
+				properties.add(p.build());
+				changeMap.put(EnumAttr.PK_VAL.getValue(), (long) changePkVal);
+			}
+			System.out.println(" ---playerId: " + this.getArmyId() + "  exp: " + exp + " changePkVal: " + changePkVal + " this.getPkVal(): " + this.getPkVal());
 
-		int changePkVal = 0;// 减少pk值
-		long exp = 0;// 损失经验
-		if (getColour(this.getPkVal()) == BattleModeCode.yellow) {
-			changePkVal = MathUtils.randomClamp(10, 20);
-			exp = getSimpleInfo().getExp() * (getPkVal() / 500000);
-		} else if (getColour(this.getPkVal()) == BattleModeCode.red) {
-			changePkVal = MathUtils.randomClamp(40, 80);
-			exp = getSimpleInfo().getExp() * (getPkVal() / 100000);
-		}
+			if (exp > 0) {
+				long nowExp = getSimpleInfo().getExp() - exp < 0 ? 0 : getSimpleInfo().getExp() - exp;
+				PropertyMsg.Builder p = PropertyMsg.newBuilder();
+				p.setBasePoint(nowExp);
+				p.setTotalPoint(nowExp);
+				p.setType(EnumAttr.Exp.getValue());
+				properties.add(p.build());
+				changeMap.put(EnumAttr.Exp.getValue(), (long) (exp * -1));
+			}
 
-		if (changePkVal > 0) {
-			changePkVal = this.getPkVal() - changePkVal < 0 ? 0 : this.getPkVal() - changePkVal;
-			this.setPkVal(changePkVal);
-			PropertyMsg.Builder p = PropertyMsg.newBuilder();
-			p.setBasePoint(changePkVal);
-			p.setTotalPoint(changePkVal);
-			p.setType(EnumAttr.PK_VAL.getValue());
-			properties.add(p.build());
-			changeMap.put(EnumAttr.PK_VAL.getValue(), (long) this.getPkVal());
+			if (changeMap.size() > 0)
+				notifyCenter(changeMap, this.getArmyId());
+
+			if (properties.size() > 0)
+				updateProperty(this, properties);
 		}
-		if (exp > 0) {
-			long nowExp = getSimpleInfo().getExp() - exp < 0 ? 0 : getSimpleInfo().getExp() - exp;
-			PropertyMsg.Builder p = PropertyMsg.newBuilder();
-			p.setBasePoint(nowExp);
-			p.setTotalPoint(nowExp);
-			p.setType(EnumAttr.Exp.getValue());
-			properties.add(p.build());
-			changeMap.put(EnumAttr.Exp.getValue(), (long) (exp * -1));
-		}
-		if (changeMap.size() > 0)
-			notifyCenter(changeMap, this.getArmyId());
-		if (properties.size() > 0)
-			updateProperty(this.getArmyId(), properties);
-		
-		
 		return true;
 	}
 

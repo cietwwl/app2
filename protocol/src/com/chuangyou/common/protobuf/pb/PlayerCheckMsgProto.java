@@ -16,7 +16,7 @@ public final class PlayerCheckMsgProto {
      * <code>optional bool result = 1;</code>
      *
      * <pre>
-     *ÑéÖ¤½á¹¹
+     *éªŒè¯ç»“æ„
      * </pre>
      */
     boolean hasResult();
@@ -24,7 +24,7 @@ public final class PlayerCheckMsgProto {
      * <code>optional bool result = 1;</code>
      *
      * <pre>
-     *ÑéÖ¤½á¹¹
+     *éªŒè¯ç»“æ„
      * </pre>
      */
     boolean getResult();
@@ -59,7 +59,7 @@ public final class PlayerCheckMsgProto {
      * <code>optional int64 user_id = 3;</code>
      *
      * <pre>
-     *ÓÃ»§ID
+     *ç”¨æˆ·ID
      * </pre>
      */
     boolean hasUserId();
@@ -67,7 +67,7 @@ public final class PlayerCheckMsgProto {
      * <code>optional int64 user_id = 3;</code>
      *
      * <pre>
-     *ÓÃ»§ID
+     *ç”¨æˆ·ID
      * </pre>
      */
     long getUserId();
@@ -76,7 +76,7 @@ public final class PlayerCheckMsgProto {
      * <code>optional .PlayerInfoListMsg players = 4;</code>
      *
      * <pre>
-     *½ÇÉ«°ü
+     *è§’è‰²åŒ…
      * </pre>
      */
     boolean hasPlayers();
@@ -84,7 +84,7 @@ public final class PlayerCheckMsgProto {
      * <code>optional .PlayerInfoListMsg players = 4;</code>
      *
      * <pre>
-     *½ÇÉ«°ü
+     *è§’è‰²åŒ…
      * </pre>
      */
     com.chuangyou.common.protobuf.pb.PlayerInfoListMsgProto.PlayerInfoListMsg getPlayers();
@@ -92,7 +92,7 @@ public final class PlayerCheckMsgProto {
      * <code>optional .PlayerInfoListMsg players = 4;</code>
      *
      * <pre>
-     *½ÇÉ«°ü
+     *è§’è‰²åŒ…
      * </pre>
      */
     com.chuangyou.common.protobuf.pb.PlayerInfoListMsgProto.PlayerInfoListMsgOrBuilder getPlayersOrBuilder();
@@ -224,7 +224,7 @@ public final class PlayerCheckMsgProto {
      * <code>optional bool result = 1;</code>
      *
      * <pre>
-     *ÑéÖ¤½á¹¹
+     *éªŒè¯ç»“æ„
      * </pre>
      */
     public boolean hasResult() {
@@ -234,7 +234,7 @@ public final class PlayerCheckMsgProto {
      * <code>optional bool result = 1;</code>
      *
      * <pre>
-     *ÑéÖ¤½á¹¹
+     *éªŒè¯ç»“æ„
      * </pre>
      */
     public boolean getResult() {
@@ -301,7 +301,7 @@ public final class PlayerCheckMsgProto {
      * <code>optional int64 user_id = 3;</code>
      *
      * <pre>
-     *ÓÃ»§ID
+     *ç”¨æˆ·ID
      * </pre>
      */
     public boolean hasUserId() {
@@ -311,7 +311,7 @@ public final class PlayerCheckMsgProto {
      * <code>optional int64 user_id = 3;</code>
      *
      * <pre>
-     *ÓÃ»§ID
+     *ç”¨æˆ·ID
      * </pre>
      */
     public long getUserId() {
@@ -324,7 +324,7 @@ public final class PlayerCheckMsgProto {
      * <code>optional .PlayerInfoListMsg players = 4;</code>
      *
      * <pre>
-     *½ÇÉ«°ü
+     *è§’è‰²åŒ…
      * </pre>
      */
     public boolean hasPlayers() {
@@ -334,7 +334,7 @@ public final class PlayerCheckMsgProto {
      * <code>optional .PlayerInfoListMsg players = 4;</code>
      *
      * <pre>
-     *½ÇÉ«°ü
+     *è§’è‰²åŒ…
      * </pre>
      */
     public com.chuangyou.common.protobuf.pb.PlayerInfoListMsgProto.PlayerInfoListMsg getPlayers() {
@@ -344,7 +344,7 @@ public final class PlayerCheckMsgProto {
      * <code>optional .PlayerInfoListMsg players = 4;</code>
      *
      * <pre>
-     *½ÇÉ«°ü
+     *è§’è‰²åŒ…
      * </pre>
      */
     public com.chuangyou.common.protobuf.pb.PlayerInfoListMsgProto.PlayerInfoListMsgOrBuilder getPlayersOrBuilder() {
@@ -647,7 +647,7 @@ public final class PlayerCheckMsgProto {
        * <code>optional bool result = 1;</code>
        *
        * <pre>
-       *ÑéÖ¤½á¹¹
+       *éªŒè¯ç»“æ„
        * </pre>
        */
       public boolean hasResult() {
@@ -657,7 +657,7 @@ public final class PlayerCheckMsgProto {
        * <code>optional bool result = 1;</code>
        *
        * <pre>
-       *ÑéÖ¤½á¹¹
+       *éªŒè¯ç»“æ„
        * </pre>
        */
       public boolean getResult() {
@@ -667,7 +667,7 @@ public final class PlayerCheckMsgProto {
        * <code>optional bool result = 1;</code>
        *
        * <pre>
-       *ÑéÖ¤½á¹¹
+       *éªŒè¯ç»“æ„
        * </pre>
        */
       public Builder setResult(boolean value) {
@@ -680,7 +680,7 @@ public final class PlayerCheckMsgProto {
        * <code>optional bool result = 1;</code>
        *
        * <pre>
-       *ÑéÖ¤½á¹¹
+       *éªŒè¯ç»“æ„
        * </pre>
        */
       public Builder clearResult() {
@@ -795,7 +795,7 @@ public final class PlayerCheckMsgProto {
        * <code>optional int64 user_id = 3;</code>
        *
        * <pre>
-       *ÓÃ»§ID
+       *ç”¨æˆ·ID
        * </pre>
        */
       public boolean hasUserId() {
@@ -805,7 +805,7 @@ public final class PlayerCheckMsgProto {
        * <code>optional int64 user_id = 3;</code>
        *
        * <pre>
-       *ÓÃ»§ID
+       *ç”¨æˆ·ID
        * </pre>
        */
       public long getUserId() {
@@ -815,7 +815,7 @@ public final class PlayerCheckMsgProto {
        * <code>optional int64 user_id = 3;</code>
        *
        * <pre>
-       *ÓÃ»§ID
+       *ç”¨æˆ·ID
        * </pre>
        */
       public Builder setUserId(long value) {
@@ -828,7 +828,7 @@ public final class PlayerCheckMsgProto {
        * <code>optional int64 user_id = 3;</code>
        *
        * <pre>
-       *ÓÃ»§ID
+       *ç”¨æˆ·ID
        * </pre>
        */
       public Builder clearUserId() {
@@ -845,7 +845,7 @@ public final class PlayerCheckMsgProto {
        * <code>optional .PlayerInfoListMsg players = 4;</code>
        *
        * <pre>
-       *½ÇÉ«°ü
+       *è§’è‰²åŒ…
        * </pre>
        */
       public boolean hasPlayers() {
@@ -855,7 +855,7 @@ public final class PlayerCheckMsgProto {
        * <code>optional .PlayerInfoListMsg players = 4;</code>
        *
        * <pre>
-       *½ÇÉ«°ü
+       *è§’è‰²åŒ…
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.PlayerInfoListMsgProto.PlayerInfoListMsg getPlayers() {
@@ -869,7 +869,7 @@ public final class PlayerCheckMsgProto {
        * <code>optional .PlayerInfoListMsg players = 4;</code>
        *
        * <pre>
-       *½ÇÉ«°ü
+       *è§’è‰²åŒ…
        * </pre>
        */
       public Builder setPlayers(com.chuangyou.common.protobuf.pb.PlayerInfoListMsgProto.PlayerInfoListMsg value) {
@@ -889,7 +889,7 @@ public final class PlayerCheckMsgProto {
        * <code>optional .PlayerInfoListMsg players = 4;</code>
        *
        * <pre>
-       *½ÇÉ«°ü
+       *è§’è‰²åŒ…
        * </pre>
        */
       public Builder setPlayers(
@@ -907,7 +907,7 @@ public final class PlayerCheckMsgProto {
        * <code>optional .PlayerInfoListMsg players = 4;</code>
        *
        * <pre>
-       *½ÇÉ«°ü
+       *è§’è‰²åŒ…
        * </pre>
        */
       public Builder mergePlayers(com.chuangyou.common.protobuf.pb.PlayerInfoListMsgProto.PlayerInfoListMsg value) {
@@ -930,7 +930,7 @@ public final class PlayerCheckMsgProto {
        * <code>optional .PlayerInfoListMsg players = 4;</code>
        *
        * <pre>
-       *½ÇÉ«°ü
+       *è§’è‰²åŒ…
        * </pre>
        */
       public Builder clearPlayers() {
@@ -947,7 +947,7 @@ public final class PlayerCheckMsgProto {
        * <code>optional .PlayerInfoListMsg players = 4;</code>
        *
        * <pre>
-       *½ÇÉ«°ü
+       *è§’è‰²åŒ…
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.PlayerInfoListMsgProto.PlayerInfoListMsg.Builder getPlayersBuilder() {
@@ -959,7 +959,7 @@ public final class PlayerCheckMsgProto {
        * <code>optional .PlayerInfoListMsg players = 4;</code>
        *
        * <pre>
-       *½ÇÉ«°ü
+       *è§’è‰²åŒ…
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.PlayerInfoListMsgProto.PlayerInfoListMsgOrBuilder getPlayersOrBuilder() {
@@ -973,7 +973,7 @@ public final class PlayerCheckMsgProto {
        * <code>optional .PlayerInfoListMsg players = 4;</code>
        *
        * <pre>
-       *½ÇÉ«°ü
+       *è§’è‰²åŒ…
        * </pre>
        */
       private com.google.protobuf.SingleFieldBuilder<

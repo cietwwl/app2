@@ -16,7 +16,7 @@ public final class PostionMsgProto {
      * <code>optional int32 map_id = 1;</code>
      *
      * <pre>
-     *地图真实ID
+     *鍦板浘鐪熷疄ID
      * </pre>
      */
     boolean hasMapId();
@@ -24,7 +24,7 @@ public final class PostionMsgProto {
      * <code>optional int32 map_id = 1;</code>
      *
      * <pre>
-     *地图真实ID
+     *鍦板浘鐪熷疄ID
      * </pre>
      */
     int getMapId();
@@ -33,7 +33,7 @@ public final class PostionMsgProto {
      * <code>optional int32 map_key = 2;</code>
      *
      * <pre>
-     *地图模型ID
+     *鍦板浘妯″瀷ID
      * </pre>
      */
     boolean hasMapKey();
@@ -41,7 +41,7 @@ public final class PostionMsgProto {
      * <code>optional int32 map_key = 2;</code>
      *
      * <pre>
-     *地图模型ID
+     *鍦板浘妯″瀷ID
      * </pre>
      */
     int getMapKey();
@@ -50,7 +50,7 @@ public final class PostionMsgProto {
      * <code>optional .PBVector3 postion = 3;</code>
      *
      * <pre>
-     *坐标
+     *鍧愭爣
      * </pre>
      */
     boolean hasPostion();
@@ -58,7 +58,7 @@ public final class PostionMsgProto {
      * <code>optional .PBVector3 postion = 3;</code>
      *
      * <pre>
-     *坐标
+     *鍧愭爣
      * </pre>
      */
     com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3 getPostion();
@@ -66,7 +66,7 @@ public final class PostionMsgProto {
      * <code>optional .PBVector3 postion = 3;</code>
      *
      * <pre>
-     *坐标
+     *鍧愭爣
      * </pre>
      */
     com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3OrBuilder getPostionOrBuilder();
@@ -192,7 +192,7 @@ public final class PostionMsgProto {
      * <code>optional int32 map_id = 1;</code>
      *
      * <pre>
-     *地图真实ID
+     *鍦板浘鐪熷疄ID
      * </pre>
      */
     public boolean hasMapId() {
@@ -202,7 +202,7 @@ public final class PostionMsgProto {
      * <code>optional int32 map_id = 1;</code>
      *
      * <pre>
-     *地图真实ID
+     *鍦板浘鐪熷疄ID
      * </pre>
      */
     public int getMapId() {
@@ -215,7 +215,7 @@ public final class PostionMsgProto {
      * <code>optional int32 map_key = 2;</code>
      *
      * <pre>
-     *地图模型ID
+     *鍦板浘妯″瀷ID
      * </pre>
      */
     public boolean hasMapKey() {
@@ -225,7 +225,7 @@ public final class PostionMsgProto {
      * <code>optional int32 map_key = 2;</code>
      *
      * <pre>
-     *地图模型ID
+     *鍦板浘妯″瀷ID
      * </pre>
      */
     public int getMapKey() {
@@ -238,7 +238,7 @@ public final class PostionMsgProto {
      * <code>optional .PBVector3 postion = 3;</code>
      *
      * <pre>
-     *坐标
+     *鍧愭爣
      * </pre>
      */
     public boolean hasPostion() {
@@ -248,7 +248,7 @@ public final class PostionMsgProto {
      * <code>optional .PBVector3 postion = 3;</code>
      *
      * <pre>
-     *坐标
+     *鍧愭爣
      * </pre>
      */
     public com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3 getPostion() {
@@ -258,7 +258,7 @@ public final class PostionMsgProto {
      * <code>optional .PBVector3 postion = 3;</code>
      *
      * <pre>
-     *坐标
+     *鍧愭爣
      * </pre>
      */
     public com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3OrBuilder getPostionOrBuilder() {
@@ -542,7 +542,7 @@ public final class PostionMsgProto {
        * <code>optional int32 map_id = 1;</code>
        *
        * <pre>
-       *地图真实ID
+       *鍦板浘鐪熷疄ID
        * </pre>
        */
       public boolean hasMapId() {
@@ -552,7 +552,7 @@ public final class PostionMsgProto {
        * <code>optional int32 map_id = 1;</code>
        *
        * <pre>
-       *地图真实ID
+       *鍦板浘鐪熷疄ID
        * </pre>
        */
       public int getMapId() {
@@ -562,7 +562,7 @@ public final class PostionMsgProto {
        * <code>optional int32 map_id = 1;</code>
        *
        * <pre>
-       *地图真实ID
+       *鍦板浘鐪熷疄ID
        * </pre>
        */
       public Builder setMapId(int value) {
@@ -575,7 +575,7 @@ public final class PostionMsgProto {
        * <code>optional int32 map_id = 1;</code>
        *
        * <pre>
-       *地图真实ID
+       *鍦板浘鐪熷疄ID
        * </pre>
        */
       public Builder clearMapId() {
@@ -590,7 +590,7 @@ public final class PostionMsgProto {
        * <code>optional int32 map_key = 2;</code>
        *
        * <pre>
-       *地图模型ID
+       *鍦板浘妯″瀷ID
        * </pre>
        */
       public boolean hasMapKey() {
@@ -600,7 +600,7 @@ public final class PostionMsgProto {
        * <code>optional int32 map_key = 2;</code>
        *
        * <pre>
-       *地图模型ID
+       *鍦板浘妯″瀷ID
        * </pre>
        */
       public int getMapKey() {
@@ -610,7 +610,7 @@ public final class PostionMsgProto {
        * <code>optional int32 map_key = 2;</code>
        *
        * <pre>
-       *地图模型ID
+       *鍦板浘妯″瀷ID
        * </pre>
        */
       public Builder setMapKey(int value) {
@@ -623,7 +623,7 @@ public final class PostionMsgProto {
        * <code>optional int32 map_key = 2;</code>
        *
        * <pre>
-       *地图模型ID
+       *鍦板浘妯″瀷ID
        * </pre>
        */
       public Builder clearMapKey() {
@@ -640,7 +640,7 @@ public final class PostionMsgProto {
        * <code>optional .PBVector3 postion = 3;</code>
        *
        * <pre>
-       *坐标
+       *鍧愭爣
        * </pre>
        */
       public boolean hasPostion() {
@@ -650,7 +650,7 @@ public final class PostionMsgProto {
        * <code>optional .PBVector3 postion = 3;</code>
        *
        * <pre>
-       *坐标
+       *鍧愭爣
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3 getPostion() {
@@ -664,7 +664,7 @@ public final class PostionMsgProto {
        * <code>optional .PBVector3 postion = 3;</code>
        *
        * <pre>
-       *坐标
+       *鍧愭爣
        * </pre>
        */
       public Builder setPostion(com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3 value) {
@@ -684,7 +684,7 @@ public final class PostionMsgProto {
        * <code>optional .PBVector3 postion = 3;</code>
        *
        * <pre>
-       *坐标
+       *鍧愭爣
        * </pre>
        */
       public Builder setPostion(
@@ -702,7 +702,7 @@ public final class PostionMsgProto {
        * <code>optional .PBVector3 postion = 3;</code>
        *
        * <pre>
-       *坐标
+       *鍧愭爣
        * </pre>
        */
       public Builder mergePostion(com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3 value) {
@@ -725,7 +725,7 @@ public final class PostionMsgProto {
        * <code>optional .PBVector3 postion = 3;</code>
        *
        * <pre>
-       *坐标
+       *鍧愭爣
        * </pre>
        */
       public Builder clearPostion() {
@@ -742,7 +742,7 @@ public final class PostionMsgProto {
        * <code>optional .PBVector3 postion = 3;</code>
        *
        * <pre>
-       *坐标
+       *鍧愭爣
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3.Builder getPostionBuilder() {
@@ -754,7 +754,7 @@ public final class PostionMsgProto {
        * <code>optional .PBVector3 postion = 3;</code>
        *
        * <pre>
-       *坐标
+       *鍧愭爣
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3OrBuilder getPostionOrBuilder() {
@@ -768,7 +768,7 @@ public final class PostionMsgProto {
        * <code>optional .PBVector3 postion = 3;</code>
        *
        * <pre>
-       *坐标
+       *鍧愭爣
        * </pre>
        */
       private com.google.protobuf.SingleFieldBuilder<

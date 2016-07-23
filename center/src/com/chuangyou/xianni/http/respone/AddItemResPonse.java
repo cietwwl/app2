@@ -2,7 +2,6 @@ package com.chuangyou.xianni.http.respone;
 
 import java.util.Map;
 
-import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.item.ItemAddType;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.http.BaseRespone;
@@ -39,8 +38,9 @@ public class AddItemResPonse implements BaseRespone {
 
 		GamePlayer player = WorldMgr.getPlayerFromCache(playerId);
 		if (player != null && player.getPlayerState() == PlayerState.ONLINE) {
-			player.getBagInventory().addItem(itemTempId, count, addType, true);
-			return HttpResult.getResult(Code.SUCCESS, "物品添加成功");
+			if(player.getBagInventory().addItem(itemTempId, count, addType, true) == true){
+				return HttpResult.getResult(Code.SUCCESS, "物品添加成功");
+			}
 		}
 
 		return HttpResult.getResult(Code.SUCCESS, "物品添加失败");

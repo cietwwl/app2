@@ -16,7 +16,7 @@ public final class LoginGameReqMsgProto {
      * <code>optional int64 playerID = 1;</code>
      *
      * <pre>
-     *½ÇÉ«ID
+     *è§’è‰²ID
      * </pre>
      */
     boolean hasPlayerID();
@@ -24,7 +24,7 @@ public final class LoginGameReqMsgProto {
      * <code>optional int64 playerID = 1;</code>
      *
      * <pre>
-     *½ÇÉ«ID
+     *è§’è‰²ID
      * </pre>
      */
     long getPlayerID();
@@ -132,7 +132,7 @@ public final class LoginGameReqMsgProto {
      * <code>optional int64 playerID = 1;</code>
      *
      * <pre>
-     *½ÇÉ«ID
+     *è§’è‰²ID
      * </pre>
      */
     public boolean hasPlayerID() {
@@ -142,7 +142,7 @@ public final class LoginGameReqMsgProto {
      * <code>optional int64 playerID = 1;</code>
      *
      * <pre>
-     *½ÇÉ«ID
+     *è§’è‰²ID
      * </pre>
      */
     public long getPlayerID() {
@@ -383,7 +383,7 @@ public final class LoginGameReqMsgProto {
        * <code>optional int64 playerID = 1;</code>
        *
        * <pre>
-       *½ÇÉ«ID
+       *è§’è‰²ID
        * </pre>
        */
       public boolean hasPlayerID() {
@@ -393,7 +393,7 @@ public final class LoginGameReqMsgProto {
        * <code>optional int64 playerID = 1;</code>
        *
        * <pre>
-       *½ÇÉ«ID
+       *è§’è‰²ID
        * </pre>
        */
       public long getPlayerID() {
@@ -403,7 +403,7 @@ public final class LoginGameReqMsgProto {
        * <code>optional int64 playerID = 1;</code>
        *
        * <pre>
-       *½ÇÉ«ID
+       *è§’è‰²ID
        * </pre>
        */
       public Builder setPlayerID(long value) {
@@ -416,7 +416,7 @@ public final class LoginGameReqMsgProto {
        * <code>optional int64 playerID = 1;</code>
        *
        * <pre>
-       *½ÇÉ«ID
+       *è§’è‰²ID
        * </pre>
        */
       public Builder clearPlayerID() {

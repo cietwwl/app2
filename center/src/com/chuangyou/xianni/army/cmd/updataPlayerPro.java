@@ -20,7 +20,6 @@ public class updataPlayerPro implements Command {
 		PlayerAttUpdateMsg msg = PlayerAttUpdateMsg.parseFrom(packet.getBytes());
 		GamePlayer player = WorldMgr.getPlayer(msg.getPlayerId());
 
-		System.out.println(msg);
 		if (msg.getAttList() != null) {
 			for (PropertyMsg property : msg.getAttList()) {
 				if (property.getType() == EnumAttr.PK_VAL.getValue()) {

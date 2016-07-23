@@ -1,0 +1,8 @@
+//protocol=10551;
+option java_package = "com.chuangyou.common.protobuf.pb.shop";
+option java_outer_classname = "GetMallInfoReqProto";
+
+//请求商城信息
+message GetMallInfoReqMsg{
+	required int32 requestType =1;  //请求类型  1：强制请求 ，只要收到此type就会回复商城中所有商品信息   2：更新请求。如果商城信息有更新。就回复。没有就回复没有数据更新
+}

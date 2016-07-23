@@ -5,6 +5,7 @@ import com.chuangyou.common.util.LanguageSet;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.NetConfigSet;
 import com.chuangyou.xianni.common.CommandSet;
+import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.HttpCommandSet;
 
 public abstract class BaseServer {
@@ -33,13 +34,16 @@ public abstract class BaseServer {
 		if (!initComponent(HttpCommandSet.load(), "HTTP命令加载")) {
 			return false;
 		}
-		
-		if (!initComponent(LanguageSet.loadLanguage(Config.getValue("language")), "初始化语言包")){
+
+		if (!initComponent(LanguageSet.loadLanguage(Config.getValue("language")), "初始化语言包")) {
+			return false;
+		}
+		if (!initComponent(ErrorCode.checkErrorCode(), "检查错误码")) {
 			return false;
 		}
 
 		// TODO 语言包测试
-		//System.err.println(LanguageSet.getResource("CenterServer.test.testAlert"));
+		// System.err.println(LanguageSet.getResource("CenterServer.test.testAlert"));
 		return true;
 	}
 

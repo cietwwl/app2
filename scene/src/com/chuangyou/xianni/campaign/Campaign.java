@@ -8,10 +8,9 @@ import java.util.Map.Entry;
 
 import com.chuangyou.common.protobuf.pb.campaign.CampaignInfoMsgProto.CampaignInfoMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CampaignStatuMsgProto.CampaignStatuMsg;
+import com.chuangyou.common.protobuf.pb.campaign.PassFbInnerProto.PassFbInnerMsg;
 import com.chuangyou.common.protobuf.pb.map.SpawnNodeChangeListMsgProto.SpawnNodeChangeListMsg;
 import com.chuangyou.common.protobuf.pb.map.SpawnNodeChangeMsgProto.SpawnNodeChangeMsg;
-import com.chuangyou.common.protobuf.pb.task.PassFbInnerProto.PassFbInnerMsg;
-import com.chuangyou.common.util.AccessTextFile;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.common.util.Vector3;

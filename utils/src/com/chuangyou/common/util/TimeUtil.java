@@ -204,6 +204,40 @@ public class TimeUtil {
 	}
 
 	/**
+	 * 判断是否在时间段
+	 * 
+	 * @param startTime 格式 HH:mm
+	 * @param endTime 格式 HH:mm
+	 * @return
+	 */
+	public static boolean checkPeriod(String startTime, String endTime) {
+		if (startTime.isEmpty() || endTime.isEmpty())
+			return false;
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String ctime = formatter.format(new Date());
+		startTime = ctime + " " + startTime;
+		endTime = ctime + " " + endTime;
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		try {
+			Date nowDate = new Date();
+			Date startDateTime = df.parse(startTime);
+			Date endDateTime = df.parse(endTime);
+			if (nowDate.getTime() > startDateTime.getTime() && nowDate.getTime() < endDateTime.getTime()) {
+				return true;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	// public static void main(String[] args) {
+	// boolean r = checkPeriod("8:15", "20:11");
+	// System.out.println(r);
+	// }
+
+	/**
 	 * 获取默认日期2000-01-01
 	 * 
 	 * @return 返回默认起始时间
@@ -284,7 +318,7 @@ public class TimeUtil {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * <pre>
 	 * 比较是否为同一天(注意：分界线为凌晨 6 点)
@@ -383,7 +417,7 @@ public class TimeUtil {
 		c2.add(Calendar.HOUR_OF_DAY, -5);
 		return dateCompare(c1, c2);
 	}
-	
+
 	/**
 	 * <pre>
 	 * 返回两个日期相差天数(注意：分界线为凌晨 6 点)
@@ -474,8 +508,8 @@ public class TimeUtil {
 	}
 
 	public static String getSignStr() {
-		String[] strs = new String[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5",
-				"6", "7", "8", "9" };
+		String[] strs = new String[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1",
+				"2", "3", "4", "5", "6", "7", "8", "9" };
 
 		ThreadSafeRandom random = new ThreadSafeRandom();
 		String signStr = "";
@@ -765,57 +799,59 @@ public class TimeUtil {
 		currentDate.set(Calendar.SECOND, 0);
 		return currentDate;
 	}
-	
+
 	/**
 	 * 字符串转DATE
+	 * 
 	 * @param dateStr
 	 * @return
 	 */
-    public static Date getDateByString(String dateStr,int timeType){
-    	Date date = null;
-    	if(StringUtils.isNullOrEmpty(dateStr)){
-    		return null;
-    	}
-    	String format = "yyMMddHHmmss";
-    	SimpleDateFormat sdf = new SimpleDateFormat(format);
-    	if(timeType == 1){
-    		dateStr = getNowYYMMDD()+dateStr;
-    	}
-    	try {
+	public static Date getDateByString(String dateStr, int timeType) {
+		Date date = null;
+		if (StringUtils.isNullOrEmpty(dateStr)) {
+			return null;
+		}
+		String format = "yyMMddHHmmss";
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		if (timeType == 1) {
+			dateStr = getNowYYMMDD() + dateStr;
+		}
+		try {
 			date = sdf.parse(dateStr);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-    	return date;
-    }
-    
-    /**
-     * 根据当天的日期将字符串转日期对象
-     * @param dateStr
-     * @return
-     */
-    public static Date getDateFromNowByString(String dateStr){
-    	Date date = null;
-    	if(StringUtils.isNullOrEmpty(dateStr)){
-    		return null;
-    	}
-    	
-    	String format = "yyMMddHHmmss";
-    	SimpleDateFormat sdf = new SimpleDateFormat(format);
-    	
-    	try {
-			date = sdf.parse(getNowYYMMDD()+dateStr);
+
+		return date;
+	}
+
+	/**
+	 * 根据当天的日期将字符串转日期对象
+	 * 
+	 * @param dateStr
+	 * @return
+	 */
+	public static Date getDateFromNowByString(String dateStr) {
+		Date date = null;
+		if (StringUtils.isNullOrEmpty(dateStr)) {
+			return null;
+		}
+
+		String format = "yyMMddHHmmss";
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+
+		try {
+			date = sdf.parse(getNowYYMMDD() + dateStr);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-    	return date;
-    }
-    
-    /**
+
+		return date;
+	}
+
+	/**
 	 * 获取当前的YYMMDD
 	 * 
 	 * @return

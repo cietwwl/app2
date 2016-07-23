@@ -31,15 +31,15 @@ public class LoginIn implements Command {
 		simPlayer.readProto(msg.getHeorAppearance());
 
 		// 初始化英雄数据
-		Player hero = new Player(playerId);
+		Player player = new Player(playerId);
 		Team t = TeamMgr.getTeam(playerId);
 		if(t==null){
-			hero.setTeamId(0);
+			player.setTeamId(0);
 		}else{
-			hero.setTeamId(t.getTeamid());
+			player.setTeamId(t.getTeamid());
 		}
-		hero.setType(RoleConstants.RoleType.player);
-		hero.readHeroInfo(msg.getHeoBattleInfo());
+		player.setType(RoleConstants.RoleType.player);
+		player.readHeroInfo(msg.getHeoBattleInfo());
 
 		Pet pet = null;
 		if(msg.getPetBattleInfo().getPetTempId() > 0){
@@ -48,7 +48,7 @@ public class LoginIn implements Command {
 			pet.readPetInfo(msg.getPetBattleInfo());
 		}
 
-		ArmyProxy army = new ArmyProxy(playerId, "center", channel, simPlayer, hero, pet);
+		ArmyProxy army = new ArmyProxy(playerId, "center", channel, simPlayer, player, pet);
 		WorldMgr.addOnline(army);
 
 		PBMessage message = MessageUtil.buildMessage(Protocol.U_ARMY_HERO_INFO, msg.getHeoBattleInfo());

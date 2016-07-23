@@ -7,6 +7,7 @@ import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignFactory;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
+import com.chuangyou.xianni.campaign.TeamCampaign;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.exec.Action;
 import com.chuangyou.xianni.team.Team;
@@ -64,6 +65,9 @@ public class CampaignCreateAction extends Action {
 					campaign.onPlayerEnter(teamMember);
 				}
 			}
+			TeamCampaign tc = (TeamCampaign) campaign;
+			tc.setTeamId(team.getTeamid());
+			team.setCampaignId(tc.getIndexId());
 		}
 	}
 

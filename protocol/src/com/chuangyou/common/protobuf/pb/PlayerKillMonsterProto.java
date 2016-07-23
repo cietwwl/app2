@@ -29,6 +29,23 @@ public final class PlayerKillMonsterProto {
      * <code>required int32 monsterTemplateId = 2;</code>
      */
     int getMonsterTemplateId();
+
+    /**
+     * <code>optional int32 type = 3;</code>
+     *
+     * <pre>
+     *1 怪物 2 人物
+     * </pre>
+     */
+    boolean hasType();
+    /**
+     * <code>optional int32 type = 3;</code>
+     *
+     * <pre>
+     *1 怪物 2 人物
+     * </pre>
+     */
+    int getType();
   }
   /**
    * Protobuf type {@code PlayerKillMonsterMsg}
@@ -94,6 +111,11 @@ public final class PlayerKillMonsterProto {
             case 16: {
               bitField0_ |= 0x00000002;
               monsterTemplateId_ = input.readInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              type_ = input.readInt32();
               break;
             }
           }
@@ -166,9 +188,33 @@ public final class PlayerKillMonsterProto {
       return monsterTemplateId_;
     }
 
+    public static final int TYPE_FIELD_NUMBER = 3;
+    private int type_;
+    /**
+     * <code>optional int32 type = 3;</code>
+     *
+     * <pre>
+     *1 怪物 2 人物
+     * </pre>
+     */
+    public boolean hasType() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional int32 type = 3;</code>
+     *
+     * <pre>
+     *1 怪物 2 人物
+     * </pre>
+     */
+    public int getType() {
+      return type_;
+    }
+
     private void initFields() {
       playerId_ = 0L;
       monsterTemplateId_ = 0;
+      type_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -197,6 +243,9 @@ public final class PlayerKillMonsterProto {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeInt32(2, monsterTemplateId_);
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(3, type_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -213,6 +262,10 @@ public final class PlayerKillMonsterProto {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(2, monsterTemplateId_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, type_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -339,6 +392,8 @@ public final class PlayerKillMonsterProto {
         bitField0_ = (bitField0_ & ~0x00000001);
         monsterTemplateId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
+        type_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -375,6 +430,10 @@ public final class PlayerKillMonsterProto {
           to_bitField0_ |= 0x00000002;
         }
         result.monsterTemplateId_ = monsterTemplateId_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.type_ = type_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -396,6 +455,9 @@ public final class PlayerKillMonsterProto {
         }
         if (other.hasMonsterTemplateId()) {
           setMonsterTemplateId(other.getMonsterTemplateId());
+        }
+        if (other.hasType()) {
+          setType(other.getType());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -496,6 +558,54 @@ public final class PlayerKillMonsterProto {
         return this;
       }
 
+      private int type_ ;
+      /**
+       * <code>optional int32 type = 3;</code>
+       *
+       * <pre>
+       *1 怪物 2 人物
+       * </pre>
+       */
+      public boolean hasType() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional int32 type = 3;</code>
+       *
+       * <pre>
+       *1 怪物 2 人物
+       * </pre>
+       */
+      public int getType() {
+        return type_;
+      }
+      /**
+       * <code>optional int32 type = 3;</code>
+       *
+       * <pre>
+       *1 怪物 2 人物
+       * </pre>
+       */
+      public Builder setType(int value) {
+        bitField0_ |= 0x00000004;
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 type = 3;</code>
+       *
+       * <pre>
+       *1 怪物 2 人物
+       * </pre>
+       */
+      public Builder clearType() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        type_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:PlayerKillMonsterMsg)
     }
 
@@ -521,11 +631,11 @@ public final class PlayerKillMonsterProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n scene/PlayerKillMonsterMsg.proto\"C\n\024Pl" +
+      "\n scene/PlayerKillMonsterMsg.proto\"Q\n\024Pl" +
       "ayerKillMonsterMsg\022\020\n\010playerId\030\001 \002(\003\022\031\n\021" +
-      "monsterTemplateId\030\002 \002(\005B:\n com.chuangyou" +
-      ".common.protobuf.pbB\026PlayerKillMonsterPr" +
-      "oto"
+      "monsterTemplateId\030\002 \002(\005\022\014\n\004type\030\003 \001(\005B:\n" +
+      " com.chuangyou.common.protobuf.pbB\026Playe" +
+      "rKillMonsterProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -544,7 +654,7 @@ public final class PlayerKillMonsterProto {
     internal_static_PlayerKillMonsterMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_PlayerKillMonsterMsg_descriptor,
-        new java.lang.String[] { "PlayerId", "MonsterTemplateId", });
+        new java.lang.String[] { "PlayerId", "MonsterTemplateId", "Type", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

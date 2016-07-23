@@ -42,7 +42,7 @@ public class TouchPointSpwanNode extends SpwanNode {
 		int offsetY = Math.abs((int) (v3.y - spwanInfo.getBound_y() / Vector3.Accuracy));
 		int offsetZ = Math.abs((int) (v3.z - spwanInfo.getBound_z() / Vector3.Accuracy));
 
-		if (offsetX > 10 || offsetY > 10 || offsetZ > 10) {
+		if (offsetX > 100 || offsetY > 100 || offsetZ > 100) {
 			return;
 		}
 

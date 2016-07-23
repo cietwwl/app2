@@ -53,7 +53,7 @@ public class PlayerInfoSendCmd {
 	 * @param playerId
 	 * @return
 	 */
-	public static PlayerAttUpdateMsg getPropertyUpdatePacket(Map<Integer, Long> changeMap, long playerId){
+	public static PlayerAttUpdateMsg getPropertyUpdatePacket(Map<Integer, Long> changeMap, long playerId) {
 		PlayerAttUpdateMsg.Builder msg = PlayerAttUpdateMsg.newBuilder();
 		msg.setPlayerId(playerId);
 
@@ -75,7 +75,7 @@ public class PlayerInfoSendCmd {
 	 * @param totalValue
 	 * @return
 	 */
-	public static PlayerAttUpdateMsg getPropertyUpdatePacket(int type,long totalValue,long playerId){
+	public static PlayerAttUpdateMsg getPropertyUpdatePacket(int type, long totalValue, long playerId) {
 		PlayerAttUpdateMsg.Builder msg = PlayerAttUpdateMsg.newBuilder();
 		msg.setPlayerId(playerId);
 		PropertyMsg.Builder childMsg = PropertyMsg.newBuilder();
@@ -84,9 +84,10 @@ public class PlayerInfoSendCmd {
 		msg.addAtt(childMsg);
 		return msg.build();
 	}
-	
+
 	/**
 	 * 获取人物快照信息包
+	 * 
 	 * @param gamePlayer
 	 * @return
 	 */
@@ -101,44 +102,46 @@ public class PlayerInfoSendCmd {
 				armytory.getArmy().getHero().writeHeroProto(gamePlayer, heroInfo);
 			}
 			army.setHeoBattleInfo(heroInfo);
-			
+
 			PetInfoMsg petInfo = getPetInfoPacket(gamePlayer);
 			army.setPetBattleInfo(petInfo);
-			
+
 			return army.build();
 		} catch (Exception e) {
 			Log.error("生成部队信息异常", e);
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 获取宠物信息包
+	 * 
 	 * @param player
 	 * @return
 	 */
-	public static PetInfoMsg getPetInfoPacket(GamePlayer player){
+	public static PetInfoMsg getPetInfoPacket(GamePlayer player) {
 		PetInfoMsg.Builder petInfo = PetInfoMsg.newBuilder();
 		petInfo.setPlayerId(player.getPlayerId());
-		
+
 		PetInventory petInventory = player.getPetInventory();
-		if(petInventory == null) return null;
+		if (petInventory == null)
+			return null;
 		PetAtt petAtt = player.getPetInventory().getPetAtt();
 		petInfo.setPetTempId(petAtt.getFightPetId());
 		petInfo.setPetSoul(petAtt.getSoulLv());
-		
-		if(petInfo.getPetTempId() > 0){
+
+		if (petInfo.getPetTempId() > 0) {
 			PetInfo pet = player.getPetInventory().getPetInfo(petAtt.getFightPetId());
-			if(pet != null){
+			if (pet != null) {
 				petInfo.setPetPhysique(pet.getPhysique());
 				petInfo.setPetQuality(pet.getQuality());
 			}
 			Map<Integer, Integer> petAttMap = player.getPetInventory().getPetPropertyMap();
-			for(int type:petAttMap.keySet()){
+			for (int type : petAttMap.keySet()) {
 				PropertyMsg.Builder property = PropertyMsg.newBuilder();
 				property.setType(type);
 				property.setTotalPoint(petAttMap.get(type));
-				
+
 				petInfo.addPetProperty(property);
 			}
 		}
@@ -168,7 +171,7 @@ public class PlayerInfoSendCmd {
 			}
 			// 发送到客户端
 			PBMessage resp = MessageUtil.buildMessage(Protocol.U_ITEM_FACE_LIST, movedList);
-			System.out.println(player.getPlayerId() + "发送背包协议-=-------------------------------");
+			System.out.println(player.getPlayerId() + "发送背包协议-=-------------------------------" + movedList);
 			player.sendPbMessage(resp);
 		} catch (Exception e) {
 			Log.error(String.format("用户%s物品位置更新出错!", player.getPlayerId()), e);

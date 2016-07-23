@@ -16,7 +16,7 @@ public final class PingRspProto {
      * <code>optional int64 time = 1;</code>
      *
      * <pre>
-     *当前时间
+     *褰撳墠鏃堕棿
      * </pre>
      */
     boolean hasTime();
@@ -24,7 +24,7 @@ public final class PingRspProto {
      * <code>optional int64 time = 1;</code>
      *
      * <pre>
-     *当前时间
+     *褰撳墠鏃堕棿
      * </pre>
      */
     long getTime();
@@ -132,7 +132,7 @@ public final class PingRspProto {
      * <code>optional int64 time = 1;</code>
      *
      * <pre>
-     *当前时间
+     *褰撳墠鏃堕棿
      * </pre>
      */
     public boolean hasTime() {
@@ -142,7 +142,7 @@ public final class PingRspProto {
      * <code>optional int64 time = 1;</code>
      *
      * <pre>
-     *当前时间
+     *褰撳墠鏃堕棿
      * </pre>
      */
     public long getTime() {
@@ -383,7 +383,7 @@ public final class PingRspProto {
        * <code>optional int64 time = 1;</code>
        *
        * <pre>
-       *当前时间
+       *褰撳墠鏃堕棿
        * </pre>
        */
       public boolean hasTime() {
@@ -393,7 +393,7 @@ public final class PingRspProto {
        * <code>optional int64 time = 1;</code>
        *
        * <pre>
-       *当前时间
+       *褰撳墠鏃堕棿
        * </pre>
        */
       public long getTime() {
@@ -403,7 +403,7 @@ public final class PingRspProto {
        * <code>optional int64 time = 1;</code>
        *
        * <pre>
-       *当前时间
+       *褰撳墠鏃堕棿
        * </pre>
        */
       public Builder setTime(long value) {
@@ -416,7 +416,7 @@ public final class PingRspProto {
        * <code>optional int64 time = 1;</code>
        *
        * <pre>
-       *当前时间
+       *褰撳墠鏃堕棿
        * </pre>
        */
       public Builder clearTime() {

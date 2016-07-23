@@ -1,0 +1,10 @@
+//protocol=554;
+option java_package = "com.chuangyou.common.protobuf.pb.shop";
+option java_outer_classname = "GetMallInfoRespProto";
+
+import "shop/GetNpcShopInfoRespMsg.proto";
+//请求商城信息返回
+message GetMallInfoRespMsg{
+	required int32 resultType = 1;// 1:有数据回复   2：无数据回复（ 当用更新去请求的时候。数据没有发生过变化。就会回复2）
+	repeated GetNpcShopInfoRespMsg infos = 2; //信息
+}

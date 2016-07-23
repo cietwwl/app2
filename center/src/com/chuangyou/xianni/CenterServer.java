@@ -1,6 +1,7 @@
 package com.chuangyou.xianni;
 
 import com.chuangyou.common.util.Config;
+import com.chuangyou.common.util.FilterWordSet;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.NetConfigSet;
 import com.chuangyou.common.util.NetConfigXml;
@@ -9,6 +10,7 @@ import com.chuangyou.xianni.army.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.bag.ItemManager;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
 import com.chuangyou.xianni.common.template.LevelUpTempleteMgr;
+import com.chuangyou.xianni.common.template.PropertyFightingTemplateMgr;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.common.timer.TimerTaskMgr;
 import com.chuangyou.xianni.entity_id.EntityIdBuilder;
@@ -23,14 +25,16 @@ import com.chuangyou.xianni.netty.server.CenterInboundHandler;
 import com.chuangyou.xianni.netty.server.CenterOutboundHandler;
 import com.chuangyou.xianni.netty.server.HttpServerInboundHandler;
 import com.chuangyou.xianni.npcDialog.NpcInfoTemplateMgr;
-import com.chuangyou.xianni.npcShop.template.NpcShopTemplateMgr;
 import com.chuangyou.xianni.pet.template.PetTemplateMgr;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.script.manager.ScriptManager;
+import com.chuangyou.xianni.shop.template.ShopTemplateMgr;
 import com.chuangyou.xianni.skill.template.SkillTempMgr;
 import com.chuangyou.xianni.sql.db.pool.DBPoolMgr;
 import com.chuangyou.xianni.task.template.TaskTemplateMgr;
+import com.chuangyou.xianni.team.TeamTargetTempMgr;
 import com.chuangyou.xianni.word.WorldMgr;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelFuture;
@@ -87,8 +91,8 @@ public class CenterServer extends BaseServer {
 		if (!initComponent(SystemConfigTemplateMgr.init(), "初始化公共字典配置表")) {
 			return false;
 		}
-		
-		if(!initComponent(LevelUpTempleteMgr.init(), "初始华升级配置表")){
+
+		if (!initComponent(LevelUpTempleteMgr.init(), "初始华升级配置表")) {
 			return false;
 		}
 
@@ -106,7 +110,7 @@ public class CenterServer extends BaseServer {
 			return false;
 		}
 
-		if (!initComponent(NpcShopTemplateMgr.init(), "初始化NPC商店数据")) {
+		if (!initComponent(ShopTemplateMgr.init(), "初始化商店数据")) {
 			return false;
 		}
 		if (!initComponent(MapProxyManager.init(), "初始化地图")) {
@@ -136,7 +140,18 @@ public class CenterServer extends BaseServer {
 		if (!initComponent(MonsterInfoTemplateMgr.init(), "初始化怪物模板数据")) {
 			return false;
 		}
+
+		if (!initComponent(PropertyFightingTemplateMgr.init(), "初始化属性战斗力配置")) {
+			return false;
+		}
+		if (!initComponent(TeamTargetTempMgr.init(), "初始化组队目标表")) {
+			return false;
+		}
 		
+		if(!initComponent(FilterWordSet.loadFilterWord(Config.getValue("filter_word")), "初始化敏感字")){
+			return false;
+		}
+
 		return true;
 	}
 

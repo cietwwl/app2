@@ -22,46 +22,46 @@ public class GateWayClient extends LinkedClient {
 	public GateWayClient(int type, int id, String name, String address, int port, int index) {
 		super(type, id, name, address, port, index);
 	}
-	
-	
+
 	/**
 	 * 连接
 	 */
 	public synchronized boolean connect() {
+		Bootstrap b = null;
+		EventLoopGroup workerGroup = new NioEventLoopGroup(5);
 		try {
 			load = 0;
-			EventLoopGroup workerGroup = new NioEventLoopGroup(5);
-
 			try {
-				Bootstrap b = new Bootstrap().group(workerGroup).channel(NioSocketChannel.class)
-						.option(ChannelOption.SO_KEEPALIVE, true).handler(new ChannelInitializer<SocketChannel>() {
-							@Override
-							public void initChannel(SocketChannel ch) throws Exception {
-								ChannelHandlerAdapter decoder = new PBMessageDecoder();
-								ChannelHandlerAdapter encoder = new PBMessageEncoder();
-								ChannelHandlerAdapter inboundHandler = new GateWay2CoreInboundHandler();
-								ChannelHandlerAdapter outboundHandler = new GateWay2CoreOutboundHandler();
+				b = new Bootstrap().group(workerGroup).channel(NioSocketChannel.class).option(ChannelOption.SO_KEEPALIVE, true).handler(new ChannelInitializer<SocketChannel>() {
+					@Override
+					public void initChannel(SocketChannel ch) throws Exception {
+						ChannelHandlerAdapter decoder = new PBMessageDecoder();
+						ChannelHandlerAdapter encoder = new PBMessageEncoder();
+						ChannelHandlerAdapter inboundHandler = new GateWay2CoreInboundHandler();
+						ChannelHandlerAdapter outboundHandler = new GateWay2CoreOutboundHandler();
 
-								ch.pipeline().addLast(decoder);
-								ch.pipeline().addLast(inboundHandler);
-								ch.pipeline().addLast(outboundHandler);
-								ch.pipeline().addLast(encoder);
-							}
-						});
+						ch.pipeline().addLast(decoder);
+						ch.pipeline().addLast(inboundHandler);
+						ch.pipeline().addLast(outboundHandler);
+						ch.pipeline().addLast(encoder);
+					}
+				});
 
 				// 启动客户端
 				ChannelFuture f = b.connect(address, port).sync(); // (5)
 				this.channel = f.channel();
+				
 				// 等待连接关闭
 				// f.channel().closeFuture().sync();
 			} finally {
-				// workerGroup.shutdownGracefully();
+				//workerGroup.shutdownGracefully();
 			}
 			connTimes = 0;
 			return true;
 		} catch (Exception e) {
 			Log.error("connect to address " + address + ":" + port + " fail.", e);
 			connTimes++;
+			workerGroup.shutdownGracefully();
 			return false;
 		}
 	}

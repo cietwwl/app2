@@ -16,7 +16,7 @@ public final class AttackOrderProto {
      * <code>optional int32 skillActionId = 1;</code>
      *
      * <pre>
-     *攻击指令
+     *鏀诲嚮鎸囦护
      * </pre>
      */
     boolean hasSkillActionId();
@@ -24,7 +24,7 @@ public final class AttackOrderProto {
      * <code>optional int32 skillActionId = 1;</code>
      *
      * <pre>
-     *攻击指令
+     *鏀诲嚮鎸囦护
      * </pre>
      */
     int getSkillActionId();
@@ -33,7 +33,7 @@ public final class AttackOrderProto {
      * <code>repeated int64 targets = 2;</code>
      *
      * <pre>
-     *被攻击目标ID
+     *琚敾鍑荤洰鏍嘔D
      * </pre>
      */
     java.util.List<java.lang.Long> getTargetsList();
@@ -41,7 +41,7 @@ public final class AttackOrderProto {
      * <code>repeated int64 targets = 2;</code>
      *
      * <pre>
-     *被攻击目标ID
+     *琚敾鍑荤洰鏍嘔D
      * </pre>
      */
     int getTargetsCount();
@@ -49,7 +49,7 @@ public final class AttackOrderProto {
      * <code>repeated int64 targets = 2;</code>
      *
      * <pre>
-     *被攻击目标ID
+     *琚敾鍑荤洰鏍嘔D
      * </pre>
      */
     long getTargets(int index);
@@ -58,7 +58,7 @@ public final class AttackOrderProto {
      * <code>optional .PBVector3 current = 3;</code>
      *
      * <pre>
-     *释放前的位置
+     *閲婃斁鍓嶇殑浣嶇疆
      * </pre>
      */
     boolean hasCurrent();
@@ -66,7 +66,7 @@ public final class AttackOrderProto {
      * <code>optional .PBVector3 current = 3;</code>
      *
      * <pre>
-     *释放前的位置
+     *閲婃斁鍓嶇殑浣嶇疆
      * </pre>
      */
     com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3 getCurrent();
@@ -74,7 +74,7 @@ public final class AttackOrderProto {
      * <code>optional .PBVector3 current = 3;</code>
      *
      * <pre>
-     *释放前的位置
+     *閲婃斁鍓嶇殑浣嶇疆
      * </pre>
      */
     com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3OrBuilder getCurrentOrBuilder();
@@ -83,7 +83,7 @@ public final class AttackOrderProto {
      * <code>optional .PBVector3 position = 4;</code>
      *
      * <pre>
-     *释放后的位置
+     *閲婃斁鍚庣殑浣嶇疆
      * </pre>
      */
     boolean hasPosition();
@@ -91,7 +91,7 @@ public final class AttackOrderProto {
      * <code>optional .PBVector3 position = 4;</code>
      *
      * <pre>
-     *释放后的位置
+     *閲婃斁鍚庣殑浣嶇疆
      * </pre>
      */
     com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3 getPosition();
@@ -99,7 +99,7 @@ public final class AttackOrderProto {
      * <code>optional .PBVector3 position = 4;</code>
      *
      * <pre>
-     *释放后的位置
+     *閲婃斁鍚庣殑浣嶇疆
      * </pre>
      */
     com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3OrBuilder getPositionOrBuilder();
@@ -108,7 +108,7 @@ public final class AttackOrderProto {
    * Protobuf type {@code AttackOrderMsg}
    *
    * <pre>
-   *输出攻击指令
+   *杈撳嚭鏀诲嚮鎸囦护
    * </pre>
    */
   public static final class AttackOrderMsg extends
@@ -261,7 +261,7 @@ public final class AttackOrderProto {
      * <code>optional int32 skillActionId = 1;</code>
      *
      * <pre>
-     *攻击指令
+     *鏀诲嚮鎸囦护
      * </pre>
      */
     public boolean hasSkillActionId() {
@@ -271,7 +271,7 @@ public final class AttackOrderProto {
      * <code>optional int32 skillActionId = 1;</code>
      *
      * <pre>
-     *攻击指令
+     *鏀诲嚮鎸囦护
      * </pre>
      */
     public int getSkillActionId() {
@@ -284,7 +284,7 @@ public final class AttackOrderProto {
      * <code>repeated int64 targets = 2;</code>
      *
      * <pre>
-     *被攻击目标ID
+     *琚敾鍑荤洰鏍嘔D
      * </pre>
      */
     public java.util.List<java.lang.Long>
@@ -295,7 +295,7 @@ public final class AttackOrderProto {
      * <code>repeated int64 targets = 2;</code>
      *
      * <pre>
-     *被攻击目标ID
+     *琚敾鍑荤洰鏍嘔D
      * </pre>
      */
     public int getTargetsCount() {
@@ -305,7 +305,7 @@ public final class AttackOrderProto {
      * <code>repeated int64 targets = 2;</code>
      *
      * <pre>
-     *被攻击目标ID
+     *琚敾鍑荤洰鏍嘔D
      * </pre>
      */
     public long getTargets(int index) {
@@ -318,7 +318,7 @@ public final class AttackOrderProto {
      * <code>optional .PBVector3 current = 3;</code>
      *
      * <pre>
-     *释放前的位置
+     *閲婃斁鍓嶇殑浣嶇疆
      * </pre>
      */
     public boolean hasCurrent() {
@@ -328,7 +328,7 @@ public final class AttackOrderProto {
      * <code>optional .PBVector3 current = 3;</code>
      *
      * <pre>
-     *释放前的位置
+     *閲婃斁鍓嶇殑浣嶇疆
      * </pre>
      */
     public com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3 getCurrent() {
@@ -338,7 +338,7 @@ public final class AttackOrderProto {
      * <code>optional .PBVector3 current = 3;</code>
      *
      * <pre>
-     *释放前的位置
+     *閲婃斁鍓嶇殑浣嶇疆
      * </pre>
      */
     public com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3OrBuilder getCurrentOrBuilder() {
@@ -351,7 +351,7 @@ public final class AttackOrderProto {
      * <code>optional .PBVector3 position = 4;</code>
      *
      * <pre>
-     *释放后的位置
+     *閲婃斁鍚庣殑浣嶇疆
      * </pre>
      */
     public boolean hasPosition() {
@@ -361,7 +361,7 @@ public final class AttackOrderProto {
      * <code>optional .PBVector3 position = 4;</code>
      *
      * <pre>
-     *释放后的位置
+     *閲婃斁鍚庣殑浣嶇疆
      * </pre>
      */
     public com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3 getPosition() {
@@ -371,7 +371,7 @@ public final class AttackOrderProto {
      * <code>optional .PBVector3 position = 4;</code>
      *
      * <pre>
-     *释放后的位置
+     *閲婃斁鍚庣殑浣嶇疆
      * </pre>
      */
     public com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3OrBuilder getPositionOrBuilder() {
@@ -521,7 +521,7 @@ public final class AttackOrderProto {
      * Protobuf type {@code AttackOrderMsg}
      *
      * <pre>
-     *输出攻击指令
+     *杈撳嚭鏀诲嚮鎸囦护
      * </pre>
      */
     public static final class Builder extends
@@ -698,7 +698,7 @@ public final class AttackOrderProto {
        * <code>optional int32 skillActionId = 1;</code>
        *
        * <pre>
-       *攻击指令
+       *鏀诲嚮鎸囦护
        * </pre>
        */
       public boolean hasSkillActionId() {
@@ -708,7 +708,7 @@ public final class AttackOrderProto {
        * <code>optional int32 skillActionId = 1;</code>
        *
        * <pre>
-       *攻击指令
+       *鏀诲嚮鎸囦护
        * </pre>
        */
       public int getSkillActionId() {
@@ -718,7 +718,7 @@ public final class AttackOrderProto {
        * <code>optional int32 skillActionId = 1;</code>
        *
        * <pre>
-       *攻击指令
+       *鏀诲嚮鎸囦护
        * </pre>
        */
       public Builder setSkillActionId(int value) {
@@ -731,7 +731,7 @@ public final class AttackOrderProto {
        * <code>optional int32 skillActionId = 1;</code>
        *
        * <pre>
-       *攻击指令
+       *鏀诲嚮鎸囦护
        * </pre>
        */
       public Builder clearSkillActionId() {
@@ -752,7 +752,7 @@ public final class AttackOrderProto {
        * <code>repeated int64 targets = 2;</code>
        *
        * <pre>
-       *被攻击目标ID
+       *琚敾鍑荤洰鏍嘔D
        * </pre>
        */
       public java.util.List<java.lang.Long>
@@ -763,7 +763,7 @@ public final class AttackOrderProto {
        * <code>repeated int64 targets = 2;</code>
        *
        * <pre>
-       *被攻击目标ID
+       *琚敾鍑荤洰鏍嘔D
        * </pre>
        */
       public int getTargetsCount() {
@@ -773,7 +773,7 @@ public final class AttackOrderProto {
        * <code>repeated int64 targets = 2;</code>
        *
        * <pre>
-       *被攻击目标ID
+       *琚敾鍑荤洰鏍嘔D
        * </pre>
        */
       public long getTargets(int index) {
@@ -783,7 +783,7 @@ public final class AttackOrderProto {
        * <code>repeated int64 targets = 2;</code>
        *
        * <pre>
-       *被攻击目标ID
+       *琚敾鍑荤洰鏍嘔D
        * </pre>
        */
       public Builder setTargets(
@@ -797,7 +797,7 @@ public final class AttackOrderProto {
        * <code>repeated int64 targets = 2;</code>
        *
        * <pre>
-       *被攻击目标ID
+       *琚敾鍑荤洰鏍嘔D
        * </pre>
        */
       public Builder addTargets(long value) {
@@ -810,7 +810,7 @@ public final class AttackOrderProto {
        * <code>repeated int64 targets = 2;</code>
        *
        * <pre>
-       *被攻击目标ID
+       *琚敾鍑荤洰鏍嘔D
        * </pre>
        */
       public Builder addAllTargets(
@@ -825,7 +825,7 @@ public final class AttackOrderProto {
        * <code>repeated int64 targets = 2;</code>
        *
        * <pre>
-       *被攻击目标ID
+       *琚敾鍑荤洰鏍嘔D
        * </pre>
        */
       public Builder clearTargets() {
@@ -842,7 +842,7 @@ public final class AttackOrderProto {
        * <code>optional .PBVector3 current = 3;</code>
        *
        * <pre>
-       *释放前的位置
+       *閲婃斁鍓嶇殑浣嶇疆
        * </pre>
        */
       public boolean hasCurrent() {
@@ -852,7 +852,7 @@ public final class AttackOrderProto {
        * <code>optional .PBVector3 current = 3;</code>
        *
        * <pre>
-       *释放前的位置
+       *閲婃斁鍓嶇殑浣嶇疆
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3 getCurrent() {
@@ -866,7 +866,7 @@ public final class AttackOrderProto {
        * <code>optional .PBVector3 current = 3;</code>
        *
        * <pre>
-       *释放前的位置
+       *閲婃斁鍓嶇殑浣嶇疆
        * </pre>
        */
       public Builder setCurrent(com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3 value) {
@@ -886,7 +886,7 @@ public final class AttackOrderProto {
        * <code>optional .PBVector3 current = 3;</code>
        *
        * <pre>
-       *释放前的位置
+       *閲婃斁鍓嶇殑浣嶇疆
        * </pre>
        */
       public Builder setCurrent(
@@ -904,7 +904,7 @@ public final class AttackOrderProto {
        * <code>optional .PBVector3 current = 3;</code>
        *
        * <pre>
-       *释放前的位置
+       *閲婃斁鍓嶇殑浣嶇疆
        * </pre>
        */
       public Builder mergeCurrent(com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3 value) {
@@ -927,7 +927,7 @@ public final class AttackOrderProto {
        * <code>optional .PBVector3 current = 3;</code>
        *
        * <pre>
-       *释放前的位置
+       *閲婃斁鍓嶇殑浣嶇疆
        * </pre>
        */
       public Builder clearCurrent() {
@@ -944,7 +944,7 @@ public final class AttackOrderProto {
        * <code>optional .PBVector3 current = 3;</code>
        *
        * <pre>
-       *释放前的位置
+       *閲婃斁鍓嶇殑浣嶇疆
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3.Builder getCurrentBuilder() {
@@ -956,7 +956,7 @@ public final class AttackOrderProto {
        * <code>optional .PBVector3 current = 3;</code>
        *
        * <pre>
-       *释放前的位置
+       *閲婃斁鍓嶇殑浣嶇疆
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3OrBuilder getCurrentOrBuilder() {
@@ -970,7 +970,7 @@ public final class AttackOrderProto {
        * <code>optional .PBVector3 current = 3;</code>
        *
        * <pre>
-       *释放前的位置
+       *閲婃斁鍓嶇殑浣嶇疆
        * </pre>
        */
       private com.google.protobuf.SingleFieldBuilder<
@@ -994,7 +994,7 @@ public final class AttackOrderProto {
        * <code>optional .PBVector3 position = 4;</code>
        *
        * <pre>
-       *释放后的位置
+       *閲婃斁鍚庣殑浣嶇疆
        * </pre>
        */
       public boolean hasPosition() {
@@ -1004,7 +1004,7 @@ public final class AttackOrderProto {
        * <code>optional .PBVector3 position = 4;</code>
        *
        * <pre>
-       *释放后的位置
+       *閲婃斁鍚庣殑浣嶇疆
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3 getPosition() {
@@ -1018,7 +1018,7 @@ public final class AttackOrderProto {
        * <code>optional .PBVector3 position = 4;</code>
        *
        * <pre>
-       *释放后的位置
+       *閲婃斁鍚庣殑浣嶇疆
        * </pre>
        */
       public Builder setPosition(com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3 value) {
@@ -1038,7 +1038,7 @@ public final class AttackOrderProto {
        * <code>optional .PBVector3 position = 4;</code>
        *
        * <pre>
-       *释放后的位置
+       *閲婃斁鍚庣殑浣嶇疆
        * </pre>
        */
       public Builder setPosition(
@@ -1056,7 +1056,7 @@ public final class AttackOrderProto {
        * <code>optional .PBVector3 position = 4;</code>
        *
        * <pre>
-       *释放后的位置
+       *閲婃斁鍚庣殑浣嶇疆
        * </pre>
        */
       public Builder mergePosition(com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3 value) {
@@ -1079,7 +1079,7 @@ public final class AttackOrderProto {
        * <code>optional .PBVector3 position = 4;</code>
        *
        * <pre>
-       *释放后的位置
+       *閲婃斁鍚庣殑浣嶇疆
        * </pre>
        */
       public Builder clearPosition() {
@@ -1096,7 +1096,7 @@ public final class AttackOrderProto {
        * <code>optional .PBVector3 position = 4;</code>
        *
        * <pre>
-       *释放后的位置
+       *閲婃斁鍚庣殑浣嶇疆
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3.Builder getPositionBuilder() {
@@ -1108,7 +1108,7 @@ public final class AttackOrderProto {
        * <code>optional .PBVector3 position = 4;</code>
        *
        * <pre>
-       *释放后的位置
+       *閲婃斁鍚庣殑浣嶇疆
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3OrBuilder getPositionOrBuilder() {
@@ -1122,7 +1122,7 @@ public final class AttackOrderProto {
        * <code>optional .PBVector3 position = 4;</code>
        *
        * <pre>
-       *释放后的位置
+       *閲婃斁鍚庣殑浣嶇疆
        * </pre>
        */
       private com.google.protobuf.SingleFieldBuilder<

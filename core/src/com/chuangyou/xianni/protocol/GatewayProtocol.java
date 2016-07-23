@@ -20,4 +20,6 @@ public interface GatewayProtocol {
 	public final short	G_BROADCAST_PACKET		= 25007;// 广播包
 
 	public final short	G_PING_PACKET			= 25008;// 接受客户端ping包
+	
+	public final short	G_BROADCAST_SERVER		= 25009;// 全服广播
 }

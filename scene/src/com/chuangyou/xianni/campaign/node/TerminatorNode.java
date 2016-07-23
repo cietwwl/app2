@@ -83,7 +83,6 @@ public class TerminatorNode extends CampaignNodeDecorator {
 		// 杀死所有存活怪
 		for (Living alive : monsters) {
 			alive.suicide();
-			AccessTextFile.saveRecord("alive.suicide():" + alive.getId());
 		}
 		campaign.changeEndTime(System.currentTimeMillis() + 60 * 1000);
 	}

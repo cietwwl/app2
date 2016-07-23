@@ -16,6 +16,7 @@ import com.chuangyou.xianni.netty.codec.PBMessageEncoder;
 import com.chuangyou.xianni.netty.server.SceneInboundHandler;
 import com.chuangyou.xianni.netty.server.SceneOutboundHandler;
 import com.chuangyou.xianni.proto.PBMessage;
+import com.chuangyou.xianni.role.template.AiConfigTemplateMgr;
 import com.chuangyou.xianni.role.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.role.template.NpcInfoTemplateMgr;
 import com.chuangyou.xianni.script.manager.ScriptManager;
@@ -88,6 +89,9 @@ public class SceneServer extends BaseServer {
 			return false;
 		}
 		if (!initComponent(MonsterInfoTemplateMgr.init(), "初始化怪物模板数据")) {
+			return false;
+		}
+		if (!initComponent(AiConfigTemplateMgr.init(), "初始化ai数据")) {
 			return false;
 		}
 		if (!initComponent(NpcInfoTemplateMgr.init(), "初始化NPC/转场点模板数据")) {

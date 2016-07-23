@@ -1,0 +1,12 @@
+//protocol=526;
+option java_package = "com.chuangyou.common.protobuf.pb.shop";
+option java_outer_classname = "BuyGoodsRespProto";
+
+import "shop/GoodsInfo.proto";
+
+ //购买商品
+ //无论购买成功还是失败。该商品的详细信息会再推一次给客户端。以达到数据同步
+message BuyGoodsRespMsg{
+	required bool isSuccess = 1;  //true：购买成功
+	required GoodsInfo info = 2;  //需要更新商品信息
+}

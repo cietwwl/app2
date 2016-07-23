@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.chuangyou.common.util.Log;
+import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.player.PlayerJoinInfo;
 import com.chuangyou.xianni.entity.player.PlayerTimeInfo;
@@ -25,7 +26,8 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 	public boolean add(PlayerInfo playerInfo) {
 		boolean result = false;
 		playerInfo.beginAdd();
-		String sql = "INSERT INTO tb_u_player_info (playerId,userId,nickname,level,exp,totalExp,money,bindCash,cash,vipLevel,fight,skinId,pBagCount,mountId,magicWeaponId,skillStage,repair,battleMode,pkVal,changeBattleModeTime) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+		String sql = "INSERT INTO tb_u_player_info (playerId,userId,nickname,level,exp,totalExp,money,bindCash,cash,vipLevel,fight,skinId,pBagCount,mountId,magicWeaponId,skillStage,repair,battleMode,pkVal,changeBattleModeTime,fashionId,weaponId,wingId) "
+				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.BIGINT, playerInfo.getPlayerId()));
 		para.put(2, new DbParameter(Types.BIGINT, playerInfo.getUserId()));
@@ -42,11 +44,15 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		para.put(13, new DbParameter(Types.INTEGER, playerInfo.getpBagCount()));
 		para.put(14, new DbParameter(Types.INTEGER, playerInfo.getMountId()));
 		para.put(15, new DbParameter(Types.INTEGER, playerInfo.getMagicWeaponId()));
-		para.put(16, new DbParameter(Types.INTEGER, 0));
+		para.put(16, new DbParameter(Types.INTEGER, playerInfo.getSkillStage()));
 		para.put(17, new DbParameter(Types.INTEGER, playerInfo.getRepair()));
-		para.put(18, new DbParameter(Types.INTEGER, 1));
-		para.put(19, new DbParameter(Types.INTEGER, 0));
-		para.put(20, new DbParameter(Types.BIGINT, 0));
+		para.put(18, new DbParameter(Types.INTEGER, playerInfo.getBattleMode()));
+		para.put(19, new DbParameter(Types.INTEGER, playerInfo.getPkVal()));
+		para.put(20, new DbParameter(Types.BIGINT, playerInfo.getChangeBattleModeTime()));
+		
+		para.put(21, new DbParameter(Types.INTEGER, playerInfo.getFashionId()));
+		para.put(22, new DbParameter(Types.INTEGER, playerInfo.getWeaponId()));
+		para.put(23, new DbParameter(Types.INTEGER, playerInfo.getWingId()));
 		result = execNoneQuery(sql, para) > -1 ? true : false;
 		playerInfo.commitAdd(result);
 		return result;
@@ -56,7 +62,7 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 	public boolean update(PlayerInfo playerInfo) {
 		boolean result = false;
 		playerInfo.beginUpdate();
-		String sql = "update tb_u_player_info set nickname=?,level=?,exp=?,totalExp=?,money=?,bindCash=?,cash=?,vipLevel=?,fight=?,skinId=?,pBagCount=?,mountId=?,magicWeaponId=?,skillStage=?,repair=?,battleMode=?,pkVal=?,changeBattleModeTime=? where playerId=?";
+		String sql = "update tb_u_player_info set nickname=?,level=?,exp=?,totalExp=?,money=?,bindCash=?,cash=?,vipLevel=?,fight=?,skinId=?,pBagCount=?,mountId=?,magicWeaponId=?,skillStage=?,repair=?,battleMode=?,pkVal=?,changeBattleModeTime=?,fashionId=?,weaponId=?,wingId=? where playerId=?";
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.VARCHAR, playerInfo.getNickName()));
 		para.put(2, new DbParameter(Types.INTEGER, playerInfo.getLevel()));
@@ -73,16 +79,19 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		para.put(13, new DbParameter(Types.INTEGER, playerInfo.getMagicWeaponId()));
 		para.put(14, new DbParameter(Types.INTEGER, playerInfo.getSkillStage()));
 		para.put(15, new DbParameter(Types.BIGINT, playerInfo.getRepair()));
-		
+
 		para.put(16, new DbParameter(Types.INTEGER, playerInfo.getBattleMode()));
 		para.put(17, new DbParameter(Types.INTEGER, playerInfo.getPkVal()));
 		para.put(18, new DbParameter(Types.BIGINT, playerInfo.getChangeBattleModeTime()));
+		
+		para.put(19, new DbParameter(Types.INTEGER, playerInfo.getFashionId()));
+		para.put(20, new DbParameter(Types.INTEGER, playerInfo.getWeaponId()));
+		para.put(21, new DbParameter(Types.INTEGER, playerInfo.getWingId()));
 
-		para.put(19, new DbParameter(Types.BIGINT, playerInfo.getPlayerId()));
+		para.put(22, new DbParameter(Types.BIGINT, playerInfo.getPlayerId()));
 		result = execNoneQuery(sql, para) > -1 ? true : false;
 		
 		
-		System.out.println("保存用户数据："+result);
 		
 		playerInfo.commitUpdate(result);
 		return result;
@@ -100,7 +109,7 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 
 	@Override
 	public PlayerInfo getPlayerInfo(String nickName) {
-		String sql = "SELECT * FROM tb_u_player_info WHERE nickName='" + nickName+"'";
+		String sql = "SELECT * FROM tb_u_player_info WHERE nickName='" + nickName + "'";
 		List<PlayerInfo> result = read(sql, null);
 		if (result != null && result.size() > 0) {
 			return result.get(0);
@@ -139,6 +148,12 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 					info.setBattleMode(rs.getInt("battleMode"));
 					info.setPkVal(rs.getInt("pkVal"));
 					info.setChangeBattleModeTime(rs.getLong("changeBattleModeTime"));
+					
+					info.setFashionId(rs.getInt("fashionId"));
+					info.setWeaponId(rs.getInt("weaponId"));
+					info.setWingId(rs.getInt("wingId"));
+					
+					info.setOp(Option.None);
 					infos.add(info);
 				}
 			} catch (SQLException e) {

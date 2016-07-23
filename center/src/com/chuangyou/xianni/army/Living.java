@@ -4,6 +4,7 @@ import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMs
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
 import com.chuangyou.common.util.Log;
+import com.chuangyou.xianni.common.template.PropertyFightingTemplateMgr;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.player.PlayerJoinInfo;
@@ -53,38 +54,39 @@ public abstract class Living {
 	// public static final int //最大气血
 
 	protected Property[]	properties;
+	protected int			fighting;						// 战斗力
 
 	public Living() {
 		properties = new Property[29];
-		properties[SOUL] = new Property("元魂");
-		properties[BLOOD] = new Property("气血");
-		properties[ATTACK] = new Property("攻击");
-		properties[DEFENCE] = new Property("防御");
-		properties[SOUL_ATTACK] = new Property("魂攻");
-		properties[SOUL_DEFENCE] = new Property("魂防");
-		properties[ACCURATE] = new Property("命中");
-		properties[DODGE] = new Property("闪避");
-		properties[CRIT] = new Property("暴击");
-		properties[CRIT_DEFENCE] = new Property("抗暴");
-		properties[CRIT_ADDTION] = new Property("暴击伤害");
-		properties[CRIT_CUT] = new Property("抗暴减伤");
-		properties[BLOOD_ATTACK_ADDTION] = new Property("气血伤害增加");
-		properties[BLOOD_ATTACK_CUT] = new Property("气血伤害减免");
-		properties[SOUL_ATTACK_ADDTION] = new Property("元魂伤害增加");
-		properties[SOUL_ATTACK_CUT] = new Property("元魂伤害减免");
-		properties[REGAIN_SOUL] = new Property("每10秒回魂");
-		properties[REGAIN_BLOOD] = new Property("每10秒回血");
-		properties[METAL] = new Property("金");
-		properties[WOOD] = new Property("木");
-		properties[WATER] = new Property("水");
-		properties[FIRE] = new Property("火");
-		properties[EARTH] = new Property("土");
-		properties[METAL_DEFENCE] = new Property("金抗");
-		properties[WOOD_DEFENCE] = new Property("木抗");
-		properties[WATER_DEFENCE] = new Property("水抗");
-		properties[FIRE_DEFENCE] = new Property("火抗");
-		properties[EARTH_DEFENCE] = new Property("土抗");
-		properties[SPEED] = new Property("速度");
+		properties[SOUL] = new Property("元魂", EnumAttr.SOUL.getValue());
+		properties[BLOOD] = new Property("气血", EnumAttr.BLOOD.getValue());
+		properties[ATTACK] = new Property("攻击", EnumAttr.ATTACK.getValue());
+		properties[DEFENCE] = new Property("防御", EnumAttr.DEFENCE.getValue());
+		properties[SOUL_ATTACK] = new Property("魂攻", EnumAttr.SOUL_ATTACK.getValue());
+		properties[SOUL_DEFENCE] = new Property("魂防", EnumAttr.SOUL_DEFENCE.getValue());
+		properties[ACCURATE] = new Property("命中", EnumAttr.ACCURATE.getValue());
+		properties[DODGE] = new Property("闪避", EnumAttr.DODGE.getValue());
+		properties[CRIT] = new Property("暴击", EnumAttr.CRIT.getValue());
+		properties[CRIT_DEFENCE] = new Property("抗暴", EnumAttr.CRIT_DEFENCE.getValue());
+		properties[CRIT_ADDTION] = new Property("暴击伤害", EnumAttr.CRIT_ADDTION.getValue());
+		properties[CRIT_CUT] = new Property("抗暴减伤", EnumAttr.CRIT_CUT.getValue());
+		properties[BLOOD_ATTACK_ADDTION] = new Property("气血伤害增加", EnumAttr.ATTACK_ADDTION.getValue());
+		properties[BLOOD_ATTACK_CUT] = new Property("气血伤害减免", EnumAttr.ATTACK_CUT.getValue());
+		properties[SOUL_ATTACK_ADDTION] = new Property("元魂伤害增加", EnumAttr.SOUL_ATTACK_ADDTION.getValue());
+		properties[SOUL_ATTACK_CUT] = new Property("元魂伤害减免", EnumAttr.SOUL_ATTACK_CUT.getValue());
+		properties[REGAIN_SOUL] = new Property("每10秒回魂", EnumAttr.REGAIN_SOUL.getValue());
+		properties[REGAIN_BLOOD] = new Property("每10秒回血", EnumAttr.REGAIN_BLOOD.getValue());
+		properties[METAL] = new Property("金", EnumAttr.METAL.getValue());
+		properties[WOOD] = new Property("木", EnumAttr.WOOD.getValue());
+		properties[WATER] = new Property("水", EnumAttr.WATER.getValue());
+		properties[FIRE] = new Property("火", EnumAttr.FIRE.getValue());
+		properties[EARTH] = new Property("土", EnumAttr.EARTH.getValue());
+		properties[METAL_DEFENCE] = new Property("金抗", EnumAttr.METAL_DEFENCE.getValue());
+		properties[WOOD_DEFENCE] = new Property("木抗", EnumAttr.WOOD_DEFENCE.getValue());
+		properties[WATER_DEFENCE] = new Property("水抗", EnumAttr.WATER_DEFENCE.getValue());
+		properties[FIRE_DEFENCE] = new Property("火抗", EnumAttr.FIRE_DEFENCE.getValue());
+		properties[EARTH_DEFENCE] = new Property("土抗", EnumAttr.EARTH_DEFENCE.getValue());
+		properties[SPEED] = new Property("速度", EnumAttr.SPEED.getValue());
 	}
 
 	public Property[] getProperty() {
@@ -496,10 +498,6 @@ public abstract class Living {
 		properties[SPEED].setPetPer(petPer.getSpeed());
 	}
 
-	public void setBagPro(int type, int val) {
-		properties[type].setBagData(val);
-	}
-
 	public void writeProto(GamePlayer player, PropertyListMsg.Builder propertyMsgs) {
 		PlayerJoinInfo joinInfo = player.getBasePlayer().getPlayerJoinInfo();
 
@@ -516,9 +514,16 @@ public abstract class Living {
 				Log.error("------丢失属性-----丢失属性------丢失属性-------丢失属性---", new Exception("丢失属性"));
 			}
 		}
+		/*----------------------------人物战斗力--------------------------*/
+		refresh();// 刷新
+		PropertyMsg.Builder proMsg = PropertyMsg.newBuilder();
+		proMsg.setType(EnumAttr.FightValue.getValue());
+		proMsg.setTotalPoint(fighting);
+		propertyMsgs.addPropertys(proMsg);
 	}
 
 	public void writeUpdateProto(GamePlayer player, PlayerAttUpdateMsg.Builder msg) {
+
 		msg.setPlayerId(player.getPlayerId());
 		PlayerJoinInfo joinInfo = player.getBasePlayer().getPlayerJoinInfo();
 		for (int i = 0; i < properties.length; i++) {
@@ -526,7 +531,6 @@ public abstract class Living {
 			if (property != null) {
 				if (property.isChange()) {
 					updatePlayer(i, property, joinInfo);
-
 					PropertyMsg.Builder proMsg = PropertyMsg.newBuilder();
 					proMsg.setType(i + 1);
 					property.writeProto(proMsg);
@@ -536,7 +540,23 @@ public abstract class Living {
 				Log.error("------丢失属性-----丢失属性------丢失属性-------丢失属性---", new Exception("丢失属性"));
 			}
 		}
+		/*----------------------------人物战斗力--------------------------*/
+		refresh();// 刷新
+		PropertyMsg.Builder proMsg = PropertyMsg.newBuilder();
+		proMsg.setType(EnumAttr.FightValue.getValue());
+		proMsg.setTotalPoint(fighting);
+		msg.addAtt(proMsg);
+	}
 
+	public int getFighting() {
+		return fighting;
+	}
+
+	public void refresh() {
+		fighting = 0;
+		for (Property p : properties) {
+			fighting += p.getTotalJoin() * PropertyFightingTemplateMgr.getFighting(p.getType()) / 100;
+		}
 	}
 
 	public void updatePlayer(int index, Property property, PlayerJoinInfo joinInfo) {

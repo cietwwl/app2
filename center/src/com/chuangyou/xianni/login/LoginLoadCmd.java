@@ -3,6 +3,7 @@
 import com.chuangyou.common.protobuf.pb.PlayerDataMsgProto.PlayerDataMsg;
 import com.chuangyou.common.protobuf.pb.PlayerLoadDataMsgProto.PlayerLoadDataMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CampaignOptionMsgProto.CampaignOptionMsg;
+import com.chuangyou.common.protobuf.pb.shop.GetMallInfoReqProto.GetMallInfoReqMsg;
 import com.chuangyou.common.protobuf.pb.task.GetTaskListReqProto.GetTaskListReqMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.army.ArmyInventory;
@@ -13,6 +14,7 @@ import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.shop.cmd.GetMallInfoReqCmd;
 import com.chuangyou.xianni.socket.Cmd;
 import com.chuangyou.xianni.task.cmd.GetTaskListReqCmd;
 import com.chuangyou.xianni.team.reaction.GetTeamInfoAction;
@@ -24,13 +26,14 @@ import com.chuangyou.xianni.team.reaction.GetTeamInfoAction;
  */
 @Cmd(code = Protocol.C_PLAYER_DATA, desc = "登录加载")
 public class LoginLoadCmd extends AbstractCommand {
-	static final int	SYS			= 1;
-	static final int	USER		= 2;
-	static final int	ARMY		= 3;
-	static final int	BAG			= 4;
-	static final int	TASK		= 5;
-	static final int	CAMPAIGN	= 6;
-	static final int 	TEAM        = 7;
+	static final int SYS = 1;
+	static final int USER = 2;
+	static final int ARMY = 3;
+	static final int BAG = 4;
+	static final int TASK = 5;
+	static final int CAMPAIGN = 6;
+	static final int TEAM = 7;
+	static final int SHOP = 8;
 
 	@Override
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
@@ -80,6 +83,15 @@ public class LoginLoadCmd extends AbstractCommand {
 			if (dataType.getDataType() == TEAM) {
 				GetTeamInfoAction action = new GetTeamInfoAction(player, null);
 				action.getActionQueue().enqueue(action);
+			}
+
+			// 商店
+			if (dataType.getDataType() == SHOP) {
+				GetMallInfoReqMsg.Builder req = GetMallInfoReqMsg.newBuilder();
+				req.setRequestType(1);
+				PBMessage pkg = MessageUtil.buildMessage(Protocol.C_REQ_MALL_INFO, player.getPlayerId(), req);
+				pkg.setBytes(pkg.getMessage().toByteArray());
+				player.enqueue(new CmdTask(new GetMallInfoReqCmd(), null, pkg, player.getCmdTaskQueue()));
 			}
 
 			// 加载好友列表

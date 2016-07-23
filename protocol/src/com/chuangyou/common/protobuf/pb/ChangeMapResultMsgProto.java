@@ -16,7 +16,7 @@ public final class ChangeMapResultMsgProto {
      * <code>optional int32 result = 1;</code>
      *
      * <pre>
-     *½øÈë×´Ì¬ ¸Ã×Ö¶ÎÔİ²»´¦Àí
+     *è¿›å…¥çŠ¶æ€ è¯¥å­—æ®µæš‚ä¸å¤„ç†
      * </pre>
      */
     boolean hasResult();
@@ -24,7 +24,7 @@ public final class ChangeMapResultMsgProto {
      * <code>optional int32 result = 1;</code>
      *
      * <pre>
-     *½øÈë×´Ì¬ ¸Ã×Ö¶ÎÔİ²»´¦Àí
+     *è¿›å…¥çŠ¶æ€ è¯¥å­—æ®µæš‚ä¸å¤„ç†
      * </pre>
      */
     int getResult();
@@ -33,7 +33,7 @@ public final class ChangeMapResultMsgProto {
      * <code>optional int32 mapType = 2;</code>
      *
      * <pre>
-     *µØÍ¼ÀàĞÍ ¸Ã×Ö¶ÎÔİ²»´¦Àí
+     *åœ°å›¾ç±»å‹ è¯¥å­—æ®µæš‚ä¸å¤„ç†
      * </pre>
      */
     boolean hasMapType();
@@ -41,7 +41,7 @@ public final class ChangeMapResultMsgProto {
      * <code>optional int32 mapType = 2;</code>
      *
      * <pre>
-     *µØÍ¼ÀàĞÍ ¸Ã×Ö¶ÎÔİ²»´¦Àí
+     *åœ°å›¾ç±»å‹ è¯¥å­—æ®µæš‚ä¸å¤„ç†
      * </pre>
      */
     int getMapType();
@@ -50,7 +50,7 @@ public final class ChangeMapResultMsgProto {
      * <code>optional .PostionMsg postion = 3;</code>
      *
      * <pre>
-     *µØÍ¼Î»ÖÃ×ø±ê
+     *åœ°å›¾ä½ç½®åæ ‡
      * </pre>
      */
     boolean hasPostion();
@@ -58,7 +58,7 @@ public final class ChangeMapResultMsgProto {
      * <code>optional .PostionMsg postion = 3;</code>
      *
      * <pre>
-     *µØÍ¼Î»ÖÃ×ø±ê
+     *åœ°å›¾ä½ç½®åæ ‡
      * </pre>
      */
     com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg getPostion();
@@ -66,7 +66,7 @@ public final class ChangeMapResultMsgProto {
      * <code>optional .PostionMsg postion = 3;</code>
      *
      * <pre>
-     *µØÍ¼Î»ÖÃ×ø±ê
+     *åœ°å›¾ä½ç½®åæ ‡
      * </pre>
      */
     com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsgOrBuilder getPostionOrBuilder();
@@ -192,7 +192,7 @@ public final class ChangeMapResultMsgProto {
      * <code>optional int32 result = 1;</code>
      *
      * <pre>
-     *½øÈë×´Ì¬ ¸Ã×Ö¶ÎÔİ²»´¦Àí
+     *è¿›å…¥çŠ¶æ€ è¯¥å­—æ®µæš‚ä¸å¤„ç†
      * </pre>
      */
     public boolean hasResult() {
@@ -202,7 +202,7 @@ public final class ChangeMapResultMsgProto {
      * <code>optional int32 result = 1;</code>
      *
      * <pre>
-     *½øÈë×´Ì¬ ¸Ã×Ö¶ÎÔİ²»´¦Àí
+     *è¿›å…¥çŠ¶æ€ è¯¥å­—æ®µæš‚ä¸å¤„ç†
      * </pre>
      */
     public int getResult() {
@@ -215,7 +215,7 @@ public final class ChangeMapResultMsgProto {
      * <code>optional int32 mapType = 2;</code>
      *
      * <pre>
-     *µØÍ¼ÀàĞÍ ¸Ã×Ö¶ÎÔİ²»´¦Àí
+     *åœ°å›¾ç±»å‹ è¯¥å­—æ®µæš‚ä¸å¤„ç†
      * </pre>
      */
     public boolean hasMapType() {
@@ -225,7 +225,7 @@ public final class ChangeMapResultMsgProto {
      * <code>optional int32 mapType = 2;</code>
      *
      * <pre>
-     *µØÍ¼ÀàĞÍ ¸Ã×Ö¶ÎÔİ²»´¦Àí
+     *åœ°å›¾ç±»å‹ è¯¥å­—æ®µæš‚ä¸å¤„ç†
      * </pre>
      */
     public int getMapType() {
@@ -238,7 +238,7 @@ public final class ChangeMapResultMsgProto {
      * <code>optional .PostionMsg postion = 3;</code>
      *
      * <pre>
-     *µØÍ¼Î»ÖÃ×ø±ê
+     *åœ°å›¾ä½ç½®åæ ‡
      * </pre>
      */
     public boolean hasPostion() {
@@ -248,7 +248,7 @@ public final class ChangeMapResultMsgProto {
      * <code>optional .PostionMsg postion = 3;</code>
      *
      * <pre>
-     *µØÍ¼Î»ÖÃ×ø±ê
+     *åœ°å›¾ä½ç½®åæ ‡
      * </pre>
      */
     public com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg getPostion() {
@@ -258,7 +258,7 @@ public final class ChangeMapResultMsgProto {
      * <code>optional .PostionMsg postion = 3;</code>
      *
      * <pre>
-     *µØÍ¼Î»ÖÃ×ø±ê
+     *åœ°å›¾ä½ç½®åæ ‡
      * </pre>
      */
     public com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsgOrBuilder getPostionOrBuilder() {
@@ -542,7 +542,7 @@ public final class ChangeMapResultMsgProto {
        * <code>optional int32 result = 1;</code>
        *
        * <pre>
-       *½øÈë×´Ì¬ ¸Ã×Ö¶ÎÔİ²»´¦Àí
+       *è¿›å…¥çŠ¶æ€ è¯¥å­—æ®µæš‚ä¸å¤„ç†
        * </pre>
        */
       public boolean hasResult() {
@@ -552,7 +552,7 @@ public final class ChangeMapResultMsgProto {
        * <code>optional int32 result = 1;</code>
        *
        * <pre>
-       *½øÈë×´Ì¬ ¸Ã×Ö¶ÎÔİ²»´¦Àí
+       *è¿›å…¥çŠ¶æ€ è¯¥å­—æ®µæš‚ä¸å¤„ç†
        * </pre>
        */
       public int getResult() {
@@ -562,7 +562,7 @@ public final class ChangeMapResultMsgProto {
        * <code>optional int32 result = 1;</code>
        *
        * <pre>
-       *½øÈë×´Ì¬ ¸Ã×Ö¶ÎÔİ²»´¦Àí
+       *è¿›å…¥çŠ¶æ€ è¯¥å­—æ®µæš‚ä¸å¤„ç†
        * </pre>
        */
       public Builder setResult(int value) {
@@ -575,7 +575,7 @@ public final class ChangeMapResultMsgProto {
        * <code>optional int32 result = 1;</code>
        *
        * <pre>
-       *½øÈë×´Ì¬ ¸Ã×Ö¶ÎÔİ²»´¦Àí
+       *è¿›å…¥çŠ¶æ€ è¯¥å­—æ®µæš‚ä¸å¤„ç†
        * </pre>
        */
       public Builder clearResult() {
@@ -590,7 +590,7 @@ public final class ChangeMapResultMsgProto {
        * <code>optional int32 mapType = 2;</code>
        *
        * <pre>
-       *µØÍ¼ÀàĞÍ ¸Ã×Ö¶ÎÔİ²»´¦Àí
+       *åœ°å›¾ç±»å‹ è¯¥å­—æ®µæš‚ä¸å¤„ç†
        * </pre>
        */
       public boolean hasMapType() {
@@ -600,7 +600,7 @@ public final class ChangeMapResultMsgProto {
        * <code>optional int32 mapType = 2;</code>
        *
        * <pre>
-       *µØÍ¼ÀàĞÍ ¸Ã×Ö¶ÎÔİ²»´¦Àí
+       *åœ°å›¾ç±»å‹ è¯¥å­—æ®µæš‚ä¸å¤„ç†
        * </pre>
        */
       public int getMapType() {
@@ -610,7 +610,7 @@ public final class ChangeMapResultMsgProto {
        * <code>optional int32 mapType = 2;</code>
        *
        * <pre>
-       *µØÍ¼ÀàĞÍ ¸Ã×Ö¶ÎÔİ²»´¦Àí
+       *åœ°å›¾ç±»å‹ è¯¥å­—æ®µæš‚ä¸å¤„ç†
        * </pre>
        */
       public Builder setMapType(int value) {
@@ -623,7 +623,7 @@ public final class ChangeMapResultMsgProto {
        * <code>optional int32 mapType = 2;</code>
        *
        * <pre>
-       *µØÍ¼ÀàĞÍ ¸Ã×Ö¶ÎÔİ²»´¦Àí
+       *åœ°å›¾ç±»å‹ è¯¥å­—æ®µæš‚ä¸å¤„ç†
        * </pre>
        */
       public Builder clearMapType() {
@@ -640,7 +640,7 @@ public final class ChangeMapResultMsgProto {
        * <code>optional .PostionMsg postion = 3;</code>
        *
        * <pre>
-       *µØÍ¼Î»ÖÃ×ø±ê
+       *åœ°å›¾ä½ç½®åæ ‡
        * </pre>
        */
       public boolean hasPostion() {
@@ -650,7 +650,7 @@ public final class ChangeMapResultMsgProto {
        * <code>optional .PostionMsg postion = 3;</code>
        *
        * <pre>
-       *µØÍ¼Î»ÖÃ×ø±ê
+       *åœ°å›¾ä½ç½®åæ ‡
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg getPostion() {
@@ -664,7 +664,7 @@ public final class ChangeMapResultMsgProto {
        * <code>optional .PostionMsg postion = 3;</code>
        *
        * <pre>
-       *µØÍ¼Î»ÖÃ×ø±ê
+       *åœ°å›¾ä½ç½®åæ ‡
        * </pre>
        */
       public Builder setPostion(com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg value) {
@@ -684,7 +684,7 @@ public final class ChangeMapResultMsgProto {
        * <code>optional .PostionMsg postion = 3;</code>
        *
        * <pre>
-       *µØÍ¼Î»ÖÃ×ø±ê
+       *åœ°å›¾ä½ç½®åæ ‡
        * </pre>
        */
       public Builder setPostion(
@@ -702,7 +702,7 @@ public final class ChangeMapResultMsgProto {
        * <code>optional .PostionMsg postion = 3;</code>
        *
        * <pre>
-       *µØÍ¼Î»ÖÃ×ø±ê
+       *åœ°å›¾ä½ç½®åæ ‡
        * </pre>
        */
       public Builder mergePostion(com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg value) {
@@ -725,7 +725,7 @@ public final class ChangeMapResultMsgProto {
        * <code>optional .PostionMsg postion = 3;</code>
        *
        * <pre>
-       *µØÍ¼Î»ÖÃ×ø±ê
+       *åœ°å›¾ä½ç½®åæ ‡
        * </pre>
        */
       public Builder clearPostion() {
@@ -742,7 +742,7 @@ public final class ChangeMapResultMsgProto {
        * <code>optional .PostionMsg postion = 3;</code>
        *
        * <pre>
-       *µØÍ¼Î»ÖÃ×ø±ê
+       *åœ°å›¾ä½ç½®åæ ‡
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg.Builder getPostionBuilder() {
@@ -754,7 +754,7 @@ public final class ChangeMapResultMsgProto {
        * <code>optional .PostionMsg postion = 3;</code>
        *
        * <pre>
-       *µØÍ¼Î»ÖÃ×ø±ê
+       *åœ°å›¾ä½ç½®åæ ‡
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsgOrBuilder getPostionOrBuilder() {
@@ -768,7 +768,7 @@ public final class ChangeMapResultMsgProto {
        * <code>optional .PostionMsg postion = 3;</code>
        *
        * <pre>
-       *µØÍ¼Î»ÖÃ×ø±ê
+       *åœ°å›¾ä½ç½®åæ ‡
        * </pre>
        */
       private com.google.protobuf.SingleFieldBuilder<

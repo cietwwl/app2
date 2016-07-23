@@ -16,7 +16,7 @@ public final class ItemReqInfoMsgProto {
      * <code>optional int32 pos = 1;</code>
      *
      * <pre>
-     * 位置	
+     * 浣嶇疆	
      * </pre>
      */
     boolean hasPos();
@@ -24,7 +24,7 @@ public final class ItemReqInfoMsgProto {
      * <code>optional int32 pos = 1;</code>
      *
      * <pre>
-     * 位置	
+     * 浣嶇疆	
      * </pre>
      */
     int getPos();
@@ -33,7 +33,7 @@ public final class ItemReqInfoMsgProto {
      * <code>optional int32 bagType = 2;</code>
      *
      * <pre>
-     * 背包类型
+     * 鑳屽寘绫诲瀷
      * </pre>
      */
     boolean hasBagType();
@@ -41,7 +41,7 @@ public final class ItemReqInfoMsgProto {
      * <code>optional int32 bagType = 2;</code>
      *
      * <pre>
-     * 背包类型
+     * 鑳屽寘绫诲瀷
      * </pre>
      */
     int getBagType();
@@ -154,7 +154,7 @@ public final class ItemReqInfoMsgProto {
      * <code>optional int32 pos = 1;</code>
      *
      * <pre>
-     * 位置	
+     * 浣嶇疆	
      * </pre>
      */
     public boolean hasPos() {
@@ -164,7 +164,7 @@ public final class ItemReqInfoMsgProto {
      * <code>optional int32 pos = 1;</code>
      *
      * <pre>
-     * 位置	
+     * 浣嶇疆	
      * </pre>
      */
     public int getPos() {
@@ -177,7 +177,7 @@ public final class ItemReqInfoMsgProto {
      * <code>optional int32 bagType = 2;</code>
      *
      * <pre>
-     * 背包类型
+     * 鑳屽寘绫诲瀷
      * </pre>
      */
     public boolean hasBagType() {
@@ -187,7 +187,7 @@ public final class ItemReqInfoMsgProto {
      * <code>optional int32 bagType = 2;</code>
      *
      * <pre>
-     * 背包类型
+     * 鑳屽寘绫诲瀷
      * </pre>
      */
     public int getBagType() {
@@ -445,7 +445,7 @@ public final class ItemReqInfoMsgProto {
        * <code>optional int32 pos = 1;</code>
        *
        * <pre>
-       * 位置	
+       * 浣嶇疆	
        * </pre>
        */
       public boolean hasPos() {
@@ -455,7 +455,7 @@ public final class ItemReqInfoMsgProto {
        * <code>optional int32 pos = 1;</code>
        *
        * <pre>
-       * 位置	
+       * 浣嶇疆	
        * </pre>
        */
       public int getPos() {
@@ -465,7 +465,7 @@ public final class ItemReqInfoMsgProto {
        * <code>optional int32 pos = 1;</code>
        *
        * <pre>
-       * 位置	
+       * 浣嶇疆	
        * </pre>
        */
       public Builder setPos(int value) {
@@ -478,7 +478,7 @@ public final class ItemReqInfoMsgProto {
        * <code>optional int32 pos = 1;</code>
        *
        * <pre>
-       * 位置	
+       * 浣嶇疆	
        * </pre>
        */
       public Builder clearPos() {
@@ -493,7 +493,7 @@ public final class ItemReqInfoMsgProto {
        * <code>optional int32 bagType = 2;</code>
        *
        * <pre>
-       * 背包类型
+       * 鑳屽寘绫诲瀷
        * </pre>
        */
       public boolean hasBagType() {
@@ -503,7 +503,7 @@ public final class ItemReqInfoMsgProto {
        * <code>optional int32 bagType = 2;</code>
        *
        * <pre>
-       * 背包类型
+       * 鑳屽寘绫诲瀷
        * </pre>
        */
       public int getBagType() {
@@ -513,7 +513,7 @@ public final class ItemReqInfoMsgProto {
        * <code>optional int32 bagType = 2;</code>
        *
        * <pre>
-       * 背包类型
+       * 鑳屽寘绫诲瀷
        * </pre>
        */
       public Builder setBagType(int value) {
@@ -526,7 +526,7 @@ public final class ItemReqInfoMsgProto {
        * <code>optional int32 bagType = 2;</code>
        *
        * <pre>
-       * 背包类型
+       * 鑳屽寘绫诲瀷
        * </pre>
        */
       public Builder clearBagType() {

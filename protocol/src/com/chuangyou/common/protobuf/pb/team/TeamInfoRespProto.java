@@ -106,6 +106,23 @@ public final class TeamInfoRespProto {
      */
     com.chuangyou.common.protobuf.pb.team.TeamMemberInfoProto.TeamMemberInfoMsgOrBuilder getInfosOrBuilder(
         int index);
+
+    /**
+     * <code>optional int32 teamStatu = 5;</code>
+     *
+     * <pre>
+     *队伍状态 正常—准备—待进入(倒计时3秒)—进入目标
+     * </pre>
+     */
+    boolean hasTeamStatu();
+    /**
+     * <code>optional int32 teamStatu = 5;</code>
+     *
+     * <pre>
+     *队伍状态 正常—准备—待进入(倒计时3秒)—进入目标
+     * </pre>
+     */
+    int getTeamStatu();
   }
   /**
    * Protobuf type {@code TeamInfoRespMsg}
@@ -184,6 +201,11 @@ public final class TeamInfoRespProto {
                 mutable_bitField0_ |= 0x00000008;
               }
               infos_.add(input.readMessage(com.chuangyou.common.protobuf.pb.team.TeamMemberInfoProto.TeamMemberInfoMsg.PARSER, extensionRegistry));
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000008;
+              teamStatu_ = input.readInt32();
               break;
             }
           }
@@ -353,11 +375,35 @@ public final class TeamInfoRespProto {
       return infos_.get(index);
     }
 
+    public static final int TEAMSTATU_FIELD_NUMBER = 5;
+    private int teamStatu_;
+    /**
+     * <code>optional int32 teamStatu = 5;</code>
+     *
+     * <pre>
+     *队伍状态 正常—准备—待进入(倒计时3秒)—进入目标
+     * </pre>
+     */
+    public boolean hasTeamStatu() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional int32 teamStatu = 5;</code>
+     *
+     * <pre>
+     *队伍状态 正常—准备—待进入(倒计时3秒)—进入目标
+     * </pre>
+     */
+    public int getTeamStatu() {
+      return teamStatu_;
+    }
+
     private void initFields() {
       teamId_ = 0;
       leaderPlayerId_ = 0L;
       targetId_ = 0;
       infos_ = java.util.Collections.emptyList();
+      teamStatu_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -402,6 +448,9 @@ public final class TeamInfoRespProto {
       for (int i = 0; i < infos_.size(); i++) {
         output.writeMessage(4, infos_.get(i));
       }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt32(5, teamStatu_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -426,6 +475,10 @@ public final class TeamInfoRespProto {
       for (int i = 0; i < infos_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, infos_.get(i));
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(5, teamStatu_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -561,6 +614,8 @@ public final class TeamInfoRespProto {
         } else {
           infosBuilder_.clear();
         }
+        teamStatu_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -610,6 +665,10 @@ public final class TeamInfoRespProto {
         } else {
           result.infos_ = infosBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.teamStatu_ = teamStatu_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -660,6 +719,9 @@ public final class TeamInfoRespProto {
               infosBuilder_.addAllMessages(other.infos_);
             }
           }
+        }
+        if (other.hasTeamStatu()) {
+          setTeamStatu(other.getTeamStatu());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1162,6 +1224,54 @@ public final class TeamInfoRespProto {
         return infosBuilder_;
       }
 
+      private int teamStatu_ ;
+      /**
+       * <code>optional int32 teamStatu = 5;</code>
+       *
+       * <pre>
+       *队伍状态 正常—准备—待进入(倒计时3秒)—进入目标
+       * </pre>
+       */
+      public boolean hasTeamStatu() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional int32 teamStatu = 5;</code>
+       *
+       * <pre>
+       *队伍状态 正常—准备—待进入(倒计时3秒)—进入目标
+       * </pre>
+       */
+      public int getTeamStatu() {
+        return teamStatu_;
+      }
+      /**
+       * <code>optional int32 teamStatu = 5;</code>
+       *
+       * <pre>
+       *队伍状态 正常—准备—待进入(倒计时3秒)—进入目标
+       * </pre>
+       */
+      public Builder setTeamStatu(int value) {
+        bitField0_ |= 0x00000010;
+        teamStatu_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 teamStatu = 5;</code>
+       *
+       * <pre>
+       *队伍状态 正常—准备—待进入(倒计时3秒)—进入目标
+       * </pre>
+       */
+      public Builder clearTeamStatu() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        teamStatu_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:TeamInfoRespMsg)
     }
 
@@ -1188,11 +1298,12 @@ public final class TeamInfoRespProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\032team/TeamInfoRespMsg.proto\032\034team/TeamM" +
-      "emberInfoMsg.proto\"n\n\017TeamInfoRespMsg\022\016\n" +
-      "\006teamId\030\001 \002(\005\022\026\n\016leaderPlayerId\030\002 \002(\003\022\020\n" +
-      "\010targetId\030\003 \002(\005\022!\n\005infos\030\004 \003(\0132\022.TeamMem" +
-      "berInfoMsgB:\n%com.chuangyou.common.proto" +
-      "buf.pb.teamB\021TeamInfoRespProto"
+      "emberInfoMsg.proto\"\201\001\n\017TeamInfoRespMsg\022\016" +
+      "\n\006teamId\030\001 \002(\005\022\026\n\016leaderPlayerId\030\002 \002(\003\022\020" +
+      "\n\010targetId\030\003 \002(\005\022!\n\005infos\030\004 \003(\0132\022.TeamMe" +
+      "mberInfoMsg\022\021\n\tteamStatu\030\005 \001(\005B:\n%com.ch" +
+      "uangyou.common.protobuf.pb.teamB\021TeamInf" +
+      "oRespProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1212,7 +1323,7 @@ public final class TeamInfoRespProto {
     internal_static_TeamInfoRespMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_TeamInfoRespMsg_descriptor,
-        new java.lang.String[] { "TeamId", "LeaderPlayerId", "TargetId", "Infos", });
+        new java.lang.String[] { "TeamId", "LeaderPlayerId", "TargetId", "Infos", "TeamStatu", });
     com.chuangyou.common.protobuf.pb.team.TeamMemberInfoProto.getDescriptor();
   }
 

@@ -1,16 +1,16 @@
 package com.chuangyou.xianni.campaign.cmd;
 
-import com.chuangyou.common.protobuf.pb.campaign.CampaignInfoMsgProto.CampaignInfoMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CampaignOptionMsgProto.CampaignOptionMsg;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.constant.CampaignOptionType;
-import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
+import com.chuangyou.xianni.team.Team;
+import com.chuangyou.xianni.team.TeamMgr;
 import com.chuangyou.xianni.world.AbstractCommand;
 import com.chuangyou.xianni.world.ArmyProxy;
 
@@ -45,6 +45,16 @@ public class CampaignOptionCmd extends AbstractCommand {
 			Campaign campaign = CampaignMgr.getCampagin(parm1);
 			if (campaign != null) {
 				campaign.onPlayerLeave(army);
+			}
+		}
+		/* 进入队伍所在副本 */
+		if (op == CampaignOptionType.JOIN_TEAM) {
+			Team tem = TeamMgr.getTeam(army.getPlayerId());
+			if (tem != null && tem.getCampaignId() != 0) {
+				Campaign campaign = CampaignMgr.getCampagin(tem.getCampaignId());
+				if (campaign != null) {
+					campaign.onPlayerLeave(army);
+				}
 			}
 		}
 	}

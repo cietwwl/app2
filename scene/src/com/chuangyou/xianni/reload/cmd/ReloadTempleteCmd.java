@@ -3,6 +3,7 @@ package com.chuangyou.xianni.reload.cmd;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.role.template.AiConfigTemplateMgr;
 import com.chuangyou.xianni.role.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.role.template.NpcInfoTemplateMgr;
 import com.chuangyou.xianni.socket.Cmd;
@@ -23,6 +24,7 @@ public class ReloadTempleteCmd implements Command {
 		SpawnTemplateMgr.reloadSpawnInfoTemp();
 		MonsterInfoTemplateMgr.reloadMonsterInfoTemp();
 		NpcInfoTemplateMgr.reloadNpcInfoTemp();
+		AiConfigTemplateMgr.init();
 		
 	}
 

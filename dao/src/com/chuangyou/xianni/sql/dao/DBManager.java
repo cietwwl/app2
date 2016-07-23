@@ -1,8 +1,10 @@
 package com.chuangyou.xianni.sql.dao;
 
+import com.chuangyou.xianni.sql.dao.impl.AiConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.BaseBufferTemplateInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.CampaignRecordInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.CampaignTemplateInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.ChatPrivateOfflineMsgDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.DropConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.EmailDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.FashionConfigDaoImpl;
@@ -32,7 +34,10 @@ import com.chuangyou.xianni.sql.dao.impl.PetSkillInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PetTotalAttDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PlayerInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PlayerPositionInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.PropertyFightingTemplateDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.RoleConfigImplDao;
+import com.chuangyou.xianni.sql.dao.impl.ShopConfigDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.ShopDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SkillActionMoveTemplateInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SkillActionTemplateInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SkillBufferTemplateInfoDaoImpl;
@@ -43,6 +48,7 @@ import com.chuangyou.xianni.sql.dao.impl.SpawnInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SystemConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.TaskDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.TaskTemplateImpl;
+import com.chuangyou.xianni.sql.dao.impl.TeamTargetTemplateDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.TemplateTestDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.UserDaoImpl;
 
@@ -62,9 +68,15 @@ public class DBManager {
 	private static final FriendDao			friendDao			= new FriendDaoImpl();
 	/** npc shop */
 	private static final NpcShopDao			npcShopDao			= new NpcShopDaoImpl();
-
+	
 	/** npc商店模板数据 */
 	private static final NpcShopConfigDao	npcShopConfigDao	= new NpcShopConfigDaoImpl();
+	
+	/** shop */
+	private static final ShopDao			shopDao			= new ShopDaoImpl();
+
+	/** 商店模板数据 */
+	private static final ShopConfigDao	shopConfigDao	= new ShopConfigDaoImpl();
 	/** 任务模板 */
 	private static final TaskTemplateDao	taskTemplateDao		= new TaskTemplateImpl();
 	/** 任务DB */
@@ -107,6 +119,13 @@ public class DBManager {
 
 	public static MonsterInfoDao getMonsterInfoDao() {
 		return monsterInfoDao;
+	}
+	/**
+	 * ai 配置数据
+	 */
+	private static final AiConfigDao aiConfigDao = new AiConfigDaoImpl();
+	public static AiConfigDao getAiConfigDao(){
+		return aiConfigDao;
 	}
 
 	/**
@@ -180,9 +199,22 @@ public class DBManager {
 	public static NpcShopDao getNpcshopdao() {
 		return npcShopDao;
 	}
-
+	
 	public static NpcShopConfigDao getNpcshopconfigdao() {
 		return npcShopConfigDao;
+	}
+	
+	/**
+	 * 商店
+	 * 
+	 * @return
+	 */
+	public static ShopDao getShopDao() {
+		return shopDao;
+	}
+
+	public static ShopConfigDao getShopConfigDao() {
+		return shopConfigDao;
 	}
 
 	/**
@@ -425,4 +457,25 @@ public class DBManager {
 		return livingStatusTemplateInfoDao;
 	}
 
+	/** 属性，战斗力对应表 */
+	private static final PropertyFightingTemplateDao propertyFightingTemplateDao = new PropertyFightingTemplateDaoImpl();
+
+	public static PropertyFightingTemplateDao getPropertyFightingTemplateDao() {
+		return propertyFightingTemplateDao;
+	}
+
+	/** 组队目标表 */
+	private static final TeamTargetTemplateDao teamTargetTemplateDao = new TeamTargetTemplateDaoImpl();
+
+	public static TeamTargetTemplateDao getTeamTargetTemplateDao() {
+		return teamTargetTemplateDao;
+	}
+	
+	/**
+	 * 私聊离线消息
+	 */
+	private static final ChatPrivateOfflineMsgDao chatPrivateOfflineMsgDao = new ChatPrivateOfflineMsgDaoImpl();
+	public static ChatPrivateOfflineMsgDao getChatPrivateOfflineMsgDao(){
+		return chatPrivateOfflineMsgDao;
+	}
 }

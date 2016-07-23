@@ -1,0 +1,27 @@
+
+option java_package = "com.chuangyou.common.protobuf.pb.shop";
+option java_outer_classname = "GoodsInfoProto";
+
+ // NPC商店。商品信息结构
+message GoodsInfo{
+	required int32 privateId =1;  //商品配置表中的唯一ID
+	optional int32 itemType =2;//对应Item表中id
+	optional int32 bind = 3;//0：不绑定 1：绑定
+	optional int32 moneyType = 4;//对应XNDesign\潜规则\命名规则1\属性 中属性ID字段  如果是消耗物品。这个地方就是物品type
+	required int64 price =5;     //单价
+	required int32 discount = 6;//折扣，100:为不打折 50:为打五折  10:为打1折  以此类推
+	required int32 serverLimitNum = 7;//全服限购数量              小于等于0为不限购
+	required int32 personLimitNum = 8;//个人限购数量              小于等于0为不限购
+	required int32 timeType = 9;//1:永久 2：固定时间 3：每天 4：每周 5：每月 11-17：周一到周日 101-131：1号到31号
+	required string shelvesTime = 10; //上架时间（年月日时分秒）
+	required string shelfTime   = 11; //下架时间（年月日时分秒）
+	required string startTime   = 12; //每日开始时间（时分秒）
+	required string endTime     = 13; //每日结束时间（时分秒）
+	required int32  resetTime   = 14; //重置时间 （重置时间 单位分）
+	optional int32 serverProcured =15;//全服已购数量，            小于等于0为不限购
+	optional int32 roleProcured =16;  //单个用户已购数量，    小于等于0为不限购
+	optional int32 tab = 17;     //页签编号
+	optional int32 sort = 18; //表示顺序字段
+	optional int32 isPreview = 19;//是否预显示（0：不 1：预显示）
+	optional int32 easyBuy = 20; //是否便捷购买(0:否 1：是)
+}

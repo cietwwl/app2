@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.chuangyou.common.protobuf.pb.PlayerAttSnapProto.PlayerAttSnapMsg;
+import com.chuangyou.common.protobuf.pb.PlayerKillMonsterProto.PlayerKillMonsterMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLivingInfoMsg;
@@ -123,8 +124,9 @@ public class Living extends AbstractActionQueue {
 	protected int fireDefence;						// 火抗
 	protected int earthDefence;						// 土抗
 	protected int speed = 6;				// 移动速度
-	protected int pkVal;								// pk 值
-	protected int battleMode;               // 攻击模式
+	protected int pkVal;								// pk
+														// 值
+	protected int battleMode;							// 攻击模式
 	// 进场保护,不可攻击
 	protected boolean protection;
 
@@ -417,6 +419,17 @@ public class Living extends AbstractActionQueue {
 		return result;
 	}
 
+	// /**
+	// * 清空buffer
+	// *
+	// * @return
+	// */
+	// public boolean clearBuffer() {
+	// if (allBuffers != null)
+	// allBuffers.clear();
+	// return true;
+	// }
+
 	protected void sendBufferChange(BufferMsg msg) {
 		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
 		if (this.armyId > 0) {
@@ -525,7 +538,7 @@ public class Living extends AbstractActionQueue {
 
 		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
 		nears.add(living.getArmyId());
-		System.out.println("==========修改 living: " + living + " msg:" + msg.toString());
+		// System.out.println("==========修改 living: " + living + " msg:" + msg.toString());
 		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_RESP_PLAYER_ATT_UPDATE, msg.build());
 
 	}
@@ -665,7 +678,8 @@ public class Living extends AbstractActionQueue {
 			pmsg.setType(attr.getValue());
 			cachBattleInfoPacket.addPropertis(pmsg);
 
-			// System.out.println("val1: "+this.getProperty(attr.getValue()) + " type: "+attr.getValue());
+			// System.out.println("val1: "+this.getProperty(attr.getValue()) + "
+			// type: "+attr.getValue());
 		}
 		BattleLivingInfoMsg.Builder msg = this.cachBattleInfoPacket;
 		this.cachBattleInfoPacket = null;
@@ -779,6 +793,7 @@ public class Living extends AbstractActionQueue {
 			value = 0;
 		}
 		switch (attr) {
+
 		case CUR_SOUL:
 			if (value > this.getMaxSoul()) {
 				value = this.getMaxSoul();
@@ -894,6 +909,10 @@ public class Living extends AbstractActionQueue {
 		case BATTLE_MODE:
 			this.setBattleMode((int) value);
 			System.out.println("BATTLE_MODE value:" + value);
+			break;
+		case Weapon:
+			this.simpleInfo.setWeaponId((int) value);
+			break;
 		default:
 			break;
 		}
@@ -971,7 +990,7 @@ public class Living extends AbstractActionQueue {
 		case TEAM_ID:
 			return this.getTeamId();
 		case PK_VAL:
-			return this.pkVal;
+			return this.getPkVal();
 		case BATTLE_MODE:
 			return this.getBattleMode();
 		default:
@@ -1528,7 +1547,7 @@ public class Living extends AbstractActionQueue {
 	}
 
 	public void calPkVal() {
-		if (this.getField().getFieldInfo().isBattle()) {
+		if (this.getField().getFieldInfo().isBattle() && this.getPkVal() > 0) {
 			this.pkValCalTime = System.currentTimeMillis();
 			int changePkVal = MathUtils.randomClamp(1, 5);
 			changePkVal = this.getPkVal() - changePkVal < 0 ? 0 : this.getPkVal() - changePkVal;
@@ -1754,6 +1773,13 @@ public class Living extends AbstractActionQueue {
 		// 查看冷却
 		if (cooldowns.containsKey(cooldownKey)) {
 			CoolDown cooldown = cooldowns.get(cooldownKey);
+			// if (this.getId() == 1000000000033L && type ==
+			// CoolDownTypes.SKILL)
+			// System.out.println("cooldownKey: "+cooldownKey +"
+			// cooldown.getDelay:"+cooldown.getDelay()+ "
+			// "+(System.currentTimeMillis() > cooldown.getStart() +
+			// cooldown.getDelay()));
+
 			if (System.currentTimeMillis() > cooldown.getStart() + cooldown.getDelay()) {
 				// 冷却时间已经结束
 				// obj.getCooldowns().remove(cooldownKey);
@@ -1763,6 +1789,7 @@ public class Living extends AbstractActionQueue {
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -1803,4 +1830,20 @@ public class Living extends AbstractActionQueue {
 			}
 		}
 	}
+
+	/**
+	 * 通知
+	 * 
+	 * @param playerId
+	 * @param beKillerId 被杀者
+	 */
+	public void notifyCenter(int type, int playerId, int beKillerId) {
+		PlayerKillMonsterMsg.Builder msg = PlayerKillMonsterMsg.newBuilder();
+		msg.setPlayerId(playerId);
+		msg.setMonsterTemplateId(beKillerId);
+		msg.setType(type);
+		PBMessage pkg = MessageUtil.buildMessage(Protocol.C_PLAYER_KILL_MONSTER, msg);
+		GatewayLinkedSet.send2Server(pkg);
+	}
+
 }

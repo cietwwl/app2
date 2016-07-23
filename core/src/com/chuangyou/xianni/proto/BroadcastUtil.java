@@ -33,4 +33,23 @@ public class BroadcastUtil {
 		return sendBroadcastPacket(set, protocol, message);
 
 	}
+	
+	/**
+	 * 全服广播消息
+	 * @param protocol
+	 * @param message
+	 * @return
+	 */
+	public static boolean sendBroadcasePacketToAll(short protocol, Message message){
+		if(message == null){
+			return false;
+		}
+		BroadcastMsg.Builder builder = BroadcastMsg.newBuilder();
+		builder.setProtocol(protocol);
+		builder.setPacket(message.toByteString());
+		
+		PBMessage broadcastPb = MessageUtil.buildMessage(Protocol.G_BROADCAST_SERVER, builder.build());
+		GatewayLinkedSet.sendAll(broadcastPb);
+		return true;
+	}
 }

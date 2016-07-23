@@ -16,7 +16,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 id = 1;</code>
      *
      * <pre>
-     *¸±±¾Î¨Ò»ID
+     *å‰¯æœ¬å”¯ä¸€ID
      * </pre>
      */
     boolean hasId();
@@ -24,7 +24,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 id = 1;</code>
      *
      * <pre>
-     *¸±±¾Î¨Ò»ID
+     *å‰¯æœ¬å”¯ä¸€ID
      * </pre>
      */
     int getId();
@@ -33,7 +33,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 tempId = 2;</code>
      *
      * <pre>
-     *Ä£°åID
+     *æ¨¡æ¿ID
      * </pre>
      */
     boolean hasTempId();
@@ -41,7 +41,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 tempId = 2;</code>
      *
      * <pre>
-     *Ä£°åID
+     *æ¨¡æ¿ID
      * </pre>
      */
     int getTempId();
@@ -50,7 +50,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int64 createTime = 3;</code>
      *
      * <pre>
-     *´´½¨Ê±¼ä
+     *åˆ›å»ºæ—¶é—´
      * </pre>
      */
     boolean hasCreateTime();
@@ -58,7 +58,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int64 createTime = 3;</code>
      *
      * <pre>
-     *´´½¨Ê±¼ä
+     *åˆ›å»ºæ—¶é—´
      * </pre>
      */
     long getCreateTime();
@@ -67,7 +67,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 state = 4;</code>
      *
      * <pre>
-     *µ±Ç°×´Ì¬
+     *å½“å‰çŠ¶æ€
      * </pre>
      */
     boolean hasState();
@@ -75,7 +75,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 state = 4;</code>
      *
      * <pre>
-     *µ±Ç°×´Ì¬
+     *å½“å‰çŠ¶æ€
      * </pre>
      */
     int getState();
@@ -84,7 +84,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 count = 5;</code>
      *
      * <pre>
-     *µ±Ç°ÈËÊı
+     *å½“å‰äººæ•°
      * </pre>
      */
     boolean hasCount();
@@ -92,7 +92,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 count = 5;</code>
      *
      * <pre>
-     *µ±Ç°ÈËÊı
+     *å½“å‰äººæ•°
      * </pre>
      */
     int getCount();
@@ -101,7 +101,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int64 createrId = 6;</code>
      *
      * <pre>
-     *´´½¨ÈËID
+     *åˆ›å»ºäººID
      * </pre>
      */
     boolean hasCreaterId();
@@ -109,7 +109,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int64 createrId = 6;</code>
      *
      * <pre>
-     *´´½¨ÈËID
+     *åˆ›å»ºäººID
      * </pre>
      */
     long getCreaterId();
@@ -118,7 +118,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 openTime = 7;</code>
      *
      * <pre>
-     *¿ª·ÅÊ±¼ä
+     *å¼€æ”¾æ—¶é—´
      * </pre>
      */
     boolean hasOpenTime();
@@ -126,7 +126,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 openTime = 7;</code>
      *
      * <pre>
-     *¿ª·ÅÊ±¼ä
+     *å¼€æ”¾æ—¶é—´
      * </pre>
      */
     int getOpenTime();
@@ -135,7 +135,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 backTime = 8;</code>
      *
      * <pre>
-     *Íæ¼Ò»Ø¹éÊ£ÓàÊ±¼ä(Ãë)
+     *ç©å®¶å›å½’å‰©ä½™æ—¶é—´(ç§’)
      * </pre>
      */
     boolean hasBackTime();
@@ -143,7 +143,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 backTime = 8;</code>
      *
      * <pre>
-     *Íæ¼Ò»Ø¹éÊ£ÓàÊ±¼ä(Ãë)
+     *ç©å®¶å›å½’å‰©ä½™æ—¶é—´(ç§’)
      * </pre>
      */
     int getBackTime();
@@ -286,7 +286,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 id = 1;</code>
      *
      * <pre>
-     *¸±±¾Î¨Ò»ID
+     *å‰¯æœ¬å”¯ä¸€ID
      * </pre>
      */
     public boolean hasId() {
@@ -296,7 +296,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 id = 1;</code>
      *
      * <pre>
-     *¸±±¾Î¨Ò»ID
+     *å‰¯æœ¬å”¯ä¸€ID
      * </pre>
      */
     public int getId() {
@@ -309,7 +309,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 tempId = 2;</code>
      *
      * <pre>
-     *Ä£°åID
+     *æ¨¡æ¿ID
      * </pre>
      */
     public boolean hasTempId() {
@@ -319,7 +319,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 tempId = 2;</code>
      *
      * <pre>
-     *Ä£°åID
+     *æ¨¡æ¿ID
      * </pre>
      */
     public int getTempId() {
@@ -332,7 +332,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int64 createTime = 3;</code>
      *
      * <pre>
-     *´´½¨Ê±¼ä
+     *åˆ›å»ºæ—¶é—´
      * </pre>
      */
     public boolean hasCreateTime() {
@@ -342,7 +342,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int64 createTime = 3;</code>
      *
      * <pre>
-     *´´½¨Ê±¼ä
+     *åˆ›å»ºæ—¶é—´
      * </pre>
      */
     public long getCreateTime() {
@@ -355,7 +355,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 state = 4;</code>
      *
      * <pre>
-     *µ±Ç°×´Ì¬
+     *å½“å‰çŠ¶æ€
      * </pre>
      */
     public boolean hasState() {
@@ -365,7 +365,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 state = 4;</code>
      *
      * <pre>
-     *µ±Ç°×´Ì¬
+     *å½“å‰çŠ¶æ€
      * </pre>
      */
     public int getState() {
@@ -378,7 +378,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 count = 5;</code>
      *
      * <pre>
-     *µ±Ç°ÈËÊı
+     *å½“å‰äººæ•°
      * </pre>
      */
     public boolean hasCount() {
@@ -388,7 +388,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 count = 5;</code>
      *
      * <pre>
-     *µ±Ç°ÈËÊı
+     *å½“å‰äººæ•°
      * </pre>
      */
     public int getCount() {
@@ -401,7 +401,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int64 createrId = 6;</code>
      *
      * <pre>
-     *´´½¨ÈËID
+     *åˆ›å»ºäººID
      * </pre>
      */
     public boolean hasCreaterId() {
@@ -411,7 +411,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int64 createrId = 6;</code>
      *
      * <pre>
-     *´´½¨ÈËID
+     *åˆ›å»ºäººID
      * </pre>
      */
     public long getCreaterId() {
@@ -424,7 +424,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 openTime = 7;</code>
      *
      * <pre>
-     *¿ª·ÅÊ±¼ä
+     *å¼€æ”¾æ—¶é—´
      * </pre>
      */
     public boolean hasOpenTime() {
@@ -434,7 +434,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 openTime = 7;</code>
      *
      * <pre>
-     *¿ª·ÅÊ±¼ä
+     *å¼€æ”¾æ—¶é—´
      * </pre>
      */
     public int getOpenTime() {
@@ -447,7 +447,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 backTime = 8;</code>
      *
      * <pre>
-     *Íæ¼Ò»Ø¹éÊ£ÓàÊ±¼ä(Ãë)
+     *ç©å®¶å›å½’å‰©ä½™æ—¶é—´(ç§’)
      * </pre>
      */
     public boolean hasBackTime() {
@@ -457,7 +457,7 @@ public final class CampaignInfoMsgProto {
      * <code>optional int32 backTime = 8;</code>
      *
      * <pre>
-     *Íæ¼Ò»Ø¹éÊ£ÓàÊ±¼ä(Ãë)
+     *ç©å®¶å›å½’å‰©ä½™æ—¶é—´(ç§’)
      * </pre>
      */
     public int getBackTime() {
@@ -817,7 +817,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 id = 1;</code>
        *
        * <pre>
-       *¸±±¾Î¨Ò»ID
+       *å‰¯æœ¬å”¯ä¸€ID
        * </pre>
        */
       public boolean hasId() {
@@ -827,7 +827,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 id = 1;</code>
        *
        * <pre>
-       *¸±±¾Î¨Ò»ID
+       *å‰¯æœ¬å”¯ä¸€ID
        * </pre>
        */
       public int getId() {
@@ -837,7 +837,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 id = 1;</code>
        *
        * <pre>
-       *¸±±¾Î¨Ò»ID
+       *å‰¯æœ¬å”¯ä¸€ID
        * </pre>
        */
       public Builder setId(int value) {
@@ -850,7 +850,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 id = 1;</code>
        *
        * <pre>
-       *¸±±¾Î¨Ò»ID
+       *å‰¯æœ¬å”¯ä¸€ID
        * </pre>
        */
       public Builder clearId() {
@@ -865,7 +865,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 tempId = 2;</code>
        *
        * <pre>
-       *Ä£°åID
+       *æ¨¡æ¿ID
        * </pre>
        */
       public boolean hasTempId() {
@@ -875,7 +875,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 tempId = 2;</code>
        *
        * <pre>
-       *Ä£°åID
+       *æ¨¡æ¿ID
        * </pre>
        */
       public int getTempId() {
@@ -885,7 +885,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 tempId = 2;</code>
        *
        * <pre>
-       *Ä£°åID
+       *æ¨¡æ¿ID
        * </pre>
        */
       public Builder setTempId(int value) {
@@ -898,7 +898,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 tempId = 2;</code>
        *
        * <pre>
-       *Ä£°åID
+       *æ¨¡æ¿ID
        * </pre>
        */
       public Builder clearTempId() {
@@ -913,7 +913,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int64 createTime = 3;</code>
        *
        * <pre>
-       *´´½¨Ê±¼ä
+       *åˆ›å»ºæ—¶é—´
        * </pre>
        */
       public boolean hasCreateTime() {
@@ -923,7 +923,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int64 createTime = 3;</code>
        *
        * <pre>
-       *´´½¨Ê±¼ä
+       *åˆ›å»ºæ—¶é—´
        * </pre>
        */
       public long getCreateTime() {
@@ -933,7 +933,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int64 createTime = 3;</code>
        *
        * <pre>
-       *´´½¨Ê±¼ä
+       *åˆ›å»ºæ—¶é—´
        * </pre>
        */
       public Builder setCreateTime(long value) {
@@ -946,7 +946,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int64 createTime = 3;</code>
        *
        * <pre>
-       *´´½¨Ê±¼ä
+       *åˆ›å»ºæ—¶é—´
        * </pre>
        */
       public Builder clearCreateTime() {
@@ -961,7 +961,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 state = 4;</code>
        *
        * <pre>
-       *µ±Ç°×´Ì¬
+       *å½“å‰çŠ¶æ€
        * </pre>
        */
       public boolean hasState() {
@@ -971,7 +971,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 state = 4;</code>
        *
        * <pre>
-       *µ±Ç°×´Ì¬
+       *å½“å‰çŠ¶æ€
        * </pre>
        */
       public int getState() {
@@ -981,7 +981,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 state = 4;</code>
        *
        * <pre>
-       *µ±Ç°×´Ì¬
+       *å½“å‰çŠ¶æ€
        * </pre>
        */
       public Builder setState(int value) {
@@ -994,7 +994,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 state = 4;</code>
        *
        * <pre>
-       *µ±Ç°×´Ì¬
+       *å½“å‰çŠ¶æ€
        * </pre>
        */
       public Builder clearState() {
@@ -1009,7 +1009,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 count = 5;</code>
        *
        * <pre>
-       *µ±Ç°ÈËÊı
+       *å½“å‰äººæ•°
        * </pre>
        */
       public boolean hasCount() {
@@ -1019,7 +1019,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 count = 5;</code>
        *
        * <pre>
-       *µ±Ç°ÈËÊı
+       *å½“å‰äººæ•°
        * </pre>
        */
       public int getCount() {
@@ -1029,7 +1029,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 count = 5;</code>
        *
        * <pre>
-       *µ±Ç°ÈËÊı
+       *å½“å‰äººæ•°
        * </pre>
        */
       public Builder setCount(int value) {
@@ -1042,7 +1042,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 count = 5;</code>
        *
        * <pre>
-       *µ±Ç°ÈËÊı
+       *å½“å‰äººæ•°
        * </pre>
        */
       public Builder clearCount() {
@@ -1057,7 +1057,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int64 createrId = 6;</code>
        *
        * <pre>
-       *´´½¨ÈËID
+       *åˆ›å»ºäººID
        * </pre>
        */
       public boolean hasCreaterId() {
@@ -1067,7 +1067,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int64 createrId = 6;</code>
        *
        * <pre>
-       *´´½¨ÈËID
+       *åˆ›å»ºäººID
        * </pre>
        */
       public long getCreaterId() {
@@ -1077,7 +1077,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int64 createrId = 6;</code>
        *
        * <pre>
-       *´´½¨ÈËID
+       *åˆ›å»ºäººID
        * </pre>
        */
       public Builder setCreaterId(long value) {
@@ -1090,7 +1090,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int64 createrId = 6;</code>
        *
        * <pre>
-       *´´½¨ÈËID
+       *åˆ›å»ºäººID
        * </pre>
        */
       public Builder clearCreaterId() {
@@ -1105,7 +1105,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 openTime = 7;</code>
        *
        * <pre>
-       *¿ª·ÅÊ±¼ä
+       *å¼€æ”¾æ—¶é—´
        * </pre>
        */
       public boolean hasOpenTime() {
@@ -1115,7 +1115,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 openTime = 7;</code>
        *
        * <pre>
-       *¿ª·ÅÊ±¼ä
+       *å¼€æ”¾æ—¶é—´
        * </pre>
        */
       public int getOpenTime() {
@@ -1125,7 +1125,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 openTime = 7;</code>
        *
        * <pre>
-       *¿ª·ÅÊ±¼ä
+       *å¼€æ”¾æ—¶é—´
        * </pre>
        */
       public Builder setOpenTime(int value) {
@@ -1138,7 +1138,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 openTime = 7;</code>
        *
        * <pre>
-       *¿ª·ÅÊ±¼ä
+       *å¼€æ”¾æ—¶é—´
        * </pre>
        */
       public Builder clearOpenTime() {
@@ -1153,7 +1153,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 backTime = 8;</code>
        *
        * <pre>
-       *Íæ¼Ò»Ø¹éÊ£ÓàÊ±¼ä(Ãë)
+       *ç©å®¶å›å½’å‰©ä½™æ—¶é—´(ç§’)
        * </pre>
        */
       public boolean hasBackTime() {
@@ -1163,7 +1163,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 backTime = 8;</code>
        *
        * <pre>
-       *Íæ¼Ò»Ø¹éÊ£ÓàÊ±¼ä(Ãë)
+       *ç©å®¶å›å½’å‰©ä½™æ—¶é—´(ç§’)
        * </pre>
        */
       public int getBackTime() {
@@ -1173,7 +1173,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 backTime = 8;</code>
        *
        * <pre>
-       *Íæ¼Ò»Ø¹éÊ£ÓàÊ±¼ä(Ãë)
+       *ç©å®¶å›å½’å‰©ä½™æ—¶é—´(ç§’)
        * </pre>
        */
       public Builder setBackTime(int value) {
@@ -1186,7 +1186,7 @@ public final class CampaignInfoMsgProto {
        * <code>optional int32 backTime = 8;</code>
        *
        * <pre>
-       *Íæ¼Ò»Ø¹éÊ£ÓàÊ±¼ä(Ãë)
+       *ç©å®¶å›å½’å‰©ä½™æ—¶é—´(ç§’)
        * </pre>
        */
       public Builder clearBackTime() {

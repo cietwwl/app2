@@ -22,6 +22,11 @@ public class SpawnInfo {
 
 	private int[]	nextSpawanIdAttr;				// 后置节点集
 
+	private int		wakeType;						// 激活下一个节点类型 0 默认为
+													// 节点结束激活下一个，1 节点开始即调用
+
+	private int		wakeDelay;						// 延迟多长时间唤醒下一个节点
+
 	private int		restType;						// 刷新模式\r\n1：普通模式，死亡后计算刷新时间刷新\r\n2：boss模式，刷新后计算刷新时间重新刷新\r\n3：副本模式，死亡后不刷新\r\n其他特殊模式待有需求时添加
 
 	private int		restSecs;						// 死亡刷新间隔时间
@@ -320,6 +325,22 @@ public class SpawnInfo {
 
 	public void setTagId(int tagId) {
 		this.tagId = tagId;
+	}
+
+	public int getWakeDelay() {
+		return wakeDelay;
+	}
+
+	public void setWakeDelay(int wakeDelay) {
+		this.wakeDelay = wakeDelay;
+	}
+
+	public int getWakeType() {
+		return wakeType;
+	}
+
+	public void setWakeType(int wakeType) {
+		this.wakeType = wakeType;
 	}
 
 }

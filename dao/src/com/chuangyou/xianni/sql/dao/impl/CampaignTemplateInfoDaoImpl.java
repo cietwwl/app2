@@ -35,6 +35,8 @@ public class CampaignTemplateInfoDaoImpl extends BaseDao implements CampaignTemp
 					info.setCampaignName(rs.getString("campaignName"));
 					info.setStoryId(rs.getInt("storyId"));
 					info.setType(rs.getInt("type"));
+					info.setDifficulty(rs.getInt("difficulty"));
+					info.setJoinType(rs.getInt("joinType"));
 					info.setMinLevel(rs.getInt("minLevel"));
 					info.setMaxLevel(rs.getInt("maxLevel"));
 					info.setPreCampaignId(rs.getInt("preCampaignId"));

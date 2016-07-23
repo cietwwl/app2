@@ -1,0 +1,10 @@
+//protocol=10522;
+option java_package = "com.chuangyou.common.protobuf.pb.shop";
+option java_outer_classname = "BuyGoodsReqProto";
+
+ //购买商品
+message BuyGoodsReqMsg{
+	required int32 privateId =1; //配置表ID
+	required int32 count =2;     //购买数量
+	required int32 totalMoney = 3; //总消耗钱
+}

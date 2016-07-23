@@ -188,10 +188,9 @@ public class LinkedClient {
 	 * 连接
 	 */
 	public synchronized boolean connect() {
+		EventLoopGroup workerGroup = new NioEventLoopGroup(5);
 		try {
 			load = 0;
-			EventLoopGroup workerGroup = new NioEventLoopGroup(5);
-
 			try {
 				Bootstrap b = new Bootstrap().group(workerGroup).channel(NioSocketChannel.class)
 						.option(ChannelOption.SO_KEEPALIVE, true).handler(new ChannelInitializer<SocketChannel>() {
@@ -215,13 +214,14 @@ public class LinkedClient {
 				// 等待连接关闭
 				// f.channel().closeFuture().sync();
 			} finally {
-				// workerGroup.shutdownGracefully();
+				//workerGroup.shutdownGracefully();
 			}
 			connTimes = 0;
 			return true;
 		} catch (Exception e) {
 			Log.error("connect to address " + address + ":" + port + " fail.", e);
 			connTimes++;
+			workerGroup.shutdownGracefully();
 			return false;
 		}
 	}

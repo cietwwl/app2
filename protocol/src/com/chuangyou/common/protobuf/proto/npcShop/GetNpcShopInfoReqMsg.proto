@@ -1,9 +1,0 @@
-//protocol=10521;
-option java_package = "com.chuangyou.common.protobuf.pb.npcShop";
-option java_outer_classname = "GetNpcShopInfoReqProto";
-
-
-//请求NPC商店信息
-message GetNpcShopInfoReqMsg{
-	required int32 shopId =1;  //NPC商店ID
-}

@@ -16,7 +16,7 @@ public final class Vector3Proto {
      * <code>optional int32 X = 1;</code>
      *
      * <pre>
-     *当前X
+     *褰撳墠X
      * </pre>
      */
     boolean hasX();
@@ -24,7 +24,7 @@ public final class Vector3Proto {
      * <code>optional int32 X = 1;</code>
      *
      * <pre>
-     *当前X
+     *褰撳墠X
      * </pre>
      */
     int getX();
@@ -33,7 +33,7 @@ public final class Vector3Proto {
      * <code>optional int32 Y = 2;</code>
      *
      * <pre>
-     *当前Y
+     *褰撳墠Y
      * </pre>
      */
     boolean hasY();
@@ -41,7 +41,7 @@ public final class Vector3Proto {
      * <code>optional int32 Y = 2;</code>
      *
      * <pre>
-     *当前Y
+     *褰撳墠Y
      * </pre>
      */
     int getY();
@@ -50,7 +50,7 @@ public final class Vector3Proto {
      * <code>optional int32 Z = 3;</code>
      *
      * <pre>
-     *当前Z
+     *褰撳墠Z
      * </pre>
      */
     boolean hasZ();
@@ -58,7 +58,7 @@ public final class Vector3Proto {
      * <code>optional int32 Z = 3;</code>
      *
      * <pre>
-     *当前Z
+     *褰撳墠Z
      * </pre>
      */
     int getZ();
@@ -181,7 +181,7 @@ public final class Vector3Proto {
      * <code>optional int32 X = 1;</code>
      *
      * <pre>
-     *当前X
+     *褰撳墠X
      * </pre>
      */
     public boolean hasX() {
@@ -191,7 +191,7 @@ public final class Vector3Proto {
      * <code>optional int32 X = 1;</code>
      *
      * <pre>
-     *当前X
+     *褰撳墠X
      * </pre>
      */
     public int getX() {
@@ -204,7 +204,7 @@ public final class Vector3Proto {
      * <code>optional int32 Y = 2;</code>
      *
      * <pre>
-     *当前Y
+     *褰撳墠Y
      * </pre>
      */
     public boolean hasY() {
@@ -214,7 +214,7 @@ public final class Vector3Proto {
      * <code>optional int32 Y = 2;</code>
      *
      * <pre>
-     *当前Y
+     *褰撳墠Y
      * </pre>
      */
     public int getY() {
@@ -227,7 +227,7 @@ public final class Vector3Proto {
      * <code>optional int32 Z = 3;</code>
      *
      * <pre>
-     *当前Z
+     *褰撳墠Z
      * </pre>
      */
     public boolean hasZ() {
@@ -237,7 +237,7 @@ public final class Vector3Proto {
      * <code>optional int32 Z = 3;</code>
      *
      * <pre>
-     *当前Z
+     *褰撳墠Z
      * </pre>
      */
     public int getZ() {
@@ -517,7 +517,7 @@ public final class Vector3Proto {
        * <code>optional int32 X = 1;</code>
        *
        * <pre>
-       *当前X
+       *褰撳墠X
        * </pre>
        */
       public boolean hasX() {
@@ -527,7 +527,7 @@ public final class Vector3Proto {
        * <code>optional int32 X = 1;</code>
        *
        * <pre>
-       *当前X
+       *褰撳墠X
        * </pre>
        */
       public int getX() {
@@ -537,7 +537,7 @@ public final class Vector3Proto {
        * <code>optional int32 X = 1;</code>
        *
        * <pre>
-       *当前X
+       *褰撳墠X
        * </pre>
        */
       public Builder setX(int value) {
@@ -550,7 +550,7 @@ public final class Vector3Proto {
        * <code>optional int32 X = 1;</code>
        *
        * <pre>
-       *当前X
+       *褰撳墠X
        * </pre>
        */
       public Builder clearX() {
@@ -565,7 +565,7 @@ public final class Vector3Proto {
        * <code>optional int32 Y = 2;</code>
        *
        * <pre>
-       *当前Y
+       *褰撳墠Y
        * </pre>
        */
       public boolean hasY() {
@@ -575,7 +575,7 @@ public final class Vector3Proto {
        * <code>optional int32 Y = 2;</code>
        *
        * <pre>
-       *当前Y
+       *褰撳墠Y
        * </pre>
        */
       public int getY() {
@@ -585,7 +585,7 @@ public final class Vector3Proto {
        * <code>optional int32 Y = 2;</code>
        *
        * <pre>
-       *当前Y
+       *褰撳墠Y
        * </pre>
        */
       public Builder setY(int value) {
@@ -598,7 +598,7 @@ public final class Vector3Proto {
        * <code>optional int32 Y = 2;</code>
        *
        * <pre>
-       *当前Y
+       *褰撳墠Y
        * </pre>
        */
       public Builder clearY() {
@@ -613,7 +613,7 @@ public final class Vector3Proto {
        * <code>optional int32 Z = 3;</code>
        *
        * <pre>
-       *当前Z
+       *褰撳墠Z
        * </pre>
        */
       public boolean hasZ() {
@@ -623,7 +623,7 @@ public final class Vector3Proto {
        * <code>optional int32 Z = 3;</code>
        *
        * <pre>
-       *当前Z
+       *褰撳墠Z
        * </pre>
        */
       public int getZ() {
@@ -633,7 +633,7 @@ public final class Vector3Proto {
        * <code>optional int32 Z = 3;</code>
        *
        * <pre>
-       *当前Z
+       *褰撳墠Z
        * </pre>
        */
       public Builder setZ(int value) {
@@ -646,7 +646,7 @@ public final class Vector3Proto {
        * <code>optional int32 Z = 3;</code>
        *
        * <pre>
-       *当前Z
+       *褰撳墠Z
        * </pre>
        */
       public Builder clearZ() {

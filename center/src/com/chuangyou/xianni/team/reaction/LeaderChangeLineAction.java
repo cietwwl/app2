@@ -25,7 +25,7 @@ public class LeaderChangeLineAction extends LeaderLeaveTeamAction {
 		if(isLine==false){			
 			changeLeader();
 		}
-		t.synchronizedchangeLine(isLine, member);
+		t.changeLine(isLine, member);
 //		member.setOnline(isLine);
 	
 	}

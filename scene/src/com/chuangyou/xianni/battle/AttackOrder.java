@@ -29,19 +29,19 @@ import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
  * </pre>
  */
 public class AttackOrder {
-	protected static ThreadSafeRandom rand = new ThreadSafeRandom();
-	private boolean isExec;
-	private Living source;									// 技能源
-	private Skill skill;									// 使用技能
-	private SkillCalc skillCalc;								// 技能计算器
-	private List<Living> targets;								// 释放目标
-	private List<Damage> damages;								// 伤害
-	private int orderId;								// 指令伤害
-	private boolean isAttack = true;
-	private long attackId;								// 攻击ID
+	protected static ThreadSafeRandom	rand		= new ThreadSafeRandom();
+	private boolean						isExec;
+	private Living						source;									// 技能源
+	private Skill						skill;									// 使用技能
+	private SkillCalc					skillCalc;								// 技能计算器
+	private List<Living>				targets;								// 释放目标
+	private List<Damage>				damages;								// 伤害
+	private int							orderId;								// 指令伤害
+	private boolean						isAttack	= true;
+	private long						attackId;								// 攻击ID
 
-	private PBVector3 current;								// 施法前位置
-	private PBVector3 postion;								// 施法后位置
+	private PBVector3					current;								// 施法前位置
+	private PBVector3					postion;								// 施法后位置
 
 	public AttackOrder(Living source, Skill skill, long attackId) {
 		this.source = source;
@@ -87,6 +87,7 @@ public class AttackOrder {
 		coolDown();
 		// 执行结束，广播伤害
 		sendDamages();
+
 		return true;
 	}
 
@@ -127,7 +128,7 @@ public class AttackOrder {
 			damage.writeProto(dmsg);
 			attackBroMsg.addDamages(dmsg);
 		}
-		//Log.error("----发送给客户端伤害包-------" + attackBroMsg.build());
+		// Log.error("----发送给客户端伤害包-------" + attackBroMsg.build());
 		BroadcastUtil.sendBroadcastPacket(players, Protocol.U_G_ATTACK_SKILL, attackBroMsg.build());
 	}
 

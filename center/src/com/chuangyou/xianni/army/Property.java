@@ -4,6 +4,7 @@ import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 
 public class Property {
 	private String	name;				// 属性名字
+	private int		type;				// 属性类型
 	private int		tempData;			// 模板数据加成
 	private int		tempPer;			// 模板万分比加成
 
@@ -27,8 +28,9 @@ public class Property {
 
 	private boolean	isChange;			// 是否有改变
 
-	public Property(String name) {
+	public Property(String name, int type) {
 		this.name = name;
+		this.type = type;
 	}
 
 	/** 清理背包属性 */
@@ -75,7 +77,7 @@ public class Property {
 	}
 
 	public void setBagData(int bagData) {
-		if (bagData != this.bagData){
+		if (bagData != this.bagData) {
 			setChange(true);
 		}
 		this.bagData = bagData;
@@ -206,6 +208,14 @@ public class Property {
 
 	public String getName() {
 		return name;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 
 	public String toString() {

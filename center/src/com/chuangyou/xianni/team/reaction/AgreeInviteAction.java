@@ -40,7 +40,7 @@ public class AgreeInviteAction extends TeamNoAction {
 			return;
 		}
 
-		if(new TeamCheck().check(player, agreeId, getProtocol(), t) == false)
+		if(TeamCheck.check(player, agreeId, getProtocol(), t) == false)
 			return;
 		t.addMember(agreeId);
 

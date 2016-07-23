@@ -17,7 +17,7 @@ public class TeamCheck {
 	 * 检查一下其人入队是否合法
 	 * @return
 	 */
-	public boolean check(GamePlayer player,long agreeId,short protocol,Team t){
+	public static boolean check(GamePlayer player,long agreeId,short protocol,Team t){
 		if (TeamMgr.getPlayerTeamMap().containsKey(agreeId)) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Team_SomeBody_Has_Team, protocol, "对方已经有队伍啦");
 			return false;

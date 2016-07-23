@@ -17,11 +17,11 @@ import com.chuangyou.xianni.entity.player.PlayerPositionInfo;
 import com.chuangyou.xianni.entity.player.PlayerTimeInfo;
 import com.chuangyou.xianni.exec.CmdTask;
 import com.chuangyou.xianni.map.MapProxyManager;
-import com.chuangyou.xianni.npcShop.manager.NpcShopServerManager;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.player.cmd.GamePlayerDisposeCmd;
 import com.chuangyou.xianni.proto.PBMessage;
+import com.chuangyou.xianni.shop.ShopServerManager;
 import com.chuangyou.xianni.sql.dao.DBManager;
 import com.chuangyou.xianni.team.reaction.ChangeLineAction;
 import com.chuangyou.xianni.word.WorldMgr.Players.PlayerData;
@@ -113,6 +113,7 @@ public class WorldMgr {
 	public static boolean isExist(long playerId) {
 		return players.isExist(playerId);
 	}
+	
 
 	/**
 	 * 退出
@@ -256,7 +257,7 @@ public class WorldMgr {
 	 * </pre>
 	 */
 	private static void saveSystemData() {
-		NpcShopServerManager.save();
+		ShopServerManager.saveToDatabase();
 		// WorldBossMgr.save();
 		// TowerMgr.save();
 		// GuildWarMgr.save();

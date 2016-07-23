@@ -23,7 +23,7 @@ public class MonsterInfo {
 
 	private long soulHpValue;		// 魂血
 
-	private long hp;					// 生命
+	private long hp;				// 生命
 
 	private int hurtValue;			// 伤害
 
@@ -64,6 +64,8 @@ public class MonsterInfo {
 	private int drop4;
 	/** 技能 */
 	private String skillIds;
+	/** ai **/
+	private int aiId;
 
 	public MonsterInfo() {
 		super();
@@ -315,6 +317,14 @@ public class MonsterInfo {
 
 	public void setSkillIds(String skillIds) {
 		this.skillIds = skillIds;
+	}
+
+	public int getAiId() {
+		return aiId;
+	}
+
+	public void setAiId(int aiId) {
+		this.aiId = aiId;
 	}
 
 }

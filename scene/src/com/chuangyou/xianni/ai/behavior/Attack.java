@@ -5,11 +5,9 @@ import java.util.List;
 
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.ai.AIState;
-import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.skill.Skill;
 import com.chuangyou.xianni.config.SceneGlobal;
 import com.chuangyou.xianni.cooldown.CoolDownTypes;
-import com.chuangyou.xianni.manager.SceneManagers;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
 
@@ -44,15 +42,16 @@ public class Attack extends BaseBehavior {
 		// System.out.println(getMonster().getId() + "攻击怪物位置：" + getMonster().getPostion() + "怪物目标位置：" + tmpTarget.getPostion() + "距离："
 		// + Vector3.distance(getMonster().getPostion(), tmpTarget.getPostion()));
 
-		int attackRange = SceneGlobal.AI_MONSTER_ATTACK_RANGE;
-		if (getMonster().getMonsterInfo().getAttackRange() > 0)
-			attackRange = getMonster().getMonsterInfo().getAttackRange();
-
+		int attackRange = getMonster().getMonsterInfo().getAttackRange();
 		// if (getMonster().getId() == 1000000000033L)
 		// System.out.println("getMonster().getPostion(): "+getMonster().getPostion().toString()+" tmpTarget.getPostion(): "+tmpTarget.getPostion().toString()+"
 		// 距离："+Vector3.distance(getMonster().getPostion(), tmpTarget.getPostion()));
 
-		if (Vector3.distance(getMonster().getPostion(), tmpTarget.getPostion()) > attackRange) {	// 查询攻击距离，这里暂时写死 = 2
+		if (Vector3.distance(getMonster().getPostion(), tmpTarget.getPostion()) > attackRange) {// 查询攻击距离，这里暂时写死 = 2
+			if (getMonster().getAiConfig().getFollowUpDistance() == 0) {
+				needChase = false;
+				return;
+			}
 			needChase = true;
 			return;
 		}

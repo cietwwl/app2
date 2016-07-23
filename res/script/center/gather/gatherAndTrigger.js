@@ -17,7 +17,7 @@ function getInterfaceName() {
  * @param id ：采集物或触发点模板ID
  */
 function doScript(playerId,id){
-	sendHintToClient(playerId,"测试：触发："+id);
+
 	switch (id) {
 	case 1009403:
 		addItem(playerId,8100004,1,1)

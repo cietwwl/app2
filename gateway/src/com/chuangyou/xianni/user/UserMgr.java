@@ -90,10 +90,10 @@ public class UserMgr {
 	 * @param message
 	 */
 	public static void broadcastMessage(PBMessage message) {
-		int size = onlineMap.size();
-		ArrayList<User> users = new ArrayList<User>(size);
-		for (User user : onlineMap.values()) {
-			users.add(user);
+		
+		ArrayList<User> users = new ArrayList<User>();
+		synchronized(onlineMap){
+			users.addAll(onlineMap.values());
 		}
 
 		for (User onlineUser : users) {

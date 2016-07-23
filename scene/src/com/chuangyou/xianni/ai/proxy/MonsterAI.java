@@ -1,34 +1,43 @@
 package com.chuangyou.xianni.ai.proxy;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.chuangyou.xianni.ai.AIState;
 import com.chuangyou.xianni.ai.behavior.Attack;
+import com.chuangyou.xianni.ai.behavior.BaseBehavior;
 import com.chuangyou.xianni.ai.behavior.BeAttack;
 import com.chuangyou.xianni.ai.behavior.Chase;
 import com.chuangyou.xianni.ai.behavior.Idle;
 import com.chuangyou.xianni.ai.behavior.Patrol;
 import com.chuangyou.xianni.ai.behavior.RunBack;
-import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.config.SceneGlobal;
 import com.chuangyou.xianni.cooldown.CoolDownTypes;
 import com.chuangyou.xianni.entity.buffer.LivingState;
-import com.chuangyou.xianni.manager.SceneManagers;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
 
-public class MonsterAI extends BaseProxy {
+public class MonsterAI {// extends BaseProxy {
+	protected Map<AIState, BaseBehavior>	behaviors;
+	protected AIState						current	= AIState.IDLE;
+	protected Living						living;
+	protected int							delay;
 
 	/**
 	 * 仇恨计算频率
 	 */
 
 	public MonsterAI(Monster m) {
-		super(m, SceneGlobal.AI_MONSTER_DELAY);
+		this.living = m;
+		behaviors = new HashMap<AIState, BaseBehavior>();
+		createStates();
+		// super(m, SceneGlobal.AI_MONSTER_DELAY);
 		// recountHatred.setRate(SceneGlobal.AI_MONSTER_HETRED_RECOUNT);
 
 	}
 
-	@Override
-	protected void exe() {
+	// @Override
+	public void exe() {
 		// TODO Auto-generated method stub
 		// AI已经死亡
 		if (living.isDie())
@@ -42,7 +51,8 @@ public class MonsterAI extends BaseProxy {
 		if (living.isCooldowning(CoolDownTypes.BE_ATTACK, null)) {
 			return;
 		}
-		// if (SceneManagers.cooldownManager.isCooldowning(living, CoolDownTypes.FIXED_BODY, null)) {
+		// if (SceneManagers.cooldownManager.isCooldowning(living,
+		// CoolDownTypes.FIXED_BODY, null)) {
 		// ((Monster) living).stop(false);
 		// return;
 		// }
@@ -52,9 +62,15 @@ public class MonsterAI extends BaseProxy {
 		}
 
 		AIState next = behaviors.get(current).next();
-//		if (living.getId() == 1000000000033L) {
-//			System.out.println("怪物 id： " + living.getId() + " 状态： " + current + " 下一个状态：" + next + " 位置：" + living.getPostion() + " 目标：" + living.getTargetPostion());
-//		}
+		if (living.getId() == 1000000000033L) {
+			System.out.println("怪物 id： " + living.getId() + " 状态： " + current + " 下一个状态：" + next + " 位置：" + living.getPostion() + " 目标：" + living.getTargetPostion());
+		}
+
+		// if (living.getId() == 1000000000033L) {
+		// System.out.println("怪物 id： " + living.getId() + " 状态： " + current + "
+		// 下一个状态：" + next + " 位置：" + living.getPostion() + " 目标：" +
+		// living.getTargetPostion());
+		// }
 
 		if (next == AIState.INVALID)
 			return;
@@ -64,7 +80,7 @@ public class MonsterAI extends BaseProxy {
 			behaviors.get(current).exe();
 	}
 
-	@Override
+	// @Override
 	protected void createStates() {
 		// TODO Auto-generated method stub
 		behaviors.put(AIState.IDLE, new Idle((Monster) living));

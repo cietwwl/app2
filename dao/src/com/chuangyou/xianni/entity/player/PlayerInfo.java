@@ -2,6 +2,7 @@ package com.chuangyou.xianni.entity.player;
 
 import com.chuangyou.common.protobuf.pb.PlayerInfoMsgProto.PlayerInfoMsg;
 import com.chuangyou.xianni.entity.DataObject;
+import com.chuangyou.xianni.entity.Option;
 
 /**
  * 玩家详细信息
@@ -61,18 +62,17 @@ public class PlayerInfo extends DataObject {
 	private int battleMode;
 	/** pk 值 **/
 	private int pkVal;
-	/** 战斗模式更新时间  **/
+	/** 战斗模式更新时间 **/
 	private long changeBattleModeTime;
-	
+
 	/** 时装ID */
 	private int fashionId = 0;
-	
+
 	/** 武器ID */
 	private int weaponId = 0;
-	
+
 	/** 翅膀ID */
 	private int wingId = 0;
-
 
 	public long getPlayerId() {
 		return playerId;
@@ -96,6 +96,8 @@ public class PlayerInfo extends DataObject {
 
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
+		setOp(Option.Update);
+
 	}
 
 	public long getExp() {
@@ -103,7 +105,11 @@ public class PlayerInfo extends DataObject {
 	}
 
 	public void setExp(long exp) {
+		if (this.exp != exp) {
+			setOp(Option.Update);
+		}
 		this.exp = exp;
+
 	}
 
 	public long getTotalExp() {
@@ -111,6 +117,9 @@ public class PlayerInfo extends DataObject {
 	}
 
 	public void setTotalExp(long totalExp) {
+		if (this.totalExp != totalExp) {
+			setOp(Option.Update);
+		}
 		this.totalExp = totalExp;
 	}
 
@@ -119,6 +128,9 @@ public class PlayerInfo extends DataObject {
 	}
 
 	public void setLevel(int level) {
+		if (this.level != level) {
+			setOp(Option.Update);
+		}
 		this.level = level;
 	}
 
@@ -127,6 +139,9 @@ public class PlayerInfo extends DataObject {
 	}
 
 	public void setMoney(long money) {
+		if (this.money != money) {
+			setOp(Option.Update);
+		}
 		this.money = money;
 	}
 
@@ -135,6 +150,9 @@ public class PlayerInfo extends DataObject {
 	}
 
 	public void setBindCash(int bindCash) {
+		if (this.bindCash != bindCash) {
+			setOp(Option.Update);
+		}
 		this.bindCash = bindCash;
 	}
 
@@ -143,6 +161,9 @@ public class PlayerInfo extends DataObject {
 	}
 
 	public void setCash(int cash) {
+		if (this.cash != cash) {
+			setOp(Option.Update);
+		}
 		this.cash = cash;
 	}
 
@@ -151,6 +172,9 @@ public class PlayerInfo extends DataObject {
 	}
 
 	public void setVipLevel(short vipLevel) {
+		if (this.vipLevel != vipLevel) {
+			setOp(Option.Update);
+		}
 		this.vipLevel = vipLevel;
 	}
 
@@ -159,6 +183,9 @@ public class PlayerInfo extends DataObject {
 	}
 
 	public void setFight(int fight) {
+		if (this.fight != fight) {
+			setOp(Option.Update);
+		}
 		this.fight = fight;
 	}
 
@@ -167,6 +194,9 @@ public class PlayerInfo extends DataObject {
 	}
 
 	public void setSkinId(int skinId) {
+		if (this.skinId != skinId) {
+			setOp(Option.Update);
+		}
 		this.skinId = skinId;
 	}
 
@@ -175,6 +205,9 @@ public class PlayerInfo extends DataObject {
 	}
 
 	public void setpBagCount(int pBagCount) {
+		if (this.pBagCount != pBagCount) {
+			setOp(Option.Update);
+		}
 		this.pBagCount = pBagCount;
 	}
 
@@ -183,6 +216,9 @@ public class PlayerInfo extends DataObject {
 	}
 
 	public void setMountId(int mountId) {
+		if (this.mountId != mountId) {
+			setOp(Option.Update);
+		}
 		this.mountId = mountId;
 	}
 
@@ -191,6 +227,9 @@ public class PlayerInfo extends DataObject {
 	}
 
 	public void setMagicWeaponId(int magicWeaponId) {
+		if (this.magicWeaponId != magicWeaponId) {
+			setOp(Option.Update);
+		}
 		this.magicWeaponId = magicWeaponId;
 	}
 
@@ -199,6 +238,9 @@ public class PlayerInfo extends DataObject {
 	}
 
 	public void setSkillStage(int skillStage) {
+		if (this.skillStage != skillStage) {
+			setOp(Option.Update);
+		}
 		this.skillStage = skillStage;
 	}
 
@@ -207,15 +249,20 @@ public class PlayerInfo extends DataObject {
 	}
 
 	public void setRepair(int repair) {
+		if (this.repair != repair) {
+			setOp(Option.Update);
+		}
 		this.repair = repair;
 	}
-
 
 	public int getBattleMode() {
 		return battleMode;
 	}
 
 	public void setBattleMode(int battleMode) {
+		if (this.battleMode != battleMode) {
+			setOp(Option.Update);
+		}
 		this.battleMode = battleMode;
 	}
 
@@ -224,6 +271,9 @@ public class PlayerInfo extends DataObject {
 	}
 
 	public void setPkVal(int pkVal) {
+		if (this.pkVal != pkVal) {
+			setOp(Option.Update);
+		}
 		this.pkVal = pkVal;
 	}
 
@@ -235,12 +285,14 @@ public class PlayerInfo extends DataObject {
 		this.changeBattleModeTime = changeBattleModeTime;
 	}
 
-
 	public int getFashionId() {
 		return fashionId;
 	}
 
 	public void setFashionId(int fashionId) {
+		if (this.fashionId != fashionId) {
+			setOp(Option.Update);
+		}
 		this.fashionId = fashionId;
 	}
 
@@ -249,6 +301,9 @@ public class PlayerInfo extends DataObject {
 	}
 
 	public void setWeaponId(int weaponId) {
+		if (this.weaponId != weaponId) {
+			setOp(Option.Update);
+		}
 		this.weaponId = weaponId;
 	}
 
@@ -257,9 +312,11 @@ public class PlayerInfo extends DataObject {
 	}
 
 	public void setWingId(int wingId) {
+		if (this.wingId != wingId) {
+			setOp(Option.Update);
+		}
 		this.wingId = wingId;
 	}
-
 
 	/**
 	 * 写玩家属性消息包

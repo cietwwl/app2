@@ -16,7 +16,7 @@ public final class ReqChangeMapMsgProto {
      * <code>optional .PostionMsg postionMsg = 1;</code>
      *
      * <pre>
-     *坐标
+     *鍧愭爣
      * </pre>
      */
     boolean hasPostionMsg();
@@ -24,7 +24,7 @@ public final class ReqChangeMapMsgProto {
      * <code>optional .PostionMsg postionMsg = 1;</code>
      *
      * <pre>
-     *坐标
+     *鍧愭爣
      * </pre>
      */
     com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg getPostionMsg();
@@ -32,7 +32,7 @@ public final class ReqChangeMapMsgProto {
      * <code>optional .PostionMsg postionMsg = 1;</code>
      *
      * <pre>
-     *坐标
+     *鍧愭爣
      * </pre>
      */
     com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsgOrBuilder getPostionMsgOrBuilder();
@@ -148,7 +148,7 @@ public final class ReqChangeMapMsgProto {
      * <code>optional .PostionMsg postionMsg = 1;</code>
      *
      * <pre>
-     *坐标
+     *鍧愭爣
      * </pre>
      */
     public boolean hasPostionMsg() {
@@ -158,7 +158,7 @@ public final class ReqChangeMapMsgProto {
      * <code>optional .PostionMsg postionMsg = 1;</code>
      *
      * <pre>
-     *坐标
+     *鍧愭爣
      * </pre>
      */
     public com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg getPostionMsg() {
@@ -168,7 +168,7 @@ public final class ReqChangeMapMsgProto {
      * <code>optional .PostionMsg postionMsg = 1;</code>
      *
      * <pre>
-     *坐标
+     *鍧愭爣
      * </pre>
      */
     public com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsgOrBuilder getPostionMsgOrBuilder() {
@@ -420,7 +420,7 @@ public final class ReqChangeMapMsgProto {
        * <code>optional .PostionMsg postionMsg = 1;</code>
        *
        * <pre>
-       *坐标
+       *鍧愭爣
        * </pre>
        */
       public boolean hasPostionMsg() {
@@ -430,7 +430,7 @@ public final class ReqChangeMapMsgProto {
        * <code>optional .PostionMsg postionMsg = 1;</code>
        *
        * <pre>
-       *坐标
+       *鍧愭爣
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg getPostionMsg() {
@@ -444,7 +444,7 @@ public final class ReqChangeMapMsgProto {
        * <code>optional .PostionMsg postionMsg = 1;</code>
        *
        * <pre>
-       *坐标
+       *鍧愭爣
        * </pre>
        */
       public Builder setPostionMsg(com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg value) {
@@ -464,7 +464,7 @@ public final class ReqChangeMapMsgProto {
        * <code>optional .PostionMsg postionMsg = 1;</code>
        *
        * <pre>
-       *坐标
+       *鍧愭爣
        * </pre>
        */
       public Builder setPostionMsg(
@@ -482,7 +482,7 @@ public final class ReqChangeMapMsgProto {
        * <code>optional .PostionMsg postionMsg = 1;</code>
        *
        * <pre>
-       *坐标
+       *鍧愭爣
        * </pre>
        */
       public Builder mergePostionMsg(com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg value) {
@@ -505,7 +505,7 @@ public final class ReqChangeMapMsgProto {
        * <code>optional .PostionMsg postionMsg = 1;</code>
        *
        * <pre>
-       *坐标
+       *鍧愭爣
        * </pre>
        */
       public Builder clearPostionMsg() {
@@ -522,7 +522,7 @@ public final class ReqChangeMapMsgProto {
        * <code>optional .PostionMsg postionMsg = 1;</code>
        *
        * <pre>
-       *坐标
+       *鍧愭爣
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg.Builder getPostionMsgBuilder() {
@@ -534,7 +534,7 @@ public final class ReqChangeMapMsgProto {
        * <code>optional .PostionMsg postionMsg = 1;</code>
        *
        * <pre>
-       *坐标
+       *鍧愭爣
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsgOrBuilder getPostionMsgOrBuilder() {
@@ -548,7 +548,7 @@ public final class ReqChangeMapMsgProto {
        * <code>optional .PostionMsg postionMsg = 1;</code>
        *
        * <pre>
-       *坐标
+       *鍧愭爣
        * </pre>
        */
       private com.google.protobuf.SingleFieldBuilder<

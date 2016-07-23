@@ -5,4 +5,5 @@ option java_outer_classname = "PlayerKillMonsterProto";
 message PlayerKillMonsterMsg {
 	required int64 playerId = 1;
 	required int32 monsterTemplateId = 2;
+	optional int32 type = 3;//1 怪物 2 人物
 }

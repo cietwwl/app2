@@ -9,8 +9,8 @@ import java.util.TimerTask;
 
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.TimeUtil;
+import com.chuangyou.xianni.chat.manager.ChatManager;
 import com.chuangyou.xianni.log.LogManager;
-import com.chuangyou.xianni.npcShop.manager.NpcShopServerManager;
 import com.chuangyou.xianni.task.manager.TaskManager;
 import com.chuangyou.xianni.word.WorldMgr;
 
@@ -21,19 +21,19 @@ public class TimerTaskMgr {
 
 	/** 保存用户数据定时器 */
 	private static Timer		saveUserDataTimer;
-	/** 更新NPC商店状态数据 */
-	private static Timer		updateNpcShopDataTimer;
+
 	/** 定时器 */
 	private static Timer		taskDayClearTimer;
 
 	/** 保存用户数据定时任务 */
 	private static TimerTask	saveUserData;
-	/** 更新NPC商店状态数据 */
-	private static TimerTask	updateNpcShopData;
+
 	/** 日常任务清理器 */
 	private static TimerTask	taskDayClearData;
 	/** 保存日志 */
 	private static TimerTask	savalogData;
+	/** 保存聊天离线消息 */
+	private static TimerTask	saveChatOfflineData;
 
 	public static boolean init() {
 		// 设置启动时间(在当前时间基础上向后推2分10秒)
@@ -46,11 +46,11 @@ public class TimerTaskMgr {
 
 		savalogData = new SavaLogData();
 		saveUserDataTimer.schedule(savalogData, beginDate, MINTIME * 5);
+		
+		saveChatOfflineData = new SaveChatOfflineData();
+		saveUserDataTimer.schedule(saveChatOfflineData, beginDate, MINTIME * 5);
 
-		// 更新NPC商店状态数据
-		updateNpcShopDataTimer = new Timer("updateNpcShopDataTimer");
-		updateNpcShopData = new UpdateNpcShopData();
-		updateNpcShopDataTimer.schedule(updateNpcShopData, beginDate, MINTIME);
+		
 
 		// 每天6点执行以下定时器
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd '6:00:00'");
@@ -110,17 +110,7 @@ class SaveUserData extends Task {
 	}
 }
 
-// =================>更新NPC商店货物状态<================================
-class UpdateNpcShopData extends Task {
-	public UpdateNpcShopData() {
-		super("更新NPC商店货物状态");
-	}
 
-	@Override
-	public void exec() {
-		NpcShopServerManager.update();
-	}
-}
 
 // ==================>重置日常任务状态<====================================
 class DayTaskData extends Task {
@@ -143,5 +133,18 @@ class SavaLogData extends Task {
 	@Override
 	public void exec() {
 		LogManager.saveLog();
+	}
+}
+
+// =================>保存玩家离线消息<======================================
+class SaveChatOfflineData extends Task{
+	public SaveChatOfflineData() {
+		// TODO Auto-generated constructor stub
+		super("保存聊天离线消息");
+	}
+	@Override
+	public void exec() {
+		// TODO Auto-generated method stub
+		ChatManager.savePrivateOfflineMsg();
 	}
 }

@@ -16,7 +16,7 @@ public final class CampaignStatuMsgProto {
      * <code>optional int32 campaignId = 1;</code>
      *
      * <pre>
-     *¸±±¾ID
+     *å‰¯æœ¬ID
      * </pre>
      */
     boolean hasCampaignId();
@@ -24,7 +24,7 @@ public final class CampaignStatuMsgProto {
      * <code>optional int32 campaignId = 1;</code>
      *
      * <pre>
-     *¸±±¾ID
+     *å‰¯æœ¬ID
      * </pre>
      */
     int getCampaignId();
@@ -33,7 +33,7 @@ public final class CampaignStatuMsgProto {
      * <code>optional int32 statu = 2;</code>
      *
      * <pre>
-     *×´Ì¬
+     *çŠ¶æ€
      * </pre>
      */
     boolean hasStatu();
@@ -41,7 +41,7 @@ public final class CampaignStatuMsgProto {
      * <code>optional int32 statu = 2;</code>
      *
      * <pre>
-     *×´Ì¬
+     *çŠ¶æ€
      * </pre>
      */
     int getStatu();
@@ -154,7 +154,7 @@ public final class CampaignStatuMsgProto {
      * <code>optional int32 campaignId = 1;</code>
      *
      * <pre>
-     *¸±±¾ID
+     *å‰¯æœ¬ID
      * </pre>
      */
     public boolean hasCampaignId() {
@@ -164,7 +164,7 @@ public final class CampaignStatuMsgProto {
      * <code>optional int32 campaignId = 1;</code>
      *
      * <pre>
-     *¸±±¾ID
+     *å‰¯æœ¬ID
      * </pre>
      */
     public int getCampaignId() {
@@ -177,7 +177,7 @@ public final class CampaignStatuMsgProto {
      * <code>optional int32 statu = 2;</code>
      *
      * <pre>
-     *×´Ì¬
+     *çŠ¶æ€
      * </pre>
      */
     public boolean hasStatu() {
@@ -187,7 +187,7 @@ public final class CampaignStatuMsgProto {
      * <code>optional int32 statu = 2;</code>
      *
      * <pre>
-     *×´Ì¬
+     *çŠ¶æ€
      * </pre>
      */
     public int getStatu() {
@@ -445,7 +445,7 @@ public final class CampaignStatuMsgProto {
        * <code>optional int32 campaignId = 1;</code>
        *
        * <pre>
-       *¸±±¾ID
+       *å‰¯æœ¬ID
        * </pre>
        */
       public boolean hasCampaignId() {
@@ -455,7 +455,7 @@ public final class CampaignStatuMsgProto {
        * <code>optional int32 campaignId = 1;</code>
        *
        * <pre>
-       *¸±±¾ID
+       *å‰¯æœ¬ID
        * </pre>
        */
       public int getCampaignId() {
@@ -465,7 +465,7 @@ public final class CampaignStatuMsgProto {
        * <code>optional int32 campaignId = 1;</code>
        *
        * <pre>
-       *¸±±¾ID
+       *å‰¯æœ¬ID
        * </pre>
        */
       public Builder setCampaignId(int value) {
@@ -478,7 +478,7 @@ public final class CampaignStatuMsgProto {
        * <code>optional int32 campaignId = 1;</code>
        *
        * <pre>
-       *¸±±¾ID
+       *å‰¯æœ¬ID
        * </pre>
        */
       public Builder clearCampaignId() {
@@ -493,7 +493,7 @@ public final class CampaignStatuMsgProto {
        * <code>optional int32 statu = 2;</code>
        *
        * <pre>
-       *×´Ì¬
+       *çŠ¶æ€
        * </pre>
        */
       public boolean hasStatu() {
@@ -503,7 +503,7 @@ public final class CampaignStatuMsgProto {
        * <code>optional int32 statu = 2;</code>
        *
        * <pre>
-       *×´Ì¬
+       *çŠ¶æ€
        * </pre>
        */
       public int getStatu() {
@@ -513,7 +513,7 @@ public final class CampaignStatuMsgProto {
        * <code>optional int32 statu = 2;</code>
        *
        * <pre>
-       *×´Ì¬
+       *çŠ¶æ€
        * </pre>
        */
       public Builder setStatu(int value) {
@@ -526,7 +526,7 @@ public final class CampaignStatuMsgProto {
        * <code>optional int32 statu = 2;</code>
        *
        * <pre>
-       *×´Ì¬
+       *çŠ¶æ€
        * </pre>
        */
       public Builder clearStatu() {

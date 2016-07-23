@@ -67,7 +67,7 @@ public class ArmyInventory extends AbstractEvent implements UnlineInventory {
 			player.getPetInventory().computePetAtt(petData, petPer);
 			hero.addPet(petData, petPer);
 		}
-		// updataHeroInfo();
+		updateHeroInfo();
 	}
 
 	@Override

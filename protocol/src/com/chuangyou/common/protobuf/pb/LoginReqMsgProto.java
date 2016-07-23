@@ -16,7 +16,7 @@ public final class LoginReqMsgProto {
      * <code>optional string userName = 1;</code>
      *
      * <pre>
-     *ÓÃ»§Ãû
+     *ç”¨æˆ·å
      * </pre>
      */
     boolean hasUserName();
@@ -24,7 +24,7 @@ public final class LoginReqMsgProto {
      * <code>optional string userName = 1;</code>
      *
      * <pre>
-     *ÓÃ»§Ãû
+     *ç”¨æˆ·å
      * </pre>
      */
     java.lang.String getUserName();
@@ -32,7 +32,7 @@ public final class LoginReqMsgProto {
      * <code>optional string userName = 1;</code>
      *
      * <pre>
-     *ÓÃ»§Ãû
+     *ç”¨æˆ·å
      * </pre>
      */
     com.google.protobuf.ByteString
@@ -42,7 +42,7 @@ public final class LoginReqMsgProto {
      * <code>optional string key = 2;</code>
      *
      * <pre>
-     *ÃÜÂë
+     *å¯†ç 
      * </pre>
      */
     boolean hasKey();
@@ -50,7 +50,7 @@ public final class LoginReqMsgProto {
      * <code>optional string key = 2;</code>
      *
      * <pre>
-     *ÃÜÂë
+     *å¯†ç 
      * </pre>
      */
     java.lang.String getKey();
@@ -58,7 +58,7 @@ public final class LoginReqMsgProto {
      * <code>optional string key = 2;</code>
      *
      * <pre>
-     *ÃÜÂë
+     *å¯†ç 
      * </pre>
      */
     com.google.protobuf.ByteString
@@ -68,7 +68,7 @@ public final class LoginReqMsgProto {
      * <code>optional int64 userId = 3;</code>
      *
      * <pre>
-     *ÓÃ»§ID
+     *ç”¨æˆ·ID
      * </pre>
      */
     boolean hasUserId();
@@ -76,7 +76,7 @@ public final class LoginReqMsgProto {
      * <code>optional int64 userId = 3;</code>
      *
      * <pre>
-     *ÓÃ»§ID
+     *ç”¨æˆ·ID
      * </pre>
      */
     long getUserId();
@@ -200,7 +200,7 @@ public final class LoginReqMsgProto {
      * <code>optional string userName = 1;</code>
      *
      * <pre>
-     *ÓÃ»§Ãû
+     *ç”¨æˆ·å
      * </pre>
      */
     public boolean hasUserName() {
@@ -210,7 +210,7 @@ public final class LoginReqMsgProto {
      * <code>optional string userName = 1;</code>
      *
      * <pre>
-     *ÓÃ»§Ãû
+     *ç”¨æˆ·å
      * </pre>
      */
     public java.lang.String getUserName() {
@@ -231,7 +231,7 @@ public final class LoginReqMsgProto {
      * <code>optional string userName = 1;</code>
      *
      * <pre>
-     *ÓÃ»§Ãû
+     *ç”¨æˆ·å
      * </pre>
      */
     public com.google.protobuf.ByteString
@@ -254,7 +254,7 @@ public final class LoginReqMsgProto {
      * <code>optional string key = 2;</code>
      *
      * <pre>
-     *ÃÜÂë
+     *å¯†ç 
      * </pre>
      */
     public boolean hasKey() {
@@ -264,7 +264,7 @@ public final class LoginReqMsgProto {
      * <code>optional string key = 2;</code>
      *
      * <pre>
-     *ÃÜÂë
+     *å¯†ç 
      * </pre>
      */
     public java.lang.String getKey() {
@@ -285,7 +285,7 @@ public final class LoginReqMsgProto {
      * <code>optional string key = 2;</code>
      *
      * <pre>
-     *ÃÜÂë
+     *å¯†ç 
      * </pre>
      */
     public com.google.protobuf.ByteString
@@ -308,7 +308,7 @@ public final class LoginReqMsgProto {
      * <code>optional int64 userId = 3;</code>
      *
      * <pre>
-     *ÓÃ»§ID
+     *ç”¨æˆ·ID
      * </pre>
      */
     public boolean hasUserId() {
@@ -318,7 +318,7 @@ public final class LoginReqMsgProto {
      * <code>optional int64 userId = 3;</code>
      *
      * <pre>
-     *ÓÃ»§ID
+     *ç”¨æˆ·ID
      * </pre>
      */
     public long getUserId() {
@@ -601,7 +601,7 @@ public final class LoginReqMsgProto {
        * <code>optional string userName = 1;</code>
        *
        * <pre>
-       *ÓÃ»§Ãû
+       *ç”¨æˆ·å
        * </pre>
        */
       public boolean hasUserName() {
@@ -611,7 +611,7 @@ public final class LoginReqMsgProto {
        * <code>optional string userName = 1;</code>
        *
        * <pre>
-       *ÓÃ»§Ãû
+       *ç”¨æˆ·å
        * </pre>
        */
       public java.lang.String getUserName() {
@@ -632,7 +632,7 @@ public final class LoginReqMsgProto {
        * <code>optional string userName = 1;</code>
        *
        * <pre>
-       *ÓÃ»§Ãû
+       *ç”¨æˆ·å
        * </pre>
        */
       public com.google.protobuf.ByteString
@@ -652,7 +652,7 @@ public final class LoginReqMsgProto {
        * <code>optional string userName = 1;</code>
        *
        * <pre>
-       *ÓÃ»§Ãû
+       *ç”¨æˆ·å
        * </pre>
        */
       public Builder setUserName(
@@ -669,7 +669,7 @@ public final class LoginReqMsgProto {
        * <code>optional string userName = 1;</code>
        *
        * <pre>
-       *ÓÃ»§Ãû
+       *ç”¨æˆ·å
        * </pre>
        */
       public Builder clearUserName() {
@@ -682,7 +682,7 @@ public final class LoginReqMsgProto {
        * <code>optional string userName = 1;</code>
        *
        * <pre>
-       *ÓÃ»§Ãû
+       *ç”¨æˆ·å
        * </pre>
        */
       public Builder setUserNameBytes(
@@ -701,7 +701,7 @@ public final class LoginReqMsgProto {
        * <code>optional string key = 2;</code>
        *
        * <pre>
-       *ÃÜÂë
+       *å¯†ç 
        * </pre>
        */
       public boolean hasKey() {
@@ -711,7 +711,7 @@ public final class LoginReqMsgProto {
        * <code>optional string key = 2;</code>
        *
        * <pre>
-       *ÃÜÂë
+       *å¯†ç 
        * </pre>
        */
       public java.lang.String getKey() {
@@ -732,7 +732,7 @@ public final class LoginReqMsgProto {
        * <code>optional string key = 2;</code>
        *
        * <pre>
-       *ÃÜÂë
+       *å¯†ç 
        * </pre>
        */
       public com.google.protobuf.ByteString
@@ -752,7 +752,7 @@ public final class LoginReqMsgProto {
        * <code>optional string key = 2;</code>
        *
        * <pre>
-       *ÃÜÂë
+       *å¯†ç 
        * </pre>
        */
       public Builder setKey(
@@ -769,7 +769,7 @@ public final class LoginReqMsgProto {
        * <code>optional string key = 2;</code>
        *
        * <pre>
-       *ÃÜÂë
+       *å¯†ç 
        * </pre>
        */
       public Builder clearKey() {
@@ -782,7 +782,7 @@ public final class LoginReqMsgProto {
        * <code>optional string key = 2;</code>
        *
        * <pre>
-       *ÃÜÂë
+       *å¯†ç 
        * </pre>
        */
       public Builder setKeyBytes(
@@ -801,7 +801,7 @@ public final class LoginReqMsgProto {
        * <code>optional int64 userId = 3;</code>
        *
        * <pre>
-       *ÓÃ»§ID
+       *ç”¨æˆ·ID
        * </pre>
        */
       public boolean hasUserId() {
@@ -811,7 +811,7 @@ public final class LoginReqMsgProto {
        * <code>optional int64 userId = 3;</code>
        *
        * <pre>
-       *ÓÃ»§ID
+       *ç”¨æˆ·ID
        * </pre>
        */
       public long getUserId() {
@@ -821,7 +821,7 @@ public final class LoginReqMsgProto {
        * <code>optional int64 userId = 3;</code>
        *
        * <pre>
-       *ÓÃ»§ID
+       *ç”¨æˆ·ID
        * </pre>
        */
       public Builder setUserId(long value) {
@@ -834,7 +834,7 @@ public final class LoginReqMsgProto {
        * <code>optional int64 userId = 3;</code>
        *
        * <pre>
-       *ÓÃ»§ID
+       *ç”¨æˆ·ID
        * </pre>
        */
       public Builder clearUserId() {

@@ -5,10 +5,8 @@ import java.util.List;
 import com.chuangyou.common.protobuf.pb.chat.ChatReceiveProto.ChatReceiveMsg;
 import com.chuangyou.common.protobuf.pb.chat.ChatSendProto.ChatSendMsg;
 import com.chuangyou.xianni.constant.ChatConstant;
-import com.chuangyou.xianni.netty.GatewayLinkedSet;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.proto.MessageUtil;
-import com.chuangyou.xianni.proto.PBMessage;
+import com.chuangyou.xianni.proto.BroadcastUtil;
 import com.chuangyou.xianni.protocol.Protocol;
 
 public class ChatSearchTeamAction extends ChatBaseAction {
@@ -20,8 +18,7 @@ public class ChatSearchTeamAction extends ChatBaseAction {
 			return false;
 		}
 		ChatReceiveMsg msg = this.buildReceiveProto(sender, sendMsg);
-		PBMessage p = MessageUtil.buildMessage(Protocol.U_CHAT_RECEIVE, msg);
-		GatewayLinkedSet.sendAll(p);
+		BroadcastUtil.sendBroadcasePacketToAll(Protocol.U_CHAT_RECEIVE, msg);
 		return true;
 	}
 	

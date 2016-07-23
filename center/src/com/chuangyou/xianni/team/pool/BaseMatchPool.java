@@ -15,7 +15,6 @@ public abstract class BaseMatchPool<T> implements IMatchPool<T>{
 	 * 入池的等待匹配的玩家ID
 	 */
 	protected LinkedList<T> pools = new LinkedList<>();
-	
 	/**
 	 * 成员入池
 	 * @param playerId

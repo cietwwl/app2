@@ -28,6 +28,7 @@ public class ClientSet {
 	private static LinkedClient			self			= null;
 	private static List<LinkedClient>	centerClients	= new Vector<LinkedClient>();	// 中心业务
 	private static List<LinkedClient>	sceneClients	= new Vector<LinkedClient>();	// 副本服务器
+	private static List<LinkedClient>	crossClients	= new Vector<LinkedClient>();	// 副本服务器
 
 	private ClientSet() {
 
@@ -41,6 +42,7 @@ public class ClientSet {
 			initSelf(gatewayId);
 			connect(ServerType.CENTER, "center");
 			connect(ServerType.SCENE, "sence");
+			connect(ServerType.CROSS, "cross");
 			return true;
 		} catch (Exception e) {
 			Log.error("initialization connector has exception:", e);
@@ -87,7 +89,10 @@ public class ClientSet {
 			centerClients.add(client);
 		} else if (serverType == ServerType.SCENE) {
 			sceneClients.add(client);
+		} else if (serverType == ServerType.CROSS) {
+			crossClients.add(client);
 		}
+
 	}
 
 	/**
@@ -102,6 +107,12 @@ public class ClientSet {
 			}
 		}
 		for (LinkedClient client : sceneClients) {
+			if (client.getChannel() != null && client.getChannel().id() == channel.id()) {
+				return client;
+			}
+		}
+
+		for (LinkedClient client : crossClients) {
 			if (client.getChannel() != null && client.getChannel().id() == channel.id()) {
 				return client;
 			}
@@ -123,6 +134,10 @@ public class ClientSet {
 			case ServerType.SCENE:
 				sceneClients.remove(client);
 				break;
+			case ServerType.CROSS:
+				crossClients.remove(client);
+				break;
+
 		}
 	}
 
@@ -135,6 +150,9 @@ public class ClientSet {
 				break;
 			case ServerType.SCENE:
 				code = Protocol.S_REGISTER; // TODO
+				break;
+			case ServerType.CROSS:
+				code = Protocol.CR_REGISTER; // TODO
 				break;
 			default:
 				break;
@@ -178,15 +196,21 @@ public class ClientSet {
 	 */
 	public static void routeSences(PBMessage packet) {
 		LinkedClient client = null;
-		long userId = packet.getPlayerId();
-		if (userId > 0) {
-			User user = UserMgr.getOnlineUser(userId);
-			if (user != null) {
-				
-			}
-		}
 		if (client == null) {
 			client = sceneClients.get(0);
+		}
+		route(client, packet);
+	}
+
+	/**
+	 * 转发数据包到sence服务器
+	 * 
+	 * @param packet
+	 */
+	public static void routeCross(PBMessage packet) {
+		LinkedClient client = null;
+		if (client == null) {
+			client = crossClients.get(0);
 		}
 		route(client, packet);
 	}

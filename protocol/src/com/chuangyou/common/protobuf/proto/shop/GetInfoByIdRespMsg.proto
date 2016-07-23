@@ -1,0 +1,13 @@
+//protocol=527;
+option java_package = "com.chuangyou.common.protobuf.pb.shop";
+option java_outer_classname = "GetInfoByIdRespProto";
+
+import "shop/GoodsInfo.proto";
+
+//单个商店商品信息
+//回复
+message GetInfoByIdRespMsg{
+	required int32 npcId = 1;  //npcID  ：不需要可以不做任何处理
+	required int32 shopId = 2; //商店ID
+	required GoodsInfo info = 3; //商品信息详情
+}

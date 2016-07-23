@@ -285,7 +285,12 @@ public enum EnumAttr {
 	/**
 	 * 修为
 	 */
+
 	REPAIR(715),
+	
+	/** 积分  */
+	POINTS(716),
+
 	/**
 	 * PK 值
 	 */

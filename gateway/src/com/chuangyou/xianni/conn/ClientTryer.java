@@ -62,17 +62,9 @@ class TryRunner implements Runnable {
 			if (tryTimes > 0) {
 				tryTimes--;
 			}
-			// if (!client.isTry()) {
-			// future.cancel(true);
-			// Log.info("Try connect to " + client.getAddress() + ":" +
-			// client.getPort()
-			// + " cancel, tryRunner will exit.");
-			// return;
-			// }
 
 			boolean result = client.connect();
-			Log.info("try connect to " + client.getName() + " server, address is " + client.getAddress() + ":"
-					+ client.getPort() + (result ? " succeed" : " failed") + ".");
+			Log.error("try connect to " + client.getName() + " server, address is " + client.getAddress() + ":" + client.getPort() + (result ? " succeed" : " failed") + ".");
 			if (result) {
 				future.cancel(true);
 				client.setTry(true);

@@ -16,7 +16,7 @@ public final class PlayerRevivalMsgProto {
      * <code>optional int64 playerId = 1;</code>
      *
      * <pre>
-     *±»¸´»îÓÃ»§µÄID
+     *è¢«å¤æ´»ç”¨æˆ·çš„ID
      * </pre>
      */
     boolean hasPlayerId();
@@ -24,7 +24,7 @@ public final class PlayerRevivalMsgProto {
      * <code>optional int64 playerId = 1;</code>
      *
      * <pre>
-     *±»¸´»îÓÃ»§µÄID
+     *è¢«å¤æ´»ç”¨æˆ·çš„ID
      * </pre>
      */
     long getPlayerId();
@@ -33,7 +33,7 @@ public final class PlayerRevivalMsgProto {
      * <code>optional int32 costType = 2;</code>
      *
      * <pre>
-     *¸´»îÏûºÄÀàĞÍ£¨Èç £º×êÊ¯£¬ÎïÆ·µÈµÈ,ÔİÊ±²»Ìî£©
+     *å¤æ´»æ¶ˆè€—ç±»å‹ï¼ˆå¦‚ ï¼šé’»çŸ³ï¼Œç‰©å“ç­‰ç­‰,æš‚æ—¶ä¸å¡«ï¼‰
      * </pre>
      */
     boolean hasCostType();
@@ -41,7 +41,7 @@ public final class PlayerRevivalMsgProto {
      * <code>optional int32 costType = 2;</code>
      *
      * <pre>
-     *¸´»îÏûºÄÀàĞÍ£¨Èç £º×êÊ¯£¬ÎïÆ·µÈµÈ,ÔİÊ±²»Ìî£©
+     *å¤æ´»æ¶ˆè€—ç±»å‹ï¼ˆå¦‚ ï¼šé’»çŸ³ï¼Œç‰©å“ç­‰ç­‰,æš‚æ—¶ä¸å¡«ï¼‰
      * </pre>
      */
     int getCostType();
@@ -154,7 +154,7 @@ public final class PlayerRevivalMsgProto {
      * <code>optional int64 playerId = 1;</code>
      *
      * <pre>
-     *±»¸´»îÓÃ»§µÄID
+     *è¢«å¤æ´»ç”¨æˆ·çš„ID
      * </pre>
      */
     public boolean hasPlayerId() {
@@ -164,7 +164,7 @@ public final class PlayerRevivalMsgProto {
      * <code>optional int64 playerId = 1;</code>
      *
      * <pre>
-     *±»¸´»îÓÃ»§µÄID
+     *è¢«å¤æ´»ç”¨æˆ·çš„ID
      * </pre>
      */
     public long getPlayerId() {
@@ -177,7 +177,7 @@ public final class PlayerRevivalMsgProto {
      * <code>optional int32 costType = 2;</code>
      *
      * <pre>
-     *¸´»îÏûºÄÀàĞÍ£¨Èç £º×êÊ¯£¬ÎïÆ·µÈµÈ,ÔİÊ±²»Ìî£©
+     *å¤æ´»æ¶ˆè€—ç±»å‹ï¼ˆå¦‚ ï¼šé’»çŸ³ï¼Œç‰©å“ç­‰ç­‰,æš‚æ—¶ä¸å¡«ï¼‰
      * </pre>
      */
     public boolean hasCostType() {
@@ -187,7 +187,7 @@ public final class PlayerRevivalMsgProto {
      * <code>optional int32 costType = 2;</code>
      *
      * <pre>
-     *¸´»îÏûºÄÀàĞÍ£¨Èç £º×êÊ¯£¬ÎïÆ·µÈµÈ,ÔİÊ±²»Ìî£©
+     *å¤æ´»æ¶ˆè€—ç±»å‹ï¼ˆå¦‚ ï¼šé’»çŸ³ï¼Œç‰©å“ç­‰ç­‰,æš‚æ—¶ä¸å¡«ï¼‰
      * </pre>
      */
     public int getCostType() {
@@ -445,7 +445,7 @@ public final class PlayerRevivalMsgProto {
        * <code>optional int64 playerId = 1;</code>
        *
        * <pre>
-       *±»¸´»îÓÃ»§µÄID
+       *è¢«å¤æ´»ç”¨æˆ·çš„ID
        * </pre>
        */
       public boolean hasPlayerId() {
@@ -455,7 +455,7 @@ public final class PlayerRevivalMsgProto {
        * <code>optional int64 playerId = 1;</code>
        *
        * <pre>
-       *±»¸´»îÓÃ»§µÄID
+       *è¢«å¤æ´»ç”¨æˆ·çš„ID
        * </pre>
        */
       public long getPlayerId() {
@@ -465,7 +465,7 @@ public final class PlayerRevivalMsgProto {
        * <code>optional int64 playerId = 1;</code>
        *
        * <pre>
-       *±»¸´»îÓÃ»§µÄID
+       *è¢«å¤æ´»ç”¨æˆ·çš„ID
        * </pre>
        */
       public Builder setPlayerId(long value) {
@@ -478,7 +478,7 @@ public final class PlayerRevivalMsgProto {
        * <code>optional int64 playerId = 1;</code>
        *
        * <pre>
-       *±»¸´»îÓÃ»§µÄID
+       *è¢«å¤æ´»ç”¨æˆ·çš„ID
        * </pre>
        */
       public Builder clearPlayerId() {
@@ -493,7 +493,7 @@ public final class PlayerRevivalMsgProto {
        * <code>optional int32 costType = 2;</code>
        *
        * <pre>
-       *¸´»îÏûºÄÀàĞÍ£¨Èç £º×êÊ¯£¬ÎïÆ·µÈµÈ,ÔİÊ±²»Ìî£©
+       *å¤æ´»æ¶ˆè€—ç±»å‹ï¼ˆå¦‚ ï¼šé’»çŸ³ï¼Œç‰©å“ç­‰ç­‰,æš‚æ—¶ä¸å¡«ï¼‰
        * </pre>
        */
       public boolean hasCostType() {
@@ -503,7 +503,7 @@ public final class PlayerRevivalMsgProto {
        * <code>optional int32 costType = 2;</code>
        *
        * <pre>
-       *¸´»îÏûºÄÀàĞÍ£¨Èç £º×êÊ¯£¬ÎïÆ·µÈµÈ,ÔİÊ±²»Ìî£©
+       *å¤æ´»æ¶ˆè€—ç±»å‹ï¼ˆå¦‚ ï¼šé’»çŸ³ï¼Œç‰©å“ç­‰ç­‰,æš‚æ—¶ä¸å¡«ï¼‰
        * </pre>
        */
       public int getCostType() {
@@ -513,7 +513,7 @@ public final class PlayerRevivalMsgProto {
        * <code>optional int32 costType = 2;</code>
        *
        * <pre>
-       *¸´»îÏûºÄÀàĞÍ£¨Èç £º×êÊ¯£¬ÎïÆ·µÈµÈ,ÔİÊ±²»Ìî£©
+       *å¤æ´»æ¶ˆè€—ç±»å‹ï¼ˆå¦‚ ï¼šé’»çŸ³ï¼Œç‰©å“ç­‰ç­‰,æš‚æ—¶ä¸å¡«ï¼‰
        * </pre>
        */
       public Builder setCostType(int value) {
@@ -526,7 +526,7 @@ public final class PlayerRevivalMsgProto {
        * <code>optional int32 costType = 2;</code>
        *
        * <pre>
-       *¸´»îÏûºÄÀàĞÍ£¨Èç £º×êÊ¯£¬ÎïÆ·µÈµÈ,ÔİÊ±²»Ìî£©
+       *å¤æ´»æ¶ˆè€—ç±»å‹ï¼ˆå¦‚ ï¼šé’»çŸ³ï¼Œç‰©å“ç­‰ç­‰,æš‚æ—¶ä¸å¡«ï¼‰
        * </pre>
        */
       public Builder clearCostType() {

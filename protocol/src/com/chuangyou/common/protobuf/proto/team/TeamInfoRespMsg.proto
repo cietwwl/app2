@@ -11,4 +11,5 @@ message TeamInfoRespMsg {
 	required int64 leaderPlayerId = 2;   // 队长id
 	required int32 targetId = 3;  //目标ID  0:未选择任何目标
 	repeated TeamMemberInfoMsg infos = 4;//队员
+	optional int32 	teamStatu=5;//队伍状态 0 正常— 1准备— 2待进入(倒计时3秒)— 3进入目标
 }

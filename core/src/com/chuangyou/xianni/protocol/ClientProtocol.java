@@ -93,10 +93,10 @@ public interface ClientProtocol {
 	// =========================>NPC商店<=========================================
 	/** 获取NPC商店信息 */
 	public static final short U_RESP_GETNPCSHOPINFO = 525;
-	/** 购买NPC商店物品 */
+	/** 购买商店物品 */
 	public static final short U_RESP_BUYGOODS = 526;
 
-	/** 请求单个NPC商店商品信息 */
+	/** 请求单个商店商品信息 */
 	public static final short U_RESP_GET_INFO_BYID = 527;
 
 	// ========================><=========================================
@@ -179,6 +179,9 @@ public interface ClientProtocol {
 	public static final short U_RESP_TEAM_HP_MP = 553;
 
 	// ==================================================================
+	/** 商城信息请求返回  */
+	public static final short U_RESP_MALL_INFO                   = 554;  
+	//===============================================================
 
 	/** 返回坐骑信息 */
 	public static final short U_MOUNT_GETINFO = 101;

@@ -11,10 +11,10 @@ public class ChatMsgInfo extends DataObject {
 	private long sendTime;
 	
 	/** 发送者ID */
-	private int senderId;
+	private long senderId;
 	
 	/** 接收者ID(仅一对一聊天时生效) */
-	private int receiverId;
+	private long receiverId;
 	
 	/** 聊天内容 */
 	private String chatContent;
@@ -35,19 +35,19 @@ public class ChatMsgInfo extends DataObject {
 		this.sendTime = sendTime;
 	}
 
-	public int getSenderId() {
+	public long getSenderId() {
 		return senderId;
 	}
 
-	public void setSenderId(int senderId) {
+	public void setSenderId(long senderId) {
 		this.senderId = senderId;
 	}
 
-	public int getReceiverId() {
+	public long getReceiverId() {
 		return receiverId;
 	}
 
-	public void setReceiverId(int receiverId) {
+	public void setReceiverId(long receiverId) {
 		this.receiverId = receiverId;
 	}
 

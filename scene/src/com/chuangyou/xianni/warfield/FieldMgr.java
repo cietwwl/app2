@@ -101,11 +101,20 @@ public class FieldMgr {
 	 * 场景静态地图
 	 */
 	private boolean initField() {
+		String ROOT = Config.getValue("mapdata");
+		File f = new File(ROOT);
+		Map<String, String> realNameMaping = new HashMap<>();
+		if (f.isDirectory()) {
+			String[] fileNames = f.list();
+			for (String str : fileNames) {
+				realNameMaping.put(str.toLowerCase(), str);
+			}
+		}
 		for (Map.Entry<Integer, FieldInfo> entry : FieldTemplateMgr.fieldTemps.entrySet()) {
 			if (!_seekersTemp.containsKey(entry.getValue().getResName())) {
-				String ROOT = Config.getValue("mapdata");
-				File f = new File(ROOT);
-				File configFile = new File(ROOT + entry.getValue().getResName() + ".txt");
+				String sonFileName = entry.getValue().getResName() + ".txt";
+				String realFileName = realNameMaping.get(sonFileName.toLowerCase());
+				File configFile = new File(ROOT + realFileName);
 				if (configFile.exists()) {
 					String name = configFile.getName();
 					String configName = name.split("[.]")[0];
@@ -113,8 +122,8 @@ public class FieldMgr {
 						byte[] data = FileOperate.read2Bytes(configFile.getAbsolutePath());
 						NavmeshSeeker seeker = ParseMapDataHelper.parse2Seeker(data);
 						Rect rect = seeker.getRect().clone();
-						_mapBounds.put(configName, rect);
-						_seekersTemp.put(configName, seeker);
+						_mapBounds.put(configName.toLowerCase(), rect);
+						_seekersTemp.put(configName.toLowerCase(), seeker);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						Log.error("初始化场景数据错误", e);

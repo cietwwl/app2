@@ -11,6 +11,8 @@ public class CampaignTemplateInfo {
 	private String	campaignName;	// 副本名字
 	private int		storyId;		// 副本所属章节标记(讲故事)
 	private int		type;			// 副本类型
+	private int		difficulty;		// 挑战难度
+	private int		joinType;		// 进入类型
 	private int		minLevel;		// 进入最小等级
 	private int		maxLevel;		// 进入最大等级
 	private int		preCampaignId;	// 前置副本
@@ -151,6 +153,22 @@ public class CampaignTemplateInfo {
 
 	public void setEndScriptId(int endScriptId) {
 		this.endScriptId = endScriptId;
+	}
+
+	public int getDifficulty() {
+		return difficulty;
+	}
+
+	public void setDifficulty(int difficulty) {
+		this.difficulty = difficulty;
+	}
+
+	public int getJoinType() {
+		return joinType;
+	}
+
+	public void setJoinType(int joinType) {
+		this.joinType = joinType;
 	}
 
 }

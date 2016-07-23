@@ -7,22 +7,25 @@ import java.util.Set;
 import com.chuangyou.common.protobuf.pb.PlayerLeaveGridProto.PlayerLeaveGridMsg;
 import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.Vector3;
-import com.chuangyou.xianni.exec.DelayAction;
+import com.chuangyou.xianni.manager.SceneManagers;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.role.helper.Hatred;
+import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.objects.ActiveLiving;
+import com.chuangyou.xianni.role.objects.Monster;
 import com.chuangyou.xianni.warfield.FieldMgr;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.grid.GridItem;
 import com.chuangyou.xianni.warfield.helper.Selector;
-import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
+import com.chuangyou.xianni.warfield.helper.selectors.MonsterSelectPlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.navi.seeker.NavmeshSeeker;
 import com.chuangyou.xianni.warfield.navi.seeker.NavmeshTriangle;
 import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.WorldMgr;
 
-public class UpdatePositionAction extends DelayAction {
+public class UpdatePositionAction {// extends DelayAction {
 
 	private static final int TICK = 100;
 	private ActiveLiving activeLiving;
@@ -30,19 +33,19 @@ public class UpdatePositionAction extends DelayAction {
 	// private int Speed = 6;
 
 	public UpdatePositionAction(ActiveLiving living) {
-		super(living, TICK);
+		// super(living, TICK);
 		this.activeLiving = living;
-		playerSelector = new PlayerSelectorHelper(this.activeLiving);
+		playerSelector = new MonsterSelectPlayerSelectorHelper(this.activeLiving);
 	}
 
-	@Override
-	public void execute() {
+	// @Override
+	public void exe() {
 		if (!activeLiving.isArrial()) {
 			Vector3 target = MathUtils.GetVector3InDistance(activeLiving.getPostion(), activeLiving.getGoal(), getStep(activeLiving.getSpeed()));
 			// System.out.println("moveTarget = " + target + " activeLiving.getPostion() = " + activeLiving.getPostion() + " activeLiving.getGoal() = " + activeLiving.getGoal());
 			if (!isValidPoint(target)) { // 不可站立的点
 				this.activeLiving.stop(true);
-				setUpdate();
+				// setUpdate();
 				return;
 			}
 			this.activeLiving.setMoveTime(this.activeLiving.getMoveTime() - TICK);
@@ -52,19 +55,22 @@ public class UpdatePositionAction extends DelayAction {
 				setPostion(activeLiving.getGoal(), playerSelector);
 				this.activeLiving.arrial();
 			} else {
-//				if (activeLiving.getId() == 1000000000033L)
-//					System.out.println(this.activeLiving.getPostion().toString() + " 设置位置：" + target + " this.activeLiving.getMoveTime()： " + this.activeLiving.getMoveTime()
-//							+ "getStep(Speed): " + getStep(activeLiving.getSpeed()));
+				// if (activeLiving.getId() == 1000000000033L)
+				// System.out.println(this.activeLiving.getPostion().toString() + " 设置位置：" + target + " this.activeLiving.getMoveTime()： " + this.activeLiving.getMoveTime()
+				// + "getStep(Speed): " + getStep(activeLiving.getSpeed()));
 				setPostion(target, playerSelector);
 			}
 		}
-		setUpdate();
+		
+		autoAddHatred();
+		
+		// setUpdate();
 	}
 
-	private void setUpdate() {
-		this.execTime = System.currentTimeMillis() + TICK;
-		this.getActionQueue().enDelayQueue(this);
-	}
+	// private void setUpdate() {
+	// this.execTime = System.currentTimeMillis() + TICK;
+	// this.getActionQueue().enDelayQueue(this);
+	// }
 
 	/**
 	 * AI对象通知附近的对象
@@ -142,6 +148,30 @@ public class UpdatePositionAction extends DelayAction {
 	 */
 	protected float getStep(float speed) {
 		return speed * TICK * 0.001f;
+	}
+
+	/**
+	 * 将警戒内的对象加入仇恨列表
+	 */
+	protected void autoAddHatred() {
+		if (this.activeLiving.getType() == RoleType.monster) {
+			Monster monster = (Monster) this.activeLiving;
+			Set<Long> ids = monster.getNears(playerSelector);// 获得警戒范围内的玩家
+			for (Long id : ids) {
+				List<Hatred> hatreds = monster.getHatreds();
+				for (int i = 0; i < hatreds.size(); i++) {
+					if (hatreds.get(i).getTarget() == id) {
+						return;
+					}
+				}
+				Hatred hatred = SceneManagers.hatredManager.getHatred();
+				hatred.setTarget(id);
+				hatred.setFirstAttack(System.currentTimeMillis());
+				hatred.setHatred(0);
+				hatred.setLastAttack(System.currentTimeMillis());
+				hatreds.add(hatred);
+			}
+		}
 	}
 
 }

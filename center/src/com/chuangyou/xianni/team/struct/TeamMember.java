@@ -5,13 +5,19 @@ import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.word.WorldMgr;
 
-public class TeamMember{
-	
-	private long playerId;
-	private int teamId;
-	/** 是否在线  */
-	private boolean isOnline = true;
-	
+public class TeamMember {
+
+	private long		playerId;
+	private int			teamId;
+	private int			statu;				// 准备状态 0 未准备，1 已准备
+	/** 是否在线 */
+	private boolean		isOnline	= true;
+
+	public static int	DE_PREPARE	= 0;
+	public static int	PREPARE		= 1;
+	public static int	LATER		= 2;
+	public static int	JOIN_TARGET	= 3;
+
 	public TeamMember(int teamId, long playerId) {
 		this.teamId = teamId;
 		this.playerId = playerId;
@@ -25,7 +31,6 @@ public class TeamMember{
 		return playerId;
 	}
 
-
 	public boolean isOnline() {
 		return isOnline;
 	}
@@ -34,12 +39,21 @@ public class TeamMember{
 		this.isOnline = isOnline;
 	}
 
+	public int getStatu() {
+		return statu;
+	}
+
+	public void setStatu(int statu) {
+		this.statu = statu;
+	}
+
 	/**
 	 * 队员信息
+	 * 
 	 * @param playerId
 	 * @return
 	 */
-	public TeamMemberInfoMsg.Builder getTeamMemberMsg(){
+	public TeamMemberInfoMsg.Builder getTeamMemberMsg() {
 		GamePlayer player = WorldMgr.getPlayer(playerId);
 		TeamMemberInfoMsg.Builder m = TeamMemberInfoMsg.newBuilder();
 		m.setPlayerId(player.getPlayerId());
@@ -47,14 +61,15 @@ public class TeamMember{
 		m.setFight(player.getBasePlayer().getPlayerInfo().getFight());
 		m.setName(player.getBasePlayer().getPlayerInfo().getNickName());
 		m.setSkinId(player.getBasePlayer().getPlayerInfo().getSkinId());
-		if(player.getPlayerState() == PlayerState.OFFLINE){
+		m.setStatu(getStatu());
+		if (player.getPlayerState() == PlayerState.OFFLINE) {
 			m.setIsOnline(false);
 			m.setFashionId(0);
 			m.setMapId(0);
 			m.setMapKey(0);
 			m.setWeapon(0);
 			m.setWing(0);
-		}else{
+		} else {
 			m.setIsOnline(true);
 			m.setFashionId(0);
 			m.setMapId(player.getBasePlayer().getPlayerPositionInfo().getMapId());
@@ -65,5 +80,4 @@ public class TeamMember{
 		return m;
 	}
 
-	
 }

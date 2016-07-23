@@ -174,13 +174,17 @@ public class EmailInventory extends AbstractEvent implements IInventory {
 	 * @return
 	 */
 	public boolean saveToDatabase() {
+		
 		if (emails == null || emails.size() == 0)
 			return true;
-		int len = emails.size();
+		
+		List<Email> emailsClone = new ArrayList<>();
+		emailsClone.addAll(emails);
+		int len = emailsClone.size();
 		for (int i = 0; i < len; i++) {
-			short option = emails.get(i).getOp();
+			short option = emailsClone.get(i).getOp();
 			if (option == Option.Update) {
-				DBManager.getEmaildao().update(emails.get(i));
+				DBManager.getEmaildao().update(emailsClone.get(i));
 			}
 		}
 		return true;

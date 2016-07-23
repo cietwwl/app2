@@ -30,7 +30,7 @@ public final class BattleLivingInfoMsgProto {
     long getLivingId();
 
     /**
-     * <code>optional int64 player_id = 2;</code>
+     * <code>optional int64 playerId = 2;</code>
      *
      * <pre>
      *角色ID
@@ -38,7 +38,7 @@ public final class BattleLivingInfoMsgProto {
      */
     boolean hasPlayerId();
     /**
-     * <code>optional int64 player_id = 2;</code>
+     * <code>optional int64 playerId = 2;</code>
      *
      * <pre>
      *角色ID
@@ -724,10 +724,10 @@ public final class BattleLivingInfoMsgProto {
       return livingId_;
     }
 
-    public static final int PLAYER_ID_FIELD_NUMBER = 2;
+    public static final int PLAYERID_FIELD_NUMBER = 2;
     private long playerId_;
     /**
-     * <code>optional int64 player_id = 2;</code>
+     * <code>optional int64 playerId = 2;</code>
      *
      * <pre>
      *角色ID
@@ -737,7 +737,7 @@ public final class BattleLivingInfoMsgProto {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional int64 player_id = 2;</code>
+     * <code>optional int64 playerId = 2;</code>
      *
      * <pre>
      *角色ID
@@ -2028,7 +2028,7 @@ public final class BattleLivingInfoMsgProto {
 
       private long playerId_ ;
       /**
-       * <code>optional int64 player_id = 2;</code>
+       * <code>optional int64 playerId = 2;</code>
        *
        * <pre>
        *角色ID
@@ -2038,7 +2038,7 @@ public final class BattleLivingInfoMsgProto {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional int64 player_id = 2;</code>
+       * <code>optional int64 playerId = 2;</code>
        *
        * <pre>
        *角色ID
@@ -2048,7 +2048,7 @@ public final class BattleLivingInfoMsgProto {
         return playerId_;
       }
       /**
-       * <code>optional int64 player_id = 2;</code>
+       * <code>optional int64 playerId = 2;</code>
        *
        * <pre>
        *角色ID
@@ -2061,7 +2061,7 @@ public final class BattleLivingInfoMsgProto {
         return this;
       }
       /**
-       * <code>optional int64 player_id = 2;</code>
+       * <code>optional int64 playerId = 2;</code>
        *
        * <pre>
        *角色ID
@@ -3847,20 +3847,20 @@ public final class BattleLivingInfoMsgProto {
     java.lang.String[] descriptorData = {
       "\n battle/BattleLivingInfoMsg.proto\032\026comm" +
       "on/PBVector3.proto\032\026battle/BufferMsg.pro" +
-      "to\032\026army/PropertyMsg.proto\"\303\003\n\023BattleLiv" +
-      "ingInfoMsg\022\020\n\010livingId\030\001 \001(\003\022\021\n\tplayer_i" +
-      "d\030\002 \001(\003\022\021\n\tnick_name\030\003 \001(\t\022\014\n\004type\030\004 \001(\005" +
-      "\022\r\n\005level\030\005 \001(\005\022\021\n\tvip_level\030\006 \001(\005\022\r\n\005fi" +
-      "ght\030\007 \001(\005\022\016\n\006skinId\030\010 \001(\005\022\022\n\nfashion_id\030" +
-      "\t \001(\005\022\021\n\tweapon_id\030\n \001(\005\022\020\n\010mount_id\030\013 \001" +
-      "(\005\022\027\n\017magic_weapon_id\030\014 \001(\005\022\017\n\007wing_id\030\r" +
-      " \001(\005\022\033\n\007postion\030\016 \001(\0132\n.PBVector3\022\032\n\006tar",
-      "get\030\017 \001(\0132\n.PBVector3\022\036\n\nbufferList\030\020 \003(" +
-      "\0132\n.BufferMsg\022\016\n\006skills\030\021 \003(\005\022\037\n\tpropert" +
-      "is\030\022 \003(\0132\014.PropertyMsg\022\021\n\tliveState\030\023 \001(" +
-      "\005\022\021\n\tsoulState\030\024 \001(\005\022\022\n\nmountState\030\025 \001(\005" +
-      "BC\n\'com.chuangyou.common.protobuf.pb.bat" +
-      "tleB\030BattleLivingInfoMsgProto"
+      "to\032\026army/PropertyMsg.proto\"\302\003\n\023BattleLiv" +
+      "ingInfoMsg\022\020\n\010livingId\030\001 \001(\003\022\020\n\010playerId" +
+      "\030\002 \001(\003\022\021\n\tnick_name\030\003 \001(\t\022\014\n\004type\030\004 \001(\005\022" +
+      "\r\n\005level\030\005 \001(\005\022\021\n\tvip_level\030\006 \001(\005\022\r\n\005fig" +
+      "ht\030\007 \001(\005\022\016\n\006skinId\030\010 \001(\005\022\022\n\nfashion_id\030\t" +
+      " \001(\005\022\021\n\tweapon_id\030\n \001(\005\022\020\n\010mount_id\030\013 \001(" +
+      "\005\022\027\n\017magic_weapon_id\030\014 \001(\005\022\017\n\007wing_id\030\r " +
+      "\001(\005\022\033\n\007postion\030\016 \001(\0132\n.PBVector3\022\032\n\006targ",
+      "et\030\017 \001(\0132\n.PBVector3\022\036\n\nbufferList\030\020 \003(\013" +
+      "2\n.BufferMsg\022\016\n\006skills\030\021 \003(\005\022\037\n\tproperti" +
+      "s\030\022 \003(\0132\014.PropertyMsg\022\021\n\tliveState\030\023 \001(\005" +
+      "\022\021\n\tsoulState\030\024 \001(\005\022\022\n\nmountState\030\025 \001(\005B" +
+      "C\n\'com.chuangyou.common.protobuf.pb.batt" +
+      "leB\030BattleLivingInfoMsgProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

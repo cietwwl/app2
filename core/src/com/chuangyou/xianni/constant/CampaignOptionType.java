@@ -8,4 +8,7 @@ public class CampaignOptionType {
 	public static final int	JOIN		= 2;
 	/** 退出 */
 	public static final int	LEAVE		= 3;
+	/** 成员进入队伍所在副本 */
+	public static final int	JOIN_TEAM	= 4;
+
 }

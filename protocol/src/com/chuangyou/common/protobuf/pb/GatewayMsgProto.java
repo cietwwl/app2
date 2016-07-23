@@ -16,7 +16,7 @@ public final class GatewayMsgProto {
      * <code>optional string notify_msg = 1;</code>
      *
      * <pre>
-     * 提示消息
+     * 鎻愮ず娑堟伅
      * </pre>
      */
     boolean hasNotifyMsg();
@@ -24,7 +24,7 @@ public final class GatewayMsgProto {
      * <code>optional string notify_msg = 1;</code>
      *
      * <pre>
-     * 提示消息
+     * 鎻愮ず娑堟伅
      * </pre>
      */
     java.lang.String getNotifyMsg();
@@ -32,7 +32,7 @@ public final class GatewayMsgProto {
      * <code>optional string notify_msg = 1;</code>
      *
      * <pre>
-     * 提示消息
+     * 鎻愮ず娑堟伅
      * </pre>
      */
     com.google.protobuf.ByteString
@@ -142,7 +142,7 @@ public final class GatewayMsgProto {
      * <code>optional string notify_msg = 1;</code>
      *
      * <pre>
-     * 提示消息
+     * 鎻愮ず娑堟伅
      * </pre>
      */
     public boolean hasNotifyMsg() {
@@ -152,7 +152,7 @@ public final class GatewayMsgProto {
      * <code>optional string notify_msg = 1;</code>
      *
      * <pre>
-     * 提示消息
+     * 鎻愮ず娑堟伅
      * </pre>
      */
     public java.lang.String getNotifyMsg() {
@@ -173,7 +173,7 @@ public final class GatewayMsgProto {
      * <code>optional string notify_msg = 1;</code>
      *
      * <pre>
-     * 提示消息
+     * 鎻愮ず娑堟伅
      * </pre>
      */
     public com.google.protobuf.ByteString
@@ -426,7 +426,7 @@ public final class GatewayMsgProto {
        * <code>optional string notify_msg = 1;</code>
        *
        * <pre>
-       * 提示消息
+       * 鎻愮ず娑堟伅
        * </pre>
        */
       public boolean hasNotifyMsg() {
@@ -436,7 +436,7 @@ public final class GatewayMsgProto {
        * <code>optional string notify_msg = 1;</code>
        *
        * <pre>
-       * 提示消息
+       * 鎻愮ず娑堟伅
        * </pre>
        */
       public java.lang.String getNotifyMsg() {
@@ -457,7 +457,7 @@ public final class GatewayMsgProto {
        * <code>optional string notify_msg = 1;</code>
        *
        * <pre>
-       * 提示消息
+       * 鎻愮ず娑堟伅
        * </pre>
        */
       public com.google.protobuf.ByteString
@@ -477,7 +477,7 @@ public final class GatewayMsgProto {
        * <code>optional string notify_msg = 1;</code>
        *
        * <pre>
-       * 提示消息
+       * 鎻愮ず娑堟伅
        * </pre>
        */
       public Builder setNotifyMsg(
@@ -494,7 +494,7 @@ public final class GatewayMsgProto {
        * <code>optional string notify_msg = 1;</code>
        *
        * <pre>
-       * 提示消息
+       * 鎻愮ず娑堟伅
        * </pre>
        */
       public Builder clearNotifyMsg() {
@@ -507,7 +507,7 @@ public final class GatewayMsgProto {
        * <code>optional string notify_msg = 1;</code>
        *
        * <pre>
-       * 提示消息
+       * 鎻愮ず娑堟伅
        * </pre>
        */
       public Builder setNotifyMsgBytes(

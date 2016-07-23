@@ -4,7 +4,6 @@ import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.ai.AIState;
 import com.chuangyou.xianni.cooldown.CoolDownTypes;
-import com.chuangyou.xianni.manager.SceneManagers;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
 import com.chuangyou.xianni.warfield.field.Field;
@@ -35,11 +34,16 @@ public class Chase extends BaseBehavior {
 		if (checkAttackTarget()) {
 			return;
 		}
+		int followUpDistance = getMonster().getAiConfig().getFollowUpDistance();
+		if (followUpDistance == 0) { // 不追击
+			return;
+		}
+
 		chaseTarget = MathUtils.GetRandomVector3ByCenter(l.getPostion(), 1, false);// l.getPostion();
 		if (!isValidPoint(chaseTarget))
 			chaseTarget = l.getPostion();
 
-//		System.out.println("自己位置：" + getMonster().getPostion() + " 追击到点：" + chaseTarget+" 人物位置： "+l.getPostion());
+		// System.out.println("自己位置：" + getMonster().getPostion() + " 追击到点：" + chaseTarget+" 人物位置： "+l.getPostion());
 		getMonster().stop(false);
 		getMonster().moveto(chaseTarget);
 	}
@@ -52,6 +56,7 @@ public class Chase extends BaseBehavior {
 			return AIState.BEATTACK;
 		if (checkAttackTarget())
 			return AIState.ATTACK;
+
 		Field f = getMonster().getField();
 		Living l = f.getLiving(getMonster().getTarget());
 		// 当前目标已经无效
@@ -60,12 +65,15 @@ public class Chase extends BaseBehavior {
 			getMonster().removeHatred(getMonster().getTarget());
 			return AIState.IDLE;
 		}
+		if (getMonster().getAiConfig().getFollowUpDistance() == 0)// 不追击
+			return AIState.IDLE;
+
 		// 获取当前离目标的距离
 		chaseTarget = MathUtils.GetRandomVector3ByCenter(l.getPostion(), 1, false);
 		float distance = Vector3.distance(getMonster().getInitPosition(), chaseTarget);// 出生点与目标的距离
 		// System.out.println(getMonster().getId() + "---追击怪物位置：" + getMonster().getPostion() + "怪物目标位置：" + l.getPostion());
 		// 脱离追击范围
-		if (distance > getMonster().getMonsterInfo().getFollowUpDistance()) {
+		if (distance > getMonster().getAiConfig().getFollowUpDistance()) {
 			float leaveBornDistance = Vector3.distance(getMonster().getInitPosition(), getMonster().getPostion());// 当前位置与出生点的距离
 			// 在巡逻范围，找其他目标，移除当前的最大仇恨
 			if (leaveBornDistance < getMonster().getMonsterInfo().getSeekEnemyRange()) {

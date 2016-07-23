@@ -3,6 +3,7 @@ package com.chuangyou.xianni.entity.task;
 import java.util.Date;
 
 import com.chuangyou.xianni.entity.DataObject;
+import com.chuangyou.xianni.entity.Option;
 
 public class TaskInfo extends DataObject {
 	
@@ -16,7 +17,6 @@ public class TaskInfo extends DataObject {
 	public static final byte FINISH = 2;
 	/** 提交  */
 	public static final byte COMMIT = 3;
-	
 	
 	
 	
@@ -37,32 +37,47 @@ public class TaskInfo extends DataObject {
 		return playerId;
 	}
 	public void setPlayerId(long playerId) {
-		this.playerId = playerId;
+		if(this.playerId != playerId){
+			this.setOp(Option.Update);
+			this.playerId = playerId;
+		}
 	}
 	public int getProcess() {
 		return process;
 	}
 	public void setProcess(int process) {
-		this.process = process;
+		if(this.process!=process){
+			this.setOp(Option.Update);
+			this.process = process;
+		}
 	}
 	
 	public Date getUpdateTime() {
 		return updateTime;
 	}
 	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
+		if(this.updateTime!=updateTime){
+			this.setOp(Option.Update);
+			this.updateTime = updateTime;
+		}
 	}
 	public Date getCreateTime() {
 		return createTime;
 	}
 	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
+		if(this.createTime!=createTime){
+			this.setOp(Option.Update);
+			this.createTime = createTime;
+		}
 	}
 	public byte getState() {
 		return state;
 	}
 	public void setState(byte state) {
-		this.state = state;
+		if(this.state != state){
+			this.setOp(Option.Update);
+			this.state = state;
+		}
 	}
 	
 	

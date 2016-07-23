@@ -36,7 +36,7 @@ public class ChatSenderFactory {
 		_chatSenderMap.put(ChatConstant.Channel.SEARCH_TEAM, new ChatSearchTeamAction());
 	}
 	
-	public ChatBaseAction getAction(int channel){
+	public ChatBaseAction getAction(short channel){
 		return _chatSenderMap.get(channel);
 	}
 }

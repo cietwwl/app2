@@ -16,7 +16,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 templateId = 1;</code>
      *
      * <pre>
-     * Ä£°åID
+     * æ¨¡æ¿ID
      * </pre>
      */
     boolean hasTemplateId();
@@ -24,7 +24,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 templateId = 1;</code>
      *
      * <pre>
-     * Ä£°åID
+     * æ¨¡æ¿ID
      * </pre>
      */
     int getTemplateId();
@@ -33,7 +33,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 pos = 2;</code>
      *
      * <pre>
-     * Î»ÖÃ
+     * ä½ç½®
      * </pre>
      */
     boolean hasPos();
@@ -41,7 +41,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 pos = 2;</code>
      *
      * <pre>
-     * Î»ÖÃ
+     * ä½ç½®
      * </pre>
      */
     int getPos();
@@ -50,7 +50,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 bagType = 3;</code>
      *
      * <pre>
-     *±³°üÀàĞÍ
+     *èƒŒåŒ…ç±»å‹
      * </pre>
      */
     boolean hasBagType();
@@ -58,7 +58,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 bagType = 3;</code>
      *
      * <pre>
-     *±³°üÀàĞÍ
+     *èƒŒåŒ…ç±»å‹
      * </pre>
      */
     int getBagType();
@@ -67,7 +67,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional bool bind = 4;</code>
      *
      * <pre>
-     *°ó¶¨
+     *ç»‘å®š
      * </pre>
      */
     boolean hasBind();
@@ -75,7 +75,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional bool bind = 4;</code>
      *
      * <pre>
-     *°ó¶¨
+     *ç»‘å®š
      * </pre>
      */
     boolean getBind();
@@ -84,7 +84,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional bool used = 5;</code>
      *
      * <pre>
-     *ÊÇ·ñÊ¹ÓÃ
+     *æ˜¯å¦ä½¿ç”¨
      * </pre>
      */
     boolean hasUsed();
@@ -92,7 +92,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional bool used = 5;</code>
      *
      * <pre>
-     *ÊÇ·ñÊ¹ÓÃ
+     *æ˜¯å¦ä½¿ç”¨
      * </pre>
      */
     boolean getUsed();
@@ -101,7 +101,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 count = 6;</code>
      *
      * <pre>
-     * ÊıÁ¿
+     * æ•°é‡
      * </pre>
      */
     boolean hasCount();
@@ -109,7 +109,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 count = 6;</code>
      *
      * <pre>
-     * ÊıÁ¿
+     * æ•°é‡
      * </pre>
      */
     int getCount();
@@ -118,7 +118,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 validDate = 7;</code>
      *
      * <pre>
-     * ÓĞĞ§Ê±¼ä
+     * æœ‰æ•ˆæ—¶é—´
      * </pre>
      */
     boolean hasValidDate();
@@ -126,7 +126,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 validDate = 7;</code>
      *
      * <pre>
-     * ÓĞĞ§Ê±¼ä
+     * æœ‰æ•ˆæ—¶é—´
      * </pre>
      */
     int getValidDate();
@@ -135,7 +135,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int64 beginDate = 8;</code>
      *
      * <pre>
-     * ÉúĞ§Ê±¼ä
+     * ç”Ÿæ•ˆæ—¶é—´
      * </pre>
      */
     boolean hasBeginDate();
@@ -143,7 +143,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int64 beginDate = 8;</code>
      *
      * <pre>
-     * ÉúĞ§Ê±¼ä
+     * ç”Ÿæ•ˆæ—¶é—´
      * </pre>
      */
     long getBeginDate();
@@ -152,7 +152,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional bool isNew = 9;</code>
      *
      * <pre>
-     * ĞÂÎïÆ·ÌáÊ¾
+     * æ–°ç‰©å“æç¤º
      * </pre>
      */
     boolean hasIsNew();
@@ -160,7 +160,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional bool isNew = 9;</code>
      *
      * <pre>
-     * ĞÂÎïÆ·ÌáÊ¾
+     * æ–°ç‰©å“æç¤º
      * </pre>
      */
     boolean getIsNew();
@@ -169,7 +169,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 qualityCoefficient = 10;</code>
      *
      * <pre>
-     *Æ·ÖÊÏµÊı
+     *å“è´¨ç³»æ•°
      * </pre>
      */
     boolean hasQualityCoefficient();
@@ -177,7 +177,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 qualityCoefficient = 10;</code>
      *
      * <pre>
-     *Æ·ÖÊÏµÊı
+     *å“è´¨ç³»æ•°
      * </pre>
      */
     int getQualityCoefficient();
@@ -186,7 +186,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 pro = 11;</code>
      *
      * <pre>
-     *ÎïÆ·ÏêÏ¸ÊôĞÔ
+     *ç‰©å“è¯¦ç»†å±æ€§
      * </pre>
      */
     boolean hasPro();
@@ -194,7 +194,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 pro = 11;</code>
      *
      * <pre>
-     *ÎïÆ·ÏêÏ¸ÊôĞÔ
+     *ç‰©å“è¯¦ç»†å±æ€§
      * </pre>
      */
     int getPro();
@@ -203,7 +203,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 grow = 12;</code>
      *
      * <pre>
-     *³É³¤ÏµÊı
+     *æˆé•¿ç³»æ•°
      * </pre>
      */
     boolean hasGrow();
@@ -211,7 +211,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 grow = 12;</code>
      *
      * <pre>
-     *³É³¤ÏµÊı
+     *æˆé•¿ç³»æ•°
      * </pre>
      */
     int getGrow();
@@ -220,7 +220,7 @@ public final class ItemFullInfoMsgProto {
    * Protobuf type {@code ItemFullInfoMsg}
    *
    * <pre>
-   * µÀ¾ßÎïÆ·Ïê°ü
+   * é“å…·ç‰©å“è¯¦åŒ…
    * </pre>
    */
   public static final class ItemFullInfoMsg extends
@@ -378,7 +378,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 templateId = 1;</code>
      *
      * <pre>
-     * Ä£°åID
+     * æ¨¡æ¿ID
      * </pre>
      */
     public boolean hasTemplateId() {
@@ -388,7 +388,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 templateId = 1;</code>
      *
      * <pre>
-     * Ä£°åID
+     * æ¨¡æ¿ID
      * </pre>
      */
     public int getTemplateId() {
@@ -401,7 +401,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 pos = 2;</code>
      *
      * <pre>
-     * Î»ÖÃ
+     * ä½ç½®
      * </pre>
      */
     public boolean hasPos() {
@@ -411,7 +411,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 pos = 2;</code>
      *
      * <pre>
-     * Î»ÖÃ
+     * ä½ç½®
      * </pre>
      */
     public int getPos() {
@@ -424,7 +424,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 bagType = 3;</code>
      *
      * <pre>
-     *±³°üÀàĞÍ
+     *èƒŒåŒ…ç±»å‹
      * </pre>
      */
     public boolean hasBagType() {
@@ -434,7 +434,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 bagType = 3;</code>
      *
      * <pre>
-     *±³°üÀàĞÍ
+     *èƒŒåŒ…ç±»å‹
      * </pre>
      */
     public int getBagType() {
@@ -447,7 +447,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional bool bind = 4;</code>
      *
      * <pre>
-     *°ó¶¨
+     *ç»‘å®š
      * </pre>
      */
     public boolean hasBind() {
@@ -457,7 +457,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional bool bind = 4;</code>
      *
      * <pre>
-     *°ó¶¨
+     *ç»‘å®š
      * </pre>
      */
     public boolean getBind() {
@@ -470,7 +470,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional bool used = 5;</code>
      *
      * <pre>
-     *ÊÇ·ñÊ¹ÓÃ
+     *æ˜¯å¦ä½¿ç”¨
      * </pre>
      */
     public boolean hasUsed() {
@@ -480,7 +480,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional bool used = 5;</code>
      *
      * <pre>
-     *ÊÇ·ñÊ¹ÓÃ
+     *æ˜¯å¦ä½¿ç”¨
      * </pre>
      */
     public boolean getUsed() {
@@ -493,7 +493,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 count = 6;</code>
      *
      * <pre>
-     * ÊıÁ¿
+     * æ•°é‡
      * </pre>
      */
     public boolean hasCount() {
@@ -503,7 +503,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 count = 6;</code>
      *
      * <pre>
-     * ÊıÁ¿
+     * æ•°é‡
      * </pre>
      */
     public int getCount() {
@@ -516,7 +516,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 validDate = 7;</code>
      *
      * <pre>
-     * ÓĞĞ§Ê±¼ä
+     * æœ‰æ•ˆæ—¶é—´
      * </pre>
      */
     public boolean hasValidDate() {
@@ -526,7 +526,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 validDate = 7;</code>
      *
      * <pre>
-     * ÓĞĞ§Ê±¼ä
+     * æœ‰æ•ˆæ—¶é—´
      * </pre>
      */
     public int getValidDate() {
@@ -539,7 +539,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int64 beginDate = 8;</code>
      *
      * <pre>
-     * ÉúĞ§Ê±¼ä
+     * ç”Ÿæ•ˆæ—¶é—´
      * </pre>
      */
     public boolean hasBeginDate() {
@@ -549,7 +549,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int64 beginDate = 8;</code>
      *
      * <pre>
-     * ÉúĞ§Ê±¼ä
+     * ç”Ÿæ•ˆæ—¶é—´
      * </pre>
      */
     public long getBeginDate() {
@@ -562,7 +562,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional bool isNew = 9;</code>
      *
      * <pre>
-     * ĞÂÎïÆ·ÌáÊ¾
+     * æ–°ç‰©å“æç¤º
      * </pre>
      */
     public boolean hasIsNew() {
@@ -572,7 +572,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional bool isNew = 9;</code>
      *
      * <pre>
-     * ĞÂÎïÆ·ÌáÊ¾
+     * æ–°ç‰©å“æç¤º
      * </pre>
      */
     public boolean getIsNew() {
@@ -585,7 +585,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 qualityCoefficient = 10;</code>
      *
      * <pre>
-     *Æ·ÖÊÏµÊı
+     *å“è´¨ç³»æ•°
      * </pre>
      */
     public boolean hasQualityCoefficient() {
@@ -595,7 +595,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 qualityCoefficient = 10;</code>
      *
      * <pre>
-     *Æ·ÖÊÏµÊı
+     *å“è´¨ç³»æ•°
      * </pre>
      */
     public int getQualityCoefficient() {
@@ -608,7 +608,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 pro = 11;</code>
      *
      * <pre>
-     *ÎïÆ·ÏêÏ¸ÊôĞÔ
+     *ç‰©å“è¯¦ç»†å±æ€§
      * </pre>
      */
     public boolean hasPro() {
@@ -618,7 +618,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 pro = 11;</code>
      *
      * <pre>
-     *ÎïÆ·ÏêÏ¸ÊôĞÔ
+     *ç‰©å“è¯¦ç»†å±æ€§
      * </pre>
      */
     public int getPro() {
@@ -631,7 +631,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 grow = 12;</code>
      *
      * <pre>
-     *³É³¤ÏµÊı
+     *æˆé•¿ç³»æ•°
      * </pre>
      */
     public boolean hasGrow() {
@@ -641,7 +641,7 @@ public final class ItemFullInfoMsgProto {
      * <code>optional int32 grow = 12;</code>
      *
      * <pre>
-     *³É³¤ÏµÊı
+     *æˆé•¿ç³»æ•°
      * </pre>
      */
     public int getGrow() {
@@ -850,7 +850,7 @@ public final class ItemFullInfoMsgProto {
      * Protobuf type {@code ItemFullInfoMsg}
      *
      * <pre>
-     * µÀ¾ßÎïÆ·Ïê°ü
+     * é“å…·ç‰©å“è¯¦åŒ…
      * </pre>
      */
     public static final class Builder extends
@@ -1073,7 +1073,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 templateId = 1;</code>
        *
        * <pre>
-       * Ä£°åID
+       * æ¨¡æ¿ID
        * </pre>
        */
       public boolean hasTemplateId() {
@@ -1083,7 +1083,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 templateId = 1;</code>
        *
        * <pre>
-       * Ä£°åID
+       * æ¨¡æ¿ID
        * </pre>
        */
       public int getTemplateId() {
@@ -1093,7 +1093,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 templateId = 1;</code>
        *
        * <pre>
-       * Ä£°åID
+       * æ¨¡æ¿ID
        * </pre>
        */
       public Builder setTemplateId(int value) {
@@ -1106,7 +1106,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 templateId = 1;</code>
        *
        * <pre>
-       * Ä£°åID
+       * æ¨¡æ¿ID
        * </pre>
        */
       public Builder clearTemplateId() {
@@ -1121,7 +1121,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 pos = 2;</code>
        *
        * <pre>
-       * Î»ÖÃ
+       * ä½ç½®
        * </pre>
        */
       public boolean hasPos() {
@@ -1131,7 +1131,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 pos = 2;</code>
        *
        * <pre>
-       * Î»ÖÃ
+       * ä½ç½®
        * </pre>
        */
       public int getPos() {
@@ -1141,7 +1141,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 pos = 2;</code>
        *
        * <pre>
-       * Î»ÖÃ
+       * ä½ç½®
        * </pre>
        */
       public Builder setPos(int value) {
@@ -1154,7 +1154,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 pos = 2;</code>
        *
        * <pre>
-       * Î»ÖÃ
+       * ä½ç½®
        * </pre>
        */
       public Builder clearPos() {
@@ -1169,7 +1169,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 bagType = 3;</code>
        *
        * <pre>
-       *±³°üÀàĞÍ
+       *èƒŒåŒ…ç±»å‹
        * </pre>
        */
       public boolean hasBagType() {
@@ -1179,7 +1179,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 bagType = 3;</code>
        *
        * <pre>
-       *±³°üÀàĞÍ
+       *èƒŒåŒ…ç±»å‹
        * </pre>
        */
       public int getBagType() {
@@ -1189,7 +1189,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 bagType = 3;</code>
        *
        * <pre>
-       *±³°üÀàĞÍ
+       *èƒŒåŒ…ç±»å‹
        * </pre>
        */
       public Builder setBagType(int value) {
@@ -1202,7 +1202,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 bagType = 3;</code>
        *
        * <pre>
-       *±³°üÀàĞÍ
+       *èƒŒåŒ…ç±»å‹
        * </pre>
        */
       public Builder clearBagType() {
@@ -1217,7 +1217,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional bool bind = 4;</code>
        *
        * <pre>
-       *°ó¶¨
+       *ç»‘å®š
        * </pre>
        */
       public boolean hasBind() {
@@ -1227,7 +1227,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional bool bind = 4;</code>
        *
        * <pre>
-       *°ó¶¨
+       *ç»‘å®š
        * </pre>
        */
       public boolean getBind() {
@@ -1237,7 +1237,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional bool bind = 4;</code>
        *
        * <pre>
-       *°ó¶¨
+       *ç»‘å®š
        * </pre>
        */
       public Builder setBind(boolean value) {
@@ -1250,7 +1250,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional bool bind = 4;</code>
        *
        * <pre>
-       *°ó¶¨
+       *ç»‘å®š
        * </pre>
        */
       public Builder clearBind() {
@@ -1265,7 +1265,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional bool used = 5;</code>
        *
        * <pre>
-       *ÊÇ·ñÊ¹ÓÃ
+       *æ˜¯å¦ä½¿ç”¨
        * </pre>
        */
       public boolean hasUsed() {
@@ -1275,7 +1275,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional bool used = 5;</code>
        *
        * <pre>
-       *ÊÇ·ñÊ¹ÓÃ
+       *æ˜¯å¦ä½¿ç”¨
        * </pre>
        */
       public boolean getUsed() {
@@ -1285,7 +1285,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional bool used = 5;</code>
        *
        * <pre>
-       *ÊÇ·ñÊ¹ÓÃ
+       *æ˜¯å¦ä½¿ç”¨
        * </pre>
        */
       public Builder setUsed(boolean value) {
@@ -1298,7 +1298,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional bool used = 5;</code>
        *
        * <pre>
-       *ÊÇ·ñÊ¹ÓÃ
+       *æ˜¯å¦ä½¿ç”¨
        * </pre>
        */
       public Builder clearUsed() {
@@ -1313,7 +1313,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 count = 6;</code>
        *
        * <pre>
-       * ÊıÁ¿
+       * æ•°é‡
        * </pre>
        */
       public boolean hasCount() {
@@ -1323,7 +1323,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 count = 6;</code>
        *
        * <pre>
-       * ÊıÁ¿
+       * æ•°é‡
        * </pre>
        */
       public int getCount() {
@@ -1333,7 +1333,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 count = 6;</code>
        *
        * <pre>
-       * ÊıÁ¿
+       * æ•°é‡
        * </pre>
        */
       public Builder setCount(int value) {
@@ -1346,7 +1346,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 count = 6;</code>
        *
        * <pre>
-       * ÊıÁ¿
+       * æ•°é‡
        * </pre>
        */
       public Builder clearCount() {
@@ -1361,7 +1361,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 validDate = 7;</code>
        *
        * <pre>
-       * ÓĞĞ§Ê±¼ä
+       * æœ‰æ•ˆæ—¶é—´
        * </pre>
        */
       public boolean hasValidDate() {
@@ -1371,7 +1371,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 validDate = 7;</code>
        *
        * <pre>
-       * ÓĞĞ§Ê±¼ä
+       * æœ‰æ•ˆæ—¶é—´
        * </pre>
        */
       public int getValidDate() {
@@ -1381,7 +1381,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 validDate = 7;</code>
        *
        * <pre>
-       * ÓĞĞ§Ê±¼ä
+       * æœ‰æ•ˆæ—¶é—´
        * </pre>
        */
       public Builder setValidDate(int value) {
@@ -1394,7 +1394,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 validDate = 7;</code>
        *
        * <pre>
-       * ÓĞĞ§Ê±¼ä
+       * æœ‰æ•ˆæ—¶é—´
        * </pre>
        */
       public Builder clearValidDate() {
@@ -1409,7 +1409,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int64 beginDate = 8;</code>
        *
        * <pre>
-       * ÉúĞ§Ê±¼ä
+       * ç”Ÿæ•ˆæ—¶é—´
        * </pre>
        */
       public boolean hasBeginDate() {
@@ -1419,7 +1419,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int64 beginDate = 8;</code>
        *
        * <pre>
-       * ÉúĞ§Ê±¼ä
+       * ç”Ÿæ•ˆæ—¶é—´
        * </pre>
        */
       public long getBeginDate() {
@@ -1429,7 +1429,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int64 beginDate = 8;</code>
        *
        * <pre>
-       * ÉúĞ§Ê±¼ä
+       * ç”Ÿæ•ˆæ—¶é—´
        * </pre>
        */
       public Builder setBeginDate(long value) {
@@ -1442,7 +1442,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int64 beginDate = 8;</code>
        *
        * <pre>
-       * ÉúĞ§Ê±¼ä
+       * ç”Ÿæ•ˆæ—¶é—´
        * </pre>
        */
       public Builder clearBeginDate() {
@@ -1457,7 +1457,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional bool isNew = 9;</code>
        *
        * <pre>
-       * ĞÂÎïÆ·ÌáÊ¾
+       * æ–°ç‰©å“æç¤º
        * </pre>
        */
       public boolean hasIsNew() {
@@ -1467,7 +1467,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional bool isNew = 9;</code>
        *
        * <pre>
-       * ĞÂÎïÆ·ÌáÊ¾
+       * æ–°ç‰©å“æç¤º
        * </pre>
        */
       public boolean getIsNew() {
@@ -1477,7 +1477,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional bool isNew = 9;</code>
        *
        * <pre>
-       * ĞÂÎïÆ·ÌáÊ¾
+       * æ–°ç‰©å“æç¤º
        * </pre>
        */
       public Builder setIsNew(boolean value) {
@@ -1490,7 +1490,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional bool isNew = 9;</code>
        *
        * <pre>
-       * ĞÂÎïÆ·ÌáÊ¾
+       * æ–°ç‰©å“æç¤º
        * </pre>
        */
       public Builder clearIsNew() {
@@ -1505,7 +1505,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 qualityCoefficient = 10;</code>
        *
        * <pre>
-       *Æ·ÖÊÏµÊı
+       *å“è´¨ç³»æ•°
        * </pre>
        */
       public boolean hasQualityCoefficient() {
@@ -1515,7 +1515,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 qualityCoefficient = 10;</code>
        *
        * <pre>
-       *Æ·ÖÊÏµÊı
+       *å“è´¨ç³»æ•°
        * </pre>
        */
       public int getQualityCoefficient() {
@@ -1525,7 +1525,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 qualityCoefficient = 10;</code>
        *
        * <pre>
-       *Æ·ÖÊÏµÊı
+       *å“è´¨ç³»æ•°
        * </pre>
        */
       public Builder setQualityCoefficient(int value) {
@@ -1538,7 +1538,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 qualityCoefficient = 10;</code>
        *
        * <pre>
-       *Æ·ÖÊÏµÊı
+       *å“è´¨ç³»æ•°
        * </pre>
        */
       public Builder clearQualityCoefficient() {
@@ -1553,7 +1553,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 pro = 11;</code>
        *
        * <pre>
-       *ÎïÆ·ÏêÏ¸ÊôĞÔ
+       *ç‰©å“è¯¦ç»†å±æ€§
        * </pre>
        */
       public boolean hasPro() {
@@ -1563,7 +1563,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 pro = 11;</code>
        *
        * <pre>
-       *ÎïÆ·ÏêÏ¸ÊôĞÔ
+       *ç‰©å“è¯¦ç»†å±æ€§
        * </pre>
        */
       public int getPro() {
@@ -1573,7 +1573,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 pro = 11;</code>
        *
        * <pre>
-       *ÎïÆ·ÏêÏ¸ÊôĞÔ
+       *ç‰©å“è¯¦ç»†å±æ€§
        * </pre>
        */
       public Builder setPro(int value) {
@@ -1586,7 +1586,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 pro = 11;</code>
        *
        * <pre>
-       *ÎïÆ·ÏêÏ¸ÊôĞÔ
+       *ç‰©å“è¯¦ç»†å±æ€§
        * </pre>
        */
       public Builder clearPro() {
@@ -1601,7 +1601,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 grow = 12;</code>
        *
        * <pre>
-       *³É³¤ÏµÊı
+       *æˆé•¿ç³»æ•°
        * </pre>
        */
       public boolean hasGrow() {
@@ -1611,7 +1611,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 grow = 12;</code>
        *
        * <pre>
-       *³É³¤ÏµÊı
+       *æˆé•¿ç³»æ•°
        * </pre>
        */
       public int getGrow() {
@@ -1621,7 +1621,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 grow = 12;</code>
        *
        * <pre>
-       *³É³¤ÏµÊı
+       *æˆé•¿ç³»æ•°
        * </pre>
        */
       public Builder setGrow(int value) {
@@ -1634,7 +1634,7 @@ public final class ItemFullInfoMsgProto {
        * <code>optional int32 grow = 12;</code>
        *
        * <pre>
-       *³É³¤ÏµÊı
+       *æˆé•¿ç³»æ•°
        * </pre>
        */
       public Builder clearGrow() {

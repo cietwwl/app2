@@ -4,7 +4,7 @@ import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.interfaces.IInventory;
 
 public class ChatInventory extends AbstractEvent implements IInventory {
-
+	
 	@Override
 	public boolean loadFromDataBase() {
 		// TODO Auto-generated method stub

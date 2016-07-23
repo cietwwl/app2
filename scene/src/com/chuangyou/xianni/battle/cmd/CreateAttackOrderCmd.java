@@ -35,7 +35,7 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 	public void execute(ArmyProxy army, PBMessage packet) throws Exception {
 		AttackOrderMsg orderMsg = AttackOrderMsg.parseFrom(packet.toByteArray());
 		int skillActionId = orderMsg.getSkillActionId();
-//		System.out.println(orderMsg);
+		System.out.println(orderMsg);
 		// 该玩家是否具有此技能
 		Player player = army.getPlayer();
 		if (!player.hasSkillId(skillActionId)) {
@@ -60,39 +60,38 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 		// 技能目标
 		List<Living> targets = new ArrayList<>();
 
-		int startTime = field.getFieldInfo().getStartBattleTime();
-		int endTime = field.getFieldInfo().getEndBattleTime();
-		int hour = TimeUtil.getCurrentHour();
+		String startTime = field.getFieldInfo().getStartBattleTime();
+		String endTime = field.getFieldInfo().getEndBattleTime();
 
+		// System.out.println(field.getFieldInfo().getMapKey());
 		for (long targetId : orderMsg.getTargetsList()) {
 			Living living = field.getLiving(targetId);
 			if (living != null) {
-//				System.out.println(battleMode +" vs  "+living.getBattleMode()+" living.ID = " + living.getId());
-//				if (living.getType() == RoleType.player) {
-//					if (field.getFieldInfo().isBattle()) {// pk 地图才能攻击
-//						if (((Player) living).getSimpleInfo().getLevel() < 35)
-//							continue;
-//						if (player.getTeamId() == ((Player) living).getTeamId())// 队友
-//							continue;
-//						if (startTime > 0 && hour < startTime) {
-//
-//						}
-//						// getCurrentHour
-//
-//						// if (((Player) living).getColour(living.getPkVal()) == BattleModeCode.white) {// 受地图保护
-//						// continue;
-//						// }
-//					} else {
-//						continue;
-//					}
-//				}
+				// System.out.println("living.getType():" + living.getType() + " " + battleMode + " vs " + living.getBattleMode() + " living.ID = " + living.getId());
+				if (living.getType() == RoleType.player) {
+					if (field.getFieldInfo().isBattle()) {// pk 地图才能攻击
+						// if (((Player) living).getSimpleInfo().getLevel() < 35)
+						// continue;
+						if (player.getBattleMode() == BattleModeCode.sectsBattleMode) {
+							if (player.getTeamId() != 0 && player.getTeamId() == ((Player) living).getTeamId())// 队友
+								continue;
+						}
+						if (startTime != null && endTime != null && TimeUtil.checkPeriod(startTime, endTime)) {// 受保护时间
+							if (((Player) living).getColour(living.getPkVal()) == BattleModeCode.white) {// 受地图保护
+								continue;
+							}
+						}
+					} else {
+						continue;
+					}
+				}
 				targets.add(living);
 				if (battleMode == BattleModeCode.warBattleMode && living.getBattleMode() == BattleModeCode.peaceBattleMode && living.getType() == RoleType.player)
 					isFlicker = true;
 			}
 		}
-
-		if (isFlicker)
+		// System.out.println(" targets.size(): " + targets.size());
+		if (isFlicker && player.getPkVal() == 0)
 			player.changeFlickerName(true);
 
 		long attackId = IDMakerHelper.attackId();
@@ -103,7 +102,7 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 		// orderMsg.getCurrent());
 		// System.out.println("orderMsg.getPosition() = " +
 		// orderMsg.getPosition());
-		
+
 		// 施法位置
 		order.setCurrent(orderMsg.getCurrent());
 		// 目标位置

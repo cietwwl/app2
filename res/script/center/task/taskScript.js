@@ -32,21 +32,21 @@ function acceptTask(playerId,taskId){
  * @param taskId
  */
 function finishTask(playerId,taskId){
-	sendHintToClient(playerId,"测试：任务："+taskId);
+
 	switch (taskId) {
 	case 10005:
 		changeMap(playerId,1009,-7612,172,5265);
 		break;
-	case 10031:
+	case 10041:
 		changeMap(playerId,1009,-5211,8.9,5351);
 		break;
-	case 10036:
+	case 10046:
 		changeMap(playerId,1009,-6928,-55.7,7296);
 		break;
-	case 10040:
+	case 10048:
 		changeMap(playerId,1009,-7913,-34,7672);
 		break;
-	case 10080:
+	case 10084:
 		changeMap(playerId,1009,-5591,-30,7259);
 		break;	
 	}
@@ -58,7 +58,7 @@ function finishTask(playerId,taskId){
  * @param taskId
  */
 function commitTask(playerId,taskId){
-	sendHintToClient(playerId,"测试：任务："+taskId);
+
 	switch (taskId) {
 	case 10005:
 		changeMap(playerId,1009,-7612,172,5265);

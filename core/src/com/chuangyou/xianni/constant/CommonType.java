@@ -17,6 +17,8 @@ public class CommonType {
 		public final static int	CASH_BIND_ITEM	= 7130000;
 		/** 修为 */
 		public final static int	REPAIR_ITEM		= 7140000;
+		/** 经验 */
+		public final static int EXP				= 7150000;
 
 	}
 

@@ -14,4 +14,5 @@ message TeamMemberInfoMsg {
 	optional bool isOnline = 9; //是否在线
 	optional int32 mapId = 10;//地图唯一ID
 	optional int32 mapKey = 11;//地图模板ID
+	optional int32 statu= 12;//成员当前状态  0 未准备 1 准备 2 待准备 3 已前往目标
 }

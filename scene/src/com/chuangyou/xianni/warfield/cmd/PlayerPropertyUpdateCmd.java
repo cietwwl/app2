@@ -31,7 +31,7 @@ public class PlayerPropertyUpdateCmd extends AbstractCommand {
 		if (pArmy != null) {
 			// 修改玩家属性
 			List<PropertyMsg> attList = req.getAttList();
-			pArmy.getPlayer().updataProperty(attList);
+			pArmy.getPlayer().readProperty(attList);
 			// 通知自己
 			PBMessage selfPkg = MessageUtil.buildMessage(Protocol.U_RESP_PLAYER_ATT_UPDATE, req);
 			pArmy.sendPbMessage(selfPkg);

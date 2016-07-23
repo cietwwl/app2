@@ -23,7 +23,7 @@ public class MemberChangeLineAction extends TeamHasAction {
 	@Override
 	public void teamExec(GamePlayer player, PBMessage packet) throws Exception {
 		// TODO Auto-generated method stub
-		t.synchronizedchangeLine(isLine, member);
+		t.changeLine(isLine, member);
 //		member.setOnline(isLine);
 		
 	}

@@ -2,6 +2,6 @@
 option java_package = "com.chuangyou.common.protobuf.pb.item";
 option java_outer_classname = "ItemReqInfoMsgProto";
 message ItemReqInfoMsg{
-	optional int32 pos = 1;			// 位置	
-	optional int32 bagType = 2;		// 背包类型
+	optional int32 pos = 1;			// 浣嶇疆	
+	optional int32 bagType = 2;		// 鑳屽寘绫诲瀷
 }

@@ -9,14 +9,19 @@ import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.ai.proxy.MonsterAI;
 import com.chuangyou.xianni.battle.action.MonsterPollingAction;
+import com.chuangyou.xianni.battle.buffer.Buffer;
+import com.chuangyou.xianni.battle.buffer.BufferFactory;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.config.SceneGlobal;
 import com.chuangyou.xianni.cooldown.CoolDownTypes;
 import com.chuangyou.xianni.drop.manager.DropManager;
+import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillActionMoveTempleteInfo;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
+import com.chuangyou.xianni.entity.spawn.AiConfig;
 import com.chuangyou.xianni.entity.spawn.MonsterInfo;
+import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.manager.SceneManagers;
 import com.chuangyou.xianni.netty.GatewayLinkedSet;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -26,26 +31,34 @@ import com.chuangyou.xianni.role.action.UpdatePositionAction;
 import com.chuangyou.xianni.role.helper.Hatred;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
+import com.chuangyou.xianni.role.template.AiConfigTemplateMgr;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.spawn.MonsterSpawnNode;
 
 public class Monster extends ActiveLiving {
-	protected MonsterSpawnNode	node;
-	private MonsterInfo			monsterInfo;
+	protected MonsterSpawnNode node;
+	private MonsterInfo monsterInfo;
+	private AiConfig aiConfig;
 
 	// 怪物攻击的初始技能，固定写死
-	private int					skillId;
+	private int skillId;
 	// 初始位置
-	private Vector3				initPosition;
+	private Vector3 initPosition;
 	// 仇恨列表
-	private List<Hatred>		hatreds	= new ArrayList<Hatred>();
+	private List<Hatred> hatreds = new ArrayList<Hatred>();
 	// 攻击目标
-	private Long				target;
+	private Long target;
 	// 当前使用的技能id
-	private int					curSkillID;
+	private int curSkillID;
+	private static final int invincibleBufferId = 99999999;// 无敌buffer id
+	private Buffer invincibleBuffer = null;
 
 	public int getCurSkillID() {
 		return curSkillID;
+	}
+
+	public Buffer getInvincibleBuffer() {
+		return invincibleBuffer;
 	}
 
 	public void setCurSkillID(int curSkillID) {
@@ -75,9 +88,12 @@ public class Monster extends ActiveLiving {
 		super(IDMakerHelper.nextID());
 		setType(RoleType.monster);
 		this.node = node;
-		enDelayQueue(new MonsterAI(this));
-		enDelayQueue(new UpdatePositionAction(this));
-		enDelayQueue(new MonsterPollingAction(this));
+		SkillBufferTemplateInfo sbinfo = BattleTempMgr.getBufferInfo(invincibleBufferId);
+		this.invincibleBuffer = BufferFactory.createBuffer(this, this, sbinfo);
+		this.invincibleBuffer.setPermanent(false);
+		// enDelayQueue(new MonsterAI(this));
+		// enDelayQueue(new UpdatePositionAction(this));
+		enDelayQueue(new MonsterPollingAction(this, new MonsterAI(this), new UpdatePositionAction(this)));
 		// setCurSkillID(1001);
 	}
 
@@ -87,11 +103,29 @@ public class Monster extends ActiveLiving {
 				node.lvingDie(this);
 			}
 			DropManager.dropFromMonster(this.getSkin(), killer.getArmyId(), this.getId(), this.getField().id, this.getPostion());
-			if (killer != null && killer.getArmyId() > 0) {
-				notifyCenter(this.getSkin(), killer.getArmyId());
-			}
+			DieAction die = new DieAction(this, killer, 1000);
+			die.getActionQueue().enDelayQueue(die);
 		}
 		return true;
+	}
+
+	class DieAction extends DelayAction {
+		Living deather;
+		Living killer;
+
+		public DieAction(Living deather, Living killer, int delay) {
+			super(killer, delay);
+			this.deather = deather;
+			this.killer = killer;
+		}
+
+		@Override
+		public void execute() {
+			if (killer != null && killer.getArmyId() > 0) {
+				notifyCenter(getSkin(), killer.getArmyId());
+			}
+		}
+
 	}
 
 	@Override
@@ -111,6 +145,7 @@ public class Monster extends ActiveLiving {
 		PlayerKillMonsterMsg.Builder msg = PlayerKillMonsterMsg.newBuilder();
 		msg.setMonsterTemplateId(tempId);
 		msg.setPlayerId(playerId);
+		msg.setType(1);
 		PBMessage pkg = MessageUtil.buildMessage(Protocol.C_PLAYER_KILL_MONSTER, msg);
 		GatewayLinkedSet.send2Server(pkg);
 	}
@@ -191,6 +226,21 @@ public class Monster extends ActiveLiving {
 			Hatred hatred = iter.next();
 			SceneManagers.hatredManager.removeHatred(hatred);
 			iter.remove();
+		}
+	}
+
+	/**
+	 * 清除过期仇恨
+	 */
+	public void cleanExpiredHatreds() {
+		Iterator<Hatred> iter = this.getHatreds().iterator();
+		while (iter.hasNext()) {
+			Hatred hatred = iter.next();
+			long lastAttack = hatred.getLastAttack();
+			if (System.currentTimeMillis() - lastAttack > 60000) {
+				SceneManagers.hatredManager.removeHatred(hatred);
+				iter.remove();
+			}
 		}
 	}
 
@@ -311,6 +361,12 @@ public class Monster extends ActiveLiving {
 
 	public void setMonsterInfo(MonsterInfo monsterInfo) {
 		this.monsterInfo = monsterInfo;
+		int aiId = monsterInfo.getAiId();
+		this.aiConfig = AiConfigTemplateMgr.get(aiId);
+	}
+
+	public AiConfig getAiConfig() {
+		return aiConfig;
 	}
 
 }

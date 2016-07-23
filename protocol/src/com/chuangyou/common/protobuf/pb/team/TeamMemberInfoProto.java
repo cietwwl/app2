@@ -171,6 +171,23 @@ public final class TeamMemberInfoProto {
      * </pre>
      */
     int getMapKey();
+
+    /**
+     * <code>optional int32 statu = 12;</code>
+     *
+     * <pre>
+     *成员当前状态  0 未准备 1 准备
+     * </pre>
+     */
+    boolean hasStatu();
+    /**
+     * <code>optional int32 statu = 12;</code>
+     *
+     * <pre>
+     *成员当前状态  0 未准备 1 准备
+     * </pre>
+     */
+    int getStatu();
   }
   /**
    * Protobuf type {@code TeamMemberInfoMsg}
@@ -282,6 +299,11 @@ public final class TeamMemberInfoProto {
             case 88: {
               bitField0_ |= 0x00000400;
               mapKey_ = input.readInt32();
+              break;
+            }
+            case 96: {
+              bitField0_ |= 0x00000800;
+              statu_ = input.readInt32();
               break;
             }
           }
@@ -572,6 +594,29 @@ public final class TeamMemberInfoProto {
       return mapKey_;
     }
 
+    public static final int STATU_FIELD_NUMBER = 12;
+    private int statu_;
+    /**
+     * <code>optional int32 statu = 12;</code>
+     *
+     * <pre>
+     *成员当前状态  0 未准备 1 准备
+     * </pre>
+     */
+    public boolean hasStatu() {
+      return ((bitField0_ & 0x00000800) == 0x00000800);
+    }
+    /**
+     * <code>optional int32 statu = 12;</code>
+     *
+     * <pre>
+     *成员当前状态  0 未准备 1 准备
+     * </pre>
+     */
+    public int getStatu() {
+      return statu_;
+    }
+
     private void initFields() {
       playerId_ = 0L;
       name_ = "";
@@ -584,6 +629,7 @@ public final class TeamMemberInfoProto {
       isOnline_ = false;
       mapId_ = 0;
       mapKey_ = 0;
+      statu_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -651,6 +697,9 @@ public final class TeamMemberInfoProto {
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
         output.writeInt32(11, mapKey_);
       }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        output.writeInt32(12, statu_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -703,6 +752,10 @@ public final class TeamMemberInfoProto {
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(11, mapKey_);
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(12, statu_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -847,6 +900,8 @@ public final class TeamMemberInfoProto {
         bitField0_ = (bitField0_ & ~0x00000200);
         mapKey_ = 0;
         bitField0_ = (bitField0_ & ~0x00000400);
+        statu_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000800);
         return this;
       }
 
@@ -919,6 +974,10 @@ public final class TeamMemberInfoProto {
           to_bitField0_ |= 0x00000400;
         }
         result.mapKey_ = mapKey_;
+        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+          to_bitField0_ |= 0x00000800;
+        }
+        result.statu_ = statu_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -969,6 +1028,9 @@ public final class TeamMemberInfoProto {
         }
         if (other.hasMapKey()) {
           setMapKey(other.getMapKey());
+        }
+        if (other.hasStatu()) {
+          setStatu(other.getStatu());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1525,6 +1587,54 @@ public final class TeamMemberInfoProto {
         return this;
       }
 
+      private int statu_ ;
+      /**
+       * <code>optional int32 statu = 12;</code>
+       *
+       * <pre>
+       *成员当前状态  0 未准备 1 准备
+       * </pre>
+       */
+      public boolean hasStatu() {
+        return ((bitField0_ & 0x00000800) == 0x00000800);
+      }
+      /**
+       * <code>optional int32 statu = 12;</code>
+       *
+       * <pre>
+       *成员当前状态  0 未准备 1 准备
+       * </pre>
+       */
+      public int getStatu() {
+        return statu_;
+      }
+      /**
+       * <code>optional int32 statu = 12;</code>
+       *
+       * <pre>
+       *成员当前状态  0 未准备 1 准备
+       * </pre>
+       */
+      public Builder setStatu(int value) {
+        bitField0_ |= 0x00000800;
+        statu_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 statu = 12;</code>
+       *
+       * <pre>
+       *成员当前状态  0 未准备 1 准备
+       * </pre>
+       */
+      public Builder clearStatu() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        statu_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:TeamMemberInfoMsg)
     }
 
@@ -1550,14 +1660,14 @@ public final class TeamMemberInfoProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\034team/TeamMemberInfoMsg.proto\"\303\001\n\021TeamM" +
+      "\n\034team/TeamMemberInfoMsg.proto\"\322\001\n\021TeamM" +
       "emberInfoMsg\022\020\n\010playerId\030\001 \002(\003\022\014\n\004name\030\002" +
       " \002(\t\022\016\n\006skinId\030\003 \002(\005\022\r\n\005level\030\004 \002(\005\022\r\n\005f" +
       "ight\030\005 \002(\005\022\021\n\tfashionId\030\006 \001(\005\022\016\n\006weapon\030" +
       "\007 \001(\005\022\014\n\004wing\030\010 \001(\005\022\020\n\010isOnline\030\t \001(\010\022\r\n" +
-      "\005mapId\030\n \001(\005\022\016\n\006mapKey\030\013 \001(\005B<\n%com.chua" +
-      "ngyou.common.protobuf.pb.teamB\023TeamMembe" +
-      "rInfoProto"
+      "\005mapId\030\n \001(\005\022\016\n\006mapKey\030\013 \001(\005\022\r\n\005statu\030\014 " +
+      "\001(\005B<\n%com.chuangyou.common.protobuf.pb." +
+      "teamB\023TeamMemberInfoProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1576,7 +1686,7 @@ public final class TeamMemberInfoProto {
     internal_static_TeamMemberInfoMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_TeamMemberInfoMsg_descriptor,
-        new java.lang.String[] { "PlayerId", "Name", "SkinId", "Level", "Fight", "FashionId", "Weapon", "Wing", "IsOnline", "MapId", "MapKey", });
+        new java.lang.String[] { "PlayerId", "Name", "SkinId", "Level", "Fight", "FashionId", "Weapon", "Wing", "IsOnline", "MapId", "MapKey", "Statu", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

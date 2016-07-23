@@ -46,6 +46,8 @@ public class SpawnInfoDaoImpl extends BaseDao implements SpawnInfoDao {
 					info.setTagId(rs.getInt("tagId"));
 					info.setPreSpawanId(rs.getString("preSpawanId"));
 					info.setNextSpawanId(rs.getString("nextSpawanId"));
+					info.setWakeType(rs.getInt("wakeType"));
+					info.setWakeDelay(rs.getInt("wakeDelay"));
 					info.setRestType(rs.getInt("rest_type"));
 					info.setRestSecs(rs.getInt("rest_secs"));
 					info.setToalCount(rs.getInt("toalCount"));

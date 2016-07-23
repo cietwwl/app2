@@ -1,9 +1,0 @@
-//protocol=10523;
-option java_package = "com.chuangyou.common.protobuf.pb.npcShop";
-option java_outer_classname = "GetInfoByIdReqProto";
-
-
-//请求单个NPC商店商品信息
-message GetInfoByIdReqMsg{
-	required int32 privateId =1;  //商品配置表中的唯一ID
-}

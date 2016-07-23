@@ -16,7 +16,7 @@ public final class TouchPointProto {
      * <code>optional int32 mapId = 1;</code>
      *
      * <pre>
-     * 地图ID
+     * 鍦板浘ID
      * </pre>
      */
     boolean hasMapId();
@@ -24,7 +24,7 @@ public final class TouchPointProto {
      * <code>optional int32 mapId = 1;</code>
      *
      * <pre>
-     * 地图ID
+     * 鍦板浘ID
      * </pre>
      */
     int getMapId();
@@ -33,7 +33,7 @@ public final class TouchPointProto {
      * <code>optional int32 pointId = 2;</code>
      *
      * <pre>
-     * 接触点ID
+     * 鎺ヨЕ鐐笽D
      * </pre>
      */
     boolean hasPointId();
@@ -41,7 +41,7 @@ public final class TouchPointProto {
      * <code>optional int32 pointId = 2;</code>
      *
      * <pre>
-     * 接触点ID
+     * 鎺ヨЕ鐐笽D
      * </pre>
      */
     int getPointId();
@@ -50,7 +50,7 @@ public final class TouchPointProto {
      * <code>optional int32 spwanId = 3;</code>
      *
      * <pre>
-     *节点ID
+     *鑺傜偣ID
      * </pre>
      */
     boolean hasSpwanId();
@@ -58,7 +58,7 @@ public final class TouchPointProto {
      * <code>optional int32 spwanId = 3;</code>
      *
      * <pre>
-     *节点ID
+     *鑺傜偣ID
      * </pre>
      */
     int getSpwanId();
@@ -176,7 +176,7 @@ public final class TouchPointProto {
      * <code>optional int32 mapId = 1;</code>
      *
      * <pre>
-     * 地图ID
+     * 鍦板浘ID
      * </pre>
      */
     public boolean hasMapId() {
@@ -186,7 +186,7 @@ public final class TouchPointProto {
      * <code>optional int32 mapId = 1;</code>
      *
      * <pre>
-     * 地图ID
+     * 鍦板浘ID
      * </pre>
      */
     public int getMapId() {
@@ -199,7 +199,7 @@ public final class TouchPointProto {
      * <code>optional int32 pointId = 2;</code>
      *
      * <pre>
-     * 接触点ID
+     * 鎺ヨЕ鐐笽D
      * </pre>
      */
     public boolean hasPointId() {
@@ -209,7 +209,7 @@ public final class TouchPointProto {
      * <code>optional int32 pointId = 2;</code>
      *
      * <pre>
-     * 接触点ID
+     * 鎺ヨЕ鐐笽D
      * </pre>
      */
     public int getPointId() {
@@ -222,7 +222,7 @@ public final class TouchPointProto {
      * <code>optional int32 spwanId = 3;</code>
      *
      * <pre>
-     *节点ID
+     *鑺傜偣ID
      * </pre>
      */
     public boolean hasSpwanId() {
@@ -232,7 +232,7 @@ public final class TouchPointProto {
      * <code>optional int32 spwanId = 3;</code>
      *
      * <pre>
-     *节点ID
+     *鑺傜偣ID
      * </pre>
      */
     public int getSpwanId() {
@@ -507,7 +507,7 @@ public final class TouchPointProto {
        * <code>optional int32 mapId = 1;</code>
        *
        * <pre>
-       * 地图ID
+       * 鍦板浘ID
        * </pre>
        */
       public boolean hasMapId() {
@@ -517,7 +517,7 @@ public final class TouchPointProto {
        * <code>optional int32 mapId = 1;</code>
        *
        * <pre>
-       * 地图ID
+       * 鍦板浘ID
        * </pre>
        */
       public int getMapId() {
@@ -527,7 +527,7 @@ public final class TouchPointProto {
        * <code>optional int32 mapId = 1;</code>
        *
        * <pre>
-       * 地图ID
+       * 鍦板浘ID
        * </pre>
        */
       public Builder setMapId(int value) {
@@ -540,7 +540,7 @@ public final class TouchPointProto {
        * <code>optional int32 mapId = 1;</code>
        *
        * <pre>
-       * 地图ID
+       * 鍦板浘ID
        * </pre>
        */
       public Builder clearMapId() {
@@ -555,7 +555,7 @@ public final class TouchPointProto {
        * <code>optional int32 pointId = 2;</code>
        *
        * <pre>
-       * 接触点ID
+       * 鎺ヨЕ鐐笽D
        * </pre>
        */
       public boolean hasPointId() {
@@ -565,7 +565,7 @@ public final class TouchPointProto {
        * <code>optional int32 pointId = 2;</code>
        *
        * <pre>
-       * 接触点ID
+       * 鎺ヨЕ鐐笽D
        * </pre>
        */
       public int getPointId() {
@@ -575,7 +575,7 @@ public final class TouchPointProto {
        * <code>optional int32 pointId = 2;</code>
        *
        * <pre>
-       * 接触点ID
+       * 鎺ヨЕ鐐笽D
        * </pre>
        */
       public Builder setPointId(int value) {
@@ -588,7 +588,7 @@ public final class TouchPointProto {
        * <code>optional int32 pointId = 2;</code>
        *
        * <pre>
-       * 接触点ID
+       * 鎺ヨЕ鐐笽D
        * </pre>
        */
       public Builder clearPointId() {
@@ -603,7 +603,7 @@ public final class TouchPointProto {
        * <code>optional int32 spwanId = 3;</code>
        *
        * <pre>
-       *节点ID
+       *鑺傜偣ID
        * </pre>
        */
       public boolean hasSpwanId() {
@@ -613,7 +613,7 @@ public final class TouchPointProto {
        * <code>optional int32 spwanId = 3;</code>
        *
        * <pre>
-       *节点ID
+       *鑺傜偣ID
        * </pre>
        */
       public int getSpwanId() {
@@ -623,7 +623,7 @@ public final class TouchPointProto {
        * <code>optional int32 spwanId = 3;</code>
        *
        * <pre>
-       *节点ID
+       *鑺傜偣ID
        * </pre>
        */
       public Builder setSpwanId(int value) {
@@ -636,7 +636,7 @@ public final class TouchPointProto {
        * <code>optional int32 spwanId = 3;</code>
        *
        * <pre>
-       *节点ID
+       *鑺傜偣ID
        * </pre>
        */
       public Builder clearSpwanId() {

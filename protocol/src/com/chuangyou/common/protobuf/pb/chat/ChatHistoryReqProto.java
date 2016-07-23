@@ -14,10 +14,18 @@ public final class ChatHistoryReqProto {
 
     /**
      * <code>optional int32 channel = 1;</code>
+     *
+     * <pre>
+     * 频道
+     * </pre>
      */
     boolean hasChannel();
     /**
      * <code>optional int32 channel = 1;</code>
+     *
+     * <pre>
+     * 频道
+     * </pre>
      */
     int getChannel();
   }
@@ -122,12 +130,20 @@ public final class ChatHistoryReqProto {
     private int channel_;
     /**
      * <code>optional int32 channel = 1;</code>
+     *
+     * <pre>
+     * 频道
+     * </pre>
      */
     public boolean hasChannel() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
      * <code>optional int32 channel = 1;</code>
+     *
+     * <pre>
+     * 频道
+     * </pre>
      */
     public int getChannel() {
       return channel_;
@@ -365,18 +381,30 @@ public final class ChatHistoryReqProto {
       private int channel_ ;
       /**
        * <code>optional int32 channel = 1;</code>
+       *
+       * <pre>
+       * 频道
+       * </pre>
        */
       public boolean hasChannel() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
        * <code>optional int32 channel = 1;</code>
+       *
+       * <pre>
+       * 频道
+       * </pre>
        */
       public int getChannel() {
         return channel_;
       }
       /**
        * <code>optional int32 channel = 1;</code>
+       *
+       * <pre>
+       * 频道
+       * </pre>
        */
       public Builder setChannel(int value) {
         bitField0_ |= 0x00000001;
@@ -386,6 +414,10 @@ public final class ChatHistoryReqProto {
       }
       /**
        * <code>optional int32 channel = 1;</code>
+       *
+       * <pre>
+       * 频道
+       * </pre>
        */
       public Builder clearChannel() {
         bitField0_ = (bitField0_ & ~0x00000001);

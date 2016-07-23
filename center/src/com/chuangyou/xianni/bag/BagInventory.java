@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
+import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
 import com.chuangyou.common.util.LockData;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.army.Hero;
@@ -28,6 +30,9 @@ import com.chuangyou.xianni.http.HttpResult.Code;
 import com.chuangyou.xianni.interfaces.IInventory;
 import com.chuangyou.xianni.player.BasePlayer;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.proto.MessageUtil;
+import com.chuangyou.xianni.proto.PBMessage;
+import com.chuangyou.xianni.protocol.Protocol;
 
 /**
  * 用户+英雄背包管理
@@ -220,6 +225,9 @@ public class BagInventory extends AbstractEvent implements IInventory {
 		case CurrencyItemType.REPAIR_ITEM:
 			player.getBasePlayer().addRepair(count);
 			return true;
+			case CurrencyItemType.EXP:
+				player.getBasePlayer().addExp(count);
+				return true;
 		}
 
 		ItemTemplateInfo tempInfo = ItemManager.findItemTempInfo(templateId);
@@ -431,6 +439,7 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	public void equimentOption(int beginBagType, short beginPos) {
 		int endBagType = 0;
 		short endPos = -1;
+		int weaponId = 0;
 
 		if (beginBagType == BagType.HeroEquipment) { // 卸下装备
 			endBagType = BagType.Play;
@@ -449,8 +458,23 @@ public class BagInventory extends AbstractEvent implements IInventory {
 			endBagType = BagType.HeroEquipment;
 			endPos = heroEquipment.getPos(beginItem.getItemTempInfo());
 			bagMoveReceive(beginBagType, beginPos, endBagType, endPos, (short) -1);
+			weaponId = beginItem.getTemplateId();
+			updateHeroProperties(heroEquipment.getObjectId());
 		}
 
+		// 操作武器
+		if ((beginBagType == BagType.HeroEquipment && beginPos == 0) || endPos == 0) {
+			PlayerAttUpdateMsg.Builder attMsg = PlayerAttUpdateMsg.newBuilder();
+			PropertyMsg.Builder proMsg = PropertyMsg.newBuilder();
+			proMsg.setType(EnumAttr.Weapon.getValue());
+			proMsg.setTotalPoint(weaponId);
+			attMsg.addAtt(proMsg);
+			attMsg.setPlayerId(player.getPlayerId());
+			PBMessage message = MessageUtil.buildMessage(Protocol.S_PROPERTY_UPDATE, attMsg);
+			player.sendPbMessage(message);
+
+			player.getBasePlayer().getPlayerInfo().setWeaponId(weaponId);
+		}
 	}
 
 	public void bagMoveReceive(int beginBagType, short beginPos, int endBagType, short endPos, short count) {

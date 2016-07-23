@@ -38,18 +38,21 @@ public abstract class ChatBaseAction {
 	 * @return 是否可以发送
 	 */
 	public boolean checkCd(GamePlayer sender, ChatSendMsg sendMsg, boolean errorTip){
+		boolean result = true;
 		long lastTime = ChatManager.getLastTime(sendMsg.getChannel(), sender.getPlayerId());
-		if(lastTime == -1){
-			return true;
-		}
-		int cdTime = this.getCoolingTime();
-		if(System.currentTimeMillis() - lastTime < cdTime * 1000){
-			if(errorTip == true){
-				ErrorMsgUtil.sendErrorMsg(sender, ErrorCode.CHAT_COOLING, (short)0, "发言过于频繁");
+		if(lastTime > 0){
+			int cdTime = this.getCoolingTime();
+			if(System.currentTimeMillis() - lastTime < cdTime){
+				if(errorTip == true){
+					ErrorMsgUtil.sendErrorMsg(sender, ErrorCode.CHAT_COOLING, (short)0, "发言过于频繁");
+				}
+				result = false;
 			}
-			return false;
 		}
-		return true;
+		if(result == true){
+			ChatManager.setLastTime(sendMsg.getChannel(), sender.getPlayerId(), System.currentTimeMillis());
+		}
+		return result;
 	}
 	
 	/**

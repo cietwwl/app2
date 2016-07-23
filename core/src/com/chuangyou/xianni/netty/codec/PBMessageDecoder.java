@@ -38,7 +38,7 @@ public class PBMessageDecoder extends ByteToMessageDecoder {
 			case READ_HEADER:
 				headerFlag = in.readShortLE();
 				if (PBMessage.HEADER != headerFlag) {
-					Log.debug("Illegal client request,can not match header flag. drop a packet,close connection.");
+					Log.error("Illegal client request,can not match header flag. drop a packet,close connection.");
 					return;
 				} else {
 					currentState = State.READ_LENGTH;
@@ -48,9 +48,7 @@ public class PBMessageDecoder extends ByteToMessageDecoder {
 				lenght = in.readShortLE();
 				if (lenght <= 0 || lenght >= Short.MAX_VALUE) {
 					// 非法的数据长度
-					Log.debug("Message Length Invalid Length = " + lenght + ", drop this Message.close connection");
-					System.err.println(
-							"Message Length Invalid Length = " + lenght + ", drop this Message.close connection");
+					Log.error("Message Length Invalid Length = " + lenght + ", drop this Message.close connection");
 					return;
 				}
 				message.setLen((short) lenght);
@@ -58,7 +56,7 @@ public class PBMessageDecoder extends ByteToMessageDecoder {
 				// 剩余长度，是否足够
 				if (lenght - 4 > in.readableBytes()) {
 					// 数据还不够读取,等待下一次读取
-					Log.warn("Data not integrity. there is a lack of " + (lenght - in.readableBytes()) + " bytes.");
+					Log.error("Data not integrity. there is a lack of " + (lenght - in.readableBytes()) + " bytes.");
 					// System.err.println(
 					// "Data not integrity. there is a lack of " + (lenght -
 					// in.readableBytes()) + " bytes.");

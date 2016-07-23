@@ -30,7 +30,6 @@ import com.chuangyou.xianni.friend.FriendInventory;
 import com.chuangyou.xianni.magicwp.MagicwpInventory;
 import com.chuangyou.xianni.map.MapProxyManager;
 import com.chuangyou.xianni.mount.MountInventory;
-import com.chuangyou.xianni.npcShop.NpcShopInventory;
 import com.chuangyou.xianni.pet.PetInventory;
 import com.chuangyou.xianni.player.event.PlayerPropertyUpdateEvent;
 import com.chuangyou.xianni.player.event.PlayerSceneAttEvent;
@@ -38,6 +37,7 @@ import com.chuangyou.xianni.player.manager.PlayerManager;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.shop.ShopInventory;
 import com.chuangyou.xianni.skill.SkillInventory;
 import com.chuangyou.xianni.task.TaskInventory;
 import com.chuangyou.xianni.word.WorldMgr;
@@ -70,8 +70,8 @@ public class GamePlayer extends AbstractEvent {
 	/** 宠物数据 */
 	private PetInventory		petInventory;
 
-	/** npc商店购购买信息 */
-	private NpcShopInventory	npcShopInventory;
+	/** 商店购购买信息 */
+	private ShopInventory	shopInventory;
 
 	/** 背包 */
 	private BagInventory		bagInventory;
@@ -113,8 +113,8 @@ public class GamePlayer extends AbstractEvent {
 		if (mountInventory != null) {
 			mountInventory.saveToDatabase();
 		}
-		if (npcShopInventory != null) {
-			npcShopInventory.saveToDatabase();
+		if (shopInventory != null) {
+			shopInventory.saveToDatabase();
 		}
 		if (magicwpInventory != null) {
 			magicwpInventory.saveToDatabase();
@@ -171,8 +171,8 @@ public class GamePlayer extends AbstractEvent {
 			return false;
 		}
 
-		npcShopInventory = new NpcShopInventory(this);
-		if (!initData(npcShopInventory.loadFromDataBase(), "玩家Npc Shop数据")) {
+		shopInventory = new ShopInventory(this);
+		if (!initData(shopInventory.loadFromDataBase(), "玩家Npc Shop数据")) {
 			return false;
 		}
 
@@ -237,9 +237,9 @@ public class GamePlayer extends AbstractEvent {
 			mountInventory.unloadData();
 			mountInventory = null;
 		}
-		if (npcShopInventory != null) {
-			npcShopInventory.unloadData();
-			npcShopInventory = null;
+		if (shopInventory != null) {
+			shopInventory.unloadData();
+			shopInventory = null;
 		}
 
 		if (magicwpInventory != null) {
@@ -420,8 +420,8 @@ public class GamePlayer extends AbstractEvent {
 		return mountInventory;
 	}
 
-	public NpcShopInventory getNpcShopInventory() {
-		return npcShopInventory;
+	public ShopInventory getShopInventory() {
+		return shopInventory;
 	}
 
 	public MagicwpInventory getMagicwpInventory() {

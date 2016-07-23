@@ -122,6 +122,9 @@ public interface CenterProtocol {
 	/** 通关副本 */
 	public static final short	C_REQ_PASS_FB					= 10533;
 
+	/** 回应查找怪物结果 */
+	public static final short	C_INNER_SEARCH_MONSTER			= 10549;
+
 	// ==================================================================
 	// ==========================>采集+触发点<=====================================
 
@@ -160,8 +163,11 @@ public interface CenterProtocol {
 	public static final short	C_REQ_TEAM_CLEAR_APPLY_LIST		= 10547;
 	/** 取消匹配 */
 	public static final short	C_REQ_TEAM_CLEAR_MATCH			= 10548;
-	/** 回应查找怪物结果 */
-	public static final short	C_INNER_SEARCH_MONSTER			= 10549;
+	/** 成员一般操作 */
+	public static final short	C_MEMBER_COMMON_OPTION			= 10550;
+	// =================================================================
+	/** 商城信息请求 */
+	public static final short C_REQ_MALL_INFO                   = 10551;  
 	// ==================================================================
 	// =========================>坐骑<===================================
 	/** 获取坐骑信息 */
@@ -268,7 +274,7 @@ public interface CenterProtocol {
 
 	/** 掉落物拾取 */
 	public static short			C_DROP_PICKUP					= 10146;
-	
+
 	/** 聊天发送消息 */
 	public static short			C_CHAT_SEND						= 10147;
 	/** 获取聊天记录 */

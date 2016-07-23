@@ -96,6 +96,12 @@ public class PlayerCreateCmd implements Command {
 			playerInfo.setFashionId(0);
 			playerInfo.setWeaponId(0);
 			playerInfo.setWingId(0);
+			playerInfo.setSkillStage(0);
+			playerInfo.setRepair(0);
+			playerInfo.setBattleMode(1);
+			playerInfo.setPkVal(0);
+			playerInfo.setChangeBattleModeTime(0);
+			
 			
 			if(req.getRoleConfigId() == 1){
 				playerInfo.setWeaponId(2110001);

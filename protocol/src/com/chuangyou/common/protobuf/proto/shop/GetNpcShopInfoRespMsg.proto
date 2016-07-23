@@ -1,0 +1,11 @@
+//protocol=525;
+option java_package = "com.chuangyou.common.protobuf.pb.shop";
+option java_outer_classname = "GetNpcShopInfoRespProto";
+
+import "shop/GoodsInfo.proto";
+
+// 请求NPC商店信息返回
+message GetNpcShopInfoRespMsg{
+	required int32 npcShopId = 1; //NPC商店ID  90：商城常用 91：商城外形 92：每周限购 93：VIP专区 94：积分 其它的自定义ID
+	repeated GoodsInfo npcGoodInfos =2;  //商品信息列表
+}

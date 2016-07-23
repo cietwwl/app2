@@ -2,7 +2,6 @@ package com.chuangyou.xianni.army;
 
 import java.util.Map;
 import java.util.Map.Entry;
-
 import com.chuangyou.common.protobuf.pb.army.HeroInfoMsgProto.HeroInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
@@ -13,9 +12,10 @@ import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.skill.SkillInventory;
 
 public class Hero extends Living {
-	private GamePlayer player;					// 当前用户ID
-	private int curBlood = 100000;
-	private int curSoul = 100000;
+	private GamePlayer	player;					// 当前用户ID
+	private int			curBlood	= 100000;
+	private int			curSoul		= 100000;
+
 
 	public GamePlayer getPlayer() {
 		return player;
@@ -50,6 +50,7 @@ public class Hero extends Living {
 	public void ghost(Living otherLiving) {
 
 	}
+
 
 	@Override
 	public void addBag(BaseProperty bagData, BaseProperty bagPer) {

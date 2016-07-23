@@ -34,7 +34,7 @@ public class AgreeToTeamAction extends TeamLeaderAction {
 			t.getApplyPools().getPools().remove(agreeId);
 			sendNotify(false);
 		}else{
-			if(new TeamCheck().check(player, agreeId, getProtocol(), t)==false)return;
+			if(TeamCheck.check(player, agreeId, getProtocol(), t)==false)return;
 			if(t.addMember(agreeId)!=null){
 				sendNotify(true);
 			}

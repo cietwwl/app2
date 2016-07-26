@@ -27,13 +27,22 @@ import com.chuangyou.xianni.world.WorldMgr;
 public class ActiveLiving extends Living {
 
 	/// 目标
-	protected Vector3		goal;
+	protected Vector3 goal;
 	/// 路径
-	protected List<Vector3>	path;
+	protected List<Vector3> path;
 	/// 移动所需要的时间
-	protected int			moveTime;
+	protected int moveTime;
 	/// 寻路等待中
-	protected boolean		navWaiting	= false;
+	protected boolean navWaiting = false;
+	private boolean navFail = false;
+
+	public boolean isNavFail() {
+		return navFail;
+	}
+
+	public void setNavFail(boolean navFail) {
+		this.navFail = navFail;
+	}
 
 	public boolean isNavWaiting() {
 		return navWaiting;
@@ -167,6 +176,7 @@ public class ActiveLiving extends Living {
 			this.path = path;
 			moveto(this.path.remove(0));
 		} else {
+			setNavFail(true);
 			goal = Vector3.Invalid;
 			moveTime = 0;
 			if (this.path != null)

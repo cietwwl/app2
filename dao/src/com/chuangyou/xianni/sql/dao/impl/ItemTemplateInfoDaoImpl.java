@@ -36,14 +36,48 @@ public class ItemTemplateInfoDaoImpl extends BaseDao implements ItemTemplateInfo
 					info.setMasterType(rs.getInt("masterType"));
 					info.setSonType(rs.getInt("sonType"));
 					info.setName(rs.getString("name"));
+					info.setProfession(rs.getInt("profession"));
+					info.setLevel(rs.getInt("level"));
+					info.setItemcolor(rs.getByte("itemcolor"));
+					info.setExp(rs.getInt("exp"));
+					info.setBuy(rs.getInt("buy"));
+					info.setSell(rs.getInt("sell"));
 					info.setAmount(rs.getInt("amount"));
-					info.setStatistics1(rs.getInt("statistics1"));
-					info.setStatistics2(rs.getInt("statistics2"));
-					info.setStatistics3(rs.getInt("statistics3"));
-					info.setStatistics4(rs.getInt("statistics4"));
+					info.setInit_life_time(rs.getInt("init_life_time"));
+
 					info.setItemBase(rs.getInt("itemBase"));
 					info.setQualityCoefficient(rs.getInt("qualityCoefficient"));
 					info.setGrow(rs.getInt("grow"));
+					info.setBind(rs.getByte("bind"));
+					info.setBindtime(rs.getInt("bindtime"));
+					info.setId_action(rs.getString("id_action"));
+					info.setJiachi1(rs.getInt("jiachi1"));
+					info.setStatistics1(rs.getInt("statistics1"));
+					info.setJiachi2(rs.getInt("jiachi2"));
+					info.setStatistics2(rs.getInt("statistics2"));
+					info.setJiachi3(rs.getInt("jiachi3"));
+					info.setStatistics3(rs.getInt("statistics3"));
+					info.setJiachi4(rs.getInt("jiachi4"));
+					info.setStatistics4(rs.getInt("statistics4"));
+
+					info.setAwakeskill1(rs.getInt("awakeskill1"));
+					info.setAwakenum1(rs.getInt("awakenum1"));
+					info.setAddmoneytype1(rs.getInt("addmoneytype1"));
+					info.setAddmoneynum1(rs.getInt("addmoneynum1"));
+
+					info.setAwakeskill2(rs.getInt("awakeskill2"));
+					info.setAwakenum2(rs.getInt("awakenum2"));
+					info.setAddmoneytype2(rs.getInt("addmoneytype2"));
+					info.setAddmoneynum2(rs.getInt("addmoneynum2"));
+
+					info.setAwakeskill3(rs.getInt("awakeskill3"));
+					info.setAwakenum3(rs.getInt("awakenum3"));
+					info.setAddmoneytype3(rs.getInt("addmoneytype3"));
+					info.setAddmoneynum3(rs.getInt("addmoneynum3"));
+
+					info.setSuit_id(rs.getInt("suit_id"));
+					info.setDes(rs.getString("des"));
+
 					infos.add(info);
 				}
 			} catch (SQLException e) {

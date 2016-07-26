@@ -33,12 +33,27 @@ public class MountLevelUpCdClearCmd extends AbstractCommand {
 		Map<Integer, MountLevelCfg> mountLevCfg = MountTemplateMgr.getLevelTemps();
 		MountLevelCfg mountLevel = mountLevCfg.get(mount.getLevel());
 		
-		//判断元宝
-		if(player.getBasePlayer().getPlayerInfo().getCash() < mountLevel.getClearCdCash()){
-			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Money_UnEnough, packet.getCode());
+		////////////////////////////////////////////////////////////7.23 范加伟改 
+		long totalPrice = mountLevel.getClearCdCash();
+		if (totalPrice > player.getBasePlayer().getPlayerInfo().getBindCash() +  player.getBasePlayer().getPlayerInfo().getCash()) {
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Money_UnEnough,packet.getCode(),"数据错误--绑定仙玉不足");
 			return;
+		} else {
+			if(totalPrice>player.getBasePlayer().getPlayerInfo().getBindCash()){
+				long temp = (totalPrice - player.getBasePlayer().getPlayerInfo().getBindCash());
+				player.getBasePlayer().consumeBindCach(player.getBasePlayer().getPlayerInfo().getBindCash());
+				player.getBasePlayer().consumeCash((int)temp);
+			}else{							
+				player.getBasePlayer().consumeBindCach((int) totalPrice);
+			}
 		}
-		if(!player.getBasePlayer().consumeCash(mountLevel.getClearCdCash())) return;
+		/////////////////////////////////////////////////////////////
+//		//判断元宝
+//		if(player.getBasePlayer().getPlayerInfo().getCash() < mountLevel.getClearCdCash()){
+//			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Money_UnEnough, packet.getCode());
+//			return;
+//		}
+//		if(!player.getBasePlayer().consumeCash(mountLevel.getClearCdCash())) return;
 		
 		//清除成功
 		mount.setUpLevCd(0);

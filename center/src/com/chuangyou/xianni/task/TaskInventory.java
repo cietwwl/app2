@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.task.TaskInfo;
 import com.chuangyou.xianni.event.AbstractEvent;

@@ -72,6 +72,7 @@ public class PlayerCreateCmd implements Command {
 			playerInfo = new PlayerInfo();
 			playerInfo.setPlayerId(EntityIdBuilder.playerIdBuilder());
 			playerInfo.setUserId(req.getUserId());
+			playerInfo.setJob(req.getRoleConfigId());
 			playerInfo.setNickName(req.getNickName());
 			playerInfo.setLevel(1);
 			playerInfo.setExp(0);
@@ -101,13 +102,12 @@ public class PlayerCreateCmd implements Command {
 			playerInfo.setBattleMode(1);
 			playerInfo.setPkVal(0);
 			playerInfo.setChangeBattleModeTime(0);
-			
-			
-			if(req.getRoleConfigId() == 1){
+
+			if (req.getRoleConfigId() == 1) {
 				playerInfo.setWeaponId(2110001);
-			}else if(req.getRoleConfigId() == 2){
-				
-			}else if(req.getRoleConfigId() == 3){
+			} else if (req.getRoleConfigId() == 2) {
+
+			} else if (req.getRoleConfigId() == 3) {
 				playerInfo.setWeaponId(2110004);
 			}
 
@@ -146,8 +146,6 @@ public class PlayerCreateCmd implements Command {
 			playerJoinInfo.setFireDefence(0);
 			playerJoinInfo.setEarthDefence(0);
 			playerJoinInfo.setSpeed(0);
-
-			
 
 			PlayerTimeInfo playerTimeInfo = new PlayerTimeInfo();
 			playerTimeInfo.setPlayerId(playerInfo.getPlayerId());

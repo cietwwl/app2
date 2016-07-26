@@ -29,9 +29,10 @@ public class TeamTargetTemplateDaoImpl extends BaseDao implements TeamTargetTemp
 					teamTargetTemplate.setLevLimitMin(rs.getInt("levLimitMin"));
 					teamTargetTemplate.setLevLimitMax(rs.getInt("levLimitMax"));
 					teamTargetTemplate.setTargetType(rs.getInt("targetType"));
-					teamTargetTemplate.setTarget(rs.getInt("targetType"));
+					teamTargetTemplate.setTarget(rs.getInt("target"));
 					teamTargetTemplate.setEntityId(rs.getInt("entityId"));
 					teamTargetTemplate.setV3(rs.getString("v3"));
+					teamTargetTemplate.setGoType(rs.getInt("goType"));
 					list.add(teamTargetTemplate);
 				}
 			} catch (SQLException e) {

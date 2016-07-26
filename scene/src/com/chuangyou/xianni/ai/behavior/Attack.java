@@ -42,7 +42,7 @@ public class Attack extends BaseBehavior {
 		// System.out.println(getMonster().getId() + "攻击怪物位置：" + getMonster().getPostion() + "怪物目标位置：" + tmpTarget.getPostion() + "距离："
 		// + Vector3.distance(getMonster().getPostion(), tmpTarget.getPostion()));
 
-		int attackRange = getMonster().getMonsterInfo().getAttackRange();
+		int attackRange = getMonster().getAiConfig().getAttackDistance();
 		// if (getMonster().getId() == 1000000000033L)
 		// System.out.println("getMonster().getPostion(): "+getMonster().getPostion().toString()+" tmpTarget.getPostion(): "+tmpTarget.getPostion().toString()+"
 		// 距离："+Vector3.distance(getMonster().getPostion(), tmpTarget.getPostion()));
@@ -76,7 +76,7 @@ public class Attack extends BaseBehavior {
 		Skill skill = getMonster().getRandSkill();
 		AttackOrderControler.attackOrder(getMonster(), skill.getActionId(), targets, getMonster().getPostion(), tmpTarget.getPostion());
 		// SceneManagers.cooldownManager.addCooldown(getMonster(), CoolDownTypes.SKILL, null, SceneGlobal.AI_MONSTER_ATTACK_COOL_DOWN);
-		getMonster().addCooldown(CoolDownTypes.SKILL, null, SceneGlobal.AI_MONSTER_ATTACK_COOL_DOWN);
+		getMonster().addCooldown(CoolDownTypes.SKILL, null, getMonster().getAiConfig().getAttackSpeed() * 1000);
 	}
 
 	@Override

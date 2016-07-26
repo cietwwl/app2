@@ -1,10 +1,9 @@
 //protocol=10550;
 option java_package = "com.chuangyou.common.protobuf.pb.team";
 option java_outer_classname = "TeamOptionMsgProto";
-import "team/TeamOptionMsg.proto";
 
 //队伍信息
 message TeamOptionMsg {
-	optional int32 option = 1; // 101 前往目标  ，102 准备  103 取消准备
+	optional int32 option = 1; // 101 前往目标  ，102 准备  103 取消准备 104 暂离
 	optional int32 param = 2; //参数
 }

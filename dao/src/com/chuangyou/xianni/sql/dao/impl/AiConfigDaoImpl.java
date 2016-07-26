@@ -45,12 +45,7 @@ public class AiConfigDaoImpl extends BaseDao implements AiConfigDao {
 					config.setAttackSpeed(rs.getInt("attackSpeed"));
 					config.setRunBack(rs.getBoolean("runBack"));
 					config.setFullState(rs.getBoolean("fullState"));
-					config.setActiveAttackPlayers(rs.getBoolean("activeAttackPlayers"));
-					config.setActiveAttackMonster(rs.getBoolean("activeAttackMonster"));
-					config.setOpenAttack(rs.getBoolean("isOpenAttack"));
-					config.setOpenMove(rs.getBoolean("isOpenMove"));
-					config.setOpenPatrol(rs.getBoolean("isOpenPatrol"));
-					config.setOpenRunBack(rs.getBoolean("isOpenRunBack"));
+					config.setActiveAttack(rs.getInt("activeAttack"));
 					config.setRewardExp(rs.getBoolean("isRewardExp"));
 					config.setRewardStone(rs.getBoolean("isRewardStone"));
 					config.setDropped(rs.getBoolean("isDropped"));

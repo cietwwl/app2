@@ -9,7 +9,7 @@ public class ItemTemplateInfo extends BaseProperty {
 	private int masterType; // 主类型
 	private int sonType; // 子类型
 
-	private byte profession; // 1战士，2法师，3弓箭手
+	private int profession; // 1.成女2.成男 3.萝莉
 
 	private int mod; // 作者:模型id
 
@@ -105,11 +105,11 @@ public class ItemTemplateInfo extends BaseProperty {
 		this.name = name;
 	}
 
-	public byte getProfession() {
+	public int getProfession() {
 		return profession;
 	}
 
-	public void setProfession(byte profession) {
+	public void setProfession(int profession) {
 		this.profession = profession;
 	}
 

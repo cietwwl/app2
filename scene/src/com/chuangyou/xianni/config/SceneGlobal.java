@@ -53,4 +53,17 @@ public class SceneGlobal {
 	 * 怪物体积半径
 	 */
 	public static final int AI_MONSTER_RADIUS = 1;
+	/**
+	 * 不主动攻击
+	 */
+	public static final int AI_ACTIVEATTACK = 0;
+	/**
+	 * 主动攻击玩家
+	 */
+	public static final int AI_ACTIVEATTACK_PLAYER = 1;
+	/**
+	 * 主动攻击怪物
+	 */
+	public static final int AI_ACTIVEATTACK_MONSTER = 2;
+
 }

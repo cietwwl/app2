@@ -1,4 +1,4 @@
-﻿package com.chuangyou.xianni.bag;
+package com.chuangyou.xianni.bag;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +10,8 @@ import com.chuangyou.common.util.LockData;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.army.Hero;
 import com.chuangyou.xianni.battleMode.manager.BattleModeManager;
+import com.chuangyou.xianni.common.ErrorCode;
+import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.BattleModeCode;
 import com.chuangyou.xianni.constant.CommonType;
@@ -39,26 +41,26 @@ import com.chuangyou.xianni.protocol.Protocol;
  */
 public class BagInventory extends AbstractEvent implements IInventory {
 
-	private GamePlayer player;
+	private GamePlayer					player;
 	// 用户物品背包
-	private BaseBag playerBag;
+	private BaseBag						playerBag;
 	// 英雄ID+英雄装备列表
-	private BagHeroEquipment heroEquipment;
+	private BagHeroEquipment			heroEquipment;
 	// 背包过期物品
-	private HashMap<Short, List<Short>> validItemsPos;
+	private HashMap<Short, List<Short>>	validItemsPos;
 	// 位置异常物品
-	private List<BaseItem> unLoadItem = new ArrayList<BaseItem>();
+	private List<BaseItem>				unLoadItem	= new ArrayList<BaseItem>();
 	// 数据异常物品
-	private HashMap<Short, List<Short>> unusualItemsPos;
+	private HashMap<Short, List<Short>>	unusualItemsPos;
 
-	private LockData bagMoveLock;
+	private LockData					bagMoveLock;
 
 	public BagInventory(GamePlayer player) {
 		this.player = player;
 		bagMoveLock = new LockData();
 
-		playerBag = new BaseBag((short) (SystemConfigTemplateMgr.getIntValue("bag.initGridNum") + (short) player.getBasePlayer().getPlayerInfo().getpBagCount()), BagType.Play,
-				(short) 0, true, player, 0);
+		playerBag = new BaseBag((short) (SystemConfigTemplateMgr.getIntValue("bag.initGridNum") + (short) player.getBasePlayer().getPlayerInfo().getpBagCount()), BagType.Play, (short) 0, true, player,
+				0);
 		validItemsPos = new HashMap<Short, List<Short>>();
 		unusualItemsPos = new HashMap<Short, List<Short>>();
 	}
@@ -140,8 +142,7 @@ public class BagInventory extends AbstractEvent implements IInventory {
 		if (unLoadItem.size() != 0) {
 			for (BaseItem baseItem : unLoadItem) {
 				playerBag.addEmptyByItem(baseItem);
-				sb.append("从新放入新的物品 :tempId : " + baseItem.getTemplateId() + " , templateName : " + baseItem.getTemplateName() + " , count : " + baseItem.getItemInfo().getCount()
-						+ "\r\n");
+				sb.append("从新放入新的物品 :tempId : " + baseItem.getTemplateId() + " , templateName : " + baseItem.getTemplateName() + " , count : " + baseItem.getItemInfo().getCount() + "\r\n");
 			}
 			unLoadItem.clear();
 		}
@@ -208,23 +209,23 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	 */
 	public boolean addItem(int templateId, int count, short addType, boolean isBind) {
 		switch (templateId) {
-		case CurrencyItemType.CASH_ITEM:
-			player.getBasePlayer().addCash(count);
-			return true;
-		case CurrencyItemType.CASH_BIND_ITEM:
-			player.getBasePlayer().addBindCash(count);
-			return true;
-		case CurrencyItemType.MONEY_ITEM:
-			if (BattleModeManager.getColour(this.player.getBasePlayer().getPlayerInfo().getPkVal()) == BattleModeCode.yellow) {
-				count = (int) (count * 0.8);
-			} else if (BattleModeManager.getColour(this.player.getBasePlayer().getPlayerInfo().getPkVal()) == BattleModeCode.red) {
-				count = (int) (count * 0.5);
-			}
-			player.getBasePlayer().addMoney(count);
-			return true;
-		case CurrencyItemType.REPAIR_ITEM:
-			player.getBasePlayer().addRepair(count);
-			return true;
+			case CurrencyItemType.CASH_ITEM:
+				player.getBasePlayer().addCash(count);
+				return true;
+			case CurrencyItemType.CASH_BIND_ITEM:
+				player.getBasePlayer().addBindCash(count);
+				return true;
+			case CurrencyItemType.MONEY_ITEM:
+				if (BattleModeManager.getColour(this.player.getBasePlayer().getPlayerInfo().getPkVal()) == BattleModeCode.yellow) {
+					count = (int) (count * 0.8);
+				} else if (BattleModeManager.getColour(this.player.getBasePlayer().getPlayerInfo().getPkVal()) == BattleModeCode.red) {
+					count = (int) (count * 0.5);
+				}
+				player.getBasePlayer().addMoney(count);
+				return true;
+			case CurrencyItemType.REPAIR_ITEM:
+				player.getBasePlayer().addRepair(count);
+				return true;
 			case CurrencyItemType.EXP:
 				player.getBasePlayer().addExp(count);
 				return true;
@@ -278,8 +279,7 @@ public class BagInventory extends AbstractEvent implements IInventory {
 				}
 			}
 			if (count != 0) {
-				Log.error(String.format("Item Remover Error：PlayerId%s,TemplateId:%s,Count:%s PlayerBag:%s HideBag:%s Storage:%s", player.getPlayerId(), templateId, count,
-						playerItemCount, 0, 0));
+				Log.error(String.format("Item Remover Error：PlayerId%s,TemplateId:%s,Count:%s PlayerBag:%s HideBag:%s Storage:%s", player.getPlayerId(), templateId, count, playerItemCount, 0, 0));
 				return false;
 			}
 			this.notifyListeners(new ObjectEvent(this, templateId, EventNameType.TASK_ITEM_CHANGE_REDUCE));
@@ -322,12 +322,12 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	 */
 	public BaseBag getBag(int bagType) {
 		switch (bagType) {
-		case BagType.Play:
-			return playerBag;
-		case BagType.HeroEquipment:
-			return heroEquipment;
-		default:
-			return null;
+			case BagType.Play:
+				return playerBag;
+			case BagType.HeroEquipment:
+				return heroEquipment;
+			default:
+				return null;
 		}
 	}
 
@@ -361,12 +361,12 @@ public class BagInventory extends AbstractEvent implements IInventory {
 			int tempId = info.getItemTempInfo().getId();
 			int count = info.getItemInfo().getCount();
 			switch (tempId) {
-			case -100: // 添加货币X
-				player.getBasePlayer().addMoney(count);
-				break;
-			default:
-				bagItems.add(info);
-				break;
+				case -100: // 添加货币X
+					player.getBasePlayer().addMoney(count);
+					break;
+				default:
+					bagItems.add(info);
+					break;
 			}
 			if (info.getItemInfo().isTips()) {
 				saveToDatabase();
@@ -453,6 +453,12 @@ public class BagInventory extends AbstractEvent implements IInventory {
 			BaseItem beginItem = beginBag.getItemByPos(beginPos);
 			if (beginItem == null) {
 				Log.error("hero equipment item but is empty");
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Exchange_Bag_Prop_Error, (byte)0);
+				return;
+			}
+			if (beginItem.getItemTempInfo().getProfession() != 0 && beginItem.getItemTempInfo().getProfession() != player.getBasePlayer().getPlayerInfo().getJob()) {
+				Log.error("hero equipment item error");
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Exchange_Bag_Prop_Error, (byte)0);
 				return;
 			}
 			endBagType = BagType.HeroEquipment;
@@ -526,8 +532,8 @@ public class BagInventory extends AbstractEvent implements IInventory {
 				beginBag.commitChanges();
 				endBag.commitChanges();
 			} catch (Exception e) {
-				Log.error("背包移动异常, nickName : " + player.getNickName() + ",beginBagType : " + beginBagType + ",beginPos : " + beginPos + ",endBagType : " + endBagType
-						+ ",endPos : " + endPos + ",count : " + count, e);
+				Log.error("背包移动异常, nickName : " + player.getNickName() + ",beginBagType : " + beginBagType + ",beginPos : " + beginPos + ",endBagType : " + endBagType + ",endPos : " + endPos
+						+ ",count : " + count, e);
 			} finally {
 				bagMoveLock.commitLock();
 			}
@@ -554,8 +560,7 @@ public class BagInventory extends AbstractEvent implements IInventory {
 			}
 			BaseItem endItem = playerBag.getItemByPos(endPos);
 			if (endItem != null) {
-				if ((heroEquipment.isEquipSlot(beginPos) == true) && (heroEquipment.canEquipSlotContains(beginPos, endItem.getItemTempInfo()) == true)
-						&& (heroEquipment.isValid(endItem) == true)) {
+				if ((heroEquipment.isEquipSlot(beginPos) == true) && (heroEquipment.canEquipSlotContains(beginPos, endItem.getItemTempInfo()) == true) && (heroEquipment.isValid(endItem) == true)) {
 					heroEquipment.takeOutByItem(beginItem);
 					playerBag.takeOutByItem(endItem);
 					playerBag.addEmptyByPos(beginItem, endPos);
@@ -587,8 +592,7 @@ public class BagInventory extends AbstractEvent implements IInventory {
 				return;
 			}
 
-			if (heroEquipment.isEquipSlot(endPos) == false || heroEquipment.canEquipSlotContains(endPos, beginItem.getItemTempInfo()) == false
-					|| (heroEquipment.isValid(beginItem) == false)) {
+			if (heroEquipment.isEquipSlot(endPos) == false || heroEquipment.canEquipSlotContains(endPos, beginItem.getItemTempInfo()) == false || (heroEquipment.isValid(beginItem) == false)) {
 				return;
 			}
 			BaseItem endItem = heroEquipment.getItemByPos(endPos);

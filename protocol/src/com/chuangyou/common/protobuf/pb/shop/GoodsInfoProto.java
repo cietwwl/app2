@@ -387,6 +387,23 @@ public final class GoodsInfoProto {
      * </pre>
      */
     int getEasyBuy();
+
+    /**
+     * <code>optional int32 vipLv = 21;</code>
+     *
+     * <pre>
+     *购买需要的VIP等级
+     * </pre>
+     */
+    boolean hasVipLv();
+    /**
+     * <code>optional int32 vipLv = 21;</code>
+     *
+     * <pre>
+     *购买需要的VIP等级
+     * </pre>
+     */
+    int getVipLv();
   }
   /**
    * Protobuf type {@code GoodsInfo}
@@ -546,6 +563,11 @@ public final class GoodsInfoProto {
             case 160: {
               bitField0_ |= 0x00080000;
               easyBuy_ = input.readInt32();
+              break;
+            }
+            case 168: {
+              bitField0_ |= 0x00100000;
+              vipLv_ = input.readInt32();
               break;
             }
           }
@@ -1172,6 +1194,29 @@ public final class GoodsInfoProto {
       return easyBuy_;
     }
 
+    public static final int VIPLV_FIELD_NUMBER = 21;
+    private int vipLv_;
+    /**
+     * <code>optional int32 vipLv = 21;</code>
+     *
+     * <pre>
+     *购买需要的VIP等级
+     * </pre>
+     */
+    public boolean hasVipLv() {
+      return ((bitField0_ & 0x00100000) == 0x00100000);
+    }
+    /**
+     * <code>optional int32 vipLv = 21;</code>
+     *
+     * <pre>
+     *购买需要的VIP等级
+     * </pre>
+     */
+    public int getVipLv() {
+      return vipLv_;
+    }
+
     private void initFields() {
       privateId_ = 0;
       itemType_ = 0;
@@ -1193,6 +1238,7 @@ public final class GoodsInfoProto {
       sort_ = 0;
       isPreview_ = 0;
       easyBuy_ = 0;
+      vipLv_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1311,6 +1357,9 @@ public final class GoodsInfoProto {
       if (((bitField0_ & 0x00080000) == 0x00080000)) {
         output.writeInt32(20, easyBuy_);
       }
+      if (((bitField0_ & 0x00100000) == 0x00100000)) {
+        output.writeInt32(21, vipLv_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1399,6 +1448,10 @@ public final class GoodsInfoProto {
       if (((bitField0_ & 0x00080000) == 0x00080000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(20, easyBuy_);
+      }
+      if (((bitField0_ & 0x00100000) == 0x00100000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(21, vipLv_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1561,6 +1614,8 @@ public final class GoodsInfoProto {
         bitField0_ = (bitField0_ & ~0x00040000);
         easyBuy_ = 0;
         bitField0_ = (bitField0_ & ~0x00080000);
+        vipLv_ = 0;
+        bitField0_ = (bitField0_ & ~0x00100000);
         return this;
       }
 
@@ -1669,6 +1724,10 @@ public final class GoodsInfoProto {
           to_bitField0_ |= 0x00080000;
         }
         result.easyBuy_ = easyBuy_;
+        if (((from_bitField0_ & 0x00100000) == 0x00100000)) {
+          to_bitField0_ |= 0x00100000;
+        }
+        result.vipLv_ = vipLv_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1752,6 +1811,9 @@ public final class GoodsInfoProto {
         }
         if (other.hasEasyBuy()) {
           setEasyBuy(other.getEasyBuy());
+        }
+        if (other.hasVipLv()) {
+          setVipLv(other.getVipLv());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -2992,6 +3054,54 @@ public final class GoodsInfoProto {
         return this;
       }
 
+      private int vipLv_ ;
+      /**
+       * <code>optional int32 vipLv = 21;</code>
+       *
+       * <pre>
+       *购买需要的VIP等级
+       * </pre>
+       */
+      public boolean hasVipLv() {
+        return ((bitField0_ & 0x00100000) == 0x00100000);
+      }
+      /**
+       * <code>optional int32 vipLv = 21;</code>
+       *
+       * <pre>
+       *购买需要的VIP等级
+       * </pre>
+       */
+      public int getVipLv() {
+        return vipLv_;
+      }
+      /**
+       * <code>optional int32 vipLv = 21;</code>
+       *
+       * <pre>
+       *购买需要的VIP等级
+       * </pre>
+       */
+      public Builder setVipLv(int value) {
+        bitField0_ |= 0x00100000;
+        vipLv_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 vipLv = 21;</code>
+       *
+       * <pre>
+       *购买需要的VIP等级
+       * </pre>
+       */
+      public Builder clearVipLv() {
+        bitField0_ = (bitField0_ & ~0x00100000);
+        vipLv_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:GoodsInfo)
     }
 
@@ -3017,7 +3127,7 @@ public final class GoodsInfoProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\024shop/GoodsInfo.proto\"\200\003\n\tGoodsInfo\022\021\n\t" +
+      "\n\024shop/GoodsInfo.proto\"\217\003\n\tGoodsInfo\022\021\n\t" +
       "privateId\030\001 \002(\005\022\020\n\010itemType\030\002 \001(\005\022\014\n\004bin" +
       "d\030\003 \001(\005\022\021\n\tmoneyType\030\004 \001(\005\022\r\n\005price\030\005 \002(" +
       "\003\022\020\n\010discount\030\006 \002(\005\022\026\n\016serverLimitNum\030\007 " +
@@ -3027,8 +3137,9 @@ public final class GoodsInfoProto {
       "\t\022\021\n\tresetTime\030\016 \002(\005\022\026\n\016serverProcured\030\017" +
       " \001(\005\022\024\n\014roleProcured\030\020 \001(\005\022\013\n\003tab\030\021 \001(\005\022" +
       "\014\n\004sort\030\022 \001(\005\022\021\n\tisPreview\030\023 \001(\005\022\017\n\007easy",
-      "Buy\030\024 \001(\005B7\n%com.chuangyou.common.protob" +
-      "uf.pb.shopB\016GoodsInfoProto"
+      "Buy\030\024 \001(\005\022\r\n\005vipLv\030\025 \001(\005B7\n%com.chuangyo" +
+      "u.common.protobuf.pb.shopB\016GoodsInfoProt" +
+      "o"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3047,7 +3158,7 @@ public final class GoodsInfoProto {
     internal_static_GoodsInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_GoodsInfo_descriptor,
-        new java.lang.String[] { "PrivateId", "ItemType", "Bind", "MoneyType", "Price", "Discount", "ServerLimitNum", "PersonLimitNum", "TimeType", "ShelvesTime", "ShelfTime", "StartTime", "EndTime", "ResetTime", "ServerProcured", "RoleProcured", "Tab", "Sort", "IsPreview", "EasyBuy", });
+        new java.lang.String[] { "PrivateId", "ItemType", "Bind", "MoneyType", "Price", "Discount", "ServerLimitNum", "PersonLimitNum", "TimeType", "ShelvesTime", "ShelfTime", "StartTime", "EndTime", "ResetTime", "ServerProcured", "RoleProcured", "Tab", "Sort", "IsPreview", "EasyBuy", "VipLv", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -53,7 +53,7 @@ public class CampaignOptionCmd extends AbstractCommand {
 			if (tem != null && tem.getCampaignId() != 0) {
 				Campaign campaign = CampaignMgr.getCampagin(tem.getCampaignId());
 				if (campaign != null) {
-					campaign.onPlayerLeave(army);
+					campaign.onPlayerEnter(army);
 				}
 			}
 		}

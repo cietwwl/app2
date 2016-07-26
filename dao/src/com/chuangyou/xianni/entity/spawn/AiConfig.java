@@ -11,12 +11,7 @@ public class AiConfig {
 
 	private boolean runBack;// 返回出生点
 	private boolean fullState;// 恢复满状态
-	private boolean activeAttackPlayers;// 主动攻击玩家
-	private boolean activeAttackMonster;// 主动攻击怪物
-	private boolean isOpenAttack;// 是否攻击
-	private boolean isOpenMove;// 是否移动
-	private boolean isOpenPatrol;// 是否巡逻
-	private boolean isOpenRunBack;// 是否回归
+	private int activeAttack;// 主动攻击 0 不攻击 1 攻击玩家 2 攻击怪物
 	private boolean isRewardExp;// 是否奖励经验
 	private boolean isRewardStone;// 是否奖励灵石
 	private boolean isDropped;// 是否掉落
@@ -94,54 +89,6 @@ public class AiConfig {
 		this.fullState = fullState;
 	}
 
-	public boolean isActiveAttackPlayers() {
-		return activeAttackPlayers;
-	}
-
-	public void setActiveAttackPlayers(boolean activeAttackPlayers) {
-		this.activeAttackPlayers = activeAttackPlayers;
-	}
-
-	public boolean isActiveAttackMonster() {
-		return activeAttackMonster;
-	}
-
-	public void setActiveAttackMonster(boolean activeAttackMonster) {
-		this.activeAttackMonster = activeAttackMonster;
-	}
-
-	public boolean isOpenAttack() {
-		return isOpenAttack;
-	}
-
-	public void setOpenAttack(boolean isOpenAttack) {
-		this.isOpenAttack = isOpenAttack;
-	}
-
-	public boolean isOpenMove() {
-		return isOpenMove;
-	}
-
-	public void setOpenMove(boolean isOpenMove) {
-		this.isOpenMove = isOpenMove;
-	}
-
-	public boolean isOpenPatrol() {
-		return isOpenPatrol;
-	}
-
-	public void setOpenPatrol(boolean isOpenPatrol) {
-		this.isOpenPatrol = isOpenPatrol;
-	}
-
-	public boolean isOpenRunBack() {
-		return isOpenRunBack;
-	}
-
-	public void setOpenRunBack(boolean isOpenRunBack) {
-		this.isOpenRunBack = isOpenRunBack;
-	}
-
 	public boolean isRewardExp() {
 		return isRewardExp;
 	}
@@ -172,6 +119,14 @@ public class AiConfig {
 
 	public void setScript(int script) {
 		this.script = script;
+	}
+
+	public int getActiveAttack() {
+		return activeAttack;
+	}
+
+	public void setActiveAttack(int activeAttack) {
+		this.activeAttack = activeAttack;
 	}
 
 }

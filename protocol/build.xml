@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="empireProtocol" default="all" basedir=".">
+<project name="protocol" default="all" basedir=".">
 	<property name="src.dir" value="src" />
 	<property name="build.dir" value="classes" />
 	<property name="deploy.dir" value="../ServerDeploy/serverLib" />
@@ -15,17 +15,7 @@
 		<echo message="Compiling source files." />
 		<javac srcdir="${src.dir}" source="1.8" target="1.8" destdir="${build.dir}" debug="off" encoding="utf-8" includeantruntime="false">
 			<classpath>
-				<fileset dir="${default.lib}">
-					<include name="**/*.jar" />
-				</fileset>
-				<fileset dir="${server.lib}">
-					<include name="**/*.jar" />
-				</fileset>
-				<fileset dir="${server.maven.lib}">
-					<include name="/com/google/protobuf/protobuf-java/2.6.1/protobuf-java-2.6.1-sources.jar" />
-				</fileset>
-
-
+				<pathelement path="${server.maven.lib}/com/google/protobuf/protobuf-java/2.6.1/protobuf-java-2.6.1.jar" />
 			</classpath>
 		</javac>
 	</target>

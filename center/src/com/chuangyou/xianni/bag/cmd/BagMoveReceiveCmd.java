@@ -24,7 +24,7 @@ public class BagMoveReceiveCmd extends AbstractCommand {
 			return;
 		}
 		player.getBagInventory().equimentOption(beginBagType, beginPos);
-
+		
 	}
 
 }

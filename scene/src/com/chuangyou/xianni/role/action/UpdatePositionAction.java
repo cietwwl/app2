@@ -7,6 +7,7 @@ import java.util.Set;
 import com.chuangyou.common.protobuf.pb.PlayerLeaveGridProto.PlayerLeaveGridMsg;
 import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.Vector3;
+import com.chuangyou.xianni.config.SceneGlobal;
 import com.chuangyou.xianni.manager.SceneManagers;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -14,6 +15,7 @@ import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.Hatred;
 import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.objects.ActiveLiving;
+import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
 import com.chuangyou.xianni.warfield.FieldMgr;
 import com.chuangyou.xianni.warfield.field.Field;
@@ -43,11 +45,13 @@ public class UpdatePositionAction {// extends DelayAction {
 		if (!activeLiving.isArrial()) {
 			Vector3 target = MathUtils.GetVector3InDistance(activeLiving.getPostion(), activeLiving.getGoal(), getStep(activeLiving.getSpeed()));
 			// System.out.println("moveTarget = " + target + " activeLiving.getPostion() = " + activeLiving.getPostion() + " activeLiving.getGoal() = " + activeLiving.getGoal());
-			if (!isValidPoint(target)) { // 不可站立的点
+
+			if (!isValidPoint(target) && !this.activeLiving.isNavFail()) { // 不可站立的点
 				this.activeLiving.stop(true);
 				// setUpdate();
 				return;
 			}
+
 			this.activeLiving.setMoveTime(this.activeLiving.getMoveTime() - TICK);
 			if (this.activeLiving.getMoveTime() <= 0) {
 				// if (activeLiving.getId() == 1000000000033L)
@@ -58,12 +62,13 @@ public class UpdatePositionAction {// extends DelayAction {
 				// if (activeLiving.getId() == 1000000000033L)
 				// System.out.println(this.activeLiving.getPostion().toString() + " 设置位置：" + target + " this.activeLiving.getMoveTime()： " + this.activeLiving.getMoveTime()
 				// + "getStep(Speed): " + getStep(activeLiving.getSpeed()));
+				activeLiving.setNavFail(true);
 				setPostion(target, playerSelector);
 			}
 		}
-		
+
 		autoAddHatred();
-		
+
 		// setUpdate();
 	}
 
@@ -156,8 +161,25 @@ public class UpdatePositionAction {// extends DelayAction {
 	protected void autoAddHatred() {
 		if (this.activeLiving.getType() == RoleType.monster) {
 			Monster monster = (Monster) this.activeLiving;
+			int activeAttackType = monster.getAiConfig().getActiveAttack();// 主动攻击 0 不攻击 1 攻击玩家 2 攻击怪物
+			if (activeAttackType == SceneGlobal.AI_ACTIVEATTACK)
+				return;
+
 			Set<Long> ids = monster.getNears(playerSelector);// 获得警戒范围内的玩家
 			for (Long id : ids) {
+				Field f = this.activeLiving.getField();
+				Living nearLiving = f.getLiving(id);
+				if (nearLiving == null)
+					continue;
+
+				if (activeAttackType == SceneGlobal.AI_ACTIVEATTACK_PLAYER) {
+					if (nearLiving.getType() != RoleType.player)
+						continue;
+				} else if (activeAttackType == SceneGlobal.AI_ACTIVEATTACK_MONSTER) {
+					if (nearLiving.getType() != RoleType.monster)
+						continue;
+				}
+
 				List<Hatred> hatreds = monster.getHatreds();
 				for (int i = 0; i < hatreds.size(); i++) {
 					if (hatreds.get(i).getTarget() == id) {

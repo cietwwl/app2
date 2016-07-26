@@ -26,33 +26,34 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 	public boolean add(PlayerInfo playerInfo) {
 		boolean result = false;
 		playerInfo.beginAdd();
-		String sql = "INSERT INTO tb_u_player_info (playerId,userId,nickname,level,exp,totalExp,money,bindCash,cash,vipLevel,fight,skinId,pBagCount,mountId,magicWeaponId,skillStage,repair,battleMode,pkVal,changeBattleModeTime,fashionId,weaponId,wingId) "
-				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+		String sql = "INSERT INTO tb_u_player_info (playerId,userId,job,nickname,level,exp,totalExp,money,bindCash,cash,vipLevel,fight,skinId,pBagCount,mountId,magicWeaponId,skillStage,repair,battleMode,pkVal,changeBattleModeTime,fashionId,weaponId,wingId) "
+				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.BIGINT, playerInfo.getPlayerId()));
 		para.put(2, new DbParameter(Types.BIGINT, playerInfo.getUserId()));
-		para.put(3, new DbParameter(Types.VARCHAR, playerInfo.getNickName()));
-		para.put(4, new DbParameter(Types.INTEGER, playerInfo.getLevel()));
-		para.put(5, new DbParameter(Types.BIGINT, playerInfo.getExp()));
-		para.put(6, new DbParameter(Types.BIGINT, playerInfo.getTotalExp()));
-		para.put(7, new DbParameter(Types.BIGINT, playerInfo.getMoney()));
-		para.put(8, new DbParameter(Types.INTEGER, playerInfo.getBindCash()));
-		para.put(9, new DbParameter(Types.INTEGER, playerInfo.getCash()));
-		para.put(10, new DbParameter(Types.INTEGER, playerInfo.getVipLevel()));
-		para.put(11, new DbParameter(Types.INTEGER, playerInfo.getFight()));
-		para.put(12, new DbParameter(Types.INTEGER, playerInfo.getSkinId()));
-		para.put(13, new DbParameter(Types.INTEGER, playerInfo.getpBagCount()));
-		para.put(14, new DbParameter(Types.INTEGER, playerInfo.getMountId()));
-		para.put(15, new DbParameter(Types.INTEGER, playerInfo.getMagicWeaponId()));
-		para.put(16, new DbParameter(Types.INTEGER, playerInfo.getSkillStage()));
-		para.put(17, new DbParameter(Types.INTEGER, playerInfo.getRepair()));
-		para.put(18, new DbParameter(Types.INTEGER, playerInfo.getBattleMode()));
-		para.put(19, new DbParameter(Types.INTEGER, playerInfo.getPkVal()));
-		para.put(20, new DbParameter(Types.BIGINT, playerInfo.getChangeBattleModeTime()));
-		
-		para.put(21, new DbParameter(Types.INTEGER, playerInfo.getFashionId()));
-		para.put(22, new DbParameter(Types.INTEGER, playerInfo.getWeaponId()));
-		para.put(23, new DbParameter(Types.INTEGER, playerInfo.getWingId()));
+		para.put(3, new DbParameter(Types.INTEGER, playerInfo.getJob()));
+		para.put(4, new DbParameter(Types.VARCHAR, playerInfo.getNickName()));
+		para.put(5, new DbParameter(Types.INTEGER, playerInfo.getLevel()));
+		para.put(6, new DbParameter(Types.BIGINT, playerInfo.getExp()));
+		para.put(7, new DbParameter(Types.BIGINT, playerInfo.getTotalExp()));
+		para.put(8, new DbParameter(Types.BIGINT, playerInfo.getMoney()));
+		para.put(9, new DbParameter(Types.INTEGER, playerInfo.getBindCash()));
+		para.put(10, new DbParameter(Types.INTEGER, playerInfo.getCash()));
+		para.put(11, new DbParameter(Types.INTEGER, playerInfo.getVipLevel()));
+		para.put(12, new DbParameter(Types.INTEGER, playerInfo.getFight()));
+		para.put(13, new DbParameter(Types.INTEGER, playerInfo.getSkinId()));
+		para.put(14, new DbParameter(Types.INTEGER, playerInfo.getpBagCount()));
+		para.put(15, new DbParameter(Types.INTEGER, playerInfo.getMountId()));
+		para.put(16, new DbParameter(Types.INTEGER, playerInfo.getMagicWeaponId()));
+		para.put(17, new DbParameter(Types.INTEGER, playerInfo.getSkillStage()));
+		para.put(18, new DbParameter(Types.INTEGER, playerInfo.getRepair()));
+		para.put(19, new DbParameter(Types.INTEGER, playerInfo.getBattleMode()));
+		para.put(20, new DbParameter(Types.INTEGER, playerInfo.getPkVal()));
+		para.put(21, new DbParameter(Types.BIGINT, playerInfo.getChangeBattleModeTime()));
+
+		para.put(22, new DbParameter(Types.INTEGER, playerInfo.getFashionId()));
+		para.put(23, new DbParameter(Types.INTEGER, playerInfo.getWeaponId()));
+		para.put(24, new DbParameter(Types.INTEGER, playerInfo.getWingId()));
 		result = execNoneQuery(sql, para) > -1 ? true : false;
 		playerInfo.commitAdd(result);
 		return result;
@@ -83,16 +84,14 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		para.put(16, new DbParameter(Types.INTEGER, playerInfo.getBattleMode()));
 		para.put(17, new DbParameter(Types.INTEGER, playerInfo.getPkVal()));
 		para.put(18, new DbParameter(Types.BIGINT, playerInfo.getChangeBattleModeTime()));
-		
+
 		para.put(19, new DbParameter(Types.INTEGER, playerInfo.getFashionId()));
 		para.put(20, new DbParameter(Types.INTEGER, playerInfo.getWeaponId()));
 		para.put(21, new DbParameter(Types.INTEGER, playerInfo.getWingId()));
 
 		para.put(22, new DbParameter(Types.BIGINT, playerInfo.getPlayerId()));
 		result = execNoneQuery(sql, para) > -1 ? true : false;
-		
-		
-		
+
 		playerInfo.commitUpdate(result);
 		return result;
 	}
@@ -130,6 +129,7 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 					info = new PlayerInfo();
 					info.setPlayerId(rs.getLong("playerId"));
 					info.setUserId(rs.getLong("userId"));
+					info.setJob(rs.getInt("job"));
 					info.setNickName(rs.getString("nickName"));
 					info.setLevel(rs.getInt("level"));
 					info.setExp(rs.getLong("exp"));
@@ -148,11 +148,11 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 					info.setBattleMode(rs.getInt("battleMode"));
 					info.setPkVal(rs.getInt("pkVal"));
 					info.setChangeBattleModeTime(rs.getLong("changeBattleModeTime"));
-					
+
 					info.setFashionId(rs.getInt("fashionId"));
 					info.setWeaponId(rs.getInt("weaponId"));
 					info.setWingId(rs.getInt("wingId"));
-					
+
 					info.setOp(Option.None);
 					infos.add(info);
 				}

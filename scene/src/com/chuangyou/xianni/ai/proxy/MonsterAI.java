@@ -62,14 +62,8 @@ public class MonsterAI {// extends BaseProxy {
 		}
 
 		AIState next = behaviors.get(current).next();
-		if (living.getId() == 1000000000033L) {
-			System.out.println("怪物 id： " + living.getId() + " 状态： " + current + " 下一个状态：" + next + " 位置：" + living.getPostion() + " 目标：" + living.getTargetPostion());
-		}
-
 		// if (living.getId() == 1000000000033L) {
-		// System.out.println("怪物 id： " + living.getId() + " 状态： " + current + "
-		// 下一个状态：" + next + " 位置：" + living.getPostion() + " 目标：" +
-		// living.getTargetPostion());
+		// System.out.println("怪物 id： " + living.getId() + " 状态： " + current + " 下一个状态：" + next + " 位置：" + living.getPostion() + " 目标：" + living.getTargetPostion());
 		// }
 
 		if (next == AIState.INVALID)

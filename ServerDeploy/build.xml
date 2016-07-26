@@ -8,46 +8,32 @@
 
 	<target name="copyLib">
 		<echo message="Copy lib files." />
-		<copy todir="${deploy.lib}" file="${source.lib}/mysql/mysql-connector-java/5.1.37/mysql-connector-java-5.1.37.jar" flatten="true"/>
-		<copy todir="${deploy.lib}" file="${source.lib}/log4j/log4j/1.2.17/log4j-1.2.17.jar" flatten="true"/>
-		<copy todir="${deploy.lib}" file="${source.lib}/commons-logging/commons-logging/1.2/commons-logging-1.2.jar" flatten="true"/>
-		<copy todir="${deploy.lib}" file="${source.lib}/c3p0/c3p0/0.9.1.2/c3p0-0.9.1.2.jar" flatten="true"/>
-		<copy todir="${deploy.lib}" file="${source.lib}/com/jolbox/bonecp/0.8.0-rc3/bonecp-0.8.0-rc3.jar" flatten="true"/>
-		<copy todir="${deploy.lib}" file="${source.lib}/com/google/guava/guava/15.0/guava-15.0.jar" flatten="true"/>
-		<copy todir="${deploy.lib}" file="${source.lib}/org/slf4j/slf4j-api/1.7.2/slf4j-api-1.7.2.jar" flatten="true"/>
-		<copy todir="${deploy.lib}" file="${source.lib}/com/google/protobuf/protobuf-java/2.6.1/protobuf-java-2.6.1-sources.jar" flatten="true"/>
+		<copy todir="${deploy.lib}" file="${source.lib}/mysql/mysql-connector-java/5.1.37/mysql-connector-java-5.1.37.jar" flatten="true" />
+		<copy todir="${deploy.lib}" file="${source.lib}/io/netty/netty-all/4.1.0.CR7/netty-all-4.1.0.CR7.jar" flatten="true" />
+		<copy todir="${deploy.lib}" file="${source.lib}/log4j/log4j/1.2.17/log4j-1.2.17.jar" flatten="true" />
+		<copy todir="${deploy.lib}" file="${source.lib}/commons-logging/commons-logging/1.2/commons-logging-1.2.jar" flatten="true" />
+		<copy todir="${deploy.lib}" file="${source.lib}/com/google/protobuf/protobuf-java/2.6.1/protobuf-java-2.6.1.jar" flatten="true" />
+		<copy todir="${deploy.lib}" file="${source.lib}/commons-dbcp/commons-dbcp/1.4/commons-dbcp-1.4.jar" flatten="true" />
+		<copy todir="${deploy.lib}" file="${source.lib}/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4.jar" flatten="true" />
+		<copy todir="${deploy.lib}" file="${source.lib}/c3p0/c3p0/0.9.1.2/c3p0-0.9.1.2.jar" flatten="true" />
+		<copy todir="${deploy.lib}" file="${source.lib}/com/jolbox/bonecp/0.8.0-rc3/bonecp-0.8.0-rc3.jar" flatten="true" />
+		<copy todir="${deploy.lib}" file="${source.lib}/com/google/guava/guava/15.0/guava-15.0.jar" flatten="true" />
+		<copy todir="${deploy.lib}" file="${source.lib}/org/slf4j/slf4j-api/1.7.2/slf4j-api-1.7.2.jar" flatten="true" />
+		<copy todir="${deploy.lib}" file="${source.lib}/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" flatten="true" />
+		<copy todir="${deploy.lib}" file="${source.lib}/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" flatten="true" />
+		<copy todir="${deploy.lib}" file="${source.lib}/com/alibaba/fastjson/1.1.15/fastjson-1.1.15.jar" flatten="true" />
 		
 		
-		
-		
-		<!--copy todir="${deploy.lib}" flatten="true">
-			<fileset dir="${source.lib}" defaultexcludes="true" includes="**/*.jar" />
-		</copy-->
 	</target>
-
-
 
 	<target name="callDB">
 		<echo message="build db.jar" />
 		<ant antfile="build.xml" dir="../dao/" />
 	</target>
-	<target name="callTapzoy">
-		<echo message="build Tapzoy.jar" />
-		<ant antfile="build.xml" dir="../APP-Tapzoy/" />
-	</target>
-	<target name="callChannel">
-		<echo message="build ChannelAccess.jar" />
-		<ant antfile="build.xml" dir="../ChannelAccess/" />
-	</target>
 
-	<target name="callRelayServer">
-		<echo message="build RelayServer.jar" />
-		<ant antfile="build.xml" dir="../APP-RelayServer/" />
-	</target>
-
-	<target name="callVM">
-		<echo message="build vm.jar" />
-		<ant antfile="build.xml" dir="../VM/" />
+	<target name="callNetProtocol">
+		<echo message="build protocol.jar" />
+		<ant antfile="build.xml" dir="../protocol/" />
 	</target>
 
 	<target name="callCommon">
@@ -55,19 +41,11 @@
 		<ant antfile="build.xml" dir="../Common/" />
 	</target>
 
-	<target name="callNetProtocol">
-		<echo message="build protocol.jar" />
-		<ant antfile="build.xml" dir="../APP-NetProtocol/" />
-	</target>
-
 	<target name="callEmpireNetProtocol">
 		<echo message="build empireProtocol.jar" />
 		<ant antfile="build.xml" dir="../APP-EmpireNetProtocol/" />
 	</target>
-	<target name="callImage">
-		<echo message="build image.jar" />
-		<ant antfile="build.xml" dir="../Image/" />
-	</target>
+
 	<target name="callAccountServer">
 		<echo message="build AccountServer.jar" />
 		<ant antfile="build.xml" dir="../APP-AccountServer/" />
@@ -88,14 +66,8 @@
 		<echo message="build DispatchServer.jar" />
 		<ant antfile="build.xml" dir="../APP-DispatchServer/" />
 	</target>
-	<target name="callExtensionServer">
-		<echo message="build ExtensionServer.jar" />
-		<ant antfile="build.xml" dir="../APP-ExtensionServer/" />
-	</target>
-	<target name="callExchangeServer">
-		<echo message="build ExchangeServer.jar" />
-		<ant antfile="build.xml" dir="../APP-ExchangeServer/" />
-	</target>
+
+
 	<target name="callChmod">
 		<chmod perm="777">
 			<fileset dir="./" includes="**/*.sh" />
@@ -103,8 +75,12 @@
 	</target>
 	<target name="all">
 		<ant target="copyLib" />
-		<ant target="callDB" />
+		<ant target="callNetProtocol" />
+
+
+
 		<!--
+		
 		<ant target="callChannel" />
 		<ant target="callTapzoy" />
 		<ant target="callRelayServer" />

@@ -38,6 +38,10 @@ public class BuyGoodsAction extends BaseBuyGoodsAction implements IBuyGoods {
 			player.sendPbMessage(pkg);
 			return;
 		}
+		if(player.getBasePlayer().getPlayerInfo().getVipLevel()<cfg.getVipLv() && cfg.getShopid() == ShopCfg.SHOP_VIP){
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIP_LEVEL_UNENOUGH, Protocol.C_REQ_BUYGOODS,"VIP等级不够");
+			return;
+		}
 		getLimitBuy().limitBuy(num, totalPrice);
 		
 	}

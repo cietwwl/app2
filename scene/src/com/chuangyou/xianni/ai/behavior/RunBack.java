@@ -14,10 +14,12 @@ public class RunBack extends BaseBehavior {
 		// todo:速归对象加上无敌BUFF，不可被攻击
 		getMonster().addBuffer(getMonster().getInvincibleBuffer());
 		// 寻路
-		getMonster().stop(true);
-		getMonster().navigateto(getMonster().getInitPosition());
-		// System.out.println("RunBack： "+getMonster().getInitPosition().toString());
-
+		if (getMonster().isNavFail()) {
+			getMonster().moveto(getMonster().getInitPosition());
+		} else {
+			getMonster().stop(true);
+			getMonster().navigateto(getMonster().getInitPosition());
+		}
 	}
 
 	@Override

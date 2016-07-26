@@ -430,20 +430,20 @@ public class ErrorCode {
 	/** 等级不足，不能切换 **/
 	public static final int	CHANGE_BATTLE								= 6009;
 	/** 当前状态，不能切换 **/
-	public static final int	CHANGE_BATTLE1								= 6010;
-	/** CD 时间未过，不能切换 **/
-	public static final int	CHANGE_BATTLE2								= 6011;
-
-	/** 查无此商品 */
-	public static final int	NO_THE_GOODS								= 6012;
-
-	/** 价格不对 */
-	public static final int	ERROR_PRICE									= 6013;
-	// public static final int CHANGE_BATTLE3 = 6009;
-	// public static final int CHANGE_BATTLE4 = 6009;
-	// public static final int CHANGE_BATTLE5 = 6009;
-	// public static final int CHANGE_BATTLE6 = 6009;
-	// public static final int CHANGE_BATTLE7 = 6009;
+	public static final int CHANGE_BATTLE1 = 6010;
+	/** CD 时间未过，不能切换**/
+	public static final int CHANGE_BATTLE2 = 6011;
+	/**  查无此商品  */
+	public static final int NO_THE_GOODS = 6012;
+	/**  价格不对  */
+	public static final int ERROR_PRICE = 6013;
+	/** VIP等级不够 */
+	public static final int VIP_LEVEL_UNENOUGH = 6014;
+//	public static final int CHANGE_BATTLE3 = 6009;
+//	public static final int CHANGE_BATTLE4 = 6009;
+//	public static final int CHANGE_BATTLE5 = 6009;
+//	public static final int CHANGE_BATTLE6 = 6009;
+//	public static final int CHANGE_BATTLE7 = 6009;
 
 	public static void main(String[] args) {
 		System.out.println(checkErrorCode());

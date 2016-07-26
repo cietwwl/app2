@@ -63,6 +63,8 @@ public class ShopCfg {
 	private byte isPreview;
 	/** 是否快速购买  */
 	private byte easyBuy;
+	/** 购买需要的VIP等级 */
+	private int vipLv;
 	
 
 	/**
@@ -352,6 +354,16 @@ public class ShopCfg {
 
 	public void setEasyBuy(byte easyBuy) {
 		this.easyBuy = easyBuy;
+	}
+
+
+	public int getVipLv() {
+		return vipLv;
+	}
+
+
+	public void setVipLv(int vipLv) {
+		this.vipLv = vipLv;
 	}
 	
 

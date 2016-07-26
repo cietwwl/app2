@@ -269,13 +269,27 @@ public class Team extends AbstractEvent implements Comparable<Team> {
 	/** 切换状态 */
 	public void changeTeamStatu(int statu) {
 		this.teamStatu = statu;
-		List<Long> playerIds = getPlayers(-1);
-		TeamInfoRespMsg.Builder message = getTeamMsg();
-		BroadcastUtil.sendBroadcastPacket(playerIds, Protocol.U_RESP_TEAM_INFO, message.build());
+		if (statu == Team.PREPARE) {
+			changeMemberStatu(TeamMember.PREPARE, getLeader().getPlayerId());
+		} else {
+			if (statu == Team.NORMAL) {
+				for (TeamMember member : getMembers()) {
+					member.setStatu(TeamMember.DE_PREPARE);
+				}
+			}
+			List<Long> playerIds = getPlayers(-1);
+			TeamInfoRespMsg.Builder message = getTeamMsg();
+			BroadcastUtil.sendBroadcastPacket(playerIds, Protocol.U_RESP_TEAM_INFO, message.build());
+		}
+
 	}
 
 	/** 成员修改状态 */
 	public void changeMemberStatu(int memberStatu, long playerId) {
+		// 非此两种状态，不允许修改成员状态
+		if (teamStatu != Team.PREPARE && teamStatu != Team.NORMAL) {
+			return;
+		}
 		TeamMember member = getMember(playerId);
 		member.setStatu(memberStatu);
 
@@ -283,7 +297,7 @@ public class Team extends AbstractEvent implements Comparable<Team> {
 		boolean ready = true;
 		for (TeamMember m : getMembers()) {
 			// 未准备
-			if (m.getStatu() == 0) {
+			if (m.getStatu() != TeamMember.PREPARE) {
 				ready = false;
 			}
 		}
@@ -291,7 +305,7 @@ public class Team extends AbstractEvent implements Comparable<Team> {
 			this.teamStatu = GOING;
 			TeamTargetTemplate target = TeamTargetTempMgr.get(targetId);
 
-			if (target.getTargetType() == 2 && leader != null) {
+			if (target.getTargetType() == 2 && leader != null) {// 类型2 副本
 				CreateCampaignMsg.Builder ccmsg = CreateCampaignMsg.newBuilder();
 				ccmsg.setCampaign(target.getTarget());
 				CreateCampaignDelayAction action = new CreateCampaignDelayAction(TeamMgr.getActionQueue(), this, ccmsg.build(), 3000);

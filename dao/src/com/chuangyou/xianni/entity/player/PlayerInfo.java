@@ -11,68 +11,71 @@ import com.chuangyou.xianni.entity.Option;
 public class PlayerInfo extends DataObject {
 
 	/** 角色ID */
-	private long playerId;
+	private long	playerId;
 
 	/** 用户ID */
-	private long userId;
+	private long	userId;
+
+	/** 职业 */
+	private int		job;
 
 	/** 角色名字 */
-	private String nickName;
+	private String	nickName;
 
 	/** 等级 */
-	private int level;
+	private int		level;
 
 	/** 当前经验 */
-	private long exp;
+	private long	exp;
 
 	/** 总经验 */
-	private long totalExp;
+	private long	totalExp;
 
 	/** 金币(灵石) */
-	private long money;
+	private long	money;
 
 	/** 绑定元宝(绑定仙玉) */
-	private int bindCash;
+	private int		bindCash;
 
 	/** 元宝(仙玉) */
-	private int cash;
+	private int		cash;
 
 	/** VIP等级 */
-	private short vipLevel;
+	private short	vipLevel;
 
 	/** 战斗力 */
-	private int fight;
+	private int		fight;
 
 	/** 皮肤 */
-	private int skinId;
+	private int		skinId;
 
 	/** 角色背包数量 */
-	private int pBagCount;
+	private int		pBagCount;
 
 	/** 出战坐骑ID */
-	private int mountId;
+	private int		mountId;
 
 	/** 出战法宝ID */
-	private int magicWeaponId;
+	private int		magicWeaponId;
 	/** 技能达到的阶段 **/
-	private int skillStage;
+	private int		skillStage;
 	/** 修为 **/
-	private int repair;
+	private int		repair;
 	/** 战斗模式 1和平模式2对战模式3门派模式 */
-	private int battleMode;
+	private int		battleMode;
 	/** pk 值 **/
-	private int pkVal;
+	private int		pkVal;
 	/** 战斗模式更新时间 **/
-	private long changeBattleModeTime;
+	private long	changeBattleModeTime;
 
 	/** 时装ID */
-	private int fashionId = 0;
+	private int		fashionId	= 0;
 
 	/** 武器ID */
-	private int weaponId = 0;
+	private int		weaponId	= 0;
 
 	/** 翅膀ID */
-	private int wingId = 0;
+	private int		wingId		= 0;
 
 	public long getPlayerId() {
 		return playerId;
@@ -318,11 +321,20 @@ public class PlayerInfo extends DataObject {
 		this.wingId = wingId;
 	}
 
+	public int getJob() {
+		return job;
+	}
+
+	public void setJob(int job) {
+		this.job = job;
+	}
+
 	/**
 	 * 写玩家属性消息包
 	 * 
 	 * @param proto
-	 * @param bagInitCount 背包初始大小配置
+	 * @param bagInitCount
+	 *            背包初始大小配置
 	 */
 	public void writeProto(PlayerInfoMsg.Builder proto, int bagInitCount) {
 		proto.setPlayerId(this.getPlayerId());

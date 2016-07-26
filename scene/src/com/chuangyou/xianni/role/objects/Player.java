@@ -21,12 +21,12 @@ import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.skill.Skill;
+import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.BattleModeCode;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.mount.MountGradeCfg;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
-import com.chuangyou.xianni.exec.ActionQueue;
 import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.exec.ThreadManager;
 import com.chuangyou.xianni.mount.MountTempleteMgr;
@@ -160,12 +160,23 @@ public class Player extends ActiveLiving {
 	 * @return
 	 */
 	public int getColour(int val) {
-		if (val >= 1000) {
+		int minRed = SystemConfigTemplateMgr.getIntValue("pk.colour.minRed");
+		int minYellow = SystemConfigTemplateMgr.getIntValue("pk.colour.minYellow");
+
+		if (val >= minRed) {
 			return BattleModeCode.red;
-		} else if (val > 0) {
+		} else if (val >= minYellow) {
 			return BattleModeCode.yellow;
 		}
 		return BattleModeCode.white;
+		
+		
+//		if (val >= 1000) {
+//			return BattleModeCode.red;
+//		} else if (val > 0) {
+//			return BattleModeCode.yellow;
+//		}
+//		return BattleModeCode.white;
 	}
 
 	// /**

@@ -43,11 +43,11 @@ public class MonsterInfoDaoImpl extends BaseDao implements MonsterInfoDao {
 					info.setSkin(rs.getShort("skin"));
 					info.setLevel(rs.getInt("level"));
 					info.setMonsterType(rs.getInt("monsterType"));
-					info.setSeekEnemyRange(rs.getInt("seekEnemyRange"));
-					info.setAttackRange(rs.getInt("attackRange"));
-					info.setFollowUpDistance(rs.getInt("followUpDistance"));
-					info.setMoveSpeed(rs.getInt("moveSpeed"));
-					info.setAttackSpeed(rs.getInt("attackSpeed"));
+					// info.setSeekEnemyRange(rs.getInt("seekEnemyRange"));
+					// info.setAttackRange(rs.getInt("attackRange"));
+					// info.setFollowUpDistance(rs.getInt("followUpDistance"));
+					// info.setMoveSpeed(rs.getInt("moveSpeed"));
+					// info.setAttackSpeed(rs.getInt("attackSpeed"));
 					info.setSoulHpValue(rs.getLong("soulHpValue"));
 					info.setHp(rs.getLong("hp"));
 					info.setHurtValue(rs.getInt("hurtValue"));

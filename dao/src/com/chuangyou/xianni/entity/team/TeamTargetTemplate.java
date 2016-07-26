@@ -10,6 +10,7 @@ public class TeamTargetTemplate {
 	private int		target;			// 指向ID
 	private int		entityId;		// 实体ID
 	private String	v3;				// 指向位置
+	private int		goType;			// 前往类型 0 正常（准备阶段） 1 跳过此阶段直接前往
 
 	public int getId() {
 		return id;
@@ -82,5 +83,14 @@ public class TeamTargetTemplate {
 	public void setV3(String v3) {
 		this.v3 = v3;
 	}
+
+	public int getGoType() {
+		return goType;
+	}
+
+	public void setGoType(int goType) {
+		this.goType = goType;
+	}
+	
 
 }

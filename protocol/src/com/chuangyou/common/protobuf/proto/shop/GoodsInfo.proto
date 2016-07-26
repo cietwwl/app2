@@ -24,4 +24,5 @@ message GoodsInfo{
 	optional int32 sort = 18; //表示顺序字段
 	optional int32 isPreview = 19;//是否预显示（0：不 1：预显示）
 	optional int32 easyBuy = 20; //是否便捷购买(0:否 1：是)
+	optional int32 vipLv = 21;   //购买需要的VIP等级
 }

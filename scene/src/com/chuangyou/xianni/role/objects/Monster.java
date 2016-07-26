@@ -3,8 +3,13 @@ package com.chuangyou.xianni.role.objects;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import com.chuangyou.common.protobuf.pb.PlayerKillMonsterProto.PlayerKillMonsterMsg;
+import com.chuangyou.common.protobuf.pb.battle.BufferMsgProto.BufferMsg;
+import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
+import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
 import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.ai.proxy.MonsterAI;
@@ -14,6 +19,7 @@ import com.chuangyou.xianni.battle.buffer.BufferFactory;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.config.SceneGlobal;
+import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.cooldown.CoolDownTypes;
 import com.chuangyou.xianni.drop.manager.DropManager;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
@@ -33,7 +39,10 @@ import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.template.AiConfigTemplateMgr;
 import com.chuangyou.xianni.warfield.field.Field;
+import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.spawn.MonsterSpawnNode;
+import com.chuangyou.xianni.world.ArmyProxy;
+import com.chuangyou.xianni.world.WorldMgr;
 
 public class Monster extends ActiveLiving {
 	protected MonsterSpawnNode node;
@@ -52,6 +61,7 @@ public class Monster extends ActiveLiving {
 	private int curSkillID;
 	private static final int invincibleBufferId = 99999999;// 无敌buffer id
 	private Buffer invincibleBuffer = null;
+	
 
 	public int getCurSkillID() {
 		return curSkillID;
@@ -267,7 +277,25 @@ public class Monster extends ActiveLiving {
 	}
 
 	public void clearWorkBuffer() {
-		workBuffers.clear();
+		List<Buffer> allbuffer = new ArrayList<>();
+		synchronized (workBuffers) {
+			for (Entry<Integer, List<Buffer>> entry : workBuffers.entrySet()) {
+				List<Buffer> wayBufs = entry.getValue();
+				allbuffer.addAll(wayBufs);
+				wayBufs.clear();
+			}
+			workBuffers.clear();
+		}
+
+		for (Buffer buff : allbuffer) {
+			buff.stop();
+			BufferMsg.Builder bmsg = BufferMsg.newBuilder();
+			bmsg.setBufferId(buff.getBufferId());
+			bmsg.setOption(4);// 4 删除
+			bmsg.setSourceId(buff.getSource().getId());
+			bmsg.setTargetId(buff.getTarget().getId());
+			sendBufferChange(bmsg.build());
+		}
 	}
 
 	/**
@@ -369,4 +397,44 @@ public class Monster extends ActiveLiving {
 		return aiConfig;
 	}
 
+	/**
+	 * 恢复初始满状态
+	 */
+	public boolean fullState() {
+		List<Damage> damages = new ArrayList<>();
+		Damage curSoul = new Damage(this, this);
+		curSoul.setDamageType(EnumAttr.CUR_SOUL.getValue());
+		curSoul.setDamageValue(getCurSoul() - getInitSoul());
+		damages.add(curSoul);
+		takeDamage(curSoul);
+
+		Damage curBlood = new Damage(this, this);
+		curBlood.setDamageType(EnumAttr.CUR_BLOOD.getValue());
+		curBlood.setDamageValue(getCurSoul() - getInitBlood());
+		damages.add(curBlood);
+		takeDamage(curBlood);
+
+		if (damages.size() > 0) {
+			DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
+			damagesPb.setAttackId(-1);
+			for (Damage d : damages) {
+				DamageMsg.Builder dmsg = DamageMsg.newBuilder();
+				d.writeProto(dmsg);
+				damagesPb.addDamages(dmsg);
+			}
+			Set<Long> players = getNears(new PlayerSelectorHelper(this));
+			// players.add(getArmyId());
+			for (Long armyId : players) {
+				ArmyProxy army = WorldMgr.getArmy(armyId);
+				PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
+				if (army != null) {
+					army.sendPbMessage(message);
+				}
+			}
+			// BroadcastUtil.sendBroadcastPacket(players, Protocol.U_G_DAMAGE,damagesPb.build());
+		}
+
+		clearWorkBuffer();
+		return true;
+	}
 }

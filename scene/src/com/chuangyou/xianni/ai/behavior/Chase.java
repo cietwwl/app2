@@ -42,8 +42,8 @@ public class Chase extends BaseBehavior {
 		chaseTarget = MathUtils.GetRandomVector3ByCenter(l.getPostion(), 1, false);// l.getPostion();
 		if (!isValidPoint(chaseTarget))
 			chaseTarget = l.getPostion();
-
-		// System.out.println("自己位置：" + getMonster().getPostion() + " 追击到点：" + chaseTarget+" 人物位置： "+l.getPostion());
+		// if (getMonster().getId() == 1000000000033L)
+		// System.out.println("11111111111111 自己位置：" + getMonster().getPostion() + " 追击到点：" + chaseTarget + " 人物位置： " + l.getPostion());
 		getMonster().stop(false);
 		getMonster().moveto(chaseTarget);
 	}
@@ -76,13 +76,20 @@ public class Chase extends BaseBehavior {
 		if (distance > getMonster().getAiConfig().getFollowUpDistance()) {
 			float leaveBornDistance = Vector3.distance(getMonster().getInitPosition(), getMonster().getPostion());// 当前位置与出生点的距离
 			// 在巡逻范围，找其他目标，移除当前的最大仇恨
-			if (leaveBornDistance < getMonster().getMonsterInfo().getSeekEnemyRange()) {
+			if (leaveBornDistance < getMonster().getAiConfig().getPatrolRange()) {
 				getMonster().removeHatred(l.getId());
 				return AIState.IDLE;
 			} else {
 				// 清除所有的仇恨，速归
 				getMonster().cleanHatreds();
-				return AIState.RUNBACK;
+
+				if (getMonster().getAiConfig().isFullState())
+					getMonster().fullState();
+
+				if (getMonster().getAiConfig().isRunBack())
+					return AIState.RUNBACK;
+				else
+					return AIState.PATROL;
 			}
 		} else {
 			// System.err.println("isArrial = " + getMonster().isArrial());
@@ -109,7 +116,7 @@ public class Chase extends BaseBehavior {
 		if (l == null)
 			return false;
 		// System.err.println("distance = " + Vector3.distance(getMonster().getPostion(), l.getPostion()));
-		if (Vector3.distance(getMonster().getPostion(), l.getPostion()) <= getMonster().getMonsterInfo().getAttackRange())
+		if (Vector3.distance(getMonster().getPostion(), l.getPostion()) <= getMonster().getAiConfig().getAttackDistance())
 			return true;
 		return false;
 	}

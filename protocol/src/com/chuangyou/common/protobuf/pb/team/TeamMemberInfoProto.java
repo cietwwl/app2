@@ -176,7 +176,7 @@ public final class TeamMemberInfoProto {
      * <code>optional int32 statu = 12;</code>
      *
      * <pre>
-     *成员当前状态  0 未准备 1 准备
+     *成员当前状态  0 未准备 1 准备 2 待准备 3 已前往目标
      * </pre>
      */
     boolean hasStatu();
@@ -184,7 +184,7 @@ public final class TeamMemberInfoProto {
      * <code>optional int32 statu = 12;</code>
      *
      * <pre>
-     *成员当前状态  0 未准备 1 准备
+     *成员当前状态  0 未准备 1 准备 2 待准备 3 已前往目标
      * </pre>
      */
     int getStatu();
@@ -600,7 +600,7 @@ public final class TeamMemberInfoProto {
      * <code>optional int32 statu = 12;</code>
      *
      * <pre>
-     *成员当前状态  0 未准备 1 准备
+     *成员当前状态  0 未准备 1 准备 2 待准备 3 已前往目标
      * </pre>
      */
     public boolean hasStatu() {
@@ -610,7 +610,7 @@ public final class TeamMemberInfoProto {
      * <code>optional int32 statu = 12;</code>
      *
      * <pre>
-     *成员当前状态  0 未准备 1 准备
+     *成员当前状态  0 未准备 1 准备 2 待准备 3 已前往目标
      * </pre>
      */
     public int getStatu() {
@@ -1592,7 +1592,7 @@ public final class TeamMemberInfoProto {
        * <code>optional int32 statu = 12;</code>
        *
        * <pre>
-       *成员当前状态  0 未准备 1 准备
+       *成员当前状态  0 未准备 1 准备 2 待准备 3 已前往目标
        * </pre>
        */
       public boolean hasStatu() {
@@ -1602,7 +1602,7 @@ public final class TeamMemberInfoProto {
        * <code>optional int32 statu = 12;</code>
        *
        * <pre>
-       *成员当前状态  0 未准备 1 准备
+       *成员当前状态  0 未准备 1 准备 2 待准备 3 已前往目标
        * </pre>
        */
       public int getStatu() {
@@ -1612,7 +1612,7 @@ public final class TeamMemberInfoProto {
        * <code>optional int32 statu = 12;</code>
        *
        * <pre>
-       *成员当前状态  0 未准备 1 准备
+       *成员当前状态  0 未准备 1 准备 2 待准备 3 已前往目标
        * </pre>
        */
       public Builder setStatu(int value) {
@@ -1625,7 +1625,7 @@ public final class TeamMemberInfoProto {
        * <code>optional int32 statu = 12;</code>
        *
        * <pre>
-       *成员当前状态  0 未准备 1 准备
+       *成员当前状态  0 未准备 1 准备 2 待准备 3 已前往目标
        * </pre>
        */
       public Builder clearStatu() {

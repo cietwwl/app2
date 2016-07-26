@@ -16,11 +16,13 @@ import com.chuangyou.xianni.config.SceneGlobal;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.constant.SpwanInfoType;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
+import com.chuangyou.xianni.entity.spawn.AiConfig;
 import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
 import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
+import com.chuangyou.xianni.role.template.AiConfigTemplateMgr;
 import com.chuangyou.xianni.role.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.warfield.field.Field;
 
@@ -116,7 +118,8 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 	/** 浸染 */
 	public static void instill(Monster monster, MonsterInfo monsterInfo) {
 		monster.setMonsterInfo(monsterInfo);
-		monster.setSpeed(monsterInfo.getMoveSpeed());
+		AiConfig ai = AiConfigTemplateMgr.get(monsterInfo.getAiId());
+		monster.setSpeed(ai.getMoveSpeed());
 		monster.setSkin(monsterInfo.getMonsterId());
 
 		monster.setProperty(EnumAttr.MAX_BLOOD, monsterInfo.getHp());

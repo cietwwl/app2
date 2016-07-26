@@ -516,6 +516,8 @@ public abstract class Living {
 		}
 		/*----------------------------人物战斗力--------------------------*/
 		refresh();// 刷新
+		player.getBasePlayer().getPlayerInfo().setFight(fighting);
+		
 		PropertyMsg.Builder proMsg = PropertyMsg.newBuilder();
 		proMsg.setType(EnumAttr.FightValue.getValue());
 		proMsg.setTotalPoint(fighting);
@@ -542,6 +544,8 @@ public abstract class Living {
 		}
 		/*----------------------------人物战斗力--------------------------*/
 		refresh();// 刷新
+		player.getBasePlayer().getPlayerInfo().setFight(fighting);
+		
 		PropertyMsg.Builder proMsg = PropertyMsg.newBuilder();
 		proMsg.setType(EnumAttr.FightValue.getValue());
 		proMsg.setTotalPoint(fighting);

@@ -111,7 +111,7 @@ public final class TeamInfoRespProto {
      * <code>optional int32 teamStatu = 5;</code>
      *
      * <pre>
-     *队伍状态 正常—准备—待进入(倒计时3秒)—进入目标
+     *队伍状态 0 正常— 1准备— 2待进入(倒计时3秒)— 3进入目标
      * </pre>
      */
     boolean hasTeamStatu();
@@ -119,7 +119,7 @@ public final class TeamInfoRespProto {
      * <code>optional int32 teamStatu = 5;</code>
      *
      * <pre>
-     *队伍状态 正常—准备—待进入(倒计时3秒)—进入目标
+     *队伍状态 0 正常— 1准备— 2待进入(倒计时3秒)— 3进入目标
      * </pre>
      */
     int getTeamStatu();
@@ -381,7 +381,7 @@ public final class TeamInfoRespProto {
      * <code>optional int32 teamStatu = 5;</code>
      *
      * <pre>
-     *队伍状态 正常—准备—待进入(倒计时3秒)—进入目标
+     *队伍状态 0 正常— 1准备— 2待进入(倒计时3秒)— 3进入目标
      * </pre>
      */
     public boolean hasTeamStatu() {
@@ -391,7 +391,7 @@ public final class TeamInfoRespProto {
      * <code>optional int32 teamStatu = 5;</code>
      *
      * <pre>
-     *队伍状态 正常—准备—待进入(倒计时3秒)—进入目标
+     *队伍状态 0 正常— 1准备— 2待进入(倒计时3秒)— 3进入目标
      * </pre>
      */
     public int getTeamStatu() {
@@ -1229,7 +1229,7 @@ public final class TeamInfoRespProto {
        * <code>optional int32 teamStatu = 5;</code>
        *
        * <pre>
-       *队伍状态 正常—准备—待进入(倒计时3秒)—进入目标
+       *队伍状态 0 正常— 1准备— 2待进入(倒计时3秒)— 3进入目标
        * </pre>
        */
       public boolean hasTeamStatu() {
@@ -1239,7 +1239,7 @@ public final class TeamInfoRespProto {
        * <code>optional int32 teamStatu = 5;</code>
        *
        * <pre>
-       *队伍状态 正常—准备—待进入(倒计时3秒)—进入目标
+       *队伍状态 0 正常— 1准备— 2待进入(倒计时3秒)— 3进入目标
        * </pre>
        */
       public int getTeamStatu() {
@@ -1249,7 +1249,7 @@ public final class TeamInfoRespProto {
        * <code>optional int32 teamStatu = 5;</code>
        *
        * <pre>
-       *队伍状态 正常—准备—待进入(倒计时3秒)—进入目标
+       *队伍状态 0 正常— 1准备— 2待进入(倒计时3秒)— 3进入目标
        * </pre>
        */
       public Builder setTeamStatu(int value) {
@@ -1262,7 +1262,7 @@ public final class TeamInfoRespProto {
        * <code>optional int32 teamStatu = 5;</code>
        *
        * <pre>
-       *队伍状态 正常—准备—待进入(倒计时3秒)—进入目标
+       *队伍状态 0 正常— 1准备— 2待进入(倒计时3秒)— 3进入目标
        * </pre>
        */
       public Builder clearTeamStatu() {

@@ -37,7 +37,7 @@ public class NetConfigSet {
 	private static boolean initGlobal() {
 		try {
 			String globalPath = Config.getValue("path");
-			
+
 			SAXReader reader = new SAXReader();
 			Document doc = reader.read(globalPath);
 			Element root = doc.getRootElement();
@@ -50,6 +50,9 @@ public class NetConfigSet {
 
 			Element gateway_server = root.element("gateway_server");
 			init(gateway_server, "gateway", gatewayMap);
+
+			Element cross_server = root.element("cross_server");
+			init(cross_server, "cross", crossMap);
 
 			Element mainDb = root.element("maindb_server");
 			init(mainDb, "db", mainDBMap);

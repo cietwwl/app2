@@ -16,7 +16,7 @@ public class MonsterSelectPlayerSelectorHelper extends Selector {
 
 	@Override
 	public boolean selectorType(int type) {
-		return type == RoleConstants.RoleType.player;
+		return type == RoleConstants.RoleType.player || type == RoleConstants.RoleType.monster;
 	}
 
 	@Override

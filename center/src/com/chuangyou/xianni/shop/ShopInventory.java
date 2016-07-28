@@ -1,8 +1,6 @@
 package com.chuangyou.xianni.shop;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import com.chuangyou.xianni.entity.Option;

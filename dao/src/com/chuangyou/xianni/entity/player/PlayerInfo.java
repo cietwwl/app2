@@ -76,6 +76,10 @@ public class PlayerInfo extends DataObject {
 
 	/** 翅膀ID */
 	private int		wingId		= 0;
+	/**
+	 * 积分
+	 **/
+	private int		points		= 0;
 
 	public long getPlayerId() {
 		return playerId;
@@ -329,6 +333,17 @@ public class PlayerInfo extends DataObject {
 		this.job = job;
 	}
 
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		if (this.points != points) {
+			setOp(Option.Update);
+			this.points = points;
+		}
+	}
+
 	/**
 	 * 写玩家属性消息包
 	 * 
@@ -339,6 +354,7 @@ public class PlayerInfo extends DataObject {
 	public void writeProto(PlayerInfoMsg.Builder proto, int bagInitCount) {
 		proto.setPlayerId(this.getPlayerId());
 		proto.setUserId(this.getUserId());
+		proto.setJob(this.getJob());
 		proto.setNickName(this.getNickName());
 		proto.setLevel(this.getLevel());
 		proto.setExp(this.getExp());
@@ -355,6 +371,8 @@ public class PlayerInfo extends DataObject {
 		proto.setFashionId(this.getFashionId());
 		proto.setWeaponId(this.getWeaponId());
 		proto.setWingId(this.getWingId());
+		proto.setPoints(this.getPoints());
 		proto.setPBagCount(bagInitCount + this.getpBagCount());
 	}
+
 }

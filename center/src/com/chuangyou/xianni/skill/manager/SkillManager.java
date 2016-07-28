@@ -178,46 +178,45 @@ public class SkillManager {
 	 * @return
 	 */
 	public static boolean OneKeyUpSkill(GamePlayer player, PBMessage packet) {
-		Map<Integer, SkillTempateInfo> skillTempList = SkillTempMgr.getSkillTempByType(SkillInventory.initiativeSkillType, 3);// 主动技能配置列表
-		Map<String, HeroSkill> skillMap = player.getSkillInventory().getHeroSkill(SkillInventory.initiativeSkillType, 3);// 英雄所有主动技能
-		Map<String, HeroSkill> studyMap = new HashMap<>();// 已学习的
-		for (Entry<String, HeroSkill> entry : skillMap.entrySet()) {
-			HeroSkill temp = entry.getValue();
-			studyMap.put(temp.getType() + "_" + temp.getSubType() + "_" + temp.getGrandsonType(), temp);
-		}
-		Map<String, Integer> map = new HashMap<>();// 类型-等级映射（根据等级排序使用）
-		Map<String, Integer> map2 = new HashMap<>();// 类型-技能id映射
-		for (Entry<Integer, SkillTempateInfo> entry : skillTempList.entrySet()) {
-			SkillTempateInfo temp = entry.getValue();
-			int type = temp.getMasterType();
-			int subType = temp.getSonType();
-			int grandsonType = temp.getGrandsonType();
-			String key = type + "_" + subType + "_" + grandsonType;
-			if (studyMap.containsKey(key)) {
-				map.put(key, studyMap.get(key).getSkillLV());
-				map2.put(key, studyMap.get(key).getSkillId());
-			} else {
-				map.put(key, 0);// 没有学习
-			}
-		}
-		// 技能等级小的排前
-		List<Map.Entry<String, Integer>> infoIds = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
-		Collections.sort(infoIds, new Comparator<Map.Entry<String, Integer>>() {
-			public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
-				return (o1.getValue() - o2.getValue());
-			}
-		});
-		// 学习技能
-		int useStone = 0; // 技能升级需要灵石
-		int useRepair = 0; // 技能升级需要修为
-		int useJade = 0; // 技能升级需要仙玉
-		Map<Integer, Integer> useGoods = new HashMap<>();// 消耗物品
-		ArrayList<Integer> studySkillIds = new ArrayList<>();
 		boolean run = false;
-
 		int falseCount = 0;
-		while (infoIds.size() > falseCount) {
-			// type type = (type) en.nextElement();
+		while (true) {
+			Map<Integer, SkillTempateInfo> skillTempList = SkillTempMgr.getSkillTempByType(SkillInventory.initiativeSkillType, 3);// 主动技能配置列表
+			Map<String, HeroSkill> skillMap = player.getSkillInventory().getHeroSkill(SkillInventory.initiativeSkillType, 3);// 英雄所有主动技能
+			Map<String, HeroSkill> studyMap = new HashMap<>();// 已学习的
+			for (Entry<String, HeroSkill> entry : skillMap.entrySet()) {
+				HeroSkill temp = entry.getValue();
+				studyMap.put(temp.getType() + "_" + temp.getSubType() + "_" + temp.getGrandsonType(), temp);
+			}
+			Map<String, Integer> map = new HashMap<>();// 类型-等级映射（根据等级排序使用）
+			Map<String, Integer> map2 = new HashMap<>();// 类型-技能id映射
+			for (Entry<Integer, SkillTempateInfo> entry : skillTempList.entrySet()) {
+				SkillTempateInfo temp = entry.getValue();
+				int type = temp.getMasterType();
+				int subType = temp.getSonType();
+				int grandsonType = temp.getGrandsonType();
+				String key = type + "_" + subType + "_" + grandsonType;
+				if (studyMap.containsKey(key)) {
+					map.put(key, studyMap.get(key).getSkillLV());
+					map2.put(key, studyMap.get(key).getSkillId());
+				} else {
+					map.put(key, 0);// 没有学习
+				}
+			}
+			// 技能等级小的排前
+			List<Map.Entry<String, Integer>> infoIds = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
+			Collections.sort(infoIds, new Comparator<Map.Entry<String, Integer>>() {
+				public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+					return (o1.getValue() - o2.getValue());
+				}
+			});
+			// 学习技能
+			int useStone = 0; // 技能升级需要灵石
+			int useRepair = 0; // 技能升级需要修为
+			int useJade = 0; // 技能升级需要仙玉
+			Map<Integer, Integer> useGoods = new HashMap<>();// 消耗物品
+			ArrayList<Integer> studySkillIds = new ArrayList<>();
+
 			falseCount = 0;
 			for (Entry<String, Integer> entry : infoIds) {
 				String key = entry.getKey();
@@ -226,11 +225,12 @@ public class SkillManager {
 					// System.out.println("key: " + key + " map2.get(key): " + map2.get(key));
 					continue;
 				}
-
 				SkillTempateInfo tempinfo = SkillTempMgr.getSkillTemp(map2.get(key));
 				int nextSkillId = tempinfo.getNextTempId();
-				if (nextSkillId <= 0)
+				if (nextSkillId <= 0) {
+					falseCount++;
 					continue;
+				}
 				boolean res = upSkill(player, nextSkillId, useStone, useRepair, useJade, useGoods);
 				if (res) {
 					run = true;
@@ -239,6 +239,9 @@ public class SkillManager {
 				}
 				// System.out.println("skillId: " + map2.get(key) + " nextSkillId:" + nextSkillId + " res:" + res);
 				studySkillIds.add(nextSkillId);
+			}
+			if (infoIds.size() == falseCount) {
+				break;
 			}
 		}
 
@@ -552,10 +555,10 @@ public class SkillManager {
 		beanCritDefence.setPro(skillBasePro.getCritDefence());
 		msg.addInfo(beanCritDefence);
 
-		SkillProperty.Builder critAddtion = SkillProperty.newBuilder();
-		critAddtion.setType(EnumAttr.CRIT_ADDTION.getValue());
-		critAddtion.setPro(skillBasePro.getCritAddtion());
-		msg.addInfo(critAddtion);
+		// SkillProperty.Builder critAddtion = SkillProperty.newBuilder();
+		// critAddtion.setType(EnumAttr.CRIT_ADDTION.getValue());
+		// critAddtion.setPro(skillBasePro.getCritAddtion());
+		// msg.addInfo(critAddtion);
 
 		msg.setStage(player.getBasePlayer().getPlayerInfo().getSkillStage());
 

@@ -68,8 +68,9 @@ public class SingleLivingAttack extends AbstractSkillCalc {
 		}
 		// 提示类型
 		int tipType = 0;
+
 		// 计算伤害
-		int damageValue = 1000;//calcutor.calcDamage(source, target, tempInfo);
+		int damageValue = calcutor.calcDamage(source, target, tempInfo);
 		// 当释放者处于元魂状态时，伤害增加10%
 		if (source.isSoulState()) {
 			damageValue += damageValue * 0.1;
@@ -79,7 +80,7 @@ public class SingleLivingAttack extends AbstractSkillCalc {
 
 		// 未暴击时，计算miss概率
 		if (!isCrit) {
-			if (isMiss(source.getAccurate(), target.getDodge())) {
+			if (!isHit(source.getAccurate(), target.getDodge())) {
 				damageValue = 0;
 				tipType = Damage.MISS;
 			}
@@ -92,8 +93,8 @@ public class SingleLivingAttack extends AbstractSkillCalc {
 		if (tempInfo.getMasterType() == 2) {
 			damageValue = damageValue / count;
 		}
-//		if(source.getType() == 1)
-//		damageValue += 50000000;
+		// if(source.getType() == 1)
+		// damageValue += 50000000;
 		for (int i = 0; i < time; i++) {
 			Damage damage = new Damage(target, source);
 			damage.setSkillId(attackOrder.getSkill().getSkillId());

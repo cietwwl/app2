@@ -64,7 +64,7 @@ public class DropManager {
 				int flag = 0;
 				for(int itemId: itemIds){
 					DropItemInfo item = items.get(itemId);
-					if(randomNum > flag && randomNum <= item.getWeight()){
+					if(randomNum > flag && randomNum <= flag + item.getWeight()){
 						dropItems.add(item);
 						break;
 					}

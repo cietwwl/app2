@@ -1,0 +1,7 @@
+//protocol=151;
+option java_package = "com.chuangyou.common.protobuf.pb.item";
+option java_outer_classname = "ItemBagGridUnlockRespProto";
+
+message ItemBagGridUnlockRespMsg{
+	optional int32 bagTotalSize = 1; // 背包总格子数
+}

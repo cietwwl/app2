@@ -1,0 +1,7 @@
+//protocol=10149;
+option java_package = "com.chuangyou.common.protobuf.pb.item";
+option java_outer_classname = "ItemBagGridUnlockReqProto";
+
+message ItemBagGridUnlockReqMsg{
+	optional int32 unlockNum = 1; // 要解锁的格子数量
+}

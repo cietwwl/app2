@@ -9,6 +9,7 @@ import java.util.List;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
+import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.field.FieldInfo;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
@@ -70,9 +71,9 @@ public class WorldMgr {
 		if (playerPositionInfo == null) {
 			playerPositionInfo = new PlayerPositionInfo();
 			playerPositionInfo.setPlayerId(playerId);
-			FieldInfo fieldTemp = MapProxyManager.getFieldTempInfo(GamePlayer.BORN_MAP);
-			playerPositionInfo.setMapId(GamePlayer.BORN_MAP);
-			playerPositionInfo.setMapTempId(GamePlayer.BORN_MAP);
+			FieldInfo fieldTemp = MapProxyManager.getFieldTempInfo(SystemConfigTemplateMgr.getInitBorn());
+			playerPositionInfo.setMapId(fieldTemp.getMapKey());
+			playerPositionInfo.setMapTempId(fieldTemp.getMapKey());
 			playerPositionInfo.setX(Vector3BuilderHelper.build(fieldTemp.getPosition()).getX());
 			playerPositionInfo.setY(Vector3BuilderHelper.build(fieldTemp.getPosition()).getY());
 			playerPositionInfo.setZ(Vector3BuilderHelper.build(fieldTemp.getPosition()).getZ());

@@ -181,6 +181,9 @@ public interface ClientProtocol {
 	// ==================================================================
 	/** 商城信息请求返回  */
 	public static final short U_RESP_MALL_INFO                   = 554;  
+	
+	/** 请求简单快照信息 */
+	public static final short U_RESP_PLAYER_SIMPLE               = 555;
 	//===============================================================
 
 	/** 返回坐骑信息 */
@@ -294,6 +297,9 @@ public interface ClientProtocol {
 	public static final short U_CHAT_RECEIVE = 149;
 	/** 发送给客户端聊天记录 */
 	public static final short U_CHAT_HISTORY_RESP = 150;
+	
+	/** 背包格子解锁 */
+	public static final short U_BAG_GRID_UNLOCK = 151;
 
 	/** 获取时装信息 */
 	public static short U_FASHION_GET = 201;

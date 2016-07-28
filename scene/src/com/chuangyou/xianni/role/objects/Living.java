@@ -1,6 +1,8 @@
 package com.chuangyou.xianni.role.objects;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -21,6 +23,7 @@ import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListM
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
 import com.chuangyou.common.protobuf.pb.battle.LivingStateChangeMsgProto.LivingStateChangeMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
+import com.chuangyou.common.util.AccessTextFile;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.Vector3;
@@ -469,8 +472,7 @@ public class Living extends AbstractActionQueue {
 	 * @param pmsg
 	 */
 	public void readProperty(PropertyListMsg pmsg) {
-		List<PropertyMsg> properties = pmsg.getPropertysList();
-
+		List<PropertyMsg> properties = new ArrayList<>(pmsg.getPropertysList());
 		readProperty(properties);
 	}
 
@@ -538,30 +540,52 @@ public class Living extends AbstractActionQueue {
 
 		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
 		nears.add(living.getArmyId());
-		// System.out.println("==========修改 living: " + living + " msg:" + msg.toString());
+		// System.out.println("==========修改 living: " + living + " msg:" +
+		// msg.toString());
 		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_RESP_PLAYER_ATT_UPDATE, msg.build());
 
 	}
 
-	public void updata(List<PropertyMsg> properties) {
-		readProperty(properties);
-		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
-		nears.add(getArmyId());
-		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_G_BATTLEPLAYERINFO, getBattlePlayerInfoMsg().build());
-	}
+	// public void updata(List<PropertyMsg> properties) {
+	// readProperty(properties);
+	// Set<Long> nears = getNears(new PlayerSelectorHelper(this));
+	// nears.add(getArmyId());
+	// BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_G_BATTLEPLAYERINFO,
+	// getBattlePlayerInfoMsg().build());
+	// }
 
 	public void readProperty(List<PropertyMsg> properties) {
-		if (properties != null && properties.size() > 0) {
-			for (PropertyMsg p : properties) {
+		List<PropertyMsg> temp = new ArrayList<>(properties);
+		if (temp != null && temp.size() > 0) {
+			for (PropertyMsg p : temp) {
 				// 设置最大气血
 				if (p.getType() == EnumAttr.BLOOD.getValue()) {
-					setProperty(EnumAttr.MAX_BLOOD, p.getTotalPoint());
+					long add = p.getTotalPoint() - getProperty(EnumAttr.BLOOD.getValue());
+					if (add != 0) {
+						long maxBlood = getProperty(EnumAttr.MAX_BLOOD.getValue());
+						long newMaxB = maxBlood + add;
+						setProperty(EnumAttr.MAX_BLOOD, newMaxB);
+						PropertyMsg.Builder speedMsg = PropertyMsg.newBuilder();
+						speedMsg.setType(EnumAttr.MAX_BLOOD.getValue());
+						speedMsg.setTotalPoint(newMaxB);
+						properties.add(speedMsg.build());						
+						addCurBlood((int) add);
+					}
 				}
 				// 设置最大元魂
 				if (p.getType() == EnumAttr.SOUL.getValue()) {
-					setProperty(EnumAttr.MAX_SOUL, p.getTotalPoint());
+					long add = p.getTotalPoint() - getProperty(EnumAttr.SOUL.getValue());
+					if (add != 0) {
+						long maxSoul = getProperty(EnumAttr.MAX_SOUL.getValue());
+						long newMaxS = maxSoul + add;
+						setProperty(EnumAttr.MAX_SOUL, newMaxS);
+						PropertyMsg.Builder speedMsg = PropertyMsg.newBuilder();
+						speedMsg.setType(EnumAttr.MAX_SOUL.getValue());
+						speedMsg.setTotalPoint(newMaxS);
+						properties.add(speedMsg.build());
+						addCurSoul((int) add);
+					}
 				}
-
 			}
 			for (PropertyMsg p : properties) {
 				EnumAttr attr = EnumAttr.getEnumAttrByValue(p.getType());
@@ -1634,17 +1658,33 @@ public class Living extends AbstractActionQueue {
 	}
 
 	/**
-	 * 获取随机技能
+	 * 获取攻击技能
 	 * 
 	 * @return
 	 */
-	public Skill getRandSkill() {
+	public Skill getAttackSkill() {
+		Skill skill = null;
 		if (this.drivingSkills.isEmpty())
 			return null;
-		Integer[] keys = this.drivingSkills.keySet().toArray(new Integer[0]);
-		Integer randomKey = MathUtils.randomClamp(0, this.drivingSkills.size() - 1);
-		Integer key = keys[randomKey];
-		Skill skill = this.drivingSkills.get(key);
+		// Integer[] keys = this.drivingSkills.keySet().toArray(new Integer[0]);
+		// Integer randomKey = MathUtils.randomClamp(0, this.drivingSkills.size() - 1);
+		// Integer key = keys[randomKey];
+		// skill = this.drivingSkills.get(key);
+		List<Map.Entry<Integer, Skill>> skills = new ArrayList<Map.Entry<Integer, Skill>>(this.drivingSkills.entrySet());
+		Collections.sort(skills, new Comparator<Map.Entry<Integer, Skill>>() {
+			public int compare(Map.Entry<Integer, Skill> o1, Map.Entry<Integer, Skill> o2) {
+				return (o2.getValue().getTemplateInfo().getCooldown() - o1.getValue().getTemplateInfo().getCooldown());
+			}
+		});
+		for (int i = 0; i < skills.size(); i++) {
+			if (isCooldowning(CoolDownTypes.SKILL, skills.get(i).getValue().getActionId() + "")) {
+				if (i == skills.size() - 1)
+					skill = skills.get(i).getValue();
+				continue;
+			}
+			skill = skills.get(i).getValue();
+			break;
+		}
 		return skill;
 	}
 
@@ -1827,6 +1867,67 @@ public class Living extends AbstractActionQueue {
 			PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
 			if (army != null) {
 				army.sendPbMessage(message);
+			}
+		}
+	}
+
+	public void addCurBlood(int addValue) {
+		List<Damage> damages = new ArrayList<>();
+
+		Damage blood = new Damage(this, this);
+		blood.setDamageType(EnumAttr.CUR_BLOOD.getValue());
+		blood.setDamageValue(-addValue);
+		blood.setSource(this);
+		blood.setCalcType(DamageEffecterType.BLOOD);
+		damages.add(blood);
+		takeDamage(blood);
+
+		DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
+		damagesPb.setAttackId(-1);
+		for (Damage d : damages) {
+			DamageMsg.Builder dmsg = DamageMsg.newBuilder();
+			d.writeProto(dmsg);
+			damagesPb.addDamages(dmsg);
+		}
+		Set<Long> players = getNears(new PlayerSelectorHelper(this));
+		// 添加自己
+		players.add(getArmyId());
+		for (Long armyId : players) {
+			ArmyProxy army = WorldMgr.getArmy(armyId);
+			PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
+			if (army != null) {
+				army.sendPbMessage(message);
+			}
+		}
+	}
+
+	public void addCurSoul(int addValue) {
+		List<Damage> damages = new ArrayList<>();
+
+		Damage soul = new Damage(this, this);
+		soul.setDamageType(EnumAttr.CUR_SOUL.getValue());
+		soul.setDamageValue(-addValue);
+		soul.setCalcType(DamageEffecterType.SOUL);
+		soul.setSource(this);
+		damages.add(soul);
+		takeDamage(soul);
+
+		DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
+		damagesPb.setAttackId(-1);
+		for (Damage d : damages) {
+			DamageMsg.Builder dmsg = DamageMsg.newBuilder();
+			d.writeProto(dmsg);
+			damagesPb.addDamages(dmsg);
+		}
+		Set<Long> players = getNears(new PlayerSelectorHelper(this));
+		// 添加自己
+		players.add(getArmyId());
+		for (Long armyId : players) {
+			ArmyProxy army = WorldMgr.getArmy(armyId);
+			PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
+			if (army != null) {
+				army.sendPbMessage(message);
+				System.out.println(damagesPb.build());
 			}
 		}
 	}

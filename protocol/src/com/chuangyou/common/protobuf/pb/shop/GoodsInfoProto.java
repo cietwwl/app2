@@ -404,6 +404,58 @@ public final class GoodsInfoProto {
      * </pre>
      */
     int getVipLv();
+
+    /**
+     * <code>optional string discountStart = 22;</code>
+     *
+     * <pre>
+     *打折开始时间 0：不打折
+     * </pre>
+     */
+    boolean hasDiscountStart();
+    /**
+     * <code>optional string discountStart = 22;</code>
+     *
+     * <pre>
+     *打折开始时间 0：不打折
+     * </pre>
+     */
+    java.lang.String getDiscountStart();
+    /**
+     * <code>optional string discountStart = 22;</code>
+     *
+     * <pre>
+     *打折开始时间 0：不打折
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getDiscountStartBytes();
+
+    /**
+     * <code>optional string discountEnd = 23;</code>
+     *
+     * <pre>
+     *打折结束时间
+     * </pre>
+     */
+    boolean hasDiscountEnd();
+    /**
+     * <code>optional string discountEnd = 23;</code>
+     *
+     * <pre>
+     *打折结束时间
+     * </pre>
+     */
+    java.lang.String getDiscountEnd();
+    /**
+     * <code>optional string discountEnd = 23;</code>
+     *
+     * <pre>
+     *打折结束时间
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getDiscountEndBytes();
   }
   /**
    * Protobuf type {@code GoodsInfo}
@@ -568,6 +620,18 @@ public final class GoodsInfoProto {
             case 168: {
               bitField0_ |= 0x00100000;
               vipLv_ = input.readInt32();
+              break;
+            }
+            case 178: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00200000;
+              discountStart_ = bs;
+              break;
+            }
+            case 186: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00400000;
+              discountEnd_ = bs;
               break;
             }
           }
@@ -1217,6 +1281,114 @@ public final class GoodsInfoProto {
       return vipLv_;
     }
 
+    public static final int DISCOUNTSTART_FIELD_NUMBER = 22;
+    private java.lang.Object discountStart_;
+    /**
+     * <code>optional string discountStart = 22;</code>
+     *
+     * <pre>
+     *打折开始时间 0：不打折
+     * </pre>
+     */
+    public boolean hasDiscountStart() {
+      return ((bitField0_ & 0x00200000) == 0x00200000);
+    }
+    /**
+     * <code>optional string discountStart = 22;</code>
+     *
+     * <pre>
+     *打折开始时间 0：不打折
+     * </pre>
+     */
+    public java.lang.String getDiscountStart() {
+      java.lang.Object ref = discountStart_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          discountStart_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string discountStart = 22;</code>
+     *
+     * <pre>
+     *打折开始时间 0：不打折
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getDiscountStartBytes() {
+      java.lang.Object ref = discountStart_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        discountStart_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int DISCOUNTEND_FIELD_NUMBER = 23;
+    private java.lang.Object discountEnd_;
+    /**
+     * <code>optional string discountEnd = 23;</code>
+     *
+     * <pre>
+     *打折结束时间
+     * </pre>
+     */
+    public boolean hasDiscountEnd() {
+      return ((bitField0_ & 0x00400000) == 0x00400000);
+    }
+    /**
+     * <code>optional string discountEnd = 23;</code>
+     *
+     * <pre>
+     *打折结束时间
+     * </pre>
+     */
+    public java.lang.String getDiscountEnd() {
+      java.lang.Object ref = discountEnd_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          discountEnd_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string discountEnd = 23;</code>
+     *
+     * <pre>
+     *打折结束时间
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getDiscountEndBytes() {
+      java.lang.Object ref = discountEnd_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        discountEnd_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       privateId_ = 0;
       itemType_ = 0;
@@ -1239,6 +1411,8 @@ public final class GoodsInfoProto {
       isPreview_ = 0;
       easyBuy_ = 0;
       vipLv_ = 0;
+      discountStart_ = "";
+      discountEnd_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1360,6 +1534,12 @@ public final class GoodsInfoProto {
       if (((bitField0_ & 0x00100000) == 0x00100000)) {
         output.writeInt32(21, vipLv_);
       }
+      if (((bitField0_ & 0x00200000) == 0x00200000)) {
+        output.writeBytes(22, getDiscountStartBytes());
+      }
+      if (((bitField0_ & 0x00400000) == 0x00400000)) {
+        output.writeBytes(23, getDiscountEndBytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1452,6 +1632,14 @@ public final class GoodsInfoProto {
       if (((bitField0_ & 0x00100000) == 0x00100000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(21, vipLv_);
+      }
+      if (((bitField0_ & 0x00200000) == 0x00200000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(22, getDiscountStartBytes());
+      }
+      if (((bitField0_ & 0x00400000) == 0x00400000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(23, getDiscountEndBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1616,6 +1804,10 @@ public final class GoodsInfoProto {
         bitField0_ = (bitField0_ & ~0x00080000);
         vipLv_ = 0;
         bitField0_ = (bitField0_ & ~0x00100000);
+        discountStart_ = "";
+        bitField0_ = (bitField0_ & ~0x00200000);
+        discountEnd_ = "";
+        bitField0_ = (bitField0_ & ~0x00400000);
         return this;
       }
 
@@ -1728,6 +1920,14 @@ public final class GoodsInfoProto {
           to_bitField0_ |= 0x00100000;
         }
         result.vipLv_ = vipLv_;
+        if (((from_bitField0_ & 0x00200000) == 0x00200000)) {
+          to_bitField0_ |= 0x00200000;
+        }
+        result.discountStart_ = discountStart_;
+        if (((from_bitField0_ & 0x00400000) == 0x00400000)) {
+          to_bitField0_ |= 0x00400000;
+        }
+        result.discountEnd_ = discountEnd_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1814,6 +2014,16 @@ public final class GoodsInfoProto {
         }
         if (other.hasVipLv()) {
           setVipLv(other.getVipLv());
+        }
+        if (other.hasDiscountStart()) {
+          bitField0_ |= 0x00200000;
+          discountStart_ = other.discountStart_;
+          onChanged();
+        }
+        if (other.hasDiscountEnd()) {
+          bitField0_ |= 0x00400000;
+          discountEnd_ = other.discountEnd_;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -3102,6 +3312,206 @@ public final class GoodsInfoProto {
         return this;
       }
 
+      private java.lang.Object discountStart_ = "";
+      /**
+       * <code>optional string discountStart = 22;</code>
+       *
+       * <pre>
+       *打折开始时间 0：不打折
+       * </pre>
+       */
+      public boolean hasDiscountStart() {
+        return ((bitField0_ & 0x00200000) == 0x00200000);
+      }
+      /**
+       * <code>optional string discountStart = 22;</code>
+       *
+       * <pre>
+       *打折开始时间 0：不打折
+       * </pre>
+       */
+      public java.lang.String getDiscountStart() {
+        java.lang.Object ref = discountStart_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            discountStart_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string discountStart = 22;</code>
+       *
+       * <pre>
+       *打折开始时间 0：不打折
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getDiscountStartBytes() {
+        java.lang.Object ref = discountStart_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          discountStart_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string discountStart = 22;</code>
+       *
+       * <pre>
+       *打折开始时间 0：不打折
+       * </pre>
+       */
+      public Builder setDiscountStart(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00200000;
+        discountStart_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string discountStart = 22;</code>
+       *
+       * <pre>
+       *打折开始时间 0：不打折
+       * </pre>
+       */
+      public Builder clearDiscountStart() {
+        bitField0_ = (bitField0_ & ~0x00200000);
+        discountStart_ = getDefaultInstance().getDiscountStart();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string discountStart = 22;</code>
+       *
+       * <pre>
+       *打折开始时间 0：不打折
+       * </pre>
+       */
+      public Builder setDiscountStartBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00200000;
+        discountStart_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object discountEnd_ = "";
+      /**
+       * <code>optional string discountEnd = 23;</code>
+       *
+       * <pre>
+       *打折结束时间
+       * </pre>
+       */
+      public boolean hasDiscountEnd() {
+        return ((bitField0_ & 0x00400000) == 0x00400000);
+      }
+      /**
+       * <code>optional string discountEnd = 23;</code>
+       *
+       * <pre>
+       *打折结束时间
+       * </pre>
+       */
+      public java.lang.String getDiscountEnd() {
+        java.lang.Object ref = discountEnd_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            discountEnd_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string discountEnd = 23;</code>
+       *
+       * <pre>
+       *打折结束时间
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getDiscountEndBytes() {
+        java.lang.Object ref = discountEnd_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          discountEnd_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string discountEnd = 23;</code>
+       *
+       * <pre>
+       *打折结束时间
+       * </pre>
+       */
+      public Builder setDiscountEnd(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00400000;
+        discountEnd_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string discountEnd = 23;</code>
+       *
+       * <pre>
+       *打折结束时间
+       * </pre>
+       */
+      public Builder clearDiscountEnd() {
+        bitField0_ = (bitField0_ & ~0x00400000);
+        discountEnd_ = getDefaultInstance().getDiscountEnd();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string discountEnd = 23;</code>
+       *
+       * <pre>
+       *打折结束时间
+       * </pre>
+       */
+      public Builder setDiscountEndBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00400000;
+        discountEnd_ = value;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:GoodsInfo)
     }
 
@@ -3127,7 +3537,7 @@ public final class GoodsInfoProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\024shop/GoodsInfo.proto\"\217\003\n\tGoodsInfo\022\021\n\t" +
+      "\n\024shop/GoodsInfo.proto\"\273\003\n\tGoodsInfo\022\021\n\t" +
       "privateId\030\001 \002(\005\022\020\n\010itemType\030\002 \001(\005\022\014\n\004bin" +
       "d\030\003 \001(\005\022\021\n\tmoneyType\030\004 \001(\005\022\r\n\005price\030\005 \002(" +
       "\003\022\020\n\010discount\030\006 \002(\005\022\026\n\016serverLimitNum\030\007 " +
@@ -3137,9 +3547,10 @@ public final class GoodsInfoProto {
       "\t\022\021\n\tresetTime\030\016 \002(\005\022\026\n\016serverProcured\030\017" +
       " \001(\005\022\024\n\014roleProcured\030\020 \001(\005\022\013\n\003tab\030\021 \001(\005\022" +
       "\014\n\004sort\030\022 \001(\005\022\021\n\tisPreview\030\023 \001(\005\022\017\n\007easy",
-      "Buy\030\024 \001(\005\022\r\n\005vipLv\030\025 \001(\005B7\n%com.chuangyo" +
-      "u.common.protobuf.pb.shopB\016GoodsInfoProt" +
-      "o"
+      "Buy\030\024 \001(\005\022\r\n\005vipLv\030\025 \001(\005\022\025\n\rdiscountStar" +
+      "t\030\026 \001(\t\022\023\n\013discountEnd\030\027 \001(\tB7\n%com.chua" +
+      "ngyou.common.protobuf.pb.shopB\016GoodsInfo" +
+      "Proto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3158,7 +3569,7 @@ public final class GoodsInfoProto {
     internal_static_GoodsInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_GoodsInfo_descriptor,
-        new java.lang.String[] { "PrivateId", "ItemType", "Bind", "MoneyType", "Price", "Discount", "ServerLimitNum", "PersonLimitNum", "TimeType", "ShelvesTime", "ShelfTime", "StartTime", "EndTime", "ResetTime", "ServerProcured", "RoleProcured", "Tab", "Sort", "IsPreview", "EasyBuy", "VipLv", });
+        new java.lang.String[] { "PrivateId", "ItemType", "Bind", "MoneyType", "Price", "Discount", "ServerLimitNum", "PersonLimitNum", "TimeType", "ShelvesTime", "ShelfTime", "StartTime", "EndTime", "ResetTime", "ServerProcured", "RoleProcured", "Tab", "Sort", "IsPreview", "EasyBuy", "VipLv", "DiscountStart", "DiscountEnd", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

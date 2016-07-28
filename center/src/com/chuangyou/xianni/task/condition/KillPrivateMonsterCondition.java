@@ -3,6 +3,7 @@ package com.chuangyou.xianni.task.condition;
 import java.util.ArrayList;
 
 import com.chuangyou.common.protobuf.pb.gather.SearchPrivateMonsterInnerProto.SearchPrivateMonsterInnerMsg;
+import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.entity.task.TaskCfg;
 import com.chuangyou.xianni.entity.task.TaskInfo;
 import com.chuangyou.xianni.netty.GatewayLinkedSet;
@@ -30,6 +31,10 @@ public class KillPrivateMonsterCondition extends KillMonsterTaskCondition {
 	public void acceptProcess() {
 		ArrayList<Integer> posList = cfg.toMapPos();
 		if(posList.size()==4){
+			if(cfg.getTaskTime()<=0){
+				Log.error("任务 ID:"+cfg.getTaskId()+"刷私有怪任务任务时间不能填0");
+				return;
+			}
 			ScriptInterfaceManager.createPrivateMonster(player.getPlayerId(),cfg.getTargetId(),posList.get(1),
 					posList.get(2),
 					posList.get(3),

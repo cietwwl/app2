@@ -22,7 +22,7 @@ function showDialog(roleId,npcId){
 	 var commandStructClass = Java.type('com.chuangyou.xianni.npcDialog.NpcCommand'); 
 	 var list = new listClass();
 
-	 var dialogText = '这里是编号：'+npcId+'的智能NPC在为你服务'; 
+	 var dialogText = '你最好祈祷别让我抓到你，否则我会让你好看！'; 
 
 	 sendToClient(roleId,list,dialogText);
 	 

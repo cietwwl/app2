@@ -46,10 +46,9 @@ public class AiConfigDaoImpl extends BaseDao implements AiConfigDao {
 					config.setRunBack(rs.getBoolean("runBack"));
 					config.setFullState(rs.getBoolean("fullState"));
 					config.setActiveAttack(rs.getInt("activeAttack"));
-					config.setRewardExp(rs.getBoolean("isRewardExp"));
-					config.setRewardStone(rs.getBoolean("isRewardStone"));
-					config.setDropped(rs.getBoolean("isDropped"));
-					config.setScript(rs.getInt("script"));
+					config.setRewardExp(rs.getInt("rewardExp"));
+					config.setDropSet(rs.getString("dropSet"));
+					config.setScript(rs.getString("script"));
 					list.put(config.getId(), config);
 				}
 			} catch (SQLException e) {

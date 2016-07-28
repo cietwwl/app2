@@ -1,7 +1,9 @@
 package com.chuangyou.xianni.battle.cmd;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.chuangyou.common.protobuf.pb.battle.AttackOrderProto.AttackOrderMsg;
 import com.chuangyou.common.util.Log;
@@ -12,13 +14,17 @@ import com.chuangyou.xianni.battle.OrderFactory;
 import com.chuangyou.xianni.battle.action.OrderExecAction;
 import com.chuangyou.xianni.battle.skill.Skill;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
+import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.BattleModeCode;
+import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.drop.manager.DropManager;
 import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.objects.Living;
+import com.chuangyou.xianni.role.objects.Monster;
 import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.socket.Cmd;
 import com.chuangyou.xianni.warfield.FieldMgr;
@@ -64,14 +70,17 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 		String endTime = field.getFieldInfo().getEndBattleTime();
 
 		// System.out.println(field.getFieldInfo().getMapKey());
+
+		int rewardExp = 0;
 		for (long targetId : orderMsg.getTargetsList()) {
 			Living living = field.getLiving(targetId);
 			if (living != null) {
 				// System.out.println("living.getType():" + living.getType() + " " + battleMode + " vs " + living.getBattleMode() + " living.ID = " + living.getId());
 				if (living.getType() == RoleType.player) {
 					if (field.getFieldInfo().isBattle()) {// pk 地图才能攻击
-						// if (((Player) living).getSimpleInfo().getLevel() < 35)
-						// continue;
+						int openLv = SystemConfigTemplateMgr.getIntValue("pk.openLv");
+						if (((Player) living).getSimpleInfo().getLevel() < openLv)
+							continue;
 						if (player.getBattleMode() == BattleModeCode.sectsBattleMode) {
 							if (player.getTeamId() != 0 && player.getTeamId() == ((Player) living).getTeamId())// 队友
 								continue;
@@ -83,6 +92,14 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 						}
 					} else {
 						continue;
+					}
+				} else if (living.getType() == RoleType.monster) {
+					int exp = ((Monster) living).getAiConfig().getRewardExp();
+					rewardExp += exp;
+					// 掉落
+					List<Integer> drop = ((Monster) living).getAiConfig().getDrop();
+					for (Integer integer : drop) {
+						DropManager.drop(player.getArmyId(), living.getId(), integer, army.getPlayer().getField().id, living.getPostion());
 					}
 				}
 				targets.add(living);
@@ -120,7 +137,13 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 		// }
 		if (!Vector3.Equal(current, target) && player.checkStatus(LivingState.ATTACK_MOVE))
 			NotifyNearHelper.notifyHelper(field, army, target, new AllSelectorHelper(army.getPlayer()));
-		/////////
+
+		// 奖励经验
+		if (rewardExp > 0) {
+			Map<Integer, Long> changeMap = new HashMap<>();
+			changeMap.put(Integer.valueOf(EnumAttr.Exp.getValue()), Long.valueOf(rewardExp));
+			player.notifyCenter(changeMap, player.getArmyId());
+		}
 
 	}
 

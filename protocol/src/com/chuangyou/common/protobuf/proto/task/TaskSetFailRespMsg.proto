@@ -4,6 +4,7 @@ option java_outer_classname = "TaskSetFailRespProto";
 
 //任务操作
 message TaskSetFailRespMsg {
+
 	required int32 taskId = 1;
 
 }

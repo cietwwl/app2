@@ -1,6 +1,7 @@
 package com.chuangyou.xianni.shop.action;
 
 import com.chuangyou.common.protobuf.pb.shop.BuyGoodsRespProto.BuyGoodsRespMsg;
+import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.shop.ShopCfg;
@@ -30,7 +31,7 @@ public class BuyGoodsAction extends BaseBuyGoodsAction implements IBuyGoods {
 		ResetLogicFactory.getResetLogic(player, cfg).reset(player, cfg);
 		
 		//todo 校对一下价格是否正确。若不正确。同步数据给客户端
-		if(Math.ceil(cfg.getPrice()*num*cfg.getDiscount()*0.01)!=totalPrice){
+		if(Math.ceil(cfg.getPrice()*num*getDiscount()*0.01)!=totalPrice){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.ERROR_PRICE, Protocol.C_REQ_BUYGOODS,"价格不对");
 			
 			BuyGoodsRespMsg.Builder msg = ShopMsgHelper.getBuyResult(player, cfg, false);
@@ -42,8 +43,19 @@ public class BuyGoodsAction extends BaseBuyGoodsAction implements IBuyGoods {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIP_LEVEL_UNENOUGH, Protocol.C_REQ_BUYGOODS,"VIP等级不够");
 			return;
 		}
-		getLimitBuy().limitBuy(num, totalPrice);
-		
+		getLimitBuy().limitBuy(num, totalPrice);		
+	}
+	
+	
+	private int getDiscount(){
+		if(cfg.getDiscountStart().equals("0") || cfg.getDiscountEnd().equals("0"))return cfg.getDiscount();
+		if(TimeUtil.isInDate(System.currentTimeMillis(), 
+				TimeUtil.getDateByString(cfg.getDiscountStart(),3),
+				TimeUtil.getDateByString(cfg.getDiscountEnd(),3))){
+			return cfg.getDiscount();
+		}else{
+			return 100;
+		}
 	}
 
 	@Override

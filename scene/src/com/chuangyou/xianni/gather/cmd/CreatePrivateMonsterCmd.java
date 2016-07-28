@@ -1,12 +1,17 @@
 package com.chuangyou.xianni.gather.cmd;
 
+import java.util.List;
+
 import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
 import com.chuangyou.common.protobuf.pb.gather.CreatePrivateMonsterInnerProto.CreatePrivateMonsterInnerMsg;
+import com.chuangyou.common.protobuf.pb.gather.SearchPrivateMonsterInnerProto.SearchPrivateMonsterInnerMsg;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.role.PrivateMonsterMgr;
 import com.chuangyou.xianni.role.action.CreatePrivateMonsterAction;
+import com.chuangyou.xianni.role.objects.PrivateMonster;
 import com.chuangyou.xianni.role.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.socket.Cmd;
 import com.chuangyou.xianni.socket.Command;
@@ -27,7 +32,22 @@ public class CreatePrivateMonsterCmd implements Command {
 		int monsterId = msg.getMonsterId();
 		int leaveTime = msg.getLeaveTime();
 		int mapId     = msg.getMapId();
-			
+		
+		//检测一下此种怪物其它的时间 是否到了.因为检测细度问题.可能会有一些误差.这个地方做一个特殊处理
+		List<PrivateMonster> list = PrivateMonsterMgr.get(playerId);
+		if(list.size()>0){
+			for (PrivateMonster privateMonster : list) {
+				if(privateMonster.getSkin()==monsterId){
+					if (privateMonster.expired()) {
+						privateMonster.destory();
+						if (privateMonster.getField() != null) {
+							privateMonster.getField().leaveField(privateMonster);
+						}
+					}				
+				}
+			}
+		}
+		
 		ArmyProxy army = WorldMgr.getArmy(playerId);
 		MonsterInfo monsterInfo = MonsterInfoTemplateMgr.get(monsterId);
 		if(army!=null && monsterInfo!=null){	

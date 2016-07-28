@@ -154,9 +154,9 @@ public class PlayerCreateCmd implements Command {
 
 			PlayerPositionInfo playerPositionInfo = new PlayerPositionInfo();
 			playerPositionInfo.setPlayerId(playerInfo.getPlayerId());
-			FieldInfo fieldTemp = MapProxyManager.getFieldTempInfo(GamePlayer.BORN_MAP);
-			playerPositionInfo.setMapId(GamePlayer.BORN_MAP);
-			playerPositionInfo.setMapTempId(GamePlayer.BORN_MAP);
+			FieldInfo fieldTemp = MapProxyManager.getFieldTempInfo(SystemConfigTemplateMgr.getInitBorn());
+			playerPositionInfo.setMapId(fieldTemp.getMapKey());
+			playerPositionInfo.setMapTempId(fieldTemp.getMapKey());
 			playerPositionInfo.setX(Vector3BuilderHelper.build(fieldTemp.getPosition()).getX());
 			playerPositionInfo.setY(Vector3BuilderHelper.build(fieldTemp.getPosition()).getY());
 			playerPositionInfo.setZ(Vector3BuilderHelper.build(fieldTemp.getPosition()).getZ());

@@ -10,6 +10,7 @@ import com.chuangyou.common.protobuf.pb.PlayerKillMonsterProto.PlayerKillMonster
 import com.chuangyou.common.protobuf.pb.battle.BufferMsgProto.BufferMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
+import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.ai.proxy.MonsterAI;
@@ -37,7 +38,11 @@ import com.chuangyou.xianni.role.action.UpdatePositionAction;
 import com.chuangyou.xianni.role.helper.Hatred;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
+import com.chuangyou.xianni.role.script.IMonsterDie;
 import com.chuangyou.xianni.role.template.AiConfigTemplateMgr;
+import com.chuangyou.xianni.script.IScript;
+import com.chuangyou.xianni.script.manager.ScriptManager;
+import com.chuangyou.xianni.touchPoint.script.ITouchPointTrigger;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.spawn.MonsterSpawnNode;
@@ -61,7 +66,6 @@ public class Monster extends ActiveLiving {
 	private int curSkillID;
 	private static final int invincibleBufferId = 99999999;// 无敌buffer id
 	private Buffer invincibleBuffer = null;
-	
 
 	public int getCurSkillID() {
 		return curSkillID;
@@ -115,6 +119,14 @@ public class Monster extends ActiveLiving {
 			DropManager.dropFromMonster(this.getSkin(), killer.getArmyId(), this.getId(), this.getField().id, this.getPostion());
 			DieAction die = new DieAction(this, killer, 1000);
 			die.getActionQueue().enDelayQueue(die);
+
+			IScript iScript = ScriptManager.getScriptById(getAiConfig().getScript());
+			if (iScript != null) {
+				IMonsterDie script = (IMonsterDie) iScript;
+				script.action(killer.getArmyId(), getMonsterInfo().getMonsterId());
+			} else {
+				Log.error("-------------getAiConfig().getScript()-------------" + getAiConfig().getScript());
+			}
 		}
 		return true;
 	}

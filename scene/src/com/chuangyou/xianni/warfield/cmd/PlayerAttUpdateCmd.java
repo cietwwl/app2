@@ -27,20 +27,32 @@ public class PlayerAttUpdateCmd extends AbstractCommand {
 
 		// 改变属性的玩家
 		ArmyProxy pArmy = WorldMgr.getArmy(req.getPlayerId());
-		if(pArmy == null) return;
-		
+		if (pArmy == null)
+			return;
+
 		// 修改玩家属性
 		List<PropertyMsg> attList = req.getAttList();
-		pArmy.getPlayer().getSimpleInfo().readProperty(attList);
+
+		// 升级直接满血
+		for (PropertyMsg property : attList) {
+			if (property.getType() == EnumAttr.Level.getValue()) {
+				pArmy.getPlayer().addCurBlood(Integer.MAX_VALUE);
+				pArmy.getPlayer().addCurSoul(Integer.MAX_VALUE);
+				break;
+			}
+		}
 		
-		//创建同步消息
+		// 读取属性
+		pArmy.getPlayer().getSimpleInfo().readProperty(attList);
+
+		// 创建同步消息
 		PlayerAttUpdateMsg.Builder resp = PlayerAttUpdateMsg.newBuilder();
 		resp.setPlayerId(req.getPlayerId());
 		resp.addAllAtt(req.getAttList());
-		
-		//如果是更换坐骑，同时也要更新速度
-		for(PropertyMsg property:attList){
-			if(property.getType() == EnumAttr.Mount.getValue()){
+
+		// 如果是更换坐骑，同时也要更新速度
+		for (PropertyMsg property : attList) {
+			if (property.getType() == EnumAttr.Mount.getValue()) {
 				PropertyMsg.Builder speedMsg = PropertyMsg.newBuilder();
 				speedMsg.setType(EnumAttr.SPEED.getValue());
 				speedMsg.setTotalPoint(pArmy.getPlayer().getProperty(EnumAttr.SPEED.getValue()));
@@ -48,7 +60,7 @@ public class PlayerAttUpdateCmd extends AbstractCommand {
 				break;
 			}
 		}
-		
+
 		// 通知自己
 		PBMessage selfPkg = MessageUtil.buildMessage(Protocol.U_RESP_PLAYER_ATT_UPDATE, resp);
 		pArmy.sendPbMessage(selfPkg);

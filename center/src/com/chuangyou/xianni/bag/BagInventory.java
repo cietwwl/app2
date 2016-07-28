@@ -20,7 +20,7 @@ import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.email.manager.EmailManager;
 import com.chuangyou.xianni.entity.item.BagType;
 import com.chuangyou.xianni.entity.item.BindType;
-import com.chuangyou.xianni.entity.item.ItemInfo;
+import com.chuangyou.xianni.entity.item.ItemInfo; 
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
 import com.chuangyou.xianni.entity.property.BaseProperty;
@@ -216,11 +216,6 @@ public class BagInventory extends AbstractEvent implements IInventory {
 				player.getBasePlayer().addBindCash(count);
 				return true;
 			case CurrencyItemType.MONEY_ITEM:
-				if (BattleModeManager.getColour(this.player.getBasePlayer().getPlayerInfo().getPkVal()) == BattleModeCode.yellow) {
-					count = (int) (count * 0.8);
-				} else if (BattleModeManager.getColour(this.player.getBasePlayer().getPlayerInfo().getPkVal()) == BattleModeCode.red) {
-					count = (int) (count * 0.5);
-				}
 				player.getBasePlayer().addMoney(count);
 				return true;
 			case CurrencyItemType.REPAIR_ITEM:

@@ -1,5 +1,6 @@
 package com.chuangyou.xianni.warfield.cmd;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -31,30 +32,35 @@ public class PlayerPropertyUpdateCmd extends AbstractCommand {
 		if (pArmy != null) {
 			// 修改玩家属性
 			List<PropertyMsg> attList = req.getAttList();
+
+			attList = new ArrayList<>(attList);
 			pArmy.getPlayer().readProperty(attList);
+
+			PlayerAttUpdateMsg.Builder newpacket = PlayerAttUpdateMsg.newBuilder();
+			newpacket.setPlayerId(req.getPlayerId());
+			newpacket.addAllAtt(attList);
 			// 通知自己
-			PBMessage selfPkg = MessageUtil.buildMessage(Protocol.U_RESP_PLAYER_ATT_UPDATE, req);
+			PBMessage selfPkg = MessageUtil.buildMessage(Protocol.U_RESP_PLAYER_ATT_UPDATE, newpacket);
 			pArmy.sendPbMessage(selfPkg);
-			
-			
-			//部分角色属性需要同步给周围玩家
+
+			// 部分角色属性需要同步给周围玩家
 			boolean needNotify = false;
 			PlayerAttUpdateMsg.Builder notifyMsg = PlayerAttUpdateMsg.newBuilder();
-			for(PropertyMsg property:attList){
-				if(property.getType() == EnumAttr.Mount.getValue()){
+			for (PropertyMsg property : attList) {
+				if (property.getType() == EnumAttr.Mount.getValue()) {
 					PropertyMsg.Builder speedMsg = PropertyMsg.newBuilder();
 					speedMsg.setType(EnumAttr.SPEED.getValue());
 					speedMsg.setTotalPoint(pArmy.getPlayer().getProperty(EnumAttr.SPEED.getValue()));
 					notifyMsg.addAtt(speedMsg);
 				}
 			}
-			if(needNotify == true){
+			if (needNotify == true) {
 				notifyMsg.setPlayerId(pArmy.getPlayerId());
-				
-				//通知附近玩家
+
+				// 通知附近玩家
 				Set<Long> nears = pArmy.getPlayer().getNears(new PlayerSelectorHelper(pArmy.getPlayer()));
 				NotifyNearHelper.notifyAttrChange(pArmy, nears, req);
-			}else{
+			} else {
 				notifyMsg.clear();
 				notifyMsg = null;
 			}

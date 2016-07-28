@@ -43,8 +43,8 @@ public abstract class AbstractSkillCalc implements SkillCalc {
 	/**
 	 * 是否miss 闪避公式: 1+（命中-对方闪避）*0.0001∈[25%，100%]
 	 */
-	protected boolean isMiss(int accurate, int dodge) {
-		int probability = Math.min(Math.max(100 + (accurate - dodge), 2500), 7500);
+	protected boolean isHit(int accurate, int dodge) {
+		int probability = Math.min(Math.max(10000 + (accurate - dodge), 2500), 10000);
 		if (random.next(10000) <= probability) {
 			return true;
 		}

@@ -18,7 +18,7 @@ public class ChangeBattleModeCmd extends AbstractCommand {
 		ReqBattleModeMsg req = ReqBattleModeMsg.parseFrom(packet.getBytes());
 		int battleMode = req.getBattleMode();
 
-		System.out.println("battleMode: "+battleMode);
+//		System.out.println("battleMode: "+battleMode);
 		boolean result = BattleModeManager.changeBattleMode(player, battleMode, packet.getCode());
 		if (result) {
 			ResBattleModeMsg.Builder res = ResBattleModeMsg.newBuilder();

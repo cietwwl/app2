@@ -22,7 +22,7 @@ function showDialog(roleId,npcId){
 	 var commandStructClass = Java.type('com.chuangyou.xianni.npcDialog.NpcCommand'); 
 	 var list = new listClass();
 
-	 var dialogText = '这里是编号：'+npcId+'的智能NPC在为你服务'; 
+	 var dialogText = '小子，你快点修炼吧！达到婴变期，才能把我弄出去啊！'; 
 
 	 sendToClient(roleId,list,dialogText);
 	 

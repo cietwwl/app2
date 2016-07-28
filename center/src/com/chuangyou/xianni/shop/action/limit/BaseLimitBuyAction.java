@@ -3,7 +3,7 @@ package com.chuangyou.xianni.shop.action.limit;
 import com.chuangyou.common.protobuf.pb.shop.BuyGoodsRespProto.BuyGoodsRespMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.bag.ItemManager;
-import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.constant.CommonType.CurrencyItemType;
 import com.chuangyou.xianni.entity.item.ItemAddType;
 import com.chuangyou.xianni.entity.shop.ShopCfg;
 import com.chuangyou.xianni.player.GamePlayer;
@@ -36,13 +36,13 @@ public abstract class BaseLimitBuyAction extends BaseBuyGoodsAction implements I
 	public IPayBuyGoods getPayBuyGoods() {
 		// TODO Auto-generated method stub
 		if(cfg!=null && player!=null){
-			if(cfg.getMoneyType() == EnumAttr.MONEY.getValue()){
+			if(cfg.getMoneyType() == CurrencyItemType.MONEY_ITEM){
 				return new MoneyPayBuyAction(player, cfg);
-			}else if(cfg.getMoneyType() == EnumAttr.CASH.getValue()){
+			}else if(cfg.getMoneyType() == CurrencyItemType.CASH_ITEM){
 				return new CashPayBuyAction(player, cfg);
-			}else if(cfg.getMoneyType() == EnumAttr.CASH_BIND.getValue()){
+			}else if(cfg.getMoneyType() == CurrencyItemType.CASH_BIND_ITEM){
 				return new BindCashPayBuyAction(player, cfg);
-			}else if(cfg.getMoneyType() == EnumAttr.POINTS.getValue()){
+			}else if(cfg.getMoneyType() == CurrencyItemType.POINTS){
 				return new PointsPayBuyAction(player, cfg);
 			}else {
 				if(ItemManager.findItemTempInfo(cfg.getMoneyType())!=null){

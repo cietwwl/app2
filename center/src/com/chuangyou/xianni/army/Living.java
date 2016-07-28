@@ -517,7 +517,7 @@ public abstract class Living {
 		/*----------------------------人物战斗力--------------------------*/
 		refresh();// 刷新
 		player.getBasePlayer().getPlayerInfo().setFight(fighting);
-		
+
 		PropertyMsg.Builder proMsg = PropertyMsg.newBuilder();
 		proMsg.setType(EnumAttr.FightValue.getValue());
 		proMsg.setTotalPoint(fighting);
@@ -531,13 +531,14 @@ public abstract class Living {
 		for (int i = 0; i < properties.length; i++) {
 			Property property = properties[i];
 			if (property != null) {
-				if (property.isChange()) {
-					updatePlayer(i, property, joinInfo);
-					PropertyMsg.Builder proMsg = PropertyMsg.newBuilder();
-					proMsg.setType(i + 1);
-					property.writeProto(proMsg);
-					msg.addAtt(proMsg);
-				}
+				// if (property.isChange()) {
+				// //此处不受控制（系统A更新属性，B调用属性，C通知时候导致没有通知到）
+				updatePlayer(i, property, joinInfo);
+				PropertyMsg.Builder proMsg = PropertyMsg.newBuilder();
+				proMsg.setType(i + 1);
+				property.writeProto(proMsg);
+				msg.addAtt(proMsg);
+				// }
 			} else {
 				Log.error("------丢失属性-----丢失属性------丢失属性-------丢失属性---", new Exception("丢失属性"));
 			}
@@ -545,7 +546,7 @@ public abstract class Living {
 		/*----------------------------人物战斗力--------------------------*/
 		refresh();// 刷新
 		player.getBasePlayer().getPlayerInfo().setFight(fighting);
-		
+
 		PropertyMsg.Builder proMsg = PropertyMsg.newBuilder();
 		proMsg.setType(EnumAttr.FightValue.getValue());
 		proMsg.setTotalPoint(fighting);

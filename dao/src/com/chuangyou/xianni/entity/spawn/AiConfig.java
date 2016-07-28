@@ -1,5 +1,8 @@
 package com.chuangyou.xianni.entity.spawn;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AiConfig {
 	private int id;
 	private int alertRange;// 警戒范围
@@ -12,10 +15,12 @@ public class AiConfig {
 	private boolean runBack;// 返回出生点
 	private boolean fullState;// 恢复满状态
 	private int activeAttack;// 主动攻击 0 不攻击 1 攻击玩家 2 攻击怪物
-	private boolean isRewardExp;// 是否奖励经验
-	private boolean isRewardStone;// 是否奖励灵石
-	private boolean isDropped;// 是否掉落
-	private int script;// 脚本
+
+	private boolean isOpenRunBack;// 是否逃跑
+	private int rewardExp;// 每次被攻击奖励经验
+	private String dropSet;// 每次被攻击 掉落集合
+	private String script;// 死亡后的脚本
+	private List<Integer> drop = new ArrayList<>();
 
 	public int getId() {
 		return id;
@@ -89,36 +94,46 @@ public class AiConfig {
 		this.fullState = fullState;
 	}
 
-	public boolean isRewardExp() {
-		return isRewardExp;
+	public int getRewardExp() {
+		return rewardExp;
 	}
 
-	public void setRewardExp(boolean isRewardExp) {
-		this.isRewardExp = isRewardExp;
+	public void setRewardExp(int rewardExp) {
+		this.rewardExp = rewardExp;
 	}
 
-	public boolean isRewardStone() {
-		return isRewardStone;
+	public String getDropSet() {
+		return dropSet;
 	}
 
-	public void setRewardStone(boolean isRewardStone) {
-		this.isRewardStone = isRewardStone;
+	public void setDropSet(String dropSet) {
+		this.dropSet = dropSet;
+		if (dropSet != null) {
+			for (String str : dropSet.split(",")) {
+				if (!str.isEmpty())
+					drop.add(Integer.valueOf(str));
+			}
+		}
 	}
 
-	public boolean isDropped() {
-		return isDropped;
+	public List<Integer> getDrop() {
+		return drop;
 	}
 
-	public void setDropped(boolean isDropped) {
-		this.isDropped = isDropped;
-	}
-
-	public int getScript() {
+	public String getScript() {
 		return script;
 	}
 
-	public void setScript(int script) {
+	public void setScript(String script) {
 		this.script = script;
+	}
+
+	public boolean isOpenRunBack() {
+		return isOpenRunBack;
+	}
+
+	public void setOpenRunBack(boolean isOpenRunBack) {
+		this.isOpenRunBack = isOpenRunBack;
 	}
 
 	public int getActiveAttack() {

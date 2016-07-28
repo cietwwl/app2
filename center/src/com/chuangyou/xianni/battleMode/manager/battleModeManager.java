@@ -37,24 +37,24 @@ public class BattleModeManager {
 		int playerLv = player.getBasePlayer().getPlayerInfo().getLevel();
 		int pkVal = player.getBasePlayer().getPlayerInfo().getPkVal();
 		int openLv = SystemConfigTemplateMgr.getIntValue("pk.openLv");
-//		if (playerLv < openLv) {
-//			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.CHANGE_BATTLE, protocolCode);
-//			return false;
-//		}
+		if (playerLv < openLv) {
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.CHANGE_BATTLE, protocolCode);
+			return false;
+		}
 		if (nowBattleMode == battleMode) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.CHANGE_BATTLE1, protocolCode);
-			System.out.println("------nowBattleMode :" + nowBattleMode + " battleMode: " + battleMode);
+//			System.out.println("------nowBattleMode :" + nowBattleMode + " battleMode: " + battleMode);
 			return false;
 		}
 
 		if (getColour(pkVal) > BattleModeCode.white) {// 白名以上不能切换
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.CHANGE_BATTLE1, protocolCode);
-			System.out.println("-----pkVal: " + pkVal);
+//			System.out.println("-----pkVal: " + pkVal);
 			return false;
 		}
 		if (battleMode == BattleModeCode.peaceBattleMode) {// 需要判断CD时间
 			if (System.currentTimeMillis() - changeBattleModeTime < 5 * 1000) {// cd 时间未过，不能切换
-				System.out.println("-----changeBattleModeTime: " + changeBattleModeTime);
+//				System.out.println("-----changeBattleModeTime: " + changeBattleModeTime);
 				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.CHANGE_BATTLE2, protocolCode);
 				return false;
 			}

@@ -22,7 +22,7 @@ function showDialog(roleId,npcId){
 	 var commandStructClass = Java.type('com.chuangyou.xianni.npcDialog.NpcCommand'); 
 	 var list = new listClass();
 
-	 var dialogText = '这里是编号：'+npcId+'的智能NPC在为你服务'; 
+	 var dialogText = '杀我藤家之人，必受诅咒……厉儿，太爷爷发誓，上穷碧落下黄泉，一定为你报仇！'; 
 
 	 sendToClient(roleId,list,dialogText);
 	 

@@ -22,7 +22,7 @@ function showDialog(roleId,npcId){
 	 var commandStructClass = Java.type('com.chuangyou.xianni.npcDialog.NpcCommand'); 
 	 var list = new listClass();
 
-	 var dialogText = '这里是编号：'+npcId+'的智能NPC在为你服务~~'; 
+	 var dialogText = '我王林一定会仙术有成，光宗耀祖的！'; 
 
 	 sendToClient(roleId,list,dialogText);
 	 

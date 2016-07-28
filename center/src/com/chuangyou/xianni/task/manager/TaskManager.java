@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import com.chuangyou.common.protobuf.pb.task.TaskInfoProto.TaskInfoMsg;
 import com.chuangyou.common.protobuf.pb.task.TaskUpdateRespProto.TaskUpdateRespMsg;
+import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.task.TaskCfg;
@@ -42,6 +43,8 @@ public class TaskManager {
 	 * @param info
 	 */
 	public static void clearDayTask(GamePlayer player,boolean isNotify){
+		if(player==null)return;
+		Log.error("taskInventory:"+player.getTaskInventory());
 		Map<Integer, TaskTriggerInfo> infos = player.getTaskInventory().getTaskInfos();
 		Iterator<Entry<Integer, TaskTriggerInfo>> it = infos.entrySet().iterator();
 		List<TaskInfo> list = new ArrayList<>();		
@@ -70,8 +73,9 @@ public class TaskManager {
 					}
 					removeList.add(t);
 				}
-			}
+			}			
 		}
+		
 		
 		if(removeList.size()>0){
 			for (TaskInfo taskInfo : removeList) {
@@ -85,6 +89,8 @@ public class TaskManager {
 		}
 				
 	}
+	
+	
 	
 	
 	/**

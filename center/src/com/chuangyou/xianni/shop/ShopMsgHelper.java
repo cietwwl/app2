@@ -60,6 +60,9 @@ public class ShopMsgHelper {
 		info.setSort(cfg.getSort());
 		info.setIsPreview(cfg.getIsPreview());
 		info.setEasyBuy(cfg.getEasyBuy());
+		info.setVipLv(cfg.getVipLv());
+		info.setDiscountStart(cfg.getDiscountStart());
+		info.setDiscountEnd(cfg.getDiscountEnd());
 		return info;
 	}
 	

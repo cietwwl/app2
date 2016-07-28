@@ -11,6 +11,7 @@ public class LogManager {
 	public static List<ItemLogInfo> itemLogs = new ArrayList<>();
 	private static List<SkillLogInfo> skillLogInfo = new ArrayList<>();
 	
+	
 	public static void saveLog() {
 		saveItemLog();
 		saveSkillLog();

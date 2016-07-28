@@ -73,10 +73,12 @@ public class Attack extends BaseBehavior {
 		targets.add(tmpTarget);
 		// System.out.println(tmpTarget.getPostion());
 		// AttackOrderControler.attackOrder(getMonster(), getMonster().getCurSkillID(), targets, getMonster().getPostion(), tmpTarget.getPostion());
-		Skill skill = getMonster().getRandSkill();
+		Skill skill = getMonster().getAttackSkill();
 		AttackOrderControler.attackOrder(getMonster(), skill.getActionId(), targets, getMonster().getPostion(), tmpTarget.getPostion());
 		// SceneManagers.cooldownManager.addCooldown(getMonster(), CoolDownTypes.SKILL, null, SceneGlobal.AI_MONSTER_ATTACK_COOL_DOWN);
 		getMonster().addCooldown(CoolDownTypes.SKILL, null, getMonster().getAiConfig().getAttackSpeed() * 1000);
+
+		getMonster().addCooldown(CoolDownTypes.SKILL, skill.getActionId() + "", skill.getTemplateInfo().getCooldown() * 1000);
 	}
 
 	@Override

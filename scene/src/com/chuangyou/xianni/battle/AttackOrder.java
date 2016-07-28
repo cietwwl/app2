@@ -68,12 +68,13 @@ public class AttackOrder {
 		}
 		if (targets == null || targets.size() == 0) {
 			// 没有目标，只广播动作
-			Log.error("attackId :" + this.attackId);
+			//Log.error("attackId :" + this.attackId);
 			sendDamages();
 			return false;
 		}
 		// 如果玩家已死亡，但使用了死亡可用的技能可以继续执行
 		if (source.isDie()) {
+			Log.error("sourcesource: "+source);
 			isAttack = false;
 			return false;
 		}

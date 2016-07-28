@@ -119,11 +119,15 @@ public interface CenterProtocol {
 	 * 设置NPC对话任务完成
 	 */
 	public static final short	C_REQ_SETNPCDIALOG				= 10532;
+	
 	/** 通关副本 */
 	public static final short	C_REQ_PASS_FB					= 10533;
 
 	/** 回应查找怪物结果 */
 	public static final short	C_INNER_SEARCH_MONSTER			= 10549;
+	
+	/** 任务小飞鞋 */
+	public static final short   C_REQ_TASK_CHANGEMAP              = 10552;
 
 	// ==================================================================
 	// ==========================>采集+触发点<=====================================
@@ -167,7 +171,10 @@ public interface CenterProtocol {
 	public static final short	C_MEMBER_COMMON_OPTION			= 10550;
 	// =================================================================
 	/** 商城信息请求 */
-	public static final short C_REQ_MALL_INFO                   = 10551;  
+	public static final short C_REQ_MALL_INFO                   = 10551; 
+	
+	/** 请求简单快照信息 */
+	public static final short C_REQ_PLAYER_SIMPLE               = 10553;
 	// ==================================================================
 	// =========================>坐骑<===================================
 	/** 获取坐骑信息 */
@@ -279,6 +286,10 @@ public interface CenterProtocol {
 	public static short			C_CHAT_SEND						= 10147;
 	/** 获取聊天记录 */
 	public static short			C_CHAT_HISTORY_REQ				= 10148;
+	
+	
+	/** 背包格子解锁 */
+	public static short			C_BAG_GRID_UNLOCK				= 10149;
 
 	// =========================>时装<===================================
 	/** 获取时装信息 */

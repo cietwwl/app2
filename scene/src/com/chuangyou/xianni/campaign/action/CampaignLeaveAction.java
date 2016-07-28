@@ -1,11 +1,9 @@
 package com.chuangyou.xianni.campaign.action;
 
-import com.chuangyou.common.protobuf.pb.campaign.CampaignStatuMsgProto.CampaignStatuMsg;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignFactory;
 import com.chuangyou.xianni.campaign.state.CampaignState;
 import com.chuangyou.xianni.exec.Action;
-import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.world.ArmyProxy;

@@ -5,7 +5,6 @@ import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.NetConfigSet;
 import com.chuangyou.common.util.NetConfigXml;
 import com.chuangyou.common.util.ServerType;
-import com.chuangyou.xianni.SceneServer.ThreadServer;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
 import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;

@@ -96,7 +96,7 @@ public class TaskOperateReqCmd extends AbstractCommand {
 				}
 			}
 			
-			if(cfg.getTaskTarget() == TaskCfg.COMMIT_ITEM){
+			if(cfg.getTaskTarget() == TaskCfg.COMMIT_ITEM || cfg.getTaskTarget() == TaskCfg.PATCH){
 				player.getBagInventory().removeItem(cfg.getTargetId(), cfg.getTargetNum(),ItemRemoveType.TASK_COMMIT);
 			}
 			

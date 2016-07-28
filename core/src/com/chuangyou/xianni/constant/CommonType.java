@@ -19,6 +19,8 @@ public class CommonType {
 		public final static int	REPAIR_ITEM		= 7140000;
 		/** 经验 */
 		public final static int EXP				= 7150000;
+		/** 积分 */
+		public final static int POINTS          = 7160000;
 
 	}
 

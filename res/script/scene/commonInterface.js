@@ -30,3 +30,10 @@ function changeMap(playerId,mapId,x,y,z){
 function createCampaign(playerId,campaignId){
 	com.chuangyou.xianni.script.manager.ScriptInterfaceScenceManager.createCampaign(playerId,campaignId);
 }
+
+/**
+ * 怪我死亡
+ */
+function onDie(playerId,monsterId){
+	com.chuangyou.xianni.script.manager.ScriptInterfaceScenceManager.onDie(playerId,monsterId);
+}

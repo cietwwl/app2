@@ -5,9 +5,11 @@ import com.chuangyou.common.protobuf.pb.ReqChangeMapMsgProto.ReqChangeMapMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.army.ArmyInventory;
+import com.chuangyou.xianni.army.Hero;
 import com.chuangyou.xianni.bag.BagInventory;
 import com.chuangyou.xianni.campaign.CampaignInventory;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
+import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.email.EmailInventory;
 import com.chuangyou.xianni.entity.field.FieldInfo;
@@ -15,6 +17,7 @@ import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.player.PlayerJoinInfo;
 import com.chuangyou.xianni.entity.player.PlayerPositionInfo;
 import com.chuangyou.xianni.entity.player.PlayerTimeInfo;
+import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.event.ObjectEvent;
@@ -45,7 +48,6 @@ import com.chuangyou.xianni.word.WorldMgr;
 import io.netty.channel.Channel;
 
 public class GamePlayer extends AbstractEvent {
-	public static final int		BORN_MAP	= 1005;
 	private CmdTaskQueue		cmdTaskQueue;
 	private ActionQueue			actionQueue;
 
@@ -71,7 +73,7 @@ public class GamePlayer extends AbstractEvent {
 	private PetInventory		petInventory;
 
 	/** 商店购购买信息 */
-	private ShopInventory	shopInventory;
+	private ShopInventory		shopInventory;
 
 	/** 背包 */
 	private BagInventory		bagInventory;
@@ -323,7 +325,6 @@ public class GamePlayer extends AbstractEvent {
 	 * 升级处理
 	 */
 	private void onLevelUpdate() {
-
 		armyInventory.getArmy().getHero().addTemp(PlayerManager.getTempProperty(this));
 		armyInventory.updateProperty();
 	}
@@ -492,13 +493,18 @@ public class GamePlayer extends AbstractEvent {
 		this.curCampaign = curCampaign;
 	}
 
+	public int getLevel() {
+		return this.basePlayer.getPlayerInfo().getLevel();
+	}
+
 	/** 回到出生点 */
 	public void backBornPoint() {
-		FieldInfo fieldTemp = MapProxyManager.getFieldTempInfo(BORN_MAP);
+		int born_map = SystemConfigTemplateMgr.getInitBorn();
+		FieldInfo fieldTemp = MapProxyManager.getFieldTempInfo(born_map);
 		ReqChangeMapMsg.Builder reqBuilder = ReqChangeMapMsg.newBuilder();
 		PostionMsg.Builder postion = PostionMsg.newBuilder();
-		postion.setMapId(BORN_MAP);
-		postion.setMapKey(BORN_MAP);
+		postion.setMapId(born_map);
+		postion.setMapKey(born_map);
 		postion.setPostion(Vector3BuilderHelper.build(fieldTemp.getPosition()));
 		reqBuilder.setPostionMsg(postion);
 		PBMessage message = MessageUtil.buildMessage(Protocol.S_ENTERSCENE, getPlayerId(), reqBuilder);

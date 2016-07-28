@@ -35,11 +35,14 @@ public class AddMoneyRespone implements BaseRespone {
 				return HttpResult.getResult(Code.SUCCESS, "add bindCash success");
 			}else if(type == EnumAttr.REPAIR.getValue()){
 				player.getBasePlayer().addRepair(num);
-				return HttpResult.getResult(Code.SUCCESS, "add bindCash success");
+				return HttpResult.getResult(Code.SUCCESS, "add REPAIR success");
+			}else if(type == EnumAttr.POINTS.getValue()){
+				player.getBasePlayer().addPoints(num);
+				return HttpResult.getResult(Code.SUCCESS, "add POINTS success");
 			}
 			
 		}
-		return HttpResult.getResult(Code.SUCCESS, "add money fail");
+		return HttpResult.getResult(Code.SUCCESS, "add fail");
 	}
 
 }

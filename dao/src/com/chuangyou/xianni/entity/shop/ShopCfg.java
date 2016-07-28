@@ -1,5 +1,7 @@
 package com.chuangyou.xianni.entity.shop;
 
+import java.util.Date;
+
 import com.chuangyou.common.util.StringUtils;
 import com.chuangyou.common.util.TimeUtil;
 
@@ -65,8 +67,11 @@ public class ShopCfg {
 	private byte easyBuy;
 	/** 购买需要的VIP等级 */
 	private int vipLv;
+	/** 打折开始时间   0:或者空为永久打折*/
+	private String discountStart;
+	/**  打折结束时间  */
+	private String discountEnd;
 	
-
 	/**
 	 * 是否过期 
 	 * @return true:已经过期 
@@ -78,12 +83,31 @@ public class ShopCfg {
 		if(this.shelvesTime.equals("0") && this.shelfTime.equals("0"))return false;
 		//其它类型都判断一下，当前时间是否在上下架时间范围内
 		return !TimeUtil.isInDate(System.currentTimeMillis(), 
-				TimeUtil.getDateByString(this.shelvesTime,2),
-				TimeUtil.getDateByString(this.shelfTime,2));
+				TimeUtil.getDateByString(this.shelvesTime,3),
+				TimeUtil.getDateByString(this.shelfTime,3));		
+	}
+	
+	/**
+	 * 是否可以推送给客户端显示
+	 * @return true:显示。可推送给客户端
+	 */
+	public boolean isShow(){
+		if(this.isExpired()){
+			if(TimeUtil.isInDate(System.currentTimeMillis(), 
+					new Date(),
+					TimeUtil.getDateByString(this.shelfTime,3)) && this.isPreview == 1){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return true;
+		}
 		
 	}
-
-
+	
+	
+	
 	public int getNpcid() {
 		return npcid;
 	}
@@ -364,6 +388,32 @@ public class ShopCfg {
 
 	public void setVipLv(int vipLv) {
 		this.vipLv = vipLv;
+	}
+
+
+	public String getDiscountStart() {
+		return discountStart;
+	}
+
+
+	public void setDiscountStart(String discountStart) {
+		if(StringUtils.isNullOrEmpty(discountStart)){
+			discountStart = "0";
+		}
+		this.discountStart = discountStart;
+	}
+
+
+	public String getDiscountEnd() {
+		return discountEnd;
+	}
+
+
+	public void setDiscountEnd(String discountEnd) {
+		if(StringUtils.isNullOrEmpty(discountEnd)){
+			discountEnd = "0";
+		}
+		this.discountEnd = discountEnd;
 	}
 	
 

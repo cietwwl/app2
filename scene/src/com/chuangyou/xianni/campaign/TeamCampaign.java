@@ -2,8 +2,10 @@ package com.chuangyou.xianni.campaign;
 
 import java.util.List;
 
+import com.chuangyou.common.protobuf.pb.campaign.CampaignInfoMsgProto.CampaignInfoMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CampaignStatuMsgProto.CampaignStatuMsg;
 import com.chuangyou.common.protobuf.pb.campaign.PassFbInnerProto.PassFbInnerMsg;
+import com.chuangyou.xianni.campaign.state.CampaignState;
 import com.chuangyou.xianni.campaign.state.StopState;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.netty.GatewayLinkedSet;
@@ -74,7 +76,33 @@ public class TeamCampaign extends Campaign {
 				}
 			}
 		}
+	}
 
+	public void onKick(ArmyProxy army) {
+
+		/** 组队副本，当所有人离开时，销毁副本 */
+		if (isEmpty() && getState().getCode() != CampaignState.STOP) {
+			over();
+		} else {
+			CampaignStatuMsg.Builder cstatu = CampaignStatuMsg.newBuilder();
+			cstatu.setCampaignId(getIndexId());
+			cstatu.setStatu(0);// 退出
+			PBMessage statuMsg = MessageUtil.buildMessage(Protocol.C_CAMPAIGN_STATU, cstatu);
+			army.sendPbMessage(statuMsg);
+
+			PBMessage quit = new PBMessage(Protocol.C_QUIT_CAMPAIGN);
+			army.sendPbMessage(quit);
+			removeArmy(army);
+
+			CampaignInfoMsg.Builder infoMsg = CampaignInfoMsg.newBuilder();
+			infoMsg.setId(id);
+			infoMsg.setCount(armys.size());
+			infoMsg.setCreaterId(creater);
+			infoMsg.setState(CampaignState.STOP);
+			infoMsg.setTempId(campaignId);
+			PBMessage message = MessageUtil.buildMessage(Protocol.U_CAMPAIGN_INFO, infoMsg);
+			army.sendPbMessage(message);
+		}
 	}
 
 	public void setTeamId(int teamId) {

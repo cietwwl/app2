@@ -3,7 +3,6 @@ package com.chuangyou.xianni.player;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import com.chuangyou.common.util.LockData;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.common.template.LevelUpTempleteMgr;
@@ -26,25 +25,25 @@ import com.chuangyou.xianni.player.event.PlayerSceneAttEvent;
 public class BasePlayer extends AbstractEvent {
 
 	/** 玩家详细信息 */
-	private PlayerInfo playerInfo;
+	private PlayerInfo			playerInfo;
 
 	/** 玩家加成属性信息 */
-	private PlayerJoinInfo playerJoinInfo;
+	private PlayerJoinInfo		playerJoinInfo;
 
 	/** 玩家时间、硽码相关信息 */
-	private PlayerTimeInfo playerTimeInfo;
+	private PlayerTimeInfo		playerTimeInfo;
 
 	/** 玩家临时数据，不入库 */
-	private short onLineStatus = PlayerState.OFFLINE;
+	private short				onLineStatus	= PlayerState.OFFLINE;
 	/** 期望组队目标 */
-	private int teamTarget = 0;
+	private int					teamTarget		= 0;
 
 	/** 玩家移动位置信息 */
-	private PlayerPositionInfo playerPositionInfo;
+	private PlayerPositionInfo	playerPositionInfo;
 
-	private LockData moneyLock = new LockData();
+	private LockData			moneyLock		= new LockData();
 	/*-----------------------更新数据---------------------------*/
-	private AtomicInteger changeCount = new AtomicInteger(0);
+	private AtomicInteger		changeCount		= new AtomicInteger(0);
 
 	public BasePlayer(PlayerInfo playerInfo, PlayerJoinInfo playerJoinInfo, PlayerTimeInfo playerTimeInfo, PlayerPositionInfo playerPositionInfo) {
 		this.playerInfo = playerInfo;
@@ -270,7 +269,62 @@ public class BasePlayer extends AbstractEvent {
 	}
 
 	/**
-	 * @param quest 单条提交
+	 * 添加积分
+	 * 
+	 * @param count
+	 * @return
+	 */
+	public boolean addPoints(int count) {
+		beginChanges();
+		try {
+			if (moneyLock.beginLock()) {
+				this.playerInfo.setPoints(playerInfo.getPoints() + count);
+				this.playerInfo.setOp(Option.Update);
+			} else {
+				Log.error("playerId : " + getPlayerInfo().getPlayerId() + " addPoints Lock");
+				return false;
+			}
+		} catch (Exception e) {
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " addPoints", e);
+			return false;
+		} finally {
+			commitChages(EnumAttr.POINTS.getValue(), playerInfo.getPoints());
+			moneyLock.commitLock();
+		}
+		return true;
+	}
+
+	/**
+	 * 消耗积分
+	 * 
+	 * @param count
+	 * @return
+	 */
+	public boolean consumePoints(int count) {
+		if (playerInfo.getPoints() < count)
+			return false;
+		beginChanges();
+		try {
+			if (moneyLock.beginLock()) {
+				this.playerInfo.setPoints(playerInfo.getBindCash() - count);
+				this.playerInfo.setOp(Option.Update);
+			} else {
+				Log.error("playerId : " + getPlayerInfo().getPlayerId() + " consumePoints Lock");
+				return false;
+			}
+		} catch (Exception e) {
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " consumePoints", e);
+			return false;
+		} finally {
+			commitChages(EnumAttr.POINTS.getValue(), playerInfo.getPoints());
+			moneyLock.commitLock();
+		}
+		return true;
+	}
+
+	/**
+	 * @param quest
+	 *            单条提交
 	 */
 	public void onChanged() {
 		try {
@@ -414,7 +468,6 @@ public class BasePlayer extends AbstractEvent {
 	 * @return
 	 */
 	public boolean addExp(long addValue) {
-
 		if (addValue == 0)
 			return false;
 		beginChanges();
@@ -431,7 +484,7 @@ public class BasePlayer extends AbstractEvent {
 				this.playerInfo.setExp(exp);
 				this.playerInfo.setTotalExp(totalExp);
 			}
-			
+
 			LevelUp curLevelTemp = LevelUpTempleteMgr.getPlayerLevelUp(playerInfo.getLevel());
 
 			if (this.playerInfo.getExp() >= curLevelTemp.getExp()) {

@@ -16,7 +16,6 @@ public class Hero extends Living {
 	private int			curBlood	= 100000;
 	private int			curSoul		= 100000;
 
-
 	public GamePlayer getPlayer() {
 		return player;
 	}
@@ -51,7 +50,6 @@ public class Hero extends Living {
 
 	}
 
-
 	@Override
 	public void addBag(BaseProperty bagData, BaseProperty bagPer) {
 		super.addBag(bagData, bagPer);
@@ -62,15 +60,24 @@ public class Hero extends Living {
 		PropertyListMsg.Builder propertis = PropertyListMsg.newBuilder();
 		writeProto(gamePlayer, propertis);
 
+		int cSoul = getCurSoul();
+		int cBloold = getCurBlood();
+		// 当等级<=1每次登陆均满血
+		if (gamePlayer.getLevel() <= 1) {
+			cSoul = getTotalProperty(Living.SOUL);
+			cBloold = getTotalProperty(Living.BLOOD);
+		}
+
 		PropertyMsg.Builder cur_hp = PropertyMsg.newBuilder();
 		cur_hp.setType(EnumAttr.CUR_SOUL.getValue());
-		cur_hp.setTotalPoint(getTotalProperty(Living.SOUL));
+		cur_hp.setTotalPoint(cSoul);
 		propertis.addPropertys(cur_hp);
 
 		PropertyMsg.Builder cur_blood = PropertyMsg.newBuilder();
 		cur_blood.setType(EnumAttr.CUR_BLOOD.getValue());
-		cur_blood.setTotalPoint(getTotalProperty(Living.BLOOD));
+		cur_blood.setTotalPoint(cBloold);
 		propertis.addPropertys(cur_blood);
+
 		// 添加pk值
 		PropertyMsg.Builder pkVal = PropertyMsg.newBuilder();
 		pkVal.setType(EnumAttr.PK_VAL.getValue());

@@ -64,6 +64,8 @@ public class ShopConfigDaoImpl extends BaseDao implements ShopConfigDao {
 					info.setIsPreview(rs.getByte("isPreview"));
 					info.setEasyBuy(rs.getByte("easyBuy"));
 					info.setVipLv(rs.getInt("vipLv"));
+					info.setDiscountStart(rs.getString("discountStart"));
+					info.setDiscountEnd(rs.getString("discountEnd"));
 					infos.put(info.getId(), info);
 				}
 			} catch (SQLException e) {

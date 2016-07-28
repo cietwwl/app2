@@ -150,7 +150,6 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 					continue;
 				}
 				if (BattleTempMgr.getActionInfo(skillTempateInfo.getActionId()) == null) {
-					System.out.println("------");
 					continue;
 				}
 				Skill skill = new Skill(BattleTempMgr.getActionInfo(skillTempateInfo.getActionId()));

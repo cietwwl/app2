@@ -328,6 +328,14 @@ public class Team extends AbstractEvent implements Comparable<Team> {
 			PBMessage message = MessageUtil.buildMessage(Protocol.S_CAMPAIGN_OPTION, builder);
 			player.sendPbMessage(message);
 		}
+		TeamMember member = getMember(playerId);
+		if (member != null) {
+			member.setStatu(TeamMember.JOIN_TARGET);
+			List<Long> playerIds = getPlayers(-1);
+			TeamInfoRespMsg.Builder message = getTeamMsg();
+			BroadcastUtil.sendBroadcastPacket(playerIds, Protocol.U_RESP_TEAM_INFO, message.build());
+		}
+
 	}
 
 	public int getId() {

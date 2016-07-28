@@ -11,15 +11,17 @@ public class MonsterInfo {
 
 	private int monsterType;		// 怪物种类
 
-	// private int seekEnemyRange; // 索敌范围
-	//
-	// private int attackRange; // 攻击范围
-	//
-	// private int followUpDistance; // 追击距离
-	//
-	// private int moveSpeed; // 移动速度
-	//
-	// private int attackSpeed; // 攻击速度
+	private int alertRange; // 警戒范围
+
+	private int seekEnemyRange; // 索敌范围
+
+	private int attackRange; // 攻击范围
+
+	private int followUpDistance; // 追击距离
+
+	private int moveSpeed; // 移动速度
+
+	private int attackSpeed; // 攻击速度
 
 	private long soulHpValue;		// 魂血
 
@@ -103,45 +105,53 @@ public class MonsterInfo {
 		this.monsterType = monsterType;
 	}
 
-	// public int getSeekEnemyRange() {
-	// return seekEnemyRange;
-	// }
-	//
-	// public void setSeekEnemyRange(int seekEnemyRange) {
-	// this.seekEnemyRange = seekEnemyRange;
-	// }
-	//
-	// public int getAttackRange() {
-	// return attackRange;
-	// }
-	//
-	// public void setAttackRange(int attackRange) {
-	// this.attackRange = attackRange;
-	// }
-	//
-	// public int getFollowUpDistance() {
-	// return followUpDistance;
-	// }
-	//
-	// public void setFollowUpDistance(int followUpDistance) {
-	// this.followUpDistance = followUpDistance;
-	// }
-	//
-	// public int getMoveSpeed() {
-	// return moveSpeed;
-	// }
-	//
-	// public void setMoveSpeed(int moveSpeed) {
-	// this.moveSpeed = moveSpeed;
-	// }
-	//
-	// public int getAttackSpeed() {
-	// return attackSpeed;
-	// }
-	//
-	// public void setAttackSpeed(int attackSpeed) {
-	// this.attackSpeed = attackSpeed;
-	// }
+	public int getAlertRange() {
+		return alertRange;
+	}
+
+	public void setAlertRange(int alertRange) {
+		this.alertRange = alertRange;
+	}
+
+	public int getSeekEnemyRange() {
+		return seekEnemyRange;
+	}
+
+	public void setSeekEnemyRange(int seekEnemyRange) {
+		this.seekEnemyRange = seekEnemyRange;
+	}
+
+	public int getAttackRange() {
+		return attackRange;
+	}
+
+	public void setAttackRange(int attackRange) {
+		this.attackRange = attackRange;
+	}
+
+	public int getFollowUpDistance() {
+		return followUpDistance;
+	}
+
+	public void setFollowUpDistance(int followUpDistance) {
+		this.followUpDistance = followUpDistance;
+	}
+
+	public int getMoveSpeed() {
+		return moveSpeed;
+	}
+
+	public void setMoveSpeed(int moveSpeed) {
+		this.moveSpeed = moveSpeed;
+	}
+
+	public int getAttackSpeed() {
+		return attackSpeed;
+	}
+
+	public void setAttackSpeed(int attackSpeed) {
+		this.attackSpeed = attackSpeed;
+	}
 
 	public long getSoulHpValue() {
 		return soulHpValue;

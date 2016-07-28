@@ -1,6 +1,6 @@
 package com.chuangyou.xianni.task.cmd;
 
-import com.chuangyou.common.protobuf.pb.task.TaskSetFailReqProto.TaskSetNpcDialogReqMsg;
+import com.chuangyou.common.protobuf.pb.task.TaskSetNpcDialogReqProto.TaskSetNpcDialogReqMsg;
 import com.chuangyou.common.protobuf.pb.task.TaskSetNpcDialogRespProto.TaskSetNpcDialogRespMsg;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.event.EventNameType;

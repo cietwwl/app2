@@ -421,12 +421,12 @@ public class BaseBag extends AbstractBag {
 
 			SimpleProperty property = SkillUtil.readPro(itemBase);
 
-			float proVal = (property.getValue() + 1 * grow) * (1 + 1 + qualityCoefficient); // 装备属性=（初始属性+装备等级*属性成长值）*（1+装备等级+品质系数）
+			float proVal = (property.getValue() + 1 * grow) * (1 + 1 * qualityCoefficient); // 装备属性=（初始属性+装备等级*属性成长值）*（1+装备等级*品质系数）
 
 			if (property.isPre()) {
-				SkillUtil.joinPro(bagPer, property.getType(), (int) proVal);
+				SkillUtil.joinPro(bagPer, property.getType(), (int) Math.ceil(proVal));
 			} else {
-				SkillUtil.joinPro(bagData, property.getType(), (int) proVal);
+				SkillUtil.joinPro(bagData, property.getType(), (int) Math.ceil(proVal));
 			}
 
 			// 2.0,装备属性

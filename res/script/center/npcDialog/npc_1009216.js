@@ -22,7 +22,7 @@ function showDialog(roleId,npcId){
 	 var commandStructClass = Java.type('com.chuangyou.xianni.npcDialog.NpcCommand'); 
 	 var list = new listClass();
 
-	 var dialogText = '这里是编号：'+npcId+'的智能NPC在为你服务'; 
+	 var dialogText = '灵力消耗太大，若不是有灵气液体，恐怕就逃不掉了……'; 
 
 	 sendToClient(roleId,list,dialogText);
 	 

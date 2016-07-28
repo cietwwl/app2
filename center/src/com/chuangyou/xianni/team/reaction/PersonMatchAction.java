@@ -1,6 +1,8 @@
 package com.chuangyou.xianni.team.reaction;
 
 import com.chuangyou.common.protobuf.pb.team.MatchTargetReqProto.MatchTargetReqMsg;
+import com.chuangyou.xianni.common.ErrorCode;
+import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.team.TeamMgr;
@@ -28,6 +30,11 @@ public class PersonMatchAction extends TeamNoAction {
 		// TODO Auto-generated method stub
 		MatchTargetReqMsg msg = MatchTargetReqMsg.parseFrom(packet.getBytes());
 		targetId = msg.getTargetId();
+		
+		if(targetId == TeamMgr.TEAM_NO_TARGET){
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, getProtocol(),"无目标类型不能参与匹配");
+			return;
+		}
 		
 		TeamMgr.removePersonTarget(targetId, player.getPlayerId());
 		player.getBasePlayer().setTeamTarget(targetId);

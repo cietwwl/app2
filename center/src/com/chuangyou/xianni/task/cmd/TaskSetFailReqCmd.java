@@ -2,7 +2,7 @@ package com.chuangyou.xianni.task.cmd;
 
 import java.util.Date;
 
-import com.chuangyou.common.protobuf.pb.task.TaskSetFailReqProtp.TaskSetFailReqMsg;
+import com.chuangyou.common.protobuf.pb.task.TaskSetFailReqProto.TaskSetFailReqMsg;
 import com.chuangyou.common.protobuf.pb.task.TaskSetFailRespProto.TaskSetFailRespMsg;
 import com.chuangyou.common.protobuf.pb.task.TaskUpdateRespProto.TaskUpdateRespMsg;
 import com.chuangyou.xianni.base.AbstractCommand;

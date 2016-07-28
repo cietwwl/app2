@@ -6,6 +6,7 @@ import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
+import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.EnterMapResult;
 import com.chuangyou.xianni.entity.field.FieldInfo;
 import com.chuangyou.xianni.exec.DelayAction;
@@ -20,9 +21,8 @@ import com.chuangyou.xianni.world.ArmyProxy;
 
 /** 人物复活 */
 public class RevivalPlayerAction extends DelayAction {
-	static final int			DEFAULT_MAP	= 1005;
 	/* 死亡CD */
-	private static final int	DeathCD		= 12 * 1000;
+	private static final int	DeathCD	= 9 * 1000;
 
 	private ArmyProxy			army;
 
@@ -51,8 +51,8 @@ public class RevivalPlayerAction extends DelayAction {
 		Campaign campaign = null;
 		// 野外死亡，直接回主城
 		if (field == null || field.getCampaignId() == 0 || (campaign = CampaignMgr.getCampagin(field.getCampaignId())) == null) {
-			field = FieldMgr.getIns().getField(DEFAULT_MAP);
-			FieldInfo fieldTemp = FieldTemplateMgr.getFieldTemp(DEFAULT_MAP);
+			field = FieldMgr.getIns().getField(SystemConfigTemplateMgr.getInitBorn());
+			FieldInfo fieldTemp = FieldTemplateMgr.getFieldTemp(SystemConfigTemplateMgr.getInitBorn());
 			vector3 = fieldTemp.getPosition();
 		} else {
 			// 副本中死亡

@@ -815,6 +815,9 @@ public class TimeUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		if (timeType == 1) {
 			dateStr = getNowYYMMDD() + dateStr;
+		}else if(timeType == 3){
+			 format = "yyyyMMddHHmmss";
+			 sdf =  new SimpleDateFormat(format);
 		}
 		try {
 			date = sdf.parse(dateStr);

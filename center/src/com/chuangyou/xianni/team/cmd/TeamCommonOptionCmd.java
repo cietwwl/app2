@@ -68,7 +68,6 @@ public class TeamCommonOptionCmd extends AbstractCommand {
 		}
 
 		if (msg.getOption() == PERSON_GOING) {
-			team.changeMemberStatu(TeamMember.JOIN_TARGET,  player.getPlayerId());
 			team.goTarget(player.getPlayerId());
 			return;
 		}

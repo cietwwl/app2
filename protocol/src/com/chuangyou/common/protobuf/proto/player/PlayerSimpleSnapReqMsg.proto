@@ -1,0 +1,6 @@
+//protocol=10553;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerSimpleSnapReqProto";
+message PlayerSimpleSnapReqMsg {
+	required int64 playerId = 1;//要查询玩家的角色ID
+}

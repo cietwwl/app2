@@ -62,20 +62,17 @@ public class TeamMember {
 		m.setName(player.getBasePlayer().getPlayerInfo().getNickName());
 		m.setSkinId(player.getBasePlayer().getPlayerInfo().getSkinId());
 		m.setStatu(getStatu());
+		m.setFashionId(player.getBasePlayer().getPlayerInfo().getFashionId());
+		m.setWeapon(player.getBasePlayer().getPlayerInfo().getWeaponId());
+		m.setWing(player.getBasePlayer().getPlayerInfo().getWingId());
 		if (player.getPlayerState() == PlayerState.OFFLINE) {
 			m.setIsOnline(false);
-			m.setFashionId(0);
 			m.setMapId(0);
 			m.setMapKey(0);
-			m.setWeapon(0);
-			m.setWing(0);
 		} else {
 			m.setIsOnline(true);
-			m.setFashionId(0);
 			m.setMapId(player.getBasePlayer().getPlayerPositionInfo().getMapId());
 			m.setMapKey(player.getBasePlayer().getPlayerPositionInfo().getMapTempId());
-			m.setWeapon(0);
-			m.setWing(0);
 		}
 		return m;
 	}

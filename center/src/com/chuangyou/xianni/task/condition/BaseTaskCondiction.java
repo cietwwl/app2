@@ -117,6 +117,10 @@ public abstract class BaseTaskCondiction {
 		return listener;
 	}
 
+	public TaskCfg getCfg() {
+		return cfg;
+	}
+
 	
 	
 	

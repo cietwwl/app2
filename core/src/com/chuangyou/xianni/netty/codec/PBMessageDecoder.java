@@ -56,7 +56,7 @@ public class PBMessageDecoder extends ByteToMessageDecoder {
 				// 剩余长度，是否足够
 				if (lenght - 4 > in.readableBytes()) {
 					// 数据还不够读取,等待下一次读取
-					Log.error("Data not integrity. there is a lack of " + (lenght - in.readableBytes()) + " bytes.");
+					//Log.error("Data not integrity. there is a lack of " + (lenght - in.readableBytes()) + " bytes.");
 					// System.err.println(
 					// "Data not integrity. there is a lack of " + (lenght -
 					// in.readableBytes()) + " bytes.");

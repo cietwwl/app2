@@ -6,7 +6,6 @@ import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpd
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.interfaces.UnlineInventory;
-import com.chuangyou.xianni.pet.manager.PetManager;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.manager.PlayerManager;
 import com.chuangyou.xianni.proto.MessageUtil;

@@ -18,9 +18,9 @@ import com.chuangyou.xianni.role.helper.RoleConstants;
 
 public class Pet extends ActiveLiving {
 
-	private int petSoul;
-	private int petPhysique;
-	private int petQuality;
+	private int	petSoul;
+	private int	petPhysique;
+	private int	petQuality;
 
 	public Pet(long playerId, long id) {
 		super(playerId, id);
@@ -32,7 +32,8 @@ public class Pet extends ActiveLiving {
 		setPetSoul(pet.getPetSoul());
 		setPetPhysique(pet.getPetPhysique());
 		setPetQuality(pet.getPetQuality());
-		readProperty(pet.getPetPropertyList());
+		List<PropertyMsg> attList = new ArrayList<>(pet.getPetPropertyList());
+		readProperty(attList);
 	}
 
 	/**

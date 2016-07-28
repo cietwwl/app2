@@ -48,6 +48,7 @@ public class UpdatePositionAction {// extends DelayAction {
 
 			if (!isValidPoint(target) && !this.activeLiving.isNavFail()) { // 不可站立的点
 				this.activeLiving.stop(true);
+				// activeLiving.navigateto(activeLiving.getGoal());
 				// setUpdate();
 				return;
 			}
@@ -62,7 +63,7 @@ public class UpdatePositionAction {// extends DelayAction {
 				// if (activeLiving.getId() == 1000000000033L)
 				// System.out.println(this.activeLiving.getPostion().toString() + " 设置位置：" + target + " this.activeLiving.getMoveTime()： " + this.activeLiving.getMoveTime()
 				// + "getStep(Speed): " + getStep(activeLiving.getSpeed()));
-				activeLiving.setNavFail(true);
+				activeLiving.setNavFail(false);
 				setPostion(target, playerSelector);
 			}
 		}

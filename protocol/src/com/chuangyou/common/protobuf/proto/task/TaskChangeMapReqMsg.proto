@@ -1,0 +1,10 @@
+//protocol=10552;
+option java_package = "com.chuangyou.common.protobuf.pb.task";
+option java_outer_classname = "TaskChangeMapReqProto";
+
+import "common/PBVector3.proto";
+//请求任务列表
+message TaskChangeMapReqMsg {
+	required int32 mapId = 1;//地图IP
+	required PBVector3 pos = 2;//位置
+}

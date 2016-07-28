@@ -6,10 +6,12 @@ import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
 import com.chuangyou.common.protobuf.pb.campaign.CreateCampaignMsgProto.CreateCampaignMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.entity.field.FieldInfo;
+import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 import com.chuangyou.xianni.exec.CmdTask;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.role.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.warfield.cmd.EnterFieldCmd;
 import com.chuangyou.xianni.warfield.template.FieldTemplateMgr;
 import com.chuangyou.xianni.world.ArmyProxy;
@@ -58,5 +60,11 @@ public class ScriptInterfaceScenceManager {
 		PBMessage p = MessageUtil.buildMessage(Protocol.S_ENTERSCENE, army.getPlayerId(), msg);
 		p.setBytes(p.getMessage().toByteArray());
 		army.enqueue(new CmdTask(new EnterFieldCmd(), null, p, army.getCmdTaskQueue()));
+	}
+
+	public static void onDie(long playerId, int monsterId) {
+		ArmyProxy army = WorldMgr.getArmy(playerId);
+		MonsterInfo monsterInfo = MonsterInfoTemplateMgr.get(monsterId);
+
 	}
 }

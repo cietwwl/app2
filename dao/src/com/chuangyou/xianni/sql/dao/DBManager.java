@@ -26,8 +26,6 @@ import com.chuangyou.xianni.sql.dao.impl.MountEquipDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.MountInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.MountSpecialInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.NpcInfoDaoImpl;
-import com.chuangyou.xianni.sql.dao.impl.NpcShopConfigDaoImpl;
-import com.chuangyou.xianni.sql.dao.impl.NpcShopDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PetConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PetInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PetSkillInfoDaoImpl;
@@ -66,11 +64,6 @@ public class DBManager {
 	 * 好友DAO
 	 */
 	private static final FriendDao			friendDao			= new FriendDaoImpl();
-	/** npc shop */
-	private static final NpcShopDao			npcShopDao			= new NpcShopDaoImpl();
-	
-	/** npc商店模板数据 */
-	private static final NpcShopConfigDao	npcShopConfigDao	= new NpcShopConfigDaoImpl();
 	
 	/** shop */
 	private static final ShopDao			shopDao			= new ShopDaoImpl();
@@ -191,19 +184,7 @@ public class DBManager {
 		return systemConfigDao;
 	}
 
-	/**
-	 * NPC商店
-	 * 
-	 * @return
-	 */
-	public static NpcShopDao getNpcshopdao() {
-		return npcShopDao;
-	}
-	
-	public static NpcShopConfigDao getNpcshopconfigdao() {
-		return npcShopConfigDao;
-	}
-	
+
 	/**
 	 * 商店
 	 * 

@@ -156,6 +156,7 @@ public class CenterServer extends BaseServer {
 	}
 
 	public static void main(String[] args) throws Exception {
+			
 		long time = System.currentTimeMillis();
 		if (args.length <= 0) {
 			System.err.println("请输入配置文件地址路径...启用默认配置文件路径");

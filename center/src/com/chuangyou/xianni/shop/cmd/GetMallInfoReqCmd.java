@@ -19,19 +19,18 @@ import com.chuangyou.xianni.socket.Cmd;
 @Cmd(code=Protocol.C_REQ_MALL_INFO,desc = "请求商城中的数据")
 public class GetMallInfoReqCmd extends AbstractCommand {
 
-	private GamePlayer player;
-	
+
 	@Override
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
 		// TODO Auto-generated method stub
-		this.player = player;
+		
 		GetMallInfoReqMsg req = GetMallInfoReqMsg.parseFrom(packet.getBytes());
 		int type = req.getRequestType();
 		if(type == 1 ){
-			doNormalResult();
+			doNormalResult(player);
 		}else if(type == 2){
 			if(player.getShopInventory().isRefreshData()){
-				doNormalResult();
+				doNormalResult(player);
 			}else{
 				GetMallInfoRespMsg.Builder resp = GetMallInfoRespMsg.newBuilder();
 				resp.setResultType(2);
@@ -44,14 +43,14 @@ public class GetMallInfoReqCmd extends AbstractCommand {
 	/**
 	 * 做正常的数据返回处理
 	 */
-	private void doNormalResult(){
+	private void doNormalResult(GamePlayer player){
 		GetMallInfoRespMsg.Builder resp = GetMallInfoRespMsg.newBuilder();
 		resp.setResultType(1);
-		resp.addInfos(getInfosMsg(ShopCfg.SHOP_NORMAL));
-		resp.addInfos(getInfosMsg(ShopCfg.SHOP_FASION));
-		resp.addInfos(getInfosMsg(ShopCfg.SHOP_LIMIT_BUY));
-		resp.addInfos(getInfosMsg(ShopCfg.SHOP_POINTS));
-		resp.addInfos(getInfosMsg(ShopCfg.SHOP_VIP));
+		resp.addInfos(getInfosMsg(ShopCfg.SHOP_NORMAL,player));
+		resp.addInfos(getInfosMsg(ShopCfg.SHOP_FASION,player));
+		resp.addInfos(getInfosMsg(ShopCfg.SHOP_LIMIT_BUY,player));
+		resp.addInfos(getInfosMsg(ShopCfg.SHOP_POINTS,player));
+		resp.addInfos(getInfosMsg(ShopCfg.SHOP_VIP,player));
 		
 		PBMessage pkg = MessageUtil.buildMessage(Protocol.U_RESP_MALL_INFO,resp);
 		player.sendPbMessage(pkg);
@@ -63,11 +62,12 @@ public class GetMallInfoReqCmd extends AbstractCommand {
 	 * @param shopId
 	 * @return
 	 */
-	private GetNpcShopInfoRespMsg.Builder getInfosMsg(int shopId){
+	private GetNpcShopInfoRespMsg.Builder getInfosMsg(int shopId,GamePlayer player){
 		GetNpcShopInfoRespMsg.Builder infos= GetNpcShopInfoRespMsg.newBuilder();
 		List<ShopCfg> list = ShopTemplateMgr.getShopList(shopId);
 		infos.setNpcShopId(shopId);
 		for (ShopCfg cfg : list) {
+			if(!cfg.isShow())continue;
 			ResetLogicFactory.getResetLogic(player, cfg).reset(player, cfg);
 			infos.addNpcGoodInfos(ShopMsgHelper.getGoodsInfoMsg(player, cfg));
 		}

@@ -2,6 +2,8 @@ package com.chuangyou.xianni.entity_id;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+
+import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.sql.dao.DBManager;
 
 public class EntityIdBuilder {
@@ -9,8 +11,7 @@ public class EntityIdBuilder {
 	private static AtomicLong		PLAYER_ID;
 	private static AtomicLong		ITEM_INFO_ID;
 	private static AtomicInteger	CAMPAIGN_RECORD_ID;
-	private static AtomicInteger    TEAM_ID;
-	
+	private static AtomicInteger	TEAM_ID;
 
 	public static boolean init() {
 		USER_ID = new AtomicLong(DBManager.getUserDao().getMaxId());
@@ -23,34 +24,47 @@ public class EntityIdBuilder {
 
 	public static long userIdBuilder() {
 		synchronized (USER_ID) {
+			if (SystemConfigTemplateMgr.getIdBuiderWay() != 0) {
+				return DBManager.getUserDao().getMaxId();
+			}
 			return USER_ID.getAndIncrement();
 		}
 	}
 
 	public static long playerIdBuilder() {
 		synchronized (PLAYER_ID) {
+			if (SystemConfigTemplateMgr.getIdBuiderWay() != 0) {
+				return DBManager.getPlayerInfoDao().getMaxPlayerId();
+			}
 			return PLAYER_ID.getAndIncrement();
 		}
 	}
 
 	public static long itemIdBuilder() {
 		synchronized (ITEM_INFO_ID) {
+			if (SystemConfigTemplateMgr.getIdBuiderWay() != 0) {
+				return DBManager.getItemInfoDao().getMaxItemId();
+			}
 			return ITEM_INFO_ID.getAndIncrement();
 		}
 	}
 
 	public static int cmRecordIdBuilder() {
 		synchronized (CAMPAIGN_RECORD_ID) {
+			if (SystemConfigTemplateMgr.getIdBuiderWay() != 0) {
+				return DBManager.getCampaignRecordInfoDao().getMaxId();
+			}
 			return CAMPAIGN_RECORD_ID.getAndIncrement();
 		}
 	}
-	
+
 	/**
 	 * 队伍ID生成器
+	 * 
 	 * @return
 	 */
-	public static int teamIdBuilder(){
-		synchronized(TEAM_ID){
+	public static int teamIdBuilder() {
+		synchronized (TEAM_ID) {
 			return TEAM_ID.getAndIncrement();
 		}
 	}

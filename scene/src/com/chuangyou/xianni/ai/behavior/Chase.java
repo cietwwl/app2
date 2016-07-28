@@ -34,7 +34,7 @@ public class Chase extends BaseBehavior {
 		if (checkAttackTarget()) {
 			return;
 		}
-		int followUpDistance = getMonster().getAiConfig().getFollowUpDistance();
+		int followUpDistance = getMonster().getMonsterInfo().getFollowUpDistance();
 		if (followUpDistance == 0) { // 不追击
 			return;
 		}
@@ -65,7 +65,7 @@ public class Chase extends BaseBehavior {
 			getMonster().removeHatred(getMonster().getTarget());
 			return AIState.IDLE;
 		}
-		if (getMonster().getAiConfig().getFollowUpDistance() == 0)// 不追击
+		if (getMonster().getMonsterInfo().getFollowUpDistance() == 0)// 不追击
 			return AIState.IDLE;
 
 		// 获取当前离目标的距离
@@ -73,10 +73,10 @@ public class Chase extends BaseBehavior {
 		float distance = Vector3.distance(getMonster().getInitPosition(), chaseTarget);// 出生点与目标的距离
 		// System.out.println(getMonster().getId() + "---追击怪物位置：" + getMonster().getPostion() + "怪物目标位置：" + l.getPostion());
 		// 脱离追击范围
-		if (distance > getMonster().getAiConfig().getFollowUpDistance()) {
+		if (distance > getMonster().getMonsterInfo().getFollowUpDistance()) {
 			float leaveBornDistance = Vector3.distance(getMonster().getInitPosition(), getMonster().getPostion());// 当前位置与出生点的距离
 			// 在巡逻范围，找其他目标，移除当前的最大仇恨
-			if (leaveBornDistance < getMonster().getAiConfig().getPatrolRange()) {
+			if (leaveBornDistance < getMonster().getMonsterInfo().getSeekEnemyRange()) {
 				getMonster().removeHatred(l.getId());
 				return AIState.IDLE;
 			} else {
@@ -116,7 +116,7 @@ public class Chase extends BaseBehavior {
 		if (l == null)
 			return false;
 		// System.err.println("distance = " + Vector3.distance(getMonster().getPostion(), l.getPostion()));
-		if (Vector3.distance(getMonster().getPostion(), l.getPostion()) <= getMonster().getAiConfig().getAttackDistance())
+		if (Vector3.distance(getMonster().getPostion(), l.getPostion()) <= getMonster().getMonsterInfo().getAttackRange())
 			return true;
 		return false;
 	}

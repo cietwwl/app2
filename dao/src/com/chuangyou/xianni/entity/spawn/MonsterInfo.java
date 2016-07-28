@@ -46,12 +46,6 @@ public class MonsterInfo {
 	private int hurtType;			// 伤害类型
 
 	private int beKilledExp;		// 击杀经验
-	/** 以怪物出生点为圆心的半径范围，-1全图巡逻，0不巡逻 */
-	private int patrolRange;
-	/** 失去目标后是否返回 */
-	private byte isReturn;
-	/** 失去目标后是否恢复满状态 */
-	private byte isRelive;
 
 	/** 死亡掉落 */
 	private int drop1;
@@ -255,38 +249,6 @@ public class MonsterInfo {
 
 	public void setSkin(int skin) {
 		this.skin = skin;
-	}
-
-	public int getPatrolRange() {
-		return patrolRange;
-	}
-
-	public void setPatrolRange(int patrolRange) {
-		this.patrolRange = patrolRange;
-	}
-
-	public byte getIsReturn() {
-		return isReturn;
-	}
-
-	public void setIsReturn(byte isReturn) {
-		this.isReturn = isReturn;
-	}
-
-	public byte getIsRelive() {
-		return isRelive;
-	}
-
-	public void setIsRelive(byte isRelive) {
-		this.isRelive = isRelive;
-	}
-
-	public boolean isReturnOnLostObj() {
-		return this.isReturn == 1;
-	}
-
-	public boolean isReliveOnLostObj() {
-		return this.isRelive == 1;
 	}
 
 	public int getDrop1() {

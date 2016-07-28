@@ -4,7 +4,6 @@ import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.ai.AIState;
 import com.chuangyou.xianni.cooldown.CoolDownTypes;
-import com.chuangyou.xianni.entity.spawn.AiConfig;
 import com.chuangyou.xianni.role.objects.Monster;
 
 public class Patrol extends BaseBehavior {
@@ -24,8 +23,7 @@ public class Patrol extends BaseBehavior {
 	public void exe() {
 		needPatrol = true;
 
-		AiConfig aiConfig = getMonster().getAiConfig();
-		int patrolRange = aiConfig.getPatrolRange();
+		int patrolRange = getMonster().getMonsterInfo().getSeekEnemyRange();
 		if (patrolRange == 0) {
 			needPatrol = false;
 			return;

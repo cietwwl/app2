@@ -35,14 +35,13 @@ public class MonsterSelectPlayerSelectorHelper extends Selector {
 
 	@Override
 	public boolean canSee(Living other) {
-		int aiId = ((Monster) this.master).getMonsterInfo().getAiId();
-		AiConfig aiConfig = AiConfigTemplateMgr.get(aiId);
-		if (aiConfig == null || aiConfig.getAlertRange() <= 0)
+		int alertRange = ((Monster) this.master).getMonsterInfo().getAlertRange();
+		if (alertRange <= 0)
 			return false;
 		Vector3 masterPostion = master.getPostion();
 		Vector3 otherPostion = other.getPostion();
 		float distance = Vector3.distance(masterPostion, otherPostion);
-		if (distance <= aiConfig.getAlertRange())
+		if (distance <= alertRange)
 			return true;
 		return false;
 	}

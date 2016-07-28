@@ -6,7 +6,6 @@ import java.util.List;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.ai.AIState;
 import com.chuangyou.xianni.battle.skill.Skill;
-import com.chuangyou.xianni.config.SceneGlobal;
 import com.chuangyou.xianni.cooldown.CoolDownTypes;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
@@ -42,13 +41,13 @@ public class Attack extends BaseBehavior {
 		// System.out.println(getMonster().getId() + "攻击怪物位置：" + getMonster().getPostion() + "怪物目标位置：" + tmpTarget.getPostion() + "距离："
 		// + Vector3.distance(getMonster().getPostion(), tmpTarget.getPostion()));
 
-		int attackRange = getMonster().getAiConfig().getAttackDistance();
+		int attackRange = getMonster().getMonsterInfo().getAttackRange();
 		// if (getMonster().getId() == 1000000000033L)
 		// System.out.println("getMonster().getPostion(): "+getMonster().getPostion().toString()+" tmpTarget.getPostion(): "+tmpTarget.getPostion().toString()+"
 		// 距离："+Vector3.distance(getMonster().getPostion(), tmpTarget.getPostion()));
 
 		if (Vector3.distance(getMonster().getPostion(), tmpTarget.getPostion()) > attackRange) {// 查询攻击距离，这里暂时写死 = 2
-			if (getMonster().getAiConfig().getFollowUpDistance() == 0) {
+			if (getMonster().getMonsterInfo().getFollowUpDistance() == 0) {
 				needChase = false;
 				return;
 			}
@@ -76,7 +75,7 @@ public class Attack extends BaseBehavior {
 		Skill skill = getMonster().getAttackSkill();
 		AttackOrderControler.attackOrder(getMonster(), skill.getActionId(), targets, getMonster().getPostion(), tmpTarget.getPostion());
 		// SceneManagers.cooldownManager.addCooldown(getMonster(), CoolDownTypes.SKILL, null, SceneGlobal.AI_MONSTER_ATTACK_COOL_DOWN);
-		getMonster().addCooldown(CoolDownTypes.SKILL, null, getMonster().getAiConfig().getAttackSpeed() * 1000);
+		getMonster().addCooldown(CoolDownTypes.SKILL, null, getMonster().getMonsterInfo().getAttackSpeed() * 1000);
 
 		getMonster().addCooldown(CoolDownTypes.SKILL, skill.getActionId() + "", skill.getTemplateInfo().getCooldown() * 1000);
 	}

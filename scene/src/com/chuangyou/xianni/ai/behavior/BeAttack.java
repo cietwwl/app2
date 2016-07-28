@@ -2,8 +2,6 @@ package com.chuangyou.xianni.ai.behavior;
 
 import com.chuangyou.xianni.ai.AIState;
 import com.chuangyou.xianni.cooldown.CoolDownTypes;
-import com.chuangyou.xianni.manager.SceneManagers;
-import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
 
 /**

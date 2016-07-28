@@ -40,11 +40,11 @@ public class Idle extends BaseBehavior {
 			// 脱离追击范围
 			// System.out.println("----怪物出生点：" + getMonster().getInitPosition() + "怪物目标位置：" + tmpTarget.getPostion() + "距离：" + distance);
 
-			int followUpDistance = getMonster().getAiConfig().getFollowUpDistance(); // 追击距离
+			int followUpDistance = getMonster().getMonsterInfo().getFollowUpDistance(); // 追击距离
 			if (followUpDistance == 0) {
 				getMonster().cleanExpiredHatreds();
 				float leaveBornDistance = Vector3.distance(getMonster().getInitPosition(), getMonster().getPostion());
-				if (leaveBornDistance < getMonster().getAiConfig().getPatrolRange())
+				if (leaveBornDistance < getMonster().getMonsterInfo().getSeekEnemyRange())
 					return AIState.PATROL;
 				return AIState.ATTACK;
 			}
@@ -53,7 +53,7 @@ public class Idle extends BaseBehavior {
 				// 清除所有仇恨
 				getMonster().cleanHatreds();
 				float leaveBornDistance = Vector3.distance(getMonster().getInitPosition(), getMonster().getPostion());
-				if (leaveBornDistance < getMonster().getAiConfig().getPatrolRange()) {
+				if (leaveBornDistance < getMonster().getMonsterInfo().getSeekEnemyRange()) {
 					return AIState.PATROL;
 				} else {
 					return AIState.RUNBACK;
@@ -62,17 +62,17 @@ public class Idle extends BaseBehavior {
 				// 在追击范围内，切换到攻击状态
 				if (checkCooldown(CoolDownTypes.SKILL))
 					return AIState.INVALID;
-				if (Vector3.distance(getMonster().getPostion(), tmpTarget.getPostion()) > getMonster().getAiConfig().getAttackDistance())// SceneGlobal.AI_MONSTER_ATTACK_RANGE
+				if (Vector3.distance(getMonster().getPostion(), tmpTarget.getPostion()) > getMonster().getMonsterInfo().getAttackRange())// SceneGlobal.AI_MONSTER_ATTACK_RANGE
 					return AIState.CHASE;
 				return AIState.ATTACK;
 			}
 		}
 
 		float leaveBornDistance = Vector3.distance(getMonster().getInitPosition(), getMonster().getPostion());
-		if (leaveBornDistance < getMonster().getAiConfig().getPatrolRange()) {
+		if (leaveBornDistance < getMonster().getMonsterInfo().getSeekEnemyRange()) {
 			return AIState.PATROL;
 		} else {
-			if (getMonster().getAiConfig().getPatrolRange() == 0)
+			if (getMonster().getMonsterInfo().getSeekEnemyRange() == 0)
 				return AIState.INVALID;
 			
 			return AIState.RUNBACK;

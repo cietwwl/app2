@@ -3,7 +3,6 @@ package com.chuangyou.xianni.ai.behavior;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.ai.AIState;
 import com.chuangyou.xianni.cooldown.CoolDownTypes;
-import com.chuangyou.xianni.manager.SceneManagers;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
 import com.chuangyou.xianni.warfield.FieldMgr;

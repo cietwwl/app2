@@ -27,10 +27,10 @@ import com.chuangyou.xianni.role.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.warfield.field.Field;
 
 public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
-	private int					toalCount;							// 刷怪总数
-	private int					curCount;							// 当前数量
-	private ThreadSafeRandom	random	= new ThreadSafeRandom();
-	private Map<Long, Living>	children;							// 子孙们
+	private int toalCount;							// 刷怪总数
+	private int curCount;							// 当前数量
+	private ThreadSafeRandom random = new ThreadSafeRandom();
+	private Map<Long, Living> children;							// 子孙们
 
 	public MonsterSpawnNode(SpawnInfo info, Field field) {
 		super(info, field);
@@ -93,7 +93,6 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 		}
 		curCount++;
 		toalCount++;
-	
 
 		int randomx = spwanInfo.getBound_x();
 		int randomy = spwanInfo.getBound_y();
@@ -118,8 +117,7 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 	/** 浸染 */
 	public static void instill(Monster monster, MonsterInfo monsterInfo) {
 		monster.setMonsterInfo(monsterInfo);
-		AiConfig ai = AiConfigTemplateMgr.get(monsterInfo.getAiId());
-		monster.setSpeed(ai.getMoveSpeed());
+		monster.setSpeed(monsterInfo.getMoveSpeed());
 		monster.setSkin(monsterInfo.getMonsterId());
 
 		monster.setProperty(EnumAttr.MAX_BLOOD, monsterInfo.getHp());

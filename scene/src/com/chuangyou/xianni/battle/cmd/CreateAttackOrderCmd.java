@@ -99,7 +99,8 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 					// 掉落
 					List<Integer> drop = ((Monster) living).getAiConfig().getDrop();
 					for (Integer integer : drop) {
-						DropManager.drop(player.getArmyId(), living.getId(), integer, army.getPlayer().getField().id, living.getPostion());
+						if (integer > 0)
+							DropManager.drop(player.getArmyId(), living.getId(), integer, army.getPlayer().getField().id, living.getPostion());
 					}
 				}
 				targets.add(living);

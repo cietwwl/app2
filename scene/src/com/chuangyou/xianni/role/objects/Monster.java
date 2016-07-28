@@ -215,7 +215,7 @@ public class Monster extends ActiveLiving {
 			Hatred hatred = null;
 			List<Hatred> hatreds = getHatreds();
 			for (int i = 0; i < hatreds.size(); i++) {
-				if (hatreds.get(i).getTarget() == damage.getSource().id) {
+				if (hatreds.get(i) != null && hatreds.get(i).getTarget() == damage.getSource().id) {
 					hatred = hatreds.remove(i);
 					break;
 				}

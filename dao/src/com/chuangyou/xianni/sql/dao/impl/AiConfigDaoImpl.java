@@ -37,15 +37,13 @@ public class AiConfigDaoImpl extends BaseDao implements AiConfigDao {
 				while (rs.next()) {
 					AiConfig config = new AiConfig();
 					config.setId(rs.getInt("id"));
-					config.setAlertRange(rs.getInt("alertRange"));
-					config.setPatrolRange(rs.getInt("patrolRange"));
-					config.setAttackDistance(rs.getInt("attackDistance"));
-					config.setFollowUpDistance(rs.getInt("followUpDistance"));
-					config.setMoveSpeed(rs.getInt("moveSpeed"));
-					config.setAttackSpeed(rs.getInt("attackSpeed"));
+ 
 					config.setRunBack(rs.getBoolean("runBack"));
 					config.setFullState(rs.getBoolean("fullState"));
-					config.setActiveAttack(rs.getInt("activeAttack"));
+					config.setActiveAttackPlayer(rs.getBoolean("activeAttackPlayer"));
+					config.setActiveAttackSameMonster(rs.getBoolean("activeAttackSameMonster"));
+					config.setActiveAttackNotSameMonster(rs.getBoolean("activeAttackNotSameMonster"));
+					config.setOpenRunBack(rs.getBoolean("isOpenRunBack"));
 					config.setRewardExp(rs.getInt("rewardExp"));
 					config.setDropSet(rs.getString("dropSet"));
 					config.setScript(rs.getString("script"));

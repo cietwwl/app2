@@ -162,9 +162,10 @@ public class UpdatePositionAction {// extends DelayAction {
 	protected void autoAddHatred() {
 		if (this.activeLiving.getType() == RoleType.monster) {
 			Monster monster = (Monster) this.activeLiving;
-			int activeAttackType = monster.getAiConfig().getActiveAttack();// 主动攻击 0 不攻击 1 攻击玩家 2 攻击怪物
-			if (activeAttackType == SceneGlobal.AI_ACTIVEATTACK)
-				return;
+
+			boolean activeAttackPlayer = monster.getAiConfig().isActiveAttackPlayer();
+			boolean activeAttackSameMonster = monster.getAiConfig().isActiveAttackSameMonster();
+			boolean activeAttackNotSameMonster = monster.getAiConfig().isActiveAttackNotSameMonster();
 
 			Set<Long> ids = monster.getNears(playerSelector);// 获得警戒范围内的玩家
 			for (Long id : ids) {
@@ -173,17 +174,21 @@ public class UpdatePositionAction {// extends DelayAction {
 				if (nearLiving == null)
 					continue;
 
-				if (activeAttackType == SceneGlobal.AI_ACTIVEATTACK_PLAYER) {
-					if (nearLiving.getType() != RoleType.player)
+				if (nearLiving.getType() == RoleType.player) {
+					if (!activeAttackPlayer)
 						continue;
-				} else if (activeAttackType == SceneGlobal.AI_ACTIVEATTACK_MONSTER) {
-					if (nearLiving.getType() != RoleType.monster)
-						continue;
+				} else if (nearLiving.getType() == RoleType.monster) {
+					if (monster.getMonsterInfo().getMonsterType() == ((Monster) nearLiving).getMonsterInfo().getMonsterType()) {
+						if (!activeAttackSameMonster)
+							continue;
+					} else {
+						if (!activeAttackNotSameMonster)
+							continue;
+					}
 				}
-
 				List<Hatred> hatreds = monster.getHatreds();
 				for (int i = 0; i < hatreds.size(); i++) {
-					if (hatreds.get(i).getTarget() == id) {
+					if (hatreds.get(i) != null && hatreds.get(i).getTarget() == id) {
 						return;
 					}
 				}

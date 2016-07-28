@@ -5,17 +5,18 @@ import java.util.List;
 
 public class AiConfig {
 	private int id;
-	private int alertRange;// 警戒范围
-	private int patrolRange;// 巡逻范围
-	private int attackDistance;// 攻击距离
-	private int followUpDistance;// 追击距离
-	private int moveSpeed;// 移动速度
-	private int attackSpeed;// 攻击速度
+	// private int alertRange;// 警戒范围
+	// private int patrolRange;// 巡逻范围
+	// private int attackDistance;// 攻击距离
+	// private int followUpDistance;// 追击距离
+	// private int moveSpeed;// 移动速度
+	// private int attackSpeed;// 攻击速度
 
 	private boolean runBack;// 返回出生点
 	private boolean fullState;// 恢复满状态
-	private int activeAttack;// 主动攻击 0 不攻击 1 攻击玩家 2 攻击怪物
-
+	private boolean activeAttackPlayer;// 是否主动攻击玩家
+	private boolean activeAttackSameMonster;// 是否主动攻击同种怪
+	private boolean activeAttackNotSameMonster;// 是否主动攻击不同种怪物
 	private boolean isOpenRunBack;// 是否逃跑
 	private int rewardExp;// 每次被攻击奖励经验
 	private String dropSet;// 每次被攻击 掉落集合
@@ -30,52 +31,28 @@ public class AiConfig {
 		this.id = id;
 	}
 
-	public int getAlertRange() {
-		return alertRange;
+	public boolean isActiveAttackPlayer() {
+		return activeAttackPlayer;
 	}
 
-	public void setAlertRange(int alertRange) {
-		this.alertRange = alertRange;
+	public void setActiveAttackPlayer(boolean activeAttackPlayer) {
+		this.activeAttackPlayer = activeAttackPlayer;
 	}
 
-	public int getPatrolRange() {
-		return patrolRange;
+	public boolean isActiveAttackSameMonster() {
+		return activeAttackSameMonster;
 	}
 
-	public void setPatrolRange(int patrolRange) {
-		this.patrolRange = patrolRange;
+	public void setActiveAttackSameMonster(boolean activeAttackSameMonster) {
+		this.activeAttackSameMonster = activeAttackSameMonster;
 	}
 
-	public int getAttackDistance() {
-		return attackDistance;
+	public boolean isActiveAttackNotSameMonster() {
+		return activeAttackNotSameMonster;
 	}
 
-	public void setAttackDistance(int attackDistance) {
-		this.attackDistance = attackDistance;
-	}
-
-	public int getFollowUpDistance() {
-		return followUpDistance;
-	}
-
-	public void setFollowUpDistance(int followUpDistance) {
-		this.followUpDistance = followUpDistance;
-	}
-
-	public int getMoveSpeed() {
-		return moveSpeed;
-	}
-
-	public void setMoveSpeed(int moveSpeed) {
-		this.moveSpeed = moveSpeed;
-	}
-
-	public int getAttackSpeed() {
-		return attackSpeed;
-	}
-
-	public void setAttackSpeed(int attackSpeed) {
-		this.attackSpeed = attackSpeed;
+	public void setActiveAttackNotSameMonster(boolean activeAttackNotSameMonster) {
+		this.activeAttackNotSameMonster = activeAttackNotSameMonster;
 	}
 
 	public boolean isRunBack() {
@@ -134,14 +111,6 @@ public class AiConfig {
 
 	public void setOpenRunBack(boolean isOpenRunBack) {
 		this.isOpenRunBack = isOpenRunBack;
-	}
-
-	public int getActiveAttack() {
-		return activeAttack;
-	}
-
-	public void setActiveAttack(int activeAttack) {
-		this.activeAttack = activeAttack;
 	}
 
 }

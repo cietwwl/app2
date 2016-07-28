@@ -43,11 +43,14 @@ public class MonsterInfoDaoImpl extends BaseDao implements MonsterInfoDao {
 					info.setSkin(rs.getShort("skin"));
 					info.setLevel(rs.getInt("level"));
 					info.setMonsterType(rs.getInt("monsterType"));
-					// info.setSeekEnemyRange(rs.getInt("seekEnemyRange"));
-					// info.setAttackRange(rs.getInt("attackRange"));
-					// info.setFollowUpDistance(rs.getInt("followUpDistance"));
-					// info.setMoveSpeed(rs.getInt("moveSpeed"));
-					// info.setAttackSpeed(rs.getInt("attackSpeed"));
+					
+					info.setAlertRange(rs.getInt("alertRange"));
+					info.setSeekEnemyRange(rs.getInt("seekEnemyRange"));
+					info.setAttackRange(rs.getInt("attackRange"));
+					info.setFollowUpDistance(rs.getInt("followUpDistance"));
+					info.setMoveSpeed(rs.getInt("moveSpeed"));
+					info.setAttackSpeed(rs.getInt("attackSpeed"));
+					
 					info.setSoulHpValue(rs.getLong("soulHpValue"));
 					info.setHp(rs.getLong("hp"));
 					info.setHurtValue(rs.getInt("hurtValue"));
@@ -60,9 +63,6 @@ public class MonsterInfoDaoImpl extends BaseDao implements MonsterInfoDao {
 					info.setToughnessValue(rs.getInt("toughnessValue"));
 					info.setHurtType(rs.getInt("hurtType"));
 					info.setBeKilledExp(rs.getInt("beKilledExp"));
-					info.setPatrolRange(rs.getInt("patrolRange"));
-					info.setIsReturn(rs.getByte("isReturn"));
-					info.setIsRelive(rs.getByte("isRelive"));
 					info.setDrop1(rs.getInt("drop1"));
 					info.setDrop2(rs.getInt("drop2"));
 					info.setDrop3(rs.getInt("drop3"));

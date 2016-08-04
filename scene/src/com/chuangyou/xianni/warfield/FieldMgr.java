@@ -212,7 +212,7 @@ public class FieldMgr {
 		return f;
 	}
 
-	private void spwanInit(Field f) {
+	protected void spwanInit(Field f) {
 		Map<Integer, SpawnInfo> spawnInfos = SpawnTemplateMgr.getFieldSpawnInfos(f.getMapKey());
 		if (spawnInfos == null || spawnInfos.size() == 0) {
 			Log.error("map has not anly spawnInfo ,the mapKey is:" + f.getMapKey());

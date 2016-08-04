@@ -9,4 +9,5 @@ message PBVector3{
   	optional int32 X = 1; //当前X
 	optional int32 Y = 2; //当前Y
 	optional int32 Z = 3; //当前Z
+	optional int32 angle = 4; //朝向角度
 }

@@ -1,0 +1,9 @@
+//protocol= 10705;
+option java_package = "com.chuangyou.common.protobuf.pb.inverseBead";
+option java_outer_classname = "ReqInverseBeadResetMsgProto";
+
+//请求重置天逆珠
+message ReqInverseBeadResetMsg {
+	optional int32 id = 1; //占位
+	
+}

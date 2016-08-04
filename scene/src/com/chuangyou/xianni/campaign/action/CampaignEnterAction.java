@@ -70,6 +70,7 @@ public class CampaignEnterAction extends Action {
 		reloadPos(army);
 		// 进入地图
 		FieldInfo fieldTemp = FieldTemplateMgr.getFieldTemp(field.getMapKey());
+		int angle = 0;
 		// 若无初始位置,则设置进入时占无效位置
 		if (vector3 == null || (vector3.x <= 0 && vector3.y <= 0 && vector3.z <= 0)) {
 			// 当副本有出生点时候，进入地图，优先出现在出生点
@@ -78,6 +79,7 @@ public class CampaignEnterAction extends Action {
 				vector3 = new Vector3(fieldTemp.getPosition().x, fieldTemp.getPosition().y, fieldTemp.getPosition().z);
 			} else {
 				vector3 = born.getSpawnInfo().getPosition();
+				angle = born.getSpawnInfo().getParam1();
 			}
 		}
 
@@ -89,7 +91,11 @@ public class CampaignEnterAction extends Action {
 		PostionMsg.Builder postionMsg = PostionMsg.newBuilder();
 		postionMsg.setMapId(field.id);
 		postionMsg.setMapKey(field.getMapKey());
-		postionMsg.setPostion(Vector3BuilderHelper.build(vector3));
+
+		PBVector3.Builder builder = Vector3BuilderHelper.build(vector3);
+		builder.setAngle(angle);
+
+		postionMsg.setPostion(builder);
 		cmbuilder.setPostion(postionMsg);
 		army.sendPbMessage(MessageUtil.buildMessage(Protocol.C_ENTER_SENCE_MAP_RESULT, cmbuilder));
 

@@ -179,12 +179,12 @@ public interface ClientProtocol {
 	public static final short U_RESP_TEAM_HP_MP = 553;
 
 	// ==================================================================
-	/** 商城信息请求返回  */
-	public static final short U_RESP_MALL_INFO                   = 554;  
-	
+	/** 商城信息请求返回 */
+	public static final short U_RESP_MALL_INFO = 554;
+
 	/** 请求简单快照信息 */
-	public static final short U_RESP_PLAYER_SIMPLE               = 555;
-	//===============================================================
+	public static final short U_RESP_PLAYER_SIMPLE = 555;
+	// ===============================================================
 
 	/** 返回坐骑信息 */
 	public static final short U_MOUNT_GETINFO = 101;
@@ -292,12 +292,12 @@ public interface ClientProtocol {
 
 	/** 同步坐骑状态 */
 	public static final short U_PLAYER_MOUNT_STATE_RESP = 148;
-	
+
 	/** 接收聊天消息 */
 	public static final short U_CHAT_RECEIVE = 149;
 	/** 发送给客户端聊天记录 */
 	public static final short U_CHAT_HISTORY_RESP = 150;
-	
+
 	/** 背包格子解锁 */
 	public static final short U_BAG_GRID_UNLOCK = 151;
 
@@ -336,4 +336,11 @@ public interface ClientProtocol {
 	public static final short U_BATTLE_MODE = 710;
 	/** 脱战 **/
 	public static final short U_LEAVE_FIGHT = 711;
+	// ========================>天逆珠<=========================
+	/** 天逆珠升级成功 **/
+	public static final short U_INVERSE_BEAD_UP = 720;
+	/** 天逆珠五行数据 **/
+	public static final short U_INVERSE_BEAD_DATE = 721;
+	/** 重置天逆珠数据**/
+	public static final short U_RESET_INVERSE_MONSTER = 722;
 }

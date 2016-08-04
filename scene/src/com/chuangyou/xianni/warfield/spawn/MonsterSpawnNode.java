@@ -1,12 +1,10 @@
 package com.chuangyou.xianni.warfield.spawn;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.chuangyou.common.util.AccessTextFile;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.common.util.Vector3;
@@ -16,21 +14,19 @@ import com.chuangyou.xianni.config.SceneGlobal;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.constant.SpwanInfoType;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
-import com.chuangyou.xianni.entity.spawn.AiConfig;
 import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
 import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
-import com.chuangyou.xianni.role.template.AiConfigTemplateMgr;
 import com.chuangyou.xianni.role.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.warfield.field.Field;
 
 public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
-	private int toalCount;							// 刷怪总数
-	private int curCount;							// 当前数量
-	private ThreadSafeRandom random = new ThreadSafeRandom();
-	private Map<Long, Living> children;							// 子孙们
+	protected int toalCount;							// 刷怪总数
+	protected int curCount;							// 当前数量
+	protected ThreadSafeRandom random = new ThreadSafeRandom();
+	protected Map<Long, Living> children;							// 子孙们
 
 	public MonsterSpawnNode(SpawnInfo info, Field field) {
 		super(info, field);

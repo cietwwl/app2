@@ -10,12 +10,14 @@ import com.chuangyou.xianni.battle.damage.DamageCalculator;
 public abstract class AbstractSkillCalc implements SkillCalc {
 
 	protected static ThreadSafeRandom	random	= new ThreadSafeRandom();
-	protected DamageCalculator			calcutor;
+	protected DamageCalculator			bloodCalcutor;
+	protected DamageCalculator			soulCalcutor;
 	protected int						orderId;
 
-	public AbstractSkillCalc(int order, DamageCalculator calcutor) {
+	public AbstractSkillCalc(int order, DamageCalculator bloodCalcutor, DamageCalculator soulCalcutor) {
 		this.orderId = order;
-		this.calcutor = calcutor;
+		this.bloodCalcutor = bloodCalcutor;
+		this.soulCalcutor = soulCalcutor;
 	}
 
 	/**

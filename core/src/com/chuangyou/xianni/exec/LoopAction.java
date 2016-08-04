@@ -3,10 +3,10 @@ package com.chuangyou.xianni.exec;
 public abstract class LoopAction extends DelayAction {
 
 	private int count;
-	
-	private int	delay;
-	
-	public LoopAction(ActionQueue queue, int delay,int count) {
+
+	private int delay;
+
+	public LoopAction(ActionQueue queue, int delay, int count) {
 		super(queue, delay);
 		// TODO Auto-generated constructor stub
 		this.count = count;
@@ -21,11 +21,11 @@ public abstract class LoopAction extends DelayAction {
 		}
 		count--;
 		loopExecute();
-		System.out.println("TestLoopAction_count:" + count + "  exectm:" + System.currentTimeMillis());
+		// System.out.println("TestLoopAction_count:" + count + " exectm:" + System.currentTimeMillis());
 		this.execTime = System.currentTimeMillis() + this.delay;
 		getActionQueue().enDelayQueue(this);
 	}
-	
+
 	/**
 	 * 循环执行接口
 	 */

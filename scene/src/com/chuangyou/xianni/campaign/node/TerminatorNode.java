@@ -40,6 +40,7 @@ public class TerminatorNode extends CampaignNodeDecorator {
 
 	public void over(Campaign campaign, SpwanNode node) {
 		exec(campaign, node);
+		campaign.passCampaign();
 	}
 
 	public void exec(Campaign campaign, SpwanNode node) {

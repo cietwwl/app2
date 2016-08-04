@@ -2,6 +2,7 @@ package com.chuangyou.xianni.battle.calc;
 
 import com.chuangyou.xianni.battle.damage.DamageCalculator;
 import com.chuangyou.xianni.battle.damage.DamageFactory;
+import com.chuangyou.xianni.constant.EnumAttr;
 
 public class CalcFactory {
 
@@ -12,16 +13,17 @@ public class CalcFactory {
 	 * @param calcWay
 	 * @return
 	 */
-	public static SkillCalc createSkillCalc(int skillId, int calcWay, int job) {
-		DamageCalculator damageCalc = DamageFactory.createCalculator(calcWay, job);
-		if (damageCalc == null) {
-			return null;
-		}
+	public static SkillCalc createSkillCalc(int skillId) {
+		DamageCalculator bloodCalc = DamageFactory.createCalculator(EnumAttr.CUR_BLOOD);
+		DamageCalculator soulCalc = DamageFactory.createCalculator(EnumAttr.CUR_SOUL);
+		// if (bloodCalc == null) {
+		// return null;
+		// }
 		SkillCalc calc = null;
 		switch (skillId) {
 			case 1:
 			default:
-				calc = new SingleLivingAttack(skillId, damageCalc);
+				calc = new SingleLivingAttack(skillId, bloodCalc, soulCalc);
 				break;
 		}
 		return calc;

@@ -21,8 +21,8 @@ function getInterfaceName() {
  * @param y
  * @param z
  */
-function changeMap(playerId,mapId,x,y,z){
-	com.chuangyou.xianni.script.manager.ScriptInterfaceScenceManager.changeMap(playerId,mapId,x,y,z);
+function changeMap(playerId,mapId,x,y,z,angle){
+	com.chuangyou.xianni.script.manager.ScriptInterfaceScenceManager.changeMap(playerId,mapId,x,y,z,angle);
 }
 /**
  *创建一个副本并传送进去

@@ -1,0 +1,9 @@
+//protocol= 721;
+option java_package = "com.chuangyou.common.protobuf.pb.inverseBead";
+option java_outer_classname = "ResGetInverseBeadMsgProto";
+
+//五行数据
+import "inverseBead/InverseBeadMsg.proto";
+message ResGetInverseBeadMsg {
+	repeated InverseBeadMsg inverseBead = 1;
+}

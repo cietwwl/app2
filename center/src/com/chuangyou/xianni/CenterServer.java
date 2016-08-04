@@ -15,6 +15,7 @@ import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.common.timer.TimerTaskMgr;
 import com.chuangyou.xianni.entity_id.EntityIdBuilder;
 import com.chuangyou.xianni.fashion.template.FashionTemplateMgr;
+import com.chuangyou.xianni.inverseBead.template.InverseBeadTemMgr;
 import com.chuangyou.xianni.login.template.roleConfigMgr;
 import com.chuangyou.xianni.magicwp.template.MagicwpTemplateMgr;
 import com.chuangyou.xianni.map.MapProxyManager;
@@ -137,6 +138,10 @@ public class CenterServer extends BaseServer {
 		if (!initComponent(SkillTempMgr.init(), "初始化技能模板数据")) {
 			return false;
 		}
+
+		if (!initComponent(InverseBeadTemMgr.init(), "初始化天逆珠模板数据")) {
+			return false;
+		}
 		if (!initComponent(MonsterInfoTemplateMgr.init(), "初始化怪物模板数据")) {
 			return false;
 		}
@@ -147,8 +152,8 @@ public class CenterServer extends BaseServer {
 		if (!initComponent(TeamTargetTempMgr.init(), "初始化组队目标表")) {
 			return false;
 		}
-		
-		if(!initComponent(FilterWordSet.loadFilterWord(Config.getValue("filter_word")), "初始化敏感字")){
+
+		if (!initComponent(FilterWordSet.loadFilterWord(Config.getValue("filter_word")), "初始化敏感字")) {
 			return false;
 		}
 
@@ -156,7 +161,7 @@ public class CenterServer extends BaseServer {
 	}
 
 	public static void main(String[] args) throws Exception {
-			
+
 		long time = System.currentTimeMillis();
 		if (args.length <= 0) {
 			System.err.println("请输入配置文件地址路径...启用默认配置文件路径");

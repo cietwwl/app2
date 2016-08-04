@@ -1,10 +1,12 @@
 package com.chuangyou.xianni.role.objects;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.chuangyou.common.protobuf.pb.PlayerKillMonsterProto.PlayerKillMonsterMsg;
 import com.chuangyou.common.protobuf.pb.battle.BufferMsgProto.BufferMsg;
@@ -42,7 +44,6 @@ import com.chuangyou.xianni.role.script.IMonsterDie;
 import com.chuangyou.xianni.role.template.AiConfigTemplateMgr;
 import com.chuangyou.xianni.script.IScript;
 import com.chuangyou.xianni.script.manager.ScriptManager;
-import com.chuangyou.xianni.touchPoint.script.ITouchPointTrigger;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.spawn.MonsterSpawnNode;
@@ -50,22 +51,25 @@ import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.WorldMgr;
 
 public class Monster extends ActiveLiving {
-	protected MonsterSpawnNode node;
-	private MonsterInfo monsterInfo;
-	private AiConfig aiConfig;
+
+	private MonsterInfo			monsterInfo;
+	private AiConfig			aiConfig;
 
 	// 怪物攻击的初始技能，固定写死
-	private int skillId;
+	private int					skillId;
 	// 初始位置
-	private Vector3 initPosition;
+	private Vector3				initPosition;
 	// 仇恨列表
-	private List<Hatred> hatreds = new ArrayList<Hatred>();
+	private List<Hatred>		hatreds				= Collections.synchronizedList(new ArrayList<Hatred>());
 	// 攻击目标
-	private Long target;
+	private Long				target;
 	// 当前使用的技能id
-	private int curSkillID;
-	private static final int invincibleBufferId = 99999999;// 无敌buffer id
-	private Buffer invincibleBuffer = null;
+	private int					curSkillID;
+	private static final int	invincibleBufferId	= 99999999;												// 无敌buffer
+																											// id
+	private Buffer				invincibleBuffer	= null;
+	// 攻击者
+	private Long attacker;
 
 	public int getCurSkillID() {
 		return curSkillID;
@@ -113,10 +117,15 @@ public class Monster extends ActiveLiving {
 
 	public boolean onDie(Living killer) {
 		if (super.onDie(killer)) {
+
 			if (node != null) {
-				node.lvingDie(this);
+				MonsterSpawnNode mnode = (MonsterSpawnNode) node;
+				mnode.lvingDie(this);
 			}
-			DropManager.dropFromMonster(this.getSkin(), killer.getArmyId(), this.getId(), this.getField().id, this.getPostion());
+			if (killer != null && this.getField() != null) {
+				DropManager.dropFromMonster(this.getSkin(), killer.getArmyId(), this.getId(), this.getField().id, this.getPostion());
+			}
+
 			DieAction die = new DieAction(this, killer, 1000);
 			die.getActionQueue().enDelayQueue(die);
 
@@ -132,8 +141,8 @@ public class Monster extends ActiveLiving {
 	}
 
 	class DieAction extends DelayAction {
-		Living deather;
-		Living killer;
+		Living	deather;
+		Living	killer;
 
 		public DieAction(Living deather, Living killer, int delay) {
 			super(killer, delay);
@@ -180,10 +189,18 @@ public class Monster extends ActiveLiving {
 		this.skillId = skillId;
 	}
 
+	public Long getAttacker() {
+		return attacker;
+	}
+
+	public void setAttacker(Long attacker) {
+		this.attacker = attacker;
+	}
+
 	@Override
 	protected void addHatred(Damage damage) {
-		// TODO Auto-generated method stub
 		super.addHatred(damage);
+		this.attacker = damage.getSource().getId();
 		// 排除自己给自己的伤害包
 		if (damage.getSource().id != id) {
 			if (damage.getDamageValue() < 0)
@@ -212,30 +229,36 @@ public class Monster extends ActiveLiving {
 				}
 				addCooldown(CoolDownTypes.BE_ATTACK, null, SceneGlobal.AI_BEATTACK_TIME);
 			}
+			if (getAiConfig().isRunAway()) {
+				return;
+			}
+
 			Hatred hatred = null;
 			List<Hatred> hatreds = getHatreds();
-			for (int i = 0; i < hatreds.size(); i++) {
-				if (hatreds.get(i) != null && hatreds.get(i).getTarget() == damage.getSource().id) {
-					hatred = hatreds.remove(i);
-					break;
+			synchronized (this.hatreds) {
+				for (int i = 0; i < hatreds.size(); i++) {
+					if (hatreds.get(i).getTarget() != null && hatreds.get(i).getTarget() == damage.getSource().id) {
+						hatred = hatreds.remove(i);
+						break;
+					}
 				}
-			}
-			if (hatred == null) {
-				hatred = SceneManagers.hatredManager.getHatred();
-				hatred.setTarget(damage.getSource().id);
-				hatred.setFirstAttack(System.currentTimeMillis());
-			}
-			// 增加仇恨值
-			hatred.setHatred(hatred.getHatred() + damage.getDamageValue());
-			hatred.setLastAttack(System.currentTimeMillis());
-			// 插入仇恨列表（按仇恨值大小排列）
-			for (int i = 0; i < hatreds.size(); i++) {
-				if (hatreds.get(i).getHatred() < hatred.getHatred()) {
-					hatreds.add(i, hatred);
-					return;
+				if (hatred == null) {
+					hatred = SceneManagers.hatredManager.getHatred();
+					hatred.setTarget(damage.getSource().id);
+					hatred.setFirstAttack(System.currentTimeMillis());
 				}
+				// 增加仇恨值
+				hatred.setHatred(hatred.getHatred() + damage.getDamageValue());
+				hatred.setLastAttack(System.currentTimeMillis());
+				// 插入仇恨列表（按仇恨值大小排列）
+				for (int i = 0; i < hatreds.size(); i++) {
+					if (hatreds.get(i).getHatred() < hatred.getHatred()) {
+						hatreds.add(i, hatred);
+						return;
+					}
+				}
+				hatreds.add(hatred);
 			}
-			hatreds.add(hatred);
 		}
 	}
 
@@ -317,15 +340,19 @@ public class Monster extends ActiveLiving {
 	 */
 	public Long getDefaultAttackTarget() {
 		if (this.getHatreds().size() > 0) {
-			Iterator<Hatred> iter = this.getHatreds().iterator();
-			while (iter.hasNext()) {
-				Hatred hatred = (Hatred) iter.next();
-				Living target = getField().getLiving(hatred.getTarget());
-				if (target == null)
-					continue;
-				if (target.isDie())
-					continue;
-				return hatred.getTarget();
+			synchronized (this.getHatreds()) {
+				Iterator<Hatred> iter = this.getHatreds().iterator();
+				while (iter.hasNext()) {
+					Hatred hatred = (Hatred) iter.next();
+					if (hatred == null || hatred.getTarget() == null)
+						continue;
+					Living target = getField().getLiving(hatred.getTarget());
+					if (target == null)
+						continue;
+					if (target.isDie())
+						continue;
+					return hatred.getTarget();
+				}
 			}
 		}
 		return -1l;
@@ -357,32 +384,40 @@ public class Monster extends ActiveLiving {
 		if (this.getHatreds().size() > 0) {
 			long valid = System.currentTimeMillis() - SceneGlobal.AI_MONSTER_OVERDUE;
 			// 遍历仇恨列表
-			Iterator<Hatred> iter = this.getHatreds().iterator();
-			while (iter.hasNext()) {
-				Hatred hatred = (Hatred) iter.next();
-				Living target = getField().getLiving(hatred.getTarget());
-				if (target == null) {
-					SceneManagers.hatredManager.removeHatred(hatred);
-					iter.remove();
-					continue;
-				}
-				if (target.isDie()) {
-					SceneManagers.hatredManager.removeHatred(hatred);
-					iter.remove();
-					continue;
-				}
-				// 攻击过期，移出仇恨列表
-				if (hatred.getLastAttack() < valid) {
-					// 仇恨过时，但在警戒范围内仇恨度最高的目标，暂时保留在仇恨列表中
-					if (lastOverHatred == null)
-						lastOverHatred = hatred;
-					else {
-						// 移出仇恨列表
+			synchronized (hatreds) {
+				Iterator<Hatred> iter = this.getHatreds().iterator();
+				while (iter.hasNext()) {
+					Hatred hatred = (Hatred) iter.next();
+					if (hatred != null && hatred.getTarget() == null) {
 						SceneManagers.hatredManager.removeHatred(hatred);
 						iter.remove();
+						continue;
+					}
+					Living target = getField().getLiving(hatred.getTarget());
+					if (target == null) {
+						SceneManagers.hatredManager.removeHatred(hatred);
+						iter.remove();
+						continue;
+					}
+					if (target.isDie()) {
+						SceneManagers.hatredManager.removeHatred(hatred);
+						iter.remove();
+						continue;
+					}
+					// 攻击过期，移出仇恨列表
+					if (hatred.getLastAttack() < valid) {
+						// 仇恨过时，但在警戒范围内仇恨度最高的目标，暂时保留在仇恨列表中
+						if (lastOverHatred == null)
+							lastOverHatred = hatred;
+						else {
+							// 移出仇恨列表
+							SceneManagers.hatredManager.removeHatred(hatred);
+							iter.remove();
+						}
 					}
 				}
 			}
+
 			if (lastOverHatred != null && this.getHatreds().size() > 1) {
 				// 移出仇恨列表
 				SceneManagers.hatredManager.removeHatred(lastOverHatred);
@@ -443,7 +478,8 @@ public class Monster extends ActiveLiving {
 					army.sendPbMessage(message);
 				}
 			}
-			// BroadcastUtil.sendBroadcastPacket(players, Protocol.U_G_DAMAGE,damagesPb.build());
+			// BroadcastUtil.sendBroadcastPacket(players,
+			// Protocol.U_G_DAMAGE,damagesPb.build());
 		}
 
 		clearWorkBuffer();

@@ -1,7 +1,7 @@
 package com.chuangyou.xianni.campaign;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import com.chuangyou.common.protobuf.pb.campaign.CampaignInfoMsgProto.CampaignInfoMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CampaignStatuMsgProto.CampaignStatuMsg;
 import com.chuangyou.common.protobuf.pb.campaign.PassFbInnerProto.PassFbInnerMsg;
@@ -14,15 +14,14 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.team.Team;
 import com.chuangyou.xianni.team.TeamMgr;
-import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.WorldMgr;
 
 public class TeamCampaign extends Campaign {
 	private int teamId;
 
-	public TeamCampaign(CampaignTemplateInfo tempInfo, ArmyProxy creater) {
-		super(tempInfo, creater);
+	public TeamCampaign(CampaignTemplateInfo tempInfo, ArmyProxy creater, int taskId) {
+		super(tempInfo, creater, taskId);
 	}
 
 	public boolean agreedToEnter(ArmyProxy army) {
@@ -107,6 +106,23 @@ public class TeamCampaign extends Campaign {
 
 	public void setTeamId(int teamId) {
 		this.teamId = teamId;
+	}
+
+	public List<ArmyProxy> getAllArmys() {
+		Team team = TeamMgr.getTeam(creater);
+		if (team != null) {
+			List<ArmyProxy> all = new ArrayList<>();
+			List<Long> members = team.getMembers();
+			for (long playerId : members) {
+				ArmyProxy army = WorldMgr.getArmy(playerId);
+				if (army != null) {
+					all.add(army);
+				}
+			}
+			return all;
+		} else {
+			return super.getAllArmys();
+		}
 	}
 
 }

@@ -17,35 +17,35 @@ import com.chuangyou.xianni.player.GamePlayer;
 public abstract class Living {
 
 	/** 客户端对应属性ID = 服务器属性ID+1 **/
-	public static final int	SOUL					= 0;	// 元魂
-	public static final int	BLOOD					= 1;	// 气血
-	public static final int	ATTACK					= 2;	// 攻击
-	public static final int	DEFENCE					= 3;	// 防御
-	public static final int	SOUL_ATTACK				= 4;	// 魂攻
-	public static final int	SOUL_DEFENCE			= 5;	// 魂防
-	public static final int	ACCURATE				= 6;	// 命中
-	public static final int	DODGE					= 7;	// 闪避
-	public static final int	CRIT					= 8;	// 暴击
-	public static final int	CRIT_DEFENCE			= 9;	// 抗暴
-	public static final int	CRIT_ADDTION			= 10;	// 暴击伤害
-	public static final int	CRIT_CUT				= 11;	// 抗暴减伤
-	public static final int	BLOOD_ATTACK_ADDTION	= 12;	// 气血伤害增加
-	public static final int	BLOOD_ATTACK_CUT		= 13;	// 气血伤害减免
-	public static final int	SOUL_ATTACK_ADDTION		= 14;	// 元魂伤害增加
-	public static final int	SOUL_ATTACK_CUT			= 15;	// 元魂伤害减免
-	public static final int	REGAIN_SOUL				= 16;	// 每10秒回魂
-	public static final int	REGAIN_BLOOD			= 17;	// 每10秒回血
-	public static final int	METAL					= 18;	// 金
-	public static final int	WOOD					= 19;	// 木
-	public static final int	WATER					= 20;	// 水
-	public static final int	FIRE					= 21;	// 火
-	public static final int	EARTH					= 22;	// 土
-	public static final int	METAL_DEFENCE			= 23;	// 金抗
-	public static final int	WOOD_DEFENCE			= 24;	// 木抗
-	public static final int	WATER_DEFENCE			= 25;	// 水抗
-	public static final int	FIRE_DEFENCE			= 26;	// 火抗
-	public static final int	EARTH_DEFENCE			= 27;	// 土抗
-	public static final int	SPEED					= 28;	// 移动速度
+	public static final int SOUL = 0;	// 元魂
+	public static final int BLOOD = 1;	// 气血
+	public static final int ATTACK = 2;	// 攻击
+	public static final int DEFENCE = 3;	// 防御
+	public static final int SOUL_ATTACK = 4;	// 魂攻
+	public static final int SOUL_DEFENCE = 5;	// 魂防
+	public static final int ACCURATE = 6;	// 命中
+	public static final int DODGE = 7;	// 闪避
+	public static final int CRIT = 8;	// 暴击
+	public static final int CRIT_DEFENCE = 9;	// 抗暴
+	public static final int CRIT_ADDTION = 10;	// 暴击伤害
+	public static final int CRIT_CUT = 11;	// 抗暴减伤
+	public static final int BLOOD_ATTACK_ADDTION = 12;	// 气血伤害增加
+	public static final int BLOOD_ATTACK_CUT = 13;	// 气血伤害减免
+	public static final int SOUL_ATTACK_ADDTION = 14;	// 元魂伤害增加
+	public static final int SOUL_ATTACK_CUT = 15;	// 元魂伤害减免
+	public static final int REGAIN_SOUL = 16;	// 每10秒回魂
+	public static final int REGAIN_BLOOD = 17;	// 每10秒回血
+	public static final int METAL = 18;	// 金
+	public static final int WOOD = 19;	// 木
+	public static final int WATER = 20;	// 水
+	public static final int FIRE = 21;	// 火
+	public static final int EARTH = 22;	// 土
+	public static final int METAL_DEFENCE = 23;	// 金抗
+	public static final int WOOD_DEFENCE = 24;	// 木抗
+	public static final int WATER_DEFENCE = 25;	// 水抗
+	public static final int FIRE_DEFENCE = 26;	// 火抗
+	public static final int EARTH_DEFENCE = 27;	// 土抗
+	public static final int SPEED = 28;	// 移动速度
 
 	// public static final int//当前元魂
 	// public static final int //当前气血
@@ -53,8 +53,8 @@ public abstract class Living {
 	// public static final int //最大元魂
 	// public static final int //最大气血
 
-	protected Property[]	properties;
-	protected int			fighting;						// 战斗力
+	protected Property[] properties;
+	protected int fighting;						// 战斗力
 
 	public Living() {
 		properties = new Property[29];
@@ -292,6 +292,30 @@ public abstract class Living {
 		properties[FIRE_DEFENCE].setSkillPer(skillPer.getFireDefence());
 		properties[EARTH_DEFENCE].setSkillPer(skillPer.getEarthDefence());
 		properties[SPEED].setSkillPer(skillPer.getSpeed());
+	}
+
+	public void addInverseBead(BaseProperty inverseBeadData, BaseProperty inverseBeadPer) {
+		properties[METAL].setInverseBeadData(inverseBeadPer.getMetal());
+		properties[WOOD].setInverseBeadData(inverseBeadPer.getWood());
+		properties[WATER].setInverseBeadData(inverseBeadPer.getWater());
+		properties[FIRE].setInverseBeadData(inverseBeadPer.getFire());
+		properties[EARTH].setInverseBeadData(inverseBeadPer.getEarth());
+		properties[METAL_DEFENCE].setInverseBeadData(inverseBeadPer.getMetalDefence());
+		properties[WOOD_DEFENCE].setInverseBeadData(inverseBeadPer.getWoodDefence());
+		properties[WATER_DEFENCE].setInverseBeadData(inverseBeadPer.getWaterDefence());
+		properties[FIRE_DEFENCE].setInverseBeadData(inverseBeadPer.getFireDefence());
+		properties[EARTH_DEFENCE].setInverseBeadData(inverseBeadPer.getEarthDefence());
+
+		properties[METAL].setInverseBeadper(inverseBeadPer.getMetal());
+		properties[WOOD].setInverseBeadper(inverseBeadPer.getWood());
+		properties[WATER].setInverseBeadper(inverseBeadPer.getWater());
+		properties[FIRE].setInverseBeadper(inverseBeadPer.getFire());
+		properties[EARTH].setInverseBeadper(inverseBeadPer.getEarth());
+		properties[METAL_DEFENCE].setInverseBeadper(inverseBeadPer.getMetalDefence());
+		properties[WOOD_DEFENCE].setInverseBeadper(inverseBeadPer.getWoodDefence());
+		properties[WATER_DEFENCE].setInverseBeadper(inverseBeadPer.getWaterDefence());
+		properties[FIRE_DEFENCE].setInverseBeadper(inverseBeadPer.getFireDefence());
+		properties[EARTH_DEFENCE].setInverseBeadper(inverseBeadPer.getEarthDefence());
 	}
 
 	/**
@@ -566,95 +590,95 @@ public abstract class Living {
 
 	public void updatePlayer(int index, Property property, PlayerJoinInfo joinInfo) {
 		switch (index) {
-			case SOUL:
-				joinInfo.setSoul(property.getTotalJoin());
-				break;
-			case BLOOD:
-				joinInfo.setBlood(property.getTotalJoin());
-				break;
-			case ATTACK:
-				joinInfo.setAttack(property.getTotalJoin());
-				break;
-			case DEFENCE:
-				joinInfo.setDefence(property.getTotalJoin());
-				break;
-			case SOUL_ATTACK:
-				joinInfo.setSoulAttack(property.getTotalJoin());
-				break;
-			case SOUL_DEFENCE:
-				joinInfo.setSoulDefence(property.getTotalJoin());
-				break;
-			case ACCURATE:
-				joinInfo.setAccurate(property.getTotalJoin());
-				break;
-			case DODGE:
-				joinInfo.setDodge(property.getTotalJoin());
-				break;
-			case CRIT:
-				joinInfo.setCrit(property.getTotalJoin());
-				break;
-			case CRIT_DEFENCE:
-				joinInfo.setCritDefence(property.getTotalJoin());
-				break;
-			case CRIT_ADDTION:
-				joinInfo.setCritAddtion(property.getTotalJoin());
-				break;
-			case CRIT_CUT:
-				joinInfo.setCritCut(property.getTotalJoin());
-				break;
-			case BLOOD_ATTACK_ADDTION:
-				joinInfo.setBloodAttackAddtion(property.getTotalJoin());
-				break;
-			case BLOOD_ATTACK_CUT:
-				joinInfo.setBloodAttackCut(property.getTotalJoin());
-				break;
-			case SOUL_ATTACK_ADDTION:
-				joinInfo.setSoulAttackAddtion(property.getTotalJoin());
-				break;
-			case SOUL_ATTACK_CUT:
-				joinInfo.setSoulAttackCut(property.getTotalJoin());
-				break;
-			case REGAIN_SOUL:
-				joinInfo.setRegainSoul(property.getTotalJoin());
-				break;
-			case REGAIN_BLOOD:
-				joinInfo.setRegainBlood(property.getTotalJoin());
-				break;
-			case METAL:
-				joinInfo.setMetal(property.getTotalJoin());
-				break;
-			case WOOD:
-				joinInfo.setWood(property.getTotalJoin());
-				break;
-			case WATER:
-				joinInfo.setWater(property.getTotalJoin());
-				break;
-			case FIRE:
-				joinInfo.setFire(property.getTotalJoin());
-				break;
-			case EARTH:
-				joinInfo.setEarth(property.getTotalJoin());
-				break;
-			case METAL_DEFENCE:
-				joinInfo.setMetalDefence(property.getTotalJoin());
-				break;
-			case WOOD_DEFENCE:
-				joinInfo.setWoodDefence(property.getTotalJoin());
-				break;
-			case WATER_DEFENCE:
-				joinInfo.setWaterDefence(property.getTotalJoin());
-				break;
-			case FIRE_DEFENCE:
-				joinInfo.setFireDefence(property.getTotalJoin());
-				break;
-			case EARTH_DEFENCE:
-				joinInfo.setEarthDefence(property.getTotalJoin());
-				break;
-			case SPEED:
-				joinInfo.setSpeed(property.getTotalJoin());
-				break;
-			default:
-				break;
+		case SOUL:
+			joinInfo.setSoul(property.getTotalJoin());
+			break;
+		case BLOOD:
+			joinInfo.setBlood(property.getTotalJoin());
+			break;
+		case ATTACK:
+			joinInfo.setAttack(property.getTotalJoin());
+			break;
+		case DEFENCE:
+			joinInfo.setDefence(property.getTotalJoin());
+			break;
+		case SOUL_ATTACK:
+			joinInfo.setSoulAttack(property.getTotalJoin());
+			break;
+		case SOUL_DEFENCE:
+			joinInfo.setSoulDefence(property.getTotalJoin());
+			break;
+		case ACCURATE:
+			joinInfo.setAccurate(property.getTotalJoin());
+			break;
+		case DODGE:
+			joinInfo.setDodge(property.getTotalJoin());
+			break;
+		case CRIT:
+			joinInfo.setCrit(property.getTotalJoin());
+			break;
+		case CRIT_DEFENCE:
+			joinInfo.setCritDefence(property.getTotalJoin());
+			break;
+		case CRIT_ADDTION:
+			joinInfo.setCritAddtion(property.getTotalJoin());
+			break;
+		case CRIT_CUT:
+			joinInfo.setCritCut(property.getTotalJoin());
+			break;
+		case BLOOD_ATTACK_ADDTION:
+			joinInfo.setBloodAttackAddtion(property.getTotalJoin());
+			break;
+		case BLOOD_ATTACK_CUT:
+			joinInfo.setBloodAttackCut(property.getTotalJoin());
+			break;
+		case SOUL_ATTACK_ADDTION:
+			joinInfo.setSoulAttackAddtion(property.getTotalJoin());
+			break;
+		case SOUL_ATTACK_CUT:
+			joinInfo.setSoulAttackCut(property.getTotalJoin());
+			break;
+		case REGAIN_SOUL:
+			joinInfo.setRegainSoul(property.getTotalJoin());
+			break;
+		case REGAIN_BLOOD:
+			joinInfo.setRegainBlood(property.getTotalJoin());
+			break;
+		case METAL:
+			joinInfo.setMetal(property.getTotalJoin());
+			break;
+		case WOOD:
+			joinInfo.setWood(property.getTotalJoin());
+			break;
+		case WATER:
+			joinInfo.setWater(property.getTotalJoin());
+			break;
+		case FIRE:
+			joinInfo.setFire(property.getTotalJoin());
+			break;
+		case EARTH:
+			joinInfo.setEarth(property.getTotalJoin());
+			break;
+		case METAL_DEFENCE:
+			joinInfo.setMetalDefence(property.getTotalJoin());
+			break;
+		case WOOD_DEFENCE:
+			joinInfo.setWoodDefence(property.getTotalJoin());
+			break;
+		case WATER_DEFENCE:
+			joinInfo.setWaterDefence(property.getTotalJoin());
+			break;
+		case FIRE_DEFENCE:
+			joinInfo.setFireDefence(property.getTotalJoin());
+			break;
+		case EARTH_DEFENCE:
+			joinInfo.setEarthDefence(property.getTotalJoin());
+			break;
+		case SPEED:
+			joinInfo.setSpeed(property.getTotalJoin());
+			break;
+		default:
+			break;
 		}
 		joinInfo.setOp(Option.Update);
 	}

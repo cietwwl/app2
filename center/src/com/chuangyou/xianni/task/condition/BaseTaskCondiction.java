@@ -74,8 +74,8 @@ public abstract class BaseTaskCondiction {
 	 * 执行更新
 	 */
 	protected void doUpdate(){
-		this.info.setOp(Option.Update);
 		this.info.setState(TaskInfo.FINISH);
+		this.info.setOp(Option.Update);
 		this.info.setUpdateTime(new Date());
 	}
 	
@@ -98,11 +98,11 @@ public abstract class BaseTaskCondiction {
 	protected void reduceProcess(int num){
 		this.info.setProcess(this.info.getProcess()-num);
 		this.info.setUpdateTime(new Date());
-		this.info.setOp(Option.Update);
 		if(this.info.getProcess()<cfg.getTargetNum()){
 			this.info.setState(TaskInfo.ACCEPT);
 			doFinishNoCancelTrigger();
 		}
+		this.info.setOp(Option.Update);
 	}
 
 	public TaskInfo getInfo() {

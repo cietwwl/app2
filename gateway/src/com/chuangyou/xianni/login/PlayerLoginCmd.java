@@ -37,7 +37,7 @@ public class PlayerLoginCmd implements Command {
 		// 从在线列表中挤人
 		if (UserMgr.checkOnline(playerId)) {
 			User user = UserMgr.getOnlineUser(playerId);
-			if (user != null) {
+			if (user != null && user.getChannel() != null) {
 				try {
 					// 挤老用户下线
 					GatewayMsg.Builder gatewayMsg = GatewayMsg.newBuilder();
@@ -46,10 +46,12 @@ public class PlayerLoginCmd implements Command {
 					PBMessage resp = MessageUtil.buildMessage(Protocol.U_G_LOGIN_OTHER, gatewayMsg);
 					user.sendToUser(resp);
 					Log.info("被其他玩家挤下线 , serverName : " + user.getServerName() + " ,userId : " + playerId);
+					//防止关闭连接时候，再次回调移除在线状态操作
+					user.getChannel().attr(AttributeKeySet.PLAYER_ID).set(-1l);
 				} catch (Exception e) {
 					Log.error("挤在线玩家错误 userId : " + playerId + ", nickName : " + user.getServerName(), e);
 				} finally {
-					UserMgr.removeOnline(playerId, user.getChannel());
+					UserMgr.removeOnlineReLogin(playerId, user.getChannel());
 				}
 			}
 		}

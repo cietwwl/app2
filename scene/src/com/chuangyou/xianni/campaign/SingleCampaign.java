@@ -5,8 +5,8 @@ import com.chuangyou.xianni.world.ArmyProxy;
 
 public class SingleCampaign extends Campaign {
 
-	public SingleCampaign(CampaignTemplateInfo tempInfo, ArmyProxy creater) {
-		super(tempInfo, creater);
+	public SingleCampaign(CampaignTemplateInfo tempInfo, ArmyProxy creater, int taskId) {
+		super(tempInfo, creater, taskId);
 	}
 
 	public boolean agreedToEnter(ArmyProxy army) {

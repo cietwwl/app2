@@ -3,30 +3,33 @@ package com.chuangyou.xianni.army;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 
 public class Property {
-	private String	name;				// 属性名字
-	private int		type;				// 属性类型
-	private int		tempData;			// 模板数据加成
-	private int		tempPer;			// 模板万分比加成
+	private String name;				// 属性名字
+	private int type;				// 属性类型
+	private int tempData;			// 模板数据加成
+	private int tempPer;			// 模板万分比加成
 
-	private int		bagData;			// 背包数据加成
-	private int		bagPer;				// 背包万分比加成
+	private int bagData;			// 背包数据加成
+	private int bagPer;				// 背包万分比加成
 
-	private int		skillData	= 0;	// 技能数据加成
-	private int		skillPer	= 0;	// 技能万分比加成
+	private int skillData = 0;	// 技能数据加成
+	private int skillPer = 0;	// 技能万分比加成
 
-	private int		mountData	= 0;	// 坐骑数据加成
-	private int		mountPer	= 0;	// 坐骑万分比加成
+	private int inverseBeadData = 0;// 天逆珠数据加成
+	private int inverseBeadper = 0;// 天逆珠万分比加成
 
-	private int		magicwpData	= 0;	// 法宝属性加成
-	private int		magicwpPer	= 0;	// 法宝万分比加成
+	private int mountData = 0;	// 坐骑数据加成
+	private int mountPer = 0;	// 坐骑万分比加成
 
-	private int		petData		= 0;	// 宠物属性加成
-	private int		petPer		= 0;	// 宠物万分比加成
+	private int magicwpData = 0;	// 法宝属性加成
+	private int magicwpPer = 0;	// 法宝万分比加成
 
-	private int		totalJoin;			// 总属性值
-	private int		baseJoin;			// 基础值
+	private int petData = 0;	// 宠物属性加成
+	private int petPer = 0;	// 宠物万分比加成
 
-	private boolean	isChange;			// 是否有改变
+	private int totalJoin;			// 总属性值
+	private int baseJoin;			// 基础值
+
+	private boolean isChange;			// 是否有改变
 
 	public Property(String name, int type) {
 		this.name = name;
@@ -42,8 +45,8 @@ public class Property {
 
 	private void fresh() {
 		// 计算总的属性
-		int totalData = tempData + bagData + skillData + mountData + magicwpData + petData;
-		int totalPer = tempPer + bagPer + skillPer + mountPer + magicwpPer + petPer;
+		int totalData = tempData + bagData + skillData + mountData + magicwpData + petData + inverseBeadData;
+		int totalPer = tempPer + bagPer + skillPer + mountPer + magicwpPer + petPer + inverseBeadper;
 		totalJoin = totalData + totalData * totalPer / 10000;
 
 		// 计算基础属性
@@ -101,6 +104,26 @@ public class Property {
 		if (skillData != this.skillData)
 			setChange(true);
 		this.skillData = skillData;
+	}
+
+	public int getInverseBeadData() {
+		return inverseBeadData;
+	}
+
+	public void setInverseBeadData(int inverseBeadData) {
+		if (this.inverseBeadData != inverseBeadData)
+			setChange(true);
+		this.inverseBeadData = inverseBeadData;
+	}
+
+	public int getInverseBeadper() {
+		return inverseBeadper;
+	}
+
+	public void setInverseBeadper(int inverseBeadper) {
+		if (this.inverseBeadper != inverseBeadper)
+			setChange(true);
+		this.inverseBeadper = inverseBeadper;
 	}
 
 	public int getSkillPer() {

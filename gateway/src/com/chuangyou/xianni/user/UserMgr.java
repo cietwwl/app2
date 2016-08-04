@@ -61,6 +61,32 @@ public class UserMgr {
 	 * 
 	 * @param userId
 	 */
+	public static void removeOnlineReLogin(long playerId, Channel channel) {
+		// 移除
+		User user = getOnlineUser(playerId);
+		if (user == null || channel != user.getChannel()) {
+			Log.warn("客户端 当前用户已经从在线列表中清除了, userId : " + playerId);
+			return;
+		}
+		onlineMap.remove(playerId);
+
+		// 通知其他服务器
+		PBMessage sencesReq = new PBMessage(Protocol.S_ONLY_LOGIN_OUT);
+		sencesReq.setPlayerId(playerId);
+		ClientSet.routeSences(sencesReq);
+		//
+
+		// 关闭Socket
+		if (user.getChannel() != null) {
+			user.getChannel().close();
+		}
+	}
+
+	/**
+	 * 移除在线列表
+	 * 
+	 * @param userId
+	 */
 	public static void removeOnline(long playerId, Channel channel) {
 		// 移除
 		User user = getOnlineUser(playerId);
@@ -76,8 +102,6 @@ public class UserMgr {
 		ClientSet.routeSences(sencesReq);
 		//
 
-
-
 		// 关闭Socket
 		if (user.getChannel() != null) {
 			user.getChannel().close();
@@ -90,9 +114,9 @@ public class UserMgr {
 	 * @param message
 	 */
 	public static void broadcastMessage(PBMessage message) {
-		
+
 		ArrayList<User> users = new ArrayList<User>();
-		synchronized(onlineMap){
+		synchronized (onlineMap) {
 			users.addAll(onlineMap.values());
 		}
 

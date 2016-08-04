@@ -1,0 +1,9 @@
+//protocol= 10702;
+option java_package = "com.chuangyou.common.protobuf.pb.inverseBead";
+option java_outer_classname = "ReqGetInverseBeadMsgProto";
+
+//获取五行数据
+message ReqGetInverseBeadMsg {
+	optional int32 fiveElements = 1; //占位
+	
+}

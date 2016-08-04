@@ -21,6 +21,9 @@ import com.chuangyou.xianni.campaign.state.CampaignState;
 import com.chuangyou.xianni.campaign.state.OpeningState;
 import com.chuangyou.xianni.campaign.state.PrepareState;
 import com.chuangyou.xianni.campaign.state.StopState;
+import com.chuangyou.xianni.campaign.state.SuccessState;
+import com.chuangyou.xianni.campaign.task.CampaignTask;
+import com.chuangyou.xianni.entity.campaign.CampaignTaskTemplateInfo;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.entity.field.FieldInfo;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
@@ -73,8 +76,9 @@ public class Campaign extends AbstractActionQueue {
 	protected long											expiredTime;				// 副本过期时间
 
 	protected Map<Integer, Map<Integer, List<SpwanNode>>>	teamNodes;					// 将同组的节点分组<所属召唤阵ID,<分组ID,组成员集>>
+	protected CampaignTask									task;						// 挑战任务
 
-	public Campaign(CampaignTemplateInfo tempInfo, ArmyProxy creater) {
+	public Campaign(CampaignTemplateInfo tempInfo, ArmyProxy creater, int taskId) {
 		super(ThreadManager.actionExecutor);
 		this.id = IDMakerHelper.campaignId();
 		this.campaignId = tempInfo.getTemplateId();
@@ -89,6 +93,11 @@ public class Campaign extends AbstractActionQueue {
 		this.teamNodes = new HashMap<>();
 		this.creater = creater.getPlayerId();
 		this.random = new ThreadSafeRandom();
+
+		CampaignTaskTemplateInfo ttemp = CampaignTaskTempMgr.get(taskId);
+		if (ttemp != null) {
+			task = new CampaignTask(this, ttemp);
+		}
 	}
 
 	/** 地图开始 */
@@ -161,10 +170,19 @@ public class Campaign extends AbstractActionQueue {
 		return armys.size();
 	}
 
+	/** 获取副本内所有部队信息 */
 	public List<ArmyProxy> getAllArmys() {
 		List<ArmyProxy> getAll = new ArrayList<>();
 		getAll.addAll(armys.values());
 		return getAll;
+	}
+
+	/** 通关副本 */
+	public void passCampaign() {
+		state = new SuccessState(this);
+		for (ArmyProxy army : getAllArmys()) {
+			sendCampaignInfo(army);
+		}
 	}
 
 	/**
@@ -179,7 +197,7 @@ public class Campaign extends AbstractActionQueue {
 		cstatu.setCampaignId(getIndexId());
 		cstatu.setStatu(0);// 退出
 		PBMessage statuMsg = MessageUtil.buildMessage(Protocol.C_CAMPAIGN_STATU, cstatu);
-		for (ArmyProxy army : armys.values()) {
+		for (ArmyProxy army : getAllArmys()) {
 			sendCampaignInfo(army);
 			onPlayerLeave(army);
 			// 通知center服务器,玩家副本销毁了
@@ -232,20 +250,6 @@ public class Campaign extends AbstractActionQueue {
 
 	public boolean isEmpty() {
 		return armys == null || armys.size() == 0;
-	}
-
-	public static class CloseDelayAction extends DelayAction {
-		Campaign campaign;
-
-		public CloseDelayAction(Campaign campaign, int delay) {
-			super(campaign, delay);
-			this.campaign = campaign;
-		}
-
-		@Override
-		public void execute() {
-			campaign.over();
-		}
 	}
 
 	/* 发送副本信息 */
@@ -337,6 +341,10 @@ public class Campaign extends AbstractActionQueue {
 		}
 	}
 
+	public void addTask(CampaignTask task) {
+		this.task = task;
+	}
+
 	public Map<Integer, SpwanNode> getSpwanNodes() {
 		return spwanNodes;
 	}
@@ -367,7 +375,7 @@ public class Campaign extends AbstractActionQueue {
 
 	/** 添加副本分组管理 */
 	public void addTeamNode(SpwanNode teamNode) {
-		int callerId = teamNode.getSpawnInfo().getParam2();//召唤阵id
+		int callerId = teamNode.getSpawnInfo().getParam2();// 召唤阵id
 		int teamId = teamNode.getSpawnInfo().getParam1();
 		// 所属该召唤阵的所有刷怪点
 		Map<Integer, List<SpwanNode>> callerOwns = teamNodes.get(callerId);
@@ -437,9 +445,9 @@ public class Campaign extends AbstractActionQueue {
 		}
 	}
 
-	class CampaignCheckAction extends DelayAction {
+	public class CampaignCheckAction extends DelayAction {
 		public CampaignCheckAction(Campaign campaign) {
-			super(campaign, 2000);
+			super(campaign, 1000);
 		}
 
 		@Override
@@ -451,9 +459,18 @@ public class Campaign extends AbstractActionQueue {
 				over();
 				return;
 			}
-			this.execTime = System.currentTimeMillis() + 2000;
+			this.execTime = System.currentTimeMillis() + 1000;
 			this.getActionQueue().enDelayQueue(this);
 		}
+	}
 
+	protected void notifyTaskEvent(int event, int param) {
+		if (task == null) {
+			return;
+		}
+		if (task.getConditionType() != event) {
+			return;
+		}
+		task.notityEvent(param);
 	}
 }

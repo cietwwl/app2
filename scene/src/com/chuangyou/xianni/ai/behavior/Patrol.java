@@ -50,6 +50,11 @@ public class Patrol extends BaseBehavior {
 
 	@Override
 	public AIState next() {
+		if (getMonster().getAiConfig().isRunAway()) {// 是否逃跑
+			if (getMonster().getAttacker() != null)
+				return AIState.RUNAWAY;
+		}
+
 		// if (!needPatrol)
 		// return AIState.IDLE; // 距离太短，不处理
 		if (getMonster().isCooldowning(CoolDownTypes.BE_ATTACK, null))

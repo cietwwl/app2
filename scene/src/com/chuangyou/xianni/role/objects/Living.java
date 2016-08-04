@@ -12,7 +12,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import com.chuangyou.common.protobuf.pb.PlayerAttSnapProto.PlayerAttSnapMsg;
 import com.chuangyou.common.protobuf.pb.PlayerKillMonsterProto.PlayerKillMonsterMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
@@ -23,7 +22,6 @@ import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListM
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
 import com.chuangyou.common.protobuf.pb.battle.LivingStateChangeMsgProto.LivingStateChangeMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
-import com.chuangyou.common.util.AccessTextFile;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.Vector3;
@@ -59,127 +57,134 @@ import com.chuangyou.xianni.warfield.grid.GridCoord;
 import com.chuangyou.xianni.warfield.grid.GridItem;
 import com.chuangyou.xianni.warfield.helper.Selector;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
+import com.chuangyou.xianni.warfield.spawn.MonsterSpawnNode;
+import com.chuangyou.xianni.warfield.spawn.SpwanNode;
 import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.SimplePlayerInfo;
 import com.chuangyou.xianni.world.WorldMgr;
 
 public class Living extends AbstractActionQueue {
-	public static final int ALIVE = 0;				// 活着
-	public static final int DIE = 1;				// 死亡
-	public static final int DISTORY = 2;				// 移除
+	public static final int						ALIVE			= 0;				// 活着
+	public static final int						DIE				= 1;				// 死亡
+	public static final int						DISTORY			= 2;				// 移除
 
 	/** 对象的生死 生/死 */
-	static final int LIVING = 1;
+	static final int							LIVING			= 1;
 	/** 对象作战状态 元魂/气血 */
-	static final int FIGHT_STATU = 2;
+	static final int							FIGHT_STATU		= 2;
 	/** 是否闪名 */
-	static final int BATTLE_MODE = 3;
+	static final int							BATTLE_MODE		= 3;
 
 	/// livingId
-	protected long id;
+	protected long								id;
 	// 部队ID
-	protected long armyId;
+	protected long								armyId;
 	/// 皮肤， npc：npcid
-	protected int skin;
+	protected int								skin;
 	/// Living类型
-	protected int type;
+	protected int								type;
 	/// 格子索引
-	protected int gridIndex;
+	protected int								gridIndex;
 
 	/// 简单用户信息
-	protected SimplePlayerInfo simpleInfo;
-	protected int job;								// 职业
-	protected int initSoul;							// 初始血量
-	protected int maxSoul;							// 最大血量
-	protected int curSoul;							// 当前血量
+	protected SimplePlayerInfo					simpleInfo;
+	protected int								job;								// 职业
+	protected int								initSoul;							// 初始血量
+	protected int								maxSoul;							// 最大血量
+	protected int								curSoul;							// 当前血量
 
-	protected int initBlood;							// 初始气血(固定)
-	protected int maxBlood;							// 最大气血(变动)
+	protected int								initBlood;							// 初始气血(固定)
+	protected int								maxBlood;							// 最大气血(变动)
 
 	/**
-	 * 气血效果 气血值=0 进入元魂状态，当脱离战斗状态或者气血恢复100%时脱离元魂状态 受到所有的异常状态时间延长50%，造成的伤害提高10%，魂防-50% 回复的气血值暂时没有效果，直到脱离元魂状态 离开战斗状态20秒后开始自动回复气血值 气血值>0 免疫硬直和浮空效果 战斗状态每10秒一次的自动回复气血
+	 * 气血效果 气血值=0 进入元魂状态，当脱离战斗状态或者气血恢复100%时脱离元魂状态
+	 * 受到所有的异常状态时间延长50%，造成的伤害提高10%，魂防-50% 回复的气血值暂时没有效果，直到脱离元魂状态
+	 * 离开战斗状态20秒后开始自动回复气血值 气血值>0 免疫硬直和浮空效果 战斗状态每10秒一次的自动回复气血
 	 **/
-	protected int curBlood;							// 当前气血(变动)
-	protected int attack;								// 攻击
-	protected int defence;							// 防御
-	protected int soulAttack;							// 魂攻
-	protected int soulDefence;						// 魂防
-	protected int accurate;							// 命中
-	protected int dodge;								// 闪避
-	protected int crit;								// 暴击
-	protected int critDefence;						// 抗暴
-	protected int critAddtion;						// 暴击伤害
-	protected int critCut;							// 抗暴减伤
-	protected int attackAddtion;						// 气血伤害增加
-	protected int attackCut;							// 气血伤害减免
-	protected int soulAttackAddtion;					// 元魂伤害增加
-	protected int soulAttackCut;						// 元魂伤害减免
-	protected int regainSoul;							// 每10秒回魂
-	protected int regainBlood;						// 每10秒回血
-	protected int metal;								// 金
-	protected int wood;								// 木
-	protected int water;								// 水
-	protected int fire;								// 火
-	protected int earth;								// 土
-	protected int metalDefence;						// 金抗
-	protected int woodDefence;						// 木抗
-	protected int waterDefence;						// 水抗
-	protected int fireDefence;						// 火抗
-	protected int earthDefence;						// 土抗
-	protected int speed = 6;				// 移动速度
-	protected int pkVal;								// pk
-														// 值
-	protected int battleMode;							// 攻击模式
+	protected int								curBlood;							// 当前气血(变动)
+	protected int								attack;								// 攻击
+	protected int								defence;							// 防御
+	protected int								soulAttack;							// 魂攻
+	protected int								soulDefence;						// 魂防
+	protected int								accurate;							// 命中
+	protected int								dodge;								// 闪避
+	protected int								crit;								// 暴击
+	protected int								critDefence;						// 抗暴
+	protected int								critAddtion;						// 暴击伤害
+	protected int								critCut;							// 抗暴减伤
+	protected int								attackAddtion;						// 气血伤害增加
+	protected int								attackCut;							// 气血伤害减免
+	protected int								soulAttackAddtion;					// 元魂伤害增加
+	protected int								soulAttackCut;						// 元魂伤害减免
+	protected int								regainSoul;							// 每10秒回魂
+	protected int								regainBlood;						// 每10秒回血
+	protected int								metal;								// 金
+	protected int								wood;								// 木
+	protected int								water;								// 水
+	protected int								fire;								// 火
+	protected int								earth;								// 土
+	protected int								metalDefence;						// 金抗
+	protected int								woodDefence;						// 木抗
+	protected int								waterDefence;						// 水抗
+	protected int								fireDefence;						// 火抗
+	protected int								earthDefence;						// 土抗
+	protected int								speed			= 6;				// 移动速度
+	protected int								pkVal;								// pk
+																					// 值
+	protected int								battleMode;							// 攻击模式
 	// 进场保护,不可攻击
-	protected boolean protection;
+	protected boolean							protection;
 
 	// 生存状态
-	protected int livingState;
+	protected int								livingState;
 
 	/** 战斗形态 :是否处于元魂状态 */
-	protected boolean isSoulState = false;
+	protected boolean							isSoulState		= false;
 
 	/** 是否处于战斗状态 */
-	protected boolean fightState = false;
+	protected boolean							fightState		= false;
 	/** 最后一次战斗时间 */
-	protected long lastFightTm;
+	protected long								lastFightTm;
 	/** pk 值计算时间 */
-	private long pkValCalTime = 0;
+	private long								pkValCalTime	= 0;
 	/**
 	 * 位置
 	 */
-	protected Vector3 postion;
+	protected Vector3							postion;
 
 	/**
 	 * 目标位置
 	 */
-	protected Vector3 targetPostion = Vector3.Invalid;
+	protected Vector3							targetPostion	= Vector3.Invalid;
 
 	/**
 	 * 所在的场景
 	 */
-	protected Field field;
+	protected Field								field;
+
+	/** 怪物出生节点 */
+	protected SpwanNode							node;
 	/** 缓存在地图中，别人获取自己的时候的信息 */
-	protected BattleLivingInfoMsg.Builder cachBattleInfoPacket;
+	protected BattleLivingInfoMsg.Builder		cachBattleInfoPacket;
 	/** 缓存地图中, 本人快照信息 */
-	protected PlayerAttSnapMsg.Builder cacheAttSnapPacker;
+	protected PlayerAttSnapMsg.Builder			cacheAttSnapPacker;
 	/** 主动技能 */
-	protected Map<Integer, Skill> drivingSkills;
+	protected Map<Integer, Skill>				drivingSkills;
 	/** 技能map type->skill */
-	protected Map<String, Skill> mapSkill;
+	protected Map<String, Skill>				mapSkill;
 
 	/** 被动技能带来的常驻buffer <execWay,<bufferId,buffer>> */
-	protected Map<Integer, List<Buffer>> permanentBuffer;
+	protected Map<Integer, List<Buffer>>		permanentBuffer;
 
 	/** 存活的临时buffer <execWay,<bufferId,buffer>> */
 
-	protected Map<Integer, List<Buffer>> workBuffers;
+	protected Map<Integer, List<Buffer>>		workBuffers;
 
 	/** 所有的buffer */
-	protected Map<Long, Buffer> allBuffers;
+	protected Map<Long, Buffer>					allBuffers;
 
 	/** 状态管理器 */
-	protected Map<LivingState, AtomicInteger> livingStatus;
+	protected Map<LivingState, AtomicInteger>	livingStatus;
 
 	public HashMap<String, CoolDown> getCooldowns() {
 		return cooldowns;
@@ -188,29 +193,29 @@ public class Living extends AbstractActionQueue {
 	/** buffer回收站--待定，看是否需要 */
 	// -------------------------------------------
 	/** (气血&&元魂)自动恢复时间 */
-	protected long restoreTime = System.currentTimeMillis();
+	protected long						restoreTime	= System.currentTimeMillis();
 
 	/** 死亡时间 */
-	protected long dieTime;
+	protected long						dieTime;
 
-	protected boolean canAction;
+	protected boolean					canAction;
 
-	private static EnumAttr[] propertys;
+	private static EnumAttr[]			propertys;
 
 	/** 队伍ID */
-	private int teamId;
+	private int							teamId;
 
 	/** cd对象 */
-	protected HashMap<String, CoolDown> cooldowns = new HashMap<String, CoolDown>();
+	protected HashMap<String, CoolDown>	cooldowns	= new HashMap<String, CoolDown>();
 
-	protected Object dieLock = new Object();
+	protected Object					dieLock		= new Object();
 
 	static {
 		propertys = new EnumAttr[] { EnumAttr.CUR_SOUL, EnumAttr.MAX_SOUL, EnumAttr.SOUL, EnumAttr.BLOOD, EnumAttr.MAX_BLOOD, EnumAttr.CUR_BLOOD, EnumAttr.ATTACK, EnumAttr.DEFENCE,
-				EnumAttr.SOUL_ATTACK, EnumAttr.SOUL_DEFENCE, EnumAttr.ACCURATE, EnumAttr.DODGE, EnumAttr.CRIT, EnumAttr.CRIT_DEFENCE, EnumAttr.CRIT_ADDTION, EnumAttr.CRIT_CUT,
-				EnumAttr.ATTACK_ADDTION, EnumAttr.ATTACK_CUT, EnumAttr.SOUL_ATTACK_ADDTION, EnumAttr.SOUL_ATTACK_CUT, EnumAttr.REGAIN_SOUL, EnumAttr.REGAIN_BLOOD, EnumAttr.METAL,
-				EnumAttr.WOOD, EnumAttr.WATER, EnumAttr.FIRE, EnumAttr.EARTH, EnumAttr.METAL_DEFENCE, EnumAttr.WOOD_DEFENCE, EnumAttr.WATER_DEFENCE, EnumAttr.FIRE_DEFENCE,
-				EnumAttr.EARTH_DEFENCE, EnumAttr.SPEED, EnumAttr.TEAM_ID, EnumAttr.PK_VAL, EnumAttr.BATTLE_MODE };
+				EnumAttr.SOUL_ATTACK, EnumAttr.SOUL_DEFENCE, EnumAttr.ACCURATE, EnumAttr.DODGE, EnumAttr.CRIT, EnumAttr.CRIT_DEFENCE, EnumAttr.CRIT_ADDTION, EnumAttr.CRIT_CUT, EnumAttr.ATTACK_ADDTION,
+				EnumAttr.ATTACK_CUT, EnumAttr.SOUL_ATTACK_ADDTION, EnumAttr.SOUL_ATTACK_CUT, EnumAttr.REGAIN_SOUL, EnumAttr.REGAIN_BLOOD, EnumAttr.METAL, EnumAttr.WOOD, EnumAttr.WATER, EnumAttr.FIRE,
+				EnumAttr.EARTH, EnumAttr.METAL_DEFENCE, EnumAttr.WOOD_DEFENCE, EnumAttr.WATER_DEFENCE, EnumAttr.FIRE_DEFENCE, EnumAttr.EARTH_DEFENCE, EnumAttr.SPEED, EnumAttr.TEAM_ID, EnumAttr.PK_VAL,
+				EnumAttr.BATTLE_MODE };
 	}
 
 	public Vector3 getPostion() {
@@ -568,7 +573,7 @@ public class Living extends AbstractActionQueue {
 						PropertyMsg.Builder speedMsg = PropertyMsg.newBuilder();
 						speedMsg.setType(EnumAttr.MAX_BLOOD.getValue());
 						speedMsg.setTotalPoint(newMaxB);
-						properties.add(speedMsg.build());						
+						properties.add(speedMsg.build());
 						addCurBlood((int) add);
 					}
 				}
@@ -728,6 +733,9 @@ public class Living extends AbstractActionQueue {
 		cacheAttSnapPacker.setSkinId(getSkin());
 		cacheAttSnapPacker.setPostion(Vector3BuilderHelper.build(getPostion()));
 		cacheAttSnapPacker.setTarget(Vector3BuilderHelper.build(getTargetPostion()));
+		if (node != null) {
+			cacheAttSnapPacker.setBornNodeId(node.getSpwanId());
+		}
 		return cacheAttSnapPacker;
 	}
 
@@ -818,207 +826,207 @@ public class Living extends AbstractActionQueue {
 		}
 		switch (attr) {
 
-		case CUR_SOUL:
-			if (value > this.getMaxSoul()) {
-				value = this.getMaxSoul();
-			}
-			this.setCurSoul((int) value);
-			break;
-		case MAX_SOUL:
-			this.setMaxSoul((int) value);
-			break;
-		case SOUL:
-			this.setInitSoul((int) value);
-			break;
-		case BLOOD:
-			this.setInitBlood((int) value);
-			break;
-		case MAX_BLOOD:
-			this.setMaxBlood((int) value);
-			break;
-		case CUR_BLOOD:
-			if (value > this.getMaxBlood()) {
-				value = this.getMaxBlood();
-			}
-			this.setCurBlood((int) value);
-			break;
-		case ATTACK:
-			this.setAttack((int) value);
-			break;
-		case DEFENCE:
-			this.setDefence((int) value);
-			break;
-		case SOUL_ATTACK:
-			this.setSoulAttack((int) value);
-			break;
-		case SOUL_DEFENCE:
-			this.setSoulDefence((int) value);
-			break;
-		case ACCURATE:
-			this.setAccurate((int) value);
-			break;
-		case DODGE:
-			this.setDodge((int) value);
-			break;
-		case CRIT:
-			this.setCrit((int) value);
-			break;
-		case CRIT_DEFENCE:
-			this.setCritDefence((int) value);
-			break;
-		case CRIT_ADDTION:
-			this.setCritAddtion((int) value);
-			break;
-		case CRIT_CUT:
-			this.setCritCut((int) value);
-			break;
-		case ATTACK_ADDTION:
-			this.setAttackAddtion((int) value);
-			break;
-		case ATTACK_CUT:
-			this.setAttackCut((int) value);
-			break;
-		case SOUL_ATTACK_ADDTION:
-			this.setSoulAttackAddtion((int) value);
-			break;
-		case SOUL_ATTACK_CUT:
-			this.setSoulAttackCut((int) value);
-			break;
-		case REGAIN_SOUL:
-			this.setRegainSoul((int) value);
-			break;
-		case REGAIN_BLOOD:
-			this.setRegainBlood((int) value);
-			break;
-		case METAL:
-			this.setMetal((int) value);
-			break;
-		case WOOD:
-			this.setWood((int) value);
-			break;
-		case WATER:
-			this.setWater((int) value);
-			break;
-		case FIRE:
-			this.setFire((int) value);
-			break;
-		case EARTH:
-			this.setEarth((int) value);
-			break;
-		case METAL_DEFENCE:
-			this.setMetalDefence((int) value);
-			break;
-		case WOOD_DEFENCE:
-			this.setWoodDefence((int) value);
-			break;
-		case WATER_DEFENCE:
-			this.setWaterDefence((int) value);
-			break;
-		case FIRE_DEFENCE:
-			this.setFireDefence((int) value);
-			break;
-		case EARTH_DEFENCE:
-			this.setEarthDefence((int) value);
-			break;
-		case SPEED:
-			this.setSpeed((int) value);
-			break;
-		case TEAM_ID:
-			this.setTeamId((int) value);
-			break;
-		case PK_VAL:
-			this.setPkVal((int) value);
-			System.out.println("PK_VAL value:" + value);
-			break;
-		case BATTLE_MODE:
-			this.setBattleMode((int) value);
-			System.out.println("BATTLE_MODE value:" + value);
-			break;
-		case Weapon:
-			this.simpleInfo.setWeaponId((int) value);
-			break;
-		default:
-			break;
+			case CUR_SOUL:
+				if (value > this.getMaxSoul()) {
+					value = this.getMaxSoul();
+				}
+				this.setCurSoul((int) value);
+				break;
+			case MAX_SOUL:
+				this.setMaxSoul((int) value);
+				break;
+			case SOUL:
+				this.setInitSoul((int) value);
+				break;
+			case BLOOD:
+				this.setInitBlood((int) value);
+				break;
+			case MAX_BLOOD:
+				this.setMaxBlood((int) value);
+				break;
+			case CUR_BLOOD:
+				if (value > this.getMaxBlood()) {
+					value = this.getMaxBlood();
+				}
+				this.setCurBlood((int) value);
+				break;
+			case ATTACK:
+				this.setAttack((int) value);
+				break;
+			case DEFENCE:
+				this.setDefence((int) value);
+				break;
+			case SOUL_ATTACK:
+				this.setSoulAttack((int) value);
+				break;
+			case SOUL_DEFENCE:
+				this.setSoulDefence((int) value);
+				break;
+			case ACCURATE:
+				this.setAccurate((int) value);
+				break;
+			case DODGE:
+				this.setDodge((int) value);
+				break;
+			case CRIT:
+				this.setCrit((int) value);
+				break;
+			case CRIT_DEFENCE:
+				this.setCritDefence((int) value);
+				break;
+			case CRIT_ADDTION:
+				this.setCritAddtion((int) value);
+				break;
+			case CRIT_CUT:
+				this.setCritCut((int) value);
+				break;
+			case ATTACK_ADDTION:
+				this.setAttackAddtion((int) value);
+				break;
+			case ATTACK_CUT:
+				this.setAttackCut((int) value);
+				break;
+			case SOUL_ATTACK_ADDTION:
+				this.setSoulAttackAddtion((int) value);
+				break;
+			case SOUL_ATTACK_CUT:
+				this.setSoulAttackCut((int) value);
+				break;
+			case REGAIN_SOUL:
+				this.setRegainSoul((int) value);
+				break;
+			case REGAIN_BLOOD:
+				this.setRegainBlood((int) value);
+				break;
+			case METAL:
+				this.setMetal((int) value);
+				break;
+			case WOOD:
+				this.setWood((int) value);
+				break;
+			case WATER:
+				this.setWater((int) value);
+				break;
+			case FIRE:
+				this.setFire((int) value);
+				break;
+			case EARTH:
+				this.setEarth((int) value);
+				break;
+			case METAL_DEFENCE:
+				this.setMetalDefence((int) value);
+				break;
+			case WOOD_DEFENCE:
+				this.setWoodDefence((int) value);
+				break;
+			case WATER_DEFENCE:
+				this.setWaterDefence((int) value);
+				break;
+			case FIRE_DEFENCE:
+				this.setFireDefence((int) value);
+				break;
+			case EARTH_DEFENCE:
+				this.setEarthDefence((int) value);
+				break;
+			case SPEED:
+				this.setSpeed((int) value);
+				break;
+			case TEAM_ID:
+				this.setTeamId((int) value);
+				break;
+			case PK_VAL:
+				this.setPkVal((int) value);
+				System.out.println("PK_VAL value:" + value);
+				break;
+			case BATTLE_MODE:
+				this.setBattleMode((int) value);
+				System.out.println("BATTLE_MODE value:" + value);
+				break;
+			case Weapon:
+				this.simpleInfo.setWeaponId((int) value);
+				break;
+			default:
+				break;
 		}
 	}
 
 	public int getProperty(int type) {
 		EnumAttr attr = EnumAttr.getEnumAttrByValue(type);
 		switch (attr) {
-		case CUR_SOUL:
-			return this.getCurSoul();
-		case MAX_SOUL:
-			return this.getMaxSoul();
-		case SOUL:
-			return this.getInitSoul();
-		case BLOOD:
-			return this.getInitBlood();
-		case MAX_BLOOD:
-			return this.getMaxBlood();
-		case CUR_BLOOD:
-			return this.getCurBlood();
-		case ATTACK:
-			return this.getAttack();
-		case DEFENCE:
-			return this.getDefence();
-		case SOUL_ATTACK:
-			return this.getSoulAttack();
-		case SOUL_DEFENCE:
-			return this.getSoulDefence();
-		case ACCURATE:
-			return this.getAccurate();
-		case DODGE:
-			return this.getDodge();
-		case CRIT:
-			return this.getCrit();
-		case CRIT_DEFENCE:
-			return this.getCritDefence();
-		case CRIT_ADDTION:
-			return this.getCritAddtion();
-		case CRIT_CUT:
-			return this.getCritCut();
-		case ATTACK_ADDTION:
-			return this.getAttackAddtion();
-		case ATTACK_CUT:
-			return this.getAttackCut();
-		case SOUL_ATTACK_ADDTION:
-			return this.getSoulAttackAddtion();
-		case SOUL_ATTACK_CUT:
-			return this.getSoulAttackCut();
-		case REGAIN_SOUL:
-			return this.getRegainSoul();
-		case REGAIN_BLOOD:
-			return this.getRegainBlood();
-		case METAL:
-			return this.getMetal();
-		case WOOD:
-			return this.getWood();
-		case WATER:
-			return this.getWater();
-		case FIRE:
-			return this.getFire();
-		case EARTH:
-			return this.getEarth();
-		case METAL_DEFENCE:
-			return this.getMetalDefence();
-		case WOOD_DEFENCE:
-			return this.getWoodDefence();
-		case WATER_DEFENCE:
-			return this.getWaterDefence();
-		case FIRE_DEFENCE:
-			return this.getFireDefence();
-		case EARTH_DEFENCE:
-			return this.getEarthDefence();
-		case SPEED:
-			return this.getSpeed();
-		case TEAM_ID:
-			return this.getTeamId();
-		case PK_VAL:
-			return this.getPkVal();
-		case BATTLE_MODE:
-			return this.getBattleMode();
-		default:
-			return 0;
+			case CUR_SOUL:
+				return this.getCurSoul();
+			case MAX_SOUL:
+				return this.getMaxSoul();
+			case SOUL:
+				return this.getInitSoul();
+			case BLOOD:
+				return this.getInitBlood();
+			case MAX_BLOOD:
+				return this.getMaxBlood();
+			case CUR_BLOOD:
+				return this.getCurBlood();
+			case ATTACK:
+				return this.getAttack();
+			case DEFENCE:
+				return this.getDefence();
+			case SOUL_ATTACK:
+				return this.getSoulAttack();
+			case SOUL_DEFENCE:
+				return this.getSoulDefence();
+			case ACCURATE:
+				return this.getAccurate();
+			case DODGE:
+				return this.getDodge();
+			case CRIT:
+				return this.getCrit();
+			case CRIT_DEFENCE:
+				return this.getCritDefence();
+			case CRIT_ADDTION:
+				return this.getCritAddtion();
+			case CRIT_CUT:
+				return this.getCritCut();
+			case ATTACK_ADDTION:
+				return this.getAttackAddtion();
+			case ATTACK_CUT:
+				return this.getAttackCut();
+			case SOUL_ATTACK_ADDTION:
+				return this.getSoulAttackAddtion();
+			case SOUL_ATTACK_CUT:
+				return this.getSoulAttackCut();
+			case REGAIN_SOUL:
+				return this.getRegainSoul();
+			case REGAIN_BLOOD:
+				return this.getRegainBlood();
+			case METAL:
+				return this.getMetal();
+			case WOOD:
+				return this.getWood();
+			case WATER:
+				return this.getWater();
+			case FIRE:
+				return this.getFire();
+			case EARTH:
+				return this.getEarth();
+			case METAL_DEFENCE:
+				return this.getMetalDefence();
+			case WOOD_DEFENCE:
+				return this.getWoodDefence();
+			case WATER_DEFENCE:
+				return this.getWaterDefence();
+			case FIRE_DEFENCE:
+				return this.getFireDefence();
+			case EARTH_DEFENCE:
+				return this.getEarthDefence();
+			case SPEED:
+				return this.getSpeed();
+			case TEAM_ID:
+				return this.getTeamId();
+			case PK_VAL:
+				return this.getPkVal();
+			case BATTLE_MODE:
+				return this.getBattleMode();
+			default:
+				return 0;
 		}
 	}
 
@@ -1434,10 +1442,13 @@ public class Living extends AbstractActionQueue {
 		if (wbuff != null && wbuff.size() != 0) {
 			List<Damage> damages = new ArrayList<>();
 			for (Buffer buff : wbuff) {
-				Damage damage = new Damage(this, buff.getSource());
-				if (buff.checkValid() && buff.execute(null, damage, ExecWayType.TIME_LINE)) {
-					damages.add(damage);
-					takeDamage(damage);
+				Damage damage1 = new Damage(this, buff.getSource());
+				Damage damage2 = new Damage(this, buff.getSource());
+				if (buff.checkValid() && buff.execute(null, damage1, damage2, ExecWayType.TIME_LINE)) {
+					damages.add(damage1);
+					damages.add(damage2);
+					takeDamage(damage1);
+					takeDamage(damage2);
 				}
 			}
 			if (damages.size() > 0) {
@@ -1462,10 +1473,13 @@ public class Living extends AbstractActionQueue {
 		if (buffers != null && buffers.size() != 0) {
 			List<Damage> damages = new ArrayList<>();
 			for (Buffer buff : buffers) {
-				Damage damage = new Damage(this, buff.getSource());
-				if (buff.checkValid() && buff.execute(null, damage, execWay)) {
-					damages.add(damage);
-					takeDamage(damage);
+				Damage damage1 = new Damage(this, buff.getSource());
+				Damage damage2 = new Damage(this, buff.getSource());
+				if (buff.checkValid() && buff.execute(null, damage1, damage2, execWay)) {
+					damages.add(damage1);
+					damages.add(damage2);
+					takeDamage(damage1);
+					takeDamage(damage2);
 				}
 			}
 			if (damages.size() > 0) {
@@ -1487,16 +1501,19 @@ public class Living extends AbstractActionQueue {
 
 	public void execBuffer(Buffer buff, int execWay) {
 		List<Damage> damages = new ArrayList<>();
-		Damage damage = new Damage(this, buff.getSource());
+		Damage damage1 = new Damage(this, buff.getSource());
+		Damage damage2 = new Damage(this, buff.getSource());
 		boolean isValid = false;
 		if (execWay == ExecWayType.REMOVE) {
 			isValid = true;
 		} else {
 			isValid = buff.checkValid();
 		}
-		if (isValid && buff.execute(null, damage, execWay)) {
-			damages.add(damage);
-			takeDamage(damage);
+		if (isValid && buff.execute(null, damage1, damage2, execWay)) {
+			damages.add(damage1);
+			damages.add(damage2);
+			takeDamage(damage1);
+			takeDamage(damage2);
 		}
 
 		if (damages.size() > 0) {
@@ -1538,7 +1555,7 @@ public class Living extends AbstractActionQueue {
 			return;
 		}
 		fightState = false;
-		if (isSoulState()) {
+		if (isSoulState() && getCurBlood() > 0) {
 			changeSoulState(false);
 			List<Damage> damages = new ArrayList<>();
 			Damage curBlood = new Damage(this, this);
@@ -1667,7 +1684,8 @@ public class Living extends AbstractActionQueue {
 		if (this.drivingSkills.isEmpty())
 			return null;
 		// Integer[] keys = this.drivingSkills.keySet().toArray(new Integer[0]);
-		// Integer randomKey = MathUtils.randomClamp(0, this.drivingSkills.size() - 1);
+		// Integer randomKey = MathUtils.randomClamp(0,
+		// this.drivingSkills.size() - 1);
 		// Integer key = keys[randomKey];
 		// skill = this.drivingSkills.get(key);
 		List<Map.Entry<Integer, Skill>> skills = new ArrayList<Map.Entry<Integer, Skill>>(this.drivingSkills.entrySet());
@@ -1763,10 +1781,14 @@ public class Living extends AbstractActionQueue {
 	/**
 	 * 添加冷却
 	 *
-	 * @param roleId 玩家Id
-	 * @param type 类型
-	 * @param key 关键字
-	 * @param delay 冷却时间
+	 * @param roleId
+	 *            玩家Id
+	 * @param type
+	 *            类型
+	 * @param key
+	 *            关键字
+	 * @param delay
+	 *            冷却时间
 	 */
 	public void addCooldown(CoolDownTypes type, String key, long delay) {
 		// 初始化冷却关键字
@@ -1796,9 +1818,12 @@ public class Living extends AbstractActionQueue {
 	/**
 	 * 是否在冷却中
 	 *
-	 * @param monsterId 玩家Id
-	 * @param type 冷却类型
-	 * @param key 关键字
+	 * @param monsterId
+	 *            玩家Id
+	 * @param type
+	 *            冷却类型
+	 * @param key
+	 *            关键字
 	 * @return
 	 */
 	public boolean isCooldowning(CoolDownTypes type, String key) {
@@ -1936,7 +1961,8 @@ public class Living extends AbstractActionQueue {
 	 * 通知
 	 * 
 	 * @param playerId
-	 * @param beKillerId 被杀者
+	 * @param beKillerId
+	 *            被杀者
 	 */
 	public void notifyCenter(int type, int playerId, int beKillerId) {
 		PlayerKillMonsterMsg.Builder msg = PlayerKillMonsterMsg.newBuilder();

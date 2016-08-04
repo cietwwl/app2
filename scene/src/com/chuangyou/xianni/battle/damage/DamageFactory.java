@@ -5,13 +5,13 @@ import com.chuangyou.xianni.constant.EnumAttr;
 
 public class DamageFactory {
 
-	public static DamageCalculator createCalculator(int calcWay, int job) {
+	public static DamageCalculator createCalculator(EnumAttr type) {
 		DamageCalculator calculator = null;
-		EnumAttr type = EnumAttr.getEnumAttrByValue(calcWay);
-		if(type == null){
-			Log.error("传入计算方式有误, 检查配置; calcWay1: " + calcWay);
-			return new BloodDamageCalculator();
-		}
+		// EnumAttr type = EnumAttr.getEnumAttrByValue(calcWay);
+		// if (type == null) {
+		// Log.error("传入计算方式有误, 检查配置; calcWay1: " + calcWay);
+		// return new BloodDamageCalculator();
+		// }
 		switch (type) {
 			case CUR_SOUL:
 				calculator = new SouDamageCalculator();
@@ -21,7 +21,7 @@ public class DamageFactory {
 				break;
 			default:
 				calculator = new BloodDamageCalculator();
-				Log.error("传入计算方式有误, 检查配置; calcWay: " + calcWay);
+				// Log.error("传入计算方式有误, 检查配置; calcWay: " + calcWay);
 				break;
 		}
 		return calculator;

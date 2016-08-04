@@ -47,7 +47,7 @@ public class ArmyProxy extends AbstractActionQueue {
 
 	private Player			player;			// 英雄
 	private Pet				pet;			// 宠物
-	
+
 	public ArmyProxy(long playerId, String site, Channel channel, SimplePlayerInfo simplePlayerInfo, Player hero, Pet pet) {
 		super(ThreadManager.actionExecutor);
 		this.playerId = playerId;
@@ -83,7 +83,7 @@ public class ArmyProxy extends AbstractActionQueue {
 	/** 切换地图 */
 	public void changeField(Field field, Vector3 postion) {
 		leave();
-		join(field, postion);	
+		join(field, postion);
 		NotifyHelper.notifyInfo(this);
 	}
 

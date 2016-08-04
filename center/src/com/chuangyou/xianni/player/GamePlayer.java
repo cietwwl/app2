@@ -30,6 +30,7 @@ import com.chuangyou.xianni.exec.CmdTaskQueue;
 import com.chuangyou.xianni.exec.ThreadManager;
 import com.chuangyou.xianni.fashion.FashionInventory;
 import com.chuangyou.xianni.friend.FriendInventory;
+import com.chuangyou.xianni.inverseBead.InverseBeadInventory;
 import com.chuangyou.xianni.magicwp.MagicwpInventory;
 import com.chuangyou.xianni.map.MapProxyManager;
 import com.chuangyou.xianni.mount.MountInventory;
@@ -48,51 +49,53 @@ import com.chuangyou.xianni.word.WorldMgr;
 import io.netty.channel.Channel;
 
 public class GamePlayer extends AbstractEvent {
-	private CmdTaskQueue		cmdTaskQueue;
-	private ActionQueue			actionQueue;
+	private CmdTaskQueue cmdTaskQueue;
+	private ActionQueue actionQueue;
 
 	/** 玩家所有数据 */
-	private BasePlayer			basePlayer;
+	private BasePlayer basePlayer;
 
 	/*************************** 各模块数据管理 ****************************/
 	// <<----** 共享数据，离线保留内存一段时间 ,并且提供离线加载*/---------------->>
 	/** 部队数据 */
-	private ArmyInventory		armyInventory;
+	private ArmyInventory armyInventory;
 
 	// <<----** 非共享数据，玩家下线时卸载 */---------------->>
 	/** 邮件数据 */
-	private EmailInventory		emailInventory;
+	private EmailInventory emailInventory;
 	/** 好友数据 */
-	private FriendInventory		friendInventory;
+	private FriendInventory friendInventory;
 
 	/** 坐骑数据 */
-	private MountInventory		mountInventory;
+	private MountInventory mountInventory;
 	/** 法宝数据 */
-	private MagicwpInventory	magicwpInventory;
+	private MagicwpInventory magicwpInventory;
 	/** 宠物数据 */
-	private PetInventory		petInventory;
+	private PetInventory petInventory;
 
 	/** 商店购购买信息 */
-	private ShopInventory		shopInventory;
+	private ShopInventory shopInventory;
 
 	/** 背包 */
-	private BagInventory		bagInventory;
+	private BagInventory bagInventory;
 
 	/** 时装 */
-	private FashionInventory	fashionInventory;
+	private FashionInventory fashionInventory;
 
 	/** 任务 */
-	private TaskInventory		taskInventory;
+	private TaskInventory taskInventory;
 
 	/** 副本 */
-	private CampaignInventory	campaignInventory;
+	private CampaignInventory campaignInventory;
 	/** 英雄技能 **/
-	private SkillInventory		skillInventory;
+	private SkillInventory skillInventory;
+	/** 天逆珠 **/
+	private InverseBeadInventory inverseBeadInventory;
 
-	private Channel				channel;			// 服务器持有连接
+	private Channel channel;			// 服务器持有连接
 
-	private int					curMapId	= -1;	// 玩家当前地图ID
-	private int					curCampaign	= 0;	// 玩家当前地图ID
+	private int curMapId = -1;	// 玩家当前地图ID
+	private int curCampaign = 0;	// 玩家当前地图ID
 
 	public GamePlayer() {
 		cmdTaskQueue = new AbstractCmdTaskQueue(ThreadManager.cmdExecutor);
@@ -141,6 +144,9 @@ public class GamePlayer extends AbstractEvent {
 		}
 		if (skillInventory != null) {
 			skillInventory.saveToDatabase();
+		}
+		if (inverseBeadInventory != null) {
+			inverseBeadInventory.saveToDatabase();
 		}
 	}
 
@@ -199,6 +205,10 @@ public class GamePlayer extends AbstractEvent {
 		}
 		skillInventory = new SkillInventory(this);
 		if (!initData(skillInventory.loadFromDataBase(), "英雄技能数据")) {
+			return false;
+		}
+		inverseBeadInventory = new InverseBeadInventory(this);
+		if (!initData(inverseBeadInventory.loadFromDataBase(), "英雄天逆珠数据")) {
 			return false;
 		}
 		armyInventory = new ArmyInventory(this);
@@ -495,6 +505,10 @@ public class GamePlayer extends AbstractEvent {
 
 	public int getLevel() {
 		return this.basePlayer.getPlayerInfo().getLevel();
+	}
+
+	public InverseBeadInventory getInverseBeadInventory() {
+		return inverseBeadInventory;
 	}
 
 	/** 回到出生点 */

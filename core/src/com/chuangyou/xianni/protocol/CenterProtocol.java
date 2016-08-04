@@ -1,8 +1,8 @@
-﻿package com.chuangyou.xianni.protocol;
+package com.chuangyou.xianni.protocol;
 
 /**
  * 发往center_server，范围 10001 - 20000 10500---10600: 由范加伟使用 10100---10300：由郭小帆使用
- * 10300---10500 由hw使用 10601---10700z
+ * 10300---10500 由hw使用 10701---10800z
  * 
  */
 public interface CenterProtocol {
@@ -321,6 +321,15 @@ public interface CenterProtocol {
 	/** 变更战斗模式 */
 	public static final short	C_BATTLE_MODE   				= 10501;
 	
-	
-	
+	// =========================>天逆珠<===============================InverseBead
+	/** 天逆珠五行升级***/
+	public static final short	C_INVERSE_BEAD_UP  				= 10701;
+	/** 获取天逆珠五行***/
+	public static final short	C_INVERSE_BEAD_GET  			= 10702;
+	/** 请求创建天逆珠逆境 **/
+	public static final short	C_CREATE_INVERSE_BEAD_CAMPAIGN  = 10703;
+	/** 同步过关节点**/
+	public static final short	C_CREATE_INVERSE_SYNC_MONSTER 	= 10704;
+	/** 重置天逆珠逆境 **/
+	public static final short	C_RESET_INVERSE_MONSTER 	    = 10705;
 }

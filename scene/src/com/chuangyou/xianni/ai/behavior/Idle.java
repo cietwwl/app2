@@ -22,6 +22,11 @@ public class Idle extends BaseBehavior {
 
 	@Override
 	public AIState next() {
+		if (getMonster().getAiConfig().isRunAway()) {// 是否逃跑
+			if (getMonster().getAttacker() != null)
+				return AIState.RUNAWAY;
+		}
+
 		// 空闲CD中
 		if (checkCooldown(CoolDownTypes.IDLE) || checkCooldown(CoolDownTypes.BE_ATTACK))
 			return AIState.INVALID;
@@ -74,7 +79,7 @@ public class Idle extends BaseBehavior {
 		} else {
 			if (getMonster().getMonsterInfo().getSeekEnemyRange() == 0)
 				return AIState.INVALID;
-			
+
 			return AIState.RUNBACK;
 		}
 

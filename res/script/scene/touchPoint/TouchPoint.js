@@ -17,23 +17,23 @@ function action(playerId, npcType) {
 
 		//月星->赵国传送点
 		case 1005301:
-			changeMap(playerId,1009,2928,353,5039);
+			changeMap(playerId,1009,2928,353,5039,1);
 			break;
 		//赵国->月星传送点
 		case 1009301:
-			changeMap(playerId,1005,669,679,-974);
+			changeMap(playerId,1005,669,679,-974,1);
 			break;
 		//藤家城->赵国野外
 		case 1008302:
-			changeMap(playerId,1009,3379,346,5286);
+			changeMap(playerId,1009,3379,346,5286,1);
 			break;
 		//恒岳派后山->山间泉眼
 		case 1009305:
-			changeMap(playerId,1009,3122,189,5681);
+			changeMap(playerId,1009,3122,189,5681,1);
 			break;
 		//山间泉眼->恒岳派后山
 		case 1009306:
-			changeMap(playerId,1009,3382,345,5293);
+			changeMap(playerId,1009,3382,345,5293,1);
 			break;	
 		//赵国野外->藤家城
 		case 1009307:

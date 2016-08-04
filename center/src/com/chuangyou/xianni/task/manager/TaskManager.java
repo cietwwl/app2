@@ -9,16 +9,17 @@ import java.util.Map.Entry;
 
 import com.chuangyou.common.protobuf.pb.task.TaskInfoProto.TaskInfoMsg;
 import com.chuangyou.common.protobuf.pb.task.TaskUpdateRespProto.TaskUpdateRespMsg;
-import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.task.TaskCfg;
 import com.chuangyou.xianni.entity.task.TaskInfo;
+import com.chuangyou.xianni.exec.CmdTask;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.task.TaskTriggerInfo;
+import com.chuangyou.xianni.task.cmd.ClearDayTaskCmd;
 import com.chuangyou.xianni.task.template.TaskTemplateMgr;
 import com.chuangyou.xianni.word.WorldMgr;
 
@@ -31,7 +32,10 @@ public class TaskManager {
 	public static void clearAllDayTask(){
 		for(GamePlayer player:WorldMgr.getOnLinePlayers()){
 			if(player.getTaskInventory().isReady()){
-				clearDayTask(player,true);
+				//clearDayTask(player,true);
+				PBMessage pkg = MessageUtil.buildMessage((short)-1,player.getPlayerId());
+				//将任务模拟进队列
+				player.enqueue(new CmdTask(new ClearDayTaskCmd(), null, pkg, player.getCmdTaskQueue()));
 			}
 		}
 	}
@@ -43,8 +47,6 @@ public class TaskManager {
 	 * @param info
 	 */
 	public static void clearDayTask(GamePlayer player,boolean isNotify){
-		if(player==null)return;
-		Log.error("taskInventory:"+player.getTaskInventory());
 		Map<Integer, TaskTriggerInfo> infos = player.getTaskInventory().getTaskInfos();
 		Iterator<Entry<Integer, TaskTriggerInfo>> it = infos.entrySet().iterator();
 		List<TaskInfo> list = new ArrayList<>();		

@@ -1,0 +1,10 @@
+//protocol= 722;
+option java_package = "com.chuangyou.common.protobuf.pb.inverseBead";
+option java_outer_classname = "ResInverseBeadResetMsgProto";
+
+//请求重置天逆珠
+message ResInverseBeadResetMsg {
+	required int32 monsterNum = 1; //怪物数量
+	required int64 resetTime  =2;	//重置时间
+	
+}

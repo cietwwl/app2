@@ -41,7 +41,7 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 	public void execute(ArmyProxy army, PBMessage packet) throws Exception {
 		AttackOrderMsg orderMsg = AttackOrderMsg.parseFrom(packet.toByteArray());
 		int skillActionId = orderMsg.getSkillActionId();
-		System.out.println(orderMsg);
+		// System.out.println(orderMsg);
 		// 该玩家是否具有此技能
 		Player player = army.getPlayer();
 		if (!player.hasSkillId(skillActionId)) {
@@ -65,61 +65,31 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 		boolean isFlicker = false;// 是否闪烁名称
 		// 技能目标
 		List<Living> targets = new ArrayList<>();
-
-		String startTime = field.getFieldInfo().getStartBattleTime();
-		String endTime = field.getFieldInfo().getEndBattleTime();
-
-		// System.out.println(field.getFieldInfo().getMapKey());
-
-		int rewardExp = 0;
 		for (long targetId : orderMsg.getTargetsList()) {
 			Living living = field.getLiving(targetId);
 			if (living != null) {
-				// System.out.println("living.getType():" + living.getType() + " " + battleMode + " vs " + living.getBattleMode() + " living.ID = " + living.getId());
-				if (living.getType() == RoleType.player) {
-					if (field.getFieldInfo().isBattle()) {// pk 地图才能攻击
-						int openLv = SystemConfigTemplateMgr.getIntValue("pk.openLv");
-						if (((Player) living).getSimpleInfo().getLevel() < openLv)
-							continue;
-						if (player.getBattleMode() == BattleModeCode.sectsBattleMode) {
-							if (player.getTeamId() != 0 && player.getTeamId() == ((Player) living).getTeamId())// 队友
-								continue;
-						}
-						if (startTime != null && endTime != null && TimeUtil.checkPeriod(startTime, endTime)) {// 受保护时间
-							if (((Player) living).getColour(living.getPkVal()) == BattleModeCode.white) {// 受地图保护
-								continue;
-							}
-						}
-					} else {
-						continue;
-					}
-				} else if (living.getType() == RoleType.monster) {
-					int exp = ((Monster) living).getAiConfig().getRewardExp();
-					rewardExp += exp;
-					// 掉落
-					List<Integer> drop = ((Monster) living).getAiConfig().getDrop();
-					for (Integer integer : drop) {
-						if (integer > 0)
-							DropManager.drop(player.getArmyId(), living.getId(), integer, army.getPlayer().getField().id, living.getPostion());
-					}
+				// PK判定
+				if (living.getType() == RoleType.player && !attackCheck(field, player, living)) {
+					continue;
+				}
+				// 怪物AI触发
+				if (living.getType() == RoleType.monster) {
+					monsterAiEvent(player, (Monster) living);
+				}
+				if (battleMode == BattleModeCode.warBattleMode && living.getBattleMode() == BattleModeCode.peaceBattleMode && living.getType() == RoleType.player) {
+					isFlicker = true;
 				}
 				targets.add(living);
-				if (battleMode == BattleModeCode.warBattleMode && living.getBattleMode() == BattleModeCode.peaceBattleMode && living.getType() == RoleType.player)
-					isFlicker = true;
 			}
 		}
-		// System.out.println(" targets.size(): " + targets.size());
-		if (isFlicker && player.getPkVal() == 0)
+
+		if (isFlicker && player.getPkVal() == 0) {
 			player.changeFlickerName(true);
+		}
 
 		long attackId = IDMakerHelper.attackId();
 		// 生成战斗指令
 		AttackOrder order = OrderFactory.createAttackOrder(player, skill, targets, attackId);
-
-		// System.out.println("orderMsg.getCurrent() = " +
-		// orderMsg.getCurrent());
-		// System.out.println("orderMsg.getPosition() = " +
-		// orderMsg.getPosition());
 
 		// 施法位置
 		order.setCurrent(orderMsg.getCurrent());
@@ -130,22 +100,49 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 		// System.err.println("触发攻击包 - skillActionId - " + skillActionId);
 		Vector3 current = Vector3BuilderHelper.get(orderMsg.getCurrent());
 		Vector3 target = Vector3BuilderHelper.get(orderMsg.getPosition());
-		// System.out.println(current + " - " + target + " - " +
-		// Vector3.Equal(current, target));
-		// if (!player.checkStatus(LivingState.MOVE)) {
-		// ((Monster) living).stop(false);
-		// return;
-		// }
+
 		if (!Vector3.Equal(current, target) && player.checkStatus(LivingState.ATTACK_MOVE))
 			NotifyNearHelper.notifyHelper(field, army, target, new AllSelectorHelper(army.getPlayer()));
 
+	}
+
+	private boolean attackCheck(Field field, Player player, Living target) {
+		String startTime = field.getFieldInfo().getStartBattleTime();
+		String endTime = field.getFieldInfo().getEndBattleTime();
+		if (field.getFieldInfo().isBattle()) {// pk 地图才能攻击
+			int openLv = SystemConfigTemplateMgr.getIntValue("pk.openLv");
+			if (((Player) target).getSimpleInfo().getLevel() < openLv)
+				return false;
+			if (player.getBattleMode() == BattleModeCode.sectsBattleMode) {
+				if (player.getTeamId() != 0 && player.getTeamId() == ((Player) target).getTeamId())// 队友
+					return false;
+			}
+			if (startTime != null && endTime != null && TimeUtil.checkPeriod(startTime, endTime)) {// 受保护时间
+				if (((Player) target).getColour(target.getPkVal()) == BattleModeCode.white) {// 受地图保护
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
+	private void monsterAiEvent(Player source, Monster target) {
+		int rewardExp = 0;
+		int exp = target.getAiConfig().getRewardExp();
+		rewardExp += exp;
+		// 掉落
+		List<Integer> drop = target.getAiConfig().getDrop();
+		for (Integer integer : drop) {
+			if (integer > 0)
+				DropManager.drop(source.getArmyId(), target.getId(), integer, source.getField().id, target.getPostion());
+		}
 		// 奖励经验
 		if (rewardExp > 0) {
 			Map<Integer, Long> changeMap = new HashMap<>();
 			changeMap.put(Integer.valueOf(EnumAttr.Exp.getValue()), Long.valueOf(rewardExp));
-			player.notifyCenter(changeMap, player.getArmyId());
+			source.notifyCenter(changeMap, source.getArmyId());
 		}
-
 	}
 
 }

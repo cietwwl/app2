@@ -1,0 +1,9 @@
+//protocol= 10701;
+option java_package = "com.chuangyou.common.protobuf.pb.inverseBead";
+option java_outer_classname = "ReqUpInverseBeadMsgProto";
+
+//升级请求
+message ReqUpInverseBeadMsg {
+	required int32 fiveElements = 1; //五行 1金、2 木、3水、4火、5土
+	required int32 marking = 2;      //要升级的印记 1到10
+}

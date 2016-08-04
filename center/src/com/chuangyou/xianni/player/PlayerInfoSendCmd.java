@@ -152,6 +152,9 @@ public class PlayerInfoSendCmd {
 	 * 发送物品外观列表
 	 */
 	public static void sendUpdateBagInventory(GamePlayer player, List<BagMessage> bagMessages) {
+		if (player.getPlayerState() != PlayerState.ONLINE) {
+			return;
+		}
 		ItemFaceListMsg.Builder movedList = ItemFaceListMsg.newBuilder();
 		try {
 			for (BagMessage info : bagMessages) {
@@ -171,7 +174,8 @@ public class PlayerInfoSendCmd {
 			}
 			// 发送到客户端
 			PBMessage resp = MessageUtil.buildMessage(Protocol.U_ITEM_FACE_LIST, movedList);
-			System.out.println(player.getPlayerId() + "发送背包协议-=-------------------------------" + movedList);
+			// System.out.println(player.getPlayerId() +
+			// "发送背包协议-=-------------------------------" + movedList);
 			player.sendPbMessage(resp);
 		} catch (Exception e) {
 			Log.error(String.format("用户%s物品位置更新出错!", player.getPlayerId()), e);

@@ -346,7 +346,7 @@ public class MagicwpInventory extends AbstractEvent implements IInventory {
 			BaseProperty skillPer = new BaseProperty();
 			// 加入技能属性
 			computeMagicwpAtt(skillData, skillPer);
-			player.getArmyInventory().getHero().addSkillPro(skillData, skillPer);
+			player.getArmyInventory().getHero().addMagicwp(skillData, skillPer);
 			player.getArmyInventory().updateProperty();
 		}
 	}

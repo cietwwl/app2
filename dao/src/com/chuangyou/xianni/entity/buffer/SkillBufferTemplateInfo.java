@@ -27,6 +27,10 @@ public class SkillBufferTemplateInfo {
 	private int		value;			// 固定数值
 	private int		valuePercent;	// 百分比
 
+	private int		valueType1;		// 作用属性类型1
+	private int		value1;			// 固定数值1
+	private int		valuePercent1;	// 百分比1
+
 	private int		status;			// buff作用状态ID
 
 	public int getTemplateId() {
@@ -187,6 +191,30 @@ public class SkillBufferTemplateInfo {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public int getValue1() {
+		return value1;
+	}
+
+	public void setValue1(int value1) {
+		this.value1 = value1;
+	}
+
+	public int getValuePercent1() {
+		return valuePercent1;
+	}
+
+	public void setValuePercent1(int valuePercent1) {
+		this.valuePercent1 = valuePercent1;
+	}
+
+	public int getValueType1() {
+		return valueType1;
+	}
+
+	public void setValueType1(int valueType1) {
+		this.valueType1 = valueType1;
 	}
 
 }

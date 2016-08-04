@@ -33,7 +33,7 @@ public class ScriptInterfaceScenceManager {
 
 	}
 
-	public static void changeMap(long playerId, int mapKey, int x, int y, int z) {
+	public static void changeMap(long playerId, int mapKey, int x, int y, int z, short angle) {
 
 		ArmyProxy army = WorldMgr.getArmy(playerId);
 
@@ -52,6 +52,7 @@ public class ScriptInterfaceScenceManager {
 		targetPos.setX(x);
 		targetPos.setY(y);
 		targetPos.setZ(z);
+		targetPos.setAngle(angle);
 
 		posMsg.setPostion(targetPos);
 

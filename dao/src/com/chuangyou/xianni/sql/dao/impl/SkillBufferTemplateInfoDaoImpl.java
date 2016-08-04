@@ -43,6 +43,11 @@ public class SkillBufferTemplateInfoDaoImpl extends BaseDao implements SkillBuff
 					skillBufferTmep.setValueType(rs.getInt("valueType"));
 					skillBufferTmep.setValue(rs.getInt("value"));
 					skillBufferTmep.setValuePercent(rs.getInt("valuePercent"));
+
+					skillBufferTmep.setValueType1(rs.getInt("valueType1"));
+					skillBufferTmep.setValue1(rs.getInt("value1"));
+					skillBufferTmep.setValuePercent1(rs.getInt("valuePercent1"));
+
 					skillBufferTmep.setStatus(rs.getInt("status"));
 					list.add(skillBufferTmep);
 				}

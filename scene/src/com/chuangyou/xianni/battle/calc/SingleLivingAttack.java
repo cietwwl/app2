@@ -6,8 +6,9 @@ import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.battle.AttackOrder;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.damage.DamageCalculator;
+import com.chuangyou.xianni.battle.damage.SouDamageCalculator;
+import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
-import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.objects.Living;
 
 /**
@@ -20,8 +21,8 @@ public class SingleLivingAttack extends AbstractSkillCalc {
 	/** 技能产生的伤害次序 */
 	private int order;
 
-	public SingleLivingAttack(int orderId, DamageCalculator calcutor) {
-		super(orderId, calcutor);
+	public SingleLivingAttack(int orderId, DamageCalculator bloodCalcutor, DamageCalculator soulCalcutor) {
+		super(orderId, bloodCalcutor, soulCalcutor);
 	}
 
 	@Override
@@ -68,12 +69,14 @@ public class SingleLivingAttack extends AbstractSkillCalc {
 		}
 		// 提示类型
 		int tipType = 0;
-
 		// 计算伤害
-		int damageValue = calcutor.calcDamage(source, target, tempInfo);
+		int bloodDamageValue = bloodCalcutor.calcDamage(source, target, tempInfo);
+		int soulDamageValue = soulCalcutor.calcDamage(source, target, tempInfo);
+
 		// 当释放者处于元魂状态时，伤害增加10%
 		if (source.isSoulState()) {
-			damageValue += damageValue * 0.1;
+			bloodDamageValue += bloodDamageValue * 0.1;
+			soulDamageValue += soulDamageValue * 0.1;
 		}
 		// 是否暴击
 		boolean isCrit = isCrit(tempInfo.getIsCrit(), source.getCrit(), target.getCritDefence());
@@ -81,28 +84,39 @@ public class SingleLivingAttack extends AbstractSkillCalc {
 		// 未暴击时，计算miss概率
 		if (!isCrit) {
 			if (!isHit(source.getAccurate(), target.getDodge())) {
-				damageValue = 0;
+				bloodDamageValue = 0;
+				soulDamageValue = 0;
 				tipType = Damage.MISS;
 			}
 		} else {
-			damageValue += damageValue * getCoefficient(source.getCritAddtion(), target.getCritCut());
+			float critAdd = getCoefficient(source.getCritAddtion(), target.getCritCut());
+			bloodDamageValue += bloodDamageValue * critAdd;
+			soulDamageValue += soulDamageValue * critAdd;
 			tipType = Damage.CRIPT;
 		}
 
 		// 群攻分摊伤害技能
 		if (tempInfo.getMasterType() == 2) {
-			damageValue = damageValue / count;
+			bloodDamageValue = bloodDamageValue / count;
+			soulDamageValue = soulDamageValue / count;
 		}
-		// if(source.getType() == 1)
-		// damageValue += 50000000;
+
 		for (int i = 0; i < time; i++) {
-			Damage damage = new Damage(target, source);
-			damage.setSkillId(attackOrder.getSkill().getSkillId());
-			damage.setDamageType(tempInfo.getAttackType());
-			damage.setDamageValue(damageValue);
-			damage.setTipType(tipType);
-			damage.setOrder(getOrder());
-			attackResult.add(damage);
+			Damage bloodDamage = new Damage(target, source);
+			bloodDamage.setSkillId(attackOrder.getSkill().getSkillId());
+			bloodDamage.setDamageType(EnumAttr.CUR_BLOOD.getValue());
+			bloodDamage.setDamageValue(bloodDamageValue);
+			bloodDamage.setTipType(tipType);
+			bloodDamage.setOrder(getOrder());
+			attackResult.add(bloodDamage);
+
+			Damage soulDamage = new Damage(target, source);
+			soulDamage.setSkillId(attackOrder.getSkill().getSkillId());
+			soulDamage.setDamageType(EnumAttr.CUR_SOUL.getValue());
+			soulDamage.setDamageValue(soulDamageValue);
+			soulDamage.setTipType(tipType);
+			soulDamage.setOrder(getOrder());
+			attackResult.add(soulDamage);
 		}
 		return attackResult;
 	}

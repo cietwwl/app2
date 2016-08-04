@@ -11,6 +11,7 @@ message PlayerAttSnapMsg {
 	optional PBVector3 postion = 4; 		//当前点
 	optional PBVector3 target = 5;		//目标点
 	optional int64 ownerId = 6;			//主人ID，主角不填
+	optional int32 bornNodeId=7;//出生点ID
 }
 
 

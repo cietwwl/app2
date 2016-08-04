@@ -20,11 +20,13 @@ import com.chuangyou.xianni.world.WorldMgr;
 public class CampaignCreateAction extends Action {
 	private ArmyProxy	army;
 	private int			campaignId;
+	private int			taskId;
 
-	public CampaignCreateAction(ArmyProxy army, int campaignId) {
+	public CampaignCreateAction(ArmyProxy army, int campaignId, int taskId) {
 		super(army);
 		this.army = army;
 		this.campaignId = campaignId;
+		this.taskId = taskId;
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class CampaignCreateAction extends Action {
 			return;
 		}
 
-		Campaign campaign = CampaignFactory.createCampaign(temp, army);
+		Campaign campaign = CampaignFactory.createCampaign(temp, army, taskId);
 		CampaignMgr.add(campaign);
 
 		campaign.start();

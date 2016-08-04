@@ -66,6 +66,24 @@ public class MathUtils {
 	}
 
 	/**
+	 * 求2点之前的插值-目标点的计算
+	 * 
+	 * @param form
+	 * @param to
+	 * @param distance
+	 * @return
+	 */
+	public static Vector3 GetVector3InDistance2(Vector3 form, Vector3 to, float pathDistance) {
+		if (pathDistance == 0)
+			return form;
+		float totalDistance = Vector3.distance(form, to);
+
+		float ratio = pathDistance / totalDistance;
+		Vector3 result = Vector3.add(form, Vector3.multipy(Vector3.sub(to, form), ratio));
+		return result;
+	}
+
+	/**
 	 * 获取某个方向上的点
 	 * 
 	 * @param dir

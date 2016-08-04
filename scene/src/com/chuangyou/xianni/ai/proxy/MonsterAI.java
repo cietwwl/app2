@@ -10,6 +10,7 @@ import com.chuangyou.xianni.ai.behavior.BeAttack;
 import com.chuangyou.xianni.ai.behavior.Chase;
 import com.chuangyou.xianni.ai.behavior.Idle;
 import com.chuangyou.xianni.ai.behavior.Patrol;
+import com.chuangyou.xianni.ai.behavior.RunAway;
 import com.chuangyou.xianni.ai.behavior.RunBack;
 import com.chuangyou.xianni.config.SceneGlobal;
 import com.chuangyou.xianni.cooldown.CoolDownTypes;
@@ -18,10 +19,10 @@ import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
 
 public class MonsterAI {// extends BaseProxy {
-	protected Map<AIState, BaseBehavior>	behaviors;
-	protected AIState						current	= AIState.IDLE;
-	protected Living						living;
-	protected int							delay;
+	protected Map<AIState, BaseBehavior> behaviors;
+	protected AIState current = AIState.IDLE;
+	protected Living living;
+	protected int delay;
 
 	/**
 	 * 仇恨计算频率
@@ -62,9 +63,10 @@ public class MonsterAI {// extends BaseProxy {
 		}
 
 		AIState next = behaviors.get(current).next();
-		 if (living.getId() == 1000000000026L) {
-		 System.out.println("怪物 id： " + living.getId() + " 状态： " + current + " 下一个状态：" + next + " 位置：" + living.getPostion() + " 目标：" + living.getTargetPostion());
-		 }
+
+		// if (living.getId() == 1000000000026L) {
+		// System.out.println("怪物 id： " + living.getId() + " 状态： " + current + " 下一个状态：" + next + " 位置：" + living.getPostion() + " 目标：" + living.getTargetPostion());
+		// }
 
 		if (next == AIState.INVALID)
 			return;
@@ -83,6 +85,7 @@ public class MonsterAI {// extends BaseProxy {
 		behaviors.put(AIState.ATTACK, new Attack((Monster) living));
 		behaviors.put(AIState.CHASE, new Chase((Monster) living));
 		behaviors.put(AIState.RUNBACK, new RunBack((Monster) living));
+		behaviors.put(AIState.RUNAWAY, new RunAway((Monster) living));
 	}
 
 }

@@ -1,0 +1,8 @@
+//protocol= 10703;
+option java_package = "com.chuangyou.common.protobuf.pb.inverseBead";
+option java_outer_classname = "ReqEnterCampaignMsgProto";
+
+//请求进入天逆珠逆境
+message ReqEnterCampaignMsg {
+	optional int32 campaign = 1;  //占位不用传
+}

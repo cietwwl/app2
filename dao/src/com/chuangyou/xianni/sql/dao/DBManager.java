@@ -3,6 +3,7 @@ package com.chuangyou.xianni.sql.dao;
 import com.chuangyou.xianni.sql.dao.impl.AiConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.BaseBufferTemplateInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.CampaignRecordInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.CampaignTaskTemplateInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.CampaignTemplateInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.ChatPrivateOfflineMsgDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.DropConfigDaoImpl;
@@ -12,6 +13,8 @@ import com.chuangyou.xianni.sql.dao.impl.FashionInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.FieldInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.FriendDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.HeroSkillDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.InverseBeadMonsterDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.InverseBeadTemDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.ItemInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.ItemTemplateInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.LevelUpDaoImpl;
@@ -31,6 +34,7 @@ import com.chuangyou.xianni.sql.dao.impl.PetInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PetSkillInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PetTotalAttDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PlayerInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.PlayerInverseBeadDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PlayerPositionInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PropertyFightingTemplateDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.RoleConfigImplDao;
@@ -54,26 +58,38 @@ public class DBManager {
 	/**
 	 * 测试DAO
 	 */
-	private static final TemplateTestDao	templateTestDao		= new TemplateTestDaoImpl();
+
+	private static final TemplateTestDao templateTestDao = new TemplateTestDaoImpl();
+
 
 	/**
 	 * 邮件DAO
 	 */
-	private static final EmailDao			emailDao			= new EmailDaoImpl();
+
+	private static final EmailDao emailDao = new EmailDaoImpl();
+
 	/**
 	 * 好友DAO
 	 */
-	private static final FriendDao			friendDao			= new FriendDaoImpl();
-	
+
+	private static final FriendDao friendDao = new FriendDaoImpl();
+
+
 	/** shop */
-	private static final ShopDao			shopDao			= new ShopDaoImpl();
+	private static final ShopDao shopDao = new ShopDaoImpl();
 
 	/** 商店模板数据 */
-	private static final ShopConfigDao	shopConfigDao	= new ShopConfigDaoImpl();
+
+	private static final ShopConfigDao		shopConfigDao	= new ShopConfigDaoImpl();
+
 	/** 任务模板 */
-	private static final TaskTemplateDao	taskTemplateDao		= new TaskTemplateImpl();
+
+	private static final TaskTemplateDao	taskTemplateDao	= new TaskTemplateImpl();
+
 	/** 任务DB */
-	private static final TaskDao			taskDao				= new TaskDaoImpl();
+
+	private static final TaskDao			taskDao			= new TaskDaoImpl();
+
 
 	public static FriendDao getFrienddao() {
 		return friendDao;
@@ -113,11 +129,13 @@ public class DBManager {
 	public static MonsterInfoDao getMonsterInfoDao() {
 		return monsterInfoDao;
 	}
+
 	/**
 	 * ai 配置数据
 	 */
 	private static final AiConfigDao aiConfigDao = new AiConfigDaoImpl();
-	public static AiConfigDao getAiConfigDao(){
+
+	public static AiConfigDao getAiConfigDao() {
 		return aiConfigDao;
 	}
 
@@ -183,7 +201,6 @@ public class DBManager {
 	public static SystemConfigDao getSystemConfigDao() {
 		return systemConfigDao;
 	}
-
 
 	/**
 	 * 商店
@@ -370,6 +387,21 @@ public class DBManager {
 		return skillStageDao;
 	}
 
+	/** 天逆珠 ***/
+	private static final InverseBeadTemDao inverseBeadTemDao = new InverseBeadTemDaoImpl();
+
+	public static InverseBeadTemDao getInversebeadtemdao() {
+		return inverseBeadTemDao;
+	}
+	/** 天逆珠刷怪 ***/
+	private static final InverseBeadMonsterTemDao InverseBeadMonsterTemDao = new InverseBeadMonsterDaoImpl();
+
+	public static InverseBeadMonsterTemDao getInverseBeadMonsterTemDao() {
+		return InverseBeadMonsterTemDao;
+	}
+	
+	
+
 	/** 基础技能模板 */
 	private static final SkillTempateInfoDao skillTempateInfoDao = new SkillTempateInfoDaoImpl();
 
@@ -431,6 +463,13 @@ public class DBManager {
 		return heroSkillDao;
 	}
 
+	/** 天逆珠升级数据 ***/
+	private static final PlayerInverseBeadDao playerInverseBeadDao = new PlayerInverseBeadDaoImpl();
+
+	public static PlayerInverseBeadDao getPlayerInverseBeadDao() {
+		return playerInverseBeadDao;
+	}
+
 	/** living状态表 */
 	private static final LivingStatusTemplateInfoDao livingStatusTemplateInfoDao = new LivingStatusTemplateInfoDaoImpl();
 
@@ -451,12 +490,22 @@ public class DBManager {
 	public static TeamTargetTemplateDao getTeamTargetTemplateDao() {
 		return teamTargetTemplateDao;
 	}
-	
+
 	/**
 	 * 私聊离线消息
 	 */
 	private static final ChatPrivateOfflineMsgDao chatPrivateOfflineMsgDao = new ChatPrivateOfflineMsgDaoImpl();
-	public static ChatPrivateOfflineMsgDao getChatPrivateOfflineMsgDao(){
+
+	public static ChatPrivateOfflineMsgDao getChatPrivateOfflineMsgDao() {
 		return chatPrivateOfflineMsgDao;
+	}
+
+	/**
+	 * 副本任务模板
+	 */
+	private static final CampaignTaskTemplateInfoDao campaignTaskTemplateInfoDao = new CampaignTaskTemplateInfoDaoImpl();
+
+	public static CampaignTaskTemplateInfoDao getCampaignTaskTemplateInfoDao() {
+		return campaignTaskTemplateInfoDao;
 	}
 }

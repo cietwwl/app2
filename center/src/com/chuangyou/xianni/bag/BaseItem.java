@@ -54,7 +54,7 @@ public class BaseItem {
 			getItemInfo().setObjectId(objectId);
 			getItemInfo().setBagType(bagType);
 		}else{
-			Log.error("----------------------");
+			//Log.error("----------------------");
 		}
 	}
 

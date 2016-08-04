@@ -15,6 +15,9 @@ public enum AIState {
 	CHASE(5),
 	//回归
 	RUNBACK(6),
+	//逃跑
+	RUNAWAY(7),
+	
 	;
 	
 	private int value;

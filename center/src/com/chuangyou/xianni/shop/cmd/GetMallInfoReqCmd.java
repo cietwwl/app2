@@ -18,7 +18,7 @@ import com.chuangyou.xianni.socket.Cmd;
 
 @Cmd(code=Protocol.C_REQ_MALL_INFO,desc = "请求商城中的数据")
 public class GetMallInfoReqCmd extends AbstractCommand {
-
+	
 
 	@Override
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {

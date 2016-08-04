@@ -3,6 +3,7 @@ package com.chuangyou.xianni.warfield.cmd;
 import com.chuangyou.common.protobuf.pb.ChangeMapResultMsgProto.ChangeMapResultMsg;
 import com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg;
 import com.chuangyou.common.protobuf.pb.ReqChangeMapMsgProto.ReqChangeMapMsg;
+import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
 import com.chuangyou.common.util.AccessTextFile;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.Vector3;
@@ -76,7 +77,10 @@ public class EnterFieldCmd extends AbstractCommand {
 			PostionMsg.Builder postionMsg = PostionMsg.newBuilder();
 			postionMsg.setMapId(field.id);
 			postionMsg.setMapKey(field.getMapKey());
-			postionMsg.setPostion(Vector3BuilderHelper.build(postion));
+			
+			PBVector3.Builder v3b = Vector3BuilderHelper.build(postion); 
+			v3b.setAngle(posMsg.getPostion().getAngle());
+			postionMsg.setPostion(v3b);
 			cmbuilder.setPostion(postionMsg);
 			army.sendPbMessage(MessageUtil.buildMessage(Protocol.C_ENTER_SENCE_MAP_RESULT, cmbuilder));
 		} else {

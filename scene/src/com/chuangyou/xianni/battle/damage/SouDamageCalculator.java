@@ -1,6 +1,5 @@
 package com.chuangyou.xianni.battle.damage;
 
-import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
 import com.chuangyou.xianni.role.objects.Living;
 
@@ -10,8 +9,7 @@ import com.chuangyou.xianni.role.objects.Living;
 public class SouDamageCalculator implements DamageCalculator {
 
 	@Override
-	public int calcDamage(Living source, Living target, SkillActionTemplateInfo skillTemp) {
-		ThreadSafeRandom random = new ThreadSafeRandom();
+	public int calcDamage(Living source, Living target, SkillActionTemplateInfo skillTemp) {	
 		// 已方魂攻
 		int soulAttack = source.getSoulAttack();
 		// 对方魂防
@@ -21,8 +19,8 @@ public class SouDamageCalculator implements DamageCalculator {
 		if (target.isSoulState()) {
 			soulDeffence -= soulDeffence * 0.3f;
 		}
-		int damageValue = (int) (Math.max(soulAttack - soulDeffence * 1.2, 0) * random.next(70, 13) / 10);
-		damageValue = damageValue * skillTemp.getParamParent1() / 100 + skillTemp.getParamValue1();
+		int damageValue = (int) (Math.max(soulAttack - soulDeffence * 1.2, 0) * random.next(70, 130) / 100);
+		damageValue = damageValue * skillTemp.getParamParent2() / 100 + skillTemp.getParamValue2();
 		return damageValue;
 
 	}

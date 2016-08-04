@@ -23,9 +23,9 @@ public class DropPickupCmd extends AbstractCommand {
 
 		int count = req.getCount();
 		if (BattleModeManager.getColour(player.getBasePlayer().getPlayerInfo().getPkVal()) == BattleModeCode.yellow) {
-			count = (int) Math.ceil(count * 0.8);
+			count = (int) Math.ceil(count * 0.8f);
 		} else if (BattleModeManager.getColour(player.getBasePlayer().getPlayerInfo().getPkVal()) == BattleModeCode.red) {
-			count = (int) Math.ceil(count * 0.5);
+			count = (int) Math.ceil((count * 0.5f));
 		}
 
 		boolean result = player.getBagInventory().addItem(req.getItemId(), count, ItemAddType.DROP_PICKUP, true);

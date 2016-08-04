@@ -17,7 +17,7 @@ public class AiConfig {
 	private boolean activeAttackPlayer;// 是否主动攻击玩家
 	private boolean activeAttackSameMonster;// 是否主动攻击同种怪
 	private boolean activeAttackNotSameMonster;// 是否主动攻击不同种怪物
-	private boolean isOpenRunBack;// 是否逃跑
+	private boolean runAway;// 是否逃跑
 	private int rewardExp;// 每次被攻击奖励经验
 	private String dropSet;// 每次被攻击 掉落集合
 	private String script;// 死亡后的脚本
@@ -105,12 +105,12 @@ public class AiConfig {
 		this.script = script;
 	}
 
-	public boolean isOpenRunBack() {
-		return isOpenRunBack;
+	public boolean isRunAway() {
+		return runAway;
 	}
 
-	public void setOpenRunBack(boolean isOpenRunBack) {
-		this.isOpenRunBack = isOpenRunBack;
+	public void setRunAway(boolean runAway) {
+		this.runAway = runAway;
 	}
 
 }

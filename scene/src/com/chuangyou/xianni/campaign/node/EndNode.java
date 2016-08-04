@@ -7,8 +7,11 @@ import com.chuangyou.xianni.world.ArmyProxy;
 
 public class EndNode extends CampaignNodeDecorator {
 
+	public void start(Campaign campaign, SpwanNode node) {
+		campaign.passCampaign();
+	}
 
-	public void active(ArmyProxy army,Campaign campaign, SpwanNode node) {
+	public void active(ArmyProxy army, Campaign campaign, SpwanNode node) {
 		node.stateTransition(new OverState(node));
 	}
 

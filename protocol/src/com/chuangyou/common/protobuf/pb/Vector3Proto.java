@@ -16,7 +16,7 @@ public final class Vector3Proto {
      * <code>optional int32 X = 1;</code>
      *
      * <pre>
-     *褰撳墠X
+     *当前X
      * </pre>
      */
     boolean hasX();
@@ -24,7 +24,7 @@ public final class Vector3Proto {
      * <code>optional int32 X = 1;</code>
      *
      * <pre>
-     *褰撳墠X
+     *当前X
      * </pre>
      */
     int getX();
@@ -33,7 +33,7 @@ public final class Vector3Proto {
      * <code>optional int32 Y = 2;</code>
      *
      * <pre>
-     *褰撳墠Y
+     *当前Y
      * </pre>
      */
     boolean hasY();
@@ -41,7 +41,7 @@ public final class Vector3Proto {
      * <code>optional int32 Y = 2;</code>
      *
      * <pre>
-     *褰撳墠Y
+     *当前Y
      * </pre>
      */
     int getY();
@@ -50,7 +50,7 @@ public final class Vector3Proto {
      * <code>optional int32 Z = 3;</code>
      *
      * <pre>
-     *褰撳墠Z
+     *当前Z
      * </pre>
      */
     boolean hasZ();
@@ -58,10 +58,27 @@ public final class Vector3Proto {
      * <code>optional int32 Z = 3;</code>
      *
      * <pre>
-     *褰撳墠Z
+     *当前Z
      * </pre>
      */
     int getZ();
+
+    /**
+     * <code>optional int32 angle = 4;</code>
+     *
+     * <pre>
+     *朝向角度
+     * </pre>
+     */
+    boolean hasAngle();
+    /**
+     * <code>optional int32 angle = 4;</code>
+     *
+     * <pre>
+     *朝向角度
+     * </pre>
+     */
+    int getAngle();
   }
   /**
    * Protobuf type {@code PBVector3}
@@ -135,6 +152,11 @@ public final class Vector3Proto {
               z_ = input.readInt32();
               break;
             }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              angle_ = input.readInt32();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -181,7 +203,7 @@ public final class Vector3Proto {
      * <code>optional int32 X = 1;</code>
      *
      * <pre>
-     *褰撳墠X
+     *当前X
      * </pre>
      */
     public boolean hasX() {
@@ -191,7 +213,7 @@ public final class Vector3Proto {
      * <code>optional int32 X = 1;</code>
      *
      * <pre>
-     *褰撳墠X
+     *当前X
      * </pre>
      */
     public int getX() {
@@ -204,7 +226,7 @@ public final class Vector3Proto {
      * <code>optional int32 Y = 2;</code>
      *
      * <pre>
-     *褰撳墠Y
+     *当前Y
      * </pre>
      */
     public boolean hasY() {
@@ -214,7 +236,7 @@ public final class Vector3Proto {
      * <code>optional int32 Y = 2;</code>
      *
      * <pre>
-     *褰撳墠Y
+     *当前Y
      * </pre>
      */
     public int getY() {
@@ -227,7 +249,7 @@ public final class Vector3Proto {
      * <code>optional int32 Z = 3;</code>
      *
      * <pre>
-     *褰撳墠Z
+     *当前Z
      * </pre>
      */
     public boolean hasZ() {
@@ -237,17 +259,41 @@ public final class Vector3Proto {
      * <code>optional int32 Z = 3;</code>
      *
      * <pre>
-     *褰撳墠Z
+     *当前Z
      * </pre>
      */
     public int getZ() {
       return z_;
     }
 
+    public static final int ANGLE_FIELD_NUMBER = 4;
+    private int angle_;
+    /**
+     * <code>optional int32 angle = 4;</code>
+     *
+     * <pre>
+     *朝向角度
+     * </pre>
+     */
+    public boolean hasAngle() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional int32 angle = 4;</code>
+     *
+     * <pre>
+     *朝向角度
+     * </pre>
+     */
+    public int getAngle() {
+      return angle_;
+    }
+
     private void initFields() {
       x_ = 0;
       y_ = 0;
       z_ = 0;
+      angle_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -271,6 +317,9 @@ public final class Vector3Proto {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeInt32(3, z_);
       }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt32(4, angle_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -291,6 +340,10 @@ public final class Vector3Proto {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(3, z_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, angle_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -420,6 +473,8 @@ public final class Vector3Proto {
         bitField0_ = (bitField0_ & ~0x00000002);
         z_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
+        angle_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -460,6 +515,10 @@ public final class Vector3Proto {
           to_bitField0_ |= 0x00000004;
         }
         result.z_ = z_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.angle_ = angle_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -484,6 +543,9 @@ public final class Vector3Proto {
         }
         if (other.hasZ()) {
           setZ(other.getZ());
+        }
+        if (other.hasAngle()) {
+          setAngle(other.getAngle());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -517,7 +579,7 @@ public final class Vector3Proto {
        * <code>optional int32 X = 1;</code>
        *
        * <pre>
-       *褰撳墠X
+       *当前X
        * </pre>
        */
       public boolean hasX() {
@@ -527,7 +589,7 @@ public final class Vector3Proto {
        * <code>optional int32 X = 1;</code>
        *
        * <pre>
-       *褰撳墠X
+       *当前X
        * </pre>
        */
       public int getX() {
@@ -537,7 +599,7 @@ public final class Vector3Proto {
        * <code>optional int32 X = 1;</code>
        *
        * <pre>
-       *褰撳墠X
+       *当前X
        * </pre>
        */
       public Builder setX(int value) {
@@ -550,7 +612,7 @@ public final class Vector3Proto {
        * <code>optional int32 X = 1;</code>
        *
        * <pre>
-       *褰撳墠X
+       *当前X
        * </pre>
        */
       public Builder clearX() {
@@ -565,7 +627,7 @@ public final class Vector3Proto {
        * <code>optional int32 Y = 2;</code>
        *
        * <pre>
-       *褰撳墠Y
+       *当前Y
        * </pre>
        */
       public boolean hasY() {
@@ -575,7 +637,7 @@ public final class Vector3Proto {
        * <code>optional int32 Y = 2;</code>
        *
        * <pre>
-       *褰撳墠Y
+       *当前Y
        * </pre>
        */
       public int getY() {
@@ -585,7 +647,7 @@ public final class Vector3Proto {
        * <code>optional int32 Y = 2;</code>
        *
        * <pre>
-       *褰撳墠Y
+       *当前Y
        * </pre>
        */
       public Builder setY(int value) {
@@ -598,7 +660,7 @@ public final class Vector3Proto {
        * <code>optional int32 Y = 2;</code>
        *
        * <pre>
-       *褰撳墠Y
+       *当前Y
        * </pre>
        */
       public Builder clearY() {
@@ -613,7 +675,7 @@ public final class Vector3Proto {
        * <code>optional int32 Z = 3;</code>
        *
        * <pre>
-       *褰撳墠Z
+       *当前Z
        * </pre>
        */
       public boolean hasZ() {
@@ -623,7 +685,7 @@ public final class Vector3Proto {
        * <code>optional int32 Z = 3;</code>
        *
        * <pre>
-       *褰撳墠Z
+       *当前Z
        * </pre>
        */
       public int getZ() {
@@ -633,7 +695,7 @@ public final class Vector3Proto {
        * <code>optional int32 Z = 3;</code>
        *
        * <pre>
-       *褰撳墠Z
+       *当前Z
        * </pre>
        */
       public Builder setZ(int value) {
@@ -646,12 +708,60 @@ public final class Vector3Proto {
        * <code>optional int32 Z = 3;</code>
        *
        * <pre>
-       *褰撳墠Z
+       *当前Z
        * </pre>
        */
       public Builder clearZ() {
         bitField0_ = (bitField0_ & ~0x00000004);
         z_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int angle_ ;
+      /**
+       * <code>optional int32 angle = 4;</code>
+       *
+       * <pre>
+       *朝向角度
+       * </pre>
+       */
+      public boolean hasAngle() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional int32 angle = 4;</code>
+       *
+       * <pre>
+       *朝向角度
+       * </pre>
+       */
+      public int getAngle() {
+        return angle_;
+      }
+      /**
+       * <code>optional int32 angle = 4;</code>
+       *
+       * <pre>
+       *朝向角度
+       * </pre>
+       */
+      public Builder setAngle(int value) {
+        bitField0_ |= 0x00000008;
+        angle_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 angle = 4;</code>
+       *
+       * <pre>
+       *朝向角度
+       * </pre>
+       */
+      public Builder clearAngle() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        angle_ = 0;
         onChanged();
         return this;
       }
@@ -681,9 +791,10 @@ public final class Vector3Proto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017PBVector3.proto\",\n\tPBVector3\022\t\n\001X\030\001 \001(" +
-      "\005\022\t\n\001Y\030\002 \001(\005\022\t\n\001Z\030\003 \001(\005B0\n com.chuangyou" +
-      ".common.protobuf.pbB\014Vector3Proto"
+      "\n\017PBVector3.proto\";\n\tPBVector3\022\t\n\001X\030\001 \001(" +
+      "\005\022\t\n\001Y\030\002 \001(\005\022\t\n\001Z\030\003 \001(\005\022\r\n\005angle\030\004 \001(\005B0" +
+      "\n com.chuangyou.common.protobuf.pbB\014Vect" +
+      "or3Proto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -702,7 +813,7 @@ public final class Vector3Proto {
     internal_static_PBVector3_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_PBVector3_descriptor,
-        new java.lang.String[] { "X", "Y", "Z", });
+        new java.lang.String[] { "X", "Y", "Z", "Angle", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

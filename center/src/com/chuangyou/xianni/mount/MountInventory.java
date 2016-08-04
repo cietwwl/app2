@@ -276,7 +276,7 @@ public class MountInventory extends AbstractEvent implements IInventory {
 			BaseProperty skillPer = new BaseProperty();
 			// 加入技能属性
 			computeMountAtt(skillData, skillPer);
-			player.getArmyInventory().getHero().addSkillPro(skillData, skillPer);
+			player.getArmyInventory().getHero().addMount(skillData, skillPer);
 			player.getArmyInventory().updateProperty();
 		}
 	}

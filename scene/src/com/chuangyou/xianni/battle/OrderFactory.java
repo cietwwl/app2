@@ -25,7 +25,9 @@ public class OrderFactory {
 	 */
 	public static AttackOrder createAttackOrder(Living source, Skill skill, List<Living> targets, long attackId) {
 		AttackOrder attackOrder = null;
-		SkillCalc skillCalc = CalcFactory.createSkillCalc(skill.getTemplateInfo().getTemplateId(), skill.getTemplateInfo().getAttackType(), source.getJob());
+		SkillCalc skillCalc = CalcFactory.createSkillCalc(skill.getTemplateInfo().getTemplateId());// ,
+																									// skill.getTemplateInfo().getAttackType(),
+																									// source.getJob());
 		if (targets != null) {
 			attackOrder = new AttackOrder(source, skill, targets, attackId);
 		} else {

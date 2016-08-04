@@ -60,7 +60,7 @@ public class RelieveProtectionCmd extends AbstractCommand {
 			// snap.setSkinId(l.getSkin());
 			// snap.setPostion(Vector3BuilderHelper.build(l.getPostion()));
 			// snap.setTarget(Vector3BuilderHelper.build(l.getTargetPostion()));
-			Log.error(TimeUtil.getDateFormat(new Date()) + army.getPlayerId() + "(收件人)xxxxxxxx发送快照数据至客户端:" + " PlayerId(发件人):" + id);
+			//Log.error(TimeUtil.getDateFormat(new Date()) + army.getPlayerId() + "(收件人)xxxxxxxx发送快照数据至客户端:" + " PlayerId(发件人):" + id);
 			army.sendPbMessage(MessageUtil.buildMessage(Protocol.U_RESP_ATT_SNAP, snap));
 
 			// 通知附近的玩家进入 <--------迁移至进入地图方法---------->

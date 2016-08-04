@@ -72,7 +72,7 @@ public class GateWay2CilentInboundHandler extends ServerInboundHandler {
 		// 从在线玩家列表中,将该user移除
 		if (ctx.channel().attr(AttributeKeySet.PLAYER_ID) != null && ctx.channel().attr(AttributeKeySet.PLAYER_ID).get() != null) {
 			long userId = ctx.channel().attr(AttributeKeySet.PLAYER_ID).get();
-			if (userId != 0) {
+			if (userId > 0) {
 				UserMgr.removeOnline(userId, ctx.channel());
 			}
 		}

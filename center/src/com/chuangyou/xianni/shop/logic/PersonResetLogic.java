@@ -2,7 +2,6 @@ package com.chuangyou.xianni.shop.logic;
 
 import java.util.Date;
 
-import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.shop.ShopCfg;
 import com.chuangyou.xianni.entity.shop.ShopUserCache;
@@ -24,7 +23,7 @@ public class PersonResetLogic extends BaseResetLogic {
 	 * @param player
 	 */
 	protected void resetTime(ShopCfg cfg, GamePlayer player) {
-		Log.error("cfg:"+cfg+"*****"+player.getShopInventory());
+		//Log.error("cfg:"+cfg+"*****"+player.getShopInventory());
 		ShopUserCache userCache = player.getShopInventory().get(cfg.getId());
 		long time = this.getTime(cfg);
 		if (userCache.getResetTime() < time) {

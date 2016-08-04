@@ -47,6 +47,7 @@ public class Player extends ActiveLiving {
 	 * 玩家坐骑状态 0未乘骑 1乘骑坐骑
 	 */
 	private int mountState = 1;
+	private List<Integer> monsterRefreshIdList = new ArrayList<Integer>();
 
 	public Player(long playerId) {
 		super(playerId, playerId);
@@ -103,7 +104,8 @@ public class Player extends ActiveLiving {
 				revivaling = true;
 			}
 
-//			 System.out.println("source playerId: " + source.toString() + " source.getPkVal(): " + source.getPkVal()+" source.getBattleMode():"+source.getBattleMode()+" getBattleMode():"+getBattleMode());
+			// System.out.println("source playerId: " + source.toString() + " source.getPkVal(): " + source.getPkVal()+" source.getBattleMode():"+source.getBattleMode()+"
+			// getBattleMode():"+getBattleMode());
 			// 攻击源处理
 			if (source.getBattleMode() == BattleModeCode.warBattleMode && getBattleMode() == BattleModeCode.peaceBattleMode) {// 增加pk值
 				source.setPkVal(source.getPkVal() + 1000);
@@ -121,7 +123,7 @@ public class Player extends ActiveLiving {
 				updateProperty(source, properties);
 			}
 
-//			 System.out.println("source playerId: " + source.getArmyId() + " source.getPkVal(): " + source.getPkVal());
+			// System.out.println("source playerId: " + source.getArmyId() + " source.getPkVal(): " + source.getPkVal());
 
 			// 自己
 			List<PropertyMsg> properties = new ArrayList<>();
@@ -135,7 +137,7 @@ public class Player extends ActiveLiving {
 				changePkVal = MathUtils.randomClamp(40, 80);
 				notifyCenter(2, (int) source.getArmyId(), (int) getArmyId());
 			}
-//			 System.out.println(" playerId: " + getArmyId() + " exp: " + " changePkVal: " + changePkVal + " this.getPkVal(): " + getPkVal());
+			// System.out.println(" playerId: " + getArmyId() + " exp: " + " changePkVal: " + changePkVal + " this.getPkVal(): " + getPkVal());
 			if (changePkVal > 0) {
 				changePkVal = getPkVal() - changePkVal < 0 ? 0 : getPkVal() - changePkVal;
 				setPkVal(changePkVal);
@@ -148,7 +150,7 @@ public class Player extends ActiveLiving {
 				notifyCenter(changeMap, getArmyId());
 				updateProperty(deather, properties);
 			}
-//			 System.out.println(" ---playerId: " + getArmyId() +  " changePkVal: " + changePkVal + " this.getPkVal(): " + getPkVal());
+			// System.out.println(" ---playerId: " + getArmyId() + " changePkVal: " + changePkVal + " this.getPkVal(): " + getPkVal());
 		}
 
 	}
@@ -169,14 +171,13 @@ public class Player extends ActiveLiving {
 			return BattleModeCode.yellow;
 		}
 		return BattleModeCode.white;
-		
-		
-//		if (val >= 1000) {
-//			return BattleModeCode.red;
-//		} else if (val > 0) {
-//			return BattleModeCode.yellow;
-//		}
-//		return BattleModeCode.white;
+
+		// if (val >= 1000) {
+		// return BattleModeCode.red;
+		// } else if (val > 0) {
+		// return BattleModeCode.yellow;
+		// }
+		// return BattleModeCode.white;
 	}
 
 	// /**
@@ -381,6 +382,15 @@ public class Player extends ActiveLiving {
 			}
 		}
 		return speed;
+	}
+
+	public List<Integer> getMonsterRefreshIdList() {
+		return monsterRefreshIdList;
+	}
+
+	public void reSetMonsterRefreshIdList(List<Integer> monsterRefreshIdList) {
+		this.monsterRefreshIdList.clear();
+		this.monsterRefreshIdList.addAll(monsterRefreshIdList);
 	}
 
 }

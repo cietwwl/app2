@@ -37,6 +37,10 @@ public class SkillActionTemplateInfoDaoImpl extends BaseDao implements SkillActi
 					skillTemp.setAttackType(rs.getInt("attackType"));// 气血攻击
 					skillTemp.setParamValue1(rs.getInt("paramValue1"));
 					skillTemp.setParamParent1(rs.getInt("paramParent1"));
+					skillTemp.setParamValue2(rs.getInt("paramValue2"));
+					skillTemp.setParamParent2(rs.getInt("paramParent2"));
+					skillTemp.setParamValue3(rs.getInt("paramValue3"));
+					skillTemp.setParamParent3(rs.getInt("paramParent3"));
 					skillTemp.setBufferIds(rs.getString("bufferIds"));
 					skillTemp.setRandom(rs.getInt("random"));
 					skillTemp.setIsCrit(rs.getInt("isCrit"));

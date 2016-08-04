@@ -288,7 +288,7 @@ public class PetInventory extends AbstractEvent implements IInventory {
 			BaseProperty skillPer = new BaseProperty();
 			// 加入技能属性
 			computePetAtt(skillData, skillPer);
-			player.getArmyInventory().getHero().addSkillPro(skillData, skillPer);
+			player.getArmyInventory().getHero().addPet(skillData, skillPer);
 			player.getArmyInventory().updateProperty();
 		}
 	}

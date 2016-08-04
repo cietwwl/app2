@@ -26,6 +26,8 @@ public class CampaignTemplateInfo {
 	private int		openTime;		// 开启时间 (分)
 	private int		startScriptId;	// 开始时触发脚本ID
 	private int		endScriptId;	// 结束时触发脚本ID
+	private String	tasks;			// 副本任务，以逗号分隔
+	private int[]	attrTaskIds;	// 任务ID组
 
 	public int getTemplateId() {
 		return templateId;
@@ -169,6 +171,29 @@ public class CampaignTemplateInfo {
 
 	public void setJoinType(int joinType) {
 		this.joinType = joinType;
+	}
+
+	public String getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(String tasks) {
+		this.tasks = tasks;
+		if (tasks != null && !tasks.equals("")) {
+			String[] attrTID = tasks.split(",");
+			attrTaskIds = new int[attrTID.length];
+			for (int i = 0; i < attrTID.length; i++) {
+				attrTaskIds[i] = Integer.valueOf(attrTID[i]);
+			}
+		}
+	}
+
+	public int[] getAttrTaskIds() {
+		return attrTaskIds;
+	}
+
+	public void setAttrTaskIds(int[] attrTaskIds) {
+		this.attrTaskIds = attrTaskIds;
 	}
 
 }

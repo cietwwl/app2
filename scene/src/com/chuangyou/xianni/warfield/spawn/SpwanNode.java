@@ -63,7 +63,6 @@ public class SpwanNode {
 		if (campaign != null) {
 			decorator.start(campaign, this);
 		}
-		System.out.println("-------------------------------------------------------"+spwanInfo.getId());
 		if (spwanInfo.getWakeType() != WAKE_START) {
 			return;
 		}
@@ -158,7 +157,7 @@ public class SpwanNode {
 
 	}
 
-	private void wakeNext() {
+	protected void wakeNext() {
 		// 当前节点结束，唤醒下一个节点
 		int[] spwanIds = spwanInfo.getNextSpawanIdAttr();
 
@@ -183,7 +182,7 @@ public class SpwanNode {
 					}
 					int preNodeId = SpawnTemplateMgr.getSpwanId(preTagId);
 					SpwanNode pre = field.getSpawnNode(preNodeId);
-					if (node == null) {
+					if (pre == null) {
 						continue;
 					}
 					if (pre.getSpawnInfo().getWakeType() == WAKE_OVER && pre.getState().getCode() != NodeState.OVER && pre.getState().getCode() != NodeState.DELETE) {

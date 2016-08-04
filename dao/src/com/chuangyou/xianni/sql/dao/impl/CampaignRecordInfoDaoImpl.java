@@ -28,14 +28,15 @@ public class CampaignRecordInfoDaoImpl extends BaseDao implements CampaignRecord
 	@Override
 	public boolean saveOrUpdata(CampaignRecordInfo info) {
 		boolean result = false;
-		String sql = "REPLACE INTO tb_u_campaign_info(id,playerId,campaignId,statu,assess,updateTime) VALUES (?,?,?,?,?,?);";
+		String sql = "REPLACE INTO tb_u_campaign_info(id,playerId,campaignId,point,statu,assess,updateTime) VALUES (?,?,?,?,?,?,?);";
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.INTEGER, info.getId()));
 		para.put(2, new DbParameter(Types.BIGINT, info.getPlayerId()));
 		para.put(3, new DbParameter(Types.INTEGER, info.getCampaignId()));
-		para.put(4, new DbParameter(Types.INTEGER, info.getStatu()));
-		para.put(5, new DbParameter(Types.INTEGER, info.getAssess()));
-		para.put(6, new DbParameter(Types.TIMESTAMP, info.getUpdataTime()));
+		para.put(4, new DbParameter(Types.INTEGER, info.getPoint()));
+		para.put(5, new DbParameter(Types.INTEGER, info.getStatu()));
+		para.put(6, new DbParameter(Types.INTEGER, info.getAssess()));
+		para.put(7, new DbParameter(Types.TIMESTAMP, info.getUpdataTime()));
 		result = execNoneQuery(sql, para) > -1 ? true : false;
 		return result;
 	}
@@ -76,6 +77,7 @@ public class CampaignRecordInfoDaoImpl extends BaseDao implements CampaignRecord
 					info.setId(rs.getInt("id"));
 					info.setPlayerId(rs.getLong("playerId"));
 					info.setCampaignId(rs.getInt("campaignId"));
+					info.setPoint(rs.getInt("point"));
 					info.setStatu(rs.getInt("statu"));
 					info.setAssess(rs.getInt("assess"));
 

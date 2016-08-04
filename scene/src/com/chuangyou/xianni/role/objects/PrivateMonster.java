@@ -8,6 +8,7 @@ import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.PrivateMonsterMgr;
 import com.chuangyou.xianni.team.Team;
 import com.chuangyou.xianni.team.TeamMgr;
+import com.chuangyou.xianni.warfield.spawn.MonsterSpawnNode;
 import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.WorldMgr;
 
@@ -63,9 +64,9 @@ public class PrivateMonster extends Monster {
 	public boolean onDie(Living killer) {
 		if (super.onDie(killer)) {
 			if (node != null) {
-				node.lvingDie(this);
+				MonsterSpawnNode mnode = (MonsterSpawnNode) node;
+				mnode.lvingDie(this);
 			}
-			DropManager.dropFromMonster(this.getSkin(), killer.getArmyId(), this.getId(), this.getField().id, this.getPostion());
 			notifyCenter(this.getSkin(), killer.getArmyId());
 			this.clear();
 			PrivateMonsterMgr.remove(this);

@@ -33,6 +33,10 @@ public class PrivateMonsterMgr {
 		synchronized (ownerC) {
 			ownerC.remove(pmonster);
 		}
+		
+		if (pmonster.getField() != null) {
+			pmonster.getField().addDeathLiving(pmonster);
+		}
 		return true;
 	}
 

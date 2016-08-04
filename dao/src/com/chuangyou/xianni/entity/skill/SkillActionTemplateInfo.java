@@ -18,11 +18,11 @@ public class SkillActionTemplateInfo {
 	private int costType; // 使用消耗类型 0 无消耗，1 魂 2 血等
 	private int costCount; // 消耗数量
 	private int attackType; // 攻击类型
-	private int paramValue1; // 攻击参数（固定数值）
-	private int paramValue2; // 攻击参数
+	private int paramValue1; // 攻击参数（固定数值）气血
+	private int paramValue2; // 攻击参数（固定数值）元魂		
 	private int paramValue3; // 攻击参数
-	private int paramParent1; // 攻击参数(百分比)
-	private int paramParent2; // 攻击参数(百分比)
+	private int paramParent1; // 攻击参数(百分比) 气血
+	private int paramParent2; // 攻击参数(百分比) 元魂
 	private int paramParent3; // 攻击参数(百分比)
 	private String bufferIds; // 攻击产生bufferId集
 	private int random; // 技能随机数

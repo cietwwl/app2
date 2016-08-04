@@ -59,7 +59,7 @@ public abstract class Buffer {
 	 * 
 	 * @return
 	 */
-	public final boolean execute(AttackOrder attackOrder, Damage beDamage, int execWay) {
+	public final boolean execute(AttackOrder attackOrder, Damage beDamage1, Damage beDamage2, int execWay) {
 		try {
 			// buffer已经失效
 			if (state != BufferState.VALID && bufferInfo.getExeWay() != ExecWayType.REMOVE) {
@@ -73,9 +73,10 @@ public abstract class Buffer {
 			}
 			// Buffer作用冷却CD
 			setLastExecTime(System.currentTimeMillis());
-			exec(attackOrder, beDamage); // 执行BUFFER效果
+			exec(attackOrder, beDamage1, beDamage2); // 执行BUFFER效果
 			setExecuted(true);
-			damages.add(beDamage);
+			damages.add(beDamage1);
+			damages.add(beDamage2);
 			if (isTimesBuffer()) {// 按次数计算效果
 				decrease();
 				target.upBuffer(this);
@@ -84,7 +85,8 @@ public abstract class Buffer {
 		} catch (Exception e) {
 			StringBuffer sb = new StringBuffer("[BUFFER]");
 			sb.append("attackOrder=").append(attackOrder);
-			sb.append("|beDamage=").append(beDamage).append("|");
+			sb.append("|beDamage1=").append(beDamage1).append("|");
+			sb.append("|beDamage2=").append(beDamage2).append("|");
 			sb.append("BufferName=").append(bufferInfo.getBufferName());
 			sb.append("BufferId=").append(bufferInfo.getTemplateId());
 			Log.error(sb.toString(), e);
@@ -144,7 +146,7 @@ public abstract class Buffer {
 		return bufferInfo.getDurableType() == DurableType.COUNT || bufferInfo.getDurableType() == DurableType.TIME_AND_COUNT;
 	}
 
-	protected abstract void exec(AttackOrder attackOrder, Damage beDamage);
+	protected abstract void exec(AttackOrder attackOrder, Damage beDamage1, Damage beDamage2);
 
 	/** 恢复BUFFER的状态 **/
 	public void reset() {

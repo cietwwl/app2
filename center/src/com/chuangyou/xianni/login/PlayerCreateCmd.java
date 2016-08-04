@@ -24,6 +24,7 @@ import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.entity.role.RoleConfig;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.entity_id.EntityIdBuilder;
+import com.chuangyou.xianni.inverseBead.InverseBeadInventory;
 import com.chuangyou.xianni.login.template.roleConfigMgr;
 import com.chuangyou.xianni.map.MapProxyManager;
 import com.chuangyou.xianni.mount.template.MountTemplateMgr;
@@ -151,6 +152,8 @@ public class PlayerCreateCmd implements Command {
 			playerTimeInfo.setPlayerId(playerInfo.getPlayerId());
 			playerTimeInfo.setResetTime(new Date());
 			playerTimeInfo.setSigleCampCount(0);
+			playerTimeInfo.setBeadRefreshId(InverseBeadInventory.spawnId+"");
+			playerTimeInfo.setCurrRefreshId(InverseBeadInventory.spawnId);
 
 			PlayerPositionInfo playerPositionInfo = new PlayerPositionInfo();
 			playerPositionInfo.setPlayerId(playerInfo.getPlayerId());

@@ -1,0 +1,7 @@
+//protocol= 20603;
+option java_package = "com.chuangyou.common.protobuf.pb.inverseBead";
+option java_outer_classname = "SyncMonsterPoolMsgProto";
+
+message SyncMonsterPoolMsg {
+	repeated int32 monsterRefreshId = 1;
+}

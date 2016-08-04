@@ -11,6 +11,7 @@ public class CampaignRecordInfo extends DataObject {
 	private int		id;			// 自增ID
 	private long	playerId;	// 玩家ID
 	private int		campaignId;	// 副本ID
+	private int		point;		// 挑战点
 	private int		statu;		// 完成状态
 	private int		assess;		// 最好成绩
 	private Date	updataTime;	// 完成时间
@@ -61,6 +62,14 @@ public class CampaignRecordInfo extends DataObject {
 
 	public void setUpdataTime(Date updataTime) {
 		this.updataTime = updataTime;
+	}
+
+	public int getPoint() {
+		return point;
+	}
+
+	public void setPoint(int point) {
+		this.point = point;
 	}
 
 }

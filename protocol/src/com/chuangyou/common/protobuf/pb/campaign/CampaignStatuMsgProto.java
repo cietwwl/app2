@@ -13,38 +13,89 @@ public final class CampaignStatuMsgProto {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional int32 campaignId = 1;</code>
+     * <code>optional int32 indexId = 1;</code>
      *
      * <pre>
-     *å‰¯æœ¬ID
+     *¸±±¾ID
      * </pre>
      */
-    boolean hasCampaignId();
+    boolean hasIndexId();
     /**
-     * <code>optional int32 campaignId = 1;</code>
+     * <code>optional int32 indexId = 1;</code>
      *
      * <pre>
-     *å‰¯æœ¬ID
+     *¸±±¾ID
      * </pre>
      */
-    int getCampaignId();
+    int getIndexId();
 
     /**
-     * <code>optional int32 statu = 2;</code>
+     * <code>optional int32 tempId = 2;</code>
      *
      * <pre>
-     *çŠ¶æ€
+     *¸±±¾Ä£°å
+     * </pre>
+     */
+    boolean hasTempId();
+    /**
+     * <code>optional int32 tempId = 2;</code>
+     *
+     * <pre>
+     *¸±±¾Ä£°å
+     * </pre>
+     */
+    int getTempId();
+
+    /**
+     * <code>optional int32 statu = 3;</code>
+     *
+     * <pre>
+     *×´Ì¬  0  Õı³£ÍË³ö 1 ½øÈë 2 Í¨¹ı½áÊøÍË³ö 3 Ê§°Ü½áÊøÍË³ö
      * </pre>
      */
     boolean hasStatu();
     /**
-     * <code>optional int32 statu = 2;</code>
+     * <code>optional int32 statu = 3;</code>
      *
      * <pre>
-     *çŠ¶æ€
+     *×´Ì¬  0  Õı³£ÍË³ö 1 ½øÈë 2 Í¨¹ı½áÊøÍË³ö 3 Ê§°Ü½áÊøÍË³ö
      * </pre>
      */
     int getStatu();
+
+    /**
+     * <code>optional int32 teamId = 4;</code>
+     *
+     * <pre>
+     *¶ÓÎéID
+     * </pre>
+     */
+    boolean hasTeamId();
+    /**
+     * <code>optional int32 teamId = 4;</code>
+     *
+     * <pre>
+     *¶ÓÎéID
+     * </pre>
+     */
+    int getTeamId();
+
+    /**
+     * <code>optional int32 taskId = 5;</code>
+     *
+     * <pre>
+     *¸±±¾ÈÎÎñID 
+     * </pre>
+     */
+    boolean hasTaskId();
+    /**
+     * <code>optional int32 taskId = 5;</code>
+     *
+     * <pre>
+     *¸±±¾ÈÎÎñID 
+     * </pre>
+     */
+    int getTaskId();
   }
   /**
    * Protobuf type {@code CampaignStatuMsg}
@@ -100,12 +151,27 @@ public final class CampaignStatuMsgProto {
             }
             case 8: {
               bitField0_ |= 0x00000001;
-              campaignId_ = input.readInt32();
+              indexId_ = input.readInt32();
               break;
             }
             case 16: {
               bitField0_ |= 0x00000002;
+              tempId_ = input.readInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
               statu_ = input.readInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              teamId_ = input.readInt32();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              taskId_ = input.readInt32();
               break;
             }
           }
@@ -148,55 +214,127 @@ public final class CampaignStatuMsgProto {
     }
 
     private int bitField0_;
-    public static final int CAMPAIGNID_FIELD_NUMBER = 1;
-    private int campaignId_;
+    public static final int INDEXID_FIELD_NUMBER = 1;
+    private int indexId_;
     /**
-     * <code>optional int32 campaignId = 1;</code>
+     * <code>optional int32 indexId = 1;</code>
      *
      * <pre>
-     *å‰¯æœ¬ID
+     *¸±±¾ID
      * </pre>
      */
-    public boolean hasCampaignId() {
+    public boolean hasIndexId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional int32 campaignId = 1;</code>
+     * <code>optional int32 indexId = 1;</code>
      *
      * <pre>
-     *å‰¯æœ¬ID
+     *¸±±¾ID
      * </pre>
      */
-    public int getCampaignId() {
-      return campaignId_;
+    public int getIndexId() {
+      return indexId_;
     }
 
-    public static final int STATU_FIELD_NUMBER = 2;
-    private int statu_;
+    public static final int TEMPID_FIELD_NUMBER = 2;
+    private int tempId_;
     /**
-     * <code>optional int32 statu = 2;</code>
+     * <code>optional int32 tempId = 2;</code>
      *
      * <pre>
-     *çŠ¶æ€
+     *¸±±¾Ä£°å
      * </pre>
      */
-    public boolean hasStatu() {
+    public boolean hasTempId() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional int32 statu = 2;</code>
+     * <code>optional int32 tempId = 2;</code>
      *
      * <pre>
-     *çŠ¶æ€
+     *¸±±¾Ä£°å
+     * </pre>
+     */
+    public int getTempId() {
+      return tempId_;
+    }
+
+    public static final int STATU_FIELD_NUMBER = 3;
+    private int statu_;
+    /**
+     * <code>optional int32 statu = 3;</code>
+     *
+     * <pre>
+     *×´Ì¬  0  Õı³£ÍË³ö 1 ½øÈë 2 Í¨¹ı½áÊøÍË³ö 3 Ê§°Ü½áÊøÍË³ö
+     * </pre>
+     */
+    public boolean hasStatu() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional int32 statu = 3;</code>
+     *
+     * <pre>
+     *×´Ì¬  0  Õı³£ÍË³ö 1 ½øÈë 2 Í¨¹ı½áÊøÍË³ö 3 Ê§°Ü½áÊøÍË³ö
      * </pre>
      */
     public int getStatu() {
       return statu_;
     }
 
+    public static final int TEAMID_FIELD_NUMBER = 4;
+    private int teamId_;
+    /**
+     * <code>optional int32 teamId = 4;</code>
+     *
+     * <pre>
+     *¶ÓÎéID
+     * </pre>
+     */
+    public boolean hasTeamId() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional int32 teamId = 4;</code>
+     *
+     * <pre>
+     *¶ÓÎéID
+     * </pre>
+     */
+    public int getTeamId() {
+      return teamId_;
+    }
+
+    public static final int TASKID_FIELD_NUMBER = 5;
+    private int taskId_;
+    /**
+     * <code>optional int32 taskId = 5;</code>
+     *
+     * <pre>
+     *¸±±¾ÈÎÎñID 
+     * </pre>
+     */
+    public boolean hasTaskId() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional int32 taskId = 5;</code>
+     *
+     * <pre>
+     *¸±±¾ÈÎÎñID 
+     * </pre>
+     */
+    public int getTaskId() {
+      return taskId_;
+    }
+
     private void initFields() {
-      campaignId_ = 0;
+      indexId_ = 0;
+      tempId_ = 0;
       statu_ = 0;
+      teamId_ = 0;
+      taskId_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -212,10 +350,19 @@ public final class CampaignStatuMsgProto {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, campaignId_);
+        output.writeInt32(1, indexId_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, statu_);
+        output.writeInt32(2, tempId_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(3, statu_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt32(4, teamId_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeInt32(5, taskId_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -228,11 +375,23 @@ public final class CampaignStatuMsgProto {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, campaignId_);
+          .computeInt32Size(1, indexId_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, statu_);
+          .computeInt32Size(2, tempId_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, statu_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, teamId_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(5, taskId_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -351,10 +510,16 @@ public final class CampaignStatuMsgProto {
 
       public Builder clear() {
         super.clear();
-        campaignId_ = 0;
+        indexId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
-        statu_ = 0;
+        tempId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
+        statu_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        teamId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        taskId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -386,11 +551,23 @@ public final class CampaignStatuMsgProto {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.campaignId_ = campaignId_;
+        result.indexId_ = indexId_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
+        result.tempId_ = tempId_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
         result.statu_ = statu_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.teamId_ = teamId_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.taskId_ = taskId_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -407,11 +584,20 @@ public final class CampaignStatuMsgProto {
 
       public Builder mergeFrom(com.chuangyou.common.protobuf.pb.campaign.CampaignStatuMsgProto.CampaignStatuMsg other) {
         if (other == com.chuangyou.common.protobuf.pb.campaign.CampaignStatuMsgProto.CampaignStatuMsg.getDefaultInstance()) return this;
-        if (other.hasCampaignId()) {
-          setCampaignId(other.getCampaignId());
+        if (other.hasIndexId()) {
+          setIndexId(other.getIndexId());
+        }
+        if (other.hasTempId()) {
+          setTempId(other.getTempId());
         }
         if (other.hasStatu()) {
           setStatu(other.getStatu());
+        }
+        if (other.hasTeamId()) {
+          setTeamId(other.getTeamId());
+        }
+        if (other.hasTaskId()) {
+          setTaskId(other.getTaskId());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -440,98 +626,242 @@ public final class CampaignStatuMsgProto {
       }
       private int bitField0_;
 
-      private int campaignId_ ;
+      private int indexId_ ;
       /**
-       * <code>optional int32 campaignId = 1;</code>
+       * <code>optional int32 indexId = 1;</code>
        *
        * <pre>
-       *å‰¯æœ¬ID
+       *¸±±¾ID
        * </pre>
        */
-      public boolean hasCampaignId() {
+      public boolean hasIndexId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional int32 campaignId = 1;</code>
+       * <code>optional int32 indexId = 1;</code>
        *
        * <pre>
-       *å‰¯æœ¬ID
+       *¸±±¾ID
        * </pre>
        */
-      public int getCampaignId() {
-        return campaignId_;
+      public int getIndexId() {
+        return indexId_;
       }
       /**
-       * <code>optional int32 campaignId = 1;</code>
+       * <code>optional int32 indexId = 1;</code>
        *
        * <pre>
-       *å‰¯æœ¬ID
+       *¸±±¾ID
        * </pre>
        */
-      public Builder setCampaignId(int value) {
+      public Builder setIndexId(int value) {
         bitField0_ |= 0x00000001;
-        campaignId_ = value;
+        indexId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 campaignId = 1;</code>
+       * <code>optional int32 indexId = 1;</code>
        *
        * <pre>
-       *å‰¯æœ¬ID
+       *¸±±¾ID
        * </pre>
        */
-      public Builder clearCampaignId() {
+      public Builder clearIndexId() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        campaignId_ = 0;
+        indexId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int tempId_ ;
+      /**
+       * <code>optional int32 tempId = 2;</code>
+       *
+       * <pre>
+       *¸±±¾Ä£°å
+       * </pre>
+       */
+      public boolean hasTempId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional int32 tempId = 2;</code>
+       *
+       * <pre>
+       *¸±±¾Ä£°å
+       * </pre>
+       */
+      public int getTempId() {
+        return tempId_;
+      }
+      /**
+       * <code>optional int32 tempId = 2;</code>
+       *
+       * <pre>
+       *¸±±¾Ä£°å
+       * </pre>
+       */
+      public Builder setTempId(int value) {
+        bitField0_ |= 0x00000002;
+        tempId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 tempId = 2;</code>
+       *
+       * <pre>
+       *¸±±¾Ä£°å
+       * </pre>
+       */
+      public Builder clearTempId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        tempId_ = 0;
         onChanged();
         return this;
       }
 
       private int statu_ ;
       /**
-       * <code>optional int32 statu = 2;</code>
+       * <code>optional int32 statu = 3;</code>
        *
        * <pre>
-       *çŠ¶æ€
+       *×´Ì¬  0  Õı³£ÍË³ö 1 ½øÈë 2 Í¨¹ı½áÊøÍË³ö 3 Ê§°Ü½áÊøÍË³ö
        * </pre>
        */
       public boolean hasStatu() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional int32 statu = 2;</code>
+       * <code>optional int32 statu = 3;</code>
        *
        * <pre>
-       *çŠ¶æ€
+       *×´Ì¬  0  Õı³£ÍË³ö 1 ½øÈë 2 Í¨¹ı½áÊøÍË³ö 3 Ê§°Ü½áÊøÍË³ö
        * </pre>
        */
       public int getStatu() {
         return statu_;
       }
       /**
-       * <code>optional int32 statu = 2;</code>
+       * <code>optional int32 statu = 3;</code>
        *
        * <pre>
-       *çŠ¶æ€
+       *×´Ì¬  0  Õı³£ÍË³ö 1 ½øÈë 2 Í¨¹ı½áÊøÍË³ö 3 Ê§°Ü½áÊøÍË³ö
        * </pre>
        */
       public Builder setStatu(int value) {
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000004;
         statu_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 statu = 2;</code>
+       * <code>optional int32 statu = 3;</code>
        *
        * <pre>
-       *çŠ¶æ€
+       *×´Ì¬  0  Õı³£ÍË³ö 1 ½øÈë 2 Í¨¹ı½áÊøÍË³ö 3 Ê§°Ü½áÊøÍË³ö
        * </pre>
        */
       public Builder clearStatu() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         statu_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int teamId_ ;
+      /**
+       * <code>optional int32 teamId = 4;</code>
+       *
+       * <pre>
+       *¶ÓÎéID
+       * </pre>
+       */
+      public boolean hasTeamId() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional int32 teamId = 4;</code>
+       *
+       * <pre>
+       *¶ÓÎéID
+       * </pre>
+       */
+      public int getTeamId() {
+        return teamId_;
+      }
+      /**
+       * <code>optional int32 teamId = 4;</code>
+       *
+       * <pre>
+       *¶ÓÎéID
+       * </pre>
+       */
+      public Builder setTeamId(int value) {
+        bitField0_ |= 0x00000008;
+        teamId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 teamId = 4;</code>
+       *
+       * <pre>
+       *¶ÓÎéID
+       * </pre>
+       */
+      public Builder clearTeamId() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        teamId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int taskId_ ;
+      /**
+       * <code>optional int32 taskId = 5;</code>
+       *
+       * <pre>
+       *¸±±¾ÈÎÎñID 
+       * </pre>
+       */
+      public boolean hasTaskId() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional int32 taskId = 5;</code>
+       *
+       * <pre>
+       *¸±±¾ÈÎÎñID 
+       * </pre>
+       */
+      public int getTaskId() {
+        return taskId_;
+      }
+      /**
+       * <code>optional int32 taskId = 5;</code>
+       *
+       * <pre>
+       *¸±±¾ÈÎÎñID 
+       * </pre>
+       */
+      public Builder setTaskId(int value) {
+        bitField0_ |= 0x00000010;
+        taskId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 taskId = 5;</code>
+       *
+       * <pre>
+       *¸±±¾ÈÎÎñID 
+       * </pre>
+       */
+      public Builder clearTaskId() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        taskId_ = 0;
         onChanged();
         return this;
       }
@@ -561,10 +891,11 @@ public final class CampaignStatuMsgProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\026CampaignStatuMsg.proto\"5\n\020CampaignStat" +
-      "uMsg\022\022\n\ncampaignId\030\001 \001(\005\022\r\n\005statu\030\002 \001(\005B" +
-      "B\n)com.chuangyou.common.protobuf.pb.camp" +
-      "aignB\025CampaignStatuMsgProto"
+      "\n\026CampaignStatuMsg.proto\"b\n\020CampaignStat" +
+      "uMsg\022\017\n\007indexId\030\001 \001(\005\022\016\n\006tempId\030\002 \001(\005\022\r\n" +
+      "\005statu\030\003 \001(\005\022\016\n\006teamId\030\004 \001(\005\022\016\n\006taskId\030\005" +
+      " \001(\005BB\n)com.chuangyou.common.protobuf.pb" +
+      ".campaignB\025CampaignStatuMsgProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -583,7 +914,7 @@ public final class CampaignStatuMsgProto {
     internal_static_CampaignStatuMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_CampaignStatuMsg_descriptor,
-        new java.lang.String[] { "CampaignId", "Statu", });
+        new java.lang.String[] { "IndexId", "TempId", "Statu", "TeamId", "TaskId", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

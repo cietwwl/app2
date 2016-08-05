@@ -1,0 +1,10 @@
+//protocol=1604;
+option java_package = "com.chuangyou.common.protobuf.pb.space";
+option java_outer_classname = "SetSpaceGiftRespProto";
+
+//设置礼物
+message SetSpaceGiftRespMsg{
+	required int32 totalGiftNum = 1;//添加成功后。当前的礼物总数
+	required int64 playerID = 2;
+
+}

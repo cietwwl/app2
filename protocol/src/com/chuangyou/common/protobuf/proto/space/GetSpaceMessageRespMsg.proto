@@ -1,0 +1,12 @@
+//protocol=557;
+option java_package = "com.chuangyou.common.protobuf.pb.space";
+option java_outer_classname = "GetSpaceMessageRespProto";
+
+import "space/MessageInfoMsg.proto";
+
+//请求留言信息
+message GetSpaceMessageRespMsg{
+	required int64 playerId =1; //
+	required int32 op = 2; //操作   1： 所有   2：收藏的
+	repeated MessageInfoMsg infos = 3; //留言
+}

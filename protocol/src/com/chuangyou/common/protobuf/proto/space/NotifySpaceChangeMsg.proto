@@ -1,0 +1,13 @@
+//protocol=1065;
+option java_package = "com.chuangyou.common.protobuf.pb.space";
+option java_outer_classname = "NotifySpaceChangeProto";
+
+//通知空间主人。属性发生变更
+message NotifySpaceChangeMsg{
+	required int32 gift = 1;//礼物
+	required int32 likes = 2;//点赞
+	required int32 flowers = 3;//送花
+	required int32 eggs = 4;//鸡蛋
+	required int32 popularity = 5;//人气值
+	required int64 playerId = 6;
+}

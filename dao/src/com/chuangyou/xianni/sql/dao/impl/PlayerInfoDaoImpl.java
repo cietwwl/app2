@@ -348,16 +348,18 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		// TODO Auto-generated method stub
 		boolean result = false;
 		playerTimeInfo.beginAdd();
-		String sql = "replace into tb_u_player_time_info(playerId,sigleCampCount,resetTime,currRefreshId,beadRefreshId,beadRefreshDateTime) values(?,?,?,?,?,?)";
+		String sql = "replace into tb_u_player_time_info(playerId,sigleCampCount,resetTime,currRefreshId,beadRefreshId,beadRefreshDateTime,auraNum,auraRefreshDateTime) values(?,?,?,?,?,?,?,?)";
 		Map<Integer, DbParameter> params = new HashMap<Integer, DbParameter>();
 		params.put(1, new DbParameter(Types.BIGINT, playerTimeInfo.getPlayerId()));
 		params.put(2, new DbParameter(Types.INTEGER, playerTimeInfo.getSigleCampCount()));
 		params.put(3, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getResetTime()));
-		
+
 		params.put(4, new DbParameter(Types.INTEGER, playerTimeInfo.getCurrRefreshId()));
 		params.put(5, new DbParameter(Types.VARCHAR, playerTimeInfo.getBeadRefreshId()));
 		params.put(6, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getBeadRefreshDateTime()));
-		
+		params.put(7, new DbParameter(Types.INTEGER, playerTimeInfo.getAuraNum()));
+		params.put(8, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getAuraRefreshDateTime()));
+
 		result = execNoneQuery(sql, params) > -1 ? true : false;
 		playerTimeInfo.commitAdd(result);
 		return result;
@@ -368,16 +370,20 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		// TODO Auto-generated method stub
 		boolean result = false;
 		playerTimeInfo.beginUpdate();
-		String sql = "update tb_u_player_time_info set sigleCampCount=?,resetTime=?,currRefreshId=?,beadRefreshId=?,beadRefreshDateTime=? where playerId=?";
+		String sql = "update tb_u_player_time_info set sigleCampCount=?,resetTime=?,currRefreshId=?,beadRefreshId=?,beadRefreshDateTime=?,auraNum=?,auraRefreshDateTime=? where playerId=?";
 		Map<Integer, DbParameter> params = new HashMap<Integer, DbParameter>();
-		
+
 		params.put(1, new DbParameter(Types.INTEGER, playerTimeInfo.getSigleCampCount()));
 		params.put(2, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getResetTime()));
 		params.put(3, new DbParameter(Types.INTEGER, playerTimeInfo.getCurrRefreshId()));
 		params.put(4, new DbParameter(Types.VARCHAR, playerTimeInfo.getBeadRefreshId()));
 		params.put(5, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getBeadRefreshDateTime()));
-		params.put(6, new DbParameter(Types.BIGINT, playerTimeInfo.getPlayerId()));
-		
+
+		params.put(6, new DbParameter(Types.INTEGER, playerTimeInfo.getAuraNum()));
+		params.put(7, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getAuraRefreshDateTime()));
+
+		params.put(8, new DbParameter(Types.BIGINT, playerTimeInfo.getPlayerId()));
+
 		result = execNoneQuery(sql, params) > -1 ? true : false;
 		playerTimeInfo.commitUpdate(result);
 		return result;
@@ -414,7 +420,11 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 					if (beadRefreshDateTime != null) {
 						info.setBeadRefreshDateTime(beadRefreshDateTime);
 					}
-
+					info.setAuraNum(rs.getInt("auraNum"));
+					Timestamp auraRefreshDateTime = rs.getTimestamp("auraRefreshDateTime");
+					if (auraRefreshDateTime != null) {
+						info.setAuraRefreshDateTime(auraRefreshDateTime);
+					}
 				}
 			} catch (SQLException e) {
 				info = null;

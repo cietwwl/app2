@@ -1,4 +1,10 @@
 fileFormatVersion: 2
+<<<<<<< .mine
+guid: cdf4f0116b81caa4eae87f67af1e46f4
+||||||| .r3948
+guid: 3674bb15665a2254a801c59e2594f593
+=======
 guid: ae8b688291824804bbadd7f83270127a
+>>>>>>> .r4022
 TextScriptImporter:
   userData: 

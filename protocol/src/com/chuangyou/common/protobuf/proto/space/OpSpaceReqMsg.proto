@@ -1,0 +1,9 @@
+//protocol=11600;
+option java_package = "com.chuangyou.common.protobuf.pb.space";
+option java_outer_classname = "OpSpaceReqProto";
+
+//空间操作（点赞。送花，鸡蛋。。。。）
+message OpSpaceReqMsg{
+	required int64 playerId =1; //
+	required int32 op = 2;//操作：1：点赞  2：送花 3：鸡蛋
+}

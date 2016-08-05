@@ -1,0 +1,8 @@
+//protocol=11604;
+option java_package = "com.chuangyou.common.protobuf.pb.space";
+option java_outer_classname = "SetSpaceGiftReqProto";
+
+//设置礼物
+message SetSpaceGiftReqMsg{
+	required int32 addGiftNum = 1;//新加礼物数量
+}

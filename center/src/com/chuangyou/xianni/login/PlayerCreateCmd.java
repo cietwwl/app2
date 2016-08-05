@@ -29,6 +29,7 @@ import com.chuangyou.xianni.login.template.roleConfigMgr;
 import com.chuangyou.xianni.map.MapProxyManager;
 import com.chuangyou.xianni.mount.template.MountTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.player.NickNameCheckResult;
 import com.chuangyou.xianni.player.manager.PlayerManager;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -56,11 +57,24 @@ public class PlayerCreateCmd implements Command {
 			result = ErrorCode.ROLE_IS_ALREADY_EXISTS;
 		}
 
-		playerInfos = DBManager.getPlayerInfoDao().getByNickName(req.getNickName());
-		if (playerInfos != null && playerInfos.size() > 0) {
-			Log.error("角色名重复!");
-			result = ErrorCode.PlayerName_IS_ALREADY_EXISTS;
+		//名字合法性
+		short nameCheckResult = PlayerManager.nickNameCheck(req.getNickName());
+		if(nameCheckResult > 0){
+			switch(nameCheckResult){
+			case NickNameCheckResult.LENGTH_LIMIT:
+				result = ErrorCode.PLAYERNAME_LENGTH_LIMIT;
+				break;
+			case NickNameCheckResult.ILLEGAL_CHARACTER:
+				result = ErrorCode.PLAYERNAME_ILLEGAL_CHARACTER;
+				break;
+			case NickNameCheckResult.NAME_EXIST:
+				Log.error("角色名重复!");
+				result = ErrorCode.PLAYERNAME_IS_ALREADY_EXISTS;
+				break;
+			}
+			return;
 		}
+		
 		RoleConfig roleConfig = roleConfigMgr.getRoleConfig(req.getRoleConfigId());
 		if (roleConfig == null) {
 			Log.error("缺少角色配置!id：" + req.getRoleConfigId());

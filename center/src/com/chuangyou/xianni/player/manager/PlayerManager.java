@@ -1,9 +1,17 @@
 package com.chuangyou.xianni.player.manager;
 
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+
+import com.chuangyou.common.util.Log;
+import com.chuangyou.common.util.SensitivewordFilterUtil;
+import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.entity.Option;
+import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.player.BasePlayer;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.player.NickNameCheckResult;
 import com.chuangyou.xianni.sql.dao.DBManager;
 import com.chuangyou.xianni.sql.dao.PlayerInfoDao;
 
@@ -65,5 +73,37 @@ public class PlayerManager {
 		baseProperty.setSoulDefence(1 + level * 3);
 		baseProperty.setSpeed(600);
 		return baseProperty;
+	}
+	
+	/**
+	 * 
+	 * @param nickName
+	 * @return
+	 */
+	public static short nickNameCheck(String nickName){
+		//长度判断
+		try {
+			int len = nickName.getBytes("utf-8").length;
+			if(len>21 || len == 0){
+				return NickNameCheckResult.LENGTH_LIMIT;
+			}
+		} catch (UnsupportedEncodingException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			Log.error(e);
+		}
+		
+		//非法字符判断
+		String checkName = SensitivewordFilterUtil.getIntence().replaceSensitiveWord(nickName);
+		if(!checkName.equals(nickName)){
+			return NickNameCheckResult.ILLEGAL_CHARACTER;
+		}
+		
+		//是否存在
+		List<PlayerInfo> playerInfos = DBManager.getPlayerInfoDao().getByNickName(nickName);
+		if (playerInfos != null && playerInfos.size() > 0) {
+			return NickNameCheckResult.NAME_EXIST;
+		}
+		return 0;
 	}
 }

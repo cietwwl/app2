@@ -3,6 +3,7 @@ package com.chuangyou.xianni.inverseBead.action;
 import java.util.Date;
 import java.util.List;
 
+import com.chuangyou.common.protobuf.pb.inverseBead.RefreshInverseBeadMsgProto.RefreshInverseBeadMsg;
 import com.chuangyou.common.protobuf.pb.inverseBead.SyncMonsterPoolMsgProto.SyncMonsterPoolMsg;
 import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
@@ -37,10 +38,40 @@ public class InverseBeadLoopAction extends LoopAction {
 
 	@Override
 	public void loopExecute() {
-		boolean need2s = false;
-		while (true) {
+		boolean res = refreshSpawn();
+		boolean res2 = refreshAura();
+		if (res || res2) {
 			PlayerTimeInfo playerTimeInfo = player.getBasePlayer().getPlayerTimeInfo();
-			synchronized (playerTimeInfo) {
+			RefreshInverseBeadMsg.Builder msg = RefreshInverseBeadMsg.newBuilder();
+			String beadRefreshId = playerTimeInfo.getBeadRefreshId();
+			List<Integer> list = InverseBeadManager.getBeadRefreshId(beadRefreshId);
+			msg.setMonsterNum(list.size());
+			msg.setBeadRefreshDateTime(playerTimeInfo.getBeadRefreshDateTime().getTime());
+			msg.setAuraNum(playerTimeInfo.getAuraNum());
+			msg.setAuraRefreshDateTime(playerTimeInfo.getAuraRefreshDateTime().getTime());
+			PBMessage pbm = MessageUtil.buildMessage(Protocol.U_REFRESH_INVERSE_BEAD, msg);
+			this.player.sendPbMessage(pbm);
+		}
+	}
+
+	/**
+	 * 获取间隔时间
+	 * 
+	 * @return
+	 */
+	private int getIntervalTime() {
+		int a = SystemConfigTemplateMgr.getIntValue("fiveElements.a");
+		int b = SystemConfigTemplateMgr.getIntValue("fiveElements.b");
+		// T = Random( A - B*N , A )
+		int t = Math.max(1, MathUtils.randomClamp(a - b * 0, a));
+		return t * 3600;
+	}
+
+	private boolean refreshSpawn() {
+		boolean need2s = false;
+		PlayerTimeInfo playerTimeInfo = player.getBasePlayer().getPlayerTimeInfo();
+		synchronized (playerTimeInfo) {
+			while (true) {
 				String beadRefreshId = playerTimeInfo.getBeadRefreshId();
 				Date beadRefreshDateTime = playerTimeInfo.getBeadRefreshDateTime();
 				if (beadRefreshDateTime == null)
@@ -58,7 +89,7 @@ public class InverseBeadLoopAction extends LoopAction {
 
 				if (tem == null) {
 					System.err.println("配置丢失。。。。。。。");
-					return;
+					break;
 				}
 				int[] nextIds = tem.getNextSpawanIdAttr();
 				int nextId;
@@ -69,7 +100,7 @@ public class InverseBeadLoopAction extends LoopAction {
 				}
 
 				if (this.list.contains(nextId)) {
-					return;
+					break;
 				}
 
 				this.list.add(nextId);
@@ -87,21 +118,27 @@ public class InverseBeadLoopAction extends LoopAction {
 			PBMessage c2s = MessageUtil.buildMessage(Protocol.S_CREATE_INVERSE_SYNC_MONSTER, msg);
 			player.sendPbMessage(c2s);
 		}
+
+		return need2s;
 	}
 
-	/**
-	 * 获取间隔时间
-	 * 
-	 * @return
-	 */
-	private int getIntervalTime() {
-		int a = SystemConfigTemplateMgr.getIntValue("fiveElements.a");
-		int b = SystemConfigTemplateMgr.getIntValue("fiveElements.b");
-		// T = Random( A - B*N , A )
-		int t = Math.max(1, MathUtils.randomClamp(a - b * 0, a));
-		return t * 3600;
+	private boolean refreshAura() {
+		PlayerTimeInfo playerTimeInfo = player.getBasePlayer().getPlayerTimeInfo();
+		boolean need2s = false;
+		while (true) {
+			int auraNum = playerTimeInfo.getAuraNum();
+			Date auraRefreshDateTime = playerTimeInfo.getAuraRefreshDateTime();
+			if (auraRefreshDateTime == null)
+				break;
+			if (System.currentTimeMillis() - auraRefreshDateTime.getTime() < 30 * 60 * 1000)
+				break;
+			auraNum++;
+			playerTimeInfo.setAuraNum(auraNum);
+			playerTimeInfo.setAuraRefreshDateTime(new Date(auraRefreshDateTime.getTime() + 30 * 60 * 1000));
+			need2s = true;
+		}
+		return need2s;
 	}
-
 	// public static void main(String[] args) {
 	// List<Integer> list = new ArrayList<>();
 	// list.add(1);

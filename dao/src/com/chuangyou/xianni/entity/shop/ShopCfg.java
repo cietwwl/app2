@@ -22,6 +22,8 @@ public class ShopCfg {
 	public static final byte TIME_TYPE_WEEK     = 4;
 	/**  每月  */
 	public static final byte TIME_TYPE_MONTH    = 5;
+	/** 固定时间每天  */
+	public static final byte TIME_TYPE_FIXED_DAY = 6;
 	///////////////////////////////////////////////////////
 	/** 常用商城  */
 	public static final int SHOP_NORMAL = 90;

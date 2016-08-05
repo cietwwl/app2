@@ -1,0 +1,10 @@
+//protocol=605;
+option java_package = "com.chuangyou.common.protobuf.pb.campaign";
+option java_outer_classname = "CampaignTaskInfoMsgProto";
+message CampaignTaskInfoMsg{
+	optional int32  campaignId = 1; //副本唯一ID
+	optional int32  taskId = 2;    //任务模板ID
+	optional int32  status = 3;     //当前任务状态 1 进行中, 2 成功, 3 失败, 4 已经结算;
+	optional int32  progress=4;     //进度
+}
+

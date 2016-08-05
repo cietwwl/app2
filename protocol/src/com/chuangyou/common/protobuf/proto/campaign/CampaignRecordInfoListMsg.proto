@@ -1,0 +1,8 @@
+//protocol=604;
+option java_package = "com.chuangyou.common.protobuf.pb.campaign";
+option java_outer_classname = "CampaignRecordInfoListMsgProto";
+import "campaign/CampaignRecordInfoMsg.proto";
+message CampaignRecordInfoListMsg{
+	 repeated CampaignRecordInfoMsg records = 1; //副本记录
+}
+

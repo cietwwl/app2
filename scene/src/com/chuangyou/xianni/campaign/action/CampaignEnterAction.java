@@ -6,11 +6,17 @@ import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
 import com.chuangyou.common.protobuf.pb.army.ArmyInfoReloadMsgProto.ArmyInfoReloadMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CampaignStatuMsgProto.CampaignStatuMsg;
 import com.chuangyou.common.util.Vector3;
+import com.chuangyou.xianni.battle.buffer.Buffer;
+import com.chuangyou.xianni.battle.buffer.BufferFactory;
+import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.campaign.Campaign;
+import com.chuangyou.xianni.campaign.task.CTBaseCondition;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
+import com.chuangyou.xianni.constant.CampaignConstant.CampaignStatu;
 import com.chuangyou.xianni.constant.EnterMapResult;
+import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.field.FieldInfo;
 import com.chuangyou.xianni.exec.Action;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -104,13 +110,28 @@ public class CampaignEnterAction extends Action {
 
 		// 告诉center服务器，更新副本状态
 		CampaignStatuMsg.Builder cstatu = CampaignStatuMsg.newBuilder();
-		cstatu.setCampaignId(campaign.getIndexId());
-		cstatu.setStatu(1);// 进入
+		cstatu.setIndexId(campaign.getIndexId());
+		cstatu.setStatu(CampaignStatu.NOTITY2C_IN);// 进入
 		PBMessage statuMsg = MessageUtil.buildMessage(Protocol.C_CAMPAIGN_STATU, cstatu);
 		army.sendPbMessage(statuMsg);
 
 		campaign.setExpiredTime(0);
 		campaign.sendCampaignInfo(army);
+
+		if (campaign.getTask() != null && campaign.getTask().getConditionType() == CTBaseCondition.ADD_BUFF_PLAYER) {
+			String bufferIds = campaign.getTask().getTemp().getStrParam1();
+			if (bufferIds != null && !bufferIds.equals("")) {
+				String[] attr = bufferIds.split(",");
+				for (String str : attr) {
+					int bufferId = Integer.valueOf(str);
+					SkillBufferTemplateInfo bufferTemp = BattleTempMgr.getBufferInfo(bufferId);
+					if (bufferTemp != null) {
+						Buffer buffer = BufferFactory.createBuffer(army.getPlayer(), army.getPlayer(), bufferTemp);
+						army.getPlayer().addBuffer(buffer);
+					}
+				}
+			}
+		}
 	}
 
 	private void reloadPos(ArmyProxy army) {

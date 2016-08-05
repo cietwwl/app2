@@ -35,5 +35,11 @@ public interface ItemAddType {
 	
 	/** 脚本获得物品  */
 	public static final short   SCRIPT_ADD = 2007;
+	/**
+	 * 空间获得
+	 */
+	public static final short   SPACE_ADD = 2008;
+	
+	
 	
 }

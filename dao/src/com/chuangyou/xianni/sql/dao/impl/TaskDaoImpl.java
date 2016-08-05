@@ -23,7 +23,7 @@ public class TaskDaoImpl extends BaseDao implements TaskDao {
 	@Override
 	public boolean add(TaskInfo info) {
 		// TODO Auto-generated method stub
-		info.beginAdd();
+		if(!info.beginAdd())return false;
 		boolean result = false;
 		String sql = "INSERT INTO tb_u_task_info (taskId,playerId,process,state,updateTime,createTime)"
 				+ " VALUES (?,?,?,?,?,?);";
@@ -44,7 +44,7 @@ public class TaskDaoImpl extends BaseDao implements TaskDao {
 	@Override
 	public boolean update(TaskInfo info) {
 		// TODO Auto-generated method stub
-		info.beginUpdate();
+		if(!info.beginUpdate())return false;
 		boolean result =false;
 		String sql = "update tb_u_task_info set process=?,state=?,updateTime=?,createTime=? where taskId=? and playerId=?";
 		Map<Integer, DbParameter> para= new HashMap<>();

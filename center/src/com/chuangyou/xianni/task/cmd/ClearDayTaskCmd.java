@@ -17,6 +17,7 @@ public class ClearDayTaskCmd extends AbstractCommand {
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
 		// TODO Auto-generated method stub
 		System.out.println("==================执行任务清理==========================");
+		
 		if(player.getPlayerState() == PlayerState.ONLINE && player.getTaskInventory().isReady()){
 			TaskManager.clearDayTask(player, true);
 		}

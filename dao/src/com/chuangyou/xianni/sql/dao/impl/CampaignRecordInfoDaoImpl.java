@@ -3,10 +3,8 @@ package com.chuangyou.xianni.sql.dao.impl;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,16 +26,17 @@ public class CampaignRecordInfoDaoImpl extends BaseDao implements CampaignRecord
 	@Override
 	public boolean saveOrUpdata(CampaignRecordInfo info) {
 		boolean result = false;
-		String sql = "REPLACE INTO tb_u_campaign_info(id,playerId,campaignId,point,statu,assess,updateTime) VALUES (?,?,?,?,?,?,?);";
+		String sql = "REPLACE INTO tb_u_campaign_info(id,playerId,campaignId,point,statu,updataTime,taskIds) VALUES (?,?,?,?,?,?,?);";
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.INTEGER, info.getId()));
 		para.put(2, new DbParameter(Types.BIGINT, info.getPlayerId()));
 		para.put(3, new DbParameter(Types.INTEGER, info.getCampaignId()));
 		para.put(4, new DbParameter(Types.INTEGER, info.getPoint()));
 		para.put(5, new DbParameter(Types.INTEGER, info.getStatu()));
-		para.put(6, new DbParameter(Types.INTEGER, info.getAssess()));
-		para.put(7, new DbParameter(Types.TIMESTAMP, info.getUpdataTime()));
+		para.put(6, new DbParameter(Types.BIGINT, info.getUpdataTime()));
+		para.put(7, new DbParameter(Types.VARCHAR, info.getTaskIds()));
 		result = execNoneQuery(sql, para) > -1 ? true : false;
+		info.commitUpdate(result);
 		return result;
 	}
 
@@ -79,12 +78,8 @@ public class CampaignRecordInfoDaoImpl extends BaseDao implements CampaignRecord
 					info.setCampaignId(rs.getInt("campaignId"));
 					info.setPoint(rs.getInt("point"));
 					info.setStatu(rs.getInt("statu"));
-					info.setAssess(rs.getInt("assess"));
-
-					Timestamp tt = rs.getTimestamp("updataTime");
-					if (tt != null) {
-						info.setUpdataTime(new Date(tt.getTime()));
-					}
+					info.setUpdataTime(rs.getLong("updataTime"));
+					info.setTaskIds(rs.getString("taskIds"));
 					infos.add(info);
 					info.setOp(Option.None);
 				}

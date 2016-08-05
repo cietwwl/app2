@@ -1,0 +1,10 @@
+//protocol=11603;
+option java_package = "com.chuangyou.common.protobuf.pb.space";
+option java_outer_classname = "SetSpaceCollectionReqProto";
+
+//设置收藏相关
+message SetSpaceCollectionReqMsg{
+	required int32 op = 1;  //1：收藏指定留言  2：取消指定留言的收藏 3：新增留言收藏数量  4:取消全部收藏
+	optional int32 messageId = 2;//留言ID号
+	optional int32 addCollectionNum = 3;//新增留言收藏数量
+}

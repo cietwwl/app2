@@ -6,6 +6,7 @@ import com.chuangyou.common.util.NetConfigSet;
 import com.chuangyou.common.util.NetConfigXml;
 import com.chuangyou.common.util.ServerType;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
+import com.chuangyou.xianni.campaign.CampaignTaskTempMgr;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
 import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.common.timer.TimerTaskMgr;
@@ -116,6 +117,10 @@ public class CrossServer extends BaseServer {
 		}
 
 		if (!initComponent(ScriptManager.init(), "=====初始化脚本======")) {
+			return false;
+		}
+
+		if (!initComponent(CampaignTaskTempMgr.init(), "初始化副本任务信息")) {
 			return false;
 		}
 

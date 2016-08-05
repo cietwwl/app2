@@ -5,5 +5,10 @@ option java_outer_classname = "ResGetInverseBeadMsgProto";
 //五行数据
 import "inverseBead/InverseBeadMsg.proto";
 message ResGetInverseBeadMsg {
-	repeated InverseBeadMsg inverseBead = 1;
+	repeated InverseBeadMsg inverseBead = 1;//阶段数据
+	required int32 monsterNum=2;		// 怪物数量
+	required int64 beadRefreshDateTime=3;//怪物刷新时间
+	required int32 auraNum=4;//灵气液个数
+	required int64 auraRefreshDateTime=5;//灵气液刷新时间
+
 }

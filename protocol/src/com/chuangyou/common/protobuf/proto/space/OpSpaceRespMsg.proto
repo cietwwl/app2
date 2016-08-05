@@ -1,0 +1,11 @@
+//protocol=1600;
+option java_package = "com.chuangyou.common.protobuf.pb.space";
+option java_outer_classname = "OpSpaceRespProto";
+
+//空间操作（点赞。送花，鸡蛋。。。。）
+//成功返回，（失败不返回。会有相关的错误码发给客户端）
+message OpSpaceRespMsg{
+	required int64 playerId =1; //
+	required int32 op = 2;//操作：1：点赞  2：送花 3：鸡蛋
+	optional int32 awardItem=3;//如果点赞获得了奖品。此值代表奖品的物品type号
+}

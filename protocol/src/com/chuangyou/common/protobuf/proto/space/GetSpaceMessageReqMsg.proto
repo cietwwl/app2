@@ -1,0 +1,11 @@
+//protocol=10557;
+option java_package = "com.chuangyou.common.protobuf.pb.space";
+option java_outer_classname = "GetSpaceMessageReqProto";
+
+//请求留言信息
+message GetSpaceMessageReqMsg{
+	required int64 playerId =1; //
+	required int32 op = 2; //操作   1： 所有   2：收藏的
+	required int32 startIndex = 3;//开始位置
+	required int32 endIndex = 4;//结束位置
+}

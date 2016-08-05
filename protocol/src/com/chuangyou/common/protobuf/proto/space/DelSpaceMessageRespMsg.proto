@@ -1,0 +1,11 @@
+//protocol=1602;
+option java_package = "com.chuangyou.common.protobuf.pb.space";
+option java_outer_classname = "DelSpaceMessageRespProto";
+
+//删除留言
+message DelSpaceMessageRespMsg{
+	required int32 op = 1;////1:删除指定ID留言  2：删除指定人的留言  3:删除全部留言但不包括收藏的  4：删除全部留言包括收藏的
+	optional int32 id= 2; //留言ID
+	optional int64 playerId = 3;//指定要删除其人的留言的人的ID
+
+}

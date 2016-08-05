@@ -62,4 +62,36 @@ public class SystemConfigTemplateMgr {
 		}
 		return cfg.getValue();
 	}
+
+	public static int getSpaceGiftPrice()
+	{
+		SystemConfig cfg = systemTemps.get("space.gift.perPrice");
+		if (cfg == null) {
+			Log.error("getIntValue is null ,key : space.gift.perPrice");
+			return 0;
+		}
+		return cfg.getValue();
+	}
+	
+	public static int getSpaceCollectionPrice()
+	{
+		SystemConfig cfg = systemTemps.get("space.addCollection.perPrice");
+		if (cfg == null) {
+			Log.error("getIntValue is null ,key : space.addCollection.perPrice");
+			return 0;
+		}
+		return cfg.getValue();
+	}
+	
+	
+	public static int getBirthdayItem(){
+		SystemConfig cfg = systemTemps.get("space.birthday.gift");
+		if (cfg == null) {
+			Log.error("getIntValue is null ,key : space.birthday.gift");
+			return 0;
+		}
+		return cfg.getValue();
+	}
+	
+
 }

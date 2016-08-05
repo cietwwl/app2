@@ -1,0 +1,10 @@
+option java_package = "com.chuangyou.common.protobuf.pb.campaign";
+option java_outer_classname = "CampaignRecordInfoMsgProto";
+message CampaignRecordInfoMsg{
+	optional int32  campaignId = 1; //副本ID
+	optional int32  point= 2; //副本挑战点
+	optional int32  status= 3; //完成状态 0 未完成 ，1 完成
+	optional int64  updataTime= 4; //完成时间
+	repeated int32	taskIds=5;//已经完成的任务ID
+}
+

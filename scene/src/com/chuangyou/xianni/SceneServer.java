@@ -6,6 +6,7 @@ import com.chuangyou.common.util.NetConfigSet;
 import com.chuangyou.common.util.NetConfigXml;
 import com.chuangyou.common.util.ServerType;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
+import com.chuangyou.xianni.campaign.CampaignTaskTempMgr;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
 import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.common.timer.TimerTaskMgr;
@@ -119,6 +120,10 @@ public class SceneServer extends BaseServer {
 			return false;
 		}
 
+		if (!initComponent(CampaignTaskTempMgr.init(), "初始化副本任务信息")) {
+			return false;
+		}
+
 		if (!initComponent(CampaignTempMgr.init(), "初始化副本模板信息")) {
 			return false;
 		}
@@ -130,8 +135,8 @@ public class SceneServer extends BaseServer {
 		if (!initComponent(TimerTaskMgr.init(), "初始化定时更新管理器")) {
 			return false;
 		}
-		
-		if(!initComponent(MountTempleteMgr.init(), "坐骑模板初始化")){
+
+		if (!initComponent(MountTempleteMgr.init(), "坐骑模板初始化")) {
 			return false;
 		}
 

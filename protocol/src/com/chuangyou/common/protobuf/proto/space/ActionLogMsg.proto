@@ -1,0 +1,13 @@
+option java_package = "com.chuangyou.common.protobuf.pb.space";
+option java_outer_classname = "ActionLogProto";
+
+//操作日志信息
+message ActionLogMsg{
+	required int64 sendPlayerId =1;  //发送者ID
+	required string sendName = 2;//发送者姓名
+	required string sendFace     = 3;//头像
+	required int32 sendLv        = 4;//等级
+	required int64 createDate = 5;//时间 utc时间
+	required int32 op = 6;//操作类型 1：点赞记录  2：送花记录  3：鸡蛋记录
+
+}

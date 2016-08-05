@@ -4,5 +4,6 @@ option java_outer_classname = "CreateCampaignMsgProto";
 message CreateCampaignMsg{
 	optional int32 campaign = 1;  //buffer唯一ID
 	optional bool useItem = 2;    //是否使用物品（使用物品则不扣次数）
+	optional int32	taskId = 3; //挑战目标ID
 }
 

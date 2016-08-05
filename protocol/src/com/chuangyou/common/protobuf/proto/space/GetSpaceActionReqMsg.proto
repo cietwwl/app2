@@ -1,0 +1,10 @@
+//protocol=10558;
+option java_package = "com.chuangyou.common.protobuf.pb.space";
+option java_outer_classname = "GetSpaceActionReqProto";
+
+//请求操作日志（点赞。送花，鸡蛋。。。。）
+message GetSpaceActionReqMsg{
+	required int64 playerId =1; //
+	required int32 startIndex=2;//开始
+	required int32 endIndex=3;//结束
+}

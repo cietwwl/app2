@@ -29,7 +29,7 @@ public class BeadMonsterSpawnNode extends MonsterSpawnNode { // 刷怪模板
 
 					SyncMonsterPoolMsg.Builder msg = SyncMonsterPoolMsg.newBuilder();
 					msg.addMonsterRefreshId(this.spwanInfo.getTagId());
-					PBMessage pbm = MessageUtil.buildMessage(Protocol.C_REQ_PASS_FB, msg);
+					PBMessage pbm = MessageUtil.buildMessage(Protocol.C_INVERSE_MONSTER_SPAWN, msg);
 					for (ArmyProxy army : campaign.getAllArmys()) {
 						army.sendPbMessage(pbm);
 						army.getPlayer().getMonsterRefreshIdList().remove(this.spwanInfo.getTagId());
@@ -41,6 +41,15 @@ public class BeadMonsterSpawnNode extends MonsterSpawnNode { // 刷怪模板
 					field.enDelayQueue(new CreateChildAction());
 				}
 			}
+		}
+	}
+	
+	@Override
+	public void start() {
+//		super.start();
+		System.err.println("spwanInfo :" + spwanInfo.getId());
+		while (curCount < spwanInfo.getMaxCount() && (toalCount < spwanInfo.getToalCount() || spwanInfo.getToalCount() <= 0)) {
+			createChildren();
 		}
 	}
 

@@ -1,0 +1,14 @@
+option java_package = "com.chuangyou.common.protobuf.pb.space";
+option java_outer_classname = "MessageInfoProto";
+
+//留言信息
+message MessageInfoMsg{
+	required int64 sendPlayerId =1;  //发送者ID
+	required string sendName = 2;//发送者姓名
+	required string sendFace     = 3;//头像
+	required int32 sendLv        = 4;//等级
+	required int64 createDate = 5;//时间
+	required string message = 6;//内容
+	required int32 isCollection = 7;//是否收藏  0：未收藏  1： 收藏
+	required int32 id=8;//消息ID
+}

@@ -32,6 +32,7 @@ public class MessageUtil {
 	 */
 	public static PBMessage buildMessage(short code, Message message) {
 		//Log.debug("发送消息：code："+code+"\ncontent:\n"+message);
+//		System.err.println("发送消息code："+code+"\ncontent:\n"+message);
 		PBMessage response = new PBMessage(code, -1);
 		response.setMessage(message);
 		return response;

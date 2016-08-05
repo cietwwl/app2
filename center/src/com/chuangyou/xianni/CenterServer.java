@@ -8,6 +8,7 @@ import com.chuangyou.common.util.NetConfigXml;
 import com.chuangyou.common.util.ServerType;
 import com.chuangyou.xianni.army.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.bag.ItemManager;
+import com.chuangyou.xianni.campaign.CampaignTaskTempMgr;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
 import com.chuangyou.xianni.common.template.LevelUpTempleteMgr;
 import com.chuangyou.xianni.common.template.PropertyFightingTemplateMgr;
@@ -31,6 +32,7 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.script.manager.ScriptManager;
 import com.chuangyou.xianni.shop.template.ShopTemplateMgr;
 import com.chuangyou.xianni.skill.template.SkillTempMgr;
+import com.chuangyou.xianni.sql.dao.CampaignTaskTemplateInfoDao;
 import com.chuangyou.xianni.sql.db.pool.DBPoolMgr;
 import com.chuangyou.xianni.task.template.TaskTemplateMgr;
 import com.chuangyou.xianni.team.TeamTargetTempMgr;
@@ -126,6 +128,9 @@ public class CenterServer extends BaseServer {
 		}
 
 		if (!initComponent(FashionTemplateMgr.init(), "初始化时装模板数据")) {
+			return false;
+		}
+		if (!initComponent(CampaignTaskTempMgr.init(), "初始化副本任务模板数据")) {
 			return false;
 		}
 

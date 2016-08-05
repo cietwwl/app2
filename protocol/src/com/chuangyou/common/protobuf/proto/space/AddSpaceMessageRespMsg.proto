@@ -1,0 +1,10 @@
+//protocol=1601;
+option java_package = "com.chuangyou.common.protobuf.pb.space";
+option java_outer_classname = "AddSpaceMessageRespProto";
+
+import "space/MessageInfoMsg.proto";
+//给空间留言
+message AddSpaceMessageRespMsg{
+	required int64 playerId = 1;
+	required MessageInfoMsg message = 2; //留言内容(经过服务端过滤过关键字)
+}

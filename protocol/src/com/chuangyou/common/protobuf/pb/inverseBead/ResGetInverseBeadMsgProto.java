@@ -14,27 +14,115 @@ public final class ResGetInverseBeadMsgProto {
 
     /**
      * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+     *
+     * <pre>
+     *阶段数据
+     * </pre>
      */
     java.util.List<com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg> 
         getInverseBeadList();
     /**
      * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+     *
+     * <pre>
+     *阶段数据
+     * </pre>
      */
     com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg getInverseBead(int index);
     /**
      * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+     *
+     * <pre>
+     *阶段数据
+     * </pre>
      */
     int getInverseBeadCount();
     /**
      * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+     *
+     * <pre>
+     *阶段数据
+     * </pre>
      */
     java.util.List<? extends com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsgOrBuilder> 
         getInverseBeadOrBuilderList();
     /**
      * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+     *
+     * <pre>
+     *阶段数据
+     * </pre>
      */
     com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsgOrBuilder getInverseBeadOrBuilder(
         int index);
+
+    /**
+     * <code>required int32 monsterNum = 2;</code>
+     *
+     * <pre>
+     * 怪物数量
+     * </pre>
+     */
+    boolean hasMonsterNum();
+    /**
+     * <code>required int32 monsterNum = 2;</code>
+     *
+     * <pre>
+     * 怪物数量
+     * </pre>
+     */
+    int getMonsterNum();
+
+    /**
+     * <code>required int64 beadRefreshDateTime = 3;</code>
+     *
+     * <pre>
+     *怪物刷新时间
+     * </pre>
+     */
+    boolean hasBeadRefreshDateTime();
+    /**
+     * <code>required int64 beadRefreshDateTime = 3;</code>
+     *
+     * <pre>
+     *怪物刷新时间
+     * </pre>
+     */
+    long getBeadRefreshDateTime();
+
+    /**
+     * <code>required int32 auraNum = 4;</code>
+     *
+     * <pre>
+     *灵气液个数
+     * </pre>
+     */
+    boolean hasAuraNum();
+    /**
+     * <code>required int32 auraNum = 4;</code>
+     *
+     * <pre>
+     *灵气液个数
+     * </pre>
+     */
+    int getAuraNum();
+
+    /**
+     * <code>required int64 auraRefreshDateTime = 5;</code>
+     *
+     * <pre>
+     *灵气液刷新时间
+     * </pre>
+     */
+    boolean hasAuraRefreshDateTime();
+    /**
+     * <code>required int64 auraRefreshDateTime = 5;</code>
+     *
+     * <pre>
+     *灵气液刷新时间
+     * </pre>
+     */
+    long getAuraRefreshDateTime();
   }
   /**
    * Protobuf type {@code ResGetInverseBeadMsg}
@@ -96,6 +184,26 @@ public final class ResGetInverseBeadMsgProto {
               inverseBead_.add(input.readMessage(com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg.PARSER, extensionRegistry));
               break;
             }
+            case 16: {
+              bitField0_ |= 0x00000001;
+              monsterNum_ = input.readInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000002;
+              beadRefreshDateTime_ = input.readInt64();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000004;
+              auraNum_ = input.readInt32();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000008;
+              auraRefreshDateTime_ = input.readInt64();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -138,16 +246,25 @@ public final class ResGetInverseBeadMsgProto {
       return PARSER;
     }
 
+    private int bitField0_;
     public static final int INVERSEBEAD_FIELD_NUMBER = 1;
     private java.util.List<com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg> inverseBead_;
     /**
      * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+     *
+     * <pre>
+     *阶段数据
+     * </pre>
      */
     public java.util.List<com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg> getInverseBeadList() {
       return inverseBead_;
     }
     /**
      * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+     *
+     * <pre>
+     *阶段数据
+     * </pre>
      */
     public java.util.List<? extends com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsgOrBuilder> 
         getInverseBeadOrBuilderList() {
@@ -155,26 +272,134 @@ public final class ResGetInverseBeadMsgProto {
     }
     /**
      * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+     *
+     * <pre>
+     *阶段数据
+     * </pre>
      */
     public int getInverseBeadCount() {
       return inverseBead_.size();
     }
     /**
      * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+     *
+     * <pre>
+     *阶段数据
+     * </pre>
      */
     public com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg getInverseBead(int index) {
       return inverseBead_.get(index);
     }
     /**
      * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+     *
+     * <pre>
+     *阶段数据
+     * </pre>
      */
     public com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsgOrBuilder getInverseBeadOrBuilder(
         int index) {
       return inverseBead_.get(index);
     }
 
+    public static final int MONSTERNUM_FIELD_NUMBER = 2;
+    private int monsterNum_;
+    /**
+     * <code>required int32 monsterNum = 2;</code>
+     *
+     * <pre>
+     * 怪物数量
+     * </pre>
+     */
+    public boolean hasMonsterNum() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required int32 monsterNum = 2;</code>
+     *
+     * <pre>
+     * 怪物数量
+     * </pre>
+     */
+    public int getMonsterNum() {
+      return monsterNum_;
+    }
+
+    public static final int BEADREFRESHDATETIME_FIELD_NUMBER = 3;
+    private long beadRefreshDateTime_;
+    /**
+     * <code>required int64 beadRefreshDateTime = 3;</code>
+     *
+     * <pre>
+     *怪物刷新时间
+     * </pre>
+     */
+    public boolean hasBeadRefreshDateTime() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required int64 beadRefreshDateTime = 3;</code>
+     *
+     * <pre>
+     *怪物刷新时间
+     * </pre>
+     */
+    public long getBeadRefreshDateTime() {
+      return beadRefreshDateTime_;
+    }
+
+    public static final int AURANUM_FIELD_NUMBER = 4;
+    private int auraNum_;
+    /**
+     * <code>required int32 auraNum = 4;</code>
+     *
+     * <pre>
+     *灵气液个数
+     * </pre>
+     */
+    public boolean hasAuraNum() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required int32 auraNum = 4;</code>
+     *
+     * <pre>
+     *灵气液个数
+     * </pre>
+     */
+    public int getAuraNum() {
+      return auraNum_;
+    }
+
+    public static final int AURAREFRESHDATETIME_FIELD_NUMBER = 5;
+    private long auraRefreshDateTime_;
+    /**
+     * <code>required int64 auraRefreshDateTime = 5;</code>
+     *
+     * <pre>
+     *灵气液刷新时间
+     * </pre>
+     */
+    public boolean hasAuraRefreshDateTime() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>required int64 auraRefreshDateTime = 5;</code>
+     *
+     * <pre>
+     *灵气液刷新时间
+     * </pre>
+     */
+    public long getAuraRefreshDateTime() {
+      return auraRefreshDateTime_;
+    }
+
     private void initFields() {
       inverseBead_ = java.util.Collections.emptyList();
+      monsterNum_ = 0;
+      beadRefreshDateTime_ = 0L;
+      auraNum_ = 0;
+      auraRefreshDateTime_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -182,6 +407,22 @@ public final class ResGetInverseBeadMsgProto {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
+      if (!hasMonsterNum()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasBeadRefreshDateTime()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasAuraNum()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasAuraRefreshDateTime()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       for (int i = 0; i < getInverseBeadCount(); i++) {
         if (!getInverseBead(i).isInitialized()) {
           memoizedIsInitialized = 0;
@@ -198,6 +439,18 @@ public final class ResGetInverseBeadMsgProto {
       for (int i = 0; i < inverseBead_.size(); i++) {
         output.writeMessage(1, inverseBead_.get(i));
       }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(2, monsterNum_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt64(3, beadRefreshDateTime_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(4, auraNum_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt64(5, auraRefreshDateTime_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -210,6 +463,22 @@ public final class ResGetInverseBeadMsgProto {
       for (int i = 0; i < inverseBead_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, inverseBead_.get(i));
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, monsterNum_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, beadRefreshDateTime_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, auraNum_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(5, auraRefreshDateTime_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -335,6 +604,14 @@ public final class ResGetInverseBeadMsgProto {
         } else {
           inverseBeadBuilder_.clear();
         }
+        monsterNum_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        beadRefreshDateTime_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        auraNum_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        auraRefreshDateTime_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -362,6 +639,7 @@ public final class ResGetInverseBeadMsgProto {
       public com.chuangyou.common.protobuf.pb.inverseBead.ResGetInverseBeadMsgProto.ResGetInverseBeadMsg buildPartial() {
         com.chuangyou.common.protobuf.pb.inverseBead.ResGetInverseBeadMsgProto.ResGetInverseBeadMsg result = new com.chuangyou.common.protobuf.pb.inverseBead.ResGetInverseBeadMsgProto.ResGetInverseBeadMsg(this);
         int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         if (inverseBeadBuilder_ == null) {
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
             inverseBead_ = java.util.Collections.unmodifiableList(inverseBead_);
@@ -371,6 +649,23 @@ public final class ResGetInverseBeadMsgProto {
         } else {
           result.inverseBead_ = inverseBeadBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.monsterNum_ = monsterNum_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.beadRefreshDateTime_ = beadRefreshDateTime_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.auraNum_ = auraNum_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.auraRefreshDateTime_ = auraRefreshDateTime_;
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -412,11 +707,39 @@ public final class ResGetInverseBeadMsgProto {
             }
           }
         }
+        if (other.hasMonsterNum()) {
+          setMonsterNum(other.getMonsterNum());
+        }
+        if (other.hasBeadRefreshDateTime()) {
+          setBeadRefreshDateTime(other.getBeadRefreshDateTime());
+        }
+        if (other.hasAuraNum()) {
+          setAuraNum(other.getAuraNum());
+        }
+        if (other.hasAuraRefreshDateTime()) {
+          setAuraRefreshDateTime(other.getAuraRefreshDateTime());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
       public final boolean isInitialized() {
+        if (!hasMonsterNum()) {
+          
+          return false;
+        }
+        if (!hasBeadRefreshDateTime()) {
+          
+          return false;
+        }
+        if (!hasAuraNum()) {
+          
+          return false;
+        }
+        if (!hasAuraRefreshDateTime()) {
+          
+          return false;
+        }
         for (int i = 0; i < getInverseBeadCount(); i++) {
           if (!getInverseBead(i).isInitialized()) {
             
@@ -459,6 +782,10 @@ public final class ResGetInverseBeadMsgProto {
 
       /**
        * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+       *
+       * <pre>
+       *阶段数据
+       * </pre>
        */
       public java.util.List<com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg> getInverseBeadList() {
         if (inverseBeadBuilder_ == null) {
@@ -469,6 +796,10 @@ public final class ResGetInverseBeadMsgProto {
       }
       /**
        * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+       *
+       * <pre>
+       *阶段数据
+       * </pre>
        */
       public int getInverseBeadCount() {
         if (inverseBeadBuilder_ == null) {
@@ -479,6 +810,10 @@ public final class ResGetInverseBeadMsgProto {
       }
       /**
        * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+       *
+       * <pre>
+       *阶段数据
+       * </pre>
        */
       public com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg getInverseBead(int index) {
         if (inverseBeadBuilder_ == null) {
@@ -489,6 +824,10 @@ public final class ResGetInverseBeadMsgProto {
       }
       /**
        * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+       *
+       * <pre>
+       *阶段数据
+       * </pre>
        */
       public Builder setInverseBead(
           int index, com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg value) {
@@ -506,6 +845,10 @@ public final class ResGetInverseBeadMsgProto {
       }
       /**
        * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+       *
+       * <pre>
+       *阶段数据
+       * </pre>
        */
       public Builder setInverseBead(
           int index, com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg.Builder builderForValue) {
@@ -520,6 +863,10 @@ public final class ResGetInverseBeadMsgProto {
       }
       /**
        * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+       *
+       * <pre>
+       *阶段数据
+       * </pre>
        */
       public Builder addInverseBead(com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg value) {
         if (inverseBeadBuilder_ == null) {
@@ -536,6 +883,10 @@ public final class ResGetInverseBeadMsgProto {
       }
       /**
        * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+       *
+       * <pre>
+       *阶段数据
+       * </pre>
        */
       public Builder addInverseBead(
           int index, com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg value) {
@@ -553,6 +904,10 @@ public final class ResGetInverseBeadMsgProto {
       }
       /**
        * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+       *
+       * <pre>
+       *阶段数据
+       * </pre>
        */
       public Builder addInverseBead(
           com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg.Builder builderForValue) {
@@ -567,6 +922,10 @@ public final class ResGetInverseBeadMsgProto {
       }
       /**
        * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+       *
+       * <pre>
+       *阶段数据
+       * </pre>
        */
       public Builder addInverseBead(
           int index, com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg.Builder builderForValue) {
@@ -581,6 +940,10 @@ public final class ResGetInverseBeadMsgProto {
       }
       /**
        * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+       *
+       * <pre>
+       *阶段数据
+       * </pre>
        */
       public Builder addAllInverseBead(
           java.lang.Iterable<? extends com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg> values) {
@@ -596,6 +959,10 @@ public final class ResGetInverseBeadMsgProto {
       }
       /**
        * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+       *
+       * <pre>
+       *阶段数据
+       * </pre>
        */
       public Builder clearInverseBead() {
         if (inverseBeadBuilder_ == null) {
@@ -609,6 +976,10 @@ public final class ResGetInverseBeadMsgProto {
       }
       /**
        * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+       *
+       * <pre>
+       *阶段数据
+       * </pre>
        */
       public Builder removeInverseBead(int index) {
         if (inverseBeadBuilder_ == null) {
@@ -622,6 +993,10 @@ public final class ResGetInverseBeadMsgProto {
       }
       /**
        * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+       *
+       * <pre>
+       *阶段数据
+       * </pre>
        */
       public com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg.Builder getInverseBeadBuilder(
           int index) {
@@ -629,6 +1004,10 @@ public final class ResGetInverseBeadMsgProto {
       }
       /**
        * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+       *
+       * <pre>
+       *阶段数据
+       * </pre>
        */
       public com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsgOrBuilder getInverseBeadOrBuilder(
           int index) {
@@ -639,6 +1018,10 @@ public final class ResGetInverseBeadMsgProto {
       }
       /**
        * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+       *
+       * <pre>
+       *阶段数据
+       * </pre>
        */
       public java.util.List<? extends com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsgOrBuilder> 
            getInverseBeadOrBuilderList() {
@@ -650,6 +1033,10 @@ public final class ResGetInverseBeadMsgProto {
       }
       /**
        * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+       *
+       * <pre>
+       *阶段数据
+       * </pre>
        */
       public com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg.Builder addInverseBeadBuilder() {
         return getInverseBeadFieldBuilder().addBuilder(
@@ -657,6 +1044,10 @@ public final class ResGetInverseBeadMsgProto {
       }
       /**
        * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+       *
+       * <pre>
+       *阶段数据
+       * </pre>
        */
       public com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg.Builder addInverseBeadBuilder(
           int index) {
@@ -665,6 +1056,10 @@ public final class ResGetInverseBeadMsgProto {
       }
       /**
        * <code>repeated .InverseBeadMsg inverseBead = 1;</code>
+       *
+       * <pre>
+       *阶段数据
+       * </pre>
        */
       public java.util.List<com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.InverseBeadMsg.Builder> 
            getInverseBeadBuilderList() {
@@ -683,6 +1078,198 @@ public final class ResGetInverseBeadMsgProto {
           inverseBead_ = null;
         }
         return inverseBeadBuilder_;
+      }
+
+      private int monsterNum_ ;
+      /**
+       * <code>required int32 monsterNum = 2;</code>
+       *
+       * <pre>
+       * 怪物数量
+       * </pre>
+       */
+      public boolean hasMonsterNum() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required int32 monsterNum = 2;</code>
+       *
+       * <pre>
+       * 怪物数量
+       * </pre>
+       */
+      public int getMonsterNum() {
+        return monsterNum_;
+      }
+      /**
+       * <code>required int32 monsterNum = 2;</code>
+       *
+       * <pre>
+       * 怪物数量
+       * </pre>
+       */
+      public Builder setMonsterNum(int value) {
+        bitField0_ |= 0x00000002;
+        monsterNum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 monsterNum = 2;</code>
+       *
+       * <pre>
+       * 怪物数量
+       * </pre>
+       */
+      public Builder clearMonsterNum() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        monsterNum_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private long beadRefreshDateTime_ ;
+      /**
+       * <code>required int64 beadRefreshDateTime = 3;</code>
+       *
+       * <pre>
+       *怪物刷新时间
+       * </pre>
+       */
+      public boolean hasBeadRefreshDateTime() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required int64 beadRefreshDateTime = 3;</code>
+       *
+       * <pre>
+       *怪物刷新时间
+       * </pre>
+       */
+      public long getBeadRefreshDateTime() {
+        return beadRefreshDateTime_;
+      }
+      /**
+       * <code>required int64 beadRefreshDateTime = 3;</code>
+       *
+       * <pre>
+       *怪物刷新时间
+       * </pre>
+       */
+      public Builder setBeadRefreshDateTime(long value) {
+        bitField0_ |= 0x00000004;
+        beadRefreshDateTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int64 beadRefreshDateTime = 3;</code>
+       *
+       * <pre>
+       *怪物刷新时间
+       * </pre>
+       */
+      public Builder clearBeadRefreshDateTime() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        beadRefreshDateTime_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int auraNum_ ;
+      /**
+       * <code>required int32 auraNum = 4;</code>
+       *
+       * <pre>
+       *灵气液个数
+       * </pre>
+       */
+      public boolean hasAuraNum() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>required int32 auraNum = 4;</code>
+       *
+       * <pre>
+       *灵气液个数
+       * </pre>
+       */
+      public int getAuraNum() {
+        return auraNum_;
+      }
+      /**
+       * <code>required int32 auraNum = 4;</code>
+       *
+       * <pre>
+       *灵气液个数
+       * </pre>
+       */
+      public Builder setAuraNum(int value) {
+        bitField0_ |= 0x00000008;
+        auraNum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 auraNum = 4;</code>
+       *
+       * <pre>
+       *灵气液个数
+       * </pre>
+       */
+      public Builder clearAuraNum() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        auraNum_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private long auraRefreshDateTime_ ;
+      /**
+       * <code>required int64 auraRefreshDateTime = 5;</code>
+       *
+       * <pre>
+       *灵气液刷新时间
+       * </pre>
+       */
+      public boolean hasAuraRefreshDateTime() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>required int64 auraRefreshDateTime = 5;</code>
+       *
+       * <pre>
+       *灵气液刷新时间
+       * </pre>
+       */
+      public long getAuraRefreshDateTime() {
+        return auraRefreshDateTime_;
+      }
+      /**
+       * <code>required int64 auraRefreshDateTime = 5;</code>
+       *
+       * <pre>
+       *灵气液刷新时间
+       * </pre>
+       */
+      public Builder setAuraRefreshDateTime(long value) {
+        bitField0_ |= 0x00000010;
+        auraRefreshDateTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int64 auraRefreshDateTime = 5;</code>
+       *
+       * <pre>
+       *灵气液刷新时间
+       * </pre>
+       */
+      public Builder clearAuraRefreshDateTime() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        auraRefreshDateTime_ = 0L;
+        onChanged();
+        return this;
       }
 
       // @@protoc_insertion_point(builder_scope:ResGetInverseBeadMsg)
@@ -711,11 +1298,13 @@ public final class ResGetInverseBeadMsgProto {
   static {
     java.lang.String[] descriptorData = {
       "\n&inverseBead/ResGetInverseBeadMsg.proto" +
-      "\032 inverseBead/InverseBeadMsg.proto\"<\n\024Re" +
-      "sGetInverseBeadMsg\022$\n\013inverseBead\030\001 \003(\0132" +
-      "\017.InverseBeadMsgBI\n,com.chuangyou.common" +
-      ".protobuf.pb.inverseBeadB\031ResGetInverseB" +
-      "eadMsgProto"
+      "\032 inverseBead/InverseBeadMsg.proto\"\233\001\n\024R" +
+      "esGetInverseBeadMsg\022$\n\013inverseBead\030\001 \003(\013" +
+      "2\017.InverseBeadMsg\022\022\n\nmonsterNum\030\002 \002(\005\022\033\n" +
+      "\023beadRefreshDateTime\030\003 \002(\003\022\017\n\007auraNum\030\004 " +
+      "\002(\005\022\033\n\023auraRefreshDateTime\030\005 \002(\003BI\n,com." +
+      "chuangyou.common.protobuf.pb.inverseBead" +
+      "B\031ResGetInverseBeadMsgProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -735,7 +1324,7 @@ public final class ResGetInverseBeadMsgProto {
     internal_static_ResGetInverseBeadMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ResGetInverseBeadMsg_descriptor,
-        new java.lang.String[] { "InverseBead", });
+        new java.lang.String[] { "InverseBead", "MonsterNum", "BeadRefreshDateTime", "AuraNum", "AuraRefreshDateTime", });
     com.chuangyou.common.protobuf.pb.inverseBead.InverseBeadMsgProto.getDescriptor();
   }
 

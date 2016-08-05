@@ -35,6 +35,7 @@ public class PlayerSimpleSnapReqCmd extends AbstractCommand {
 			resp.setLevel(p.getBasePlayer().getPlayerInfo().getLevel());
 			resp.setSkinId(p.getBasePlayer().getPlayerInfo().getSkinId());
 			resp.setNickName(p.getBasePlayer().getPlayerInfo().getNickName());
+			resp.setIsFriend(p.getFriendInventory().getFriend().isFriend(player.getPlayerId()));
 			if (p.getPlayerState() == PlayerState.OFFLINE) {
 				resp.setIsOnline(false);
 			} else {

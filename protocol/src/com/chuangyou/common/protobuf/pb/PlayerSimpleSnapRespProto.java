@@ -95,6 +95,23 @@ public final class PlayerSimpleSnapRespProto {
      * </pre>
      */
     boolean getIsOnline();
+
+    /**
+     * <code>optional bool isFriend = 8;</code>
+     *
+     * <pre>
+     *是否是好友
+     * </pre>
+     */
+    boolean hasIsFriend();
+    /**
+     * <code>optional bool isFriend = 8;</code>
+     *
+     * <pre>
+     *是否是好友
+     * </pre>
+     */
+    boolean getIsFriend();
   }
   /**
    * Protobuf type {@code PlayerSimpleSnapRespMsg}
@@ -182,6 +199,11 @@ public final class PlayerSimpleSnapRespProto {
             case 56: {
               bitField0_ |= 0x00000040;
               isOnline_ = input.readBool();
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000080;
+              isFriend_ = input.readBool();
               break;
             }
           }
@@ -372,6 +394,29 @@ public final class PlayerSimpleSnapRespProto {
       return isOnline_;
     }
 
+    public static final int ISFRIEND_FIELD_NUMBER = 8;
+    private boolean isFriend_;
+    /**
+     * <code>optional bool isFriend = 8;</code>
+     *
+     * <pre>
+     *是否是好友
+     * </pre>
+     */
+    public boolean hasIsFriend() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional bool isFriend = 8;</code>
+     *
+     * <pre>
+     *是否是好友
+     * </pre>
+     */
+    public boolean getIsFriend() {
+      return isFriend_;
+    }
+
     private void initFields() {
       playerId_ = 0L;
       teamId_ = 0;
@@ -380,6 +425,7 @@ public final class PlayerSimpleSnapRespProto {
       skinId_ = 0;
       nickName_ = "";
       isOnline_ = false;
+      isFriend_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -443,6 +489,9 @@ public final class PlayerSimpleSnapRespProto {
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeBool(7, isOnline_);
       }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeBool(8, isFriend_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -479,6 +528,10 @@ public final class PlayerSimpleSnapRespProto {
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(7, isOnline_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(8, isFriend_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -611,6 +664,8 @@ public final class PlayerSimpleSnapRespProto {
         bitField0_ = (bitField0_ & ~0x00000020);
         isOnline_ = false;
         bitField0_ = (bitField0_ & ~0x00000040);
+        isFriend_ = false;
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -667,6 +722,10 @@ public final class PlayerSimpleSnapRespProto {
           to_bitField0_ |= 0x00000040;
         }
         result.isOnline_ = isOnline_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.isFriend_ = isFriend_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -705,6 +764,9 @@ public final class PlayerSimpleSnapRespProto {
         }
         if (other.hasIsOnline()) {
           setIsOnline(other.getIsOnline());
+        }
+        if (other.hasIsFriend()) {
+          setIsFriend(other.getIsFriend());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1061,6 +1123,54 @@ public final class PlayerSimpleSnapRespProto {
         return this;
       }
 
+      private boolean isFriend_ ;
+      /**
+       * <code>optional bool isFriend = 8;</code>
+       *
+       * <pre>
+       *是否是好友
+       * </pre>
+       */
+      public boolean hasIsFriend() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional bool isFriend = 8;</code>
+       *
+       * <pre>
+       *是否是好友
+       * </pre>
+       */
+      public boolean getIsFriend() {
+        return isFriend_;
+      }
+      /**
+       * <code>optional bool isFriend = 8;</code>
+       *
+       * <pre>
+       *是否是好友
+       * </pre>
+       */
+      public Builder setIsFriend(boolean value) {
+        bitField0_ |= 0x00000080;
+        isFriend_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool isFriend = 8;</code>
+       *
+       * <pre>
+       *是否是好友
+       * </pre>
+       */
+      public Builder clearIsFriend() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        isFriend_ = false;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:PlayerSimpleSnapRespMsg)
     }
 
@@ -1086,13 +1196,13 @@ public final class PlayerSimpleSnapRespProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n$player/PlayerSimpleSnapRespMsg.proto\"\213" +
+      "\n$player/PlayerSimpleSnapRespMsg.proto\"\235" +
       "\001\n\027PlayerSimpleSnapRespMsg\022\020\n\010playerId\030\001" +
       " \002(\003\022\016\n\006teamId\030\002 \002(\005\022\r\n\005level\030\003 \002(\005\022\013\n\003j" +
       "ob\030\004 \002(\005\022\016\n\006skinId\030\005 \002(\005\022\020\n\010nickName\030\006 \002" +
-      "(\t\022\020\n\010isOnline\030\007 \002(\010B=\n com.chuangyou.co" +
-      "mmon.protobuf.pbB\031PlayerSimpleSnapRespPr" +
-      "oto"
+      "(\t\022\020\n\010isOnline\030\007 \002(\010\022\020\n\010isFriend\030\010 \001(\010B=" +
+      "\n com.chuangyou.common.protobuf.pbB\031Play" +
+      "erSimpleSnapRespProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1111,7 +1221,7 @@ public final class PlayerSimpleSnapRespProto {
     internal_static_PlayerSimpleSnapRespMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_PlayerSimpleSnapRespMsg_descriptor,
-        new java.lang.String[] { "PlayerId", "TeamId", "Level", "Job", "SkinId", "NickName", "IsOnline", });
+        new java.lang.String[] { "PlayerId", "TeamId", "Level", "Job", "SkinId", "NickName", "IsOnline", "IsFriend", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

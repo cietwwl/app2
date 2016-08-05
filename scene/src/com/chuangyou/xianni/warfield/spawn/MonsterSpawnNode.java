@@ -8,11 +8,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.common.util.Vector3;
+import com.chuangyou.xianni.battle.buffer.Buffer;
+import com.chuangyou.xianni.battle.buffer.BufferFactory;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.skill.Skill;
+import com.chuangyou.xianni.campaign.Campaign;
+import com.chuangyou.xianni.campaign.CampaignMgr;
+import com.chuangyou.xianni.campaign.task.CTBaseCondition;
 import com.chuangyou.xianni.config.SceneGlobal;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.constant.SpwanInfoType;
+import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
@@ -23,10 +29,11 @@ import com.chuangyou.xianni.role.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.warfield.field.Field;
 
 public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
-	protected int toalCount;							// 刷怪总数
-	protected int curCount;							// 当前数量
-	protected ThreadSafeRandom random = new ThreadSafeRandom();
-	protected Map<Long, Living> children;							// 子孙们
+	protected int					toalCount;							// 刷怪总数
+	protected int					curCount;							// 当前数量
+	private ThreadSafeRandom	random	= new ThreadSafeRandom();
+	protected Map<Long, Living>	children;							// 子孙们
+
 
 	public MonsterSpawnNode(SpawnInfo info, Field field) {
 		super(info, field);
@@ -83,7 +90,7 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 		}
 	}
 
-	private void createChildren() {
+	protected void createChildren() {
 		if (isOver() || (state != null && state.code >= NodeState.OVER)) {
 			return;
 		}
@@ -107,6 +114,24 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 			// monster.getPostion());
 		} else {
 			System.err.println(spwanInfo.getId() + "----" + spwanInfo.getEntityId() + " 在MonsterInfo里面未找到配置");
+		}
+
+		// 添加副本挑战任务buff
+		Campaign campaign = CampaignMgr.getCampagin(campaignId);
+		if (campaign != null && campaign.getTask() != null && campaign.getTask().getConditionType() == CTBaseCondition.ADD_BUFF_MONSTER) {
+			String bufferIds = campaign.getTask().getTemp().getStrParam1();
+			if (bufferIds != null && !bufferIds.equals("")) {
+				String[] attr = bufferIds.split(",");
+				for (String str : attr) {
+					int bufferId = Integer.valueOf(str);
+					SkillBufferTemplateInfo bufferTemp = BattleTempMgr.getBufferInfo(bufferId);
+					if (bufferTemp != null) {
+						Buffer buffer = BufferFactory.createBuffer(monster, monster, bufferTemp);
+						monster.addBuffer(buffer);
+					}
+				}
+			}
+
 		}
 	}
 

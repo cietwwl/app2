@@ -8,7 +8,7 @@ import com.chuangyou.common.protobuf.pb.campaign.CampaignOptionMsgProto.Campaign
 import com.chuangyou.common.protobuf.pb.campaign.CreateCampaignMsgProto.CreateCampaignMsg;
 import com.chuangyou.common.protobuf.pb.team.TeamInfoRespProto.TeamInfoRespMsg;
 import com.chuangyou.xianni.campaign.action.CreateCampaignDelayAction;
-import com.chuangyou.xianni.constant.CampaignOptionType;
+import com.chuangyou.xianni.constant.CampaignConstant;
 import com.chuangyou.xianni.entity.team.TeamTargetTemplate;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.event.EventNameType;
@@ -321,7 +321,7 @@ public class Team extends AbstractEvent implements Comparable<Team> {
 	/** 前往副本目标 */
 	public void goTarget(long playerId) {
 		CampaignOptionMsg.Builder builder = CampaignOptionMsg.newBuilder();
-		builder.setOptionType(CampaignOptionType.JOIN_TEAM);
+		builder.setOptionType(CampaignConstant.JOIN_TEAM);
 		builder.setParam1(id);
 		GamePlayer player = WorldMgr.getPlayer(playerId);
 		if (player != null) {

@@ -26,7 +26,7 @@ public class EmailDaoImpl extends BaseDao implements EmailDao {
 	@Override
 	public int add(Email email) {
 		// TODO Auto-generated method stub
-		email.beginAdd();
+		if(!email.beginAdd())return -1;
 		int result = 0;
 		String sql = "INSERT INTO tb_u_email_info (roleId,title,content,createTime,getAttachmentTime,"
 				+ "delEmailTime,status,attachment)"
@@ -57,7 +57,7 @@ public class EmailDaoImpl extends BaseDao implements EmailDao {
 
 	@Override
 	public boolean update(Email email) {
-		email.beginUpdate();
+		if(!email.beginUpdate())return false;
 		boolean result = false;
 		String sql = "UPDATE tb_u_email_info SET roleId= ? ,title = ?,content = ?,createTime = ?,getAttachmentTime = ?,delEmailTime = ?,status = ?,attachment = ?"
 				+ " WHERE privateId = ?";

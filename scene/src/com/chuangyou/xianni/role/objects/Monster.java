@@ -68,8 +68,10 @@ public class Monster extends ActiveLiving {
 	private static final int	invincibleBufferId	= 99999999;												// 无敌buffer
 																											// id
 	private Buffer				invincibleBuffer	= null;
+
 	// 攻击者
 	private Long attacker;
+
 
 	public int getCurSkillID() {
 		return curSkillID;

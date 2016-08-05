@@ -3,20 +3,19 @@
 import com.chuangyou.common.protobuf.pb.PlayerDataMsgProto.PlayerDataMsg;
 import com.chuangyou.common.protobuf.pb.PlayerLoadDataMsgProto.PlayerLoadDataMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CampaignOptionMsgProto.CampaignOptionMsg;
-import com.chuangyou.common.protobuf.pb.shop.GetMallInfoReqProto.GetMallInfoReqMsg;
-import com.chuangyou.common.protobuf.pb.task.GetTaskListReqProto.GetTaskListReqMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.army.ArmyInventory;
 import com.chuangyou.xianni.bag.BagInventory;
 import com.chuangyou.xianni.base.AbstractCommand;
+import com.chuangyou.xianni.campaign.CampaignInventory;
 import com.chuangyou.xianni.exec.CmdTask;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.shop.cmd.GetMallInfoReqCmd;
+import com.chuangyou.xianni.shop.logic.GetMaillInfoLogic;
 import com.chuangyou.xianni.socket.Cmd;
-import com.chuangyou.xianni.task.cmd.GetTaskListReqCmd;
+import com.chuangyou.xianni.task.logic.GetTaskLogic;
 import com.chuangyou.xianni.team.reaction.GetTeamInfoAction;
 
 /**
@@ -26,14 +25,14 @@ import com.chuangyou.xianni.team.reaction.GetTeamInfoAction;
  */
 @Cmd(code = Protocol.C_PLAYER_DATA, desc = "登录加载")
 public class LoginLoadCmd extends AbstractCommand {
-	static final int SYS = 1;
-	static final int USER = 2;
-	static final int ARMY = 3;
-	static final int BAG = 4;
-	static final int TASK = 5;
-	static final int CAMPAIGN = 6;
-	static final int TEAM = 7;
-	static final int SHOP = 8;
+	static final int	SYS			= 1;
+	static final int	USER		= 2;
+	static final int	ARMY		= 3;
+	static final int	BAG			= 4;
+	static final int	TASK		= 5;
+	static final int	CAMPAIGN	= 6;
+	static final int	TEAM		= 7;
+	static final int	SHOP		= 8;
 
 	@Override
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
@@ -66,10 +65,7 @@ public class LoginLoadCmd extends AbstractCommand {
 				}
 			}
 			if (dataType.getDataType() == TASK) {
-				GetTaskListReqMsg.Builder req = GetTaskListReqMsg.newBuilder();
-				PBMessage pkg = MessageUtil.buildMessage(Protocol.C_REQ_TASKLIST, player.getPlayerId(), req);
-				pkg.setBytes(pkg.getMessage().toByteArray());
-				player.enqueue(new CmdTask(new GetTaskListReqCmd(), null, pkg, player.getCmdTaskQueue()));
+				new GetTaskLogic().process(player);
 			}
 			if (dataType.getDataType() == CAMPAIGN && player.getCurCampaign() > 0) {
 				CampaignOptionMsg.Builder builder = CampaignOptionMsg.newBuilder();
@@ -77,6 +73,12 @@ public class LoginLoadCmd extends AbstractCommand {
 				builder.setParam1(player.getCurCampaign());
 				PBMessage message = MessageUtil.buildMessage(Protocol.S_CAMPAIGN_OPTION, builder);
 				player.sendPbMessage(message);
+
+				CampaignInventory campaignInventory = player.getCampaignInventory();
+				if (campaignInventory != null) {
+					campaignInventory.updataAll();
+				}
+
 			}
 
 			// 队伍
@@ -87,11 +89,7 @@ public class LoginLoadCmd extends AbstractCommand {
 
 			// 商店
 			if (dataType.getDataType() == SHOP) {
-				GetMallInfoReqMsg.Builder req = GetMallInfoReqMsg.newBuilder();
-				req.setRequestType(1);
-				PBMessage pkg = MessageUtil.buildMessage(Protocol.C_REQ_MALL_INFO, player.getPlayerId(), req);
-				pkg.setBytes(pkg.getMessage().toByteArray());
-				player.enqueue(new CmdTask(new GetMallInfoReqCmd(), null, pkg, player.getCmdTaskQueue()));
+				new GetMaillInfoLogic().doNormalResult(player);
 			}
 
 			// 加载好友列表

@@ -1,0 +1,10 @@
+//protocol=10559;
+option java_package = "com.chuangyou.common.protobuf.pb.space";
+option java_outer_classname = "EditSpaceInfoReqProto";
+
+//编辑空间基本信息
+message EditSpaceInfoReqMsg{
+	required int32 op = 1;//操作：1：头像  2：名字 3：签名  4：城市  5：生日   6:留言相关(0：不禁止 1：禁止 2： 只有好友可以留言) 7：领取生日礼物
+	optional string value = 2; //新修改的值
+	optional int32 changeValue = 3;//新修改的值
+}

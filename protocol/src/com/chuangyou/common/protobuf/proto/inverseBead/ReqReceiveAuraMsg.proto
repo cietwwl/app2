@@ -1,0 +1,8 @@
+//protocol= 10703;
+option java_package = "com.chuangyou.common.protobuf.pb.inverseBead";
+option java_outer_classname = "ReqReceiveAuraMsgProto";
+
+//请求领取灵气液
+message ReqReceiveAuraMsg {
+	optional int32 id = 1;  //占位不用传
+}

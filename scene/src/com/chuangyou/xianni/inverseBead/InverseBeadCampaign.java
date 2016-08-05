@@ -35,8 +35,8 @@ public class InverseBeadCampaign extends Campaign {
 		// 获取副本所有地图
 		Map<Integer, FieldInfo> finfos = FieldTemplateMgr.getCFieldInfos(campaignId);
 		// 创建当前地图
+		int i = 1;
 		for (Entry<Integer, FieldInfo> entry : finfos.entrySet()) {
-			int index = entry.getKey();
 			FieldInfo temp = entry.getValue();
 			// 创建地图
 			Field f = new BeadFieldManager(this.army).createCampaignField(temp.getMapKey(), temp.getType(), id);
@@ -48,9 +48,10 @@ public class InverseBeadCampaign extends Campaign {
 			tempFieldMapping.put(f.getMapKey(), f);
 			indexMapping.put(temp.getCampaignIndex(), f.id);
 			// 设置为初始地图
-			if (index == 1) {
+			if (i == 1) {
 				starField = f;
 			}
+			i++;
 		}
 
 		this.beginTime = System.currentTimeMillis();
@@ -66,6 +67,5 @@ public class InverseBeadCampaign extends Campaign {
 	public void over() {
 		super.over();
 	}
- 
 
 }

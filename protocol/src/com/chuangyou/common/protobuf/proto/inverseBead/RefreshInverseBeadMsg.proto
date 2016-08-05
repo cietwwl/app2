@@ -1,0 +1,12 @@
+//protocol= 723;
+option java_package = "com.chuangyou.common.protobuf.pb.inverseBead";
+option java_outer_classname = "RefreshInverseBeadMsgProto";
+
+//刷新后的数据
+message RefreshInverseBeadMsg {
+	required int32 monsterNum=5;		// 怪物数量
+	required int64 beadRefreshDateTime=6;//怪物刷新时间
+	required int32 auraNum=7;//灵气液个数
+	required int64 auraRefreshDateTime=8;//灵气液刷新时间
+	
+}

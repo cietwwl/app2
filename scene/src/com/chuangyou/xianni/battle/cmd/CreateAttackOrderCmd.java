@@ -41,7 +41,7 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 	public void execute(ArmyProxy army, PBMessage packet) throws Exception {
 		AttackOrderMsg orderMsg = AttackOrderMsg.parseFrom(packet.toByteArray());
 		int skillActionId = orderMsg.getSkillActionId();
-		// System.out.println(orderMsg);
+		 System.out.println(orderMsg);
 		// 该玩家是否具有此技能
 		Player player = army.getPlayer();
 		if (!player.hasSkillId(skillActionId)) {

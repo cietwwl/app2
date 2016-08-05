@@ -41,6 +41,7 @@ public class CampaignLeaveAction extends Action {
 		} else {
 			campaign.sendCampaignInfo(army);
 		}
+		army.getPlayer().removeCampaignBuffer();
 	}
 
 }

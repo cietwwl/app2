@@ -3,7 +3,7 @@ package com.chuangyou.xianni.protocol;
 /**
  * 发往客户端协议号，范围 0 - 10000
  * 
- * 500---600: 由范加伟使用 100---300：由郭小帆使用 601 - 700(zhb) 700---900 由hw使用
+ * 500---600 1000-1200: 由范加伟使用 100---300：由郭小帆使用 601 - 700(zhb) 700---900 由hw使用
  */
 public interface ClientProtocol {
 
@@ -29,6 +29,8 @@ public interface ClientProtocol {
 	public static final short U_CAMPAIGN_RESP = 601; // 副本返回状态
 	public static final short U_CAMPAIGN_INFO = 602; // 副本当前信息
 	public static final short U_CAMPAIGN_NODE_INFO = 603; // 副本节点
+	public static final short U_CAMPAIGN_RECORD = 604; // 副本记录
+	public static final short U_CAMPAIGN_TASK_INFO = 605; // 副本任务记录
 	// ===========================><==============================
 
 	/** 错误码 */
@@ -185,7 +187,38 @@ public interface ClientProtocol {
 	/** 请求简单快照信息 */
 	public static final short U_RESP_PLAYER_SIMPLE = 555;
 	// ===============================================================
-
+	
+	//============================空间====================================
+	/** 获取空间信息  */
+	public static final short U_RESP_GET_SPACE_INFO             = 556;
+	
+	/** 请求空间留言信息 */
+	public static final short U_RESP_GET_SPACE_MESSAGE          = 557;
+	
+	/** 操作日志  */
+	public static final short U_RESP_GET_SPACE_ACTION_LOG       = 558;
+	
+	/** 修改自己空间信息   */
+	public static final short U_RESP_ENDIT_INFO                 = 559;
+	/** 空间操作 */
+	public static final short U_RESP_SPACE_ACTION               =  1600;
+	
+	/**  添加留言 */
+	public static final short U_RESP_SPACE_ADD_MSG              = 1601;
+	
+	/**  删除留言 */
+	public static final short U_RESP_SPACE_DEL_MSG              = 1602;
+	
+	/** 收藏相关  */
+	public static final short U_RESP_SPACE_SET_COLLECTION       = 1603;
+	
+	/** 设置礼物   */
+	public static final short U_RESP_SPACE_SET_GIFT             = 1604;
+	
+	/** 通知属性改变 */
+	public static final short U_RESP_NOTIFY_SPACE_CHANGE        = 1065;
+	
+	// =========================>坐骑<===================================
 	/** 返回坐骑信息 */
 	public static final short U_MOUNT_GETINFO = 101;
 	/** 坐骑总属性有变更同步 */
@@ -343,4 +376,9 @@ public interface ClientProtocol {
 	public static final short U_INVERSE_BEAD_DATE = 721;
 	/** 重置天逆珠数据**/
 	public static final short U_RESET_INVERSE_MONSTER = 722;
+	/** 天逆珠数据变更**/
+	public static final short U_REFRESH_INVERSE_BEAD = 723;
+	/** 请求领取灵气液**/
+	public static final short U_INVERSE_RECEIVE_AURA = 734;
+	// ========================><=========================
 }

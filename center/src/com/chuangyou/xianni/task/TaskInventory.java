@@ -95,6 +95,7 @@ public class TaskInventory extends AbstractEvent implements IInventory {
 		}
 		return true;
 	}
+	
 
 	public Map<Integer, TaskTriggerInfo> getTaskInfos() {
 		return taskInfos;

@@ -1,0 +1,11 @@
+//protocol=20511;
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "MonsterPosSyncProto";
+
+import "common/PBVector3.proto";
+
+message MonsterPosSyncMsg{
+	optional int64 livingId = 1;//怪物ID
+	optional PBVector3 cur = 2; //当前位置
+}
+

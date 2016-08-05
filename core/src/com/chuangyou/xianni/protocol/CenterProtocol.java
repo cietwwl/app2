@@ -1,7 +1,7 @@
 package com.chuangyou.xianni.protocol;
 
 /**
- * 发往center_server，范围 10001 - 20000 10500---10600: 由范加伟使用 10100---10300：由郭小帆使用
+ * 发往center_server，范围 10001 - 20000 10500---10600  11000-12000: 由范加伟使用 10100---10300：由郭小帆使用
  * 10300---10500 由hw使用 10701---10800z
  * 
  */
@@ -176,6 +176,26 @@ public interface CenterProtocol {
 	/** 请求简单快照信息 */
 	public static final short C_REQ_PLAYER_SIMPLE               = 10553;
 	// ==================================================================
+	//============================空间====================================
+	/** 获取空间信息  */
+	public static final short C_REQ_GET_SPACE_INFO             = 10556;
+	/** 请求空间留言信息 */
+	public static final short C_REQ_GET_SPACE_MESSAGE          = 10557;
+	/** 操作日志  */
+	public static final short C_REQ_GET_SPACE_ACTION_LOG       = 10558;
+	/** 修改自己空间信息   */
+	public static final short C_REQ_ENDIT_INFO                 = 10559;
+	/** 空间操作 */
+	public static final short C_REQ_SPACE_ACTION               = 11600;
+	/**  添加留言 */
+	public static final short C_REQ_SPACE_ADD_MSG              = 11601;
+	/**  删除留言 */
+	public static final short C_REQ_SPACE_DEL_MSG              = 11602;
+	/** 收藏相关  */
+	public static final short C_REQ_SPACE_SET_COLLECTION       = 11603;
+	/** 设置礼物   */
+	public static final short C_REQ_SPACE_SET_GIFT             = 11604;
+	
 	// =========================>坐骑<===================================
 	/** 获取坐骑信息 */
 	public static short			C_MOUNT_GETINFO					= 10101;
@@ -332,4 +352,8 @@ public interface CenterProtocol {
 	public static final short	C_CREATE_INVERSE_SYNC_MONSTER 	= 10704;
 	/** 重置天逆珠逆境 **/
 	public static final short	C_RESET_INVERSE_MONSTER 	    = 10705;
+	/** 天逆珠逆境通过怪**/
+	public static final short	C_INVERSE_MONSTER_SPAWN			=10706;
+	/** 请求领取灵气液**/
+	public static final short	C_INVERSE_RECEIVE_AURA			=10707;
 }

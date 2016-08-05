@@ -5,7 +5,7 @@ import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
-import com.chuangyou.xianni.constant.CampaignOptionType;
+import com.chuangyou.xianni.constant.CampaignConstant;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
@@ -24,7 +24,7 @@ public class CampaignOptionCmd extends AbstractCommand {
 		int parm1 = reqMsg.getParam1();
 
 		// 请求副本信息
-		if (op == CampaignOptionType.GET_INFO) {
+		if (op == CampaignConstant.GET_INFO) {
 			Campaign campaign = CampaignMgr.getCampagin(parm1);
 			if (campaign != null) {
 				campaign.sendCampaignInfo(army);
@@ -33,7 +33,7 @@ public class CampaignOptionCmd extends AbstractCommand {
 			}
 		}
 		// 返回副本
-		if (op == CampaignOptionType.JOIN) {
+		if (op == CampaignConstant.JOIN) {
 			Campaign campaign = CampaignMgr.getCampagin(parm1);
 			if (campaign != null) {
 				campaign.onPlayerEnter(army);
@@ -41,14 +41,14 @@ public class CampaignOptionCmd extends AbstractCommand {
 		}
 
 		// 离开副本
-		if (op == CampaignOptionType.LEAVE) {
+		if (op == CampaignConstant.LEAVE) {
 			Campaign campaign = CampaignMgr.getCampagin(parm1);
 			if (campaign != null) {
 				campaign.onPlayerLeave(army);
 			}
 		}
 		/* 进入队伍所在副本 */
-		if (op == CampaignOptionType.JOIN_TEAM) {
+		if (op == CampaignConstant.JOIN_TEAM) {
 			Team tem = TeamMgr.getTeam(army.getPlayerId());
 			if (tem != null && tem.getCampaignId() != 0) {
 				Campaign campaign = CampaignMgr.getCampagin(tem.getCampaignId());

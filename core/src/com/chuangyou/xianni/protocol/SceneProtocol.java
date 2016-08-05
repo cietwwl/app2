@@ -74,12 +74,14 @@ public interface SceneProtocol {
 	/** 请求队伍信息 */
 	public static final short	S_REQ_TEAM_INFO				= 20509;
 	// =======================================================================
+	/**请求创建天逆珠秘境副本**/
+	public static final short	S_CREATE_INVERSE_BEAD_CAMPAIGN =  20602;
+	/**怪物**/
+	public static final short	S_CREATE_INVERSE_SYNC_MONSTER = 20603;
 	// =========================>同步战斗模式<===============================
 	/** 变更战斗模式 */
 	public static final short	S_BATTLE_MODE				= 20601;
-	public static final short	S_CREATE_INVERSE_BEAD_CAMPAIGN	= 20602;//请求创建天逆珠秘境副本
-	public static final short	S_CREATE_INVERSE_SYNC_MONSTER = 20603;//请求创建天逆珠秘境副本
-	
+
 	/** 聊天消息内部通讯，通知场景服发给所在场景所有玩家 */
 	public static final short	S_CHAT_INNER_SEND			= 20510;
 	

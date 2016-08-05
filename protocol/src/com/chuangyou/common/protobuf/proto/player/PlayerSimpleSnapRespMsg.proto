@@ -9,4 +9,5 @@ message PlayerSimpleSnapRespMsg {
 	required int32 skinId = 5;
 	required string nickName = 6;
 	required bool isOnline   = 7; //true：在线
+	optional bool isFriend = 8;//是否是好友
 }

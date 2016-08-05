@@ -46,6 +46,7 @@ import com.chuangyou.xianni.sql.dao.impl.SkillBufferTemplateInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SkillPropertyTemplateInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SkillStageDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SkillTempateInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.SpaceDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SpawnInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SystemConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.TaskDaoImpl;
@@ -500,6 +501,16 @@ public class DBManager {
 		return chatPrivateOfflineMsgDao;
 	}
 
+	
+	/**
+	 * 空间
+	 */
+	private static final SpaceDao spaceDao = new SpaceDaoImpl();
+	public static SpaceDao getSpaceDao(){
+		return spaceDao;
+	}
+
+
 	/**
 	 * 副本任务模板
 	 */
@@ -508,4 +519,5 @@ public class DBManager {
 	public static CampaignTaskTemplateInfoDao getCampaignTaskTemplateInfoDao() {
 		return campaignTaskTemplateInfoDao;
 	}
+
 }

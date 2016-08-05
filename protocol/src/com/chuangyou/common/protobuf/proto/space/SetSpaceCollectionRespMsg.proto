@@ -1,0 +1,12 @@
+//protocol=1603;
+option java_package = "com.chuangyou.common.protobuf.pb.space";
+option java_outer_classname = "SetSpaceCollectionRespProto";
+
+//设置收藏相关
+message SetSpaceCollectionRespMsg{
+	required int64 playerId = 1;//空间拥有者ID
+	required int32 op = 2;  //1：收藏指定留言  2：取消指定留言的收藏 3：新境留言收藏数量  4:取消全部收藏
+	optional int32 messageId = 3;//留言ID号
+	required int32 curCollection = 4;//当前收藏数
+	required int32 maxCollection = 5;//收藏上限
+}

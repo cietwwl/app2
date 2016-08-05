@@ -1,0 +1,8 @@
+//protocol= 734;
+option java_package = "com.chuangyou.common.protobuf.pb.inverseBead";
+option java_outer_classname = "ResReceiveAuraMsgProto";
+
+//响应领取灵气液
+message ResReceiveAuraMsg {
+	required int32 num = 1;  //获得的数量
+}

@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 
 import com.chuangyou.common.protobuf.pb.campaign.CampaignInfoMsgProto.CampaignInfoMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CampaignStatuMsgProto.CampaignStatuMsg;
-import com.chuangyou.common.protobuf.pb.campaign.PassFbInnerProto.PassFbInnerMsg;
 import com.chuangyou.common.protobuf.pb.map.SpawnNodeChangeListMsgProto.SpawnNodeChangeListMsg;
 import com.chuangyou.common.protobuf.pb.map.SpawnNodeChangeMsgProto.SpawnNodeChangeMsg;
 import com.chuangyou.common.util.Log;
@@ -22,7 +21,9 @@ import com.chuangyou.xianni.campaign.state.OpeningState;
 import com.chuangyou.xianni.campaign.state.PrepareState;
 import com.chuangyou.xianni.campaign.state.StopState;
 import com.chuangyou.xianni.campaign.state.SuccessState;
+import com.chuangyou.xianni.campaign.task.CTBaseCondition;
 import com.chuangyou.xianni.campaign.task.CampaignTask;
+import com.chuangyou.xianni.constant.CampaignConstant.CampaignStatu;
 import com.chuangyou.xianni.entity.campaign.CampaignTaskTemplateInfo;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.entity.field.FieldInfo;
@@ -30,7 +31,6 @@ import com.chuangyou.xianni.entity.spawn.SpawnInfo;
 import com.chuangyou.xianni.exec.AbstractActionQueue;
 import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.exec.ThreadManager;
-import com.chuangyou.xianni.netty.GatewayLinkedSet;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.ClientProtocol;
@@ -55,8 +55,9 @@ public class Campaign extends AbstractActionQueue {
 	public static final int									TERMINATOR			= 6;	// 副本终结者
 
 	protected ThreadSafeRandom								random;						// 副本随机
-	protected int											id;
-	protected int											campaignId;
+	protected int											id;							// 唯一ID
+	protected int											campaignId;					// 模板ID
+	protected int											teamId;
 	protected String										name;						// 副本名称
 	protected CampaignTemplateInfo							campaignTemplateInfo;		// 副本信息
 	protected long											creater;					// 创建人
@@ -179,35 +180,61 @@ public class Campaign extends AbstractActionQueue {
 
 	/** 通关副本 */
 	public void passCampaign() {
+		if (state instanceof SuccessState) {
+			return;
+		}
 		state = new SuccessState(this);
+		CampaignStatuMsg.Builder cstatu = CampaignStatuMsg.newBuilder();
+		cstatu.setIndexId(getIndexId());
+		cstatu.setTempId(campaignId);
+		cstatu.setTeamId(teamId);// 组队副本向上穿透兼容
+		cstatu.setStatu(CampaignStatu.NOTITY2C_SUCCESS);
+		if (task != null) {
+			cstatu.setTaskId(task.getTemp().getTaskId());
+		}
+		PBMessage statuMsg = MessageUtil.buildMessage(Protocol.C_CAMPAIGN_STATU, cstatu);
 		for (ArmyProxy army : getAllArmys()) {
 			sendCampaignInfo(army);
+			army.sendPbMessage(statuMsg);
 		}
+
+		endTime = System.currentTimeMillis() + 10 * 1000;// 10秒后结束副本
 	}
 
 	/**
 	 * 副本结束
 	 */
 	public void over() {
-		state = new StopState(this);
-		PassFbInnerMsg.Builder passFbMsg = PassFbInnerMsg.newBuilder();
-		passFbMsg.setCampaignId(campaignId);
+
+		// PassFbInnerMsg.Builder passFbMsg = PassFbInnerMsg.newBuilder();
+		// passFbMsg.setCampaignId(campaignId);
 
 		CampaignStatuMsg.Builder cstatu = CampaignStatuMsg.newBuilder();
-		cstatu.setCampaignId(getIndexId());
-		cstatu.setStatu(0);// 退出
+		cstatu.setIndexId(getIndexId());
+		cstatu.setTempId(campaignId);
+		cstatu.setTeamId(teamId);// 组队副本向上穿透兼容
+		if (state instanceof SuccessState) {
+			cstatu.setStatu(CampaignStatu.NOTITY2C_OUT_SUCCESS);
+		} else {
+			cstatu.setStatu(CampaignStatu.NOTITY2C_OUT_FAIL);
+		}
+		if (task != null) {
+			cstatu.setTaskId(task.getTemp().getTaskId());
+		}
 		PBMessage statuMsg = MessageUtil.buildMessage(Protocol.C_CAMPAIGN_STATU, cstatu);
+		state = new StopState(this);
+
 		for (ArmyProxy army : getAllArmys()) {
 			sendCampaignInfo(army);
 			onPlayerLeave(army);
 			// 通知center服务器,玩家副本销毁了
 			army.sendPbMessage(statuMsg);
-			passFbMsg.addPlayers(army.getPlayerId());
+			// passFbMsg.addPlayers(army.getPlayerId());
 		}
 
-		PBMessage passFbpkg = MessageUtil.buildMessage(Protocol.C_REQ_PASS_FB, passFbMsg);
-		GatewayLinkedSet.send2Server(passFbpkg);
-
+		// PBMessage passFbpkg =
+		// MessageUtil.buildMessage(Protocol.C_REQ_PASS_FB, passFbMsg);
+		// GatewayLinkedSet.send2Server(passFbpkg);
 		setExpiredTime(System.currentTimeMillis() + 5 * 60 * 1000);
 	}
 
@@ -269,6 +296,11 @@ public class Campaign extends AbstractActionQueue {
 		}
 		PBMessage message = MessageUtil.buildMessage(Protocol.U_CAMPAIGN_INFO, infoMsg);
 		army.sendPbMessage(message);
+
+		// 同步副本信息，同时同步副本任务信息
+		if (task != null) {
+			task.update(army);
+		}
 	}
 
 	public Field getEnterField(int mapId) {
@@ -452,6 +484,12 @@ public class Campaign extends AbstractActionQueue {
 
 		@Override
 		public void execute() {
+			if (state.getCode() == CampaignState.SUCCESS) {
+				notifyTaskEvent(CTBaseCondition.PASS_TIME_LIMIT, 1);
+			} else {
+				notifyTaskEvent(CTBaseCondition.PASS_TIME_LIMIT, 2);
+			}
+
 			if (state.getCode() == CampaignState.STOP) {
 				return;
 			}
@@ -472,5 +510,13 @@ public class Campaign extends AbstractActionQueue {
 			return;
 		}
 		task.notityEvent(param);
+	}
+
+	public CampaignTask getTask() {
+		return task;
+	}
+
+	public SpwanNode getNode(int nodeId) {
+		return spwanNodes.get(nodeId);
 	}
 }

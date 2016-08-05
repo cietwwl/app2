@@ -12,17 +12,21 @@ public class CTBaseCondition {
 		this.record = new CTRecord();
 	}
 
-	protected void addValue(int... value) {
-
+	public boolean addProgress(int param) {
+		return true;
 	}
 
 	/** 是否完成 */
-	protected boolean isComplated(boolean passCampaign) {
-		return passCampaign;
+	public boolean isComplated() {
+		return true;
 	}
 
 	public CampaignTaskTemplateInfo getTempInfo() {
 		return tempInfo;
+	}
+
+	public CTRecord getRecord() {
+		return record;
 	}
 
 	public static CTBaseCondition createCondition(CampaignTaskTemplateInfo tempInfo) {

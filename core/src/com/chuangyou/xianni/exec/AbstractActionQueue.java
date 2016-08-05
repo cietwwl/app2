@@ -55,6 +55,7 @@ public class AbstractActionQueue implements ActionQueue {
 		synchronized (queue) {
 			if (queue.size() == 0) {
 				Log.error("queue.size() is 0.");
+				return;
 			}
 			Action temp = queue.remove();
 			if (temp != action) {

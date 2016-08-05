@@ -42,12 +42,15 @@ import com.chuangyou.xianni.world.WorldMgr;
 
 public class Player extends ActiveLiving {
 	/** 是否复活中 */
-	private volatile boolean revivaling = false;
+	private volatile boolean	revivaling	= false;
 	/**
 	 * 玩家坐骑状态 0未乘骑 1乘骑坐骑
 	 */
-	private int mountState = 1;
+	private int					mountState	= 1;
 	private List<Integer> monsterRefreshIdList = new ArrayList<Integer>();
+
+	/** 副本buffer */
+	private Buffer				campaignBuffer;
 
 	public Player(long playerId) {
 		super(playerId, playerId);
@@ -82,8 +85,8 @@ public class Player extends ActiveLiving {
 	}
 
 	class DieAction extends DelayAction {
-		Living deather;
-		Living source;
+		Living	deather;
+		Living	source;
 
 		public DieAction(Living deather, Living source, int delay) {
 			super(source, delay);
@@ -104,8 +107,12 @@ public class Player extends ActiveLiving {
 				revivaling = true;
 			}
 
-			// System.out.println("source playerId: " + source.toString() + " source.getPkVal(): " + source.getPkVal()+" source.getBattleMode():"+source.getBattleMode()+"
+
+			// System.out.println("source playerId: " + source.toString() + "
+			// source.getPkVal(): " + source.getPkVal()+"
+			// source.getBattleMode():"+source.getBattleMode()+"
 			// getBattleMode():"+getBattleMode());
+
 			// 攻击源处理
 			if (source.getBattleMode() == BattleModeCode.warBattleMode && getBattleMode() == BattleModeCode.peaceBattleMode) {// 增加pk值
 				source.setPkVal(source.getPkVal() + 1000);
@@ -123,7 +130,10 @@ public class Player extends ActiveLiving {
 				updateProperty(source, properties);
 			}
 
-			// System.out.println("source playerId: " + source.getArmyId() + " source.getPkVal(): " + source.getPkVal());
+
+			// System.out.println("source playerId: " + source.getArmyId() + "
+			// source.getPkVal(): " + source.getPkVal());
+
 
 			// 自己
 			List<PropertyMsg> properties = new ArrayList<>();
@@ -137,7 +147,11 @@ public class Player extends ActiveLiving {
 				changePkVal = MathUtils.randomClamp(40, 80);
 				notifyCenter(2, (int) source.getArmyId(), (int) getArmyId());
 			}
-			// System.out.println(" playerId: " + getArmyId() + " exp: " + " changePkVal: " + changePkVal + " this.getPkVal(): " + getPkVal());
+
+			// System.out.println(" playerId: " + getArmyId() + " exp: " + "
+			// changePkVal: " + changePkVal + " this.getPkVal(): " +
+			// getPkVal());
+
 			if (changePkVal > 0) {
 				changePkVal = getPkVal() - changePkVal < 0 ? 0 : getPkVal() - changePkVal;
 				setPkVal(changePkVal);
@@ -150,7 +164,11 @@ public class Player extends ActiveLiving {
 				notifyCenter(changeMap, getArmyId());
 				updateProperty(deather, properties);
 			}
-			// System.out.println(" ---playerId: " + getArmyId() + " changePkVal: " + changePkVal + " this.getPkVal(): " + getPkVal());
+
+			// System.out.println(" ---playerId: " + getArmyId() + "
+			// changePkVal: " + changePkVal + " this.getPkVal(): " +
+			// getPkVal());
+
 		}
 
 	}
@@ -350,6 +368,18 @@ public class Player extends ActiveLiving {
 			bmsg.setSourceId(buff.getSource().getId());
 			bmsg.setTargetId(buff.getTarget().getId());
 			sendBufferChange(bmsg.build());
+		}
+	}
+
+	public void addCampaignBuff(Buffer buff) {
+		this.campaignBuffer = buff;
+		this.addBuffer(buff);
+	}
+
+	public void removeCampaignBuffer() {
+		if (this.campaignBuffer != null) {
+			this.removeBuffer(campaignBuffer);
+			this.campaignBuffer = null;
 		}
 	}
 

@@ -40,13 +40,13 @@ public class PetGradeUpCmd extends AbstractCommand {
 		}
 		
 		//判断目标阶数
-		PetGradeCfg targetCfg = PetTemplateMgr.getGradeTemps().get(pet.getPetId() * 1000 + pet.getLevel() + 1);
+		PetGradeCfg targetCfg = PetTemplateMgr.getGradeTemps().get(pet.getPetId() * 1000 + pet.getGrade() + 1);
 		if(targetCfg == null){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Pet_Grade_Max, packet.getCode());
 			return;
 		}
 		
-		PetGradeCfg gradeCfg = PetTemplateMgr.getGradeTemps().get(pet.getPetId() * 1000 + pet.getLevel());
+		PetGradeCfg gradeCfg = PetTemplateMgr.getGradeTemps().get(pet.getPetId() * 1000 + pet.getGrade());
 		
 		//扣物品
 		if(player.getBagInventory().getPlayerBagItemCount(gradeCfg.getUpgradeItem()) < gradeCfg.getUpgradeItemNum()){

@@ -10,7 +10,7 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
 
-@Cmd(code = Protocol.S_CREATE_INVERSE_SYNC_MONSTER, desc = "同步怪物")
+@Cmd(code = Protocol.C_INVERSE_MONSTER_SPAWN, desc = "同步怪物")
 public class SyncMonsterCmd extends AbstractCommand {
 	@Override
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {

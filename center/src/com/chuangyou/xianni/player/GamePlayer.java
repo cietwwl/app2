@@ -3,9 +3,9 @@ package com.chuangyou.xianni.player;
 import com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg;
 import com.chuangyou.common.protobuf.pb.ReqChangeMapMsgProto.ReqChangeMapMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
+import com.chuangyou.common.util.AccessTextFile;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.army.ArmyInventory;
-import com.chuangyou.xianni.army.Hero;
 import com.chuangyou.xianni.bag.BagInventory;
 import com.chuangyou.xianni.campaign.CampaignInventory;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
@@ -17,7 +17,6 @@ import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.player.PlayerJoinInfo;
 import com.chuangyou.xianni.entity.player.PlayerPositionInfo;
 import com.chuangyou.xianni.entity.player.PlayerTimeInfo;
-import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.event.ObjectEvent;
@@ -43,59 +42,63 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.shop.ShopInventory;
 import com.chuangyou.xianni.skill.SkillInventory;
+import com.chuangyou.xianni.space.SpaceInventory;
 import com.chuangyou.xianni.task.TaskInventory;
 import com.chuangyou.xianni.word.WorldMgr;
 
 import io.netty.channel.Channel;
 
 public class GamePlayer extends AbstractEvent {
-	private CmdTaskQueue cmdTaskQueue;
-	private ActionQueue actionQueue;
+	private CmdTaskQueue		cmdTaskQueue;
+	private ActionQueue			actionQueue;
 
 	/** 玩家所有数据 */
-	private BasePlayer basePlayer;
+	private BasePlayer			basePlayer;
 
 	/*************************** 各模块数据管理 ****************************/
 	// <<----** 共享数据，离线保留内存一段时间 ,并且提供离线加载*/---------------->>
 	/** 部队数据 */
-	private ArmyInventory armyInventory;
+	private ArmyInventory		armyInventory;
+	
+	/** 空间数据  */
+	private SpaceInventory      spaceInventory;
+	
+	/** 好友数据 */
+	private FriendInventory		friendInventory;
 
 	// <<----** 非共享数据，玩家下线时卸载 */---------------->>
 	/** 邮件数据 */
-	private EmailInventory emailInventory;
-	/** 好友数据 */
-	private FriendInventory friendInventory;
-
+	private EmailInventory		emailInventory;
+	
 	/** 坐骑数据 */
-	private MountInventory mountInventory;
+	private MountInventory		mountInventory;
 	/** 法宝数据 */
-	private MagicwpInventory magicwpInventory;
+	private MagicwpInventory	magicwpInventory;
 	/** 宠物数据 */
-	private PetInventory petInventory;
+	private PetInventory		petInventory;
 
 	/** 商店购购买信息 */
-	private ShopInventory shopInventory;
+	private ShopInventory		shopInventory;
 
 	/** 背包 */
-	private BagInventory bagInventory;
+	private BagInventory		bagInventory;
 
 	/** 时装 */
-	private FashionInventory fashionInventory;
+	private FashionInventory	fashionInventory;
 
 	/** 任务 */
-	private TaskInventory taskInventory;
+	private TaskInventory		taskInventory;
 
 	/** 副本 */
-	private CampaignInventory campaignInventory;
+	private CampaignInventory	campaignInventory;
 	/** 英雄技能 **/
-	private SkillInventory skillInventory;
+	private SkillInventory		skillInventory;
 	/** 天逆珠 **/
 	private InverseBeadInventory inverseBeadInventory;
+	private Channel				channel;			// 服务器持有连接
 
-	private Channel channel;			// 服务器持有连接
-
-	private int curMapId = -1;	// 玩家当前地图ID
-	private int curCampaign = 0;	// 玩家当前地图ID
+	private int					curMapId	= -1;	// 玩家当前地图ID
+	private int					curCampaign	= 0;	// 玩家当前地图ID
 
 	public GamePlayer() {
 		cmdTaskQueue = new AbstractCmdTaskQueue(ThreadManager.cmdExecutor);
@@ -145,6 +148,9 @@ public class GamePlayer extends AbstractEvent {
 		if (skillInventory != null) {
 			skillInventory.saveToDatabase();
 		}
+		if(spaceInventory!=null){
+			spaceInventory.saveToDatabase();
+		}
 		if (inverseBeadInventory != null) {
 			inverseBeadInventory.saveToDatabase();
 		}
@@ -153,18 +159,34 @@ public class GamePlayer extends AbstractEvent {
 	// 加载共享数据
 	public boolean loadShareData(PlayerInfo playerInfo, PlayerJoinInfo playerJoinInfo, PlayerTimeInfo playerTimeInfo, PlayerPositionInfo playerPositionInfo) {
 		this.basePlayer = new BasePlayer(playerInfo, playerJoinInfo, playerTimeInfo, playerPositionInfo);
+		
+		spaceInventory = new SpaceInventory(this);
+		if (!initData(spaceInventory.loadFromDataBase(), "玩家空间数据加载")) {
+			return false;
+		}
+		friendInventory = new FriendInventory(this);
+		if (!initData(friendInventory.loadFromDataBase(), "玩家好友数据加载")) {
+			return false;
+		}
 		regeditEvent();
 		return true;
 	}
 
 	// 卸载共享数据
 	public boolean unLoadShareData() {
-		return false;
+		if(spaceInventory != null){
+			spaceInventory.unloadData();
+			spaceInventory = null;
+		}
+		if (friendInventory != null) {
+			friendInventory.unloadData();
+			friendInventory = null;
+		}
+		return true;
 	}
 
 	// 加载个人私有数据
 	public boolean loadPersonData() {
-
 		emailInventory = new EmailInventory(this);
 		if (!initData(emailInventory.loadFromDataBase(), "玩家邮件")) {
 			return false;
@@ -188,7 +210,10 @@ public class GamePlayer extends AbstractEvent {
 		if (!initData(magicwpInventory.loadFromDataBase(), "玩家法宝数据")) {
 			return false;
 		}
-
+		inverseBeadInventory = new InverseBeadInventory(this);
+		if (!initData(inverseBeadInventory.loadFromDataBase(), "英雄天逆珠数据")) {
+			return false;
+		}
 		petInventory = new PetInventory(this);
 		if (!initData(petInventory.loadFromDataBase(), "玩家宠物数据")) {
 			return false;
@@ -205,10 +230,6 @@ public class GamePlayer extends AbstractEvent {
 		}
 		skillInventory = new SkillInventory(this);
 		if (!initData(skillInventory.loadFromDataBase(), "英雄技能数据")) {
-			return false;
-		}
-		inverseBeadInventory = new InverseBeadInventory(this);
-		if (!initData(inverseBeadInventory.loadFromDataBase(), "英雄天逆珠数据")) {
 			return false;
 		}
 		armyInventory = new ArmyInventory(this);
@@ -229,7 +250,6 @@ public class GamePlayer extends AbstractEvent {
 
 	// 卸载个人私有数据
 	public boolean unLoadPersonData() {
-
 		PlayerManager.logOut(basePlayer);
 
 		if (taskInventory != null) {
@@ -240,10 +260,7 @@ public class GamePlayer extends AbstractEvent {
 			emailInventory.unloadData();
 			emailInventory = null;
 		}
-		if (friendInventory != null) {
-			friendInventory.unloadData();
-			friendInventory = null;
-		}
+		
 
 		if (mountInventory != null) {
 			mountInventory.unloadData();
@@ -270,6 +287,10 @@ public class GamePlayer extends AbstractEvent {
 		if (fashionInventory != null) {
 			fashionInventory.unloadData();
 			fashionInventory = null;
+		}
+		if (campaignInventory != null) {
+			campaignInventory.unloadData();
+			campaignInventory = null;
 		}
 
 		return true;
@@ -459,6 +480,10 @@ public class GamePlayer extends AbstractEvent {
 		return fashionInventory;
 	}
 
+	public CampaignInventory getCampaignInventory() {
+		return campaignInventory;
+	}
+
 	public int getCurMapId() {
 		return curMapId;
 	}
@@ -506,11 +531,9 @@ public class GamePlayer extends AbstractEvent {
 	public int getLevel() {
 		return this.basePlayer.getPlayerInfo().getLevel();
 	}
-
 	public InverseBeadInventory getInverseBeadInventory() {
 		return inverseBeadInventory;
 	}
-
 	/** 回到出生点 */
 	public void backBornPoint() {
 		int born_map = SystemConfigTemplateMgr.getInitBorn();
@@ -523,5 +546,9 @@ public class GamePlayer extends AbstractEvent {
 		reqBuilder.setPostionMsg(postion);
 		PBMessage message = MessageUtil.buildMessage(Protocol.S_ENTERSCENE, getPlayerId(), reqBuilder);
 		sendPbMessage(message);
+	}
+
+	public SpaceInventory getSpaceInventory() {
+		return spaceInventory;
 	}
 }

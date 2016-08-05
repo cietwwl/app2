@@ -127,6 +127,19 @@ public class InverseBeadManager {
 		return true;
 	}
 
+	public static int receiveAura(GamePlayer player, short code) {
+		PlayerTimeInfo playerTimeInfo = player.getBasePlayer().getPlayerTimeInfo();
+		int num = 0;
+		synchronized (playerTimeInfo) {
+			num = playerTimeInfo.getAuraNum();
+			playerTimeInfo.setAuraNum(0);
+		}
+		if (num > 0) {
+			player.getBagInventory().removeItemFromPlayerBag(InverseBeadInventory.auraId, num, BindType.ALL);
+		}
+		return num;
+	}
+
 	public static List<Integer> getBeadRefreshId(String str) {
 		List<Integer> list = new ArrayList<>();
 		if (str == null || str.isEmpty())
@@ -148,11 +161,10 @@ public class InverseBeadManager {
 			return sb.substring(0, sb.length() - 1);
 		return "";
 	}
-	
-	
-	public static void main(String[] args){
-		 List<Integer> list = getBeadRefreshId("");
-		 System.out.println(list.size());
+
+	public static void main(String[] args) {
+		List<Integer> list = getBeadRefreshId("");
+		System.out.println(list.size());
 	}
 
 }

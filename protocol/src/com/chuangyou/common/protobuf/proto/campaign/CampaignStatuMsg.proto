@@ -1,7 +1,10 @@
 option java_package = "com.chuangyou.common.protobuf.pb.campaign";
 option java_outer_classname = "CampaignStatuMsgProto";
 message CampaignStatuMsg{
-	optional int32  campaignId= 1; //副本ID
-	optional int32  statu = 2; //状态
+	optional int32  indexId= 1; //副本ID
+	optional int32  tempId=2;    //副本模板
+	optional int32  statu = 3;   //状态  0  正常退出 1 进入 2 通过结束退出 3 失败结束退出
+	optional int32  teamId = 4; //队伍ID
+	optional int32  taskId = 5; //副本任务ID
 }
 

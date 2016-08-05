@@ -1,0 +1,27 @@
+//protocol=556;
+option java_package = "com.chuangyou.common.protobuf.pb.space";
+option java_outer_classname = "GetSpaceInfoRespProto";
+
+//请求空间信息
+message GetSpaceInfoRespMsg{
+	required int64 playerId =1; //
+	required string face =2;       //头像
+	required string signature = 3; //签名
+	required string city      = 4; //城市
+	required string birthday  = 5;//生日
+	required int32 popularity = 6;//人气值
+	required int32 gift = 7;//礼物数量
+	required int32 isNoMsg = 8;//是否禁言  0：不禁言  1： 禁言    2：好友可以发言
+	required int32 level = 9;//等级
+	required string partnerName = 10;//伴侣姓名
+	required string name = 11;//姓名
+	required string unityName = 12;//帮派名字
+	required int32 totalMsg = 13;//留言总数
+	required int32 likes = 14;  //点赞
+	required int32 flowers =15; //鲜花
+	required int32 eggs = 16;   //鸡蛋
+	required int32 curCollection = 17;//当前收藏数
+	required int32 maxCollection = 18;//收藏上限
+	required int32 isEditBirthday = 19;//0:未领过生日礼物   1：已经领过
+	required bool isFriends = 20;//是否是好友
+}

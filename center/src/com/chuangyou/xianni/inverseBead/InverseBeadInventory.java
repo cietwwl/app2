@@ -29,7 +29,8 @@ public class InverseBeadInventory extends AbstractEvent implements IInventory {
 	public static final int earth = 5;
 	/** 刷怪初始id **/
 	public static final int spawnId = 30201001;
-	public static final int campaignId = 30201;// 天逆珠副本id
+	public static final int campaignId = 30201;	// 天逆珠副本id
+	public static final int auraId = 6130011;	// 灵气液id
 
 	private GamePlayer player;
 	private Map<String, PlayerInverseBead> playerInverseBeadList = null;

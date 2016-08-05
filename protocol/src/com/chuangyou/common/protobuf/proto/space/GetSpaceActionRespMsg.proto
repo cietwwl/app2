@@ -1,0 +1,10 @@
+//protocol=558;
+option java_package = "com.chuangyou.common.protobuf.pb.space";
+option java_outer_classname = "GetSpaceActionRespProto";
+
+import "space/ActionLogMsg.proto";
+//请求操作日志（点赞。送花，鸡蛋。。。。）
+message GetSpaceActionRespMsg{
+	required int64 playerId =1; //
+	repeated ActionLogMsg infos = 2;//记录数组
+}

@@ -7,4 +7,5 @@ message InverseBeadMsg {
 	required int32 marking = 2;      // 升级的印记 1到10
 	required int32 stage = 3;        // 升级到的阶段
 	required int32 val = 4;			 // 当前的进度值 
+	
 }

@@ -9,7 +9,7 @@ import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
-import com.chuangyou.xianni.entity.item.BindType;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.magicwp.MagicwpCfg;
 import com.chuangyou.xianni.entity.magicwp.MagicwpGradeCfg;
 import com.chuangyou.xianni.entity.magicwp.MagicwpInfo;
@@ -57,7 +57,7 @@ public class MagicwpRefineCmd extends AbstractCommand {
 			return;
 		}
 		//扣道具
-		if(!player.getBagInventory().removeItemFromPlayerBag(useItem, useItemNum, BindType.ALL)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(useItem, useItemNum, ItemRemoveType.USE)) return;
 		
 		MagicwpGradeCfg gradeCfg = MagicwpTemplateMgr.getGradeTemps().get(magicwp.getMagicwpId() * 1000 + magicwp.getGrade());
 		Map<Integer, Integer> curAttMap = MagicwpRefineManager.getRefineAttMap(magicwp.getRefineAtts());

@@ -41,7 +41,7 @@ public class ItemInfoDaoImpl extends BaseDao implements ItemInfoDao {
 	public boolean addItemInfo(ItemInfo info) {
 		boolean result = false;
 		String sql = "INSERT INTO tb_u_item_info (id,templateId,playerId,isExist,objectId,bagType,pos,isBinds,isUsed,"
-				+ "validDate,beginDate,count,removeType,removeDate,addType,addDate,pro,qualityCoefficient,grow)" + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+				+ "validDate,beginDate,count,removeType,removeDate,addType,addDate,pro,qualityCoefficient,grow,awaken,awakenPoint,stone)" + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.BIGINT, info.getId()));
 		para.put(2, new DbParameter(Types.BIGINT, info.getTemplateId()));
@@ -62,6 +62,9 @@ public class ItemInfoDaoImpl extends BaseDao implements ItemInfoDao {
 		para.put(17, new DbParameter(Types.INTEGER, info.getPro()));
 		para.put(18, new DbParameter(Types.INTEGER, info.getQualityCoefficient()));
 		para.put(19, new DbParameter(Types.INTEGER, info.getGrow()));
+		para.put(20, new DbParameter(Types.INTEGER, info.getAwaken()));
+		para.put(21, new DbParameter(Types.INTEGER, info.getAwakenPoint()));
+		para.put(22, new DbParameter(Types.INTEGER, info.getStone()));
 		info.setOp(Option.None);
 		result = execNoneQuery(sql, para) > -1 ? true : false;
 		return result;
@@ -71,7 +74,7 @@ public class ItemInfoDaoImpl extends BaseDao implements ItemInfoDao {
 	public boolean updateItemInfo(ItemInfo info) {
 		boolean result = false;
 		String sql = "REPLACE INTO tb_u_item_info (id,templateId,playerId,isExist,objectId,bagType,pos,isBinds,isUsed,"
-				+ "validDate,beginDate,count,removeType,removeDate,addType,addDate,pro,qualityCoefficient,grow)" + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+				+ "validDate,beginDate,count,removeType,removeDate,addType,addDate,pro,qualityCoefficient,grow,awaken,awakenPoint,stone)" + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.BIGINT, info.getId()));
 		para.put(2, new DbParameter(Types.BIGINT, info.getTemplateId()));
@@ -92,6 +95,9 @@ public class ItemInfoDaoImpl extends BaseDao implements ItemInfoDao {
 		para.put(17, new DbParameter(Types.INTEGER, info.getPro()));
 		para.put(18, new DbParameter(Types.INTEGER, info.getQualityCoefficient()));
 		para.put(19, new DbParameter(Types.INTEGER, info.getGrow()));
+		para.put(20, new DbParameter(Types.INTEGER, info.getAwaken()));
+		para.put(21, new DbParameter(Types.INTEGER, info.getAwakenPoint()));
+		para.put(22, new DbParameter(Types.INTEGER, info.getStone()));
 
 		result = execNoneQuery(sql, para) > -1 ? true : false;
 		return result;
@@ -141,14 +147,12 @@ public class ItemInfoDaoImpl extends BaseDao implements ItemInfoDao {
 					info.setBinds(rs.getBoolean("isBinds"));
 					info.setUsed(rs.getBoolean("isUsed"));
 					info.setValidDate(rs.getInt("validDate"));
-					info.setPro(rs.getInt("pro"));
-					info.setQualityCoefficient(rs.getInt("qualityCoefficient"));
-					info.setGrow(rs.getInt("grow"));
+					
 					Timestamp tt = rs.getTimestamp("beginDate");
 					if (tt != null) {
 						info.setBeginDate(new Date(tt.getTime()));
 					}
-
+					
 					info.setCount(rs.getInt("count"));
 					info.setRemoveType(rs.getShort("removeType"));
 					tt = rs.getTimestamp("removeDate");
@@ -160,6 +164,15 @@ public class ItemInfoDaoImpl extends BaseDao implements ItemInfoDao {
 					if (tt != null) {
 						info.setAddDate(new Date(tt.getTime()));
 					}
+					
+					info.setPro(rs.getInt("pro"));
+					info.setQualityCoefficient(rs.getInt("qualityCoefficient"));
+					info.setGrow(rs.getInt("grow"));
+					
+					info.setAwaken(rs.getInt("awaken"));
+					info.setAwakenPoint(rs.getInt("awakenPoint"));
+					info.setStone(rs.getInt("stone"));
+					
 					infos.add(info);
 					info.setOp(Option.None);
 				}

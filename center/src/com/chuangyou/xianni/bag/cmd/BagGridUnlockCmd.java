@@ -8,7 +8,7 @@ import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.entity.item.BagType;
-import com.chuangyou.xianni.entity.item.BindType;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -43,7 +43,7 @@ public class BagGridUnlockCmd extends AbstractCommand {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, packet.getCode(), "物品不足");
 			return;
 		}
-		if(!player.getBagInventory().removeItemFromPlayerBag(itemId, req.getUnlockNum(), BindType.ALL)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(itemId, req.getUnlockNum(), ItemRemoveType.USE)) return;
 		
 		BagInventory bagIn = player.getBagInventory();
 		bagIn.getBag(BagType.Play).addCapability((short)req.getUnlockNum());

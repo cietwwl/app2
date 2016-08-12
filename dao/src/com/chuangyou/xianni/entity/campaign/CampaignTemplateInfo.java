@@ -28,6 +28,8 @@ public class CampaignTemplateInfo {
 	private int		endScriptId;	// 结束时触发脚本ID
 	private String	tasks;			// 副本任务，以逗号分隔
 	private int[]	attrTaskIds;	// 任务ID组
+	private String	costItem;		// 消耗物品
+	private int[]	arrCostItems;	// 消耗物品数组
 
 	public int getTemplateId() {
 		return templateId;
@@ -194,6 +196,29 @@ public class CampaignTemplateInfo {
 
 	public void setAttrTaskIds(int[] attrTaskIds) {
 		this.attrTaskIds = attrTaskIds;
+	}
+
+	public String getCostItem() {
+		return costItem;
+	}
+
+	public void setCostItem(String costItem) {
+		this.costItem = costItem;
+		if (costItem != null && !costItem.equals("")) {
+			String[] attrTID = costItem.split(",");
+			arrCostItems = new int[attrTID.length];
+			for (int i = 0; i < attrTID.length; i++) {
+				arrCostItems[i] = Integer.valueOf(attrTID[i]);
+			}
+		}
+	}
+
+	public int[] getArrCostItems() {
+		return arrCostItems;
+	}
+
+	public void setArrCostItems(int[] arrCostItems) {
+		this.arrCostItems = arrCostItems;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.chuangyou.xianni.bag;
 
 import com.chuangyou.common.util.Log;
+import com.chuangyou.xianni.constant.ItemType;
 import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.player.GamePlayer;
@@ -105,7 +106,7 @@ public class BagHeroEquipment extends BaseBag {
 	 */
 	public short getPos(ItemTemplateInfo tempInfo) {
 		short pos = 0;
-		if (tempInfo.getMasterType() == 1) {
+		if (tempInfo.getMasterType() == ItemType.MainType.EQUIP) {
 			switch (tempInfo.getSonType()) {
 				case 11:// 武器
 					pos = 0;

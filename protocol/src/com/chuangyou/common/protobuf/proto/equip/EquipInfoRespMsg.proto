@@ -1,0 +1,11 @@
+//protocol=153;
+option java_package = "com.chuangyou.common.protobuf.pb.equip";
+option java_outer_classname = "EquipInfoRespProto";
+
+import "equip/EquipInfoMsg.proto";
+
+//返回装备信息
+message EquipInfoRespMsg{
+	optional int32 action = 1; // 功能号(1装备觉醒结果返回  2装备注魂结果返回)
+	optional EquipInfoMsg equip = 2; // 装备信息
+}

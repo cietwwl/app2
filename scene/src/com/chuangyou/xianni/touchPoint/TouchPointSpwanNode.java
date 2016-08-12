@@ -2,6 +2,9 @@ package com.chuangyou.xianni.touchPoint;
 
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.Vector3;
+import com.chuangyou.xianni.campaign.Campaign;
+import com.chuangyou.xianni.campaign.CampaignMgr;
+import com.chuangyou.xianni.campaign.task.CTBaseCondition;
 import com.chuangyou.xianni.entity.spawn.NpcInfo;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
 import com.chuangyou.xianni.role.template.NpcInfoTemplateMgr;
@@ -28,6 +31,12 @@ public class TouchPointSpwanNode extends SpwanNode {
 
 	public void active(ArmyProxy army) {
 		action(army);
+		if (this.campaignId > 0) {
+			Campaign campaign = CampaignMgr.getCampagin(this.campaignId);
+			if (campaign != null) {
+				campaign.notifyTaskEvent(CTBaseCondition.TUCH_ARI, spwanInfo.getEntityId());
+			}
+		}
 	}
 
 	public void action(ArmyProxy army) {

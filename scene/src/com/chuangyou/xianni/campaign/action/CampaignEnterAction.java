@@ -127,7 +127,7 @@ public class CampaignEnterAction extends Action {
 					SkillBufferTemplateInfo bufferTemp = BattleTempMgr.getBufferInfo(bufferId);
 					if (bufferTemp != null) {
 						Buffer buffer = BufferFactory.createBuffer(army.getPlayer(), army.getPlayer(), bufferTemp);
-						army.getPlayer().addBuffer(buffer);
+						army.getPlayer().addCampaignBuff(buffer);
 					}
 				}
 			}

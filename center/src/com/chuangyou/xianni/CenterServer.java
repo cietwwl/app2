@@ -15,6 +15,7 @@ import com.chuangyou.xianni.common.template.PropertyFightingTemplateMgr;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.common.timer.TimerTaskMgr;
 import com.chuangyou.xianni.entity_id.EntityIdBuilder;
+import com.chuangyou.xianni.equip.template.EquipTemplateMgr;
 import com.chuangyou.xianni.fashion.template.FashionTemplateMgr;
 import com.chuangyou.xianni.inverseBead.template.InverseBeadTemMgr;
 import com.chuangyou.xianni.login.template.roleConfigMgr;
@@ -33,9 +34,11 @@ import com.chuangyou.xianni.script.manager.ScriptManager;
 import com.chuangyou.xianni.shop.template.ShopTemplateMgr;
 import com.chuangyou.xianni.skill.template.SkillTempMgr;
 import com.chuangyou.xianni.sql.dao.CampaignTaskTemplateInfoDao;
+import com.chuangyou.xianni.sql.dao.impl.VipTemDaoImpl;
 import com.chuangyou.xianni.sql.db.pool.DBPoolMgr;
 import com.chuangyou.xianni.task.template.TaskTemplateMgr;
 import com.chuangyou.xianni.team.TeamTargetTempMgr;
+import com.chuangyou.xianni.vip.templete.VipTemplateMgr;
 import com.chuangyou.xianni.word.WorldMgr;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -158,10 +161,17 @@ public class CenterServer extends BaseServer {
 			return false;
 		}
 
-		if (!initComponent(FilterWordSet.loadFilterWord(Config.getValue("filter_word")), "初始化敏感字")) {
+		if(!initComponent(EquipTemplateMgr.init(), "寝化装备模板数据")){
 			return false;
 		}
+		
+		if(!initComponent(FilterWordSet.loadFilterWord(Config.getValue("filter_word")), "初始化敏感字")){
 
+			return false;
+		}
+		if (!initComponent(VipTemplateMgr.init(), "初始化vip模板数据")) {
+			return false;
+		}
 		return true;
 	}
 

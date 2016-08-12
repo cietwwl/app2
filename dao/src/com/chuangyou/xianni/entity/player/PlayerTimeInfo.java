@@ -2,6 +2,7 @@ package com.chuangyou.xianni.entity.player;
 
 import java.util.Date;
 
+import com.chuangyou.common.protobuf.pb.player.PlayerTimeMsgProto.PlayerTimeMsg;
 import com.chuangyou.xianni.entity.DataObject;
 import com.chuangyou.xianni.entity.Option;
 
@@ -13,14 +14,21 @@ import com.chuangyou.xianni.entity.Option;
  */
 public class PlayerTimeInfo extends DataObject {
 
-	private long playerId;
-	private int sigleCampCount;	// 每日单人副本数量
-	private Date resetTime;		// 重置时间
-	private int currRefreshId;  // 当前的id
-	private String beadRefreshId;		// 天逆珠刷新后获得的id
-	private Date beadRefreshDateTime;// 天逆珠刷新的时间
-	private int auraNum;	// 灵气液个数
-	private Date auraRefreshDateTime;// 灵气液刷新时间
+
+	private long	playerId;
+	private int		sigleCampCount;		// 每日单人副本次数
+	private int		challengeCampCount;	// 挑战副本次数
+	private Date	resetTime;			// 重置时间
+
+	public PlayerTimeInfo() {
+		resetTime = new Date();
+	}
+
+	public void reset() {
+		setSigleCampCount(0);
+		setChallengeCampCount(0);
+		resetTime = new Date();
+	}
 
 	public int getSigleCampCount() {
 		return sigleCampCount;
@@ -33,6 +41,15 @@ public class PlayerTimeInfo extends DataObject {
 
 	public Date getResetTime() {
 		return resetTime;
+	}
+
+	public int getChallengeCampCount() {
+		return challengeCampCount;
+	}
+
+	public void setChallengeCampCount(int challengeCampCount) {
+		setOp(Option.Update);
+		this.challengeCampCount = challengeCampCount;
 	}
 
 	public void setResetTime(Date resetTime) {
@@ -48,49 +65,8 @@ public class PlayerTimeInfo extends DataObject {
 		this.playerId = playerId;
 	}
 
-	public int getCurrRefreshId() {
-		return currRefreshId;
+	public void writeProto(PlayerTimeMsg.Builder builder) {
+		builder.addChallengeCampCount(challengeCampCount);
+		builder.addSigleCampCount(sigleCampCount);
 	}
-
-	public void setCurrRefreshId(int currRefreshId) {
-		setOp(Option.Update);
-		this.currRefreshId = currRefreshId;
-	}
-
-	public String getBeadRefreshId() {
-		return beadRefreshId;
-	}
-
-	public void setBeadRefreshId(String beadRefreshId) {
-		setOp(Option.Update);
-		this.beadRefreshId = beadRefreshId;
-	}
-
-	public Date getBeadRefreshDateTime() {
-		return beadRefreshDateTime;
-	}
-
-	public void setBeadRefreshDateTime(Date beadRefreshDateTime) {
-		setOp(Option.Update);
-		this.beadRefreshDateTime = beadRefreshDateTime;
-	}
-
-	public int getAuraNum() {
-		return auraNum;
-	}
-
-	public void setAuraNum(int auraNum) {
-		setOp(Option.Update);
-		this.auraNum = auraNum;
-	}
-
-	public Date getAuraRefreshDateTime() {
-		return auraRefreshDateTime;
-	}
-
-	public void setAuraRefreshDateTime(Date auraRefreshDateTime) {
-		setOp(Option.Update);
-		this.auraRefreshDateTime = auraRefreshDateTime;
-	}
-
 }

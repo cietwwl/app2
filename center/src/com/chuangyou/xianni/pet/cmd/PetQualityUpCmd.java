@@ -6,11 +6,10 @@ import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
-import com.chuangyou.xianni.entity.item.BindType;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.pet.PetInfo;
 import com.chuangyou.xianni.entity.pet.PetInfoCfg;
 import com.chuangyou.xianni.entity.pet.PetQualityCfg;
-import com.chuangyou.xianni.pet.manager.PetManager;
 import com.chuangyou.xianni.pet.template.PetTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerInfoSendCmd;
@@ -53,7 +52,7 @@ public class PetQualityUpCmd extends AbstractCommand {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, packet.getCode());
 			return;
 		}
-		if(!player.getBagInventory().removeItemFromPlayerBag(qualityCfg.getNeedItem(), qualityCfg.getNeedNum(), BindType.ALL)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(qualityCfg.getNeedItem(), qualityCfg.getNeedNum(), ItemRemoveType.USE)) return;
 		
 		//是否升级品质
 		boolean hasUpLevel = false;

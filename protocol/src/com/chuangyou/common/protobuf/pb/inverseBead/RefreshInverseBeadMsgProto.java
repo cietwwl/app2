@@ -13,7 +13,7 @@ public final class RefreshInverseBeadMsgProto {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required int32 monsterNum = 5;</code>
+     * <code>required int32 monsterNum = 1;</code>
      *
      * <pre>
      * 怪物数量
@@ -21,7 +21,7 @@ public final class RefreshInverseBeadMsgProto {
      */
     boolean hasMonsterNum();
     /**
-     * <code>required int32 monsterNum = 5;</code>
+     * <code>required int32 monsterNum = 1;</code>
      *
      * <pre>
      * 怪物数量
@@ -30,7 +30,7 @@ public final class RefreshInverseBeadMsgProto {
     int getMonsterNum();
 
     /**
-     * <code>required int64 beadRefreshDateTime = 6;</code>
+     * <code>required int64 beadRefreshDateTime = 2;</code>
      *
      * <pre>
      *怪物刷新时间
@@ -38,7 +38,7 @@ public final class RefreshInverseBeadMsgProto {
      */
     boolean hasBeadRefreshDateTime();
     /**
-     * <code>required int64 beadRefreshDateTime = 6;</code>
+     * <code>required int64 beadRefreshDateTime = 2;</code>
      *
      * <pre>
      *怪物刷新时间
@@ -47,7 +47,7 @@ public final class RefreshInverseBeadMsgProto {
     long getBeadRefreshDateTime();
 
     /**
-     * <code>required int32 auraNum = 7;</code>
+     * <code>required int32 auraNum = 3;</code>
      *
      * <pre>
      *灵气液个数
@@ -55,7 +55,7 @@ public final class RefreshInverseBeadMsgProto {
      */
     boolean hasAuraNum();
     /**
-     * <code>required int32 auraNum = 7;</code>
+     * <code>required int32 auraNum = 3;</code>
      *
      * <pre>
      *灵气液个数
@@ -64,7 +64,7 @@ public final class RefreshInverseBeadMsgProto {
     int getAuraNum();
 
     /**
-     * <code>required int64 auraRefreshDateTime = 8;</code>
+     * <code>required int64 auraRefreshDateTime = 4;</code>
      *
      * <pre>
      *灵气液刷新时间
@@ -72,13 +72,47 @@ public final class RefreshInverseBeadMsgProto {
      */
     boolean hasAuraRefreshDateTime();
     /**
-     * <code>required int64 auraRefreshDateTime = 8;</code>
+     * <code>required int64 auraRefreshDateTime = 4;</code>
      *
      * <pre>
      *灵气液刷新时间
      * </pre>
      */
     long getAuraRefreshDateTime();
+
+    /**
+     * <code>required int32 monsterLv = 5;</code>
+     *
+     * <pre>
+     * 怪物等级
+     * </pre>
+     */
+    boolean hasMonsterLv();
+    /**
+     * <code>required int32 monsterLv = 5;</code>
+     *
+     * <pre>
+     * 怪物等级
+     * </pre>
+     */
+    int getMonsterLv();
+
+    /**
+     * <code>required int32 lastTime = 6;</code>
+     *
+     * <pre>
+     * 剩余时间
+     * </pre>
+     */
+    boolean hasLastTime();
+    /**
+     * <code>required int32 lastTime = 6;</code>
+     *
+     * <pre>
+     * 剩余时间
+     * </pre>
+     */
+    int getLastTime();
   }
   /**
    * Protobuf type {@code RefreshInverseBeadMsg}
@@ -136,24 +170,34 @@ public final class RefreshInverseBeadMsgProto {
               }
               break;
             }
-            case 40: {
+            case 8: {
               bitField0_ |= 0x00000001;
               monsterNum_ = input.readInt32();
               break;
             }
-            case 48: {
+            case 16: {
               bitField0_ |= 0x00000002;
               beadRefreshDateTime_ = input.readInt64();
               break;
             }
-            case 56: {
+            case 24: {
               bitField0_ |= 0x00000004;
               auraNum_ = input.readInt32();
               break;
             }
-            case 64: {
+            case 32: {
               bitField0_ |= 0x00000008;
               auraRefreshDateTime_ = input.readInt64();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              monsterLv_ = input.readInt32();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              lastTime_ = input.readInt32();
               break;
             }
           }
@@ -196,10 +240,10 @@ public final class RefreshInverseBeadMsgProto {
     }
 
     private int bitField0_;
-    public static final int MONSTERNUM_FIELD_NUMBER = 5;
+    public static final int MONSTERNUM_FIELD_NUMBER = 1;
     private int monsterNum_;
     /**
-     * <code>required int32 monsterNum = 5;</code>
+     * <code>required int32 monsterNum = 1;</code>
      *
      * <pre>
      * 怪物数量
@@ -209,7 +253,7 @@ public final class RefreshInverseBeadMsgProto {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required int32 monsterNum = 5;</code>
+     * <code>required int32 monsterNum = 1;</code>
      *
      * <pre>
      * 怪物数量
@@ -219,10 +263,10 @@ public final class RefreshInverseBeadMsgProto {
       return monsterNum_;
     }
 
-    public static final int BEADREFRESHDATETIME_FIELD_NUMBER = 6;
+    public static final int BEADREFRESHDATETIME_FIELD_NUMBER = 2;
     private long beadRefreshDateTime_;
     /**
-     * <code>required int64 beadRefreshDateTime = 6;</code>
+     * <code>required int64 beadRefreshDateTime = 2;</code>
      *
      * <pre>
      *怪物刷新时间
@@ -232,7 +276,7 @@ public final class RefreshInverseBeadMsgProto {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required int64 beadRefreshDateTime = 6;</code>
+     * <code>required int64 beadRefreshDateTime = 2;</code>
      *
      * <pre>
      *怪物刷新时间
@@ -242,10 +286,10 @@ public final class RefreshInverseBeadMsgProto {
       return beadRefreshDateTime_;
     }
 
-    public static final int AURANUM_FIELD_NUMBER = 7;
+    public static final int AURANUM_FIELD_NUMBER = 3;
     private int auraNum_;
     /**
-     * <code>required int32 auraNum = 7;</code>
+     * <code>required int32 auraNum = 3;</code>
      *
      * <pre>
      *灵气液个数
@@ -255,7 +299,7 @@ public final class RefreshInverseBeadMsgProto {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>required int32 auraNum = 7;</code>
+     * <code>required int32 auraNum = 3;</code>
      *
      * <pre>
      *灵气液个数
@@ -265,10 +309,10 @@ public final class RefreshInverseBeadMsgProto {
       return auraNum_;
     }
 
-    public static final int AURAREFRESHDATETIME_FIELD_NUMBER = 8;
+    public static final int AURAREFRESHDATETIME_FIELD_NUMBER = 4;
     private long auraRefreshDateTime_;
     /**
-     * <code>required int64 auraRefreshDateTime = 8;</code>
+     * <code>required int64 auraRefreshDateTime = 4;</code>
      *
      * <pre>
      *灵气液刷新时间
@@ -278,7 +322,7 @@ public final class RefreshInverseBeadMsgProto {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>required int64 auraRefreshDateTime = 8;</code>
+     * <code>required int64 auraRefreshDateTime = 4;</code>
      *
      * <pre>
      *灵气液刷新时间
@@ -288,11 +332,59 @@ public final class RefreshInverseBeadMsgProto {
       return auraRefreshDateTime_;
     }
 
+    public static final int MONSTERLV_FIELD_NUMBER = 5;
+    private int monsterLv_;
+    /**
+     * <code>required int32 monsterLv = 5;</code>
+     *
+     * <pre>
+     * 怪物等级
+     * </pre>
+     */
+    public boolean hasMonsterLv() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>required int32 monsterLv = 5;</code>
+     *
+     * <pre>
+     * 怪物等级
+     * </pre>
+     */
+    public int getMonsterLv() {
+      return monsterLv_;
+    }
+
+    public static final int LASTTIME_FIELD_NUMBER = 6;
+    private int lastTime_;
+    /**
+     * <code>required int32 lastTime = 6;</code>
+     *
+     * <pre>
+     * 剩余时间
+     * </pre>
+     */
+    public boolean hasLastTime() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>required int32 lastTime = 6;</code>
+     *
+     * <pre>
+     * 剩余时间
+     * </pre>
+     */
+    public int getLastTime() {
+      return lastTime_;
+    }
+
     private void initFields() {
       monsterNum_ = 0;
       beadRefreshDateTime_ = 0L;
       auraNum_ = 0;
       auraRefreshDateTime_ = 0L;
+      monsterLv_ = 0;
+      lastTime_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -316,6 +408,14 @@ public final class RefreshInverseBeadMsgProto {
         memoizedIsInitialized = 0;
         return false;
       }
+      if (!hasMonsterLv()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasLastTime()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -324,16 +424,22 @@ public final class RefreshInverseBeadMsgProto {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(5, monsterNum_);
+        output.writeInt32(1, monsterNum_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt64(6, beadRefreshDateTime_);
+        output.writeInt64(2, beadRefreshDateTime_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeInt32(7, auraNum_);
+        output.writeInt32(3, auraNum_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeInt64(8, auraRefreshDateTime_);
+        output.writeInt64(4, auraRefreshDateTime_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeInt32(5, monsterLv_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeInt32(6, lastTime_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -346,19 +452,27 @@ public final class RefreshInverseBeadMsgProto {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(5, monsterNum_);
+          .computeInt32Size(1, monsterNum_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(6, beadRefreshDateTime_);
+          .computeInt64Size(2, beadRefreshDateTime_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(7, auraNum_);
+          .computeInt32Size(3, auraNum_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(8, auraRefreshDateTime_);
+          .computeInt64Size(4, auraRefreshDateTime_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(5, monsterLv_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(6, lastTime_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -489,6 +603,10 @@ public final class RefreshInverseBeadMsgProto {
         bitField0_ = (bitField0_ & ~0x00000004);
         auraRefreshDateTime_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000008);
+        monsterLv_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        lastTime_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -533,6 +651,14 @@ public final class RefreshInverseBeadMsgProto {
           to_bitField0_ |= 0x00000008;
         }
         result.auraRefreshDateTime_ = auraRefreshDateTime_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.monsterLv_ = monsterLv_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.lastTime_ = lastTime_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -561,6 +687,12 @@ public final class RefreshInverseBeadMsgProto {
         if (other.hasAuraRefreshDateTime()) {
           setAuraRefreshDateTime(other.getAuraRefreshDateTime());
         }
+        if (other.hasMonsterLv()) {
+          setMonsterLv(other.getMonsterLv());
+        }
+        if (other.hasLastTime()) {
+          setLastTime(other.getLastTime());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -579,6 +711,14 @@ public final class RefreshInverseBeadMsgProto {
           return false;
         }
         if (!hasAuraRefreshDateTime()) {
+          
+          return false;
+        }
+        if (!hasMonsterLv()) {
+          
+          return false;
+        }
+        if (!hasLastTime()) {
           
           return false;
         }
@@ -606,7 +746,7 @@ public final class RefreshInverseBeadMsgProto {
 
       private int monsterNum_ ;
       /**
-       * <code>required int32 monsterNum = 5;</code>
+       * <code>required int32 monsterNum = 1;</code>
        *
        * <pre>
        * 怪物数量
@@ -616,7 +756,7 @@ public final class RefreshInverseBeadMsgProto {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required int32 monsterNum = 5;</code>
+       * <code>required int32 monsterNum = 1;</code>
        *
        * <pre>
        * 怪物数量
@@ -626,7 +766,7 @@ public final class RefreshInverseBeadMsgProto {
         return monsterNum_;
       }
       /**
-       * <code>required int32 monsterNum = 5;</code>
+       * <code>required int32 monsterNum = 1;</code>
        *
        * <pre>
        * 怪物数量
@@ -639,7 +779,7 @@ public final class RefreshInverseBeadMsgProto {
         return this;
       }
       /**
-       * <code>required int32 monsterNum = 5;</code>
+       * <code>required int32 monsterNum = 1;</code>
        *
        * <pre>
        * 怪物数量
@@ -654,7 +794,7 @@ public final class RefreshInverseBeadMsgProto {
 
       private long beadRefreshDateTime_ ;
       /**
-       * <code>required int64 beadRefreshDateTime = 6;</code>
+       * <code>required int64 beadRefreshDateTime = 2;</code>
        *
        * <pre>
        *怪物刷新时间
@@ -664,7 +804,7 @@ public final class RefreshInverseBeadMsgProto {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required int64 beadRefreshDateTime = 6;</code>
+       * <code>required int64 beadRefreshDateTime = 2;</code>
        *
        * <pre>
        *怪物刷新时间
@@ -674,7 +814,7 @@ public final class RefreshInverseBeadMsgProto {
         return beadRefreshDateTime_;
       }
       /**
-       * <code>required int64 beadRefreshDateTime = 6;</code>
+       * <code>required int64 beadRefreshDateTime = 2;</code>
        *
        * <pre>
        *怪物刷新时间
@@ -687,7 +827,7 @@ public final class RefreshInverseBeadMsgProto {
         return this;
       }
       /**
-       * <code>required int64 beadRefreshDateTime = 6;</code>
+       * <code>required int64 beadRefreshDateTime = 2;</code>
        *
        * <pre>
        *怪物刷新时间
@@ -702,7 +842,7 @@ public final class RefreshInverseBeadMsgProto {
 
       private int auraNum_ ;
       /**
-       * <code>required int32 auraNum = 7;</code>
+       * <code>required int32 auraNum = 3;</code>
        *
        * <pre>
        *灵气液个数
@@ -712,7 +852,7 @@ public final class RefreshInverseBeadMsgProto {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>required int32 auraNum = 7;</code>
+       * <code>required int32 auraNum = 3;</code>
        *
        * <pre>
        *灵气液个数
@@ -722,7 +862,7 @@ public final class RefreshInverseBeadMsgProto {
         return auraNum_;
       }
       /**
-       * <code>required int32 auraNum = 7;</code>
+       * <code>required int32 auraNum = 3;</code>
        *
        * <pre>
        *灵气液个数
@@ -735,7 +875,7 @@ public final class RefreshInverseBeadMsgProto {
         return this;
       }
       /**
-       * <code>required int32 auraNum = 7;</code>
+       * <code>required int32 auraNum = 3;</code>
        *
        * <pre>
        *灵气液个数
@@ -750,7 +890,7 @@ public final class RefreshInverseBeadMsgProto {
 
       private long auraRefreshDateTime_ ;
       /**
-       * <code>required int64 auraRefreshDateTime = 8;</code>
+       * <code>required int64 auraRefreshDateTime = 4;</code>
        *
        * <pre>
        *灵气液刷新时间
@@ -760,7 +900,7 @@ public final class RefreshInverseBeadMsgProto {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>required int64 auraRefreshDateTime = 8;</code>
+       * <code>required int64 auraRefreshDateTime = 4;</code>
        *
        * <pre>
        *灵气液刷新时间
@@ -770,7 +910,7 @@ public final class RefreshInverseBeadMsgProto {
         return auraRefreshDateTime_;
       }
       /**
-       * <code>required int64 auraRefreshDateTime = 8;</code>
+       * <code>required int64 auraRefreshDateTime = 4;</code>
        *
        * <pre>
        *灵气液刷新时间
@@ -783,7 +923,7 @@ public final class RefreshInverseBeadMsgProto {
         return this;
       }
       /**
-       * <code>required int64 auraRefreshDateTime = 8;</code>
+       * <code>required int64 auraRefreshDateTime = 4;</code>
        *
        * <pre>
        *灵气液刷新时间
@@ -792,6 +932,102 @@ public final class RefreshInverseBeadMsgProto {
       public Builder clearAuraRefreshDateTime() {
         bitField0_ = (bitField0_ & ~0x00000008);
         auraRefreshDateTime_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int monsterLv_ ;
+      /**
+       * <code>required int32 monsterLv = 5;</code>
+       *
+       * <pre>
+       * 怪物等级
+       * </pre>
+       */
+      public boolean hasMonsterLv() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>required int32 monsterLv = 5;</code>
+       *
+       * <pre>
+       * 怪物等级
+       * </pre>
+       */
+      public int getMonsterLv() {
+        return monsterLv_;
+      }
+      /**
+       * <code>required int32 monsterLv = 5;</code>
+       *
+       * <pre>
+       * 怪物等级
+       * </pre>
+       */
+      public Builder setMonsterLv(int value) {
+        bitField0_ |= 0x00000010;
+        monsterLv_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 monsterLv = 5;</code>
+       *
+       * <pre>
+       * 怪物等级
+       * </pre>
+       */
+      public Builder clearMonsterLv() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        monsterLv_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int lastTime_ ;
+      /**
+       * <code>required int32 lastTime = 6;</code>
+       *
+       * <pre>
+       * 剩余时间
+       * </pre>
+       */
+      public boolean hasLastTime() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>required int32 lastTime = 6;</code>
+       *
+       * <pre>
+       * 剩余时间
+       * </pre>
+       */
+      public int getLastTime() {
+        return lastTime_;
+      }
+      /**
+       * <code>required int32 lastTime = 6;</code>
+       *
+       * <pre>
+       * 剩余时间
+       * </pre>
+       */
+      public Builder setLastTime(int value) {
+        bitField0_ |= 0x00000020;
+        lastTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 lastTime = 6;</code>
+       *
+       * <pre>
+       * 剩余时间
+       * </pre>
+       */
+      public Builder clearLastTime() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        lastTime_ = 0;
         onChanged();
         return this;
       }
@@ -822,11 +1058,12 @@ public final class RefreshInverseBeadMsgProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\'inverseBead/RefreshInverseBeadMsg.prot" +
-      "o\"v\n\025RefreshInverseBeadMsg\022\022\n\nmonsterNum" +
-      "\030\005 \002(\005\022\033\n\023beadRefreshDateTime\030\006 \002(\003\022\017\n\007a" +
-      "uraNum\030\007 \002(\005\022\033\n\023auraRefreshDateTime\030\010 \002(" +
-      "\003BJ\n,com.chuangyou.common.protobuf.pb.in" +
-      "verseBeadB\032RefreshInverseBeadMsgProto"
+      "o\"\233\001\n\025RefreshInverseBeadMsg\022\022\n\nmonsterNu" +
+      "m\030\001 \002(\005\022\033\n\023beadRefreshDateTime\030\002 \002(\003\022\017\n\007" +
+      "auraNum\030\003 \002(\005\022\033\n\023auraRefreshDateTime\030\004 \002" +
+      "(\003\022\021\n\tmonsterLv\030\005 \002(\005\022\020\n\010lastTime\030\006 \002(\005B" +
+      "J\n,com.chuangyou.common.protobuf.pb.inve" +
+      "rseBeadB\032RefreshInverseBeadMsgProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -845,7 +1082,7 @@ public final class RefreshInverseBeadMsgProto {
     internal_static_RefreshInverseBeadMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_RefreshInverseBeadMsg_descriptor,
-        new java.lang.String[] { "MonsterNum", "BeadRefreshDateTime", "AuraNum", "AuraRefreshDateTime", });
+        new java.lang.String[] { "MonsterNum", "BeadRefreshDateTime", "AuraNum", "AuraRefreshDateTime", "MonsterLv", "LastTime", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

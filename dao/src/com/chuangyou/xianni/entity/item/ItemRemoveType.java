@@ -35,16 +35,24 @@ public interface ItemRemoveType {
 	 * 用户删除
 	 */
 	public static final short	PLAYER_DELETE	= 1008;
-	
+
 	/**
-	 *  npc商店使用
+	 * npc商店使用
 	 */
-	public static final short NPC_SHOP  = 1009;
-	
+	public static final short	NPC_SHOP		= 1009;
+
 	/**
 	 * 任务消耗
 	 */
-	public static final short TASK_COMMIT = 1010;
-	
-	
+	public static final short	TASK_COMMIT		= 1010;
+
+	/**
+	 * 进入副本消耗
+	 */
+	public static final short	JOIN_CAMPAIGN	= 1011;
+
+	/**
+	 * 分解
+	 */
+	public static final short	RESOLVE			= 1012;
 }

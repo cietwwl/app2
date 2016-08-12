@@ -17,6 +17,7 @@ import com.chuangyou.xianni.entity.fashion.FashionCfg;
 import com.chuangyou.xianni.entity.fashion.FashionInfo;
 import com.chuangyou.xianni.entity.fashion.FashionLevelCfg;
 import com.chuangyou.xianni.entity.fashion.FashionQualityCfg;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.fashion.template.FashionTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -88,36 +89,25 @@ public class FashionManager {
 	public static boolean gradeUp(FashionInfo fashion, GamePlayer player, short protocolCode) {
 		
 		FashionLevelCfg nextLevel = FashionTemplateMgr.getLevelTemps().get(fashion.getLevel() + 1);
-		FashionQualityCfg nextQuality = FashionTemplateMgr.getQualityTemps().get(fashion.getQuality());
+		FashionQualityCfg nextQuality = FashionTemplateMgr.getQualityTemps().get(fashion.getQuality() + 1);
 		
 		FashionLevelCfg level = FashionTemplateMgr.getLevelTemps().get(fashion.getLevel());
 		FashionQualityCfg quality = FashionTemplateMgr.getQualityTemps().get(fashion.getQuality());
 		
-		int needItem = SystemConfigTemplateMgr.getIntValue("fashion.grade.up.item");
-		int needNum = quality.getQualityUpConsume();
-		if (fashion.getExp()<level.getExpMax() || nextLevel != null) {//经验或等级未满，则增加经验
-			//最高品质的最高等级，不可增加经验
-			if (nextLevel == null && nextQuality == null) {
-				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Fashion_Quality_Max, protocolCode);
-				return false;
-			}
-	    	//扣物品
-			if(player.getBagInventory().getPlayerBagItemCount(needItem) < needNum){
-				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, protocolCode, "物品不足");
-				return false;
-			}
-			if(!player.getBagInventory().removeItemFromPlayerBag(needItem, needNum, protocolCode)) return false;
-			//增加经验值
-	    	ThreadSafeRandom rnd = new ThreadSafeRandom();
-	    	int addExp = rnd.next(1, 3);
-	    	fashion.setExp(fashion.getExp()+addExp);
-	    	//若经验已满，且等级未满，则升级
-	    	if (fashion.getExp()>=level.getExpMax() && nextLevel != null) {
-	    		fashion.setLevel(fashion.getLevel()+1);
-	    		fashion.setExp(0);
-	    	}
-		} else if (nextQuality != null) {//经验和等级均已满，但品质未满，则升品质
-	    	//扣物品
+		int needItem = 0;
+		int needNum = 0;
+		
+		//最高品质的最高等级，不可增加经验
+		if(nextLevel == null && nextQuality == null){
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Fashion_Quality_Max, protocolCode);
+			return false;
+		}
+		
+		if(nextLevel == null){ //等级已满，但品质未满，则升品质
+			needItem = fashion.getFashionId();
+			needNum = quality.getQualityUpConsume();
+			
+			//扣物品
 			if(player.getBagInventory().getPlayerBagItemCount(needItem) < needNum){
 				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, protocolCode, "物品不足");
 				return false;
@@ -127,16 +117,32 @@ public class FashionManager {
 			fashion.setQuality(fashion.getQuality()+1);
 			fashion.setLevel(0);
 			fashion.setExp(0);
-		} else {
-			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Fashion_Quality_Max, protocolCode);
-			return false;
+		}else{
+			needItem = SystemConfigTemplateMgr.getIntValue("fashion.grade.up.item");
+			needNum = quality.getLevelUpConsume();
+			
+	    	//扣物品
+			if(player.getBagInventory().getPlayerBagItemCount(needItem) < needNum){
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, protocolCode, "物品不足");
+				return false;
+			}
+			if(!player.getBagInventory().removeItemFromPlayerBag(needItem, needNum, ItemRemoveType.USE)) return false;
+			//增加经验值
+	    	ThreadSafeRandom rnd = new ThreadSafeRandom();
+	    	int addExp = rnd.next(1, 3);
+	    	fashion.setExp(fashion.getExp()+addExp);
+	    	//若经验已满，且等级未满，则升级
+	    	if (fashion.getExp()>=level.getExpMax() && nextLevel != null) {
+	    		fashion.setLevel(fashion.getLevel()+1);
+	    		fashion.setExp(0);
+	    	}
 		}
+		
 		//更新前后台
 		updateFashion(fashion, player);
 		
 		//更新属性
-//		RoleManager.updateAtt(fashion.getRoleId(), DataDictionaryManager.getIns().getFashionAttrEnumList(fashion.getFashionId()));
-		
+		player.getFashionInventory().updateProperty();
 		return true;
 	}
 	/** 激活 */
@@ -157,7 +163,7 @@ public class FashionManager {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, protocolCode, "物品不足");
 			return false;
 		}
-		player.getBagInventory().removeItemFromPlayerBag(fashionId, needNum, protocolCode);
+		player.getBagInventory().removeItemFromPlayerBag(fashionId, needNum, ItemRemoveType.USE);
 		
 		fashion = new FashionInfo(player.getPlayerId(), fashionId);
 		player.getFashionInventory().addFashion(fashion);
@@ -165,7 +171,7 @@ public class FashionManager {
 		updateFashion(fashion, player);
 		
 		//更新属性
-//		RoleManager.updateAtt(fashion.getRoleId(), DataDictionaryManager.getIns().getFashionAttrEnumList(fashion.getFashionId()));
+		player.getFashionInventory().updateProperty();
 		return true;
 	}
 	private static void putAttribValue(Map<Integer, Integer> attribMap, int attAndBase, int qualityAdd, int levelAdd, FashionInfo fashion) {

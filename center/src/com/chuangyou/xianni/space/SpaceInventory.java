@@ -33,6 +33,8 @@ public class SpaceInventory extends AbstractEvent implements IInventory {
 	 * 未收藏最大上限
 	 */
 	public static final int MAX_NO_COLLECTION = 100;
+	/** 初始收藏数量  */
+	public static final int INIT_COLLECTION = 100;
 	
 	private GamePlayer player;
 	
@@ -89,6 +91,7 @@ public class SpaceInventory extends AbstractEvent implements IInventory {
 		return list;
 	}
 	
+	
 	/**
 	 *  获取操作日志
 	 * @return
@@ -118,6 +121,7 @@ public class SpaceInventory extends AbstractEvent implements IInventory {
 				SpaceActionLogInfo temp = actions.remove(actions.size()-1);
 				DBManager.getSpaceDao().del(temp);
 			}
+			info.setOp(Option.Insert);
 			actions.add(info);
 			DBManager.getSpaceDao().add(info);
 		}
@@ -129,11 +133,23 @@ public class SpaceInventory extends AbstractEvent implements IInventory {
 	 * @param messageId
 	 * @return
 	 */
-	public boolean delMsg(int messageId){
+	private boolean delMsg(int messageId){
 		if(messages.containsKey(messageId)){
 			messages.remove(messageId);
 		}
 		return DBManager.getSpaceDao().del(messageId);
+	}
+	
+	/**
+	 * 删除留言
+	 * @param info
+	 * @return
+	 */
+	public boolean delMsg(SpaceMessageInfo info){
+		info.setOp(Option.Delete);
+		boolean b = delMsg(info.getId());
+		this.calcCurCollection();
+		return b;
 	}
 	
 	/**
@@ -150,6 +166,7 @@ public class SpaceInventory extends AbstractEvent implements IInventory {
 				delMsg(info.getId());
 			}
 		}
+		this.calcCurCollection();
 	}
 	
 	/**
@@ -165,7 +182,10 @@ public class SpaceInventory extends AbstractEvent implements IInventory {
 				delMsg(info.getId());
 			}
 		}
+		this.calcCurCollection();
 	}
+	
+	
 	
 	/**
 	 * 消除所有收藏标记
@@ -186,7 +206,26 @@ public class SpaceInventory extends AbstractEvent implements IInventory {
 		}
 		if(info!=null)spaceInfo.setCurCollection(0);
 	}
-		
+	
+	
+	/**
+	 * 计算当前收藏数量
+	 * @return
+	 */
+	public int calcCurCollection(){
+		Iterator<Entry<Integer, SpaceMessageInfo>> it = messages.entrySet().iterator();
+		int count = 0;
+		SpaceMessageInfo info = null;
+		while(it.hasNext()){
+			info = it.next().getValue();
+			if(info.getIsCollection() == SpaceMessageInfo.COLLECTIONED && info.getOp()!=Option.Delete){
+				count++;				
+			}
+		}
+		spaceInfo.setCurCollection(count);
+		return spaceInfo.getCurCollection();
+	}
+	
 	/**
 	 * 添加留言
 	 * @param info
@@ -225,7 +264,7 @@ public class SpaceInventory extends AbstractEvent implements IInventory {
 		// TODO Auto-generated method stub
 		this.spaceInfo = DBManager.getSpaceDao().get(player.getPlayerId());
 		if(this.spaceInfo == null){
-			this.spaceInfo = SpaceInfo.Builer(player.getPlayerId(), player.getBasePlayer().getPlayerInfo().getSkinId()+"");
+			this.spaceInfo = SpaceInfo.Builer(player.getPlayerId(), player.getBasePlayer().getPlayerInfo().getSkinId()+"",INIT_COLLECTION);
 			this.spaceInfo.setOp(Option.Insert);
 			DBManager.getSpaceDao().add(spaceInfo);
 		}
@@ -238,12 +277,16 @@ public class SpaceInventory extends AbstractEvent implements IInventory {
 		saveToDatabase();
 		this.spaceInfo = null;
 		
-		messages.clear();
-		messages = null;
+		if(messages!=null){			
+			messages.clear();
+			messages = null;
+		}
 		
-		synchronized (actions) {			
-			actions.clear();
-			actions = null;
+		if(actions!=null){			
+			synchronized (actions) {			
+				actions.clear();
+				actions = null;
+			}
 		}
 		return true;
 	}

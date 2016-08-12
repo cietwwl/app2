@@ -149,7 +149,7 @@ public class FieldMgr {
 	}
 
 	// /所有地图的集合
-	private ConcurrentHashMap<Integer, Field> fields = new ConcurrentHashMap<Integer, Field>();
+	private static ConcurrentHashMap<Integer, Field> fields = new ConcurrentHashMap<Integer, Field>();
 
 	public Field getField(int fid) {
 		if (fields.containsKey(fid))
@@ -197,7 +197,7 @@ public class FieldMgr {
 		f.setMapKey(mapkey);
 		fields.put(f.id, f);
 		spwanInit(f);
-		Log.error("初始化地图，mapKey = " + mapkey);
+		Log.error("-初始化地图，mapKey = " + mapkey+" f.id: "+f.id);
 		return f;
 	}
 

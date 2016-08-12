@@ -5,7 +5,7 @@ import com.chuangyou.common.protobuf.pb.pet.PetSkillActivateRespProto.PetSkillAc
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
-import com.chuangyou.xianni.entity.item.BindType;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.pet.PetInfo;
 import com.chuangyou.xianni.entity.pet.PetSkill;
 import com.chuangyou.xianni.entity.pet.PetSkillInfoCfg;
@@ -52,7 +52,7 @@ public class PetSkillActivateCmd extends AbstractCommand {
 				return;
 			}
 			//扣物品
-			if(!player.getBagInventory().removeItemFromPlayerBag(skillInfoCfg.getNeedjihuoitem(), needPropNum, BindType.ALL)) return;
+			if(!player.getBagInventory().removeItemFromPlayerBag(skillInfoCfg.getNeedjihuoitem(), needPropNum, ItemRemoveType.USE)) return;
 		}
 		//激活
 		skill = new PetSkill(player.getPlayerId(), skillId);

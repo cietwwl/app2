@@ -118,13 +118,13 @@ public class PlayerCreateCmd implements Command {
 			playerInfo.setPkVal(0);
 			playerInfo.setChangeBattleModeTime(0);
 
-			if (req.getRoleConfigId() == 1) {
-				playerInfo.setWeaponId(2110001);
-			} else if (req.getRoleConfigId() == 2) {
-
-			} else if (req.getRoleConfigId() == 3) {
-				playerInfo.setWeaponId(2110004);
-			}
+//			if (req.getRoleConfigId() == 1) {
+//				playerInfo.setWeaponId(2110001);
+//			} else if (req.getRoleConfigId() == 2) {
+//
+//			} else if (req.getRoleConfigId() == 3) {
+//				playerInfo.setWeaponId(2110004);
+//			}
 
 			PlayerJoinInfo playerJoinInfo = new PlayerJoinInfo();
 			playerJoinInfo.setPlayerId(playerInfo.getPlayerId());
@@ -166,8 +166,8 @@ public class PlayerCreateCmd implements Command {
 			playerTimeInfo.setPlayerId(playerInfo.getPlayerId());
 			playerTimeInfo.setResetTime(new Date());
 			playerTimeInfo.setSigleCampCount(0);
-			playerTimeInfo.setBeadRefreshId(InverseBeadInventory.spawnId+"");
-			playerTimeInfo.setCurrRefreshId(InverseBeadInventory.spawnId);
+//			playerTimeInfo.setBeadRefreshId(InverseBeadInventory.spawnId+"");
+//			playerTimeInfo.setCurrRefreshId(InverseBeadInventory.spawnId);
 
 			PlayerPositionInfo playerPositionInfo = new PlayerPositionInfo();
 			playerPositionInfo.setPlayerId(playerInfo.getPlayerId());

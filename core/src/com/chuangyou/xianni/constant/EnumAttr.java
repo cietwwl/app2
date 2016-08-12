@@ -263,6 +263,10 @@ public enum EnumAttr {
 	 * 组队
 	 */
 	TEAM_ID(60),
+	/**
+	 * vip 经验
+	 */
+	VIP_EXP(61),
 
 	/**
 	 * 灵石

@@ -6,11 +6,10 @@ import com.chuangyou.common.protobuf.pb.magicwp.MagicwpBanLevelUpRespProto.Magic
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
-import com.chuangyou.xianni.entity.item.BindType;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.magicwp.MagicwpBanCfg;
 import com.chuangyou.xianni.entity.magicwp.MagicwpBanInfo;
 import com.chuangyou.xianni.magicwp.manager.MagicwpBanLevelManager;
-import com.chuangyou.xianni.magicwp.manager.MagicwpManager;
 import com.chuangyou.xianni.magicwp.template.MagicwpTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -80,7 +79,7 @@ public class MagicwpBanFragmentUseCmd extends AbstractCommand {
 			return;
 		}
 		//扣道具
-		if(!player.getBagInventory().removeItemFromPlayerBag(needItem, 1, BindType.ALL)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(needItem, 1, ItemRemoveType.USE)) return;
 		
 		
 		//激活成功，重新生成字符串

@@ -28,6 +28,8 @@ public class AddEmailRespone implements BaseRespone {
 		String content = params.get("content");//邮件内容
 		String attachment = params.get("attachment");//附件
 		
+	//content= " fdj<color=#FFec14ff>sdfsdf </color>sldfj";
+		
 		GamePlayer player = WorldMgr.getPlayer(playerId);
 		if(player==null || StringUtils.isNullOrEmpty(title) || StringUtils.isNullOrEmpty(content)){
 			return HttpResult.getResult(Code.ERROR, "参数错误");

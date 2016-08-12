@@ -49,7 +49,7 @@ public class AddCollectionLogic implements ISpaceCollectionLogic {
 			return;
 		}
 		message.setIsCollection(SpaceMessageInfo.COLLECTIONED);
-		spaceInfo.setCurCollection(spaceInfo.getCurCollection()+1);		
+		doResultClient(player,req);
 	}
 	
 	
@@ -63,8 +63,8 @@ public class AddCollectionLogic implements ISpaceCollectionLogic {
 		resp.setPlayerId(player.getPlayerId());
 		resp.setOp(req.getOp());
 		resp.setMessageId(req.getMessageId());
-		resp.setCurCollection(spaceInfo.getCurCollection());
-		resp.setMaxCollection(spaceInfo.getCurCollection());
+		resp.setCurCollection(player.getSpaceInventory().calcCurCollection());
+		resp.setMaxCollection(spaceInfo.getMaxCollection());
 		PBMessage pkg = MessageUtil.buildMessage(Protocol.U_RESP_SPACE_SET_COLLECTION,resp);
 		player.sendPbMessage(pkg);
 	}

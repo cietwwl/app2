@@ -57,8 +57,8 @@ public class SystemConfigTemplateMgr {
 	public static int getIdBuiderWay() {
 		SystemConfig cfg = systemTemps.get("id.builder.way");
 		if (cfg == null) {
-			Log.error("getIntValue is null ,key : init.born.way");
-			return 0;
+			Log.error("getIntValue is null ,key : id.builder.way");
+			return 1;
 		}
 		return cfg.getValue();
 	}

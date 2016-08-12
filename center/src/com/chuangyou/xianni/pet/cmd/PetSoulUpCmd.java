@@ -6,10 +6,9 @@ import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
-import com.chuangyou.xianni.entity.item.BindType;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.pet.PetAtt;
 import com.chuangyou.xianni.entity.pet.PetSoulCfg;
-import com.chuangyou.xianni.pet.manager.PetManager;
 import com.chuangyou.xianni.pet.template.PetTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerInfoSendCmd;
@@ -76,7 +75,7 @@ public class PetSoulUpCmd extends AbstractCommand {
         		ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, packet.getCode(), "道具不足");
         		return;
         	}
-    		if(!player.getBagInventory().removeItemFromPlayerBag(petSoul.getNeedItem(), needNum, BindType.ALL)) return;
+    		if(!player.getBagInventory().removeItemFromPlayerBag(petSoul.getNeedItem(), needNum, ItemRemoveType.USE)) return;
         }
         if (moneyNum>0) {
         	if(player.getBasePlayer().getPlayerInfo().getCash() < moneyNum){

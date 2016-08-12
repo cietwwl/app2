@@ -5,10 +5,9 @@ import com.chuangyou.common.protobuf.pb.magicwp.MagicwpOpenRespProto.MagicwpOpen
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
-import com.chuangyou.xianni.entity.item.BindType;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.magicwp.MagicwpCfg;
 import com.chuangyou.xianni.entity.magicwp.MagicwpInfo;
-import com.chuangyou.xianni.magicwp.manager.MagicwpManager;
 import com.chuangyou.xianni.magicwp.template.MagicwpTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -48,7 +47,7 @@ public class MagicwpOpenCmd extends AbstractCommand {
 				return;
 			}
 			//扣道具
-			if(!player.getBagInventory().removeItemFromPlayerBag(magicwpCfg.getItemId(), 1, BindType.ALL)) return;
+			if(!player.getBagInventory().removeItemFromPlayerBag(magicwpCfg.getItemId(), 1, ItemRemoveType.USE)) return;
 		}else{
 		
 			//激活条件

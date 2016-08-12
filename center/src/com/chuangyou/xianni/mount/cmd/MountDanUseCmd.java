@@ -10,7 +10,7 @@ import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
-import com.chuangyou.xianni.entity.item.BindType;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.mount.MountInfo;
 import com.chuangyou.xianni.mount.manager.MountManager;
 import com.chuangyou.xianni.player.GamePlayer;
@@ -40,7 +40,7 @@ public class MountDanUseCmd extends AbstractCommand {
 			return;
 		}
 		//扣道具
-		if(!player.getBagInventory().removeItemFromPlayerBag(danItem, req.getUseNum(), BindType.ALL)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(danItem, req.getUseNum(), ItemRemoveType.USE)) return;
 		
 		mount.setUseDanNum(mount.getUseDanNum() + req.getUseNum());
 		player.getMountInventory().updateMount(mount);

@@ -310,6 +310,13 @@ public interface CenterProtocol {
 	
 	/** 背包格子解锁 */
 	public static short			C_BAG_GRID_UNLOCK				= 10149;
+	
+	// =========================>装备成长================================
+	/** 装备栏信息 */
+	public static short			C_EQUIPBAR_INFO					= 10150;
+	
+	/** 装备信息 */
+	public static short			C_EQUIP_INFO					= 10151;
 
 	// =========================>时装<===================================
 	/** 获取时装信息 */
@@ -356,4 +363,6 @@ public interface CenterProtocol {
 	public static final short	C_INVERSE_MONSTER_SPAWN			=10706;
 	/** 请求领取灵气液**/
 	public static final short	C_INVERSE_RECEIVE_AURA			=10707;
+	// =========================>vip<===============================
+	public static final short	C_VIP_BUY						=10708;
 }

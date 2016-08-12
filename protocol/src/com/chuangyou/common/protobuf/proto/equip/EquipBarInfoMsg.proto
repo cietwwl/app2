@@ -1,0 +1,12 @@
+option java_package = "com.chuangyou.common.protobuf.pb.equip";
+option java_outer_classname = "EquipBarInfoProto";
+
+//栏位信息
+message EquipBarInfoMsg{
+	optional int32 position = 1; // 栏位
+
+	optional int32 level = 2; // 等级
+	optional int32 exp = 3;
+	optional int32 grade = 4; // 加持等级
+	optional int32 bless = 5; // 加持祝福值
+}

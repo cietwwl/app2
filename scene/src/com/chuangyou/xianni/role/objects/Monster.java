@@ -21,6 +21,9 @@ import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.buffer.BufferFactory;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
+import com.chuangyou.xianni.campaign.Campaign;
+import com.chuangyou.xianni.campaign.CampaignMgr;
+import com.chuangyou.xianni.campaign.task.CTBaseCondition;
 import com.chuangyou.xianni.config.SceneGlobal;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.cooldown.CoolDownTypes;
@@ -68,10 +71,8 @@ public class Monster extends ActiveLiving {
 	private static final int	invincibleBufferId	= 99999999;												// 无敌buffer
 																											// id
 	private Buffer				invincibleBuffer	= null;
-
 	// 攻击者
 	private Long attacker;
-
 
 	public int getCurSkillID() {
 		return curSkillID;
@@ -137,6 +138,14 @@ public class Monster extends ActiveLiving {
 				script.action(killer.getArmyId(), getMonsterInfo().getMonsterId());
 			} else {
 				Log.error("-------------getAiConfig().getScript()-------------" + getAiConfig().getScript());
+			}
+
+			if (field != null && field.getCampaignId() > 0) {
+				Campaign campaign = CampaignMgr.getCampagin(field.getCampaignId());
+				if (campaign != null) {
+					campaign.notifyTaskEvent(CTBaseCondition.KILL_MONSTER_KIND, getSkin());
+					campaign.notifyTaskEvent(CTBaseCondition.KILL_MONSTER_COUNT, getSkin());
+				}
 			}
 		}
 		return true;
@@ -209,26 +218,26 @@ public class Monster extends ActiveLiving {
 				return; // 移除增益效果
 			if (damage.getSkillId() > 0 && damage.getTipType() != Damage.MISS) {
 				// 非Buff伤害，更新受击时间搓
-				SkillActionTemplateInfo actionInfo = BattleTempMgr.getActionInfo(damage.getSkillId());
-				if (actionInfo != null) {
-					SkillActionMoveTempleteInfo moveInfo = BattleTempMgr.getActionMoveInfo(actionInfo.getMove());
-					if (moveInfo != null) {
-						if (moveInfo.getMove_hitbackstep() > 0) {
-							float hitbackstep = moveInfo.getMove_hitbackstep() / 10.0f;
-							// System.out.println("hitbackstep = " + hitbackstep
-							// + "getPostion() = " + getPostion() + "
-							// damage.getSource().getPostion() = " +
-							// damage.getSource().getPostion());
-							Vector3 dir = Vector3.sub(getPostion(), damage.getSource().getPostion());
-							dir.y = getPostion().y;
-							Vector3 hitBackPoint = MathUtils.GetVector3ByDir(getPostion(), dir.getNormalize(), hitbackstep);
-							// System.out.println("id = " + id + "hitBackPoint =
-							// " + hitBackPoint);
-							if (isValidPoint(hitBackPoint))
-								setPostion(hitBackPoint);
-						}
-					}
-				}
+//				SkillActionTemplateInfo actionInfo = BattleTempMgr.getActionInfo(damage.getSkillId());
+//				if (actionInfo != null) {
+//					SkillActionMoveTempleteInfo moveInfo = BattleTempMgr.getActionMoveInfo(actionInfo.getMove());
+//					if (moveInfo != null) {
+//						if (moveInfo.getMove_hitbackstep() > 0) {
+//							float hitbackstep = moveInfo.getMove_hitbackstep() / 10.0f;
+//							// System.out.println("hitbackstep = " + hitbackstep
+//							// + "getPostion() = " + getPostion() + "
+//							// damage.getSource().getPostion() = " +
+//							// damage.getSource().getPostion());
+//							Vector3 dir = Vector3.sub(getPostion(), damage.getSource().getPostion());
+//							dir.y = getPostion().y;
+//							Vector3 hitBackPoint = MathUtils.GetVector3ByDir(getPostion(), dir.getNormalize(), hitbackstep);
+//							// System.out.println("id = " + id + "hitBackPoint =
+//							// " + hitBackPoint);
+//							if (isValidPoint(hitBackPoint))
+//								setPostion(hitBackPoint);
+//						}
+//					}
+//				}
 				addCooldown(CoolDownTypes.BE_ATTACK, null, SceneGlobal.AI_BEATTACK_TIME);
 			}
 			if (getAiConfig().isRunAway()) {

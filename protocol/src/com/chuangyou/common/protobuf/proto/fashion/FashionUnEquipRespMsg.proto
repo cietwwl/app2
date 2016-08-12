@@ -2,6 +2,7 @@
 option java_package = "com.chuangyou.common.protobuf.pb.fashion";
 option java_outer_classname = "FashionUnEquipRespProto";
 
+//时装脱下
 message FashionUnEquipRespMsg{
 	optional bool empty = 1; // 空消息标记
 }

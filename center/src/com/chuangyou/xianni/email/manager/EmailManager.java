@@ -5,6 +5,7 @@ import java.util.Date;
 import com.chuangyou.common.protobuf.pb.email.EmailInfoProto.EmailInfo;
 import com.chuangyou.common.protobuf.pb.email.OperationEmailRespProto.OperationEmailRespMsg;
 import com.chuangyou.common.util.Log;
+import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.email.Email;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerState;
@@ -49,6 +50,7 @@ public class EmailManager {
 		email.setCreateTime(new Date());
 		email.setStatus(Email.NORMAL_EMAIL);
 		email.setAttachment(attachment);
+		email.setOp(Option.Insert);
 		
 		OperationEmailRespMsg.Builder resp1 = OperationEmailRespMsg.newBuilder();
 		resp1.setType(1);

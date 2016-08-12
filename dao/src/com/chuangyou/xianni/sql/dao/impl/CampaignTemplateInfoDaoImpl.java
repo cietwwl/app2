@@ -27,7 +27,7 @@ public class CampaignTemplateInfoDaoImpl extends BaseDao implements CampaignTemp
 		CampaignTemplateInfo info = null;
 		if (pstmt != null) {
 			infos = new ArrayList<>();
-			try { 
+			try {
 				rs = pstmt.executeQuery();
 				while (rs.next()) {
 					info = new CampaignTemplateInfo();
@@ -49,7 +49,8 @@ public class CampaignTemplateInfoDaoImpl extends BaseDao implements CampaignTemp
 					info.setOpenTime(rs.getInt("openTime"));
 					info.setStartScriptId(rs.getInt("startScriptId"));
 					info.setEndScriptId(rs.getInt("endScriptId"));
-					info.setTasks(rs.getString("tasks"));
+					info.setTasks(rs.getString("taskIds"));
+					info.setCostItem(rs.getString("costItem"));
 					infos.add(info);
 				}
 			} catch (SQLException e) {

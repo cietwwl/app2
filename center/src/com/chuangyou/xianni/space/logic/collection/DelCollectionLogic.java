@@ -22,7 +22,6 @@ public class DelCollectionLogic extends AddCollectionLogic {
 			return;
 		}
 		message.setIsCollection(SpaceMessageInfo.NO_COLLECTION);
-		spaceInfo.setCurCollection(spaceInfo.getCurCollection()-1);
 		
 		doResultClient(player, req);
 	}

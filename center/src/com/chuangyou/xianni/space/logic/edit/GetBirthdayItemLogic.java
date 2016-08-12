@@ -20,11 +20,12 @@ import com.chuangyou.xianni.protocol.Protocol;
  */
 public class GetBirthdayItemLogic extends EditFaceLogic {
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void doProcess(GamePlayer player, EditSpaceInfoReqMsg req) {
 		// TODO Auto-generated method stub
 		
-		String format = "yyyy-mm-dd";
+		String format = "yyyy-MM-dd";
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		if(player.getSpaceInventory().getSpaceInfo().getIsEditBirthday()==1){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_ENDIT_INFO,"生日礼物已经领过");
@@ -33,7 +34,8 @@ public class GetBirthdayItemLogic extends EditFaceLogic {
 		try {
 			Date birthday = sdf.parse(player.getSpaceInventory().getSpaceInfo().getBirthday());
 			Date now = new Date();
-			if(now.getTime() - birthday.getTime()<1000*3600*24){
+			
+			if(birthday.getDate()== now.getDate() && birthday.getMonth()==now.getMonth()){
 				player.getSpaceInventory().getSpaceInfo().setIsEditBirthday(1);
 				int itemType = SystemConfigTemplateMgr.getBirthdayItem();
 				if(player.getBagInventory().addItem(itemType, 1, ItemAddType.SPACE_ADD, false)==false){

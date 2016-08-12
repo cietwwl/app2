@@ -1,0 +1,15 @@
+//protocol=10151;
+option java_package = "com.chuangyou.common.protobuf.pb.equip";
+option java_outer_classname = "EquipInfoReqProto";
+
+//请求装备信息
+message EquipInfoReqMsg{
+	optional int32 action = 1; // 功能号(1请求装备觉醒  2请求装备注魂)
+	optional int32 bagType = 2; // 装备所在背包类型
+	optional int32 position = 3; // 装备位置
+	optional int32 equipId = 4; // 装备ID
+
+	optional int32 stoneBagType = 5; // 宝石所在背包类型
+	optional int32 stonePos = 6; //宝石所在背包位置
+	optional int32 stoneId = 7; // 要注入的魂石道具ID(请求注魂时使用)
+}

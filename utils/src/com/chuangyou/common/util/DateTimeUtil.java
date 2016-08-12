@@ -34,13 +34,39 @@ public class DateTimeUtil {
 		byteArray[6] = (byte) calendar.get(Calendar.SECOND);
 		return byteArray;
 	}
-	
+
 	/**
 	 * 格式化日期
+	 * 
 	 * @param date
 	 * @return
 	 */
-	public static String format(Date date){
+	public static String format(Date date) {
 		return FORMAT.format(date);
 	}
+
+	/**
+	 * 判断两个日期是否同周
+	 * 
+	 * @param date
+	 * @param date2
+	 * @return
+	 */
+	public static boolean isSameWeekWithToday(Date date, Date date2) {
+		if (date == null || date2 == null) {
+			return false;
+		}
+		// 0.先把Date类型的对象转换Calendar类型的对象
+		Calendar todayCal = Calendar.getInstance();
+		Calendar dateCal = Calendar.getInstance();
+		todayCal.setTime(new Date());
+		dateCal.setTime(date);
+		// 1.比较当前日期在年份中的周数是否相同
+		if (todayCal.get(Calendar.WEEK_OF_YEAR) == dateCal.get(Calendar.WEEK_OF_YEAR)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }

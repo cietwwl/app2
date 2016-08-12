@@ -6,6 +6,8 @@ import com.chuangyou.xianni.entity.campaign.CampaignTaskTemplateInfo;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.warfield.spawn.SpwanNode;
+import com.chuangyou.xianni.warfield.spawn.WorkingState;
 import com.chuangyou.xianni.world.ArmyProxy;
 
 /** 副本任务,任意状态，只有在副本通关时候，才结算奖励 */
@@ -16,7 +18,7 @@ public class CampaignTask {
 	private State			state;		// 任务状态
 
 	private enum State {
-		PROCESSING(1), SUCCESS(2), FAIL(3), BILLING(4);
+		PROCESSING(1), REACHED(2), SUCCESS(3), FAIL(4), BILLING(5);
 		int code;
 
 		private State(int code) {
@@ -28,7 +30,7 @@ public class CampaignTask {
 		this.campaign = campaign;
 		conditon = CTBaseCondition.createCondition(tempInfo);
 		if (conditon.isComplated()) {
-			state = State.SUCCESS;
+			state = State.REACHED;
 		} else {
 			state = State.PROCESSING;
 		}
@@ -37,7 +39,14 @@ public class CampaignTask {
 
 	public void init() {
 		if (getConditionType() == CTBaseCondition.CREATE_SPECIES_MONSTER) {
-			
+			String strIds = getTemp().getStrParam1();
+			if (strIds != null && !strIds.equals("")) {
+				String[] arrIds = strIds.split(",");
+				for (String id : arrIds) {
+					SpwanNode node = campaign.getNode(Integer.valueOf(id));
+					node.stateTransition(new WorkingState(node));
+				}
+			}
 		}
 	}
 
@@ -76,17 +85,18 @@ public class CampaignTask {
 	}
 
 	/** 触发任务事件 */
-	public void notityEvent(int param) {
-		if (conditon.addProgress(param) == false) {
+	public void notityEvent(int param, boolean pass) {
+		if (conditon.addProgress(param) == false && getConditionType() != CTBaseCondition.PASS_TIME_LIMIT) {
 			return;
 		}
 		State older = state;
-		if (conditon.isComplated()) {
+		boolean isComplated = conditon.isComplated();
+		if (isComplated && pass) {
 			state = State.SUCCESS;
-		} else {
-			if (older == State.SUCCESS) {
-				state = State.FAIL;
-			}
+		}
+
+		if (!isComplated && older == State.REACHED) {
+			state = State.FAIL;
 		}
 
 		if (older != state || getConditionType() != CTBaseCondition.PASS_TIME_LIMIT) {

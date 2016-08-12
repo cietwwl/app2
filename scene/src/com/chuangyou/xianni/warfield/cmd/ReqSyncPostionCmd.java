@@ -28,7 +28,7 @@ public class ReqSyncPostionCmd extends AbstractCommand {
 		PlayerMoveSyncMsg moveSync = PlayerMoveSyncMsg.parseFrom(packet.getBytes());
 		Vector3 current = Vector3BuilderHelper.get(moveSync.getCur());
 		ActiveLiving living = (ActiveLiving) f.getLiving(army.getPlayerId());
-		NotifyNearHelper.notifyHelper(f, army, current,new ExcludePetSelector(living));
+		NotifyNearHelper.notifyHelper(f, living, current,new ExcludePetSelector(living));
 	}
 
 }

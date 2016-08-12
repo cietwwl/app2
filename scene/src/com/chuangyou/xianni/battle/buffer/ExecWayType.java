@@ -9,7 +9,7 @@ public class ExecWayType {
 
 	/** 攻击时 */
 	public static final int	ATTACT		= 2;
-	
+
 	/** BUFFER移除 */
 	public static final int	REMOVE		= 3;
 

@@ -4,9 +4,11 @@ option java_outer_classname = "RefreshInverseBeadMsgProto";
 
 //刷新后的数据
 message RefreshInverseBeadMsg {
-	required int32 monsterNum=5;		// 怪物数量
-	required int64 beadRefreshDateTime=6;//怪物刷新时间
-	required int32 auraNum=7;//灵气液个数
-	required int64 auraRefreshDateTime=8;//灵气液刷新时间
+	required int32 monsterNum=1;		// 怪物数量
+	required int64 beadRefreshDateTime=2;//怪物刷新时间
+	required int32 auraNum=3;//灵气液个数
+	required int64 auraRefreshDateTime=4;//灵气液刷新时间
+	required int32 monsterLv=5;// 怪物等级
+	required int32 lastTime=6;// 剩余时间
 	
 }

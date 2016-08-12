@@ -19,7 +19,7 @@ public class PlayerInverseBeadDaoImpl extends BaseDao implements PlayerInverseBe
 
 		playerInverseBead.beginAdd();
 		boolean result = false;
-		String sql = "INSERT INTO tb_u_inverse_bead (playerId,fiveElements,marking,stage,val)" + " VALUES (?,?,?,?);";
+		String sql = "INSERT INTO tb_u_inverse_bead (playerId,fiveElements,marking,stage,val,attVal,attVal2)" + " VALUES (?,?,?,?,?,?,?);";
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.BIGINT, playerInverseBead.getPlayerId()));
 		para.put(2, new DbParameter(Types.INTEGER, playerInverseBead.getFiveElements()));
@@ -38,15 +38,18 @@ public class PlayerInverseBeadDaoImpl extends BaseDao implements PlayerInverseBe
 
 		boolean result = false;
 		playerInverseBead.beginUpdate();
-		String sql = "update tb_u_hero_skill_info set skillId=?,skillLV=? where playerId=? and type=? and subType=? and grandsonType=?";
+		String sql = "update tb_u_inverse_bead set stage=?,val=?,attVal=?,attVal2=? where playerId=? and fiveElements=? and marking=?";
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
-		para.put(1, new DbParameter(Types.BIGINT, playerInverseBead.getPlayerId()));
-		para.put(2, new DbParameter(Types.INTEGER, playerInverseBead.getFiveElements()));
-		para.put(3, new DbParameter(Types.INTEGER, playerInverseBead.getMarking()));
-		para.put(4, new DbParameter(Types.INTEGER, playerInverseBead.getStage()));
-		para.put(5, new DbParameter(Types.INTEGER, playerInverseBead.getVal()));
-		para.put(6, new DbParameter(Types.INTEGER, playerInverseBead.getAttVal()));
-		para.put(7, new DbParameter(Types.INTEGER, playerInverseBead.getAttVal2()));
+
+		para.put(1, new DbParameter(Types.INTEGER, playerInverseBead.getStage()));
+		para.put(2, new DbParameter(Types.INTEGER, playerInverseBead.getVal()));
+		para.put(3, new DbParameter(Types.INTEGER, playerInverseBead.getAttVal()));
+		para.put(4, new DbParameter(Types.INTEGER, playerInverseBead.getAttVal2()));
+
+		para.put(5, new DbParameter(Types.BIGINT, playerInverseBead.getPlayerId()));
+		para.put(6, new DbParameter(Types.INTEGER, playerInverseBead.getFiveElements()));
+		para.put(7, new DbParameter(Types.INTEGER, playerInverseBead.getMarking()));
+
 		result = execNoneQuery(sql, para) > -1 ? true : false;
 		playerInverseBead.commitUpdate(result);
 		return result;

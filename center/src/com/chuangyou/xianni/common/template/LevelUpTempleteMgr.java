@@ -111,6 +111,26 @@ public class LevelUpTempleteMgr {
 		}
 		return typeLevelMap.get(level);
 	}
+	
+	/**
+	 * 获取装备栏最高等级
+	 * @param position
+	 * @return
+	 */
+	public static int getEquipBarMaxLevel(short position){
+		return maxLevelMap.get(LevelUpType.EQUIPBARSTART + position);
+	}
+	/**
+	 * 获取装备栏升级信息
+	 * @param position
+	 * @param level
+	 * @return
+	 */
+	public static LevelUp getEquipBarLevel(short position, int level){
+		Map<Integer, LevelUp> levels = levelUpMap.get(LevelUpType.EQUIPBARSTART + position);
+		if(levels == null) return new LevelUp();
+		return levels.get(level);
+	}
 
 	public static Map<Integer, Map<Integer, LevelUp>> getLevelUpMap() {
 		return levelUpMap;

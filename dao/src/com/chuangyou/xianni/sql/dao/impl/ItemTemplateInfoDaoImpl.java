@@ -51,6 +51,7 @@ public class ItemTemplateInfoDaoImpl extends BaseDao implements ItemTemplateInfo
 					info.setBind(rs.getByte("bind"));
 					info.setBindtime(rs.getInt("bindtime"));
 					info.setId_action(rs.getString("id_action"));
+					info.setJiachilimit(rs.getInt("jiachilimit"));
 					info.setJiachi1(rs.getInt("jiachi1"));
 					info.setStatistics1(rs.getInt("statistics1"));
 					info.setJiachi2(rs.getInt("jiachi2"));

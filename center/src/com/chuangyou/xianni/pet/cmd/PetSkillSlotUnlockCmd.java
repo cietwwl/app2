@@ -1,13 +1,11 @@
 package com.chuangyou.xianni.pet.cmd;
 
-import java.util.Map;
-
 import com.chuangyou.common.protobuf.pb.pet.PetSkillSlotUnlockReqProto.PetSkillSlotUnlockReqMsg;
 import com.chuangyou.common.protobuf.pb.pet.PetSkillSlotUnlockRespProto.PetSkillSlotUnlockRespMsg;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
-import com.chuangyou.xianni.entity.item.BindType;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.pet.PetAtt;
 import com.chuangyou.xianni.entity.pet.PetSkillSlotCfg;
 import com.chuangyou.xianni.pet.template.PetTemplateMgr;
@@ -49,7 +47,7 @@ public class PetSkillSlotUnlockCmd extends AbstractCommand {
 			return;
 		}
 		//扣物品
-		if(!player.getBagInventory().removeItemFromPlayerBag(needId, needNum, BindType.ALL)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(needId, needNum, ItemRemoveType.USE)) return;
 		//开锁
         petAtt.setSkillSlotNum(targetNum);
         player.getPetInventory().updatePetAtt(petAtt);

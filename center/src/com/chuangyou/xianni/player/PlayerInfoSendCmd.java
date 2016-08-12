@@ -12,6 +12,7 @@ import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.item.ItemFaceListMsgProto.ItemFaceListMsg;
 import com.chuangyou.common.protobuf.pb.item.ItemFaceMsgProto.ItemFaceMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
+import com.chuangyou.common.protobuf.pb.player.PlayerTimeMsgProto.PlayerTimeMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.army.ArmyInventory;
 import com.chuangyou.xianni.bag.BagMessage;
@@ -20,6 +21,7 @@ import com.chuangyou.xianni.entity.pet.PetAtt;
 import com.chuangyou.xianni.entity.pet.PetInfo;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.player.PlayerPositionInfo;
+import com.chuangyou.xianni.entity.player.PlayerTimeInfo;
 import com.chuangyou.xianni.pet.PetInventory;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -41,9 +43,22 @@ public class PlayerInfoSendCmd {
 			playerInfo.setPostionMsg(postionBuilder.build());
 			return playerInfo.build();
 		} catch (Exception e) {
-			Log.error("通知更新领主属性失败!", e);
+			Log.error("通知更新玩家属性失败!", e);
 		}
 		return null;
+	}
+
+	public static void sendPlayerTimeData(GamePlayer player) {
+		try {
+			BasePlayer basePlayer = player.getBasePlayer();
+			PlayerTimeInfo info = basePlayer.getPlayerTimeInfo();
+			PlayerTimeMsg.Builder builder = PlayerTimeMsg.newBuilder();
+			info.writeProto(builder);
+			PBMessage message = MessageUtil.buildMessage(Protocol.U_TIME_INFO, builder.build());
+			player.sendPbMessage(message);
+		} catch (Exception e) {
+			Log.error("通知更新玩家个人数据失败");
+		}
 	}
 
 	/**

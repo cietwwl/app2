@@ -124,7 +124,12 @@ public class Campaign extends AbstractActionQueue {
 			}
 		}
 		this.beginTime = System.currentTimeMillis();
-		this.endTime = beginTime + 2 * 60 * 60 * 1000;
+		if (campaignTemplateInfo.getOpenTime() == 0) {
+			this.endTime = beginTime + 2 * 60 * 60 * 1000;
+		} else {
+			this.endTime = beginTime + campaignTemplateInfo.getOpenTime() * 60l * 1000;
+		}
+		expiredTime = endTime;
 		CampaignCheckAction action = new CampaignCheckAction(this);
 		enDelayQueue(action);
 	}
@@ -184,6 +189,7 @@ public class Campaign extends AbstractActionQueue {
 			return;
 		}
 		state = new SuccessState(this);
+
 		CampaignStatuMsg.Builder cstatu = CampaignStatuMsg.newBuilder();
 		cstatu.setIndexId(getIndexId());
 		cstatu.setTempId(campaignId);
@@ -484,11 +490,7 @@ public class Campaign extends AbstractActionQueue {
 
 		@Override
 		public void execute() {
-			if (state.getCode() == CampaignState.SUCCESS) {
-				notifyTaskEvent(CTBaseCondition.PASS_TIME_LIMIT, 1);
-			} else {
-				notifyTaskEvent(CTBaseCondition.PASS_TIME_LIMIT, 2);
-			}
+			notifyTaskEvent(CTBaseCondition.PASS_TIME_LIMIT, 1);
 
 			if (state.getCode() == CampaignState.STOP) {
 				return;
@@ -502,14 +504,18 @@ public class Campaign extends AbstractActionQueue {
 		}
 	}
 
-	protected void notifyTaskEvent(int event, int param) {
+	public void notifyTaskEvent(int event, int param) {
 		if (task == null) {
 			return;
 		}
 		if (task.getConditionType() != event) {
 			return;
 		}
-		task.notityEvent(param);
+		if (state instanceof SuccessState) {
+			task.notityEvent(param, true);
+		} else {
+			task.notityEvent(param, false);
+		}
 	}
 
 	public CampaignTask getTask() {

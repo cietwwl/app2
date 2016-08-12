@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
@@ -24,7 +23,6 @@ import com.chuangyou.xianni.player.cmd.GamePlayerDisposeCmd;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.shop.ShopServerManager;
 import com.chuangyou.xianni.sql.dao.DBManager;
-import com.chuangyou.xianni.team.reaction.ChangeLineAction;
 import com.chuangyou.xianni.word.WorldMgr.Players.PlayerData;
 
 public class WorldMgr {
@@ -114,7 +112,6 @@ public class WorldMgr {
 	public static boolean isExist(long playerId) {
 		return players.isExist(playerId);
 	}
-	
 
 	/**
 	 * 退出
@@ -127,11 +124,6 @@ public class WorldMgr {
 			return false;
 		}
 		player.setPlayerState(PlayerState.OFFLINE);
-
-
-		ChangeLineAction action = new ChangeLineAction(player, null, false);
-		action.getActionQueue().enqueue(action);
-
 		try {
 			player.save();
 			player.unLoadPersonData();
@@ -169,20 +161,21 @@ public class WorldMgr {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * 获取所有在线玩家
+	 * 
 	 * @return
 	 */
-	public static List<Long> getPlayerIds(Selector selector){
+	public static List<Long> getPlayerIds(Selector selector) {
 		List<Long> list = new ArrayList<Long>();
 		Iterator<GamePlayer> it = getAllPlayers().iterator();
 		while (it.hasNext()) {
 			GamePlayer player = it.next();
-			if(selector == null){
+			if (selector == null) {
 				list.add(player.getPlayerId());
-			}else{
-				if(selector.selectPlayer(player)){
+			} else {
+				if (selector.selectPlayer(player)) {
 					list.add(player.getPlayerId());
 				}
 			}
@@ -259,21 +252,6 @@ public class WorldMgr {
 	 */
 	private static void saveSystemData() {
 		ShopServerManager.saveToDatabase();
-		// WorldBossMgr.save();
-		// TowerMgr.save();
-		// GuildWarMgr.save();
-		// ConsortiaFamMgr.saveAll();
-		// PetRankMgr.updateToDB();
-		// AdditionMgr.save();
-		// OpRecordMgr.save();
-		// KingTowerCampaignMgr.saveAll();
-		// LotteryMgr.save();
-		// GodChallengeMgr.save();
-		// MarriageMgr.save();
-		// NotifyServicesMgr.save();
-		// CastleGuildMgr.save();
-		// CrossLeagueMgr.save();
-		// PetIslandMgr.save();
 	}
 
 	static class Players {
@@ -403,6 +381,15 @@ public class WorldMgr {
 
 			public GamePlayer getPlayer() {
 				return player;
+			}
+		}
+	}
+
+	public static void resetTimeInfo() {
+		List<GamePlayer> players = getAllPlayers();
+		for (GamePlayer player : players) {
+			if (player.getPlayerState() == PlayerState.ONLINE) {
+				player.resetPlayerData();
 			}
 		}
 	}

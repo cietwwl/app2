@@ -10,10 +10,14 @@ import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.army.Living;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
+import com.chuangyou.xianni.entity.equip.EquipBarGradeCfg;
+import com.chuangyou.xianni.entity.equip.EquipBarInfo;
+import com.chuangyou.xianni.entity.equip.EquipSuitCfg;
 import com.chuangyou.xianni.entity.item.BindType;
 import com.chuangyou.xianni.entity.item.ItemInfo;
 import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
 import com.chuangyou.xianni.entity.property.BaseProperty;
+import com.chuangyou.xianni.equip.template.EquipTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerInfoSendCmd;
 import com.chuangyou.xianni.skill.SkillUtil;
@@ -379,7 +383,7 @@ public class BaseBag extends AbstractBag {
 	 * 检查某个装备是否有镶嵌宝石
 	 */
 	private boolean hasInlay(BaseItem item) {
-		return false;
+		return item.getItemInfo().getStone() > 0;
 	}
 
 	public void saveDataBase() {
@@ -408,7 +412,7 @@ public class BaseBag extends AbstractBag {
 	public void getBagJoin(BaseProperty bagData, BaseProperty bagPer) {
 		// 一、计算物品加成
 		List<BaseItem> items = getItems();
-		Map<Integer, Integer> suiteMap = new HashMap<Integer, Integer>();
+		Map<Integer, Integer> suitMap = new HashMap<Integer, Integer>();
 		List<Integer> skills = new ArrayList<Integer>();
 		StringBuilder tempStr = new StringBuilder();
 		tempStr.append(",");
@@ -420,13 +424,81 @@ public class BaseBag extends AbstractBag {
 			float grow = info.getGrow() / 10000f;// 成长系数
 
 			SimpleProperty property = SkillUtil.readPro(itemBase);
+			
+			//装备栏等级
+			ItemTemplateInfo tempInfo = item.getItemTempInfo();
+			EquipBarInfo equipBar = player.getEquipInventory().getEquipBarByPos(info.getPos());
+			if(equipBar == null) continue;
+			int level = equipBar.getLevel();
+			if(tempInfo.getJiachilimit() < level){
+				level = tempInfo.getJiachilimit();
+			}
 
-			float proVal = (property.getValue() + 1 * grow) * (1 + 1 * qualityCoefficient); // 装备属性=（初始属性+装备等级*属性成长值）*（1+装备等级*品质系数）
-
+			float proVal = (property.getValue() + level * grow) * (1 + level * qualityCoefficient); // 装备属性=（初始属性+装备等级*属性成长值）*（1+装备等级*品质系数）
+			
+			//装备栏加持等级
+			EquipBarGradeCfg equipBarCfg = EquipTemplateMgr.getBarGradeCfg(info.getPos(), equipBar.getGrade());
+			if(equipBarCfg != null){
+				proVal = proVal * (1 + equipBarCfg.getAddProperty()/10000f);
+			}
+			
+			//基本属性结算
 			if (property.isPre()) {
 				SkillUtil.joinPro(bagPer, property.getType(), (int) Math.ceil(proVal));
 			} else {
 				SkillUtil.joinPro(bagData, property.getType(), (int) Math.ceil(proVal));
+			}
+			
+			//加持激活额外属性
+			if(tempInfo.getJiachi1() > 0 && tempInfo.getStatistics1() > 0){
+				if(equipBar.getGrade() >= tempInfo.getJiachi1()){
+					SimpleProperty jiachiPro1 = SkillUtil.readPro(tempInfo.getStatistics1());
+					if(jiachiPro1.isPre()){
+						SkillUtil.joinPro(bagPer, jiachiPro1.getType(), jiachiPro1.getValue());
+					}else{
+						SkillUtil.joinPro(bagData, jiachiPro1.getType(), jiachiPro1.getValue());
+					}
+				}
+			}
+			if(tempInfo.getJiachi2() > 0 && tempInfo.getStatistics2() > 0){
+				if(equipBar.getGrade() >= tempInfo.getJiachi2()){
+					SimpleProperty jiachiPro2 = SkillUtil.readPro(tempInfo.getStatistics2());
+					if(jiachiPro2.isPre()){
+						SkillUtil.joinPro(bagPer, jiachiPro2.getType(), jiachiPro2.getValue());
+					}else{
+						SkillUtil.joinPro(bagData, jiachiPro2.getType(), jiachiPro2.getValue());
+					}
+				}
+			}
+			if(tempInfo.getJiachi3() > 0 && tempInfo.getStatistics3() > 0){
+				if(equipBar.getGrade() >= tempInfo.getJiachi3()){
+					SimpleProperty jiachiPro3 = SkillUtil.readPro(tempInfo.getStatistics3());
+					if(jiachiPro3.isPre()){
+						SkillUtil.joinPro(bagPer, jiachiPro3.getType(), jiachiPro3.getValue());
+					}else{
+						SkillUtil.joinPro(bagData, jiachiPro3.getType(), jiachiPro3.getValue());
+					}
+				}
+			}
+			if(tempInfo.getJiachi4() > 0 && tempInfo.getStatistics4() > 0){
+				if(equipBar.getGrade() >= tempInfo.getJiachi4()){
+					SimpleProperty jiachiPro4 = SkillUtil.readPro(tempInfo.getStatistics4());
+					if(jiachiPro4.isPre()){
+						SkillUtil.joinPro(bagPer, jiachiPro4.getType(), jiachiPro4.getValue());
+					}else{
+						SkillUtil.joinPro(bagData, jiachiPro4.getType(), jiachiPro4.getValue());
+					}
+				}
+			}
+			
+			//统计套装
+			if(info.getStone() > 0){
+				ItemTemplateInfo stoneTemp = ItemManager.findItemTempInfo(info.getStone());
+				if(!suitMap.containsKey(stoneTemp.getSuit_id())){
+					suitMap.put(stoneTemp.getSuit_id(), 0);
+				}
+				int suitCount = suitMap.get(stoneTemp.getSuit_id());
+				suitMap.put(stoneTemp.getSuit_id(), suitCount + 1);
 			}
 
 			// 2.0,装备属性
@@ -439,6 +511,24 @@ public class BaseBag extends AbstractBag {
 			// 3.0 统计套装
 
 			// 3.1统计随机技能
+		}
+		
+		//计算套装属性
+		for(int key: suitMap.keySet()){
+			int suitCount = suitMap.get(key);
+			EquipSuitCfg suitCfg = EquipTemplateMgr.getSuitMap().get(key);
+			if(suitCfg == null) continue;
+			Map<Integer, Integer> attMap = suitCfg.getAttMap();
+			for(int count: attMap.keySet()){
+				if(suitCount >= count){
+					SimpleProperty property = SkillUtil.readPro(attMap.get(count));
+					if(property.isPre()){
+						SkillUtil.joinPro(bagPer, property.getType(), property.getValue());
+					}else{
+						SkillUtil.joinPro(bagData, property.getType(), property.getValue());
+					}
+				}
+			}
 		}
 
 		// 二、计算套装加成（查找PropertyX值->技能模板找到加成值）

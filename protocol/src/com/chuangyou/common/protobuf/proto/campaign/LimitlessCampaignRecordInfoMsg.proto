@@ -1,0 +1,8 @@
+//protocol=606;
+option java_package = "com.chuangyou.common.protobuf.pb.campaign";
+option java_outer_classname = "LimitlessCampaignRecordInfoMsgProto";
+message LimitlessCampaignRecordInfoMsg{
+	optional int32  campaignId = 1; //副本ID
+	optional int64  updataTime= 2; //完成时间
+}
+

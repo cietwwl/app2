@@ -521,6 +521,74 @@ public abstract class Living {
 		properties[EARTH_DEFENCE].setPetPer(petPer.getEarthDefence());
 		properties[SPEED].setPetPer(petPer.getSpeed());
 	}
+	
+	/**
+	 * 添加时装属性
+	 * 
+	 * @param petData
+	 */
+	public void addFashion(BaseProperty fashionData, BaseProperty fashionPer) {
+		// 添加时装属性
+		properties[SOUL].setFashionData(fashionData.getSoul());
+		properties[BLOOD].setFashionData(fashionData.getBlood());
+		properties[ATTACK].setFashionData(fashionData.getAttack());
+		properties[DEFENCE].setFashionData(fashionData.getDefence());
+		properties[SOUL_ATTACK].setFashionData(fashionData.getSoulAttack());
+		properties[SOUL_DEFENCE].setFashionData(fashionData.getSoulDefence());
+		properties[ACCURATE].setFashionData(fashionData.getAccurate());
+		properties[DODGE].setFashionData(fashionData.getDodge());
+		properties[CRIT].setFashionData(fashionData.getCrit());
+		properties[CRIT_DEFENCE].setFashionData(fashionData.getCritDefence());
+		properties[CRIT_ADDTION].setFashionData(fashionData.getCritAddtion());
+		properties[CRIT_CUT].setFashionData(fashionData.getCritCut());
+		properties[BLOOD_ATTACK_ADDTION].setFashionData(fashionData.getBloodAttackAddtion());
+		properties[BLOOD_ATTACK_CUT].setFashionData(fashionData.getBloodAttackCut());
+		properties[SOUL_ATTACK_ADDTION].setFashionData(fashionData.getSoulAttackAddtion());
+		properties[SOUL_ATTACK_CUT].setFashionData(fashionData.getBloodAttackCut());
+		properties[REGAIN_SOUL].setFashionData(fashionData.getRegainSoul());
+		properties[REGAIN_BLOOD].setFashionData(fashionData.getRegainBlood());
+		properties[METAL].setFashionData(fashionData.getMetal());
+		properties[WOOD].setFashionData(fashionData.getWood());
+		properties[WATER].setFashionData(fashionData.getWater());
+		properties[FIRE].setFashionData(fashionData.getFire());
+		properties[EARTH].setFashionData(fashionData.getEarth());
+		properties[METAL_DEFENCE].setFashionData(fashionData.getMetalDefence());
+		properties[WOOD_DEFENCE].setFashionData(fashionData.getWoodDefence());
+		properties[WATER_DEFENCE].setFashionData(fashionData.getWaterDefence());
+		properties[FIRE_DEFENCE].setFashionData(fashionData.getFireDefence());
+		properties[EARTH_DEFENCE].setFashionData(fashionData.getEarthDefence());
+
+		// 时装百分比加成
+		properties[SOUL].setFashionPer(fashionPer.getSoul());
+		properties[BLOOD].setFashionPer(fashionPer.getBlood());
+		properties[ATTACK].setFashionPer(fashionPer.getAttack());
+		properties[DEFENCE].setFashionPer(fashionPer.getDefence());
+		properties[SOUL_ATTACK].setFashionPer(fashionPer.getSoulAttack());
+		properties[SOUL_DEFENCE].setFashionPer(fashionPer.getSoulDefence());
+		properties[ACCURATE].setFashionPer(fashionPer.getAccurate());
+		properties[DODGE].setFashionPer(fashionPer.getDodge());
+		properties[CRIT].setFashionPer(fashionPer.getCrit());
+		properties[CRIT_DEFENCE].setFashionPer(fashionPer.getCritDefence());
+		properties[CRIT_ADDTION].setFashionPer(fashionPer.getCritAddtion());
+		properties[CRIT_CUT].setFashionPer(fashionPer.getCritCut());
+		properties[BLOOD_ATTACK_ADDTION].setFashionPer(fashionPer.getBloodAttackAddtion());
+		properties[BLOOD_ATTACK_CUT].setFashionPer(fashionPer.getBloodAttackCut());
+		properties[SOUL_ATTACK_ADDTION].setFashionPer(fashionPer.getSoulAttackAddtion());
+		properties[SOUL_ATTACK_CUT].setFashionPer(fashionPer.getBloodAttackCut());
+		properties[REGAIN_SOUL].setFashionPer(fashionPer.getRegainSoul());
+		properties[REGAIN_BLOOD].setFashionPer(fashionPer.getRegainBlood());
+		properties[METAL].setFashionPer(fashionPer.getMetal());
+		properties[WOOD].setFashionPer(fashionPer.getWood());
+		properties[WATER].setFashionPer(fashionPer.getWater());
+		properties[FIRE].setFashionPer(fashionPer.getFire());
+		properties[EARTH].setFashionPer(fashionPer.getEarth());
+		properties[METAL_DEFENCE].setFashionPer(fashionPer.getMetalDefence());
+		properties[WOOD_DEFENCE].setFashionPer(fashionPer.getWoodDefence());
+		properties[WATER_DEFENCE].setFashionPer(fashionPer.getWaterDefence());
+		properties[FIRE_DEFENCE].setFashionPer(fashionPer.getFireDefence());
+		properties[EARTH_DEFENCE].setFashionPer(fashionPer.getEarthDefence());
+		properties[SPEED].setFashionPer(fashionPer.getSpeed());
+	}
 
 	public void writeProto(GamePlayer player, PropertyListMsg.Builder propertyMsgs) {
 		PlayerJoinInfo joinInfo = player.getBasePlayer().getPlayerJoinInfo();

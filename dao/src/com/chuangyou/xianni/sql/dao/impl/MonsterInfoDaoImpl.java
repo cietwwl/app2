@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 import com.chuangyou.xianni.sql.dao.MonsterInfoDao;
 import com.chuangyou.xianni.sql.db.BaseDao;
@@ -43,14 +44,14 @@ public class MonsterInfoDaoImpl extends BaseDao implements MonsterInfoDao {
 					info.setSkin(rs.getShort("skin"));
 					info.setLevel(rs.getInt("level"));
 					info.setMonsterType(rs.getInt("monsterType"));
-					
+
 					info.setAlertRange(rs.getInt("alertRange"));
 					info.setSeekEnemyRange(rs.getInt("seekEnemyRange"));
 					info.setAttackRange(rs.getInt("attackRange"));
 					info.setFollowUpDistance(rs.getInt("followUpDistance"));
 					info.setMoveSpeed(rs.getInt("moveSpeed"));
 					info.setAttackSpeed(rs.getInt("attackSpeed"));
-					
+
 					info.setSoulHpValue(rs.getLong("soulHpValue"));
 					info.setHp(rs.getLong("hp"));
 					info.setHurtValue(rs.getInt("hurtValue"));
@@ -73,9 +74,7 @@ public class MonsterInfoDaoImpl extends BaseDao implements MonsterInfoDao {
 				}
 			} catch (SQLException e) {
 				infos = null;
-				// Log.error("执行出错" + sqlText, e);
-				System.out.println("执行出错" + sqlText);
-				System.out.println(e);
+				Log.error("执行出错" + sqlText, e);
 			} finally {
 				closeConn(pstmt, rs);
 			}

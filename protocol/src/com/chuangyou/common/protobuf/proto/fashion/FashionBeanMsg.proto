@@ -1,6 +1,7 @@
 option java_package = "com.chuangyou.common.protobuf.pb.fashion";
 option java_outer_classname = "FashionBeanProto";
 
+//时装结构体
 message FashionBeanMsg{
 	optional int32 id = 1; // 时装ID
 	optional int32 quality = 2; // 品质

@@ -27,8 +27,11 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		boolean result = false;
 		playerInfo.beginAdd();
 		String sql = "INSERT INTO tb_u_player_info (playerId,userId,job,nickname,level,exp,totalExp,money,bindCash,cash,vipLevel"
-				+ ",fight,skinId,pBagCount,mountId,magicWeaponId,skillStage,repair,battleMode,pkVal,changeBattleModeTime,fashionId," + "weaponId,wingId,points) "
-				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+				+ ",fight,skinId,pBagCount,mountId,magicWeaponId,skillStage,repair,battleMode,pkVal,changeBattleModeTime,fashionId,"
+
+				+ "weaponId,wingId,points,vipTimeLimit,vipInterimTimeLimit,vipExp,equipExp) "
+				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.BIGINT, playerInfo.getPlayerId()));
 		para.put(2, new DbParameter(Types.BIGINT, playerInfo.getUserId()));
@@ -56,6 +59,15 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		para.put(23, new DbParameter(Types.INTEGER, playerInfo.getWeaponId()));
 		para.put(24, new DbParameter(Types.INTEGER, playerInfo.getWingId()));
 		para.put(25, new DbParameter(Types.INTEGER, playerInfo.getPoints()));
+
+		
+		para.put(26, new DbParameter(Types.DATE, playerInfo.getVipTimeLimit()));
+		para.put(27, new DbParameter(Types.DATE, playerInfo.getVipInterimTimeLimit()));
+		para.put(28, new DbParameter(Types.INTEGER, playerInfo.getVipExp()));
+		
+
+		para.put(29, new DbParameter(Types.BIGINT, playerInfo.getEquipExp()));
+
 		result = execNoneQuery(sql, para) > -1 ? true : false;
 		playerInfo.commitAdd(result);
 		return result;
@@ -67,7 +79,8 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		playerInfo.beginUpdate();
 		String sql = "update tb_u_player_info set nickname=?,level=?,exp=?,totalExp=?,money=?"
 				+ ",bindCash=?,cash=?,vipLevel=?,fight=?,skinId=?,pBagCount=?,mountId=?,magicWeaponId=?,skillStage=?,"
-				+ "repair=?,battleMode=?,pkVal=?,changeBattleModeTime=?,fashionId=?,weaponId=?,wingId=?,points=? where playerId=?";
+				+ "repair=?,battleMode=?,pkVal=?,changeBattleModeTime=?,fashionId=?,weaponId=?,wingId=?,points=?,vipTimeLimit=?,vipInterimTimeLimit=?,vipExp=?,equipExp=? where playerId=?";
+ 
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.VARCHAR, playerInfo.getNickName()));
 		para.put(2, new DbParameter(Types.INTEGER, playerInfo.getLevel()));
@@ -93,8 +106,15 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		para.put(20, new DbParameter(Types.INTEGER, playerInfo.getWeaponId()));
 		para.put(21, new DbParameter(Types.INTEGER, playerInfo.getWingId()));
 		para.put(22, new DbParameter(Types.INTEGER, playerInfo.getPoints()));
+		
+		para.put(23, new DbParameter(Types.DATE, playerInfo.getVipTimeLimit()));
+		para.put(24, new DbParameter(Types.DATE, playerInfo.getVipInterimTimeLimit()));
+		para.put(25, new DbParameter(Types.INTEGER, playerInfo.getVipExp()));
+ 
+		para.put(26, new DbParameter(Types.BIGINT, playerInfo.getEquipExp()));
+ 
+		para.put(27, new DbParameter(Types.BIGINT, playerInfo.getPlayerId()));
 
-		para.put(23, new DbParameter(Types.BIGINT, playerInfo.getPlayerId()));
 		result = execNoneQuery(sql, para) > -1 ? true : false;
 
 		playerInfo.commitUpdate(result);
@@ -158,7 +178,12 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 					info.setWeaponId(rs.getInt("weaponId"));
 					info.setWingId(rs.getInt("wingId"));
 					info.setPoints(rs.getInt("points"));
+					info.setEquipExp(rs.getLong("equipExp"));
 
+					info.setVipTimeLimit(rs.getDate("vipTimeLimit"));
+					info.setVipInterimTimeLimit(rs.getDate("vipInterimTimeLimit"));
+					info.setVipExp(rs.getInt("vipExp"));
+					
 					info.setOp(Option.None);
 					infos.add(info);
 				}
@@ -348,18 +373,11 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		// TODO Auto-generated method stub
 		boolean result = false;
 		playerTimeInfo.beginAdd();
-		String sql = "replace into tb_u_player_time_info(playerId,sigleCampCount,resetTime,currRefreshId,beadRefreshId,beadRefreshDateTime,auraNum,auraRefreshDateTime) values(?,?,?,?,?,?,?,?)";
+		String sql = "replace into tb_u_player_time_info(playerId,sigleCampCount,resetTime) values(?,?,?)";
 		Map<Integer, DbParameter> params = new HashMap<Integer, DbParameter>();
 		params.put(1, new DbParameter(Types.BIGINT, playerTimeInfo.getPlayerId()));
 		params.put(2, new DbParameter(Types.INTEGER, playerTimeInfo.getSigleCampCount()));
 		params.put(3, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getResetTime()));
-
-		params.put(4, new DbParameter(Types.INTEGER, playerTimeInfo.getCurrRefreshId()));
-		params.put(5, new DbParameter(Types.VARCHAR, playerTimeInfo.getBeadRefreshId()));
-		params.put(6, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getBeadRefreshDateTime()));
-		params.put(7, new DbParameter(Types.INTEGER, playerTimeInfo.getAuraNum()));
-		params.put(8, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getAuraRefreshDateTime()));
-
 		result = execNoneQuery(sql, params) > -1 ? true : false;
 		playerTimeInfo.commitAdd(result);
 		return result;
@@ -370,20 +388,11 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		// TODO Auto-generated method stub
 		boolean result = false;
 		playerTimeInfo.beginUpdate();
-		String sql = "update tb_u_player_time_info set sigleCampCount=?,resetTime=?,currRefreshId=?,beadRefreshId=?,beadRefreshDateTime=?,auraNum=?,auraRefreshDateTime=? where playerId=?";
+		String sql = "update tb_u_player_time_info set testTime=? where playerId=?";
 		Map<Integer, DbParameter> params = new HashMap<Integer, DbParameter>();
-
 		params.put(1, new DbParameter(Types.INTEGER, playerTimeInfo.getSigleCampCount()));
-		params.put(2, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getResetTime()));
-		params.put(3, new DbParameter(Types.INTEGER, playerTimeInfo.getCurrRefreshId()));
-		params.put(4, new DbParameter(Types.VARCHAR, playerTimeInfo.getBeadRefreshId()));
-		params.put(5, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getBeadRefreshDateTime()));
-
-		params.put(6, new DbParameter(Types.INTEGER, playerTimeInfo.getAuraNum()));
-		params.put(7, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getAuraRefreshDateTime()));
-
-		params.put(8, new DbParameter(Types.BIGINT, playerTimeInfo.getPlayerId()));
-
+		params.put(2, new DbParameter(Types.TIME, playerTimeInfo.getResetTime()));
+		params.put(3, new DbParameter(Types.BIGINT, playerTimeInfo.getPlayerId()));
 		result = execNoneQuery(sql, params) > -1 ? true : false;
 		playerTimeInfo.commitUpdate(result);
 		return result;
@@ -413,17 +422,6 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 					Timestamp time = rs.getTimestamp("resetTime");
 					if (time != null) {
 						info.setResetTime(new Date(time.getTime()));
-					}
-					info.setCurrRefreshId(rs.getInt("currRefreshId"));
-					info.setBeadRefreshId(rs.getString("beadRefreshId"));
-					Timestamp beadRefreshDateTime = rs.getTimestamp("beadRefreshDateTime");
-					if (beadRefreshDateTime != null) {
-						info.setBeadRefreshDateTime(beadRefreshDateTime);
-					}
-					info.setAuraNum(rs.getInt("auraNum"));
-					Timestamp auraRefreshDateTime = rs.getTimestamp("auraRefreshDateTime");
-					if (auraRefreshDateTime != null) {
-						info.setAuraRefreshDateTime(auraRefreshDateTime);
 					}
 				}
 			} catch (SQLException e) {

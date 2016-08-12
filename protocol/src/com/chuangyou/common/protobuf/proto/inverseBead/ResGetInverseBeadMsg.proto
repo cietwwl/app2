@@ -10,5 +10,6 @@ message ResGetInverseBeadMsg {
 	required int64 beadRefreshDateTime=3;//怪物刷新时间
 	required int32 auraNum=4;//灵气液个数
 	required int64 auraRefreshDateTime=5;//灵气液刷新时间
-
+	required int32 monsterLv=6;// 怪物等级
+	required int32 lastTime=7;// 剩余时间
 }

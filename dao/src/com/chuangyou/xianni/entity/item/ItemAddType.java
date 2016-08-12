@@ -40,6 +40,8 @@ public interface ItemAddType {
 	 */
 	public static final short   SPACE_ADD = 2008;
 	
-	
-	
+	/**
+	 * 装备分解获得
+	 */
+	public static final short	EQUIP_RESOLVE = 2009;
 }

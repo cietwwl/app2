@@ -1,15 +1,17 @@
 package com.chuangyou.xianni.battle.buffer;
 
-import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.battle.AttackOrder;
+import com.chuangyou.xianni.battle.damage.BloodDamageCalculator;
 import com.chuangyou.xianni.battle.damage.Damage;
+import com.chuangyou.xianni.battle.damage.SouDamageCalculator;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.role.objects.Living;
 
-public class LivingPropertyChangeBuffer extends Buffer {
+/** 伤害类型buffer */
+public class LivingDamageBuffer extends Buffer {
 
-	protected LivingPropertyChangeBuffer(long bufferId, Living source, Living target, SkillBufferTemplateInfo bufferInfo) {
+	protected LivingDamageBuffer(long bufferId, Living source, Living target, SkillBufferTemplateInfo bufferInfo) {
 		super(bufferId, source, target, bufferInfo);
 	}
 
@@ -20,10 +22,10 @@ public class LivingPropertyChangeBuffer extends Buffer {
 
 		if (type1 > 0) {
 			if (type1 == EnumAttr.CUR_BLOOD.getValue()) {
-				damageValue1 = calBlood();
+				damageValue1 = calBlood(bufferInfo.getValuePercent(), bufferInfo.getValue());
 			}
 			if (type1 == EnumAttr.CUR_SOUL.getValue()) {
-				damageValue1 = calSoul();
+				damageValue1 = calSoul(bufferInfo.getValuePercent(), bufferInfo.getValue());
 			}
 			beDamage1.setTarget(target);
 			beDamage1.setSource(source);
@@ -37,10 +39,10 @@ public class LivingPropertyChangeBuffer extends Buffer {
 		int damageValue2 = 0;
 		if (type2 > 0) {
 			if (type2 == EnumAttr.CUR_BLOOD.getValue()) {
-				damageValue2 = calBlood();
+				damageValue2 = calBlood(bufferInfo.getValuePercent1(), bufferInfo.getValue1());
 			}
 			if (type2 == EnumAttr.CUR_SOUL.getValue()) {
-				damageValue2 = calSoul();
+				damageValue2 = calSoul(bufferInfo.getValuePercent1(), bufferInfo.getValue1());
 			}
 			beDamage2.setSkillId(0);
 			beDamage2.setTarget(target);
@@ -52,27 +54,12 @@ public class LivingPropertyChangeBuffer extends Buffer {
 	}
 
 	// 向上取整{max（攻击-对方防御*1.2，攻击*0.025）*random（0.8,1.2）*MAX[1+（破血-对方血抗）/10000，0.1]}
-	private int calBlood() {
-		int attack = source.getAttack();
-		int defence = target.getDefence();
-
-		int damageValue = (int) Math.ceil(((Math.max(attack - defence * 1.2, 0) + attack * 0.025) * RND.next(80, 120) / 100));
-		damageValue = damageValue * bufferInfo.getValuePercent() / 100 + bufferInfo.getValue();
-		return damageValue;
+	private int calBlood(int percent, int value) {
+		return new BloodDamageCalculator().calcDamage(source, target, percent, value);
 	}
 
 	// 向上取整{max（魂攻-对方魂防*1.2，0）*random（0.7,1.3）*MAX[1+（破魂-对方魂抗）/10000，0.1]}
-	private int calSoul() {
-		// 已方魂攻
-		int soulAttack = source.getSoulAttack();
-		// 对方魂防
-		int soulDeffence = target.getSoulDefence();
-		// 当对方处于元魂状态时，对方魂防御降低50%
-		if (target.isSoulState()) {
-			soulDeffence = soulDeffence / 2;
-		}
-		int damageValue = (int) Math.ceil((Math.max(soulAttack - soulDeffence * 1.2, 0) * RND.next(70, 130) / 100));
-		damageValue = damageValue * bufferInfo.getValuePercent() / 100 + bufferInfo.getValue();
-		return damageValue;
+	private int calSoul(int percent, int value) {
+		return new SouDamageCalculator().calcDamage(source, target, percent, value);
 	}
 }

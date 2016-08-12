@@ -26,4 +26,5 @@ message PlayerInfoMsg{
 	optional int32 repair = 20; // 修为
 	optional int32 points = 21; //积分
 	optional int32 job = 22; //职业
+	optional int64 equipExp = 23; // 装备经验
 }

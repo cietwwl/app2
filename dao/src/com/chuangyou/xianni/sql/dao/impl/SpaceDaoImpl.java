@@ -207,7 +207,7 @@ public class SpaceDaoImpl extends BaseDao implements SpaceDao {
 	@Override
 	public List<SpaceActionLogInfo> getActionAll(long playerId,int max) {
 		// TODO Auto-generated method stub
-		String sql = "select * from tb_u_space_actionLog where receivePlayerId="+playerId+"order by createTime desc limit "+max;
+		String sql = "select * from tb_u_space_actionLog where receivePlayerId="+playerId+" order by createTime desc limit "+max;
 		PreparedStatement pstmt = execQuery(sql, null);
 		ResultSet rs = null;
 		SpaceActionLogInfo info = null;

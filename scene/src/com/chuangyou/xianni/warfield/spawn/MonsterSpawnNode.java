@@ -109,6 +109,7 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 			monster.setPostion(new Vector3(randomx / Vector3.Accuracy, randomy / Vector3.Accuracy, randomz / Vector3.Accuracy));
 			instill(monster, monsterInfo);
 			children.put(monster.getId(), monster);
+			System.out.println("怪物进入地图。。。。。monster.getId(): "+monster.getId()+"field.getMapKey"+field.getMapKey());
 			field.enterField(monster);
 			// NotifyNearHelper.notifyNearPlayer(field, monster,
 			// monster.getPostion());
@@ -150,9 +151,14 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 		monster.setProperty(EnumAttr.CUR_SOUL, monsterInfo.getSoulHpValue());
 
 		monster.setProperty(EnumAttr.ATTACK, monsterInfo.getHurtValue());
+		monster.setInitAttack(monsterInfo.getHurtValue());
 		monster.setProperty(EnumAttr.DEFENCE, monsterInfo.getArmorValue());
+		monster.setInitDefence(monsterInfo.getArmorValue());
 		monster.setProperty(EnumAttr.SOUL_ATTACK, monsterInfo.getSoulHurtValue());
+		monster.setInitSoulAttack(monsterInfo.getSoulHurtValue());
 		monster.setProperty(EnumAttr.SOUL_DEFENCE, monsterInfo.getSoulArmorValue());
+		monster.setInitSoulDefence(monsterInfo.getSoulArmorValue());
+
 		monster.setProperty(EnumAttr.ACCURATE, monsterInfo.getHitRateValue());
 		monster.setProperty(EnumAttr.DODGE, monsterInfo.getDodgeValue());
 		monster.setProperty(EnumAttr.CRIT, monsterInfo.getCritValue());

@@ -62,6 +62,23 @@ public final class DelSpaceMessageRespProto {
      * </pre>
      */
     long getPlayerId();
+
+    /**
+     * <code>required int32 curCollection = 4;</code>
+     *
+     * <pre>
+     *当前收藏数
+     * </pre>
+     */
+    boolean hasCurCollection();
+    /**
+     * <code>required int32 curCollection = 4;</code>
+     *
+     * <pre>
+     *当前收藏数
+     * </pre>
+     */
+    int getCurCollection();
   }
   /**
    * Protobuf type {@code DelSpaceMessageRespMsg}
@@ -132,6 +149,11 @@ public final class DelSpaceMessageRespProto {
             case 24: {
               bitField0_ |= 0x00000004;
               playerId_ = input.readInt64();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              curCollection_ = input.readInt32();
               break;
             }
           }
@@ -243,10 +265,34 @@ public final class DelSpaceMessageRespProto {
       return playerId_;
     }
 
+    public static final int CURCOLLECTION_FIELD_NUMBER = 4;
+    private int curCollection_;
+    /**
+     * <code>required int32 curCollection = 4;</code>
+     *
+     * <pre>
+     *当前收藏数
+     * </pre>
+     */
+    public boolean hasCurCollection() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>required int32 curCollection = 4;</code>
+     *
+     * <pre>
+     *当前收藏数
+     * </pre>
+     */
+    public int getCurCollection() {
+      return curCollection_;
+    }
+
     private void initFields() {
       op_ = 0;
       id_ = 0;
       playerId_ = 0L;
+      curCollection_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -255,6 +301,10 @@ public final class DelSpaceMessageRespProto {
       if (isInitialized == 0) return false;
 
       if (!hasOp()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasCurCollection()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -273,6 +323,9 @@ public final class DelSpaceMessageRespProto {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeInt64(3, playerId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt32(4, curCollection_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -294,6 +347,10 @@ public final class DelSpaceMessageRespProto {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(3, playerId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, curCollection_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -422,6 +479,8 @@ public final class DelSpaceMessageRespProto {
         bitField0_ = (bitField0_ & ~0x00000002);
         playerId_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000004);
+        curCollection_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -462,6 +521,10 @@ public final class DelSpaceMessageRespProto {
           to_bitField0_ |= 0x00000004;
         }
         result.playerId_ = playerId_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.curCollection_ = curCollection_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -487,12 +550,19 @@ public final class DelSpaceMessageRespProto {
         if (other.hasPlayerId()) {
           setPlayerId(other.getPlayerId());
         }
+        if (other.hasCurCollection()) {
+          setCurCollection(other.getCurCollection());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
       public final boolean isInitialized() {
         if (!hasOp()) {
+          
+          return false;
+        }
+        if (!hasCurCollection()) {
           
           return false;
         }
@@ -662,6 +732,54 @@ public final class DelSpaceMessageRespProto {
         return this;
       }
 
+      private int curCollection_ ;
+      /**
+       * <code>required int32 curCollection = 4;</code>
+       *
+       * <pre>
+       *当前收藏数
+       * </pre>
+       */
+      public boolean hasCurCollection() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>required int32 curCollection = 4;</code>
+       *
+       * <pre>
+       *当前收藏数
+       * </pre>
+       */
+      public int getCurCollection() {
+        return curCollection_;
+      }
+      /**
+       * <code>required int32 curCollection = 4;</code>
+       *
+       * <pre>
+       *当前收藏数
+       * </pre>
+       */
+      public Builder setCurCollection(int value) {
+        bitField0_ |= 0x00000008;
+        curCollection_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 curCollection = 4;</code>
+       *
+       * <pre>
+       *当前收藏数
+       * </pre>
+       */
+      public Builder clearCurCollection() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        curCollection_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:DelSpaceMessageRespMsg)
     }
 
@@ -687,11 +805,11 @@ public final class DelSpaceMessageRespProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\"space/DelSpaceMessageRespMsg.proto\"B\n\026" +
+      "\n\"space/DelSpaceMessageRespMsg.proto\"Y\n\026" +
       "DelSpaceMessageRespMsg\022\n\n\002op\030\001 \002(\005\022\n\n\002id" +
-      "\030\002 \001(\005\022\020\n\010playerId\030\003 \001(\003BB\n&com.chuangyo" +
-      "u.common.protobuf.pb.spaceB\030DelSpaceMess" +
-      "ageRespProto"
+      "\030\002 \001(\005\022\020\n\010playerId\030\003 \001(\003\022\025\n\rcurCollectio" +
+      "n\030\004 \002(\005BB\n&com.chuangyou.common.protobuf" +
+      ".pb.spaceB\030DelSpaceMessageRespProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -710,7 +828,7 @@ public final class DelSpaceMessageRespProto {
     internal_static_DelSpaceMessageRespMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_DelSpaceMessageRespMsg_descriptor,
-        new java.lang.String[] { "Op", "Id", "PlayerId", });
+        new java.lang.String[] { "Op", "Id", "PlayerId", "CurCollection", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

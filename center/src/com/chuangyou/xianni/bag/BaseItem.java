@@ -3,6 +3,7 @@ package com.chuangyou.xianni.bag;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.TimeUtil;
+import com.chuangyou.xianni.constant.ItemType;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.item.BagType;
 import com.chuangyou.xianni.entity.item.ItemInfo;
@@ -206,7 +207,7 @@ public class BaseItem {
 		info.setNew(true);
 		info.setAddType(addType);
 		info.setRemoveDate(TimeUtil.getDefaultDate());
-		if (template.getMasterType() == 1) {// 类型装备
+		if (template.getMasterType() == ItemType.MainType.EQUIP) {// 类型装备
 			int itemBase = template.getItemBase();
 			int key = itemBase / 1000000;
 			int val = itemBase % 1000000;
@@ -217,6 +218,10 @@ public class BaseItem {
 			float r2 = (100 + MathUtils.randomClamp(-5, 5)) / 100F;
 			int grow = (int) (template.getGrow() * r2);
 			info.setGrow(grow);
+			
+			info.setAwaken(0);
+			info.setAwakenPoint(0);
+			info.setStone(0);
 		}
 		info.setOp(Option.Insert);
 		BaseItem bseItem = new BaseItem(template, info);

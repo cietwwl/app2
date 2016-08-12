@@ -87,8 +87,9 @@ public class EmailInventory extends AbstractEvent implements IInventory {
 				this.deleteEmail(email);
 			}
 		}
-		
-		return emails.subList(0, Math.min(emails.size(), MAX_EMAIL_NUM));
+		List<Email> list = new ArrayList<>();
+		list.addAll(emails.subList(0, Math.min(emails.size(), MAX_EMAIL_NUM)));
+		return list;
 	}
 
 	/**
@@ -118,6 +119,7 @@ public class EmailInventory extends AbstractEvent implements IInventory {
 		if (emails.indexOf(email) != -1)
 			return false;
 
+		email.setOp(Option.Insert);
 		synchronized (addEmailLock) {
 			int id = DBManager.getEmaildao().add(email);
 			if (id <= 0) {
@@ -149,6 +151,7 @@ public class EmailInventory extends AbstractEvent implements IInventory {
 		emails.remove(email);
 		email.setStatus(Email.DEL_EMAIL);
 		email.setDelEmailTime(new Date());
+		email.setOp(Option.Update);
 		DBManager.getEmaildao().update(email);
 		return true;
 	}

@@ -22,6 +22,9 @@ public class Property {
 
 	private int magicwpData = 0;	// 法宝属性加成
 	private int magicwpPer = 0;	// 法宝万分比加成
+	
+	private int		fashionData	= 0;	//时装属性加成
+	private int		fashionPer	= 0;	//时装万分比加成
 
 	private int petData = 0;	// 宠物属性加成
 	private int petPer = 0;	// 宠物万分比加成
@@ -45,8 +48,10 @@ public class Property {
 
 	private void fresh() {
 		// 计算总的属性
-		int totalData = tempData + bagData + skillData + mountData + magicwpData + petData + inverseBeadData;
-		int totalPer = tempPer + bagPer + skillPer + mountPer + magicwpPer + petPer + inverseBeadper;
+
+		int totalData = tempData + bagData + skillData + mountData + magicwpData + petData + fashionData+ inverseBeadData;
+		int totalPer = tempPer + bagPer + skillPer + mountPer + magicwpPer + petPer + fashionPer+ inverseBeadper;
+
 		totalJoin = totalData + totalData * totalPer / 10000;
 
 		// 计算基础属性
@@ -194,6 +199,26 @@ public class Property {
 		if (petPer != this.petPer)
 			setChange(true);
 		this.petPer = petPer;
+	}
+
+	public int getFashionData() {
+		return fashionData;
+	}
+
+	public void setFashionData(int fashionData) {
+		if(fashionData != this.fashionData)
+			setChange(true);
+		this.fashionData = fashionData;
+	}
+
+	public int getFashionPer() {
+		return fashionPer;
+	}
+
+	public void setFashionPer(int fashionPer) {
+		if(fashionPer != this.fashionPer)
+			setChange(true);
+		this.fashionPer = fashionPer;
 	}
 
 	public int getTotalJoin() {

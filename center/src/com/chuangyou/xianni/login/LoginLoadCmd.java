@@ -1,4 +1,4 @@
-﻿package com.chuangyou.xianni.login;
+package com.chuangyou.xianni.login;
 
 import com.chuangyou.common.protobuf.pb.PlayerDataMsgProto.PlayerDataMsg;
 import com.chuangyou.common.protobuf.pb.PlayerLoadDataMsgProto.PlayerLoadDataMsg;
@@ -8,8 +8,11 @@ import com.chuangyou.xianni.army.ArmyInventory;
 import com.chuangyou.xianni.bag.BagInventory;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.campaign.CampaignInventory;
+import com.chuangyou.xianni.equip.EquipInventory;
 import com.chuangyou.xianni.exec.CmdTask;
+import com.chuangyou.xianni.inverseBead.manager.InverseBeadManager;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.player.PlayerInfoSendCmd;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
@@ -33,6 +36,7 @@ public class LoginLoadCmd extends AbstractCommand {
 	static final int	CAMPAIGN	= 6;
 	static final int	TEAM		= 7;
 	static final int	SHOP		= 8;
+	static final int	EQUIP		= 9;
 
 	@Override
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
@@ -45,8 +49,8 @@ public class LoginLoadCmd extends AbstractCommand {
 			}
 
 			// 加载用户
-			if (dataType.getDataType() == SYS) {
-
+			if (dataType.getDataType() == USER) {
+				PlayerInfoSendCmd.sendPlayerTimeData(player);
 			}
 
 			// 用户部队
@@ -96,6 +100,14 @@ public class LoginLoadCmd extends AbstractCommand {
 			if (dataType.getDataType() == SYS) {
 			}
 
+			// 装备栏位信息
+			if (dataType.getDataType() == EQUIP) {
+				EquipInventory equipInventory = player.getEquipInventory();
+				if (equipInventory != null) {
+					equipInventory.updateAllInfo();
+				}
+			}
+
 		} catch (Exception e) {
 			Log.error("发送用户数据 失败,nickname " + "nickname" + ", userId " + player.getPlayerId(), e);
 		} finally {
@@ -103,6 +115,8 @@ public class LoginLoadCmd extends AbstractCommand {
 			builder.setLoadDataType(dataType.getDataType());
 			PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DATA_LOAD_STATU, builder);
 			player.sendPbMessage(message);
+			
+			InverseBeadManager.syncSpawn(player);
 		}
 	}
 

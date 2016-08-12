@@ -10,6 +10,7 @@ import com.chuangyou.xianni.role.objects.Living;
  */
 public interface DamageCalculator {
 	ThreadSafeRandom random = new ThreadSafeRandom();
-	public int calcDamage(Living source, Living target,SkillActionTemplateInfo skillTemp);
+
+	public int calcDamage(Living source, Living target, int parent, int value);
 
 }

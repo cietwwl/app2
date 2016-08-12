@@ -41,6 +41,7 @@ public class GetSpaceActionLogCmd extends AbstractCommand {
 		list = list.subList(startIndex, endIndex);
 		
 		GetSpaceActionRespMsg.Builder resp = GetSpaceActionRespMsg.newBuilder();
+		resp.setPlayerId(reqPlayer.getPlayerId());
 		for (SpaceActionLogInfo spaceActionLogInfo : list) {
 			ActionLogMsg.Builder subMsg = spaceActionLogInfo.getMsg();
 			GamePlayer sendPlayer = WorldMgr.getPlayer(spaceActionLogInfo.getSendPlayerId());

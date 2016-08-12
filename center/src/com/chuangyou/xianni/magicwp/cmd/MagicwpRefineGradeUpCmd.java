@@ -5,7 +5,7 @@ import com.chuangyou.common.protobuf.pb.magicwp.MagicwpRefineGradeUpRespProto.Ma
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
-import com.chuangyou.xianni.entity.item.BindType;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.magicwp.MagicwpCfg;
 import com.chuangyou.xianni.entity.magicwp.MagicwpGradeCfg;
 import com.chuangyou.xianni.entity.magicwp.MagicwpInfo;
@@ -55,7 +55,7 @@ public class MagicwpRefineGradeUpCmd extends AbstractCommand {
 			return;
 		}
 		//扣道具
-		if(!player.getBagInventory().removeItemFromPlayerBag(gradeCfg.getJinjieItem(), gradeCfg.getItemNum(), BindType.ALL)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(gradeCfg.getJinjieItem(), gradeCfg.getItemNum(), ItemRemoveType.USE)) return;
 		
 		if(magicwp.getGrade() == 0){
 			String attStr = "";

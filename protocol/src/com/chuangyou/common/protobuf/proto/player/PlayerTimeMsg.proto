@@ -1,0 +1,8 @@
+//protocol=10;
+option java_package = "com.chuangyou.common.protobuf.pb.player";
+option java_outer_classname = "PlayerTimeMsgProto";
+message PlayerTimeMsg{
+	repeated int32 sigleCampCount=1;          //每日单人副本次数
+	repeated int32 challengeCampCount=2;      //每日挑战副本次数
+}
+

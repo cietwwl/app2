@@ -21,9 +21,11 @@ public class BufferFactory {
 			case BufferType.COMMON_RESTORE:
 			case BufferType.ONLY_RESTORE_BLOOD:
 			case BufferType.ONLY_RESTORE_SOUL:
-				buffer = new LivingPropertyChangeBuffer(IDMakerHelper.bufferId(), source, target, bufferInfo);
+				buffer = new LivingDamageBuffer(IDMakerHelper.bufferId(), source, target, bufferInfo);
+			case BufferType.ATTR_BODY:
+				buffer = new LivingDamageBuffer(IDMakerHelper.bufferId(), source, target, bufferInfo);
 			default:
-				buffer = new LivingPropertyChangeBuffer(IDMakerHelper.bufferId(), source, target, bufferInfo);
+				buffer = new AttributesBuffer(IDMakerHelper.bufferId(), source, target, bufferInfo);
 		}
 		buffer.setExecuted(false);
 		return buffer;

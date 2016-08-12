@@ -10,10 +10,12 @@ import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.entity.inverseBead.InverseBeadTem;
+import com.chuangyou.xianni.entity.inverseBead.PlayerBeadTimeInfo;
 import com.chuangyou.xianni.entity.inverseBead.PlayerInverseBead;
 import com.chuangyou.xianni.entity.item.BindType;
-import com.chuangyou.xianni.entity.player.PlayerTimeInfo;
+import com.chuangyou.xianni.entity.item.ItemAddType;
 import com.chuangyou.xianni.inverseBead.InverseBeadInventory;
+import com.chuangyou.xianni.inverseBead.InverseBeadRefreshInventory;
 import com.chuangyou.xianni.inverseBead.template.InverseBeadTemMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -59,6 +61,10 @@ public class InverseBeadManager {
 		}
 
 		InverseBeadTem tem = InverseBeadTemMgr.getTemp(stage);
+		if (tem == null) {
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.INVERSEBEAD_ERROR, code);
+			return false;
+		}
 		needGoodsNum = tem.getNeedGoodsNum();
 		if (player.getBagInventory().getPlayerBagItemCount(needGoodsId) < needGoodsNum) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, code);
@@ -90,7 +96,8 @@ public class InverseBeadManager {
 	}
 
 	public static boolean moveMonster(GamePlayer player, List<Integer> list) {
-		PlayerTimeInfo playerTimeInfo = player.getBasePlayer().getPlayerTimeInfo();
+		// PlayerTimeInfo playerTimeInfo = player.getBasePlayer().getPlayerTimeInfo();
+		PlayerBeadTimeInfo playerTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
 		synchronized (playerTimeInfo) {
 			String beadRefreshId = playerTimeInfo.getBeadRefreshId();
 			List<Integer> list2 = InverseBeadManager.getBeadRefreshId(beadRefreshId);
@@ -102,7 +109,8 @@ public class InverseBeadManager {
 	}
 
 	public static boolean reset(GamePlayer player, short code) {
-		PlayerTimeInfo playerTimeInfo = player.getBasePlayer().getPlayerTimeInfo();
+		// PlayerTimeInfo playerTimeInfo = player.getBasePlayer().getPlayerTimeInfo();
+		PlayerBeadTimeInfo playerTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
 		int needGoods = SystemConfigTemplateMgr.getIntValue("fiveElements.reset.needGoods");
 		if (needGoods > 0) {
 			if (player.getBagInventory().getPlayerBagItemCount(needGoods) < 1) {
@@ -127,15 +135,23 @@ public class InverseBeadManager {
 		return true;
 	}
 
+	/**
+	 * 领取灵气液
+	 * 
+	 * @param player
+	 * @param code
+	 * @return
+	 */
 	public static int receiveAura(GamePlayer player, short code) {
-		PlayerTimeInfo playerTimeInfo = player.getBasePlayer().getPlayerTimeInfo();
+		// PlayerTimeInfo playerTimeInfo = player.getBasePlayer().getPlayerTimeInfo();
+		PlayerBeadTimeInfo playerTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
 		int num = 0;
 		synchronized (playerTimeInfo) {
 			num = playerTimeInfo.getAuraNum();
 			playerTimeInfo.setAuraNum(0);
 		}
 		if (num > 0) {
-			player.getBagInventory().removeItemFromPlayerBag(InverseBeadInventory.auraId, num, BindType.ALL);
+			player.getBagInventory().addItemInBagOrEmail(InverseBeadInventory.auraId, num, ItemAddType.OVERLAY, false);
 		}
 		return num;
 	}
@@ -160,6 +176,16 @@ public class InverseBeadManager {
 		if (sb.length() > 0)
 			return sb.substring(0, sb.length() - 1);
 		return "";
+	}
+
+	public static void syncSpawn(GamePlayer player) {
+		// System.out.println("-----syncSpawn-----syncSpawn-----");
+		PlayerBeadTimeInfo playerBeadTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
+		List<Integer> list = InverseBeadManager.getBeadRefreshId(playerBeadTimeInfo.getBeadRefreshId());
+		SyncMonsterPoolMsg.Builder msg = SyncMonsterPoolMsg.newBuilder();
+		msg.addAllMonsterRefreshId(list);
+		PBMessage c2s = MessageUtil.buildMessage(Protocol.S_CREATE_INVERSE_SYNC_MONSTER, msg);
+		player.sendPbMessage(c2s);
 	}
 
 	public static void main(String[] args) {

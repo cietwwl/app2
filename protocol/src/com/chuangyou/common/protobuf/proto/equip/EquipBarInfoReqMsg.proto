@@ -1,0 +1,9 @@
+//protocol=10150;
+option java_package = "com.chuangyou.common.protobuf.pb.equip";
+option java_outer_classname = "EquipBarInfoReqProto";
+
+//请求装备栏位信息
+message EquipBarInfoReqMsg{
+	optional int32 action = 1; // 功能号(1请求所有栏位列表 2请求升级 3请求加持)
+	optional int32 position = 2; // 装备栏位索引
+}

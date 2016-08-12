@@ -1,0 +1,11 @@
+//protocol=152;
+option java_package = "com.chuangyou.common.protobuf.pb.equip";
+option java_outer_classname = "EquipBarInfoRespProto";
+
+import "equip/EquipBarInfoMsg.proto";
+
+//返回栏位信息
+message EquipBarInfoRespMsg{
+	optional int32 action = 1; // 功能号(1返回所有栏位信息列表 2栏位等级更新 3栏位加持更新)
+	repeated EquipBarInfoMsg equipBar = 2; // 栏位信息
+}

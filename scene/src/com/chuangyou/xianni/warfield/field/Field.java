@@ -104,7 +104,7 @@ public class Field extends AbstractActionQueue {
 	 * 
 	 * @param l
 	 */
-	public  void enterField(Living l) {
+	public void enterField(Living l) {
 		// System.out.println("playerId :" + l.getArmyId() + " index = " +
 		// l.getGridIndex() + " fieldId :" + this.getMapKey() + " mapId:" +
 		// this.id);
@@ -123,7 +123,9 @@ public class Field extends AbstractActionQueue {
 
 		// 通知附近的玩家进入
 		Set<Long> nears = l.getNears(new PlayerSelectorHelper(l));
-		System.out.println(l.getId() + "getNears:" + nears.size()+" nears:"+JSONUtil.getJSONString(nears));
+
+		System.out.println("进入地图进入地图进入地图进入地图::::"+l.getId() + "getNears:" + nears.size()+" nears:"+JSONUtil.getJSONString(nears));
+
 		if (nears != null && nears.size() > 0) {
 			BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_RESP_ATT_SNAP, l.getAttSnapMsg().build());
 		}

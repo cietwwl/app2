@@ -10,6 +10,11 @@ public class SkillUtil {
 	public static SimpleProperty readPro(int pro) {
 		int key = pro / 1000000;
 		int val = pro % 1000000;
+		SimpleProperty property = readPro(key, val);
+		return property;
+	}
+	/** 解析属性 */
+	public static SimpleProperty readPro(int key, int val){
 		SimpleProperty property = new SimpleProperty();
 		// 正数系
 		if (key <= 1000) { // 增加固定数值

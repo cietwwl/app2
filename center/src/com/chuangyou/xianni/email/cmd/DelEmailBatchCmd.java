@@ -37,9 +37,8 @@ public class DelEmailBatchCmd extends AbstractCommand {
 			Email email = it.next();
 			if (email.getStatus() != Email.READED_GETATTACHMENT_EMAIL && !email.getAttachment().equals("")) { // 有附件未取的邮件
 			} else {
-				msg.addEmails(EmailManager.changeEmail(email));
-				it.remove();
 				player.getEmailInventory().deleteEmail(email);
+				msg.addEmails(EmailManager.changeEmail(email));
 			}
 		}
 		

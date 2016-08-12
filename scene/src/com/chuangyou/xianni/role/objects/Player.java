@@ -21,6 +21,9 @@ import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.skill.Skill;
+import com.chuangyou.xianni.campaign.Campaign;
+import com.chuangyou.xianni.campaign.CampaignMgr;
+import com.chuangyou.xianni.campaign.task.CTBaseCondition;
 import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.BattleModeCode;
 import com.chuangyou.xianni.constant.EnumAttr;
@@ -42,15 +45,15 @@ import com.chuangyou.xianni.world.WorldMgr;
 
 public class Player extends ActiveLiving {
 	/** 是否复活中 */
-	private volatile boolean	revivaling	= false;
+	private volatile boolean	revivaling		= false;
 	/**
 	 * 玩家坐骑状态 0未乘骑 1乘骑坐骑
 	 */
-	private int					mountState	= 1;
+	private int					mountState		= 1;
 	private List<Integer> monsterRefreshIdList = new ArrayList<Integer>();
 
 	/** 副本buffer */
-	private Buffer				campaignBuffer;
+	private List<Buffer>		campaignBuffers	= new ArrayList<>();
 
 	public Player(long playerId) {
 		super(playerId, playerId);
@@ -80,6 +83,13 @@ public class Player extends ActiveLiving {
 			DieAction die = new DieAction(this, source, 1000);
 			die.getActionQueue().enDelayQueue(die);
 
+		}
+
+		if (field != null && field.getCampaignId() > 0) {
+			Campaign campaign = CampaignMgr.getCampagin(field.getCampaignId());
+			if (campaign != null) {
+				campaign.notifyTaskEvent(CTBaseCondition.LESS_DEAD_COUNT, 1);
+			}
 		}
 		return true;
 	}
@@ -168,6 +178,9 @@ public class Player extends ActiveLiving {
 			// System.out.println(" ---playerId: " + getArmyId() + "
 			// changePkVal: " + changePkVal + " this.getPkVal(): " +
 			// getPkVal());
+
+			calPKValue(source, deather);
+
 
 		}
 
@@ -258,8 +271,6 @@ public class Player extends ActiveLiving {
 					army.sendPbMessage(message);
 				}
 			}
-			// BroadcastUtil.sendBroadcastPacket(players, Protocol.U_G_DAMAGE,
-			// damagesPb.build());
 		}
 
 		this.isSoulState = false;
@@ -297,26 +308,6 @@ public class Player extends ActiveLiving {
 						skill.setSkillTempateInfo(skillInfo);
 						addSkill(skill);
 					}
-					// SkillActionTemplateInfo actionInfo1 =
-					// BattleTempMgr.getActionInfo(1002);
-					// if (actionInfo1 != null) {
-					// Skill skill1 = new Skill(actionInfo1);
-					// addSkill(skill1);
-					// }
-					//
-					// SkillActionTemplateInfo actionInfo2 =
-					// BattleTempMgr.getActionInfo(1003);
-					// if (actionInfo2 != null) {
-					// Skill skill2 = new Skill(actionInfo2);
-					// addSkill(skill2);
-					// }
-					//
-					// SkillActionTemplateInfo actionInfo3 =
-					// BattleTempMgr.getActionInfo(1004);
-					// if (actionInfo3 != null) {
-					// Skill skill3 = new Skill(actionInfo3);
-					// addSkill(skill3);
-					// }
 				}
 			}
 		}
@@ -330,24 +321,6 @@ public class Player extends ActiveLiving {
 		cachBattleInfoPacket.setMountState(getMountState());
 		return super.getBattlePlayerInfoMsg();
 	}
-
-	// @Override
-	// public PlayerAttSnapMsg.Builder getAttSnapMsg() {
-	// // TODO Auto-generated method stub
-	// if (cacheAttSnapPacker == null) {
-	// cacheAttSnapPacker = PlayerAttSnapMsg.newBuilder();
-	// cacheAttSnapPacker.setPlayerId(id);
-	// }
-	// cacheAttSnapPacker.setType(getType());
-	// cacheAttSnapPacker.setSkinId(getSkin());
-	// cacheAttSnapPacker.setPostion(Vector3BuilderHelper.build(getPostion()));
-	// cacheAttSnapPacker.setTarget(Vector3BuilderHelper.build(getTargetPostion()));
-	// if(simpleInfo != null){
-	// cacheAttSnapPacker.setMountId(simpleInfo.getMountId());
-	// }
-	// cacheAttSnapPacker.setMountState(getMountState());
-	// return cacheAttSnapPacker;
-	// }
 
 	public void clearWorkBuffer() {
 		List<Buffer> allbuffer = new ArrayList<>();
@@ -372,15 +345,73 @@ public class Player extends ActiveLiving {
 	}
 
 	public void addCampaignBuff(Buffer buff) {
-		this.campaignBuffer = buff;
+		campaignBuffers.add(buff);
 		this.addBuffer(buff);
 	}
 
 	public void removeCampaignBuffer() {
-		if (this.campaignBuffer != null) {
-			this.removeBuffer(campaignBuffer);
-			this.campaignBuffer = null;
+		for (Buffer buffer : campaignBuffers) {
+			removeBuffer(buffer);
 		}
+		campaignBuffers.clear();
+	}
+
+	private void calPKValue(Living source, Living deather) {
+
+		// System.out.println("source playerId: " + source.toString() + "
+		// source.getPkVal(): " + source.getPkVal()+"
+		// source.getBattleMode():"+source.getBattleMode()+"
+		// getBattleMode():"+getBattleMode());
+		// 攻击源处理
+		if (source.getBattleMode() == BattleModeCode.warBattleMode && getBattleMode() == BattleModeCode.peaceBattleMode) {// 增加pk值
+			source.setPkVal(source.getPkVal() + 1000);
+			// 通知
+			Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
+			changeMap.put(EnumAttr.PK_VAL.getValue(), (long) source.getPkVal());
+			notifyCenter(changeMap, source.getArmyId());
+
+			List<PropertyMsg> properties = new ArrayList<>();
+			PropertyMsg.Builder p = PropertyMsg.newBuilder();
+			p.setBasePoint((long) source.getPkVal());
+			p.setTotalPoint((long) source.getPkVal());
+			p.setType(EnumAttr.PK_VAL.getValue());
+			properties.add(p.build());
+			updateProperty(source, properties);
+		}
+
+		// System.out.println("source playerId: " + source.getArmyId() + "
+		// source.getPkVal(): " + source.getPkVal());
+
+		// 自己
+		List<PropertyMsg> properties = new ArrayList<>();
+		Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
+
+		int changePkVal = 0;// 减少pk值
+		if (getColour(getPkVal()) == BattleModeCode.yellow) {
+			changePkVal = MathUtils.randomClamp(10, 20);
+			notifyCenter(2, (int) source.getArmyId(), (int) getArmyId());
+		} else if (getColour(getPkVal()) == BattleModeCode.red) {
+			changePkVal = MathUtils.randomClamp(40, 80);
+			notifyCenter(2, (int) source.getArmyId(), (int) getArmyId());
+		}
+		// System.out.println(" playerId: " + getArmyId() + " exp: " + "
+		// changePkVal: " + changePkVal + " this.getPkVal(): " +
+		// getPkVal());
+		if (changePkVal > 0) {
+			changePkVal = getPkVal() - changePkVal < 0 ? 0 : getPkVal() - changePkVal;
+			setPkVal(changePkVal);
+			PropertyMsg.Builder p = PropertyMsg.newBuilder();
+			p.setBasePoint(changePkVal);
+			p.setTotalPoint(changePkVal);
+			p.setType(EnumAttr.PK_VAL.getValue());
+			properties.add(p.build());
+			changeMap.put(EnumAttr.PK_VAL.getValue(), (long) changePkVal);
+			notifyCenter(changeMap, getArmyId());
+			updateProperty(deather, properties);
+		}
+		// System.out.println(" ---playerId: " + getArmyId() + "
+		// changePkVal: " + changePkVal + " this.getPkVal(): " +
+		// getPkVal());
 	}
 
 	public boolean isRevivaling() {

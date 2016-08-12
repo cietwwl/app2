@@ -2,6 +2,7 @@
 option java_package = "com.chuangyou.common.protobuf.pb.fashion";
 option java_outer_classname = "FashionActivateRespProto";
 
+//时装激活
 message FashionActivateRespMsg{
 	optional bool empty = 1; // 空消息标记
 }

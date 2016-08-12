@@ -1,5 +1,10 @@
 package com.chuangyou.common.util;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * <pre>
  * 字符串辅助类
@@ -74,5 +79,58 @@ public class StringUtils {
 
 		return false;
 	}
+	
+	/**
+	 * 自定义字符串格式化
+	 * 
+	 * @param str bd:1,be:0:15,aa:1:4:4,ab:1:4:4:5,ac:1:4:4:1:4:4:5
+	 */
+	public static Map<String, List<Object>> strToMap(String str) {
+		Map<String, List<Object>> dataMap = new HashMap<String, List<Object>>();
+		if (str == null || str.equals(""))
+			return dataMap;
+		String[] arrStr = str.split(",");
+		for (String str1 : arrStr) {
+			String[] arrStr2 = str1.split(":");
+			ArrayList<Object> arr = new ArrayList<Object>();
+			for (int i = 0; i < arrStr2.length; i++) {
+				if (i == 0 && !dataMap.containsKey(arrStr2[i]))
+					dataMap.put(arrStr2[i], arr);
+				else
+					arr.add(arrStr2[i]);
+			}
+		}
+		return dataMap;
+	}
+ 
+
+	/**
+	 * map 转自定义字符串
+	 * 
+	 * @param map {"ab":[1,2,3,4,5,6,7,8],"ac":[1,2,3,4,5,6,7,8]}
+	 */
+	public static String mapToStr(Map<String, List<Object>> map) {
+		StringBuffer strBuff = new StringBuffer("");
+		boolean isRun = false;
+		for (String str : map.keySet()) {
+			strBuff.append(str);
+			strBuff.append(":");
+			List<Object> arr = map.get(str);
+			for (int i = 0; i < arr.size(); i++) {
+				strBuff.append(arr.get(i));
+				if (i == arr.size() - 1) {
+					strBuff.append(",");
+				} else {
+					strBuff.append(":");
+				}
+				isRun = true;
+			}
+		}
+		if (isRun) {
+			return strBuff.substring(0, strBuff.length() - 1);
+		}
+		return strBuff.toString();
+	}
+
 
 }

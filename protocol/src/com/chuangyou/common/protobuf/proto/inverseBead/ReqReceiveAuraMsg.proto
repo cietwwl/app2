@@ -1,4 +1,4 @@
-//protocol= 10703;
+//protocol= 10707;
 option java_package = "com.chuangyou.common.protobuf.pb.inverseBead";
 option java_outer_classname = "ReqReceiveAuraMsgProto";
 

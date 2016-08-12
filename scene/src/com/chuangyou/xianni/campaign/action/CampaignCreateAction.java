@@ -8,6 +8,7 @@ import com.chuangyou.xianni.campaign.CampaignFactory;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
 import com.chuangyou.xianni.campaign.TeamCampaign;
+import com.chuangyou.xianni.constant.CampaignConstant.CampaignType;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.exec.Action;
 import com.chuangyou.xianni.team.Team;
@@ -49,7 +50,7 @@ public class CampaignCreateAction extends Action {
 
 		campaign.start();
 		campaign.onPlayerEnter(army);
-		if (campaign.getTemp().getType() == CampaignFactory.TEAM) {
+		if (campaign.getTemp().getType() == CampaignType.TEAM) {
 			Team team = TeamMgr.getTeam(army.getPlayerId());
 			if (team == null) {
 				return;

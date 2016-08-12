@@ -16,6 +16,7 @@ public interface ClientProtocol {
 	public static final short U_G_DATA_LOAD_STATU = 7; // 通知客户端数据加载请求信息
 	public static final short U_G_PLAYER_CREATE_RESULT = 8; // 通知客户端创建角色结果
 	public static final short U_G_PING_PACKET = 9; // 返回ping包
+	public static final short U_TIME_INFO = 10; // 用户重置信息包
 	// ===================================================================
 
 	// ===========================>battle<==============================
@@ -31,6 +32,7 @@ public interface ClientProtocol {
 	public static final short U_CAMPAIGN_NODE_INFO = 603; // 副本节点
 	public static final short U_CAMPAIGN_RECORD = 604; // 副本记录
 	public static final short U_CAMPAIGN_TASK_INFO = 605; // 副本任务记录
+	public static final short U_LIMITLESS_CAMPAIGN_RECORD = 606; // 挑战副本记录
 	// ===========================><==============================
 
 	/** 错误码 */
@@ -333,6 +335,14 @@ public interface ClientProtocol {
 
 	/** 背包格子解锁 */
 	public static final short U_BAG_GRID_UNLOCK = 151;
+	
+	//========================>装备<============================
+	/** 装备栏位信息 */
+	public static final short U_EQUIPBAR_INFO = 152;
+	
+	/** 装备信息 */
+	public static final short U_EQUIP_INFO = 153;
+	//==========================================================
 
 	/** 获取时装信息 */
 	public static short U_FASHION_GET = 201;
@@ -380,5 +390,8 @@ public interface ClientProtocol {
 	public static final short U_REFRESH_INVERSE_BEAD = 723;
 	/** 请求领取灵气液**/
 	public static final short U_INVERSE_RECEIVE_AURA = 734;
-	// ========================><=========================
+	// ========================>vip<=========================
+	/** vip 购买响应**/
+	public static final short U_VIP_BUY				 = 735;
+	
 }

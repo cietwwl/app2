@@ -28,6 +28,7 @@ import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.buffer.BufferOverlayType;
 import com.chuangyou.xianni.battle.buffer.BufferState;
+import com.chuangyou.xianni.battle.buffer.BufferType;
 import com.chuangyou.xianni.battle.buffer.ExecWayType;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.damage.effect.DamageEffecter;
@@ -57,7 +58,6 @@ import com.chuangyou.xianni.warfield.grid.GridCoord;
 import com.chuangyou.xianni.warfield.grid.GridItem;
 import com.chuangyou.xianni.warfield.helper.Selector;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
-import com.chuangyou.xianni.warfield.spawn.MonsterSpawnNode;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
 import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.SimplePlayerInfo;
@@ -102,10 +102,16 @@ public class Living extends AbstractActionQueue {
 	 * 离开战斗状态20秒后开始自动回复气血值 气血值>0 免疫硬直和浮空效果 战斗状态每10秒一次的自动回复气血
 	 **/
 	protected int								curBlood;							// 当前气血(变动)
+
+	protected int								initAttack;							// 初始攻击
 	protected int								attack;								// 攻击
+	protected int								initDefence;						// 初始防御
 	protected int								defence;							// 防御
+	protected int								initSoulAttack;						// 初始魂攻
 	protected int								soulAttack;							// 魂攻
+	protected int								initSoulDefence;					// 初始魂防
 	protected int								soulDefence;						// 魂防
+
 	protected int								accurate;							// 命中
 	protected int								dodge;								// 闪避
 	protected int								crit;								// 暴击
@@ -401,6 +407,10 @@ public class Living extends AbstractActionQueue {
 		if (buff.getStatus() != 0) {
 			addLivingState(buff.getStatus());
 		}
+
+		if (buff.getType() == BufferType.ATTR_BODY) {
+			refreshProperties(buff.getBufferInfo().getValueType());
+		}
 	}
 
 	/**
@@ -423,6 +433,9 @@ public class Living extends AbstractActionQueue {
 
 		if (buff.getStatus() != 0) {
 			removeLivingState(buff.getStatus());
+		}
+		if (buff.getType() == BufferType.ATTR_BODY) {
+			refreshProperties(buff.getBufferInfo().getValueType());
 		}
 		return result;
 	}
@@ -837,9 +850,11 @@ public class Living extends AbstractActionQueue {
 				break;
 			case SOUL:
 				this.setInitSoul((int) value);
+				refreshProperties(attr.getValue());
 				break;
 			case BLOOD:
 				this.setInitBlood((int) value);
+				refreshProperties(attr.getValue());
 				break;
 			case MAX_BLOOD:
 				this.setMaxBlood((int) value);
@@ -851,16 +866,20 @@ public class Living extends AbstractActionQueue {
 				this.setCurBlood((int) value);
 				break;
 			case ATTACK:
-				this.setAttack((int) value);
+				this.setInitAttack((int) value);
+				refreshProperties(attr.getValue());
 				break;
 			case DEFENCE:
-				this.setDefence((int) value);
+				this.setInitDefence((int) value);
+				refreshProperties(attr.getValue());
 				break;
 			case SOUL_ATTACK:
-				this.setSoulAttack((int) value);
+				this.setInitSoulAttack((int) value);
+				refreshProperties(attr.getValue());
 				break;
 			case SOUL_DEFENCE:
-				this.setSoulDefence((int) value);
+				this.setInitSoulDefence((int) value);
+				refreshProperties(attr.getValue());
 				break;
 			case ACCURATE:
 				this.setAccurate((int) value);
@@ -1053,6 +1072,670 @@ public class Living extends AbstractActionQueue {
 	public void setSimpleInfo(SimplePlayerInfo simpleInfo) {
 		this.skin = simpleInfo.getSkinId();
 		this.simpleInfo = simpleInfo;
+	}
+
+	/* 切换战斗状态 */
+	public void changeSoulState(boolean state) {
+		isSoulState = state;
+		sendChangeStatuMsg(FIGHT_STATU, state ? 1 : 0);
+	}
+
+	/* 闪名切换 */
+	public void changeFlickerName(boolean state) {
+		sendChangeStatuMsg(BATTLE_MODE, state ? 1 : 0);
+	}
+
+	public void setSoulState(boolean isSoulState) {
+		this.isSoulState = isSoulState;
+	}
+
+	public boolean isSoulState() {
+		return isSoulState;
+	}
+
+	public long getDieTime() {
+		return dieTime;
+	}
+
+	public int lessBlood() {
+		return getMaxBlood() - getCurBlood();
+	}
+
+	public int lessSoul() {
+		return getMaxSoul() - getCurSoul();
+	}
+
+	public int getPkVal() {
+		return pkVal;
+	}
+
+	public void setPkVal(int pkVal) {
+		this.pkVal = pkVal;
+	}
+
+	public int getBattleMode() {
+		return battleMode;
+	}
+
+	public void setBattleMode(int battleMode) {
+		this.battleMode = battleMode;
+	}
+
+	public void exeWorkBuffer() {
+		List<Buffer> wbuff = imageBuffs();
+		if (wbuff != null && wbuff.size() != 0) {
+			List<Damage> damages = new ArrayList<>();
+			for (Buffer buff : wbuff) {
+				Damage damage1 = new Damage(this, buff.getSource());
+				Damage damage2 = new Damage(this, buff.getSource());
+				if (buff.checkValid() && buff.execute(null, damage1, damage2, ExecWayType.TIME_LINE)) {
+					damages.add(damage1);
+					damages.add(damage2);
+					takeDamage(damage1);
+					takeDamage(damage2);
+				}
+			}
+			if (damages.size() > 0) {
+				DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
+				damagesPb.setAttackId(-1);
+				for (Damage damage : damages) {
+					DamageMsg.Builder dmsg = DamageMsg.newBuilder();
+					damage.writeProto(dmsg);
+					damagesPb.addDamages(dmsg);
+				}
+				Set<Long> players = getNears(new PlayerSelectorHelper(this));
+				// 添加自己
+				players.add(getArmyId());
+
+				BroadcastUtil.sendBroadcastPacket(players, Protocol.U_G_DAMAGE, damagesPb.build());
+			}
+		}
+	}
+
+	public void execWayBuffer(int execWay) {
+		List<Buffer> buffers = getExeWayBuffers(execWay);
+		if (buffers != null && buffers.size() != 0) {
+			List<Damage> damages = new ArrayList<>();
+			for (Buffer buff : buffers) {
+				Damage damage1 = new Damage(this, buff.getSource());
+				Damage damage2 = new Damage(this, buff.getSource());
+				if (buff.checkValid() && buff.execute(null, damage1, damage2, execWay)) {
+					damages.add(damage1);
+					damages.add(damage2);
+					takeDamage(damage1);
+					takeDamage(damage2);
+				}
+			}
+			if (damages.size() > 0) {
+				DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
+				damagesPb.setAttackId(-1);
+				for (Damage damage : damages) {
+					DamageMsg.Builder dmsg = DamageMsg.newBuilder();
+					damage.writeProto(dmsg);
+					damagesPb.addDamages(dmsg);
+				}
+				Set<Long> players = getNears(new PlayerSelectorHelper(this));
+				// 添加自己
+				players.add(getArmyId());
+
+				BroadcastUtil.sendBroadcastPacket(players, Protocol.U_G_DAMAGE, damagesPb.build());
+			}
+		}
+	}
+
+	public void execBuffer(Buffer buff, int execWay) {
+		List<Damage> damages = new ArrayList<>();
+		Damage damage1 = new Damage(this, buff.getSource());
+		Damage damage2 = new Damage(this, buff.getSource());
+		boolean isValid = false;
+		if (execWay == ExecWayType.REMOVE) {
+			isValid = true;
+		} else {
+			isValid = buff.checkValid();
+		}
+		if (isValid && buff.execute(null, damage1, damage2, execWay)) {
+			damages.add(damage1);
+			damages.add(damage2);
+			takeDamage(damage1);
+			takeDamage(damage2);
+		}
+
+		if (damages.size() > 0) {
+			DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
+			damagesPb.setAttackId(-1);
+			for (Damage d : damages) {
+				DamageMsg.Builder dmsg = DamageMsg.newBuilder();
+				d.writeProto(dmsg);
+				damagesPb.addDamages(dmsg);
+			}
+			Set<Long> players = getNears(new PlayerSelectorHelper(this));
+			// 添加自己
+			players.add(getArmyId());
+			BroadcastUtil.sendBroadcastPacket(players, Protocol.U_G_DAMAGE, damagesPb.build());
+		}
+	}
+
+	/* 根据属性类型添加修改的变化，刷新对应属性 */
+	protected void refreshProperties(int type) {
+		List<Buffer> buffers = imageBuffs();
+		List<Buffer> invock = new ArrayList<>();
+		for (Buffer buffer : buffers) {
+			if (buffer.getType() == BufferType.ATTR_BODY && buffer.getBufferInfo().getValueType() == type) {
+				invock.add(buffer);
+			}
+		}
+		EnumAttr etype = EnumAttr.getEnumAttrByValue(type);
+		if (etype == null) {
+			Log.error("EnumAttr etype is null, type : " + type);
+			return;
+		}
+		int initValue = getInitValue(etype);
+		int addValue = 0;
+		for (Buffer buffer : invock) {
+			addValue = buffer.getBufferInfo().getValue() + (int) Math.ceil(initValue * (buffer.getBufferInfo().getValuePercent() / 10000f));
+		}
+		initValue += addValue;
+		setBufferProperty(etype, initValue);
+
+		PlayerAttUpdateMsg.Builder notifyMsg = PlayerAttUpdateMsg.newBuilder();
+		PropertyMsg.Builder speedMsg = PropertyMsg.newBuilder();
+		speedMsg.setType(etype.getValue());
+		speedMsg.setTotalPoint(initValue);
+		notifyMsg.addAtt(speedMsg);
+		notifyMsg.setPlayerId(getId());
+		// 通知附近玩家
+		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
+		if (this.armyId > 0) {
+			nears.add(this.armyId);
+		}
+		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_RESP_PLAYER_ATT_UPDATE, notifyMsg.build());
+	}
+
+	public void clearWorkBuffer() {
+		workBuffers.clear();
+	}
+
+	public boolean isFighting() {
+		return fightState;
+	}
+
+	public void fight() {
+		if (!fightState) {
+			fightState = true;
+		}
+		lastFightTm = System.currentTimeMillis();
+	}
+
+	/** 脱离战斗 */
+	public void leaveFight() {
+		if (this.getType() == RoleType.player)
+			changeFlickerName(false);
+
+		if (!fightState) {
+			return;
+		}
+		fightState = false;
+		if (isSoulState() && getCurBlood() > 0) {
+			changeSoulState(false);
+			List<Damage> damages = new ArrayList<>();
+			Damage curBlood = new Damage(this, this);
+			curBlood.setDamageType(EnumAttr.CUR_BLOOD.getValue());
+			curBlood.setDamageValue(0 - getInitBlood() * 5 / 100);
+			curBlood.setCalcType(DamageEffecterType.BLOOD);
+			damages.add(curBlood);
+			takeDamage(curBlood);
+			if (damages.size() > 0) {
+				DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
+				damagesPb.setAttackId(-1);
+				for (Damage d : damages) {
+					DamageMsg.Builder dmsg = DamageMsg.newBuilder();
+					d.writeProto(dmsg);
+					damagesPb.addDamages(dmsg);
+				}
+				Set<Long> players = getNears(new PlayerSelectorHelper(this));
+				// 添加自己
+				players.add(getArmyId());
+				for (Long armyId : players) {
+					ArmyProxy army = WorldMgr.getArmy(armyId);
+					if (army != null) {
+						PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
+						army.sendPbMessage(message);
+					}
+				}
+			}
+		}
+
+	}
+
+	public void calPkVal() {
+		if (this.getField().getFieldInfo().isBattle() && this.getPkVal() > 0) {
+			this.pkValCalTime = System.currentTimeMillis();
+			int changePkVal = MathUtils.randomClamp(1, 5);
+			changePkVal = this.getPkVal() - changePkVal < 0 ? 0 : this.getPkVal() - changePkVal;
+			this.setPkVal(changePkVal);
+			Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
+			changeMap.put(EnumAttr.PK_VAL.getValue(), (long) this.getPkVal());
+			notifyCenter(changeMap, this.getArmyId());
+
+			List<PropertyMsg> properties = new ArrayList<>();
+			PropertyMsg.Builder p = PropertyMsg.newBuilder();
+			p.setBasePoint((long) this.getPkVal());
+			p.setTotalPoint((long) this.getPkVal());
+			p.setType(EnumAttr.PK_VAL.getValue());
+			properties.add(p.build());
+			updateProperty(this, properties);
+		}
+	}
+
+	/**
+	 * 通知
+	 * 
+	 * @param changeMap
+	 * @param playerId
+	 * @return
+	 */
+	public void notifyCenter(Map<Integer, Long> changeMap, long playerId) {
+		PlayerAttUpdateMsg.Builder msg = PlayerAttUpdateMsg.newBuilder();
+		msg.setPlayerId(playerId);
+		for (int type : changeMap.keySet()) {
+			PropertyMsg.Builder attMsg = PropertyMsg.newBuilder();
+			attMsg.setType(type);
+			attMsg.setTotalPoint(changeMap.get(type));
+			msg.addAtt(attMsg);
+		}
+		PBMessage pkg = MessageUtil.buildMessage(Protocol.C_PLAYER_UPDATA_PRO, msg);
+		GatewayLinkedSet.send2Server(pkg);
+	}
+
+	public long getLastFightTM() {
+		return lastFightTm;
+	}
+
+	public long getPkValCalTime() {
+		return pkValCalTime;
+	}
+
+	public boolean canSee(long id) {
+		return true;
+	}
+
+	public String toString() {
+		return "LivingId :" + this.getId() + "  armyId:" + armyId + " type:" + this.type;
+	}
+
+	public void sendChangeStatuMsg(int stateType, int stateValue) {
+		LivingStateChangeMsg.Builder changeState = LivingStateChangeMsg.newBuilder();
+		changeState.setLivingId(id);
+		changeState.setStateType(stateType);
+		changeState.setStateValue(stateValue);
+
+		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
+		nears.add(armyId);
+		for (Long armyId : nears) {
+			ArmyProxy army = WorldMgr.getArmy(armyId);
+			PBMessage message = MessageUtil.buildMessage(Protocol.U_LIVING_STATE_CHANGE, changeState.build());
+			if (army != null) {
+				army.sendPbMessage(message);
+			}
+		}
+		// BroadcastUtil.sendBroadcastPacket(nears,
+		// Protocol.U_LIVING_STATE_CHANGE, changeState.build());
+	}
+
+	public List<Buffer> imageBuffs() {
+		List<Buffer> wbuff = new ArrayList<>();
+		synchronized (allBuffers) {
+			wbuff.addAll(allBuffers.values());
+		}
+		return wbuff;
+	}
+
+	/**
+	 * 获取攻击技能
+	 * 
+	 * @return
+	 */
+	public Skill getAttackSkill() {
+		Skill skill = null;
+		if (this.drivingSkills.isEmpty())
+			return null;
+		// Integer[] keys = this.drivingSkills.keySet().toArray(new Integer[0]);
+		// Integer randomKey = MathUtils.randomClamp(0,
+		// this.drivingSkills.size() - 1);
+		// Integer key = keys[randomKey];
+		// skill = this.drivingSkills.get(key);
+		List<Map.Entry<Integer, Skill>> skills = new ArrayList<Map.Entry<Integer, Skill>>(this.drivingSkills.entrySet());
+		Collections.sort(skills, new Comparator<Map.Entry<Integer, Skill>>() {
+			public int compare(Map.Entry<Integer, Skill> o1, Map.Entry<Integer, Skill> o2) {
+				return (o2.getValue().getTemplateInfo().getCooldown() - o1.getValue().getTemplateInfo().getCooldown());
+			}
+		});
+		for (int i = 0; i < skills.size(); i++) {
+			if (isCooldowning(CoolDownTypes.SKILL, skills.get(i).getValue().getActionId() + "")) {
+				if (i == skills.size() - 1)
+					skill = skills.get(i).getValue();
+				continue;
+			}
+			skill = skills.get(i).getValue();
+			break;
+		}
+		return skill;
+	}
+
+	/** buffer替换 */
+	public void overlay(Buffer older, Buffer newer) {
+		if (older.getState() == BufferState.INVALID) {
+			simpleAdd(newer);
+			return;
+		}
+		if (older.getOverlayWay() == BufferOverlayType.REPLACE) {
+			removeBuffer(older);
+			simpleAdd(newer);
+		}
+
+		if (older.getOverlayWay() == BufferOverlayType.REPLACE_TIME) {
+			if (newer.getAliveTime() > older.getAliveTime()) {
+				removeBuffer(older);
+				simpleAdd(newer);
+			}
+		}
+
+		if (older.getOverlayWay() == BufferOverlayType.REPLACE_COUNT) {
+			if (newer.getLeftCount() > older.getLeftCount()) {
+				removeBuffer(older);
+				simpleAdd(newer);
+			}
+		}
+
+		if (older.getOverlayWay() == BufferOverlayType.SUPERIMPOSED) {
+			older.setState(BufferState.VALID);
+			older.setLeftCount(older.getLeftCount() + newer.getBufferInfo().getExeCount());
+			older.setAliveTime(older.getAliveTime() + newer.getBufferInfo().getExeTime() * 1000);
+			upBuffer(older);
+		}
+	}
+
+	/** 检查对应状态，false 不可行，true 可行 */
+	public boolean checkStatus(LivingState state) {
+		AtomicInteger value = livingStatus.get(state);
+		if (value != null) {
+			return value.get() <= 0;
+		}
+		return true;
+	}
+
+	private void addLivingState(int stateId) {
+		LivingStatusTemplateInfo temp = BattleTempMgr.getLSInfo(stateId);
+		// 模板不存在
+		if (temp == null) {
+			return;
+		}
+		// 免疫控制
+		if (temp.getType() == LivingStatusTemplateInfo.CONTROL && !checkStatus(LivingState.BE_CONTROL)) {
+			return;
+		}
+		List<LivingState> affectedStates = temp.getAffected();
+		for (LivingState state : affectedStates) {
+			AtomicInteger value = livingStatus.get(state);
+			value.incrementAndGet();
+		}
+	}
+
+	private void removeLivingState(int stateId) {
+		LivingStatusTemplateInfo temp = BattleTempMgr.getLSInfo(stateId);
+		// 模板不存在
+		if (temp == null) {
+			return;
+		}
+		List<LivingState> affectedStates = temp.getAffected();
+		for (LivingState state : affectedStates) {
+			AtomicInteger value = livingStatus.get(state);
+			value.decrementAndGet();
+		}
+	}
+
+	/**
+	 * 添加冷却
+	 *
+	 * @param roleId
+	 *            玩家Id
+	 * @param type
+	 *            类型
+	 * @param key
+	 *            关键字
+	 * @param delay
+	 *            冷却时间
+	 */
+	public void addCooldown(CoolDownTypes type, String key, long delay) {
+		// 初始化冷却关键字
+		String cooldownKey = null;
+		if (key == null) {
+			cooldownKey = type.getValue();
+		} else {
+			cooldownKey = type.getValue() + "_" + key;
+		}
+		if (cooldowns.containsKey(cooldownKey)) {
+			CoolDown cooldown = cooldowns.get(cooldownKey);
+			cooldown.setStart(System.currentTimeMillis());
+			cooldown.setDelay(delay);
+		} else {
+			// 初始化冷却信息
+			CoolDown cooldown = new CoolDown();
+			cooldown.setType(type.getValue());
+			cooldown.setKey(cooldownKey);
+			cooldown.setStart(System.currentTimeMillis());
+			cooldown.setDelay(delay);
+
+			// 添加冷却
+			cooldowns.put(cooldownKey, cooldown);
+		}
+	}
+
+	/**
+	 * 是否在冷却中
+	 *
+	 * @param monsterId
+	 *            玩家Id
+	 * @param type
+	 *            冷却类型
+	 * @param key
+	 *            关键字
+	 * @return
+	 */
+	public boolean isCooldowning(CoolDownTypes type, String key) {
+		// 初始化冷却关键字
+		String cooldownKey = null;
+		if (key == null) {
+			cooldownKey = type.getValue();
+		} else {
+			cooldownKey = type.getValue() + "_" + key;
+		}
+
+		// 查看冷却
+		if (cooldowns.containsKey(cooldownKey)) {
+			CoolDown cooldown = cooldowns.get(cooldownKey);
+			// if (this.getId() == 1000000000033L && type ==
+			// CoolDownTypes.SKILL)
+			// System.out.println("cooldownKey: "+cooldownKey +"
+			// cooldown.getDelay:"+cooldown.getDelay()+ "
+			// "+(System.currentTimeMillis() > cooldown.getStart() +
+			// cooldown.getDelay()));
+
+			if (System.currentTimeMillis() > cooldown.getStart() + cooldown.getDelay()) {
+				// 冷却时间已经结束
+				// obj.getCooldowns().remove(cooldownKey);
+				// cooldownPool.put(cooldown);
+				return false;
+			} else {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public int getTeamId() {
+		return teamId;
+	}
+
+	public void setTeamId(int teamId) {
+		this.teamId = teamId;
+	}
+
+	/** 自杀 */
+	public void suicide() {
+		List<Damage> damages = new ArrayList<>();
+
+		Damage soul = new Damage(this, this);
+		soul.setDamageType(EnumAttr.CUR_SOUL.getValue());
+		soul.setDamageValue(Integer.MAX_VALUE);
+		soul.setSource(this);
+		damages.add(soul);
+		takeDamage(soul);
+
+		DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
+		damagesPb.setAttackId(-1);
+		for (Damage d : damages) {
+			DamageMsg.Builder dmsg = DamageMsg.newBuilder();
+			d.writeProto(dmsg);
+			damagesPb.addDamages(dmsg);
+		}
+		Set<Long> players = getNears(new PlayerSelectorHelper(this));
+		// 添加自己
+		players.add(getArmyId());
+		for (Long armyId : players) {
+			ArmyProxy army = WorldMgr.getArmy(armyId);
+			PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
+			if (army != null) {
+				army.sendPbMessage(message);
+			}
+		}
+	}
+
+	public void addCurBlood(int addValue) {
+		List<Damage> damages = new ArrayList<>();
+
+		Damage blood = new Damage(this, this);
+		blood.setDamageType(EnumAttr.CUR_BLOOD.getValue());
+		blood.setDamageValue(-addValue);
+		blood.setSource(this);
+		blood.setCalcType(DamageEffecterType.BLOOD);
+		damages.add(blood);
+		takeDamage(blood);
+
+		DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
+		damagesPb.setAttackId(-1);
+		for (Damage d : damages) {
+			DamageMsg.Builder dmsg = DamageMsg.newBuilder();
+			d.writeProto(dmsg);
+			damagesPb.addDamages(dmsg);
+		}
+		Set<Long> players = getNears(new PlayerSelectorHelper(this));
+		// 添加自己
+		players.add(getArmyId());
+		for (Long armyId : players) {
+			ArmyProxy army = WorldMgr.getArmy(armyId);
+			PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
+			if (army != null) {
+				army.sendPbMessage(message);
+			}
+		}
+	}
+
+	public void addCurSoul(int addValue) {
+		List<Damage> damages = new ArrayList<>();
+
+		Damage soul = new Damage(this, this);
+		soul.setDamageType(EnumAttr.CUR_SOUL.getValue());
+		soul.setDamageValue(-addValue);
+		soul.setCalcType(DamageEffecterType.SOUL);
+		soul.setSource(this);
+		damages.add(soul);
+		takeDamage(soul);
+
+		DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
+		damagesPb.setAttackId(-1);
+		for (Damage d : damages) {
+			DamageMsg.Builder dmsg = DamageMsg.newBuilder();
+			d.writeProto(dmsg);
+			damagesPb.addDamages(dmsg);
+		}
+		Set<Long> players = getNears(new PlayerSelectorHelper(this));
+		// 添加自己
+		players.add(getArmyId());
+		for (Long armyId : players) {
+			ArmyProxy army = WorldMgr.getArmy(armyId);
+			PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
+			if (army != null) {
+				army.sendPbMessage(message);
+				System.out.println(damagesPb.build());
+			}
+		}
+	}
+
+	/**
+	 * 通知
+	 * 
+	 * @param playerId
+	 * @param beKillerId
+	 *            被杀者
+	 */
+	public void notifyCenter(int type, int playerId, int beKillerId) {
+		PlayerKillMonsterMsg.Builder msg = PlayerKillMonsterMsg.newBuilder();
+		msg.setPlayerId(playerId);
+		msg.setMonsterTemplateId(beKillerId);
+		msg.setType(type);
+		PBMessage pkg = MessageUtil.buildMessage(Protocol.C_PLAYER_KILL_MONSTER, msg);
+		GatewayLinkedSet.send2Server(pkg);
+	}
+
+	private int getInitValue(EnumAttr type) {
+		switch (type) {
+			case MAX_BLOOD:
+				return initBlood;
+			case MAX_SOUL:
+				return initSoul;
+			case ATTACK:
+				return initAttack;
+			case DEFENCE:
+				return initDefence;
+			case SOUL_ATTACK:
+				return initSoulAttack;
+			case SOUL_DEFENCE:
+				return initSoulDefence;
+			default:
+				Log.error("not suppot type :" + type.getValue());
+				return getProperty(type.getValue());
+		}
+	}
+
+	public void setBufferProperty(EnumAttr attr, long value) {
+		/* 不允许出现负属性 */
+		if (value < 0) {
+			value = 0;
+		}
+		switch (attr) {
+			case MAX_SOUL:
+				this.setMaxSoul((int) value);
+				break;
+			case MAX_BLOOD:
+				this.setMaxBlood((int) value);
+				break;
+			case ATTACK:
+				this.setAttack((int) value);
+				break;
+			case DEFENCE:
+				this.setDefence((int) value);
+				break;
+			case SOUL_ATTACK:
+				this.setSoulAttack((int) value);
+				break;
+			case SOUL_DEFENCE:
+				this.setSoulDefence((int) value);
+				break;
+			default:
+				break;
+		}
 	}
 
 	public int getType() {
@@ -1390,587 +2073,23 @@ public class Living extends AbstractActionQueue {
 		this.restoreTime = restoreTime;
 	}
 
-	/* 切换战斗状态 */
-	public void changeSoulState(boolean state) {
-		isSoulState = state;
-		sendChangeStatuMsg(FIGHT_STATU, state ? 1 : 0);
+	public void setInitAttack(int initAttack) {
+		this.initAttack = initAttack;
 	}
 
-	/* 闪名切换 */
-	public void changeFlickerName(boolean state) {
-		sendChangeStatuMsg(BATTLE_MODE, state ? 1 : 0);
+	public void setInitDefence(int initDefence) {
+		this.initDefence = initDefence;
 	}
 
-	public void setSoulState(boolean isSoulState) {
-		this.isSoulState = isSoulState;
+	public void setInitSoulAttack(int initSoulAttack) {
+		this.initSoulAttack = initSoulAttack;
 	}
 
-	public boolean isSoulState() {
-		return isSoulState;
-	}
-
-	public long getDieTime() {
-		return dieTime;
-	}
-
-	public int lessBlood() {
-		return getMaxBlood() - getCurBlood();
-	}
-
-	public int lessSoul() {
-		return getMaxSoul() - getCurSoul();
-	}
-
-	public int getPkVal() {
-		return pkVal;
-	}
-
-	public void setPkVal(int pkVal) {
-		this.pkVal = pkVal;
-	}
-
-	public int getBattleMode() {
-		return battleMode;
-	}
-
-	public void setBattleMode(int battleMode) {
-		this.battleMode = battleMode;
-	}
-
-	public void exeWorkBuffer() {
-		List<Buffer> wbuff = imageBuffs();
-		if (wbuff != null && wbuff.size() != 0) {
-			List<Damage> damages = new ArrayList<>();
-			for (Buffer buff : wbuff) {
-				Damage damage1 = new Damage(this, buff.getSource());
-				Damage damage2 = new Damage(this, buff.getSource());
-				if (buff.checkValid() && buff.execute(null, damage1, damage2, ExecWayType.TIME_LINE)) {
-					damages.add(damage1);
-					damages.add(damage2);
-					takeDamage(damage1);
-					takeDamage(damage2);
-				}
-			}
-			if (damages.size() > 0) {
-				DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
-				damagesPb.setAttackId(-1);
-				for (Damage damage : damages) {
-					DamageMsg.Builder dmsg = DamageMsg.newBuilder();
-					damage.writeProto(dmsg);
-					damagesPb.addDamages(dmsg);
-				}
-				Set<Long> players = getNears(new PlayerSelectorHelper(this));
-				// 添加自己
-				players.add(getArmyId());
-
-				BroadcastUtil.sendBroadcastPacket(players, Protocol.U_G_DAMAGE, damagesPb.build());
-			}
-		}
-	}
-
-	public void execWayBuffer(int execWay) {
-		List<Buffer> buffers = getExeWayBuffers(execWay);
-		if (buffers != null && buffers.size() != 0) {
-			List<Damage> damages = new ArrayList<>();
-			for (Buffer buff : buffers) {
-				Damage damage1 = new Damage(this, buff.getSource());
-				Damage damage2 = new Damage(this, buff.getSource());
-				if (buff.checkValid() && buff.execute(null, damage1, damage2, execWay)) {
-					damages.add(damage1);
-					damages.add(damage2);
-					takeDamage(damage1);
-					takeDamage(damage2);
-				}
-			}
-			if (damages.size() > 0) {
-				DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
-				damagesPb.setAttackId(-1);
-				for (Damage damage : damages) {
-					DamageMsg.Builder dmsg = DamageMsg.newBuilder();
-					damage.writeProto(dmsg);
-					damagesPb.addDamages(dmsg);
-				}
-				Set<Long> players = getNears(new PlayerSelectorHelper(this));
-				// 添加自己
-				players.add(getArmyId());
-
-				BroadcastUtil.sendBroadcastPacket(players, Protocol.U_G_DAMAGE, damagesPb.build());
-			}
-		}
-	}
-
-	public void execBuffer(Buffer buff, int execWay) {
-		List<Damage> damages = new ArrayList<>();
-		Damage damage1 = new Damage(this, buff.getSource());
-		Damage damage2 = new Damage(this, buff.getSource());
-		boolean isValid = false;
-		if (execWay == ExecWayType.REMOVE) {
-			isValid = true;
-		} else {
-			isValid = buff.checkValid();
-		}
-		if (isValid && buff.execute(null, damage1, damage2, execWay)) {
-			damages.add(damage1);
-			damages.add(damage2);
-			takeDamage(damage1);
-			takeDamage(damage2);
-		}
-
-		if (damages.size() > 0) {
-			DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
-			damagesPb.setAttackId(-1);
-			for (Damage d : damages) {
-				DamageMsg.Builder dmsg = DamageMsg.newBuilder();
-				d.writeProto(dmsg);
-				damagesPb.addDamages(dmsg);
-			}
-			Set<Long> players = getNears(new PlayerSelectorHelper(this));
-			// 添加自己
-			players.add(getArmyId());
-			BroadcastUtil.sendBroadcastPacket(players, Protocol.U_G_DAMAGE, damagesPb.build());
-		}
-	}
-
-	public void clearWorkBuffer() {
-
-	}
-
-	public boolean isFighting() {
-		return fightState;
-	}
-
-	public void fight() {
-		if (!fightState) {
-			fightState = true;
-		}
-		lastFightTm = System.currentTimeMillis();
-	}
-
-	/** 脱离战斗 */
-	public void leaveFight() {
-		if (this.getType() == RoleType.player)
-			changeFlickerName(false);
-
-		if (!fightState) {
-			return;
-		}
-		fightState = false;
-		if (isSoulState() && getCurBlood() > 0) {
-			changeSoulState(false);
-			List<Damage> damages = new ArrayList<>();
-			Damage curBlood = new Damage(this, this);
-			curBlood.setDamageType(EnumAttr.CUR_BLOOD.getValue());
-			curBlood.setDamageValue(0 - getInitBlood() * 5 / 100);
-			curBlood.setCalcType(DamageEffecterType.BLOOD);
-			damages.add(curBlood);
-			takeDamage(curBlood);
-			if (damages.size() > 0) {
-				DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
-				damagesPb.setAttackId(-1);
-				for (Damage d : damages) {
-					DamageMsg.Builder dmsg = DamageMsg.newBuilder();
-					d.writeProto(dmsg);
-					damagesPb.addDamages(dmsg);
-				}
-				Set<Long> players = getNears(new PlayerSelectorHelper(this));
-				// 添加自己
-				players.add(getArmyId());
-				for (Long armyId : players) {
-					ArmyProxy army = WorldMgr.getArmy(armyId);
-					if (army != null) {
-						PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
-						army.sendPbMessage(message);
-					}
-				}
-			}
-		}
-
-	}
-
-	public void calPkVal() {
-		if (this.getField().getFieldInfo().isBattle() && this.getPkVal() > 0) {
-			this.pkValCalTime = System.currentTimeMillis();
-			int changePkVal = MathUtils.randomClamp(1, 5);
-			changePkVal = this.getPkVal() - changePkVal < 0 ? 0 : this.getPkVal() - changePkVal;
-			this.setPkVal(changePkVal);
-			Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
-			changeMap.put(EnumAttr.PK_VAL.getValue(), (long) this.getPkVal());
-			notifyCenter(changeMap, this.getArmyId());
-
-			List<PropertyMsg> properties = new ArrayList<>();
-			PropertyMsg.Builder p = PropertyMsg.newBuilder();
-			p.setBasePoint((long) this.getPkVal());
-			p.setTotalPoint((long) this.getPkVal());
-			p.setType(EnumAttr.PK_VAL.getValue());
-			properties.add(p.build());
-			updateProperty(this, properties);
-		}
-	}
-
-	/**
-	 * 通知
-	 * 
-	 * @param changeMap
-	 * @param playerId
-	 * @return
-	 */
-	public void notifyCenter(Map<Integer, Long> changeMap, long playerId) {
-		PlayerAttUpdateMsg.Builder msg = PlayerAttUpdateMsg.newBuilder();
-		msg.setPlayerId(playerId);
-		for (int type : changeMap.keySet()) {
-			PropertyMsg.Builder attMsg = PropertyMsg.newBuilder();
-			attMsg.setType(type);
-			attMsg.setTotalPoint(changeMap.get(type));
-			msg.addAtt(attMsg);
-		}
-		PBMessage pkg = MessageUtil.buildMessage(Protocol.C_PLAYER_UPDATA_PRO, msg);
-		GatewayLinkedSet.send2Server(pkg);
-	}
-
-	public long getLastFightTM() {
-		return lastFightTm;
-	}
-
-	public long getPkValCalTime() {
-		return pkValCalTime;
-	}
-
-	public boolean canSee(long id) {
-		return true;
-	}
-
-	public String toString() {
-		return "LivingId :" + this.getId() + "  armyId:" + armyId + " type:" + this.type;
-	}
-
-	public void sendChangeStatuMsg(int stateType, int stateValue) {
-		LivingStateChangeMsg.Builder changeState = LivingStateChangeMsg.newBuilder();
-		changeState.setLivingId(id);
-		changeState.setStateType(stateType);
-		changeState.setStateValue(stateValue);
-
-		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
-		nears.add(armyId);
-		for (Long armyId : nears) {
-			ArmyProxy army = WorldMgr.getArmy(armyId);
-			PBMessage message = MessageUtil.buildMessage(Protocol.U_LIVING_STATE_CHANGE, changeState.build());
-			if (army != null) {
-				army.sendPbMessage(message);
-			}
-		}
-		// BroadcastUtil.sendBroadcastPacket(nears,
-		// Protocol.U_LIVING_STATE_CHANGE, changeState.build());
-	}
-
-	public List<Buffer> imageBuffs() {
-		List<Buffer> wbuff = new ArrayList<>();
-		synchronized (allBuffers) {
-			wbuff.addAll(allBuffers.values());
-		}
-		return wbuff;
+	public void setInitSoulDefence(int initSoulDefence) {
+		this.initSoulDefence = initSoulDefence;
 	}
 
 	public boolean isClear() {
 		return false;
 	}
-
-	/**
-	 * 获取攻击技能
-	 * 
-	 * @return
-	 */
-	public Skill getAttackSkill() {
-		Skill skill = null;
-		if (this.drivingSkills.isEmpty())
-			return null;
-		// Integer[] keys = this.drivingSkills.keySet().toArray(new Integer[0]);
-		// Integer randomKey = MathUtils.randomClamp(0,
-		// this.drivingSkills.size() - 1);
-		// Integer key = keys[randomKey];
-		// skill = this.drivingSkills.get(key);
-		List<Map.Entry<Integer, Skill>> skills = new ArrayList<Map.Entry<Integer, Skill>>(this.drivingSkills.entrySet());
-		Collections.sort(skills, new Comparator<Map.Entry<Integer, Skill>>() {
-			public int compare(Map.Entry<Integer, Skill> o1, Map.Entry<Integer, Skill> o2) {
-				return (o2.getValue().getTemplateInfo().getCooldown() - o1.getValue().getTemplateInfo().getCooldown());
-			}
-		});
-		for (int i = 0; i < skills.size(); i++) {
-			if (isCooldowning(CoolDownTypes.SKILL, skills.get(i).getValue().getActionId() + "")) {
-				if (i == skills.size() - 1)
-					skill = skills.get(i).getValue();
-				continue;
-			}
-			skill = skills.get(i).getValue();
-			break;
-		}
-		return skill;
-	}
-
-	/** buffer替换 */
-	public void overlay(Buffer older, Buffer newer) {
-		if (older.getState() == BufferState.INVALID) {
-			simpleAdd(newer);
-			return;
-		}
-		if (older.getOverlayWay() == BufferOverlayType.REPLACE) {
-			removeBuffer(older);
-			simpleAdd(newer);
-		}
-
-		if (older.getOverlayWay() == BufferOverlayType.REPLACE_TIME) {
-			if (newer.getAliveTime() > older.getAliveTime()) {
-				removeBuffer(older);
-				simpleAdd(newer);
-			}
-		}
-
-		if (older.getOverlayWay() == BufferOverlayType.REPLACE_COUNT) {
-			if (newer.getLeftCount() > older.getLeftCount()) {
-				removeBuffer(older);
-				simpleAdd(newer);
-			}
-		}
-
-		if (older.getOverlayWay() == BufferOverlayType.SUPERIMPOSED) {
-			older.setState(BufferState.VALID);
-			older.setLeftCount(older.getLeftCount() + newer.getBufferInfo().getExeCount());
-			older.setAliveTime(older.getAliveTime() + newer.getBufferInfo().getExeTime() * 1000);
-			upBuffer(older);
-		}
-	}
-
-	/** 检查对应状态，false 不可行，true 可行 */
-	public boolean checkStatus(LivingState state) {
-		AtomicInteger value = livingStatus.get(state);
-		if (value != null) {
-			return value.get() <= 0;
-		}
-		return true;
-	}
-
-	private void addLivingState(int stateId) {
-		LivingStatusTemplateInfo temp = BattleTempMgr.getLSInfo(stateId);
-		// 模板不存在
-		if (temp == null) {
-			return;
-		}
-		// 免疫控制
-		if (temp.getType() == LivingStatusTemplateInfo.CONTROL && !checkStatus(LivingState.BE_CONTROL)) {
-			return;
-		}
-		List<LivingState> affectedStates = temp.getAffected();
-		for (LivingState state : affectedStates) {
-			AtomicInteger value = livingStatus.get(state);
-			value.incrementAndGet();
-		}
-	}
-
-	private void removeLivingState(int stateId) {
-		LivingStatusTemplateInfo temp = BattleTempMgr.getLSInfo(stateId);
-		// 模板不存在
-		if (temp == null) {
-			return;
-		}
-		List<LivingState> affectedStates = temp.getAffected();
-		for (LivingState state : affectedStates) {
-			AtomicInteger value = livingStatus.get(state);
-			value.decrementAndGet();
-		}
-	}
-
-	/**
-	 * 添加冷却
-	 *
-	 * @param roleId
-	 *            玩家Id
-	 * @param type
-	 *            类型
-	 * @param key
-	 *            关键字
-	 * @param delay
-	 *            冷却时间
-	 */
-	public void addCooldown(CoolDownTypes type, String key, long delay) {
-		// 初始化冷却关键字
-		String cooldownKey = null;
-		if (key == null) {
-			cooldownKey = type.getValue();
-		} else {
-			cooldownKey = type.getValue() + "_" + key;
-		}
-		if (cooldowns.containsKey(cooldownKey)) {
-			CoolDown cooldown = cooldowns.get(cooldownKey);
-			cooldown.setStart(System.currentTimeMillis());
-			cooldown.setDelay(delay);
-		} else {
-			// 初始化冷却信息
-			CoolDown cooldown = new CoolDown();
-			cooldown.setType(type.getValue());
-			cooldown.setKey(cooldownKey);
-			cooldown.setStart(System.currentTimeMillis());
-			cooldown.setDelay(delay);
-
-			// 添加冷却
-			cooldowns.put(cooldownKey, cooldown);
-		}
-	}
-
-	/**
-	 * 是否在冷却中
-	 *
-	 * @param monsterId
-	 *            玩家Id
-	 * @param type
-	 *            冷却类型
-	 * @param key
-	 *            关键字
-	 * @return
-	 */
-	public boolean isCooldowning(CoolDownTypes type, String key) {
-		// 初始化冷却关键字
-		String cooldownKey = null;
-		if (key == null) {
-			cooldownKey = type.getValue();
-		} else {
-			cooldownKey = type.getValue() + "_" + key;
-		}
-
-		// 查看冷却
-		if (cooldowns.containsKey(cooldownKey)) {
-			CoolDown cooldown = cooldowns.get(cooldownKey);
-			// if (this.getId() == 1000000000033L && type ==
-			// CoolDownTypes.SKILL)
-			// System.out.println("cooldownKey: "+cooldownKey +"
-			// cooldown.getDelay:"+cooldown.getDelay()+ "
-			// "+(System.currentTimeMillis() > cooldown.getStart() +
-			// cooldown.getDelay()));
-
-			if (System.currentTimeMillis() > cooldown.getStart() + cooldown.getDelay()) {
-				// 冷却时间已经结束
-				// obj.getCooldowns().remove(cooldownKey);
-				// cooldownPool.put(cooldown);
-				return false;
-			} else {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public int getTeamId() {
-		return teamId;
-	}
-
-	public void setTeamId(int teamId) {
-		this.teamId = teamId;
-	}
-
-	/** 自杀 */
-	public void suicide() {
-		List<Damage> damages = new ArrayList<>();
-
-		Damage soul = new Damage(this, this);
-		soul.setDamageType(EnumAttr.CUR_SOUL.getValue());
-		soul.setDamageValue(Integer.MAX_VALUE);
-		soul.setSource(this);
-		damages.add(soul);
-		takeDamage(soul);
-
-		DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
-		damagesPb.setAttackId(-1);
-		for (Damage d : damages) {
-			DamageMsg.Builder dmsg = DamageMsg.newBuilder();
-			d.writeProto(dmsg);
-			damagesPb.addDamages(dmsg);
-		}
-		Set<Long> players = getNears(new PlayerSelectorHelper(this));
-		// 添加自己
-		players.add(getArmyId());
-		for (Long armyId : players) {
-			ArmyProxy army = WorldMgr.getArmy(armyId);
-			PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
-			if (army != null) {
-				army.sendPbMessage(message);
-			}
-		}
-	}
-
-	public void addCurBlood(int addValue) {
-		List<Damage> damages = new ArrayList<>();
-
-		Damage blood = new Damage(this, this);
-		blood.setDamageType(EnumAttr.CUR_BLOOD.getValue());
-		blood.setDamageValue(-addValue);
-		blood.setSource(this);
-		blood.setCalcType(DamageEffecterType.BLOOD);
-		damages.add(blood);
-		takeDamage(blood);
-
-		DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
-		damagesPb.setAttackId(-1);
-		for (Damage d : damages) {
-			DamageMsg.Builder dmsg = DamageMsg.newBuilder();
-			d.writeProto(dmsg);
-			damagesPb.addDamages(dmsg);
-		}
-		Set<Long> players = getNears(new PlayerSelectorHelper(this));
-		// 添加自己
-		players.add(getArmyId());
-		for (Long armyId : players) {
-			ArmyProxy army = WorldMgr.getArmy(armyId);
-			PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
-			if (army != null) {
-				army.sendPbMessage(message);
-			}
-		}
-	}
-
-	public void addCurSoul(int addValue) {
-		List<Damage> damages = new ArrayList<>();
-
-		Damage soul = new Damage(this, this);
-		soul.setDamageType(EnumAttr.CUR_SOUL.getValue());
-		soul.setDamageValue(-addValue);
-		soul.setCalcType(DamageEffecterType.SOUL);
-		soul.setSource(this);
-		damages.add(soul);
-		takeDamage(soul);
-
-		DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
-		damagesPb.setAttackId(-1);
-		for (Damage d : damages) {
-			DamageMsg.Builder dmsg = DamageMsg.newBuilder();
-			d.writeProto(dmsg);
-			damagesPb.addDamages(dmsg);
-		}
-		Set<Long> players = getNears(new PlayerSelectorHelper(this));
-		// 添加自己
-		players.add(getArmyId());
-		for (Long armyId : players) {
-			ArmyProxy army = WorldMgr.getArmy(armyId);
-			PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
-			if (army != null) {
-				army.sendPbMessage(message);
-				System.out.println(damagesPb.build());
-			}
-		}
-	}
-
-	/**
-	 * 通知
-	 * 
-	 * @param playerId
-	 * @param beKillerId
-	 *            被杀者
-	 */
-	public void notifyCenter(int type, int playerId, int beKillerId) {
-		PlayerKillMonsterMsg.Builder msg = PlayerKillMonsterMsg.newBuilder();
-		msg.setPlayerId(playerId);
-		msg.setMonsterTemplateId(beKillerId);
-		msg.setType(type);
-		PBMessage pkg = MessageUtil.buildMessage(Protocol.C_PLAYER_KILL_MONSTER, msg);
-		GatewayLinkedSet.send2Server(pkg);
-	}
-
 }

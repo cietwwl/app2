@@ -22,4 +22,11 @@ public class CampaignConstant {
 		public static final int	NOTITY2C_SUCCESS		= 4;	// 副本成功结算
 	}
 
+	public static class CampaignType {
+		public static final int	SINGLE		= 1;	// 单人本
+		public static final int	TEAM		= 2;	// 组队副本
+		public static final int	BEAD		= 3;	// 天逆珠副本
+		public static final int	CHALLENG	= 4;	// 挑战副本
+	}
+
 }

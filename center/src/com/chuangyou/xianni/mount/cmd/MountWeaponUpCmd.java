@@ -9,7 +9,7 @@ import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
-import com.chuangyou.xianni.entity.item.BindType;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.mount.MountInfo;
 import com.chuangyou.xianni.entity.mount.MountWeaponCfg;
 import com.chuangyou.xianni.mount.manager.MountManager;
@@ -42,7 +42,7 @@ public class MountWeaponUpCmd extends AbstractCommand {
 			return;
 		}
 		//扣道具
-		if(!player.getBagInventory().removeItemFromPlayerBag(gradeCfg.getUpgradeItem(), gradeCfg.getUpgradeItemNum(), BindType.ALL)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(gradeCfg.getUpgradeItem(), gradeCfg.getUpgradeItemNum(), ItemRemoveType.USE)) return;
 		
 		ThreadSafeRandom random = new ThreadSafeRandom();
 		//骑兵升阶

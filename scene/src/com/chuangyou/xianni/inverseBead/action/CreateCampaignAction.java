@@ -34,12 +34,14 @@ public class CreateCampaignAction extends Action {
 		// 不允许在副本中创建副本
 		if (curField != null && curField.getCampaignId() > 0) {
 			Log.error("--user request create campaign but is aleady in campaign. playerId : " + army.getPlayerId());
+			System.out.println("--user request create campaign but is aleady in campaign. playerId : " + army.getPlayerId());
 			return;
 		}
 
 		CampaignTemplateInfo temp = CampaignTempMgr.get(campaignId);
 		if (temp == null) {
 			Log.error("--playerId: " + army.getPlayerId() + " create campaign if fail ,campaignId:" + campaignId);
+			System.out.println("--playerId: " + army.getPlayerId() + " create campaign if fail ,campaignId:" + campaignId);
 			return;
 		}
 
@@ -48,28 +50,7 @@ public class CreateCampaignAction extends Action {
 
 		campaign.start();
 		campaign.onPlayerEnter(army);
-		if (campaign.getTemp().getType() == CampaignFactory.TEAM) {
-			Team team = TeamMgr.getTeam(army.getPlayerId());
-			if (team == null) {
-				return;
-			}
-			List<Long> players = team.getMembers();
-			if (players == null || players.size() <= 0) {
-				return;
-			}
-			for (Long playerId : players) {
-				if (army.getPlayerId() == playerId) {
-					continue;
-				}
-				ArmyProxy teamMember = WorldMgr.getArmy(playerId);
-				if (teamMember != null) {
-					campaign.onPlayerEnter(teamMember);
-				}
-			}
-			TeamCampaign tc = (TeamCampaign) campaign;
-			tc.setTeamId(team.getTeamid());
-			team.setCampaignId(tc.getIndexId());
-		}
+		System.out.println("-----------campaign.onPlayerEnter(army);------------------");
 	}
 
 }

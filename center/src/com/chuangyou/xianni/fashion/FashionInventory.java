@@ -4,9 +4,13 @@ import java.util.Map;
 
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.fashion.FashionInfo;
+import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.event.AbstractEvent;
+import com.chuangyou.xianni.fashion.manager.FashionManager;
 import com.chuangyou.xianni.interfaces.IInventory;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.skill.SkillUtil;
+import com.chuangyou.xianni.skill.template.SimpleProperty;
 import com.chuangyou.xianni.sql.dao.DBManager;
 
 public class FashionInventory extends AbstractEvent implements IInventory {
@@ -93,6 +97,29 @@ public class FashionInventory extends AbstractEvent implements IInventory {
 	}
 	public Map<Integer, FashionInfo> getFashionMap() {
 		return fashionMap;
+	}
+	
+	public void computeFashionAtt(BaseProperty fashionData, BaseProperty fashionPer){
+		Map<Integer, Integer> attMap = FashionManager.getAttValMap(player);
+		for(Integer key: attMap.keySet()){
+			SimpleProperty property = SkillUtil.readPro(key, attMap.get(key));
+			if(property.isPre()){
+				SkillUtil.joinPro(fashionPer, property.getType(), property.getValue());
+			}else{
+				SkillUtil.joinPro(fashionData, property.getType(), property.getValue());
+			}
+		}
+	}
+	
+	public void updateProperty(){
+		if(player.getArmyInventory() != null){
+			BaseProperty fashionData = new BaseProperty();
+			BaseProperty fashionPer = new BaseProperty();
+			
+			computeFashionAtt(fashionData, fashionPer);
+			player.getArmyInventory().getHero().addFashion(fashionData, fashionPer);
+			player.getArmyInventory().updateProperty();
+		}
 	}
 
 }

@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.SensitivewordFilterUtil;
-import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.property.BaseProperty;

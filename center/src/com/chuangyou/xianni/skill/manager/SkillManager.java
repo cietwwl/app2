@@ -17,7 +17,7 @@ import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.hero.HeroSkill;
-import com.chuangyou.xianni.entity.item.BindType;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.log.SkillLogInfo;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.entity.property.SkillBaseProperty;
@@ -136,7 +136,7 @@ public class SkillManager {
 		for (String string : needGoods_1) {
 			String[] goods = string.split(",");
 			if (!goods[0].isEmpty())
-				player.getBagInventory().removeItemFromPlayerBag(Integer.valueOf(goods[0]), Integer.valueOf(goods[1]), BindType.ALL);
+				player.getBagInventory().removeItemFromPlayerBag(Integer.valueOf(goods[0]), Integer.valueOf(goods[1]), ItemRemoveType.USE);
 		}
 
 		// 升级处理
@@ -364,7 +364,7 @@ public class SkillManager {
 		for (String string : needGoods_1) {
 			String[] goods = string.split(",");
 			if (!goods[0].isEmpty()) {
-				player.getBagInventory().removeItemFromPlayerBag(Integer.valueOf(goods[0]), Integer.valueOf(goods[1]), BindType.ALL);
+				player.getBagInventory().removeItemFromPlayerBag(Integer.valueOf(goods[0]), Integer.valueOf(goods[1]), ItemRemoveType.USE);
 				int count = 0;
 				if (useGoods.containsKey(Integer.valueOf(goods[0])))
 					count = useGoods.get(Integer.valueOf(goods[0]));

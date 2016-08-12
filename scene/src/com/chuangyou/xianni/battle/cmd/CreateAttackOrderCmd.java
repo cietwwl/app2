@@ -102,7 +102,7 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 		Vector3 target = Vector3BuilderHelper.get(orderMsg.getPosition());
 
 		if (!Vector3.Equal(current, target) && player.checkStatus(LivingState.ATTACK_MOVE))
-			NotifyNearHelper.notifyHelper(field, army, target, new AllSelectorHelper(army.getPlayer()));
+			NotifyNearHelper.notifyHelper(field, player, target, new AllSelectorHelper(army.getPlayer()));
 
 	}
 

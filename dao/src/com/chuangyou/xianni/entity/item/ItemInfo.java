@@ -3,6 +3,7 @@ package com.chuangyou.xianni.entity.item;
 import java.util.Date;
 
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
+import com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg;
 import com.chuangyou.common.protobuf.pb.item.ItemFullInfoMsgProto.ItemFullInfoMsg;
 import com.chuangyou.xianni.entity.DataObject;
 import com.chuangyou.xianni.entity.Option;
@@ -29,8 +30,14 @@ public class ItemInfo extends DataObject implements Cloneable {
 	private int pro;// 基础属性
 	private int qualityCoefficient;// 品质系数
 	private int grow;// 成长系数
-	// private int jiachi1;// 加持
-
+	
+	/** 觉醒等级 */
+	private int awaken;
+	/** 觉醒突破点 */
+	private int awakenPoint;
+	/** 注入魂石 */
+	private int stone;
+	
 	public ItemInfo() {
 		setOp(Option.Insert);
 	}
@@ -211,6 +218,7 @@ public class ItemInfo extends DataObject implements Cloneable {
 	}
 
 	public void setPro(int pro) {
+		setOp(Option.Update);
 		this.pro = pro;
 	}
 
@@ -219,6 +227,7 @@ public class ItemInfo extends DataObject implements Cloneable {
 	}
 
 	public void setQualityCoefficient(int qualityCoefficient) {
+		setOp(Option.Update);
 		this.qualityCoefficient = qualityCoefficient;
 	}
 
@@ -227,7 +236,35 @@ public class ItemInfo extends DataObject implements Cloneable {
 	}
 
 	public void setGrow(int grow) {
+		setOp(Option.Update);
 		this.grow = grow;
+	}
+
+	public int getAwaken() {
+		return awaken;
+	}
+
+	public void setAwaken(int awaken) {
+		setOp(Option.Update);
+		this.awaken = awaken;
+	}
+
+	public int getAwakenPoint() {
+		return awakenPoint;
+	}
+
+	public void setAwakenPoint(int awakenPoint) {
+		setOp(Option.Update);
+		this.awakenPoint = awakenPoint;
+	}
+
+	public int getStone() {
+		return stone;
+	}
+
+	public void setStone(int stone) {
+		setOp(Option.Update);
+		this.stone = stone;
 	}
 
 	public void writeProto(ItemFullInfoMsg.Builder builder) {
@@ -241,6 +278,14 @@ public class ItemInfo extends DataObject implements Cloneable {
 		builder.setPro(this.getPro());
 		builder.setQualityCoefficient(this.getQualityCoefficient());
 		builder.setGrow(this.grow);
+		
+		EquipInfoMsg.Builder equip = EquipInfoMsg.newBuilder();
+		equip.setEquipId(this.id);
+		equip.setAwakenLevel(this.getAwaken());
+		equip.setAwakenPoint(this.getAwakenPoint());
+		equip.setStoneTempId(this.getStone());
+		builder.setEquip(equip);
+		
 		if (this.beginDate != null) {
 			builder.setBeginDate(this.beginDate.getTime());
 		}

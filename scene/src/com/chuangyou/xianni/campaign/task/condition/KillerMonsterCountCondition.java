@@ -12,12 +12,13 @@ public class KillerMonsterCountCondition extends CTBaseCondition {
 
 	/** 是否完成 */
 	public boolean isComplated() {
-		return record.getParam1() > tempInfo.getParam1();
+		return record.getProgress() >= tempInfo.getParam2();
 	}
 
 	public boolean addProgress(int param) {
-		if (tempInfo.getParam1() == param) {
+		if (tempInfo.getParam1() == param && !isComplated()) {
 			record.setProgress(record.getProgress() + 1);
+			return true;
 		}
 		return false;
 	}

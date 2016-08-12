@@ -1,7 +1,6 @@
 package com.chuangyou.xianni.battle.damage;
 
 import com.chuangyou.common.util.ThreadSafeRandom;
-import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
 import com.chuangyou.xianni.role.objects.Living;
 
 /**
@@ -10,12 +9,12 @@ import com.chuangyou.xianni.role.objects.Living;
 public class BloodDamageCalculator implements DamageCalculator {
 
 	@Override
-	public int calcDamage(Living source, Living target, SkillActionTemplateInfo skillTemp) {
+	public int calcDamage(Living source, Living target, int percent, int value) {
 		int attack = source.getAttack();
 		int defence = target.getDefence();
 		ThreadSafeRandom random = new ThreadSafeRandom();
 		int damageValue = (int) ((Math.max(attack - defence * 1.2, 0) + attack * 0.025) * random.next(80, 120) / 100);
-		damageValue = damageValue * skillTemp.getParamParent1() / 100 + skillTemp.getParamValue1();
+		damageValue = damageValue * percent / 10000 + value;
 		return damageValue == 0 ? 1 : damageValue;
 	}
 

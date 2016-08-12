@@ -7,6 +7,7 @@ import com.chuangyou.common.protobuf.pb.chat.ChatSendProto.ChatSendMsg;
 import com.chuangyou.xianni.chat.manager.ChatManager;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
+import com.chuangyou.xianni.constant.ChatConstant;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.BroadcastUtil;
@@ -72,6 +73,9 @@ public abstract class ChatBaseAction {
 		msg.setLevel(senderInfo.getLevel());
 		msg.setVip(senderInfo.getVipLevel());
 		msg.setChatContent(sendMsg.getChatContent());
+		if(sendMsg.getChannel() == ChatConstant.Channel.PRIVATE){
+			msg.setReceiver(sendMsg.getReceiverId());
+		}
 		return msg.build();
 	}
 	

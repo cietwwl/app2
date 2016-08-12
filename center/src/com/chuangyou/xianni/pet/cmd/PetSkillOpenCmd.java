@@ -5,7 +5,7 @@ import com.chuangyou.common.protobuf.pb.pet.PetSkillOpenRespProto.PetSkillOpenRe
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
-import com.chuangyou.xianni.entity.item.BindType;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.pet.PetSkill;
 import com.chuangyou.xianni.entity.pet.PetSkillInfoCfg;
 import com.chuangyou.xianni.pet.manager.PetAttManager;
@@ -46,7 +46,7 @@ public class PetSkillOpenCmd extends AbstractCommand {
 			return;
 		}
 		//扣物品
-		if(!player.getBagInventory().removeItemFromPlayerBag(info.getItem(), needPropNum, BindType.ALL)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(info.getItem(), needPropNum, ItemRemoveType.USE)) return;
 		//解封
 		skill.setState(3);
 		player.getPetInventory().updatePetSkill(skill);

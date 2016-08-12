@@ -10,7 +10,7 @@ public class TouchAreaCondition extends CTBaseCondition {
 	}
 
 	public boolean addProgress(int param) {
-		if (tempInfo.getStrParam1().indexOf(param) >= 0 && !record.getAttrParams().contains(param)) {
+		if (tempInfo.getStrParam1().indexOf(param) >= 0 && !record.getAttrParams().contains(param) && !isComplated()) {
 			record.setProgress(record.getProgress() + 1);
 			record.getAttrParams().add(param);
 			return true;
@@ -21,7 +21,7 @@ public class TouchAreaCondition extends CTBaseCondition {
 	/** 是否完成 */
 	public boolean isComplated() {
 		String[] areas = tempInfo.getStrParam1().split(",");
-		return record.getAttrParams().size() >= areas.length;
+		return record.getProgress() >= areas.length;
 	}
 
 }

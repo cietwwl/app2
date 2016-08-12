@@ -18,7 +18,7 @@ public class SpaceInfo extends DataObject {
 	/** 禁止留言 */
 	public static final int NO_MSG = 1;
 	/** 只有好友可以留言   */
-	public static final int FRIEND_MSG = 0;
+	public static final int FRIEND_MSG = 2;
 	
 	//==============================================
 	private long playerId;
@@ -32,7 +32,7 @@ public class SpaceInfo extends DataObject {
 	private volatile int likes;
 	private volatile int flowers;
 	private volatile int eggs;
-	private int curCollection;
+	private volatile int curCollection;
 	private int maxCollection;
 	private int isEditBirthday;
 	
@@ -70,7 +70,7 @@ public class SpaceInfo extends DataObject {
 	
 	
 	
-	public static SpaceInfo Builer(long playerId,String face){
+	public static SpaceInfo Builer(long playerId,String face,int maxCollection){
 		SpaceInfo info = new SpaceInfo();
 		info.setPlayerId(playerId);
 		info.setFace(face);
@@ -83,6 +83,7 @@ public class SpaceInfo extends DataObject {
 		info.setLikes(0);
 		info.setFlowers(0);
 		info.setEggs(0);
+		info.setMaxCollection(maxCollection);
 		info.setOp(Option.None);
 		return info;
 	}

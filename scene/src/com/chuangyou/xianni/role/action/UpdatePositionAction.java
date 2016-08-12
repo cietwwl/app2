@@ -164,6 +164,8 @@ public class UpdatePositionAction {// extends DelayAction {
 	protected void autoAddHatred() {
 		if (this.activeLiving.getType() == RoleType.monster) {
 			Monster monster = (Monster) this.activeLiving;
+			if(monster.getAiConfig()==null)
+				return;
 
 			boolean activeAttackPlayer = monster.getAiConfig().isActiveAttackPlayer();
 			boolean activeAttackSameMonster = monster.getAiConfig().isActiveAttackSameMonster();

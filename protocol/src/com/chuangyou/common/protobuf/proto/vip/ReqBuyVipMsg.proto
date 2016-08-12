@@ -1,0 +1,8 @@
+//protocol= 10708;
+option java_package = "com.chuangyou.common.protobuf.pb.vip";
+option java_outer_classname = "ReqBuyVipMsgProto";
+
+//购买vip
+message ReqBuyVipMsg {
+	required int32 VipId = 1; 
+}

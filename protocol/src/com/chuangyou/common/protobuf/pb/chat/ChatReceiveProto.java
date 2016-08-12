@@ -165,6 +165,23 @@ public final class ChatReceiveProto {
      */
     com.google.protobuf.ByteString
         getChatContentBytes();
+
+    /**
+     * <code>optional int64 receiver = 9;</code>
+     *
+     * <pre>
+     *接收者ID，只有私聊的时候需要用到
+     * </pre>
+     */
+    boolean hasReceiver();
+    /**
+     * <code>optional int64 receiver = 9;</code>
+     *
+     * <pre>
+     *接收者ID，只有私聊的时候需要用到
+     * </pre>
+     */
+    long getReceiver();
   }
   /**
    * Protobuf type {@code ChatReceiveMsg}
@@ -258,6 +275,11 @@ public final class ChatReceiveProto {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
               chatContent_ = bs;
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000100;
+              receiver_ = input.readInt64();
               break;
             }
           }
@@ -546,6 +568,29 @@ public final class ChatReceiveProto {
       }
     }
 
+    public static final int RECEIVER_FIELD_NUMBER = 9;
+    private long receiver_;
+    /**
+     * <code>optional int64 receiver = 9;</code>
+     *
+     * <pre>
+     *接收者ID，只有私聊的时候需要用到
+     * </pre>
+     */
+    public boolean hasReceiver() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional int64 receiver = 9;</code>
+     *
+     * <pre>
+     *接收者ID，只有私聊的时候需要用到
+     * </pre>
+     */
+    public long getReceiver() {
+      return receiver_;
+    }
+
     private void initFields() {
       channel_ = 0;
       sendTime_ = 0L;
@@ -555,6 +600,7 @@ public final class ChatReceiveProto {
       level_ = 0;
       vip_ = 0;
       chatContent_ = "";
+      receiver_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -592,6 +638,9 @@ public final class ChatReceiveProto {
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         output.writeBytes(8, getChatContentBytes());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeInt64(9, receiver_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -633,6 +682,10 @@ public final class ChatReceiveProto {
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(8, getChatContentBytes());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(9, receiver_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -767,6 +820,8 @@ public final class ChatReceiveProto {
         bitField0_ = (bitField0_ & ~0x00000040);
         chatContent_ = "";
         bitField0_ = (bitField0_ & ~0x00000080);
+        receiver_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
@@ -827,6 +882,10 @@ public final class ChatReceiveProto {
           to_bitField0_ |= 0x00000080;
         }
         result.chatContent_ = chatContent_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.receiver_ = receiver_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -870,6 +929,9 @@ public final class ChatReceiveProto {
           bitField0_ |= 0x00000080;
           chatContent_ = other.chatContent_;
           onChanged();
+        }
+        if (other.hasReceiver()) {
+          setReceiver(other.getReceiver());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1386,6 +1448,54 @@ public final class ChatReceiveProto {
         return this;
       }
 
+      private long receiver_ ;
+      /**
+       * <code>optional int64 receiver = 9;</code>
+       *
+       * <pre>
+       *接收者ID，只有私聊的时候需要用到
+       * </pre>
+       */
+      public boolean hasReceiver() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional int64 receiver = 9;</code>
+       *
+       * <pre>
+       *接收者ID，只有私聊的时候需要用到
+       * </pre>
+       */
+      public long getReceiver() {
+        return receiver_;
+      }
+      /**
+       * <code>optional int64 receiver = 9;</code>
+       *
+       * <pre>
+       *接收者ID，只有私聊的时候需要用到
+       * </pre>
+       */
+      public Builder setReceiver(long value) {
+        bitField0_ |= 0x00000100;
+        receiver_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 receiver = 9;</code>
+       *
+       * <pre>
+       *接收者ID，只有私聊的时候需要用到
+       * </pre>
+       */
+      public Builder clearReceiver() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        receiver_ = 0L;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:ChatReceiveMsg)
     }
 
@@ -1411,13 +1521,13 @@ public final class ChatReceiveProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\031chat/ChatReceiveMsg.proto\"\232\001\n\016ChatRece" +
+      "\n\031chat/ChatReceiveMsg.proto\"\254\001\n\016ChatRece" +
       "iveMsg\022\017\n\007channel\030\001 \001(\005\022\020\n\010sendTime\030\002 \001(" +
       "\003\022\020\n\010senderId\030\003 \001(\003\022\022\n\nsenderName\030\004 \001(\t\022" +
       "\016\n\006skinId\030\005 \001(\005\022\r\n\005level\030\006 \001(\005\022\013\n\003vip\030\007 " +
-      "\001(\005\022\023\n\013chatContent\030\010 \001(\tB9\n%com.chuangyo" +
-      "u.common.protobuf.pb.chatB\020ChatReceivePr" +
-      "oto"
+      "\001(\005\022\023\n\013chatContent\030\010 \001(\t\022\020\n\010receiver\030\t \001" +
+      "(\003B9\n%com.chuangyou.common.protobuf.pb.c" +
+      "hatB\020ChatReceiveProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1436,7 +1546,7 @@ public final class ChatReceiveProto {
     internal_static_ChatReceiveMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ChatReceiveMsg_descriptor,
-        new java.lang.String[] { "Channel", "SendTime", "SenderId", "SenderName", "SkinId", "Level", "Vip", "ChatContent", });
+        new java.lang.String[] { "Channel", "SendTime", "SenderId", "SenderName", "SkinId", "Level", "Vip", "ChatContent", "Receiver", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

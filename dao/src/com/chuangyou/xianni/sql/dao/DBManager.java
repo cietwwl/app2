@@ -8,16 +8,20 @@ import com.chuangyou.xianni.sql.dao.impl.CampaignTemplateInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.ChatPrivateOfflineMsgDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.DropConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.EmailDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.EquipBarInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.EquipConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.FashionConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.FashionInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.FieldInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.FriendDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.HeroSkillDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.InverseBeadMonsterDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.InverseBeadRefreshDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.InverseBeadTemDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.ItemInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.ItemTemplateInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.LevelUpDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.LimitlessCampaignRecordInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.LivingStatusTemplateInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.MagicwpAttDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.MagicwpBanInfoDaoImpl;
@@ -54,6 +58,9 @@ import com.chuangyou.xianni.sql.dao.impl.TaskTemplateImpl;
 import com.chuangyou.xianni.sql.dao.impl.TeamTargetTemplateDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.TemplateTestDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.UserDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.VipBagTemplateDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.VipLevelTemplateDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.VipTemDaoImpl;
 
 public class DBManager {
 	/**
@@ -61,7 +68,6 @@ public class DBManager {
 	 */
 
 	private static final TemplateTestDao templateTestDao = new TemplateTestDaoImpl();
-
 
 	/**
 	 * 邮件DAO
@@ -75,22 +81,20 @@ public class DBManager {
 
 	private static final FriendDao friendDao = new FriendDaoImpl();
 
-
 	/** shop */
 	private static final ShopDao shopDao = new ShopDaoImpl();
 
 	/** 商店模板数据 */
 
-	private static final ShopConfigDao		shopConfigDao	= new ShopConfigDaoImpl();
+	private static final ShopConfigDao shopConfigDao = new ShopConfigDaoImpl();
 
 	/** 任务模板 */
 
-	private static final TaskTemplateDao	taskTemplateDao	= new TaskTemplateImpl();
+	private static final TaskTemplateDao taskTemplateDao = new TaskTemplateImpl();
 
 	/** 任务DB */
 
-	private static final TaskDao			taskDao			= new TaskDaoImpl();
-
+	private static final TaskDao taskDao = new TaskDaoImpl();
 
 	public static FriendDao getFrienddao() {
 		return friendDao;
@@ -394,14 +398,13 @@ public class DBManager {
 	public static InverseBeadTemDao getInversebeadtemdao() {
 		return inverseBeadTemDao;
 	}
+
 	/** 天逆珠刷怪 ***/
 	private static final InverseBeadMonsterTemDao InverseBeadMonsterTemDao = new InverseBeadMonsterDaoImpl();
 
 	public static InverseBeadMonsterTemDao getInverseBeadMonsterTemDao() {
 		return InverseBeadMonsterTemDao;
 	}
-	
-	
 
 	/** 基础技能模板 */
 	private static final SkillTempateInfoDao skillTempateInfoDao = new SkillTempateInfoDaoImpl();
@@ -471,6 +474,13 @@ public class DBManager {
 		return playerInverseBeadDao;
 	}
 
+	/** 天逆珠刷新数据 ***/
+	private static final PlayerBeadRefreshTimeDao playerBeadRefreshTime = new InverseBeadRefreshDaoImpl();
+
+	public static PlayerBeadRefreshTimeDao getPlayerBeadRefreshTimeDao() {
+		return playerBeadRefreshTime;
+	}
+
 	/** living状态表 */
 	private static final LivingStatusTemplateInfoDao livingStatusTemplateInfoDao = new LivingStatusTemplateInfoDaoImpl();
 
@@ -501,15 +511,14 @@ public class DBManager {
 		return chatPrivateOfflineMsgDao;
 	}
 
-	
 	/**
 	 * 空间
 	 */
 	private static final SpaceDao spaceDao = new SpaceDaoImpl();
-	public static SpaceDao getSpaceDao(){
+
+	public static SpaceDao getSpaceDao() {
 		return spaceDao;
 	}
-
 
 	/**
 	 * 副本任务模板
@@ -518,6 +527,58 @@ public class DBManager {
 
 	public static CampaignTaskTemplateInfoDao getCampaignTaskTemplateInfoDao() {
 		return campaignTaskTemplateInfoDao;
+	}
+
+	/**
+	 * vip 模板数据
+	 */
+	private static final VipTemplateDao vipTemplateDao= new VipTemDaoImpl();
+	public static VipTemplateDao getVipTemplateDao(){
+		return vipTemplateDao;
+	}
+	/**
+	 * vip 等级模板
+	 */
+	private static final VipLevelTemplateDao vipLevelTemplateDao= new VipLevelTemplateDaoImpl();
+	public static VipLevelTemplateDao getVipLevelTemplateDao(){
+		return vipLevelTemplateDao;
+	}
+	/**
+	 * vip 礼包模板
+	 */
+	private static final VipBagTemplateDao vipBagTemplateDao= new VipBagTemplateDaoImpl();
+	public static VipBagTemplateDao getVipBagTemplateDao(){
+		return vipBagTemplateDao;
+	}
+	
+
+	
+	/**
+	 * 装备模板数据
+	 */
+	private static final EquipConfigDao equipConfigDao = new EquipConfigDaoImpl();
+	
+	public static EquipConfigDao getEquipConfigDao(){
+		return equipConfigDao;
+	}
+	
+	/**
+	 * 装备栏信息数据
+	 */
+	private static final EquipBarInfoDao equipBarInfoDao = new EquipBarInfoDaoImpl();
+	
+	public static EquipBarInfoDao getEquipBarInfoDao(){
+		return equipBarInfoDao;
+	}
+
+
+	/**
+	 * 副本记录
+	 */
+	private static final LimitlessCampaignRecordInfoDao limitlessCampaignRecordInfoDao = new LimitlessCampaignRecordInfoDaoImpl();
+
+	public static LimitlessCampaignRecordInfoDao getLimitlessCampaignRecordInfoDao() {
+		return limitlessCampaignRecordInfoDao;
 	}
 
 }

@@ -42,7 +42,6 @@ public class LikeOpLogic implements ISpaceOpLogic {
 			}		
 		}
 		doAll(player, reqPlayer, info, items, op);
-
 	}
 
 	/**

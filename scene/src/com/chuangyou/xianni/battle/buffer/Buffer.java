@@ -239,6 +239,10 @@ public abstract class Buffer {
 		bufferMsg.setBufferId(bufferId);
 		bufferMsg.setTargetId(target.getId());
 	}
+	
+	public int getType() {
+		return bufferInfo.getType();
+	}
 
 	public long getLastExecTime() {
 		return lastExecTime;

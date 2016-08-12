@@ -44,6 +44,8 @@ public class ItemTemplateInfo extends BaseProperty {
 	private int bindtime; // 作者:解绑时间，毫秒
 
 	private String id_action; // 作者:脚本
+	
+	private int jiachilimit; // 加持等级上限
 
 	private int jiachi1; // 作者:加持激活级别
 
@@ -247,6 +249,14 @@ public class ItemTemplateInfo extends BaseProperty {
 
 	public void setId_action(String id_action) {
 		this.id_action = id_action;
+	}
+
+	public int getJiachilimit() {
+		return jiachilimit;
+	}
+
+	public void setJiachilimit(int jiachilimit) {
+		this.jiachilimit = jiachilimit;
 	}
 
 	public int getJiachi1() {

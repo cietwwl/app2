@@ -25,6 +25,9 @@ public class TimerTaskMgr {
 	/** 定时器 */
 	private static Timer		taskDayClearTimer;
 
+	/** 5点重置玩家参数 */
+	private static Timer		day_reset_clearTimer;
+
 	/** 保存用户数据定时任务 */
 	private static TimerTask	saveUserData;
 
@@ -34,6 +37,9 @@ public class TimerTaskMgr {
 	private static TimerTask	savalogData;
 	/** 保存聊天离线消息 */
 	private static TimerTask	saveChatOfflineData;
+
+	/** 5点重置 */
+	private static TimerTask	day_reset_Data;
 
 	public static boolean init() {
 		// 设置启动时间(在当前时间基础上向后推2分10秒)
@@ -46,26 +52,27 @@ public class TimerTaskMgr {
 
 		savalogData = new SavaLogData();
 		saveUserDataTimer.schedule(savalogData, beginDate, MINTIME * 5);
-		
+
 		saveChatOfflineData = new SaveChatOfflineData();
 		saveUserDataTimer.schedule(saveChatOfflineData, beginDate, MINTIME * 5);
 
-		
-
-		// 每天6点执行以下定时器
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd '6:00:00'");
+		// 每天5点执行以下定时器
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd '5:00:00'");
 		taskDayClearTimer = new Timer("taskDayClearTimer");
 		taskDayClearData = new DayTaskData();
 
+		day_reset_clearTimer = new Timer("day_reset_clearTimer");
+		day_reset_Data = new Day_5ClearData();
 		try {
 			Date startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(new Date()));
 			taskDayClearTimer.scheduleAtFixedRate(taskDayClearData, startTime, MINTIME * 60 * 24);
+			day_reset_clearTimer.scheduleAtFixedRate(day_reset_Data, startTime, MINTIME * 60 * 24);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			Log.error("定时器 taskDayClearTimer,taskDayClearTimer 异常", e);
 			e.printStackTrace();
 		}
-
+		
 		return true;
 	}
 }
@@ -110,8 +117,6 @@ class SaveUserData extends Task {
 	}
 }
 
-
-
 // ==================>重置日常任务状态<====================================
 class DayTaskData extends Task {
 	public DayTaskData() {
@@ -137,14 +142,27 @@ class SavaLogData extends Task {
 }
 
 // =================>保存玩家离线消息<======================================
-class SaveChatOfflineData extends Task{
+class SaveChatOfflineData extends Task {
 	public SaveChatOfflineData() {
 		// TODO Auto-generated constructor stub
 		super("保存聊天离线消息");
 	}
+
 	@Override
 	public void exec() {
 		// TODO Auto-generated method stub
 		ChatManager.savePrivateOfflineMsg();
+	}
+}
+
+// =================>每天5点重置玩家数据<======================================
+class Day_5ClearData extends Task {
+	public Day_5ClearData() {
+		super("每天5点重置数据");
+	}
+
+	@Override
+	public void exec() {
+		WorldMgr.resetTimeInfo();
 	}
 }

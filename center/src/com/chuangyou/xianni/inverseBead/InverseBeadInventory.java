@@ -116,7 +116,7 @@ public class InverseBeadInventory extends AbstractEvent implements IInventory {
 			playerInverseBead.setPlayerId(player.getPlayerId());
 			playerInverseBead.setFiveElements(fiveElements);
 			playerInverseBead.setMarking(marking);
-			playerInverseBead.setStage(1);
+			playerInverseBead.setStage(0);
 			playerInverseBead.setVal(0);
 			playerInverseBead.setAttVal(0);
 			playerInverseBead.setAttVal2(0);

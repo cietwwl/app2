@@ -1,5 +1,7 @@
 package com.chuangyou.xianni.entity.player;
 
+import java.util.Date;
+
 import com.chuangyou.common.protobuf.pb.PlayerInfoMsgProto.PlayerInfoMsg;
 import com.chuangyou.xianni.entity.DataObject;
 import com.chuangyou.xianni.entity.Option;
@@ -11,75 +13,96 @@ import com.chuangyou.xianni.entity.Option;
 public class PlayerInfo extends DataObject {
 
 	/** 角色ID */
-	private long	playerId;
+	private long playerId;
 
 	/** 用户ID */
-	private long	userId;
+	private long userId;
 
 	/** 职业 */
-	private int		job;
+	private int job;
 
 	/** 角色名字 */
-	private String	nickName;
+	private String nickName;
 
 	/** 等级 */
-	private int		level;
+	private int level;
 
 	/** 当前经验 */
-	private long	exp;
+	private long exp;
 
 	/** 总经验 */
-	private long	totalExp;
+	private long totalExp;
 
 	/** 金币(灵石) */
-	private long	money;
+	private long money;
 
 	/** 绑定元宝(绑定仙玉) */
-	private int		bindCash;
+	private int bindCash;
 
 	/** 元宝(仙玉) */
-	private int		cash;
+	private int cash;
 
 	/** VIP等级 */
-	private short	vipLevel;
+	private short vipLevel;
 
 	/** 战斗力 */
-	private int		fight;
+	private int fight;
 
 	/** 皮肤 */
-	private int		skinId;
+	private int skinId;
 
 	/** 角色背包数量 */
-	private int		pBagCount;
+	private int pBagCount;
 
 	/** 出战坐骑ID */
-	private int		mountId;
+	private int mountId;
 
 	/** 出战法宝ID */
-	private int		magicWeaponId;
+	private int magicWeaponId;
 	/** 技能达到的阶段 **/
-	private int		skillStage;
+	private int skillStage;
 	/** 修为 **/
-	private int		repair;
+	private int repair;
 	/** 战斗模式 1和平模式2对战模式3门派模式 */
-	private int		battleMode;
+	private int battleMode;
 	/** pk 值 **/
-	private int		pkVal;
+	private int pkVal;
 	/** 战斗模式更新时间 **/
-	private long	changeBattleModeTime;
+	private long changeBattleModeTime;
 
 	/** 时装ID */
-	private int		fashionId	= 0;
+	private int fashionId = 0;
 
 	/** 武器ID */
-	private int		weaponId	= 0;
+	private int weaponId = 0;
 
 	/** 翅膀ID */
-	private int		wingId		= 0;
+	private int wingId = 0;
 	/**
 	 * 积分
 	 **/
-	private int		points		= 0;
+	private int points = 0;
+	/**
+	 * vip 到期时间
+	 */
+	private Date vipTimeLimit;
+	/**
+	 * 临时vip 到期时间
+	 */
+	private Date vipInterimTimeLimit;
+	/**
+	 * vip 经验
+	 */
+	private int vipExp;
+	/**
+	 * vip 领取记录
+	 */
+	private String vipReceiveRecording;
+	
+	/**
+	 * 装备经验
+	 */
+	private long		equipExp	= 0;
 
 	public long getPlayerId() {
 		return playerId;
@@ -344,12 +367,61 @@ public class PlayerInfo extends DataObject {
 		}
 	}
 
+
+	public Date getVipTimeLimit() {
+		return vipTimeLimit;
+	}
+
+	public void setVipTimeLimit(Date vipTimeLimit) {
+		setOp(Option.Update);
+		this.vipTimeLimit = vipTimeLimit;
+	}
+
+	public Date getVipInterimTimeLimit() {
+		return vipInterimTimeLimit;
+	}
+
+	public void setVipInterimTimeLimit(Date vipInterimTimeLimit) {
+		setOp(Option.Update);
+		this.vipInterimTimeLimit = vipInterimTimeLimit;
+	}
+
+	public int getVipExp() {
+		return vipExp;
+	}
+
+	public void setVipExp(int vipExp) {
+		setOp(Option.Update);
+		this.vipExp = vipExp;
+	}
+	
+	public String getVipReceiveRecording() {
+		return vipReceiveRecording;
+	}
+
+	public void setVipReceiveRecording(String vipReceiveRecording) {
+		setOp(Option.Update);
+		this.vipReceiveRecording = vipReceiveRecording;
+	}
+
+
+	public long getEquipExp() {
+		return equipExp;
+	}
+
+	public void setEquipExp(long equipExp) {
+		if(this.equipExp != equipExp){
+			setOp(Option.Update);
+			this.equipExp = equipExp;
+		}
+	}
+
+
 	/**
 	 * 写玩家属性消息包
 	 * 
 	 * @param proto
-	 * @param bagInitCount
-	 *            背包初始大小配置
+	 * @param bagInitCount 背包初始大小配置
 	 */
 	public void writeProto(PlayerInfoMsg.Builder proto, int bagInitCount) {
 		proto.setPlayerId(this.getPlayerId());
@@ -372,6 +444,7 @@ public class PlayerInfo extends DataObject {
 		proto.setWeaponId(this.getWeaponId());
 		proto.setWingId(this.getWingId());
 		proto.setPoints(this.getPoints());
+		proto.setEquipExp(this.getEquipExp());
 		proto.setPBagCount(bagInitCount + this.getpBagCount());
 	}
 

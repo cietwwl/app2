@@ -1,6 +1,11 @@
 package com.chuangyou.xianni.campaign.task;
 
 import com.chuangyou.common.util.Log;
+import com.chuangyou.xianni.campaign.task.condition.BeKillLimitCondition;
+import com.chuangyou.xianni.campaign.task.condition.KillerMonsterCountCondition;
+import com.chuangyou.xianni.campaign.task.condition.KillerMonsterKindsCondition;
+import com.chuangyou.xianni.campaign.task.condition.TimeLimitCondition;
+import com.chuangyou.xianni.campaign.task.condition.TouchAreaCondition;
 import com.chuangyou.xianni.entity.campaign.CampaignTaskTemplateInfo;
 
 public class CTBaseCondition {
@@ -36,15 +41,15 @@ public class CTBaseCondition {
 			case ADD_BUFF_PLAYER:
 				return new CTBaseCondition(tempInfo);
 			case PASS_TIME_LIMIT:
-				return new CTBaseCondition(tempInfo);
+				return new TimeLimitCondition(tempInfo);
 			case LESS_DEAD_COUNT:
-				return new CTBaseCondition(tempInfo);
+				return new BeKillLimitCondition(tempInfo);
 			case TUCH_ARI:
-				return new CTBaseCondition(tempInfo);
+				return new TouchAreaCondition(tempInfo);
 			case KILL_MONSTER_COUNT:
-				return new CTBaseCondition(tempInfo);
+				return new KillerMonsterCountCondition(tempInfo);
 			case KILL_MONSTER_KIND:
-				return new CTBaseCondition(tempInfo);
+				return new KillerMonsterKindsCondition(tempInfo);
 			case CREATE_SPECIES_MONSTER:
 				return new CTBaseCondition(tempInfo);
 			case GET_ITEM_COUNT:

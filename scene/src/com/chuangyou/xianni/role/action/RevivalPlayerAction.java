@@ -17,6 +17,7 @@ import com.chuangyou.xianni.warfield.FieldMgr;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
 import com.chuangyou.xianni.warfield.template.FieldTemplateMgr;
+import com.chuangyou.xianni.warfield.template.SpawnTemplateMgr;
 import com.chuangyou.xianni.world.ArmyProxy;
 
 /** 人物复活 */
@@ -50,10 +51,21 @@ public class RevivalPlayerAction extends DelayAction {
 		Field field = FieldMgr.getIns().getField(army.getFieldId());
 		Campaign campaign = null;
 		// 野外死亡，直接回主城
-		if (field == null || field.getCampaignId() == 0 || (campaign = CampaignMgr.getCampagin(field.getCampaignId())) == null) {
+		if (field == null) {
 			field = FieldMgr.getIns().getField(SystemConfigTemplateMgr.getInitBorn());
 			FieldInfo fieldTemp = FieldTemplateMgr.getFieldTemp(SystemConfigTemplateMgr.getInitBorn());
 			vector3 = fieldTemp.getPosition();
+		}
+
+		if (field.getCampaignId() == 0 || (campaign = CampaignMgr.getCampagin(field.getCampaignId())) == null) {
+			FieldInfo fieldTemp = FieldTemplateMgr.getFieldTemp(field.getMapKey());
+			if (player.getPostion() != null) {
+				vector3 = SpawnTemplateMgr.getRevivalNode(fieldTemp.getMapKey(), player.getPostion());
+			}
+			if (player.getPostion() == null || vector3 == null) {
+				vector3 = fieldTemp.getPosition();
+			}
+
 		} else {
 			// 副本中死亡
 			SpwanNode revivalNode = campaign.getRevivalNode();

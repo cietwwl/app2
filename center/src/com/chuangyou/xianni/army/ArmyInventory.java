@@ -66,6 +66,15 @@ public class ArmyInventory extends AbstractEvent implements UnlineInventory {
 			player.getPetInventory().computePetAtt(petData, petPer);
 			hero.addPet(petData, petPer);
 		}
+		
+		if(player.getFashionInventory() != null){
+			BaseProperty fashionData = new BaseProperty();
+			BaseProperty fashionPer = new BaseProperty();
+			// 加入时装属性
+			player.getFashionInventory().computeFashionAtt(fashionData, fashionPer);
+			hero.addFashion(fashionData, fashionPer);
+		}
+		
 		updateHeroInfo();
 	}
 

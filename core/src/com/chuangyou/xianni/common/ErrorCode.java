@@ -212,7 +212,7 @@ public class ErrorCode {
 	public static final int	Equip_IS_NULL								= 1901;
 
 	/** 装备经验不足 */
-	public static final int	Equip_UNENOUGH_EXP							= 1902;
+	public static final int	EQUIP_UNENOUGH_EXP							= 1902;
 
 	/** 装备等级不能大于人物等级 */
 	public static final int	RoleLevel_UnEnough							= 1903;
@@ -224,7 +224,7 @@ public class ErrorCode {
 	public static final int	Item_IS_NOT_Existed							= 1905;
 
 	/** 装备孔已经满级 */
-	public static final int	Equip_HOLE_is_MAX_LV						= 1906;
+	public static final int	EQUIP_BAR_IS_MAX_LV							= 1906;
 
 	/** 普通孔未满级 */
 	public static final int	Equip_Is_NOT_MAXLV							= 1907;
@@ -364,6 +364,26 @@ public class ErrorCode {
 
 	/** 特殊宠物不能培养 */
 	public static final int	Pet_Special_CannotTrain						= 1956;
+	
+	/** 装备加持已达到最大等级 */
+	public static final int EQUIPBAR_GRADE_MAX							= 1957;
+	/** 装备加持材料不足 */
+	public static final int EQUIPBAR_GRADEUP_ITEM_NOTENOUGH				= 1958;
+	
+	/** 背包类型未找到 */
+	public static final int BAG_NOT_FIND								= 1959;
+	
+	/** 武器觉醒等级已达到上限 */
+	public static final int EQUIP_AWAKEN_MAX							= 1960;
+	
+	/** 物品不是宝石 */
+	public static final int ITEM_NOT_STONE								= 1961;
+	
+	/** 宝石部位不对 */
+	public static final int STONE_POS_ERROR								= 1962;
+	
+	/** 此装备不可分解 */
+	public static final int EQUIP_UN_RESOLVE							= 1963;
 
 	/** 此NPC未绑定脚本 */
 	public static final int	NPC_NO_HAVE_SCRIPT							= 2501;
@@ -435,6 +455,16 @@ public class ErrorCode {
 	public static final int INVERSEBEAD_ERROR2 = 6016;
 	/** 上一个印记没有升满 **/
 	public static final int INVERSEBEAD_ERROR3 = 6017;
+	/** vip 礼包不存在**/
+	public static final int VIPBAG_ERROR = 6020;
+	/** vip 等级不足**/
+	public static final int VIPBAG_ERROR2 = 6021;
+	/** 您不是 vip**/
+	public static final int VIPBAG_ERROR3 = 6022;
+	/** 已经购买过了**/
+	public static final int VIPBAG_ERROR4 = 6023;
+	/** 只能领取对应礼包 **/
+	public static final int VIPBAG_ERROR5 = 6023;
 //	public static final int CHANGE_BATTLE3 = 6009;
 //	public static final int CHANGE_BATTLE4 = 6009;
 //	public static final int CHANGE_BATTLE5 = 6009;

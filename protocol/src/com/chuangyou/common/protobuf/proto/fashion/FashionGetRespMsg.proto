@@ -4,6 +4,7 @@ option java_outer_classname = "FashionGetRespProto";
 
 import "fashion/FashionBeanMsg.proto";
 
+//获取时装信息
 message FashionGetRespMsg{
 	repeated FashionBeanMsg fashion = 1; // 时间信息
 }

@@ -9,26 +9,21 @@ import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpd
 import com.chuangyou.common.util.LockData;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.army.Hero;
-import com.chuangyou.xianni.battleMode.manager.BattleModeManager;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
-import com.chuangyou.xianni.constant.BattleModeCode;
-import com.chuangyou.xianni.constant.CommonType;
 import com.chuangyou.xianni.constant.CommonType.CurrencyItemType;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.email.manager.EmailManager;
 import com.chuangyou.xianni.entity.item.BagType;
 import com.chuangyou.xianni.entity.item.BindType;
-import com.chuangyou.xianni.entity.item.ItemInfo; 
+import com.chuangyou.xianni.entity.item.ItemInfo;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.event.ObjectEvent;
-import com.chuangyou.xianni.http.HttpResult;
-import com.chuangyou.xianni.http.HttpResult.Code;
 import com.chuangyou.xianni.interfaces.IInventory;
 import com.chuangyou.xianni.player.BasePlayer;
 import com.chuangyou.xianni.player.GamePlayer;
@@ -448,12 +443,12 @@ public class BagInventory extends AbstractEvent implements IInventory {
 			BaseItem beginItem = beginBag.getItemByPos(beginPos);
 			if (beginItem == null) {
 				Log.error("hero equipment item but is empty");
-				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Exchange_Bag_Prop_Error, (byte)0);
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Exchange_Bag_Prop_Error, (byte) 0);
 				return;
 			}
 			if (beginItem.getItemTempInfo().getProfession() != 0 && beginItem.getItemTempInfo().getProfession() != player.getBasePlayer().getPlayerInfo().getJob()) {
 				Log.error("hero equipment item error");
-				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Exchange_Bag_Prop_Error, (byte)0);
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Exchange_Bag_Prop_Error, (byte) 0);
 				return;
 			}
 			endBagType = BagType.HeroEquipment;
@@ -607,6 +602,11 @@ public class BagInventory extends AbstractEvent implements IInventory {
 
 	public void onUseItem(int templateId, boolean isUseItem) {
 		// TODO 触发使用物品事件
+	}
+	
+	/**物品是否足够*/
+	public boolean isEnought(int templateId,int count) {
+		return playerBag.isEnough(templateId, count);
 	}
 
 }

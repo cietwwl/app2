@@ -13,6 +13,8 @@ import com.chuangyou.xianni.entity.chat.ChatMsgInfo;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.proto.BroadcastUtil;
+import com.chuangyou.xianni.proto.MessageUtil;
+import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.word.WorldMgr;
 
@@ -37,6 +39,10 @@ public class ChatPrivateAction extends ChatBaseAction {
 			chatMsgInfo.setReceiverId(sendMsg.getReceiverId());
 			chatMsgInfo.setChatContent(sendMsg.getChatContent());
 			ChatManager.addPrivateOfflineMsg(chatMsgInfo);
+			
+			ChatReceiveMsg msg = this.buildReceiveProto(sender, sendMsg);
+			PBMessage p = MessageUtil.buildMessage(Protocol.U_CHAT_RECEIVE, msg);
+			sender.sendPbMessage(p);
 			return true;
 		}
 		ChatReceiveMsg msg = this.buildReceiveProto(sender, sendMsg);

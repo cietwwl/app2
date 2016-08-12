@@ -30,9 +30,10 @@ public class BeadFieldManager extends FieldMgr {
 
 	@Override
 	protected void spwanInit(Field f) {
+		System.out.println("___________创建怪物______________"+f.getCampaignId());
 		List<Integer> list = army.getPlayer().getMonsterRefreshIdList();
 		if (list.size() == 0) {
-			System.err.println("怪物不存在。。。");
+			System.err.println("怪物不存在。。。.");
 			return;
 		}
 		Map<Integer, SpawnInfo> spawnInfos = SpawnTemplateMgr.getFieldSpawnInfos(f.getMapKey());
@@ -45,7 +46,7 @@ public class BeadFieldManager extends FieldMgr {
 			if (!list.contains(sf.getTagId()))
 				continue;
 			if (sf.getTagId() == list.get(list.size() - 1)) {
-				sf.setCampaignFeatures(Campaign.END_POIN);
+				sf.setCampaignFeatures(Campaign.TERMINATOR);
 			}
 			sf.setInitStatu(0);
 			if (sf.getTagId() == list.get(0)) {
@@ -76,6 +77,7 @@ public class BeadFieldManager extends FieldMgr {
 				node = new SpwanNode(sf, f);
 			}
 			f.addSpawnNode(node);
+			//System.out.println("nodenode--:"+node);
 			node.build();
 			if (node.getSpawnInfo().getInitStatu() == 1) {
 				node.stateTransition(new WorkingState(node));

@@ -7,7 +7,7 @@ import com.chuangyou.common.protobuf.pb.inverseBead.ReqEnterCampaignMsgProto.Req
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
 import com.chuangyou.xianni.constant.CampaignRspCode;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
-import com.chuangyou.xianni.entity.player.PlayerTimeInfo;
+import com.chuangyou.xianni.entity.inverseBead.PlayerBeadTimeInfo;
 import com.chuangyou.xianni.exec.Action;
 import com.chuangyou.xianni.inverseBead.InverseBeadInventory;
 import com.chuangyou.xianni.inverseBead.manager.InverseBeadManager;
@@ -31,8 +31,9 @@ public class CreateInverSeBeadCampaignAction extends Action {
 		if (temp == null) {
 			rspCode = CampaignRspCode.TEMP_NOT_EXISTS;
 		}
-		PlayerTimeInfo playerTimeInfo = player.getBasePlayer().getPlayerTimeInfo();
+		PlayerBeadTimeInfo playerTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
 		String beadRefreshId = playerTimeInfo.getBeadRefreshId();
+
 		List<Integer> list = InverseBeadManager.getBeadRefreshId(beadRefreshId);
 		if (list.size() == 0) {
 			rspCode = CampaignRspCode.COUNT_LESS;

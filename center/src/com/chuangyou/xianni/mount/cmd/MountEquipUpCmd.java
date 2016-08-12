@@ -10,8 +10,7 @@ import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
-import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
-import com.chuangyou.xianni.entity.item.BindType;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.mount.MountEquipCfg;
 import com.chuangyou.xianni.entity.mount.MountEquipInfo;
 import com.chuangyou.xianni.mount.manager.MountManager;
@@ -54,7 +53,7 @@ public class MountEquipUpCmd extends AbstractCommand {
 			return;
 		}
 		//扣道具
-		if(!player.getBagInventory().removeItemFromPlayerBag(levelCfg.getUpLevItem(), levelCfg.getUpLevItemNum(), BindType.ALL)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(levelCfg.getUpLevItem(), levelCfg.getUpLevItemNum(), ItemRemoveType.USE)) return;
 		
 		ThreadSafeRandom random = new ThreadSafeRandom();
 		

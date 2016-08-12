@@ -5,6 +5,7 @@ import com.chuangyou.common.protobuf.pb.ReqChangeMapMsgProto.ReqChangeMapMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
 import com.chuangyou.common.util.AccessTextFile;
 import com.chuangyou.common.util.Log;
+import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.army.ArmyInventory;
 import com.chuangyou.xianni.bag.BagInventory;
 import com.chuangyou.xianni.campaign.CampaignInventory;
@@ -17,6 +18,7 @@ import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.player.PlayerJoinInfo;
 import com.chuangyou.xianni.entity.player.PlayerPositionInfo;
 import com.chuangyou.xianni.entity.player.PlayerTimeInfo;
+import com.chuangyou.xianni.equip.EquipInventory;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.event.ObjectEvent;
@@ -30,6 +32,7 @@ import com.chuangyou.xianni.exec.ThreadManager;
 import com.chuangyou.xianni.fashion.FashionInventory;
 import com.chuangyou.xianni.friend.FriendInventory;
 import com.chuangyou.xianni.inverseBead.InverseBeadInventory;
+import com.chuangyou.xianni.inverseBead.InverseBeadRefreshInventory;
 import com.chuangyou.xianni.magicwp.MagicwpInventory;
 import com.chuangyou.xianni.map.MapProxyManager;
 import com.chuangyou.xianni.mount.MountInventory;
@@ -49,56 +52,66 @@ import com.chuangyou.xianni.word.WorldMgr;
 import io.netty.channel.Channel;
 
 public class GamePlayer extends AbstractEvent {
-	private CmdTaskQueue		cmdTaskQueue;
-	private ActionQueue			actionQueue;
+	private CmdTaskQueue cmdTaskQueue;
+	private ActionQueue actionQueue;
 
 	/** 玩家所有数据 */
-	private BasePlayer			basePlayer;
+	private BasePlayer basePlayer;
 
 	/*************************** 各模块数据管理 ****************************/
 	// <<----** 共享数据，离线保留内存一段时间 ,并且提供离线加载*/---------------->>
 	/** 部队数据 */
+
 	private ArmyInventory		armyInventory;
-	
-	/** 空间数据  */
-	private SpaceInventory      spaceInventory;
-	
+
+	/** 空间数据 */
+	private SpaceInventory		spaceInventory;
+
+
 	/** 好友数据 */
-	private FriendInventory		friendInventory;
+	private FriendInventory friendInventory;
 
 	// <<----** 非共享数据，玩家下线时卸载 */---------------->>
 	/** 邮件数据 */
+
 	private EmailInventory		emailInventory;
-	
+
+
 	/** 坐骑数据 */
-	private MountInventory		mountInventory;
+	private MountInventory mountInventory;
 	/** 法宝数据 */
-	private MagicwpInventory	magicwpInventory;
+	private MagicwpInventory magicwpInventory;
 	/** 宠物数据 */
-	private PetInventory		petInventory;
+	private PetInventory petInventory;
 
 	/** 商店购购买信息 */
-	private ShopInventory		shopInventory;
+	private ShopInventory shopInventory;
 
 	/** 背包 */
-	private BagInventory		bagInventory;
+	private BagInventory bagInventory;
 
 	/** 时装 */
-	private FashionInventory	fashionInventory;
+	private FashionInventory fashionInventory;
 
 	/** 任务 */
-	private TaskInventory		taskInventory;
+	private TaskInventory taskInventory;
 
 	/** 副本 */
-	private CampaignInventory	campaignInventory;
+	private CampaignInventory campaignInventory;
 	/** 英雄技能 **/
-	private SkillInventory		skillInventory;
+	private SkillInventory skillInventory;
 	/** 天逆珠 **/
 	private InverseBeadInventory inverseBeadInventory;
-	private Channel				channel;			// 服务器持有连接
+	/** 天逆珠刷新数据 **/
+	private InverseBeadRefreshInventory inverseBeadRefreshInventory;
+	
+	/** 装备 */
+	private EquipInventory		equipInventory;
 
-	private int					curMapId	= -1;	// 玩家当前地图ID
-	private int					curCampaign	= 0;	// 玩家当前地图ID
+	private Channel channel;			// 服务器持有连接
+
+	private int curMapId = -1;	// 玩家当前地图ID
+	private int curCampaign = 0;	// 玩家当前地图ID
 
 	public GamePlayer() {
 		cmdTaskQueue = new AbstractCmdTaskQueue(ThreadManager.cmdExecutor);
@@ -148,18 +161,27 @@ public class GamePlayer extends AbstractEvent {
 		if (skillInventory != null) {
 			skillInventory.saveToDatabase();
 		}
-		if(spaceInventory!=null){
+		if (spaceInventory != null) {
 			spaceInventory.saveToDatabase();
 		}
+
 		if (inverseBeadInventory != null) {
 			inverseBeadInventory.saveToDatabase();
 		}
+		if (inverseBeadRefreshInventory != null) {
+			inverseBeadRefreshInventory.saveToDatabase();
+		}
+
+		if(equipInventory != null){
+			equipInventory.saveToDatabase();
+		}
+
 	}
 
 	// 加载共享数据
 	public boolean loadShareData(PlayerInfo playerInfo, PlayerJoinInfo playerJoinInfo, PlayerTimeInfo playerTimeInfo, PlayerPositionInfo playerPositionInfo) {
 		this.basePlayer = new BasePlayer(playerInfo, playerJoinInfo, playerTimeInfo, playerPositionInfo);
-		
+
 		spaceInventory = new SpaceInventory(this);
 		if (!initData(spaceInventory.loadFromDataBase(), "玩家空间数据加载")) {
 			return false;
@@ -174,7 +196,7 @@ public class GamePlayer extends AbstractEvent {
 
 	// 卸载共享数据
 	public boolean unLoadShareData() {
-		if(spaceInventory != null){
+		if (spaceInventory != null) {
 			spaceInventory.unloadData();
 			spaceInventory = null;
 		}
@@ -214,6 +236,11 @@ public class GamePlayer extends AbstractEvent {
 		if (!initData(inverseBeadInventory.loadFromDataBase(), "英雄天逆珠数据")) {
 			return false;
 		}
+		inverseBeadRefreshInventory = new InverseBeadRefreshInventory(this);
+		if (!initData(inverseBeadRefreshInventory.loadFromDataBase(), "天逆珠刷新数据")) {
+			return false;
+		}
+
 		petInventory = new PetInventory(this);
 		if (!initData(petInventory.loadFromDataBase(), "玩家宠物数据")) {
 			return false;
@@ -232,10 +259,6 @@ public class GamePlayer extends AbstractEvent {
 		if (!initData(skillInventory.loadFromDataBase(), "英雄技能数据")) {
 			return false;
 		}
-		armyInventory = new ArmyInventory(this);
-		if (!initData(armyInventory.loadFromDataBase(), "用户部队")) {
-			return false;
-		}
 		taskInventory = new TaskInventory(this);
 		if (!initData(taskInventory.loadFromDataBase(), "任务数据")) {
 			return false;
@@ -244,8 +267,24 @@ public class GamePlayer extends AbstractEvent {
 		if (!initData(campaignInventory.loadFromDataBase(), "副本数据")) {
 			return false;
 		}
-
+		equipInventory = new EquipInventory(this);
+		if(!initData(equipInventory.loadFromDataBase(), "装备数据")){
+			return false;
+		}
+		
+		//创建时会计算所有属性，所以要在最后面加载
+		armyInventory = new ArmyInventory(this);
+		if (!initData(armyInventory.loadFromDataBase(), "用户部队")) {
+			return false;
+		}
 		return true;
+	}
+
+	// 执行一些登录相关的逻辑操作
+	public void login() {
+		if (!TimeUtil.dataCompare5(getBasePlayer().getPlayerTimeInfo().getResetTime())) {
+			getBasePlayer().getPlayerTimeInfo().reset();
+		}
 	}
 
 	// 卸载个人私有数据
@@ -260,7 +299,6 @@ public class GamePlayer extends AbstractEvent {
 			emailInventory.unloadData();
 			emailInventory = null;
 		}
-		
 
 		if (mountInventory != null) {
 			mountInventory.unloadData();
@@ -291,6 +329,10 @@ public class GamePlayer extends AbstractEvent {
 		if (campaignInventory != null) {
 			campaignInventory.unloadData();
 			campaignInventory = null;
+		}
+		if(equipInventory != null){
+			equipInventory.unloadData();
+			equipInventory = null;
 		}
 
 		return true;
@@ -504,6 +546,10 @@ public class GamePlayer extends AbstractEvent {
 		this.armyInventory = armyInventory;
 	}
 
+	public EquipInventory getEquipInventory() {
+		return equipInventory;
+	}
+
 	public String toString() {
 		return "playerId : " + this.getPlayerId() + " NickName :" + this.basePlayer.getPlayerInfo().getNickName();
 	}
@@ -531,9 +577,16 @@ public class GamePlayer extends AbstractEvent {
 	public int getLevel() {
 		return this.basePlayer.getPlayerInfo().getLevel();
 	}
+
 	public InverseBeadInventory getInverseBeadInventory() {
 		return inverseBeadInventory;
 	}
+	
+
+	public InverseBeadRefreshInventory getInverseBeadRefreshInventory() {
+		return inverseBeadRefreshInventory;
+	}
+
 	/** 回到出生点 */
 	public void backBornPoint() {
 		int born_map = SystemConfigTemplateMgr.getInitBorn();
@@ -551,4 +604,17 @@ public class GamePlayer extends AbstractEvent {
 	public SpaceInventory getSpaceInventory() {
 		return spaceInventory;
 	}
+
+	/** 重置玩家数据 */
+	public void resetPlayerData() {
+		try {
+			if (!TimeUtil.dataCompare5(getBasePlayer().getPlayerTimeInfo().getResetTime())) {
+				getBasePlayer().getPlayerTimeInfo().reset();
+				PlayerInfoSendCmd.sendPlayerTimeData(this);
+			}
+		} catch (Exception e) {
+			Log.error("resetPlayerData", e);
+		}
+	}
+
 }

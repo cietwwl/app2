@@ -31,16 +31,19 @@ public class AddSpaceMessageCmd extends AbstractCommand {
 			return;
 		}
 		SpaceInfo reqSpace = reqPlayer.getSpaceInventory().getSpaceInfo();
-		if(reqSpace.getIsNoMsg() == SpaceInfo.NO_MSG){
-			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SPACE_ADD_MSG,"空间主人禁止留言");		
-			return;
-		}
-		if(reqSpace.getIsNoMsg() == SpaceInfo.FRIEND_MSG){
-			if(!reqPlayer.getFriendInventory().getFriend().isFriend(player.getPlayerId())){
-				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SPACE_ADD_MSG,"非好友禁止留言");		
+		if(req.getPlayerId()!=player.getPlayerId()){			
+			if(reqSpace.getIsNoMsg() == SpaceInfo.NO_MSG){
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SPACE_ADD_MSG,"空间主人禁止留言");		
 				return;
 			}
+			if(reqSpace.getIsNoMsg() == SpaceInfo.FRIEND_MSG){
+				if(!reqPlayer.getFriendInventory().getFriend().isFriend(player.getPlayerId())){
+					ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SPACE_ADD_MSG,"非好友禁止留言");		
+					return;
+				}
+			}
 		}
+		
 		
 		SpaceMessageInfo info = new SpaceMessageInfo();
 		info.setCreateDate(new Date());

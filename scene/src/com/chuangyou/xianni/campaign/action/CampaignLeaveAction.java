@@ -1,8 +1,8 @@
 package com.chuangyou.xianni.campaign.action;
 
 import com.chuangyou.xianni.campaign.Campaign;
-import com.chuangyou.xianni.campaign.CampaignFactory;
 import com.chuangyou.xianni.campaign.state.CampaignState;
+import com.chuangyou.xianni.constant.CampaignConstant.CampaignType;
 import com.chuangyou.xianni.exec.Action;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
@@ -36,7 +36,7 @@ public class CampaignLeaveAction extends Action {
 
 		campaign.setExpiredTime(System.currentTimeMillis() + 30 * 60 * 1000);
 		/** 组队副本，当所有人离开时，销毁副本 */
-		if (campaign.getTemp().getType() == CampaignFactory.TEAM && campaign.isEmpty() && campaign.getState().getCode() != CampaignState.STOP) {
+		if (campaign.getTemp().getType() == CampaignType.TEAM && campaign.isEmpty() && campaign.getState().getCode() != CampaignState.STOP) {
 			campaign.over();
 		} else {
 			campaign.sendCampaignInfo(army);

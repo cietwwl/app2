@@ -13,10 +13,13 @@ import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.player.PlayerJoinInfo;
 import com.chuangyou.xianni.entity.player.PlayerPositionInfo;
 import com.chuangyou.xianni.entity.player.PlayerTimeInfo;
+import com.chuangyou.xianni.entity.vip.VipLevelTemplate;
+import com.chuangyou.xianni.entity.vip.VipTemplate;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.player.event.PlayerProperEvent;
 import com.chuangyou.xianni.player.event.PlayerPropertyUpdateEvent;
 import com.chuangyou.xianni.player.event.PlayerSceneAttEvent;
+import com.chuangyou.xianni.vip.templete.VipTemplateMgr;
 
 /**
  * 玩家临时数据,只作临时记录和使用，不入库
@@ -25,25 +28,25 @@ import com.chuangyou.xianni.player.event.PlayerSceneAttEvent;
 public class BasePlayer extends AbstractEvent {
 
 	/** 玩家详细信息 */
-	private PlayerInfo			playerInfo;
+	private PlayerInfo playerInfo;
 
 	/** 玩家加成属性信息 */
-	private PlayerJoinInfo		playerJoinInfo;
+	private PlayerJoinInfo playerJoinInfo;
 
 	/** 玩家时间、硽码相关信息 */
-	private PlayerTimeInfo		playerTimeInfo;
+	private PlayerTimeInfo playerTimeInfo;
 
 	/** 玩家临时数据，不入库 */
-	private short				onLineStatus	= PlayerState.OFFLINE;
+	private short onLineStatus = PlayerState.OFFLINE;
 	/** 期望组队目标 */
-	private int					teamTarget		= 0;
+	private int teamTarget = 0;
 
 	/** 玩家移动位置信息 */
-	private PlayerPositionInfo	playerPositionInfo;
+	private PlayerPositionInfo playerPositionInfo;
 
-	private LockData			moneyLock		= new LockData();
+	private LockData moneyLock = new LockData();
 	/*-----------------------更新数据---------------------------*/
-	private AtomicInteger		changeCount		= new AtomicInteger(0);
+	private AtomicInteger changeCount = new AtomicInteger(0);
 
 	public BasePlayer(PlayerInfo playerInfo, PlayerJoinInfo playerJoinInfo, PlayerTimeInfo playerTimeInfo, PlayerPositionInfo playerPositionInfo) {
 		this.playerInfo = playerInfo;
@@ -321,10 +324,61 @@ public class BasePlayer extends AbstractEvent {
 		}
 		return true;
 	}
+	
+	/**
+	 * 消耗装备经验
+	 * @param count
+	 * @return
+	 */
+	public boolean consumeEquipExp(long count){
+		if(playerInfo.getEquipExp() < count)
+			return false;
+		beginChanges();
+		try {
+			if(moneyLock.beginLock()){
+				this.playerInfo.setEquipExp(playerInfo.getEquipExp() - count);
+				this.playerInfo.setOp(Option.Update);
+			}else{
+				Log.error("playerId : " + getPlayerInfo().getPlayerId() + "consumeEquipExp Lock");
+				return false;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " consumeEquipExp", e);
+			return false;
+		} finally {
+			commitChages(EnumAttr.EQUIPEXP.getValue(), playerInfo.getEquipExp());
+			moneyLock.commitLock();
+		}
+		return true;
+	}
+	/**
+	 * 添加装备经验
+	 * @param count
+	 * @return
+	 */
+	public boolean addEquipExp(long count){
+		beginChanges();
+		try {
+			if(moneyLock.beginLock()){
+				this.playerInfo.setEquipExp(playerInfo.getEquipExp() + count);
+				this.playerInfo.setOp(Option.Update);
+			}else{
+				Log.error("playerId : " + getPlayerInfo().getPlayerId() + "addEquipExp Lock");
+				return false;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + "addEquipExp", e);
+			return false;
+		} finally {
+			commitChages(EnumAttr.EQUIPEXP.getValue(), playerInfo.getEquipExp());
+		}
+		return true;
+	}
 
 	/**
-	 * @param quest
-	 *            单条提交
+	 * @param quest 单条提交
 	 */
 	public void onChanged() {
 		try {
@@ -512,6 +566,44 @@ public class BasePlayer extends AbstractEvent {
 				commitSceneChange(EnumAttr.Level.getValue(), playerInfo.getLevel());
 			}
 		}
+		return true;
+	}
+
+	/**
+	 * 玩家增加vip经验
+	 * 
+	 * @param addValue
+	 * @return
+	 */
+	public boolean addVipExp(int addValue) {
+		if (addValue <= 0)
+			return false;
+		beginChanges();
+		Map<Integer, Long> changeMap = new HashMap<>();
+		boolean hasLevelUp = false;
+		try {
+			this.playerInfo.setVipExp(this.playerInfo.getVipExp() + addValue);
+			VipLevelTemplate temp = VipTemplateMgr.getVipLevelTemplate(playerInfo.getVipLevel());
+
+			if (temp.getNeedExp() > 0 && this.playerInfo.getVipExp() >= temp.getNeedExp()) {// 升级
+				hasLevelUp = true;
+				playerInfo.setVipLevel((short) (playerInfo.getVipLevel() + 1));
+				playerInfo.setVipExp((int) (playerInfo.getVipExp() - temp.getNeedExp()));
+			}
+
+			changeMap.put(EnumAttr.VIP_EXP.getValue(), (long)playerInfo.getVipExp());
+			this.playerInfo.setOp(Option.Update);
+		} catch (Exception e) {
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " updateVipExp", e);
+			return false;
+		} finally {
+			commitChages(changeMap);
+			if (hasLevelUp) {
+				beginChanges();
+				commitSceneChange(EnumAttr.VipLevel.getValue(), playerInfo.getVipLevel());
+			}
+		}
+
 		return true;
 	}
 

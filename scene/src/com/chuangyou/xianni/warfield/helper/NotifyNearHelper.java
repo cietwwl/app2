@@ -32,8 +32,8 @@ public class NotifyNearHelper {
 	 * @param army
 	 * @param cur
 	 */
-	public static void notifyHelper(Field f, ArmyProxy army, Vector3 cur, Selector selector) {
-		ActiveLiving living = (ActiveLiving) f.getLiving(army.getPlayerId());
+	public static void notifyHelper(Field f, ActiveLiving living, Vector3 cur, Selector selector) {
+		//ActiveLiving living = (ActiveLiving) f.getLiving(army.getPlayerId());
 		GridItem curGI = f.getGrid().getGridItem(living.getPostion());
 		GridItem tarGI = f.getGrid().getGridItem(cur);
 		if (curGI == null || tarGI == null)

@@ -1,0 +1,12 @@
+//protocol=24;
+option java_package = "com.chuangyou.common.protobuf.pb.battle";
+option java_outer_classname = "CreateSnareRspMsgProto";
+import "common/PBVector3.proto";
+message CreateSnareRspMsg {
+	optional int64 livingId = 1; //产生的陷阱ID
+	optional int64 createTime = 2; //陷阱产生时间
+	optional PBVector3 bornPos = 3; //出生点
+	optional PBVector3 targetPos = 4; //目标点
+	optional int64 lockingId = 5; //锁定目标ID
+}
+

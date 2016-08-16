@@ -1,0 +1,8 @@
+//protocol= 736;
+option java_package = "com.chuangyou.common.protobuf.pb.vip";
+option java_outer_classname = "ResReceiveMsgProto";
+
+//vip 购买礼包或者是领取周奖励 成功
+message ResReceiveMsg {
+
+}

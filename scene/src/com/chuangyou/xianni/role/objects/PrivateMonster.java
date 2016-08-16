@@ -1,7 +1,6 @@
 package com.chuangyou.xianni.role.objects;
 
 import com.chuangyou.common.protobuf.pb.PlayerLeaveGridProto.PlayerLeaveGridMsg;
-import com.chuangyou.xianni.drop.manager.DropManager;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;

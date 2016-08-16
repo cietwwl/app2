@@ -50,7 +50,7 @@ public final class ResBuyVipMsgProto {
    * Protobuf type {@code ResBuyVipMsg}
    *
    * <pre>
-   *购买vip
+   *购买或赠送vip成功
    * </pre>
    */
   public static final class ResBuyVipMsg extends
@@ -328,7 +328,7 @@ public final class ResBuyVipMsgProto {
      * Protobuf type {@code ResBuyVipMsg}
      *
      * <pre>
-     *购买vip
+     *购买或赠送vip成功
      * </pre>
      */
     public static final class Builder extends

@@ -24,6 +24,15 @@ public final class SyncMonsterPoolMsgProto {
      * <code>repeated int32 monsterRefreshId = 1;</code>
      */
     int getMonsterRefreshId(int index);
+
+    /**
+     * <code>optional int32 curCampaign = 2;</code>
+     */
+    boolean hasCurCampaign();
+    /**
+     * <code>optional int32 curCampaign = 2;</code>
+     */
+    int getCurCampaign();
   }
   /**
    * Protobuf type {@code SyncMonsterPoolMsg}
@@ -98,6 +107,11 @@ public final class SyncMonsterPoolMsgProto {
               input.popLimit(limit);
               break;
             }
+            case 16: {
+              bitField0_ |= 0x00000001;
+              curCampaign_ = input.readInt32();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -140,6 +154,7 @@ public final class SyncMonsterPoolMsgProto {
       return PARSER;
     }
 
+    private int bitField0_;
     public static final int MONSTERREFRESHID_FIELD_NUMBER = 1;
     private java.util.List<java.lang.Integer> monsterRefreshId_;
     /**
@@ -162,8 +177,24 @@ public final class SyncMonsterPoolMsgProto {
       return monsterRefreshId_.get(index);
     }
 
+    public static final int CURCAMPAIGN_FIELD_NUMBER = 2;
+    private int curCampaign_;
+    /**
+     * <code>optional int32 curCampaign = 2;</code>
+     */
+    public boolean hasCurCampaign() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional int32 curCampaign = 2;</code>
+     */
+    public int getCurCampaign() {
+      return curCampaign_;
+    }
+
     private void initFields() {
       monsterRefreshId_ = java.util.Collections.emptyList();
+      curCampaign_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -180,6 +211,9 @@ public final class SyncMonsterPoolMsgProto {
       getSerializedSize();
       for (int i = 0; i < monsterRefreshId_.size(); i++) {
         output.writeInt32(1, monsterRefreshId_.get(i));
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(2, curCampaign_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -198,6 +232,10 @@ public final class SyncMonsterPoolMsgProto {
         }
         size += dataSize;
         size += 1 * getMonsterRefreshIdList().size();
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, curCampaign_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -318,6 +356,8 @@ public final class SyncMonsterPoolMsgProto {
         super.clear();
         monsterRefreshId_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
+        curCampaign_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -345,11 +385,17 @@ public final class SyncMonsterPoolMsgProto {
       public com.chuangyou.common.protobuf.pb.inverseBead.SyncMonsterPoolMsgProto.SyncMonsterPoolMsg buildPartial() {
         com.chuangyou.common.protobuf.pb.inverseBead.SyncMonsterPoolMsgProto.SyncMonsterPoolMsg result = new com.chuangyou.common.protobuf.pb.inverseBead.SyncMonsterPoolMsgProto.SyncMonsterPoolMsg(this);
         int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
           monsterRefreshId_ = java.util.Collections.unmodifiableList(monsterRefreshId_);
           bitField0_ = (bitField0_ & ~0x00000001);
         }
         result.monsterRefreshId_ = monsterRefreshId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.curCampaign_ = curCampaign_;
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -374,6 +420,9 @@ public final class SyncMonsterPoolMsgProto {
             monsterRefreshId_.addAll(other.monsterRefreshId_);
           }
           onChanged();
+        }
+        if (other.hasCurCampaign()) {
+          setCurCampaign(other.getCurCampaign());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -468,6 +517,38 @@ public final class SyncMonsterPoolMsgProto {
         return this;
       }
 
+      private int curCampaign_ ;
+      /**
+       * <code>optional int32 curCampaign = 2;</code>
+       */
+      public boolean hasCurCampaign() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional int32 curCampaign = 2;</code>
+       */
+      public int getCurCampaign() {
+        return curCampaign_;
+      }
+      /**
+       * <code>optional int32 curCampaign = 2;</code>
+       */
+      public Builder setCurCampaign(int value) {
+        bitField0_ |= 0x00000002;
+        curCampaign_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 curCampaign = 2;</code>
+       */
+      public Builder clearCurCampaign() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        curCampaign_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:SyncMonsterPoolMsg)
     }
 
@@ -493,10 +574,11 @@ public final class SyncMonsterPoolMsgProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n$inverseBead/SyncMonsterPoolMsg.proto\"." +
+      "\n$inverseBead/SyncMonsterPoolMsg.proto\"C" +
       "\n\022SyncMonsterPoolMsg\022\030\n\020monsterRefreshId" +
-      "\030\001 \003(\005BG\n,com.chuangyou.common.protobuf." +
-      "pb.inverseBeadB\027SyncMonsterPoolMsgProto"
+      "\030\001 \003(\005\022\023\n\013curCampaign\030\002 \001(\005BG\n,com.chuan" +
+      "gyou.common.protobuf.pb.inverseBeadB\027Syn" +
+      "cMonsterPoolMsgProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -515,7 +597,7 @@ public final class SyncMonsterPoolMsgProto {
     internal_static_SyncMonsterPoolMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_SyncMonsterPoolMsg_descriptor,
-        new java.lang.String[] { "MonsterRefreshId", });
+        new java.lang.String[] { "MonsterRefreshId", "CurCampaign", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

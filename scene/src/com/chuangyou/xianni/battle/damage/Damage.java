@@ -17,7 +17,8 @@ public class Damage {
 	private int				damageValue;	// 伤害值
 	private int				leftValue;		// 伤害后的当前值
 	private int				tipType;		// 是否暴击 0x0001
-	private int				skillId;		// 由什么技能造成
+	private int				fromType;		// 来源类型 0 无来源，1 技能，2 buffer ，3 陷阱
+	private int				fromId;			// 由什么技能造成
 	private int				order;			// 第几次伤害
 	private boolean			deadly;			// 致死伤害
 	private int				calcType;		// 计算类型 1 混合计算 （先扣血后扣魂，先加魂后加血） 2
@@ -26,6 +27,12 @@ public class Damage {
 	public static final int	MISS	= 2;
 	public static final int	CRIPT	= 1;
 
+	// 技能
+	public static final int	SKILL	= 1;
+	// buffer
+	public static final int	BUFFER	= 2;
+	// 陷阱
+	public static final int	SNARE	= 3;
 
 	/**
 	 * 技能计算伤害
@@ -43,7 +50,8 @@ public class Damage {
 		dmsg.setDamageType(this.damageType);
 		dmsg.setDamageValue(this.damageValue);
 		dmsg.setLeftValue(this.leftValue);
-		dmsg.setSkillId(this.skillId);
+		dmsg.setFromType(this.fromType);
+		dmsg.setFromId(this.fromId);
 		dmsg.setOrder(this.order);
 		dmsg.setTargetId(target.getId());
 		dmsg.setTipType(tipType);
@@ -131,12 +139,20 @@ public class Damage {
 		this.order = order;
 	}
 
-	public int getSkillId() {
-		return skillId;
+	public int getFromType() {
+		return fromType;
 	}
 
-	public void setSkillId(int skillId) {
-		this.skillId = skillId;
+	public void setFromType(int fromType) {
+		this.fromType = fromType;
+	}
+
+	public int getFromId() {
+		return fromId;
+	}
+
+	public void setFromId(int fromId) {
+		this.fromId = fromId;
 	}
 
 	public int getTipType() {

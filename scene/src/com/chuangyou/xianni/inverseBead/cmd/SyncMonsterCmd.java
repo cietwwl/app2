@@ -1,5 +1,6 @@
 package com.chuangyou.xianni.inverseBead.cmd;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.chuangyou.common.protobuf.pb.inverseBead.SyncMonsterPoolMsgProto.SyncMonsterPoolMsg;
@@ -15,7 +16,8 @@ public class SyncMonsterCmd extends AbstractCommand {
 	public void execute(ArmyProxy army, PBMessage packet) throws Exception {
 		SyncMonsterPoolMsg msg = SyncMonsterPoolMsg.parseFrom(packet.getBytes());
 		List<Integer> list = msg.getMonsterRefreshIdList();
-		army.getPlayer().reSetMonsterRefreshIdList(list);
+		int curCampaign = msg.getCurCampaign();
+		army.getPlayer().reSetMonsterRefreshIdList(list, curCampaign);
 	}
 
 }

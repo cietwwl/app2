@@ -4,6 +4,8 @@ public class SystemConfig {
 	private String key;//VARCHAR(255) NOT NULL
 	private int value;//VARCHAR(255) NULL DEFAULT NULL
 	private String _desc;//VARCHAR(255) NULL DEFAULT NULL
+	private String strValue;
+	
 	public SystemConfig() {
 		super();
 	}
@@ -34,6 +36,12 @@ public class SystemConfig {
 	@Override
 	public String toString() {
 		return "SystemConfig [key=" + key + ", value=" + value + ", _desc=" + _desc + "]";
+	}
+	public String getStrValue() {
+		return strValue;
+	}
+	public void setStrValue(String strValue) {
+		this.strValue = strValue;
 	}
 	
 }

@@ -219,6 +219,10 @@ public class BagInventory extends AbstractEvent implements IInventory {
 			case CurrencyItemType.EXP:
 				player.getBasePlayer().addExp(count);
 				return true;
+			case CurrencyItemType.VIP_EXP:
+				player.getBasePlayer().addVipExp(count);
+				return true;
+				
 		}
 
 		ItemTemplateInfo tempInfo = ItemManager.findItemTempInfo(templateId);

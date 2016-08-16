@@ -66,7 +66,7 @@ public class PlayerTimeInfo extends DataObject {
 	}
 
 	public void writeProto(PlayerTimeMsg.Builder builder) {
-		builder.addChallengeCampCount(challengeCampCount);
-		builder.addSigleCampCount(sigleCampCount);
+		builder.setChallengeCampCount(challengeCampCount);
+		builder.setSigleCampCount(sigleCampCount);
 	}
 }

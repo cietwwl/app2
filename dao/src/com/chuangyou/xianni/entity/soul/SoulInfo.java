@@ -2,12 +2,13 @@ package com.chuangyou.xianni.entity.soul;
 
 import java.util.Date;
 
+import com.chuangyou.common.protobuf.pb.soul.SoulInfoProto.SoulInfoMsg;
 import com.chuangyou.xianni.entity.DataObject;
 
 
 public class SoulInfo extends DataObject {
 	private long playerId;// ` bigint(20) NOT NULL DEFAULT '0',
-	private long exp;// ` bigint(20) NOT NULL DEFAULT '0' COMMENT '经验值',
+	private long exp=0;// ` bigint(20) NOT NULL DEFAULT '0' COMMENT '经验值',
 	private int card1;// ` int(11) NOT NULL DEFAULT '0',
 	private int card2;// ` int(11) NOT NULL DEFAULT '0',
 	private int card3;// ` int(11) NOT NULL DEFAULT '0',
@@ -22,15 +23,44 @@ public class SoulInfo extends DataObject {
 	private int fuseSkillId3;// ` int(11) NOT NULL DEFAULT '0' COMMENT '融合技能',
 	private int fuseSkillId4;// ` int(11) NOT NULL DEFAULT '0' COMMENT '融合技能',
 
-	private Date fuseSkillCreateTime1;// ` timestamp NULL DEFAULT NULL COMMENT
+	private Date fuseSkillCreateTime1=new Date();// ` timestamp NULL DEFAULT NULL COMMENT
 										// '创建时间',
-	private Date fuseSkillCreateTime2;// ` timestamp NULL DEFAULT NULL COMMENT
+	private Date fuseSkillCreateTime2=new Date();// ` timestamp NULL DEFAULT NULL COMMENT
 										// '创建时间',
-	private Date fuseSkillCreateTime3;// ` timestamp NULL DEFAULT NULL COMMENT
+	private Date fuseSkillCreateTime3=new Date();// ` timestamp NULL DEFAULT NULL COMMENT
 										// '创建时间',
-	private Date fuseSkillCreateTime4;// ` timestamp NULL DEFAULT NULL COMMENT
+	private Date fuseSkillCreateTime4=new Date();// ` timestamp NULL DEFAULT NULL COMMENT
 										// '创建时间',
 
+	private int proficiency; //材料制作熟练度
+	
+	public SoulInfoMsg.Builder getMsg(){
+		SoulInfoMsg.Builder msg = SoulInfoMsg.newBuilder();
+		msg.setExp(exp);
+		msg.setCard1(card1);
+		msg.setCard2(card2);
+		msg.setCard3(card3);
+		msg.setCard4(card4);
+		msg.setCard5(card5);
+		msg.setCard6(card6);
+		msg.setCard7(card7);
+		msg.setCard8(card8);
+		
+		msg.setFuseSkillId1(fuseSkillId1);
+		msg.setFuseSkillId2(fuseSkillId2);
+		msg.setFuseSkillId3(fuseSkillId3);
+		msg.setFuseSkillId4(fuseSkillId4);
+		
+		msg.setFuseSkillCreateTime1(fuseSkillCreateTime1.getTime());
+		msg.setFuseSkillCreateTime2(fuseSkillCreateTime2.getTime());
+		msg.setFuseSkillCreateTime3(fuseSkillCreateTime3.getTime());
+		msg.setFuseSkillCreateTime4(fuseSkillCreateTime4.getTime());
+		
+		msg.setProficiency(proficiency);
+		
+		return msg;
+	}
+	
 	public long getPlayerId() {
 		return playerId;
 	}
@@ -174,5 +204,14 @@ public class SoulInfo extends DataObject {
 	public void setFuseSkillCreateTime4(Date fuseSkillCreateTime4) {
 		this.fuseSkillCreateTime4 = fuseSkillCreateTime4;
 	}
+
+	public int getProficiency() {
+		return proficiency;
+	}
+
+	public void setProficiency(int proficiency) {
+		this.proficiency = proficiency;
+	}
+
 
 }

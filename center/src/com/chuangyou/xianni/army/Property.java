@@ -25,6 +25,9 @@ public class Property {
 	
 	private int		fashionData	= 0;	//时装属性加成
 	private int		fashionPer	= 0;	//时装万分比加成
+	
+	private int     soulData    = 0;    //魂幡属性加成
+	private int 	soulPer		= 0; 	//魂幡万分比加成
 
 	private int petData = 0;	// 宠物属性加成
 	private int petPer = 0;	// 宠物万分比加成
@@ -49,8 +52,8 @@ public class Property {
 	private void fresh() {
 		// 计算总的属性
 
-		int totalData = tempData + bagData + skillData + mountData + magicwpData + petData + fashionData+ inverseBeadData;
-		int totalPer = tempPer + bagPer + skillPer + mountPer + magicwpPer + petPer + fashionPer+ inverseBeadper;
+		int totalData = tempData + bagData + skillData + mountData + magicwpData + petData + fashionData+ inverseBeadData + soulData;
+		int totalPer = tempPer + bagPer + skillPer + mountPer + magicwpPer + petPer + fashionPer+ inverseBeadper+ soulPer;
 
 		totalJoin = totalData + totalData * totalPer / 10000;
 
@@ -268,5 +271,27 @@ public class Property {
 
 	public String toString() {
 		return String.format("模板直接加成%s,模板百分比%s,", tempData, tempPer) + String.format("背包直接加成%s,背包百分比%s,", bagData, bagPer);
+	}
+
+	public int getSoulData() {
+		return soulData;
+	}
+
+	public void setSoulData(int soulData) {
+		if(this.soulData!=soulData){
+			this.setChange(true);
+			this.soulData = soulData;
+		}
+	}
+
+	public int getSoulPer() {
+		return soulPer;
+	}
+
+	public void setSoulPer(int soulPer) {
+		if(this.soulPer!=soulPer){
+			this.setChange(true);			
+			this.soulPer = soulPer;
+		}
 	}
 }

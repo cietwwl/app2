@@ -75,6 +75,14 @@ public class ArmyInventory extends AbstractEvent implements UnlineInventory {
 			hero.addFashion(fashionData, fashionPer);
 		}
 		
+		if(player.getSoulInventory() != null){
+			BaseProperty soulData = new BaseProperty();
+			BaseProperty soulPer = new BaseProperty();
+			//加入魂幡属性
+			player.getSoulInventory().computeSoulAtt(soulData, soulPer);
+			hero.addSoul(soulData, soulPer);
+		}
+		
 		updateHeroInfo();
 	}
 

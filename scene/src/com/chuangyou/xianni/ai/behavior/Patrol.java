@@ -1,14 +1,17 @@
 package com.chuangyou.xianni.ai.behavior;
 
+import java.util.Set;
+
 import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.ai.AIState;
 import com.chuangyou.xianni.cooldown.CoolDownTypes;
 import com.chuangyou.xianni.role.objects.Monster;
+import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 
 public class Patrol extends BaseBehavior {
 
-	private final int PatrolProbability = 50;
+	private final int PatrolProbability = 30;
 	private Vector3 patrolTarget;
 	// 可以巡逻
 	private boolean needPatrol = false;
@@ -35,7 +38,8 @@ public class Patrol extends BaseBehavior {
 				return;
 			}
 		}
-
+		Set<Long> nearPlayer = getMonster().getNears(new PlayerSelectorHelper(getMonster()));
+		if(nearPlayer.size() == 0) return;
 		patrolTarget = getMonster().getPostion();
 		patrolTarget = MathUtils.GetRandomVector3ByCenter(getMonster().getInitPosition(), patrolRange);
 		if (!isValidPoint(patrolTarget)) {	// 该点不能达到
@@ -50,7 +54,7 @@ public class Patrol extends BaseBehavior {
 
 	@Override
 	public AIState next() {
-		if (getMonster().getAiConfig().isRunAway()) {// 是否逃跑
+		if (getMonster().getAiConfig()!=null && getMonster().getAiConfig().isRunAway()) {// 是否逃跑
 			if (getMonster().getAttacker() != null)
 				return AIState.RUNAWAY;
 		}

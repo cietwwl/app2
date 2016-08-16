@@ -13,54 +13,38 @@ public final class PlayerTimeMsgProto {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated int32 sigleCampCount = 1;</code>
+     * <code>optional int32 sigleCampCount = 1;</code>
      *
      * <pre>
      *每日单人副本次数
      * </pre>
      */
-    java.util.List<java.lang.Integer> getSigleCampCountList();
+    boolean hasSigleCampCount();
     /**
-     * <code>repeated int32 sigleCampCount = 1;</code>
+     * <code>optional int32 sigleCampCount = 1;</code>
      *
      * <pre>
      *每日单人副本次数
      * </pre>
      */
-    int getSigleCampCountCount();
-    /**
-     * <code>repeated int32 sigleCampCount = 1;</code>
-     *
-     * <pre>
-     *每日单人副本次数
-     * </pre>
-     */
-    int getSigleCampCount(int index);
+    int getSigleCampCount();
 
     /**
-     * <code>repeated int32 challengeCampCount = 2;</code>
+     * <code>optional int32 challengeCampCount = 2;</code>
      *
      * <pre>
      *每日挑战副本次数
      * </pre>
      */
-    java.util.List<java.lang.Integer> getChallengeCampCountList();
+    boolean hasChallengeCampCount();
     /**
-     * <code>repeated int32 challengeCampCount = 2;</code>
+     * <code>optional int32 challengeCampCount = 2;</code>
      *
      * <pre>
      *每日挑战副本次数
      * </pre>
      */
-    int getChallengeCampCountCount();
-    /**
-     * <code>repeated int32 challengeCampCount = 2;</code>
-     *
-     * <pre>
-     *每日挑战副本次数
-     * </pre>
-     */
-    int getChallengeCampCount(int index);
+    int getChallengeCampCount();
   }
   /**
    * Protobuf type {@code PlayerTimeMsg}
@@ -115,45 +99,13 @@ public final class PlayerTimeMsgProto {
               break;
             }
             case 8: {
-              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                sigleCampCount_ = new java.util.ArrayList<java.lang.Integer>();
-                mutable_bitField0_ |= 0x00000001;
-              }
-              sigleCampCount_.add(input.readInt32());
-              break;
-            }
-            case 10: {
-              int length = input.readRawVarint32();
-              int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001) && input.getBytesUntilLimit() > 0) {
-                sigleCampCount_ = new java.util.ArrayList<java.lang.Integer>();
-                mutable_bitField0_ |= 0x00000001;
-              }
-              while (input.getBytesUntilLimit() > 0) {
-                sigleCampCount_.add(input.readInt32());
-              }
-              input.popLimit(limit);
+              bitField0_ |= 0x00000001;
+              sigleCampCount_ = input.readInt32();
               break;
             }
             case 16: {
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                challengeCampCount_ = new java.util.ArrayList<java.lang.Integer>();
-                mutable_bitField0_ |= 0x00000002;
-              }
-              challengeCampCount_.add(input.readInt32());
-              break;
-            }
-            case 18: {
-              int length = input.readRawVarint32();
-              int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002) && input.getBytesUntilLimit() > 0) {
-                challengeCampCount_ = new java.util.ArrayList<java.lang.Integer>();
-                mutable_bitField0_ |= 0x00000002;
-              }
-              while (input.getBytesUntilLimit() > 0) {
-                challengeCampCount_.add(input.readInt32());
-              }
-              input.popLimit(limit);
+              bitField0_ |= 0x00000002;
+              challengeCampCount_ = input.readInt32();
               break;
             }
           }
@@ -164,12 +116,6 @@ public final class PlayerTimeMsgProto {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-          sigleCampCount_ = java.util.Collections.unmodifiableList(sigleCampCount_);
-        }
-        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-          challengeCampCount_ = java.util.Collections.unmodifiableList(challengeCampCount_);
-        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -201,77 +147,56 @@ public final class PlayerTimeMsgProto {
       return PARSER;
     }
 
+    private int bitField0_;
     public static final int SIGLECAMPCOUNT_FIELD_NUMBER = 1;
-    private java.util.List<java.lang.Integer> sigleCampCount_;
+    private int sigleCampCount_;
     /**
-     * <code>repeated int32 sigleCampCount = 1;</code>
+     * <code>optional int32 sigleCampCount = 1;</code>
      *
      * <pre>
      *每日单人副本次数
      * </pre>
      */
-    public java.util.List<java.lang.Integer>
-        getSigleCampCountList() {
+    public boolean hasSigleCampCount() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional int32 sigleCampCount = 1;</code>
+     *
+     * <pre>
+     *每日单人副本次数
+     * </pre>
+     */
+    public int getSigleCampCount() {
       return sigleCampCount_;
-    }
-    /**
-     * <code>repeated int32 sigleCampCount = 1;</code>
-     *
-     * <pre>
-     *每日单人副本次数
-     * </pre>
-     */
-    public int getSigleCampCountCount() {
-      return sigleCampCount_.size();
-    }
-    /**
-     * <code>repeated int32 sigleCampCount = 1;</code>
-     *
-     * <pre>
-     *每日单人副本次数
-     * </pre>
-     */
-    public int getSigleCampCount(int index) {
-      return sigleCampCount_.get(index);
     }
 
     public static final int CHALLENGECAMPCOUNT_FIELD_NUMBER = 2;
-    private java.util.List<java.lang.Integer> challengeCampCount_;
+    private int challengeCampCount_;
     /**
-     * <code>repeated int32 challengeCampCount = 2;</code>
+     * <code>optional int32 challengeCampCount = 2;</code>
      *
      * <pre>
      *每日挑战副本次数
      * </pre>
      */
-    public java.util.List<java.lang.Integer>
-        getChallengeCampCountList() {
+    public boolean hasChallengeCampCount() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional int32 challengeCampCount = 2;</code>
+     *
+     * <pre>
+     *每日挑战副本次数
+     * </pre>
+     */
+    public int getChallengeCampCount() {
       return challengeCampCount_;
-    }
-    /**
-     * <code>repeated int32 challengeCampCount = 2;</code>
-     *
-     * <pre>
-     *每日挑战副本次数
-     * </pre>
-     */
-    public int getChallengeCampCountCount() {
-      return challengeCampCount_.size();
-    }
-    /**
-     * <code>repeated int32 challengeCampCount = 2;</code>
-     *
-     * <pre>
-     *每日挑战副本次数
-     * </pre>
-     */
-    public int getChallengeCampCount(int index) {
-      return challengeCampCount_.get(index);
     }
 
     private void initFields() {
-      sigleCampCount_ = java.util.Collections.emptyList();
-      challengeCampCount_ = java.util.Collections.emptyList();
+      sigleCampCount_ = 0;
+      challengeCampCount_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -286,11 +211,11 @@ public final class PlayerTimeMsgProto {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
-      for (int i = 0; i < sigleCampCount_.size(); i++) {
-        output.writeInt32(1, sigleCampCount_.get(i));
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, sigleCampCount_);
       }
-      for (int i = 0; i < challengeCampCount_.size(); i++) {
-        output.writeInt32(2, challengeCampCount_.get(i));
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt32(2, challengeCampCount_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -301,23 +226,13 @@ public final class PlayerTimeMsgProto {
       if (size != -1) return size;
 
       size = 0;
-      {
-        int dataSize = 0;
-        for (int i = 0; i < sigleCampCount_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeInt32SizeNoTag(sigleCampCount_.get(i));
-        }
-        size += dataSize;
-        size += 1 * getSigleCampCountList().size();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, sigleCampCount_);
       }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < challengeCampCount_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeInt32SizeNoTag(challengeCampCount_.get(i));
-        }
-        size += dataSize;
-        size += 1 * getChallengeCampCountList().size();
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, challengeCampCount_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -436,9 +351,9 @@ public final class PlayerTimeMsgProto {
 
       public Builder clear() {
         super.clear();
-        sigleCampCount_ = java.util.Collections.emptyList();
+        sigleCampCount_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
-        challengeCampCount_ = java.util.Collections.emptyList();
+        challengeCampCount_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
@@ -467,16 +382,16 @@ public final class PlayerTimeMsgProto {
       public com.chuangyou.common.protobuf.pb.player.PlayerTimeMsgProto.PlayerTimeMsg buildPartial() {
         com.chuangyou.common.protobuf.pb.player.PlayerTimeMsgProto.PlayerTimeMsg result = new com.chuangyou.common.protobuf.pb.player.PlayerTimeMsgProto.PlayerTimeMsg(this);
         int from_bitField0_ = bitField0_;
-        if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          sigleCampCount_ = java.util.Collections.unmodifiableList(sigleCampCount_);
-          bitField0_ = (bitField0_ & ~0x00000001);
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
         }
         result.sigleCampCount_ = sigleCampCount_;
-        if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          challengeCampCount_ = java.util.Collections.unmodifiableList(challengeCampCount_);
-          bitField0_ = (bitField0_ & ~0x00000002);
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
         }
         result.challengeCampCount_ = challengeCampCount_;
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -492,25 +407,11 @@ public final class PlayerTimeMsgProto {
 
       public Builder mergeFrom(com.chuangyou.common.protobuf.pb.player.PlayerTimeMsgProto.PlayerTimeMsg other) {
         if (other == com.chuangyou.common.protobuf.pb.player.PlayerTimeMsgProto.PlayerTimeMsg.getDefaultInstance()) return this;
-        if (!other.sigleCampCount_.isEmpty()) {
-          if (sigleCampCount_.isEmpty()) {
-            sigleCampCount_ = other.sigleCampCount_;
-            bitField0_ = (bitField0_ & ~0x00000001);
-          } else {
-            ensureSigleCampCountIsMutable();
-            sigleCampCount_.addAll(other.sigleCampCount_);
-          }
-          onChanged();
+        if (other.hasSigleCampCount()) {
+          setSigleCampCount(other.getSigleCampCount());
         }
-        if (!other.challengeCampCount_.isEmpty()) {
-          if (challengeCampCount_.isEmpty()) {
-            challengeCampCount_ = other.challengeCampCount_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-          } else {
-            ensureChallengeCampCountIsMutable();
-            challengeCampCount_.addAll(other.challengeCampCount_);
-          }
-          onChanged();
+        if (other.hasChallengeCampCount()) {
+          setChallengeCampCount(other.getChallengeCampCount());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -539,190 +440,98 @@ public final class PlayerTimeMsgProto {
       }
       private int bitField0_;
 
-      private java.util.List<java.lang.Integer> sigleCampCount_ = java.util.Collections.emptyList();
-      private void ensureSigleCampCountIsMutable() {
-        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-          sigleCampCount_ = new java.util.ArrayList<java.lang.Integer>(sigleCampCount_);
-          bitField0_ |= 0x00000001;
-         }
-      }
+      private int sigleCampCount_ ;
       /**
-       * <code>repeated int32 sigleCampCount = 1;</code>
+       * <code>optional int32 sigleCampCount = 1;</code>
        *
        * <pre>
        *每日单人副本次数
        * </pre>
        */
-      public java.util.List<java.lang.Integer>
-          getSigleCampCountList() {
-        return java.util.Collections.unmodifiableList(sigleCampCount_);
+      public boolean hasSigleCampCount() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>repeated int32 sigleCampCount = 1;</code>
+       * <code>optional int32 sigleCampCount = 1;</code>
        *
        * <pre>
        *每日单人副本次数
        * </pre>
        */
-      public int getSigleCampCountCount() {
-        return sigleCampCount_.size();
+      public int getSigleCampCount() {
+        return sigleCampCount_;
       }
       /**
-       * <code>repeated int32 sigleCampCount = 1;</code>
+       * <code>optional int32 sigleCampCount = 1;</code>
        *
        * <pre>
        *每日单人副本次数
        * </pre>
        */
-      public int getSigleCampCount(int index) {
-        return sigleCampCount_.get(index);
-      }
-      /**
-       * <code>repeated int32 sigleCampCount = 1;</code>
-       *
-       * <pre>
-       *每日单人副本次数
-       * </pre>
-       */
-      public Builder setSigleCampCount(
-          int index, int value) {
-        ensureSigleCampCountIsMutable();
-        sigleCampCount_.set(index, value);
+      public Builder setSigleCampCount(int value) {
+        bitField0_ |= 0x00000001;
+        sigleCampCount_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>repeated int32 sigleCampCount = 1;</code>
-       *
-       * <pre>
-       *每日单人副本次数
-       * </pre>
-       */
-      public Builder addSigleCampCount(int value) {
-        ensureSigleCampCountIsMutable();
-        sigleCampCount_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int32 sigleCampCount = 1;</code>
-       *
-       * <pre>
-       *每日单人副本次数
-       * </pre>
-       */
-      public Builder addAllSigleCampCount(
-          java.lang.Iterable<? extends java.lang.Integer> values) {
-        ensureSigleCampCountIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, sigleCampCount_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int32 sigleCampCount = 1;</code>
+       * <code>optional int32 sigleCampCount = 1;</code>
        *
        * <pre>
        *每日单人副本次数
        * </pre>
        */
       public Builder clearSigleCampCount() {
-        sigleCampCount_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
+        sigleCampCount_ = 0;
         onChanged();
         return this;
       }
 
-      private java.util.List<java.lang.Integer> challengeCampCount_ = java.util.Collections.emptyList();
-      private void ensureChallengeCampCountIsMutable() {
-        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          challengeCampCount_ = new java.util.ArrayList<java.lang.Integer>(challengeCampCount_);
-          bitField0_ |= 0x00000002;
-         }
-      }
+      private int challengeCampCount_ ;
       /**
-       * <code>repeated int32 challengeCampCount = 2;</code>
+       * <code>optional int32 challengeCampCount = 2;</code>
        *
        * <pre>
        *每日挑战副本次数
        * </pre>
        */
-      public java.util.List<java.lang.Integer>
-          getChallengeCampCountList() {
-        return java.util.Collections.unmodifiableList(challengeCampCount_);
+      public boolean hasChallengeCampCount() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>repeated int32 challengeCampCount = 2;</code>
+       * <code>optional int32 challengeCampCount = 2;</code>
        *
        * <pre>
        *每日挑战副本次数
        * </pre>
        */
-      public int getChallengeCampCountCount() {
-        return challengeCampCount_.size();
+      public int getChallengeCampCount() {
+        return challengeCampCount_;
       }
       /**
-       * <code>repeated int32 challengeCampCount = 2;</code>
+       * <code>optional int32 challengeCampCount = 2;</code>
        *
        * <pre>
        *每日挑战副本次数
        * </pre>
        */
-      public int getChallengeCampCount(int index) {
-        return challengeCampCount_.get(index);
-      }
-      /**
-       * <code>repeated int32 challengeCampCount = 2;</code>
-       *
-       * <pre>
-       *每日挑战副本次数
-       * </pre>
-       */
-      public Builder setChallengeCampCount(
-          int index, int value) {
-        ensureChallengeCampCountIsMutable();
-        challengeCampCount_.set(index, value);
+      public Builder setChallengeCampCount(int value) {
+        bitField0_ |= 0x00000002;
+        challengeCampCount_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>repeated int32 challengeCampCount = 2;</code>
-       *
-       * <pre>
-       *每日挑战副本次数
-       * </pre>
-       */
-      public Builder addChallengeCampCount(int value) {
-        ensureChallengeCampCountIsMutable();
-        challengeCampCount_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int32 challengeCampCount = 2;</code>
-       *
-       * <pre>
-       *每日挑战副本次数
-       * </pre>
-       */
-      public Builder addAllChallengeCampCount(
-          java.lang.Iterable<? extends java.lang.Integer> values) {
-        ensureChallengeCampCountIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, challengeCampCount_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int32 challengeCampCount = 2;</code>
+       * <code>optional int32 challengeCampCount = 2;</code>
        *
        * <pre>
        *每日挑战副本次数
        * </pre>
        */
       public Builder clearChallengeCampCount() {
-        challengeCampCount_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000002);
+        challengeCampCount_ = 0;
         onChanged();
         return this;
       }
@@ -753,8 +562,8 @@ public final class PlayerTimeMsgProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\023PlayerTimeMsg.proto\"C\n\rPlayerTimeMsg\022\026" +
-      "\n\016sigleCampCount\030\001 \003(\005\022\032\n\022challengeCampC" +
-      "ount\030\002 \003(\005B=\n\'com.chuangyou.common.proto" +
+      "\n\016sigleCampCount\030\001 \001(\005\022\032\n\022challengeCampC" +
+      "ount\030\002 \001(\005B=\n\'com.chuangyou.common.proto" +
       "buf.pb.playerB\022PlayerTimeMsgProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =

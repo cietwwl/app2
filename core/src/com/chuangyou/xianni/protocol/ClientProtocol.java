@@ -24,6 +24,7 @@ public interface ClientProtocol {
 	public static final short U_G_DAMAGE = 21; // 同步伤害给附近人
 	public static final short U_G_BUFFER_OPTION = 22; // buffer操作
 	public static final short U_LIVING_STATE_CHANGE = 23; // 生命体状态变更
+	public static final short U_SNARE_CREATE_RESULT = 24;//陷阱创建结果
 	// ===========================>battle<==============================
 
 	// ===========================>campaign<==============================
@@ -219,7 +220,29 @@ public interface ClientProtocol {
 	
 	/** 通知属性改变 */
 	public static final short U_RESP_NOTIFY_SPACE_CHANGE        = 1065;
+	//============================>魂幡<====================================
 	
+	/**
+	 * 请求信息
+	 */
+	public static final short U_RESP_GET_SOUL_INFO              = 1605;
+	
+	/** 碎片合成  */
+	public static final short U_RESP_SOUL_PIECE_COMBO           = 1606;
+	
+	/** 增加经验值 */
+	public static final short U_RESP_SOUL_ADD_EXP               = 1607;
+	
+	/** 同步碎片数量  */
+	public static final short U_RESP_NOTIFY_CARDPIECE           = 1608;
+	
+	/**
+	 * 材料制作
+	 */
+	public static final short U_RESP_SOUL_MAKE                  = 1609;
+	
+	
+	public static final short U_RESP_SOUL_MAKE_TASK             = 1610;
 	// =========================>坐骑<===================================
 	/** 返回坐骑信息 */
 	public static final short U_MOUNT_GETINFO = 101;
@@ -393,5 +416,8 @@ public interface ClientProtocol {
 	// ========================>vip<=========================
 	/** vip 购买响应**/
 	public static final short U_VIP_BUY				 = 735;
-	
+	/** vip 购买礼包**/
+	public static final short U_VIP_RECEIVE			 = 736;
+	/** 获取vip信息 **/
+	public static final short U_GET_VIP_INFO		=737;
 }

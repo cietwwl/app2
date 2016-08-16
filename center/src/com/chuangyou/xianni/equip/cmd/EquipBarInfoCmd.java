@@ -40,6 +40,9 @@ public class EquipBarInfoCmd extends AbstractCommand {
 		case EquipOperateAction.EquipBar.GRADE_UP://栏位加持
 			gradeUp(player, req, packet.getCode());
 			break;
+		case EquipOperateAction.EquipBar.LEVEL_UP_ONEKEY://栏位一键升级
+			levelUpOnekey(player, req, packet.getCode());;
+			break;
 		}
 	}
 	
@@ -59,7 +62,7 @@ public class EquipBarInfoCmd extends AbstractCommand {
 	 * @param protocol
 	 */
 	private void levelUp(GamePlayer player, EquipBarInfoReqMsg req, short protocol){
-		EquipBarInfo info = player.getEquipInventory().getEquipBarInfoMap().get(req.getPosition());
+		EquipBarInfo info = player.getEquipInventory().getEquipBarInfoMap().get((short)req.getPosition());
 		if(info == null){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Get_EquipBar_Postion_Error, protocol, "装备栏索引错误");
 			return;
@@ -94,6 +97,49 @@ public class EquipBarInfoCmd extends AbstractCommand {
 		player.getBagInventory().updateHeroProperties(player.getPlayerId());
 	}
 	
+	private void levelUpOnekey(GamePlayer player, EquipBarInfoReqMsg req, short protocol){
+		EquipBarInfo info = player.getEquipInventory().getEquipBarByPos((short)req.getPosition());
+		if(info == null){
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Get_EquipBar_Postion_Error, protocol, "装备栏索引错误");
+			return;
+		}
+		if(info.getLevel() >= player.getLevel()){
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.RoleLevel_UnEnough, protocol, "装备栏位等级不能超过人物等级");
+			return;
+		}
+		
+		if(info.getLevel() >= LevelUpTempleteMgr.getEquipBarMaxLevel((short)req.getPosition())){
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.EQUIP_BAR_IS_MAX_LV, protocol, "装备栏等级已达到上限");
+			return;
+		}
+		LevelUp levelUpCfg = LevelUpTempleteMgr.getEquipBarLevel((short)req.getPosition(), info.getLevel());
+		if(player.getBasePlayer().getPlayerInfo().getEquipExp() < levelUpCfg.getExp() - info.getExp()){
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.EQUIP_UNENOUGH_EXP, protocol, "装备栏升级经验不足");
+			return;
+		}
+		
+		
+		while(info.getLevel() < player.getLevel() && info.getLevel() < LevelUpTempleteMgr.getEquipBarMaxLevel((short)req.getPosition()) && player.getBasePlayer().getPlayerInfo().getEquipExp() >= levelUpCfg.getExp() - info.getExp()){
+			
+			player.getBasePlayer().consumeEquipExp(levelUpCfg.getExp() - info.getExp());
+			info.setLevel(info.getLevel() + 1);
+			info.setExp(0);
+			
+			levelUpCfg = LevelUpTempleteMgr.getEquipBarLevel((short)req.getPosition(), info.getLevel());
+		}
+		
+		EquipBarInfoRespMsg.Builder msg = EquipBarInfoRespMsg.newBuilder();
+		msg.setAction(EquipOperateAction.EquipBar.LEVEL_UP_ONEKEY);
+		EquipBarInfoMsg.Builder infoMsg = EquipBarInfoMsg.newBuilder();
+		info.writeProto(infoMsg);
+		msg.addEquipBar(infoMsg);
+		
+		PBMessage p = MessageUtil.buildMessage(Protocol.U_EQUIPBAR_INFO, msg);
+		player.sendPbMessage(p);
+		
+		player.getBagInventory().updateHeroProperties(player.getPlayerId());
+	}
+	
 	/**
 	 * 装备栏加持
 	 * @param player
@@ -101,7 +147,7 @@ public class EquipBarInfoCmd extends AbstractCommand {
 	 * @param protocol
 	 */
 	private void gradeUp(GamePlayer player, EquipBarInfoReqMsg req, short protocol){
-		EquipBarInfo info = player.getEquipInventory().getEquipBarInfoMap().get(req.getPosition());
+		EquipBarInfo info = player.getEquipInventory().getEquipBarByPos((short)req.getPosition());
 		if(info == null){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Get_EquipBar_Postion_Error, protocol, "装备栏索引错误");
 			return;

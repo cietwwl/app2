@@ -1,0 +1,13 @@
+//protocol= 737;
+option java_package = "com.chuangyou.common.protobuf.pb.vip";
+option java_outer_classname = "ResGetVipInfoMsgProto";
+
+// 获取vip 信息
+message ResGetVipInfoMsg {
+	required int32 vipLv = 1;//vip 等级
+	required int32 vipExp=2;//vip 经验
+	required int64 vipTimeLimit = 3;//vip 到期时间 （时间戳
+	required int64 vipInterimTimeLimit=4;//临时vip 到期时间（时间戳
+	repeated int32 buy=5;//购买过的礼包
+	required int32 isReceive=6;//是否已经领取了周奖励
+}

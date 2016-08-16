@@ -1,0 +1,15 @@
+//protocol=1605;
+option java_package = "com.chuangyou.common.protobuf.pb.soul";
+option java_outer_classname = "GetSoulInfoRespProto";
+import "soul/CardInfoMsg.proto";
+import "soul/CardPieceInfoMsg.proto";
+import "soul/SoulInfoMsg.proto";
+import "army/PropertyMsg.proto";
+
+//请求魂幡数据
+message GetSoulInfoRespMsg {
+	required SoulInfoMsg soulInfo = 1; //基本信息
+	repeated CardInfoMsg cards = 2; //卡牌数据
+	repeated CardPieceInfoMsg cardPieces = 3; //碎片
+	repeated PropertyMsg atts = 4;//加成属性
+}

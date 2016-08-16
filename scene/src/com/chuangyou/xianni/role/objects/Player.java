@@ -23,6 +23,7 @@ import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.skill.Skill;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignMgr;
+import com.chuangyou.xianni.campaign.node.CampaignNodeDecorator;
 import com.chuangyou.xianni.campaign.task.CTBaseCondition;
 import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.BattleModeCode;
@@ -30,6 +31,7 @@ import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.mount.MountGradeCfg;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
+import com.chuangyou.xianni.entity.spawn.SpawnInfo;
 import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.exec.ThreadManager;
 import com.chuangyou.xianni.mount.MountTempleteMgr;
@@ -39,21 +41,28 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.action.RevivalPlayerAction;
 import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
+import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
+import com.chuangyou.xianni.warfield.spawn.BeadMonsterSpawnNode;
+import com.chuangyou.xianni.warfield.spawn.PerareState;
+import com.chuangyou.xianni.warfield.spawn.SpwanNode;
+import com.chuangyou.xianni.warfield.spawn.WorkingState;
+import com.chuangyou.xianni.warfield.template.SpawnTemplateMgr;
 import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.WorldMgr;
 
 public class Player extends ActiveLiving {
 	/** 是否复活中 */
-	private volatile boolean	revivaling		= false;
+	private volatile boolean revivaling = false;
 	/**
 	 * 玩家坐骑状态 0未乘骑 1乘骑坐骑
 	 */
-	private int					mountState		= 1;
+	private int mountState = 1;
 	private List<Integer> monsterRefreshIdList = new ArrayList<Integer>();
+	private boolean flashName=false;
 
 	/** 副本buffer */
-	private List<Buffer>		campaignBuffers	= new ArrayList<>();
+	private List<Buffer> campaignBuffers = new ArrayList<>();
 
 	public Player(long playerId) {
 		super(playerId, playerId);
@@ -83,20 +92,20 @@ public class Player extends ActiveLiving {
 			DieAction die = new DieAction(this, source, 1000);
 			die.getActionQueue().enDelayQueue(die);
 
-		}
-
-		if (field != null && field.getCampaignId() > 0) {
-			Campaign campaign = CampaignMgr.getCampagin(field.getCampaignId());
-			if (campaign != null) {
-				campaign.notifyTaskEvent(CTBaseCondition.LESS_DEAD_COUNT, 1);
+			if (field != null && field.getCampaignId() > 0) {
+				Campaign campaign = CampaignMgr.getCampagin(field.getCampaignId());
+				if (campaign != null) {
+					campaign.notifyTaskEvent(CTBaseCondition.LESS_DEAD_COUNT, 1);
+				}
 			}
 		}
+
 		return true;
 	}
 
 	class DieAction extends DelayAction {
-		Living	deather;
-		Living	source;
+		Living deather;
+		Living source;
 
 		public DieAction(Living deather, Living source, int delay) {
 			super(source, delay);
@@ -116,7 +125,6 @@ public class Player extends ActiveLiving {
 				ThreadManager.actionExecutor.enDelayQueue(revival);
 				revivaling = true;
 			}
-
 
 			// System.out.println("source playerId: " + source.toString() + "
 			// source.getPkVal(): " + source.getPkVal()+"
@@ -140,10 +148,8 @@ public class Player extends ActiveLiving {
 				updateProperty(source, properties);
 			}
 
-
 			// System.out.println("source playerId: " + source.getArmyId() + "
 			// source.getPkVal(): " + source.getPkVal());
-
 
 			// 自己
 			List<PropertyMsg> properties = new ArrayList<>();
@@ -180,7 +186,6 @@ public class Player extends ActiveLiving {
 			// getPkVal());
 
 			calPKValue(source, deather);
-
 
 		}
 
@@ -274,6 +279,7 @@ public class Player extends ActiveLiving {
 		}
 
 		this.isSoulState = false;
+		this.revivaling = false;
 		this.dieTime = 0;
 		HeroPollingAction heroAction = new HeroPollingAction(this);
 		this.enDelayQueue(heroAction);
@@ -449,9 +455,49 @@ public class Player extends ActiveLiving {
 		return monsterRefreshIdList;
 	}
 
-	public void reSetMonsterRefreshIdList(List<Integer> monsterRefreshIdList) {
+	public void reSetMonsterRefreshIdList(List<Integer> monsterRefreshIdList, int curCampaign) {
+		ArrayList<Integer> date = new ArrayList<Integer>();
+		date.addAll(monsterRefreshIdList);
+
+		date.removeAll(this.monsterRefreshIdList);// 新增加的
+		Campaign campaign = CampaignMgr.getCampagin(curCampaign);
+		if (campaign != null) {
+			Field f = campaign.getEnterField(0);
+			Map<Integer, SpawnInfo> spawnInfos = SpawnTemplateMgr.getFieldSpawnInfos(f.getMapKey());
+			if (date.size() > 0) {
+				for (Entry<Integer, SpwanNode> entry : campaign.getSpwanNodes().entrySet()) {
+					entry.getValue().setDecorator(new CampaignNodeDecorator());
+				}
+			}
+			for (int i = 0; i < date.size(); i++) {
+				Integer integer = date.get(i);
+				int spwanId = SpawnTemplateMgr.getSpwanId(integer);
+				SpawnInfo sf = spawnInfos.get(spwanId);
+				if (sf == null)
+					continue;
+				if (i == date.size() - 1) {
+					sf.setCampaignFeatures(Campaign.TERMINATOR);
+				}
+				SpwanNode node = new BeadMonsterSpawnNode(sf, f);
+				f.addSpawnNode(node);
+				node.build();
+				node.stateTransition(new PerareState(node));
+				campaign.getSpwanNodes().put(node.getSpwanId(), node);
+			}
+		}
+
 		this.monsterRefreshIdList.clear();
 		this.monsterRefreshIdList.addAll(monsterRefreshIdList);
 	}
+
+	public boolean isFlashName() {
+		return flashName;
+	}
+
+	public void setFlashName(boolean flashName) {
+		this.flashName = flashName;
+	}
+
+ 
 
 }

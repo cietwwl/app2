@@ -124,7 +124,6 @@ public class Field extends AbstractActionQueue {
 		// 通知附近的玩家进入
 		Set<Long> nears = l.getNears(new PlayerSelectorHelper(l));
 
-		System.out.println("进入地图进入地图进入地图进入地图::::"+l.getId() + "getNears:" + nears.size()+" nears:"+JSONUtil.getJSONString(nears));
 
 		if (nears != null && nears.size() > 0) {
 			BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_RESP_ATT_SNAP, l.getAttSnapMsg().build());

@@ -14,7 +14,7 @@ public class DamageFactory {
 		// }
 		switch (type) {
 			case CUR_SOUL:
-				calculator = new SouDamageCalculator();
+				calculator = new SoulDamageCalculator();
 				break;
 			case CUR_BLOOD:
 				calculator = new BloodDamageCalculator();

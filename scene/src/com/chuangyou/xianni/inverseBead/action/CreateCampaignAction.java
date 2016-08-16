@@ -34,14 +34,14 @@ public class CreateCampaignAction extends Action {
 		// 不允许在副本中创建副本
 		if (curField != null && curField.getCampaignId() > 0) {
 			Log.error("--user request create campaign but is aleady in campaign. playerId : " + army.getPlayerId());
-			System.out.println("--user request create campaign but is aleady in campaign. playerId : " + army.getPlayerId());
+//			System.out.println("--user request create campaign but is aleady in campaign. playerId : " + army.getPlayerId());
 			return;
 		}
 
 		CampaignTemplateInfo temp = CampaignTempMgr.get(campaignId);
 		if (temp == null) {
 			Log.error("--playerId: " + army.getPlayerId() + " create campaign if fail ,campaignId:" + campaignId);
-			System.out.println("--playerId: " + army.getPlayerId() + " create campaign if fail ,campaignId:" + campaignId);
+//			System.out.println("--playerId: " + army.getPlayerId() + " create campaign if fail ,campaignId:" + campaignId);
 			return;
 		}
 
@@ -50,7 +50,7 @@ public class CreateCampaignAction extends Action {
 
 		campaign.start();
 		campaign.onPlayerEnter(army);
-		System.out.println("-----------campaign.onPlayerEnter(army);------------------");
+//		System.out.println("-----------campaign.onPlayerEnter(army);------------------");
 	}
 
 }

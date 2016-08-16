@@ -22,7 +22,7 @@ public class Idle extends BaseBehavior {
 
 	@Override
 	public AIState next() {
-		if (getMonster().getAiConfig().isRunAway()) {// 是否逃跑
+		if (getMonster().getAiConfig()!= null && getMonster().getAiConfig().isRunAway()) {// 是否逃跑
 			if (getMonster().getAttacker() != null)
 				return AIState.RUNAWAY;
 		}

@@ -32,6 +32,7 @@ public class SystemConfigDaoImpl extends BaseDao implements SystemConfigDao {
 					info = new SystemConfig();
 					info.setKey(rs.getString("key"));
 					info.setValue(rs.getInt("value"));
+					info.setStrValue(rs.getString("value"));
 					info.set_desc(rs.getString("_desc"));
 					infos.put(info.getKey(), info);
 				}

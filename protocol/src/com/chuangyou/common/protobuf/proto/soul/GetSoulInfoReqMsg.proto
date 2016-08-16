@@ -1,0 +1,8 @@
+//protocol=11605;
+option java_package = "com.chuangyou.common.protobuf.pb.soul";
+option java_outer_classname = "GetSoulInfoReqProto";
+
+//请求魂幡数据
+message GetSoulInfoReqMsg{
+
+}

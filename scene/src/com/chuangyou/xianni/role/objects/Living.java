@@ -74,6 +74,8 @@ public class Living extends AbstractActionQueue {
 	static final int							FIGHT_STATU		= 2;
 	/** 是否闪名 */
 	static final int							BATTLE_MODE		= 3;
+	/** 陷阱行为 */
+	static final int							ACTION_STATU	= 4;
 
 	/// livingId
 	protected long								id;
@@ -587,7 +589,7 @@ public class Living extends AbstractActionQueue {
 						speedMsg.setType(EnumAttr.MAX_BLOOD.getValue());
 						speedMsg.setTotalPoint(newMaxB);
 						properties.add(speedMsg.build());
-						addCurBlood((int) add);
+						addCurBlood((int) add, DamageEffecterType.BLOOD);
 					}
 				}
 				// 设置最大元魂
@@ -601,7 +603,7 @@ public class Living extends AbstractActionQueue {
 						speedMsg.setType(EnumAttr.MAX_SOUL.getValue());
 						speedMsg.setTotalPoint(newMaxS);
 						properties.add(speedMsg.build());
-						addCurSoul((int) add);
+						addCurSoul((int) add, DamageEffecterType.SOUL);
 					}
 				}
 			}
@@ -643,7 +645,6 @@ public class Living extends AbstractActionQueue {
 		clearWorkBuffer();
 		// sendChangeStatuMsg(LIVING, livingState);死亡状态不推，客户端自己判断
 		dieTime = System.currentTimeMillis();
-		System.err.println("living :" + this.armyId + " is die");
 		return true;
 	}
 
@@ -1268,8 +1269,10 @@ public class Living extends AbstractActionQueue {
 
 	/** 脱离战斗 */
 	public void leaveFight() {
-		if (this.getType() == RoleType.player)
+		if (this.getType() == RoleType.player){
 			changeFlickerName(false);
+			((Player)this).setFlashName(false);
+		}
 
 		if (!fightState) {
 			return;
@@ -1464,7 +1467,7 @@ public class Living extends AbstractActionQueue {
 		return true;
 	}
 
-	private void addLivingState(int stateId) {
+	protected void addLivingState(int stateId) {
 		LivingStatusTemplateInfo temp = BattleTempMgr.getLSInfo(stateId);
 		// 模板不存在
 		if (temp == null) {
@@ -1481,7 +1484,7 @@ public class Living extends AbstractActionQueue {
 		}
 	}
 
-	private void removeLivingState(int stateId) {
+	protected void removeLivingState(int stateId) {
 		LivingStatusTemplateInfo temp = BattleTempMgr.getLSInfo(stateId);
 		// 模板不存在
 		if (temp == null) {
@@ -1612,14 +1615,14 @@ public class Living extends AbstractActionQueue {
 		}
 	}
 
-	public void addCurBlood(int addValue) {
+	public void addCurBlood(int addValue, int type) {
 		List<Damage> damages = new ArrayList<>();
 
 		Damage blood = new Damage(this, this);
 		blood.setDamageType(EnumAttr.CUR_BLOOD.getValue());
 		blood.setDamageValue(-addValue);
 		blood.setSource(this);
-		blood.setCalcType(DamageEffecterType.BLOOD);
+		blood.setCalcType(type);
 		damages.add(blood);
 		takeDamage(blood);
 
@@ -1642,13 +1645,13 @@ public class Living extends AbstractActionQueue {
 		}
 	}
 
-	public void addCurSoul(int addValue) {
+	public void addCurSoul(int addValue, int type) {
 		List<Damage> damages = new ArrayList<>();
 
 		Damage soul = new Damage(this, this);
 		soul.setDamageType(EnumAttr.CUR_SOUL.getValue());
 		soul.setDamageValue(-addValue);
-		soul.setCalcType(DamageEffecterType.SOUL);
+		soul.setCalcType(type);
 		soul.setSource(this);
 		damages.add(soul);
 		takeDamage(soul);
@@ -1668,7 +1671,6 @@ public class Living extends AbstractActionQueue {
 			PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
 			if (army != null) {
 				army.sendPbMessage(message);
-				System.out.println(damagesPb.build());
 			}
 		}
 	}
@@ -1691,9 +1693,9 @@ public class Living extends AbstractActionQueue {
 
 	private int getInitValue(EnumAttr type) {
 		switch (type) {
-			case MAX_BLOOD:
+			case BLOOD:
 				return initBlood;
-			case MAX_SOUL:
+			case SOUL:
 				return initSoul;
 			case ATTACK:
 				return initAttack;
@@ -2091,5 +2093,19 @@ public class Living extends AbstractActionQueue {
 
 	public boolean isClear() {
 		return false;
+	}
+
+	public void clearData() {
+		field = null;
+		node = null;
+		cachBattleInfoPacket = null;
+		cacheAttSnapPacker = null;
+		drivingSkills.clear();
+		mapSkill.clear();
+		permanentBuffer.clear();
+		workBuffers.clear();
+		allBuffers.clear();
+		livingStatus.clear();
+		cooldowns.clear();
 	}
 }

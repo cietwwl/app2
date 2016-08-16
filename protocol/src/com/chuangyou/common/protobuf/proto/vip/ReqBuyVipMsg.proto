@@ -4,5 +4,7 @@ option java_outer_classname = "ReqBuyVipMsgProto";
 
 //购买vip
 message ReqBuyVipMsg {
-	required int32 VipId = 1; 
+	required int32 VipId = 1; //要购买的vip id
+	required int64 playerId=2;  //购买者玩家id
+	optional int64 handselPlayerId=3;//被赠送者玩家id 不填写为自己购买
 }

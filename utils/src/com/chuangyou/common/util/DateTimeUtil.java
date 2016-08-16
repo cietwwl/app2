@@ -53,20 +53,15 @@ public class DateTimeUtil {
 	 * @return
 	 */
 	public static boolean isSameWeekWithToday(Date date, Date date2) {
-		if (date == null || date2 == null) {
+		if (date == null || date2 == null)
 			return false;
-		}
 		// 0.先把Date类型的对象转换Calendar类型的对象
-		Calendar todayCal = Calendar.getInstance();
 		Calendar dateCal = Calendar.getInstance();
-		todayCal.setTime(new Date());
+		Calendar date2Cal = Calendar.getInstance();
 		dateCal.setTime(date);
+		date2Cal.setTime(date2);
 		// 1.比较当前日期在年份中的周数是否相同
-		if (todayCal.get(Calendar.WEEK_OF_YEAR) == dateCal.get(Calendar.WEEK_OF_YEAR)) {
-			return true;
-		} else {
-			return false;
-		}
+		return date2Cal.get(Calendar.WEEK_OF_YEAR) == dateCal.get(Calendar.WEEK_OF_YEAR);
 	}
 
 }

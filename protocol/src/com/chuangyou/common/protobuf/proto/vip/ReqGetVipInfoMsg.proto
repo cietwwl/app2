@@ -1,0 +1,8 @@
+//protocol= 10710;
+option java_package = "com.chuangyou.common.protobuf.pb.vip";
+option java_outer_classname = "ReqGetVipInfoMsgProto";
+
+//获取vip信息
+message ReqGetVipInfoMsg {
+	 
+}

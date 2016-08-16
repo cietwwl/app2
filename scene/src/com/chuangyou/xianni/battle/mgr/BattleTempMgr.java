@@ -9,6 +9,7 @@ import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillActionMoveTempleteInfo;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
+import com.chuangyou.xianni.entity.skill.SnareTemplateInfo;
 import com.chuangyou.xianni.sql.dao.DBManager;
 import com.chuangyou.xianni.sql.dao.LivingStatusTemplateInfoDao;
 
@@ -22,6 +23,8 @@ public class BattleTempMgr {
 	private static Map<Integer, SkillTempateInfo>				skillTemps			= new HashMap<Integer, SkillTempateInfo>();
 
 	private static Map<Integer, LivingStatusTemplateInfo>		livingStatusTemps	= new HashMap<Integer, LivingStatusTemplateInfo>();
+
+	private static Map<Integer, SnareTemplateInfo>				snareInfoTemps		= new HashMap<Integer, SnareTemplateInfo>();
 
 	public static boolean init() {
 		reloadPb();
@@ -51,10 +54,18 @@ public class BattleTempMgr {
 				skillTemps.put(stemp.getTemplateId(), stemp);
 			}
 		}
+		// 人物状态模板
 		List<LivingStatusTemplateInfo> lstemps = DBManager.getLivingStatusTemplateInfoDao().getAll();
 		if (lstemps != null && lstemps.size() > 0) {
 			for (LivingStatusTemplateInfo lsinfo : lstemps) {
 				livingStatusTemps.put(lsinfo.getId(), lsinfo);
+			}
+		}
+		// 加载陷阱
+		List<SnareTemplateInfo> stinfos = DBManager.getSnareTemplateInfoDao().load();
+		if (stinfos != null && stinfos.size() > 0) {
+			for (SnareTemplateInfo temp : stinfos) {
+				snareInfoTemps.put(temp.getTemplateId(), temp);
 			}
 		}
 		return true;
@@ -95,4 +106,10 @@ public class BattleTempMgr {
 		return null;
 	}
 
+	public static SnareTemplateInfo getSnareTemp(int templateId) {
+		if (snareInfoTemps.containsKey(templateId)) {
+			return snareInfoTemps.get(templateId);
+		}
+		return null;
+	}
 }

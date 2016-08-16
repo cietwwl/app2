@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
+import com.chuangyou.xianni.battle.damage.effect.DamageEffecterType;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -36,12 +37,12 @@ public class PlayerAttUpdateCmd extends AbstractCommand {
 		// 升级直接满血
 		for (PropertyMsg property : attList) {
 			if (property.getType() == EnumAttr.Level.getValue()) {
-				pArmy.getPlayer().addCurBlood(Integer.MAX_VALUE);
-				pArmy.getPlayer().addCurSoul(Integer.MAX_VALUE);
+				pArmy.getPlayer().addCurBlood(Integer.MAX_VALUE, DamageEffecterType.BLOOD);
+				pArmy.getPlayer().addCurSoul(Integer.MAX_VALUE, DamageEffecterType.SOUL);
 				break;
 			}
 		}
-		
+
 		// 读取属性
 		pArmy.getPlayer().getSimpleInfo().readProperty(attList);
 

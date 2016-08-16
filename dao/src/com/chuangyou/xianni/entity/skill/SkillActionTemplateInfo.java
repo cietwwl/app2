@@ -2,39 +2,41 @@ package com.chuangyou.xianni.entity.skill;
 
 /** 执行技能模板 */
 public class SkillActionTemplateInfo {
-	private int templateId; // 模板ID
-	private int masterType; // 主类型
-	private int sonType; // 子类型
-	private int useWay; // 使用方式 1 主动 2 默认 3 条件触发 等等
-	private int selectorType; // 扇形？矩阵
-	private int selectorTarget; // 目标选择器 全体||N个
-	private int selectorCount; // 搜索个数
-	private int selectorLength; // 搜索距离（半径或者边长）
-	private int selectorAngle; // 搜索角度
-	private int move;			//
-	
-	private int selector; // 目标选择器：1 随机敌人 2 敌方全体等
-	private int attackTimes; // 攻击次数
-	private int costType; // 使用消耗类型 0 无消耗，1 魂 2 血等
-	private int costCount; // 消耗数量
-	private int attackType; // 攻击类型
-	private int paramValue1; // 攻击参数（固定数值）气血
-	private int paramValue2; // 攻击参数（固定数值）元魂		
-	private int paramValue3; // 攻击参数
-	private int paramParent1; // 攻击参数(百分比) 气血
-	private int paramParent2; // 攻击参数(百分比) 元魂
-	private int paramParent3; // 攻击参数(百分比)
-	private String bufferIds; // 攻击产生bufferId集
-	private int random; // 技能随机数
-	private int isCrit; // 是否参与暴击计算
-	private int priority; // 技能优先级 （当同等满足条件时，有限级高技能先释放）
-	private int costTime; // 技能释放时间（时间内，不再接受攻击指令）
-	private int cooldown; // cd时间
-	private int combo; // 连击
-	private int maxCombo; // 最大连接数
-	private int animation; // 动作
+	private int		templateId;		// 模板ID
+	private int		masterType;		// 主类型
+	private int		sonType;		// 子类型
+	private int		useWay;			// 使用方式 1 主动 2 默认 3 条件触发 等等
+	private int		selectorType;	// 扇形？矩阵
+	private int		selectorTarget;	// 目标选择器 全体||N个
+	private int		selectorCount;	// 搜索个数
+	private int		selectorLength;	// 搜索距离（半径或者边长）
+	private int		selectorAngle;	// 搜索角度
+	private int		move;			//
 
-	private int[] bufferIdArr; // buffer数组
+	private int		selector;		// 目标选择器：1 随机敌人 2 敌方全体等
+	private int		attackTimes;	// 攻击次数
+	private int		costType;		// 使用消耗类型 0 无消耗，1 魂 2 血等
+	private int		costCount;		// 消耗数量
+	private int		attackType;		// 攻击类型
+	private int		paramValue1;	// 攻击参数（固定数值）气血
+	private int		paramValue2;	// 攻击参数（固定数值）元魂
+	private int		paramValue3;	// 攻击参数
+	private int		paramParent1;	// 攻击参数(百分比) 气血
+	private int		paramParent2;	// 攻击参数(百分比) 元魂
+	private int		paramParent3;	// 攻击参数(百分比)
+	private String	bufferIds;		// 攻击产生bufferId集
+	private String	snareIds;		// 攻击产生陷阱集
+	private int		random;			// 技能随机数
+	private int		isCrit;			// 是否参与暴击计算
+	private int		priority;		// 技能优先级 （当同等满足条件时，有限级高技能先释放）
+	private int		costTime;		// 技能释放时间（时间内，不再接受攻击指令）
+	private int		cooldown;		// cd时间
+	private int		combo;			// 连击
+	private int		maxCombo;		// 最大连接数
+	private int		animation;		// 动作
+
+	private int[]	bufferIdArr;	// buffer数组
+	private int[]	snareIdArr;		// 陷阱数组
 
 	public int getTemplateId() {
 		return templateId;
@@ -291,6 +293,31 @@ public class SkillActionTemplateInfo {
 
 	public void setMove(int move) {
 		this.move = move;
+	}
+
+	public String getSnareIds() {
+		return snareIds;
+	}
+
+	public void setSnareIds(String snareIds) {
+		this.snareIds = snareIds;
+		if (snareIds != null && !snareIds.equals("")) {
+			String[] sids = snareIds.split(",");
+			snareIdArr = new int[sids.length];
+			for (int i = 0; i < sids.length; i++) {
+				if (sids[i].isEmpty())
+					continue;
+				snareIdArr[i] = Integer.valueOf(sids[i]);
+			}
+		}
+	}
+
+	public int[] getSnareIdArr() {
+		return snareIdArr;
+	}
+
+	public void setSnareIdArr(int[] snareIdArr) {
+		this.snareIdArr = snareIdArr;
 	}
 
 }

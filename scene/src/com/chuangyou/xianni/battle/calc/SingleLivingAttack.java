@@ -6,7 +6,7 @@ import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.battle.AttackOrder;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.damage.DamageCalculator;
-import com.chuangyou.xianni.battle.damage.SouDamageCalculator;
+import com.chuangyou.xianni.battle.damage.SoulDamageCalculator;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
 import com.chuangyou.xianni.role.objects.Living;
@@ -103,7 +103,8 @@ public class SingleLivingAttack extends AbstractSkillCalc {
 
 		for (int i = 0; i < time; i++) {
 			Damage bloodDamage = new Damage(target, source);
-			bloodDamage.setSkillId(attackOrder.getSkill().getSkillId());
+			bloodDamage.setFromType(Damage.SKILL);
+			bloodDamage.setFromId(attackOrder.getSkill().getSkillId());
 			bloodDamage.setDamageType(EnumAttr.CUR_BLOOD.getValue());
 			bloodDamage.setDamageValue(bloodDamageValue);
 			bloodDamage.setTipType(tipType);
@@ -111,7 +112,8 @@ public class SingleLivingAttack extends AbstractSkillCalc {
 			attackResult.add(bloodDamage);
 
 			Damage soulDamage = new Damage(target, source);
-			soulDamage.setSkillId(attackOrder.getSkill().getSkillId());
+			bloodDamage.setFromType(Damage.SKILL);
+			soulDamage.setFromId(attackOrder.getSkill().getSkillId());
 			soulDamage.setDamageType(EnumAttr.CUR_SOUL.getValue());
 			soulDamage.setDamageValue(soulDamageValue);
 			soulDamage.setTipType(tipType);

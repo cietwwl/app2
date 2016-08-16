@@ -9,7 +9,7 @@ import com.chuangyou.xianni.bag.BagInventory;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.campaign.CampaignInventory;
 import com.chuangyou.xianni.equip.EquipInventory;
-import com.chuangyou.xianni.exec.CmdTask;
+import com.chuangyou.xianni.friend.logic.FriendLogic;
 import com.chuangyou.xianni.inverseBead.manager.InverseBeadManager;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerInfoSendCmd;
@@ -20,6 +20,7 @@ import com.chuangyou.xianni.shop.logic.GetMaillInfoLogic;
 import com.chuangyou.xianni.socket.Cmd;
 import com.chuangyou.xianni.task.logic.GetTaskLogic;
 import com.chuangyou.xianni.team.reaction.GetTeamInfoAction;
+import com.chuangyou.xianni.vip.manager.VipManager;
 
 /**
  * <pre>
@@ -28,15 +29,17 @@ import com.chuangyou.xianni.team.reaction.GetTeamInfoAction;
  */
 @Cmd(code = Protocol.C_PLAYER_DATA, desc = "登录加载")
 public class LoginLoadCmd extends AbstractCommand {
-	static final int	SYS			= 1;
-	static final int	USER		= 2;
-	static final int	ARMY		= 3;
-	static final int	BAG			= 4;
-	static final int	TASK		= 5;
-	static final int	CAMPAIGN	= 6;
-	static final int	TEAM		= 7;
-	static final int	SHOP		= 8;
-	static final int	EQUIP		= 9;
+	static final int SYS = 1;
+	static final int USER = 2;
+	static final int ARMY = 3;
+	static final int BAG = 4;
+	static final int TASK = 5;
+	static final int CAMPAIGN = 6;
+	static final int TEAM = 7;
+	static final int SHOP = 8;
+	static final int EQUIP = 9;
+	static final int FRIEND = 10;
+	static final int VIP = 11;
 
 	@Override
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
@@ -97,7 +100,8 @@ public class LoginLoadCmd extends AbstractCommand {
 			}
 
 			// 加载好友列表
-			if (dataType.getDataType() == SYS) {
+			if (dataType.getDataType() == FRIEND) {
+				new FriendLogic().doGetFirends(player);
 			}
 
 			// 装备栏位信息
@@ -107,6 +111,9 @@ public class LoginLoadCmd extends AbstractCommand {
 					equipInventory.updateAllInfo();
 				}
 			}
+			if (dataType.getDataType() == VIP) {
+				VipManager.getVipInfo(player);
+			}
 
 		} catch (Exception e) {
 			Log.error("发送用户数据 失败,nickname " + "nickname" + ", userId " + player.getPlayerId(), e);
@@ -115,7 +122,7 @@ public class LoginLoadCmd extends AbstractCommand {
 			builder.setLoadDataType(dataType.getDataType());
 			PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DATA_LOAD_STATU, builder);
 			player.sendPbMessage(message);
-			
+
 			InverseBeadManager.syncSpawn(player);
 		}
 	}

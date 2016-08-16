@@ -42,6 +42,7 @@ public class ReqGetInverseBead extends AbstractCommand {
 		PlayerBeadTimeInfo playerTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
 		String beadRefreshId = playerTimeInfo.getBeadRefreshId();
 		List<Integer> list = InverseBeadManager.getBeadRefreshId(beadRefreshId);
+//		System.out.println(list);
 		msg.setMonsterNum(list.size());
 		msg.setAuraNum(playerTimeInfo.getAuraNum());
 		if (playerTimeInfo.getBeadRefreshDateTime() != null)

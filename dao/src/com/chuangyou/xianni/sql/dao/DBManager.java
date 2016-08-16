@@ -50,6 +50,8 @@ import com.chuangyou.xianni.sql.dao.impl.SkillBufferTemplateInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SkillPropertyTemplateInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SkillStageDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SkillTempateInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.SnareTemplateInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.SoulDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SpaceDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SpawnInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SystemConfigDaoImpl;
@@ -529,6 +531,7 @@ public class DBManager {
 		return campaignTaskTemplateInfoDao;
 	}
 
+
 	/**
 	 * vip 模板数据
 	 */
@@ -557,20 +560,29 @@ public class DBManager {
 	 * 装备模板数据
 	 */
 	private static final EquipConfigDao equipConfigDao = new EquipConfigDaoImpl();
-	
-	public static EquipConfigDao getEquipConfigDao(){
+
+	public static EquipConfigDao getEquipConfigDao() {
 		return equipConfigDao;
 	}
-	
+
 	/**
 	 * 装备栏信息数据
 	 */
 	private static final EquipBarInfoDao equipBarInfoDao = new EquipBarInfoDaoImpl();
-	
-	public static EquipBarInfoDao getEquipBarInfoDao(){
+
+	public static EquipBarInfoDao getEquipBarInfoDao() {
 		return equipBarInfoDao;
 	}
 
+
+	/**
+	 * 魂幡
+	 */
+	private static final SoulDao soulDao = new SoulDaoImpl();
+	public static SoulDao getSoulDao(){
+		return soulDao;
+	}
+	
 
 	/**
 	 * 副本记录
@@ -581,4 +593,12 @@ public class DBManager {
 		return limitlessCampaignRecordInfoDao;
 	}
 
+	/**
+	 * 陷阱模板
+	 */
+	private static final SnareTemplateInfoDao snareTemplateInfoDao = new SnareTemplateInfoDaoImpl();
+
+	public static SnareTemplateInfoDao getSnareTemplateInfoDao() {
+		return snareTemplateInfoDao;
+	}
 }

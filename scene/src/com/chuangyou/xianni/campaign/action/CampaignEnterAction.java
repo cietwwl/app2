@@ -111,6 +111,7 @@ public class CampaignEnterAction extends Action {
 		// 告诉center服务器，更新副本状态
 		CampaignStatuMsg.Builder cstatu = CampaignStatuMsg.newBuilder();
 		cstatu.setIndexId(campaign.getIndexId());
+		cstatu.setTempId(campaign.getTemp().getTemplateId());
 		cstatu.setStatu(CampaignStatu.NOTITY2C_IN);// 进入
 		PBMessage statuMsg = MessageUtil.buildMessage(Protocol.C_CAMPAIGN_STATU, cstatu);
 		army.sendPbMessage(statuMsg);

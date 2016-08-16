@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.chuangyou.common.protobuf.pb.inverseBead.RefreshInverseBeadMsgProto.RefreshInverseBeadMsg;
 import com.chuangyou.common.protobuf.pb.inverseBead.SyncMonsterPoolMsgProto.SyncMonsterPoolMsg;
+import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.xianni.army.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
@@ -58,6 +59,9 @@ public class InverseBeadLoopAction extends LoopAction {
 			if (lastTime < 0)
 				lastTime = 0;
 			SpawnInfo tem = InverseBeadTemMgr.getSpwanId(playerTimeInfo.getCurrRefreshId());
+			if(tem == null){
+				return;
+			}
 			MonsterInfo monsterInfo = MonsterInfoTemplateMgr.get(tem.getEntityId());
 			msg.setMonsterLv(monsterInfo.getLevel());
 			msg.setLastTime((int) Math.ceil(lastTime));
@@ -108,9 +112,9 @@ public class InverseBeadLoopAction extends LoopAction {
 				intervalTime = getIntervalTime();
 				int curr = playerTimeInfo.getCurrRefreshId();
 				SpawnInfo tem = InverseBeadTemMgr.getSpwanId(curr);
-
 				if (tem == null) {
-					System.err.println("配置丢失。。。。。。。");
+//					System.err.println("配置丢失。。。。。。。");
+					Log.error("缺少配置。Spwan："+curr);
 					break;
 				}
 				int[] nextIds = tem.getNextSpawanIdAttr();
@@ -137,6 +141,7 @@ public class InverseBeadLoopAction extends LoopAction {
 		if (need2s) {
 			SyncMonsterPoolMsg.Builder msg = SyncMonsterPoolMsg.newBuilder();
 			msg.addAllMonsterRefreshId(this.list);
+			msg.setCurCampaign(player.getCurCampaign());
 			PBMessage c2s = MessageUtil.buildMessage(Protocol.S_CREATE_INVERSE_SYNC_MONSTER, msg);
 			player.sendPbMessage(c2s);
 		}

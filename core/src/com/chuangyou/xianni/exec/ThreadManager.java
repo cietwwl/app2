@@ -29,4 +29,14 @@ public class ThreadManager {
 		int cacheSize = 64;
 		cmdExecutor = new CmdExecutor(corePoolSize, maxPoolSize, keepAliveTime, cacheSize, "WORD_CMD_TASK_EXECUTOR");
 	}
+
+	// 执行战斗线程池
+	public static ActionExecutor battleExecutor;
+	static {
+		int corePoolSize = 8;
+		int maxPoolSize = 32;
+		int keepAliveTime = 5;
+		int cacheSize = 64;
+		battleExecutor = new ActionExecutor(corePoolSize, maxPoolSize, keepAliveTime, cacheSize, "WORD_BATTLE_EXECUTOR");
+	}
 }

@@ -46,7 +46,7 @@ public class FieldPollingAction extends DelayAction {
 
 	/** 清理死亡对象 */
 	private void clearDeathLiving() {
-		if (clearTime <= 30) { // 每30秒清理一次
+		if (clearTime <= 5) { // 每10秒清理一次
 			clearTime++;
 			return;
 		}
@@ -58,7 +58,7 @@ public class FieldPollingAction extends DelayAction {
 				field.removeDeath(death);
 			}
 		}
-		
+
 	}
 
 	/**

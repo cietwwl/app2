@@ -28,6 +28,9 @@ function doScript(playerId,id){
 	case 1009405:
 		addItem(playerId,8100006,2,1)
 		break;
+	case 1014402:
+		addItem(playerId,8100007,1,1)
+		break;	
 	}
 }
 

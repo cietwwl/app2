@@ -12,4 +12,9 @@ public class LevelUpType {
 	 * 10-17装备栏位升级占用
 	 */
 	public static final byte EQUIPBARSTART = 10;
+	
+	/**
+	 * 魂幡
+	 */
+	public static final byte SOUL = 21;
 }

@@ -39,7 +39,7 @@ public class FieldInfoDaoImpl extends BaseDao implements FieldInfoDao {
 				rs = pstmt.executeQuery();
 				while (rs.next()) {
 					info = new FieldInfo();
-					info.setMapKey(rs.getShort("mapKey"));
+					info.setMapKey(rs.getInt("mapKey"));
 					info.setName(rs.getString("name"));
 					info.setType(rs.getByte("type"));
 					info.setDesc(rs.getString("_desc"));

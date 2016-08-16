@@ -1,0 +1,15 @@
+option java_package = "com.chuangyou.common.protobuf.pb.soul";
+option java_outer_classname = "CardInfoProto";
+
+message CardInfoMsg{
+	required int32 cardId = 1;//` int(11) NOT NULL DEFAULT '0' COMMENT 'cardId',
+	required int32 star=2;//` int(11) NOT NULL DEFAULT '0' COMMENT '星级',
+	required int64 exp=3;//` bigint(20) NOT NULL DEFAULT '0' COMMENT '仙阶经验值',
+	required int32 lv = 4;//等级
+	required int32 skill1=5;//` int(11) NOT NULL DEFAULT '0' COMMENT '技能',
+	required int32 skill2=6;//` int(11) NOT NULL DEFAULT '0' COMMENT '技能',
+	required int32 skill3=7;//` int(11) NOT NULL DEFAULT '0' COMMENT '技能',
+	required int32 skill4=8;//` int(11) NOT NULL DEFAULT '0' COMMENT '技能',
+	required int32 isPutOn=9;//0：未穿上 1：穿上
+	required int32 remainTime = 10;//技能洗炼剩余次数
+}

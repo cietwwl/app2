@@ -7,7 +7,7 @@ import com.chuangyou.xianni.role.objects.Monster;
 public class MonsterPollingAction extends PollingAction {
 	private MonsterAI				ai;
 	private UpdatePositionAction	upPos;
-	static int						delay	= 200;
+	static int						delay	= 500;
 
 	public MonsterPollingAction(Monster monster, MonsterAI ai, UpdatePositionAction upPos) {
 		super(monster, delay);
@@ -17,7 +17,9 @@ public class MonsterPollingAction extends PollingAction {
 
 	@Override
 	public void exec() {
+	
 		ai.exe();
+
 		upPos.exe();
 	}
 

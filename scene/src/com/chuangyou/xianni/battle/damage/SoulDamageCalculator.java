@@ -5,7 +5,7 @@ import com.chuangyou.xianni.role.objects.Living;
 /**
  * 魂攻伤害 计算公式： max（魂攻-对方魂防*1.2，0）*random（0.7,1.3）
  */
-public class SouDamageCalculator implements DamageCalculator {
+public class SoulDamageCalculator implements DamageCalculator {
 
 	@Override
 	public int calcDamage(Living source, Living target, int percent, int value) {
@@ -21,7 +21,6 @@ public class SouDamageCalculator implements DamageCalculator {
 		int damageValue = (int) (Math.max(soulAttack - soulDeffence * 1.2, 0) * random.next(70, 130) / 100);
 		damageValue = damageValue * percent / 10000 + value;
 		return damageValue;
-
 	}
 
 }

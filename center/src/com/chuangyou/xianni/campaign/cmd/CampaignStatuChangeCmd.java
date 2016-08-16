@@ -55,7 +55,7 @@ public class CampaignStatuChangeCmd extends AbstractCommand {
 	}
 
 	private void billingTask(GamePlayer player, int campaignId, int taskId) {
-		if (taskId != 0 && player.getCampaignInventory() != null) {
+		if (player.getCampaignInventory() != null) {
 			player.getCampaignInventory().billingTask(campaignId, taskId);
 		}
 	}

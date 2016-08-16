@@ -33,6 +33,7 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.script.manager.ScriptManager;
 import com.chuangyou.xianni.shop.template.ShopTemplateMgr;
 import com.chuangyou.xianni.skill.template.SkillTempMgr;
+import com.chuangyou.xianni.soul.template.SoulTemplateMgr;
 import com.chuangyou.xianni.sql.dao.CampaignTaskTemplateInfoDao;
 import com.chuangyou.xianni.sql.dao.impl.VipTemDaoImpl;
 import com.chuangyou.xianni.sql.db.pool.DBPoolMgr;
@@ -169,6 +170,11 @@ public class CenterServer extends BaseServer {
 
 			return false;
 		}
+		
+		if (!initComponent(SoulTemplateMgr.init(), "初始化魂幡模板数据")) {
+			return false;
+		}
+		
 		if (!initComponent(VipTemplateMgr.init(), "初始化vip模板数据")) {
 			return false;
 		}

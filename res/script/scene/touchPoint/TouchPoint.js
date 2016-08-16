@@ -39,6 +39,14 @@ function action(playerId, npcType) {
 		case 1009307:
 			changeMap(playerId,1008,5800,-4.8,5099);
 			break;	
+		//域外战场->决明谷
+		case 1014301:
+			changeMap(playerId,1009,6835,-117,8186);
+			break;		
+		//决明谷->域外战场
+		case 1009303:
+			changeMap(playerId,1014,219,390,1674);
+			break;	
 		/*case 91001:
 			//createCampaign(playerId, 1);
 			changeMap(playerId, 4001, 1670, 1, -1570);

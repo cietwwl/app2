@@ -83,6 +83,9 @@ public class FriendInventory extends AbstractEvent implements IInventory{
 	public Friend getFriend() {
 		return friend;
 	}
+	
+	
+	
 
 	
 

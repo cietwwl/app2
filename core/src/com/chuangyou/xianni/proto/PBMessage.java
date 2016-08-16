@@ -92,6 +92,7 @@ public class PBMessage implements Serializable {
 		out.writeShortLE((short) len);
 		out.writeShortLE(code);
 		out.writeLongLE(playerId);
+//		System.out.println("--------code: "+code+" len: "+len);
 	}
 
 	/**

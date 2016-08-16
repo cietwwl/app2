@@ -21,34 +21,38 @@ public class BeadMonsterSpawnNode extends MonsterSpawnNode { // 刷怪模板
 		if (field != null) {
 			children.remove(living.getId());
 			field.addDeathLiving(living);
+			curCount--;
 			if (isOver()) {
 				stateTransition(new OverState(this));
 				Campaign campaign = CampaignMgr.getCampagin(campaignId);
 				if (campaign != null) {
-					// ((InverseBeadCampaign) campaign).add(this.spwanInfo.getTagId());
+					// ((InverseBeadCampaign)
+					// campaign).add(this.spwanInfo.getTagId());
 
 					SyncMonsterPoolMsg.Builder msg = SyncMonsterPoolMsg.newBuilder();
 					msg.addMonsterRefreshId(this.spwanInfo.getTagId());
 					PBMessage pbm = MessageUtil.buildMessage(Protocol.C_INVERSE_MONSTER_SPAWN, msg);
 					for (ArmyProxy army : campaign.getAllArmys()) {
 						army.sendPbMessage(pbm);
-						army.getPlayer().getMonsterRefreshIdList().remove(this.spwanInfo.getTagId());
+						army.getPlayer().getMonsterRefreshIdList().remove(Integer.valueOf(this.spwanInfo.getTagId()));
 						break;
 					}
 				}
 			} else {
-				if (spwanInfo.getToalCount() == 0 || toalCount < spwanInfo.getToalCount()) {
+				if ((spwanInfo.getToalCount() == 0 || toalCount < spwanInfo.getToalCount()) && curCount < spwanInfo.getMaxCount()) {
+					curCount++;
 					field.enDelayQueue(new CreateChildAction());
 				}
 			}
 		}
 	}
-	
+
 	@Override
 	public void start() {
-//		super.start();
+		// super.start();
 		System.err.println("---------------创建怪物  spwanInfo :" + spwanInfo.getId());
 		while (curCount < spwanInfo.getMaxCount() && (toalCount < spwanInfo.getToalCount() || spwanInfo.getToalCount() <= 0)) {
+			curCount++;
 			createChildren();
 		}
 	}

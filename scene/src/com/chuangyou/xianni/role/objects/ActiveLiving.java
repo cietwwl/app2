@@ -1,8 +1,8 @@
 package com.chuangyou.xianni.role.objects;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import com.chuangyou.common.protobuf.pb.PlayerMoveBoardcastProto.PlayerMoveBoardcastMsg;
 import com.chuangyou.common.protobuf.pb.PlayerStopBoardcastProto.PlayerStopBoardcastMsg;
 import com.chuangyou.common.util.Log;
@@ -13,8 +13,6 @@ import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.warfield.FieldMgr;
-import com.chuangyou.xianni.warfield.helper.selectors.AllSelectorHelper;
-import com.chuangyou.xianni.warfield.helper.selectors.MonsterSelectorHelper;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.navi.NavigationManager;
 import com.chuangyou.xianni.warfield.navi.exector.NavigationTask;
@@ -27,14 +25,16 @@ import com.chuangyou.xianni.world.WorldMgr;
 public class ActiveLiving extends Living {
 
 	/// 目标
-	protected Vector3 goal;
+	protected Vector3		goal;
 	/// 路径
-	protected List<Vector3> path;
+	protected List<Vector3>	path;
 	/// 移动所需要的时间
-	protected int moveTime;
+	protected int			moveTime;
 	/// 寻路等待中
-	protected boolean navWaiting = false;
-	private boolean navFail = false;
+	protected boolean		navWaiting	= false;
+	private boolean			navFail		= false;
+
+	protected List<Snare>	snares		= new ArrayList<>();
 
 	public boolean isNavFail() {
 		return navFail;
@@ -228,6 +228,42 @@ public class ActiveLiving extends Living {
 		}
 		return false;
 
+	}
+
+	public boolean onDie(Living killer) {
+		if (super.onDie(killer)) {
+			clearSnare();
+			return true;
+		}
+		return false;
+	}
+
+	public void addSnare(Snare snare) {
+		synchronized (snares) {
+			snares.add(snare);
+		}
+	}
+
+	public void removeSnare(Snare snare) {
+		synchronized (snares) {
+			snares.remove(snare);
+		}
+	}
+
+	public void clearSnare() {
+		List<Snare> temp = new ArrayList<>();
+		synchronized (snares) {
+			temp.addAll(snares);
+		}
+		for (Snare snare : temp) {
+			snare.onDie(this);
+		}
+		snares.clear();
+	}
+
+	public void clearData() {
+		super.clearData();
+		clearSnare();
 	}
 
 }

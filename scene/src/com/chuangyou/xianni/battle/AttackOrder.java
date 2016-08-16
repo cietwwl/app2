@@ -3,10 +3,11 @@ package com.chuangyou.xianni.battle;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
 import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
 import com.chuangyou.common.protobuf.pb.battle.AttackBroadcastMsgProto.AttackBroadcastMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
+import com.chuangyou.common.util.AccessTextFile;
+import com.chuangyou.common.util.JSONUtil;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.battle.buffer.Buffer;
@@ -68,13 +69,13 @@ public class AttackOrder {
 		}
 		if (targets == null || targets.size() == 0) {
 			// 没有目标，只广播动作
-			//Log.error("attackId :" + this.attackId);
+			// Log.error("attackId :" + this.attackId);
 			sendDamages();
 			return false;
 		}
 		// 如果玩家已死亡，但使用了死亡可用的技能可以继续执行
 		if (source.isDie()) {
-			Log.error("sourcesource: "+source);
+			Log.error("sourcesource: " + source);
 			isAttack = false;
 			return false;
 		}
@@ -131,12 +132,13 @@ public class AttackOrder {
 		}
 		// Log.error("----发送给客户端伤害包-------" + attackBroMsg.build());
 		BroadcastUtil.sendBroadcastPacket(players, Protocol.U_G_ATTACK_SKILL, attackBroMsg.build());
+		AccessTextFile.saveRecord(JSONUtil.getJSONString(players) + "---" + attackBroMsg.toString());
 	}
 
 	/** 再次判断该技能是否能释放执行 */
 	private boolean canAction() {
 		if (skill == null) {
-			System.out.println("技能is null");
+			System.err.println("技能is null");
 			return false;
 		}
 

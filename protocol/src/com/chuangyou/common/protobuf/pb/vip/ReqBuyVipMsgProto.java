@@ -14,12 +14,54 @@ public final class ReqBuyVipMsgProto {
 
     /**
      * <code>required int32 VipId = 1;</code>
+     *
+     * <pre>
+     *要购买的vip id
+     * </pre>
      */
     boolean hasVipId();
     /**
      * <code>required int32 VipId = 1;</code>
+     *
+     * <pre>
+     *要购买的vip id
+     * </pre>
      */
     int getVipId();
+
+    /**
+     * <code>required int64 playerId = 2;</code>
+     *
+     * <pre>
+     *购买者玩家id
+     * </pre>
+     */
+    boolean hasPlayerId();
+    /**
+     * <code>required int64 playerId = 2;</code>
+     *
+     * <pre>
+     *购买者玩家id
+     * </pre>
+     */
+    long getPlayerId();
+
+    /**
+     * <code>optional int64 handselPlayerId = 3;</code>
+     *
+     * <pre>
+     *被赠送者玩家id 不填写为自己购买
+     * </pre>
+     */
+    boolean hasHandselPlayerId();
+    /**
+     * <code>optional int64 handselPlayerId = 3;</code>
+     *
+     * <pre>
+     *被赠送者玩家id 不填写为自己购买
+     * </pre>
+     */
+    long getHandselPlayerId();
   }
   /**
    * Protobuf type {@code ReqBuyVipMsg}
@@ -82,6 +124,16 @@ public final class ReqBuyVipMsgProto {
               vipId_ = input.readInt32();
               break;
             }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              playerId_ = input.readInt64();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              handselPlayerId_ = input.readInt64();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -126,19 +178,75 @@ public final class ReqBuyVipMsgProto {
     private int vipId_;
     /**
      * <code>required int32 VipId = 1;</code>
+     *
+     * <pre>
+     *要购买的vip id
+     * </pre>
      */
     public boolean hasVipId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
      * <code>required int32 VipId = 1;</code>
+     *
+     * <pre>
+     *要购买的vip id
+     * </pre>
      */
     public int getVipId() {
       return vipId_;
     }
 
+    public static final int PLAYERID_FIELD_NUMBER = 2;
+    private long playerId_;
+    /**
+     * <code>required int64 playerId = 2;</code>
+     *
+     * <pre>
+     *购买者玩家id
+     * </pre>
+     */
+    public boolean hasPlayerId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required int64 playerId = 2;</code>
+     *
+     * <pre>
+     *购买者玩家id
+     * </pre>
+     */
+    public long getPlayerId() {
+      return playerId_;
+    }
+
+    public static final int HANDSELPLAYERID_FIELD_NUMBER = 3;
+    private long handselPlayerId_;
+    /**
+     * <code>optional int64 handselPlayerId = 3;</code>
+     *
+     * <pre>
+     *被赠送者玩家id 不填写为自己购买
+     * </pre>
+     */
+    public boolean hasHandselPlayerId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional int64 handselPlayerId = 3;</code>
+     *
+     * <pre>
+     *被赠送者玩家id 不填写为自己购买
+     * </pre>
+     */
+    public long getHandselPlayerId() {
+      return handselPlayerId_;
+    }
+
     private void initFields() {
       vipId_ = 0;
+      playerId_ = 0L;
+      handselPlayerId_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -147,6 +255,10 @@ public final class ReqBuyVipMsgProto {
       if (isInitialized == 0) return false;
 
       if (!hasVipId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasPlayerId()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -160,6 +272,12 @@ public final class ReqBuyVipMsgProto {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeInt32(1, vipId_);
       }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt64(2, playerId_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt64(3, handselPlayerId_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -172,6 +290,14 @@ public final class ReqBuyVipMsgProto {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, vipId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(2, playerId_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, handselPlayerId_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -296,6 +422,10 @@ public final class ReqBuyVipMsgProto {
         super.clear();
         vipId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
+        playerId_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        handselPlayerId_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -328,6 +458,14 @@ public final class ReqBuyVipMsgProto {
           to_bitField0_ |= 0x00000001;
         }
         result.vipId_ = vipId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.playerId_ = playerId_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.handselPlayerId_ = handselPlayerId_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -347,12 +485,22 @@ public final class ReqBuyVipMsgProto {
         if (other.hasVipId()) {
           setVipId(other.getVipId());
         }
+        if (other.hasPlayerId()) {
+          setPlayerId(other.getPlayerId());
+        }
+        if (other.hasHandselPlayerId()) {
+          setHandselPlayerId(other.getHandselPlayerId());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
       public final boolean isInitialized() {
         if (!hasVipId()) {
+          
+          return false;
+        }
+        if (!hasPlayerId()) {
           
           return false;
         }
@@ -381,18 +529,30 @@ public final class ReqBuyVipMsgProto {
       private int vipId_ ;
       /**
        * <code>required int32 VipId = 1;</code>
+       *
+       * <pre>
+       *要购买的vip id
+       * </pre>
        */
       public boolean hasVipId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
        * <code>required int32 VipId = 1;</code>
+       *
+       * <pre>
+       *要购买的vip id
+       * </pre>
        */
       public int getVipId() {
         return vipId_;
       }
       /**
        * <code>required int32 VipId = 1;</code>
+       *
+       * <pre>
+       *要购买的vip id
+       * </pre>
        */
       public Builder setVipId(int value) {
         bitField0_ |= 0x00000001;
@@ -402,10 +562,110 @@ public final class ReqBuyVipMsgProto {
       }
       /**
        * <code>required int32 VipId = 1;</code>
+       *
+       * <pre>
+       *要购买的vip id
+       * </pre>
        */
       public Builder clearVipId() {
         bitField0_ = (bitField0_ & ~0x00000001);
         vipId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private long playerId_ ;
+      /**
+       * <code>required int64 playerId = 2;</code>
+       *
+       * <pre>
+       *购买者玩家id
+       * </pre>
+       */
+      public boolean hasPlayerId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required int64 playerId = 2;</code>
+       *
+       * <pre>
+       *购买者玩家id
+       * </pre>
+       */
+      public long getPlayerId() {
+        return playerId_;
+      }
+      /**
+       * <code>required int64 playerId = 2;</code>
+       *
+       * <pre>
+       *购买者玩家id
+       * </pre>
+       */
+      public Builder setPlayerId(long value) {
+        bitField0_ |= 0x00000002;
+        playerId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int64 playerId = 2;</code>
+       *
+       * <pre>
+       *购买者玩家id
+       * </pre>
+       */
+      public Builder clearPlayerId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        playerId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long handselPlayerId_ ;
+      /**
+       * <code>optional int64 handselPlayerId = 3;</code>
+       *
+       * <pre>
+       *被赠送者玩家id 不填写为自己购买
+       * </pre>
+       */
+      public boolean hasHandselPlayerId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional int64 handselPlayerId = 3;</code>
+       *
+       * <pre>
+       *被赠送者玩家id 不填写为自己购买
+       * </pre>
+       */
+      public long getHandselPlayerId() {
+        return handselPlayerId_;
+      }
+      /**
+       * <code>optional int64 handselPlayerId = 3;</code>
+       *
+       * <pre>
+       *被赠送者玩家id 不填写为自己购买
+       * </pre>
+       */
+      public Builder setHandselPlayerId(long value) {
+        bitField0_ |= 0x00000004;
+        handselPlayerId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 handselPlayerId = 3;</code>
+       *
+       * <pre>
+       *被赠送者玩家id 不填写为自己购买
+       * </pre>
+       */
+      public Builder clearHandselPlayerId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        handselPlayerId_ = 0L;
         onChanged();
         return this;
       }
@@ -435,9 +695,10 @@ public final class ReqBuyVipMsgProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\026vip/ReqBuyVipMsg.proto\"\035\n\014ReqBuyVipMsg" +
-      "\022\r\n\005VipId\030\001 \002(\005B9\n$com.chuangyou.common." +
-      "protobuf.pb.vipB\021ReqBuyVipMsgProto"
+      "\n\026vip/ReqBuyVipMsg.proto\"H\n\014ReqBuyVipMsg" +
+      "\022\r\n\005VipId\030\001 \002(\005\022\020\n\010playerId\030\002 \002(\003\022\027\n\017han" +
+      "dselPlayerId\030\003 \001(\003B9\n$com.chuangyou.comm" +
+      "on.protobuf.pb.vipB\021ReqBuyVipMsgProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -456,7 +717,7 @@ public final class ReqBuyVipMsgProto {
     internal_static_ReqBuyVipMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ReqBuyVipMsg_descriptor,
-        new java.lang.String[] { "VipId", });
+        new java.lang.String[] { "VipId", "PlayerId", "HandselPlayerId", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

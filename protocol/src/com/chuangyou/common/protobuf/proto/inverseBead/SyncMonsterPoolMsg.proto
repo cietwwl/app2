@@ -4,4 +4,5 @@ option java_outer_classname = "SyncMonsterPoolMsgProto";
 
 message SyncMonsterPoolMsg {
 	repeated int32 monsterRefreshId = 1;
+	optional int32 curCampaign=2;
 }

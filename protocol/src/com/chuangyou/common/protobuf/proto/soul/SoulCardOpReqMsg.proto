@@ -1,0 +1,10 @@
+//protocol=11606;
+option java_package = "com.chuangyou.common.protobuf.pb.soul";
+option java_outer_classname = "SoulCardOpReqProto";
+
+//卡牌的一系列玩法操作
+message SoulCardOpReqMsg{
+	required int32 op = 1;//操作 1：合成  2：穿上  3：脱下  4:升星  5:升级  6:洗技能
+	required int32 cardId = 2; // 卡牌ID
+	optional int32 skillIndex = 3;// 当洗技能时。此值为要洗技能的位置（2--4）
+}

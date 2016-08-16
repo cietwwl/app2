@@ -16,7 +16,7 @@ public final class DamageMsgProto {
      * <code>optional int64 sourceId = 1;</code>
      *
      * <pre>
-     *‰º§ÂÆ≥Ê∫êID
+     *…À∫¶‘¥ID
      * </pre>
      */
     boolean hasSourceId();
@@ -24,7 +24,7 @@ public final class DamageMsgProto {
      * <code>optional int64 sourceId = 1;</code>
      *
      * <pre>
-     *‰º§ÂÆ≥Ê∫êID
+     *…À∫¶‘¥ID
      * </pre>
      */
     long getSourceId();
@@ -33,7 +33,7 @@ public final class DamageMsgProto {
      * <code>optional int64 targetId = 2;</code>
      *
      * <pre>
-     *ÁõÆÊ†áID
+     *ƒø±ÍID
      * </pre>
      */
     boolean hasTargetId();
@@ -41,7 +41,7 @@ public final class DamageMsgProto {
      * <code>optional int64 targetId = 2;</code>
      *
      * <pre>
-     *ÁõÆÊ†áID
+     *ƒø±ÍID
      * </pre>
      */
     long getTargetId();
@@ -50,7 +50,7 @@ public final class DamageMsgProto {
      * <code>optional int32 damageType = 3;</code>
      *
      * <pre>
-     *‰º§ÂÆ≥Á±ªÂûã
+     *…À∫¶¿‡–Õ
      * </pre>
      */
     boolean hasDamageType();
@@ -58,7 +58,7 @@ public final class DamageMsgProto {
      * <code>optional int32 damageType = 3;</code>
      *
      * <pre>
-     *‰º§ÂÆ≥Á±ªÂûã
+     *…À∫¶¿‡–Õ
      * </pre>
      */
     int getDamageType();
@@ -67,7 +67,7 @@ public final class DamageMsgProto {
      * <code>optional int32 damageValue = 4;</code>
      *
      * <pre>
-     *‰º§ÂÆ≥ÂÄº
+     *…À∫¶÷µ
      * </pre>
      */
     boolean hasDamageValue();
@@ -75,7 +75,7 @@ public final class DamageMsgProto {
      * <code>optional int32 damageValue = 4;</code>
      *
      * <pre>
-     *‰º§ÂÆ≥ÂÄº
+     *…À∫¶÷µ
      * </pre>
      */
     int getDamageValue();
@@ -84,7 +84,7 @@ public final class DamageMsgProto {
      * <code>optional int32 leftValue = 5;</code>
      *
      * <pre>
-     *Ââ©‰ΩôÂÄº
+     * £”‡÷µ
      * </pre>
      */
     boolean hasLeftValue();
@@ -92,7 +92,7 @@ public final class DamageMsgProto {
      * <code>optional int32 leftValue = 5;</code>
      *
      * <pre>
-     *Ââ©‰ΩôÂÄº
+     * £”‡÷µ
      * </pre>
      */
     int getLeftValue();
@@ -101,7 +101,7 @@ public final class DamageMsgProto {
      * <code>optional int32 tipType = 6;</code>
      *
      * <pre>
-     * 0 Ê≠£Â∏∏ 1 Êö¥Âáª 2 MISS
+     * 0 ’˝≥£ 1 ±©ª˜ 2 MISS
      * </pre>
      */
     boolean hasTipType();
@@ -109,41 +109,58 @@ public final class DamageMsgProto {
      * <code>optional int32 tipType = 6;</code>
      *
      * <pre>
-     * 0 Ê≠£Â∏∏ 1 Êö¥Âáª 2 MISS
+     * 0 ’˝≥£ 1 ±©ª˜ 2 MISS
      * </pre>
      */
     int getTipType();
 
     /**
-     * <code>optional int32 skillId = 7;</code>
+     * <code>optional int32 fromType = 7;</code>
      *
      * <pre>
-     *ÊäÄËÉΩID
+     *…À∫¶‘¥¿‡–Õ 1 ººƒ‹£¨2 buffer £¨3 œ›⁄Â
      * </pre>
      */
-    boolean hasSkillId();
+    boolean hasFromType();
     /**
-     * <code>optional int32 skillId = 7;</code>
+     * <code>optional int32 fromType = 7;</code>
      *
      * <pre>
-     *ÊäÄËÉΩID
+     *…À∫¶‘¥¿‡–Õ 1 ººƒ‹£¨2 buffer £¨3 œ›⁄Â
      * </pre>
      */
-    int getSkillId();
+    int getFromType();
 
     /**
-     * <code>optional int32 order = 8;</code>
+     * <code>optional int32 fromId = 8;</code>
      *
      * <pre>
-     *Á¨¨Âá†ÊÆµ‰º§ÂÆ≥
+     *ººƒ‹ID
+     * </pre>
+     */
+    boolean hasFromId();
+    /**
+     * <code>optional int32 fromId = 8;</code>
+     *
+     * <pre>
+     *ººƒ‹ID
+     * </pre>
+     */
+    int getFromId();
+
+    /**
+     * <code>optional int32 order = 9;</code>
+     *
+     * <pre>
+     *µ⁄º∏∂Œ…À∫¶
      * </pre>
      */
     boolean hasOrder();
     /**
-     * <code>optional int32 order = 8;</code>
+     * <code>optional int32 order = 9;</code>
      *
      * <pre>
-     *Á¨¨Âá†ÊÆµ‰º§ÂÆ≥
+     *µ⁄º∏∂Œ…À∫¶
      * </pre>
      */
     int getOrder();
@@ -232,11 +249,16 @@ public final class DamageMsgProto {
             }
             case 56: {
               bitField0_ |= 0x00000040;
-              skillId_ = input.readInt32();
+              fromType_ = input.readInt32();
               break;
             }
             case 64: {
               bitField0_ |= 0x00000080;
+              fromId_ = input.readInt32();
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000100;
               order_ = input.readInt32();
               break;
             }
@@ -286,7 +308,7 @@ public final class DamageMsgProto {
      * <code>optional int64 sourceId = 1;</code>
      *
      * <pre>
-     *‰º§ÂÆ≥Ê∫êID
+     *…À∫¶‘¥ID
      * </pre>
      */
     public boolean hasSourceId() {
@@ -296,7 +318,7 @@ public final class DamageMsgProto {
      * <code>optional int64 sourceId = 1;</code>
      *
      * <pre>
-     *‰º§ÂÆ≥Ê∫êID
+     *…À∫¶‘¥ID
      * </pre>
      */
     public long getSourceId() {
@@ -309,7 +331,7 @@ public final class DamageMsgProto {
      * <code>optional int64 targetId = 2;</code>
      *
      * <pre>
-     *ÁõÆÊ†áID
+     *ƒø±ÍID
      * </pre>
      */
     public boolean hasTargetId() {
@@ -319,7 +341,7 @@ public final class DamageMsgProto {
      * <code>optional int64 targetId = 2;</code>
      *
      * <pre>
-     *ÁõÆÊ†áID
+     *ƒø±ÍID
      * </pre>
      */
     public long getTargetId() {
@@ -332,7 +354,7 @@ public final class DamageMsgProto {
      * <code>optional int32 damageType = 3;</code>
      *
      * <pre>
-     *‰º§ÂÆ≥Á±ªÂûã
+     *…À∫¶¿‡–Õ
      * </pre>
      */
     public boolean hasDamageType() {
@@ -342,7 +364,7 @@ public final class DamageMsgProto {
      * <code>optional int32 damageType = 3;</code>
      *
      * <pre>
-     *‰º§ÂÆ≥Á±ªÂûã
+     *…À∫¶¿‡–Õ
      * </pre>
      */
     public int getDamageType() {
@@ -355,7 +377,7 @@ public final class DamageMsgProto {
      * <code>optional int32 damageValue = 4;</code>
      *
      * <pre>
-     *‰º§ÂÆ≥ÂÄº
+     *…À∫¶÷µ
      * </pre>
      */
     public boolean hasDamageValue() {
@@ -365,7 +387,7 @@ public final class DamageMsgProto {
      * <code>optional int32 damageValue = 4;</code>
      *
      * <pre>
-     *‰º§ÂÆ≥ÂÄº
+     *…À∫¶÷µ
      * </pre>
      */
     public int getDamageValue() {
@@ -378,7 +400,7 @@ public final class DamageMsgProto {
      * <code>optional int32 leftValue = 5;</code>
      *
      * <pre>
-     *Ââ©‰ΩôÂÄº
+     * £”‡÷µ
      * </pre>
      */
     public boolean hasLeftValue() {
@@ -388,7 +410,7 @@ public final class DamageMsgProto {
      * <code>optional int32 leftValue = 5;</code>
      *
      * <pre>
-     *Ââ©‰ΩôÂÄº
+     * £”‡÷µ
      * </pre>
      */
     public int getLeftValue() {
@@ -401,7 +423,7 @@ public final class DamageMsgProto {
      * <code>optional int32 tipType = 6;</code>
      *
      * <pre>
-     * 0 Ê≠£Â∏∏ 1 Êö¥Âáª 2 MISS
+     * 0 ’˝≥£ 1 ±©ª˜ 2 MISS
      * </pre>
      */
     public boolean hasTipType() {
@@ -411,53 +433,76 @@ public final class DamageMsgProto {
      * <code>optional int32 tipType = 6;</code>
      *
      * <pre>
-     * 0 Ê≠£Â∏∏ 1 Êö¥Âáª 2 MISS
+     * 0 ’˝≥£ 1 ±©ª˜ 2 MISS
      * </pre>
      */
     public int getTipType() {
       return tipType_;
     }
 
-    public static final int SKILLID_FIELD_NUMBER = 7;
-    private int skillId_;
+    public static final int FROMTYPE_FIELD_NUMBER = 7;
+    private int fromType_;
     /**
-     * <code>optional int32 skillId = 7;</code>
+     * <code>optional int32 fromType = 7;</code>
      *
      * <pre>
-     *ÊäÄËÉΩID
+     *…À∫¶‘¥¿‡–Õ 1 ººƒ‹£¨2 buffer £¨3 œ›⁄Â
      * </pre>
      */
-    public boolean hasSkillId() {
+    public boolean hasFromType() {
       return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     /**
-     * <code>optional int32 skillId = 7;</code>
+     * <code>optional int32 fromType = 7;</code>
      *
      * <pre>
-     *ÊäÄËÉΩID
+     *…À∫¶‘¥¿‡–Õ 1 ººƒ‹£¨2 buffer £¨3 œ›⁄Â
      * </pre>
      */
-    public int getSkillId() {
-      return skillId_;
+    public int getFromType() {
+      return fromType_;
     }
 
-    public static final int ORDER_FIELD_NUMBER = 8;
-    private int order_;
+    public static final int FROMID_FIELD_NUMBER = 8;
+    private int fromId_;
     /**
-     * <code>optional int32 order = 8;</code>
+     * <code>optional int32 fromId = 8;</code>
      *
      * <pre>
-     *Á¨¨Âá†ÊÆµ‰º§ÂÆ≥
+     *ººƒ‹ID
      * </pre>
      */
-    public boolean hasOrder() {
+    public boolean hasFromId() {
       return ((bitField0_ & 0x00000080) == 0x00000080);
     }
     /**
-     * <code>optional int32 order = 8;</code>
+     * <code>optional int32 fromId = 8;</code>
      *
      * <pre>
-     *Á¨¨Âá†ÊÆµ‰º§ÂÆ≥
+     *ººƒ‹ID
+     * </pre>
+     */
+    public int getFromId() {
+      return fromId_;
+    }
+
+    public static final int ORDER_FIELD_NUMBER = 9;
+    private int order_;
+    /**
+     * <code>optional int32 order = 9;</code>
+     *
+     * <pre>
+     *µ⁄º∏∂Œ…À∫¶
+     * </pre>
+     */
+    public boolean hasOrder() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional int32 order = 9;</code>
+     *
+     * <pre>
+     *µ⁄º∏∂Œ…À∫¶
      * </pre>
      */
     public int getOrder() {
@@ -471,7 +516,8 @@ public final class DamageMsgProto {
       damageValue_ = 0;
       leftValue_ = 0;
       tipType_ = 0;
-      skillId_ = 0;
+      fromType_ = 0;
+      fromId_ = 0;
       order_ = 0;
     }
     private byte memoizedIsInitialized = -1;
@@ -506,10 +552,13 @@ public final class DamageMsgProto {
         output.writeInt32(6, tipType_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeInt32(7, skillId_);
+        output.writeInt32(7, fromType_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeInt32(8, order_);
+        output.writeInt32(8, fromId_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeInt32(9, order_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -546,11 +595,15 @@ public final class DamageMsgProto {
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(7, skillId_);
+          .computeInt32Size(7, fromType_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(8, order_);
+          .computeInt32Size(8, fromId_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(9, order_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -681,10 +734,12 @@ public final class DamageMsgProto {
         bitField0_ = (bitField0_ & ~0x00000010);
         tipType_ = 0;
         bitField0_ = (bitField0_ & ~0x00000020);
-        skillId_ = 0;
+        fromType_ = 0;
         bitField0_ = (bitField0_ & ~0x00000040);
-        order_ = 0;
+        fromId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000080);
+        order_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
@@ -740,9 +795,13 @@ public final class DamageMsgProto {
         if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
           to_bitField0_ |= 0x00000040;
         }
-        result.skillId_ = skillId_;
+        result.fromType_ = fromType_;
         if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
           to_bitField0_ |= 0x00000080;
+        }
+        result.fromId_ = fromId_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
         }
         result.order_ = order_;
         result.bitField0_ = to_bitField0_;
@@ -779,8 +838,11 @@ public final class DamageMsgProto {
         if (other.hasTipType()) {
           setTipType(other.getTipType());
         }
-        if (other.hasSkillId()) {
-          setSkillId(other.getSkillId());
+        if (other.hasFromType()) {
+          setFromType(other.getFromType());
+        }
+        if (other.hasFromId()) {
+          setFromId(other.getFromId());
         }
         if (other.hasOrder()) {
           setOrder(other.getOrder());
@@ -817,7 +879,7 @@ public final class DamageMsgProto {
        * <code>optional int64 sourceId = 1;</code>
        *
        * <pre>
-       *‰º§ÂÆ≥Ê∫êID
+       *…À∫¶‘¥ID
        * </pre>
        */
       public boolean hasSourceId() {
@@ -827,7 +889,7 @@ public final class DamageMsgProto {
        * <code>optional int64 sourceId = 1;</code>
        *
        * <pre>
-       *‰º§ÂÆ≥Ê∫êID
+       *…À∫¶‘¥ID
        * </pre>
        */
       public long getSourceId() {
@@ -837,7 +899,7 @@ public final class DamageMsgProto {
        * <code>optional int64 sourceId = 1;</code>
        *
        * <pre>
-       *‰º§ÂÆ≥Ê∫êID
+       *…À∫¶‘¥ID
        * </pre>
        */
       public Builder setSourceId(long value) {
@@ -850,7 +912,7 @@ public final class DamageMsgProto {
        * <code>optional int64 sourceId = 1;</code>
        *
        * <pre>
-       *‰º§ÂÆ≥Ê∫êID
+       *…À∫¶‘¥ID
        * </pre>
        */
       public Builder clearSourceId() {
@@ -865,7 +927,7 @@ public final class DamageMsgProto {
        * <code>optional int64 targetId = 2;</code>
        *
        * <pre>
-       *ÁõÆÊ†áID
+       *ƒø±ÍID
        * </pre>
        */
       public boolean hasTargetId() {
@@ -875,7 +937,7 @@ public final class DamageMsgProto {
        * <code>optional int64 targetId = 2;</code>
        *
        * <pre>
-       *ÁõÆÊ†áID
+       *ƒø±ÍID
        * </pre>
        */
       public long getTargetId() {
@@ -885,7 +947,7 @@ public final class DamageMsgProto {
        * <code>optional int64 targetId = 2;</code>
        *
        * <pre>
-       *ÁõÆÊ†áID
+       *ƒø±ÍID
        * </pre>
        */
       public Builder setTargetId(long value) {
@@ -898,7 +960,7 @@ public final class DamageMsgProto {
        * <code>optional int64 targetId = 2;</code>
        *
        * <pre>
-       *ÁõÆÊ†áID
+       *ƒø±ÍID
        * </pre>
        */
       public Builder clearTargetId() {
@@ -913,7 +975,7 @@ public final class DamageMsgProto {
        * <code>optional int32 damageType = 3;</code>
        *
        * <pre>
-       *‰º§ÂÆ≥Á±ªÂûã
+       *…À∫¶¿‡–Õ
        * </pre>
        */
       public boolean hasDamageType() {
@@ -923,7 +985,7 @@ public final class DamageMsgProto {
        * <code>optional int32 damageType = 3;</code>
        *
        * <pre>
-       *‰º§ÂÆ≥Á±ªÂûã
+       *…À∫¶¿‡–Õ
        * </pre>
        */
       public int getDamageType() {
@@ -933,7 +995,7 @@ public final class DamageMsgProto {
        * <code>optional int32 damageType = 3;</code>
        *
        * <pre>
-       *‰º§ÂÆ≥Á±ªÂûã
+       *…À∫¶¿‡–Õ
        * </pre>
        */
       public Builder setDamageType(int value) {
@@ -946,7 +1008,7 @@ public final class DamageMsgProto {
        * <code>optional int32 damageType = 3;</code>
        *
        * <pre>
-       *‰º§ÂÆ≥Á±ªÂûã
+       *…À∫¶¿‡–Õ
        * </pre>
        */
       public Builder clearDamageType() {
@@ -961,7 +1023,7 @@ public final class DamageMsgProto {
        * <code>optional int32 damageValue = 4;</code>
        *
        * <pre>
-       *‰º§ÂÆ≥ÂÄº
+       *…À∫¶÷µ
        * </pre>
        */
       public boolean hasDamageValue() {
@@ -971,7 +1033,7 @@ public final class DamageMsgProto {
        * <code>optional int32 damageValue = 4;</code>
        *
        * <pre>
-       *‰º§ÂÆ≥ÂÄº
+       *…À∫¶÷µ
        * </pre>
        */
       public int getDamageValue() {
@@ -981,7 +1043,7 @@ public final class DamageMsgProto {
        * <code>optional int32 damageValue = 4;</code>
        *
        * <pre>
-       *‰º§ÂÆ≥ÂÄº
+       *…À∫¶÷µ
        * </pre>
        */
       public Builder setDamageValue(int value) {
@@ -994,7 +1056,7 @@ public final class DamageMsgProto {
        * <code>optional int32 damageValue = 4;</code>
        *
        * <pre>
-       *‰º§ÂÆ≥ÂÄº
+       *…À∫¶÷µ
        * </pre>
        */
       public Builder clearDamageValue() {
@@ -1009,7 +1071,7 @@ public final class DamageMsgProto {
        * <code>optional int32 leftValue = 5;</code>
        *
        * <pre>
-       *Ââ©‰ΩôÂÄº
+       * £”‡÷µ
        * </pre>
        */
       public boolean hasLeftValue() {
@@ -1019,7 +1081,7 @@ public final class DamageMsgProto {
        * <code>optional int32 leftValue = 5;</code>
        *
        * <pre>
-       *Ââ©‰ΩôÂÄº
+       * £”‡÷µ
        * </pre>
        */
       public int getLeftValue() {
@@ -1029,7 +1091,7 @@ public final class DamageMsgProto {
        * <code>optional int32 leftValue = 5;</code>
        *
        * <pre>
-       *Ââ©‰ΩôÂÄº
+       * £”‡÷µ
        * </pre>
        */
       public Builder setLeftValue(int value) {
@@ -1042,7 +1104,7 @@ public final class DamageMsgProto {
        * <code>optional int32 leftValue = 5;</code>
        *
        * <pre>
-       *Ââ©‰ΩôÂÄº
+       * £”‡÷µ
        * </pre>
        */
       public Builder clearLeftValue() {
@@ -1057,7 +1119,7 @@ public final class DamageMsgProto {
        * <code>optional int32 tipType = 6;</code>
        *
        * <pre>
-       * 0 Ê≠£Â∏∏ 1 Êö¥Âáª 2 MISS
+       * 0 ’˝≥£ 1 ±©ª˜ 2 MISS
        * </pre>
        */
       public boolean hasTipType() {
@@ -1067,7 +1129,7 @@ public final class DamageMsgProto {
        * <code>optional int32 tipType = 6;</code>
        *
        * <pre>
-       * 0 Ê≠£Â∏∏ 1 Êö¥Âáª 2 MISS
+       * 0 ’˝≥£ 1 ±©ª˜ 2 MISS
        * </pre>
        */
       public int getTipType() {
@@ -1077,7 +1139,7 @@ public final class DamageMsgProto {
        * <code>optional int32 tipType = 6;</code>
        *
        * <pre>
-       * 0 Ê≠£Â∏∏ 1 Êö¥Âáª 2 MISS
+       * 0 ’˝≥£ 1 ±©ª˜ 2 MISS
        * </pre>
        */
       public Builder setTipType(int value) {
@@ -1090,7 +1152,7 @@ public final class DamageMsgProto {
        * <code>optional int32 tipType = 6;</code>
        *
        * <pre>
-       * 0 Ê≠£Â∏∏ 1 Êö¥Âáª 2 MISS
+       * 0 ’˝≥£ 1 ±©ª˜ 2 MISS
        * </pre>
        */
       public Builder clearTipType() {
@@ -1100,97 +1162,145 @@ public final class DamageMsgProto {
         return this;
       }
 
-      private int skillId_ ;
+      private int fromType_ ;
       /**
-       * <code>optional int32 skillId = 7;</code>
+       * <code>optional int32 fromType = 7;</code>
        *
        * <pre>
-       *ÊäÄËÉΩID
+       *…À∫¶‘¥¿‡–Õ 1 ººƒ‹£¨2 buffer £¨3 œ›⁄Â
        * </pre>
        */
-      public boolean hasSkillId() {
+      public boolean hasFromType() {
         return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
-       * <code>optional int32 skillId = 7;</code>
+       * <code>optional int32 fromType = 7;</code>
        *
        * <pre>
-       *ÊäÄËÉΩID
+       *…À∫¶‘¥¿‡–Õ 1 ººƒ‹£¨2 buffer £¨3 œ›⁄Â
        * </pre>
        */
-      public int getSkillId() {
-        return skillId_;
+      public int getFromType() {
+        return fromType_;
       }
       /**
-       * <code>optional int32 skillId = 7;</code>
+       * <code>optional int32 fromType = 7;</code>
        *
        * <pre>
-       *ÊäÄËÉΩID
+       *…À∫¶‘¥¿‡–Õ 1 ººƒ‹£¨2 buffer £¨3 œ›⁄Â
        * </pre>
        */
-      public Builder setSkillId(int value) {
+      public Builder setFromType(int value) {
         bitField0_ |= 0x00000040;
-        skillId_ = value;
+        fromType_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 skillId = 7;</code>
+       * <code>optional int32 fromType = 7;</code>
        *
        * <pre>
-       *ÊäÄËÉΩID
+       *…À∫¶‘¥¿‡–Õ 1 ººƒ‹£¨2 buffer £¨3 œ›⁄Â
        * </pre>
        */
-      public Builder clearSkillId() {
+      public Builder clearFromType() {
         bitField0_ = (bitField0_ & ~0x00000040);
-        skillId_ = 0;
+        fromType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int fromId_ ;
+      /**
+       * <code>optional int32 fromId = 8;</code>
+       *
+       * <pre>
+       *ººƒ‹ID
+       * </pre>
+       */
+      public boolean hasFromId() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional int32 fromId = 8;</code>
+       *
+       * <pre>
+       *ººƒ‹ID
+       * </pre>
+       */
+      public int getFromId() {
+        return fromId_;
+      }
+      /**
+       * <code>optional int32 fromId = 8;</code>
+       *
+       * <pre>
+       *ººƒ‹ID
+       * </pre>
+       */
+      public Builder setFromId(int value) {
+        bitField0_ |= 0x00000080;
+        fromId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 fromId = 8;</code>
+       *
+       * <pre>
+       *ººƒ‹ID
+       * </pre>
+       */
+      public Builder clearFromId() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        fromId_ = 0;
         onChanged();
         return this;
       }
 
       private int order_ ;
       /**
-       * <code>optional int32 order = 8;</code>
+       * <code>optional int32 order = 9;</code>
        *
        * <pre>
-       *Á¨¨Âá†ÊÆµ‰º§ÂÆ≥
+       *µ⁄º∏∂Œ…À∫¶
        * </pre>
        */
       public boolean hasOrder() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
+        return ((bitField0_ & 0x00000100) == 0x00000100);
       }
       /**
-       * <code>optional int32 order = 8;</code>
+       * <code>optional int32 order = 9;</code>
        *
        * <pre>
-       *Á¨¨Âá†ÊÆµ‰º§ÂÆ≥
+       *µ⁄º∏∂Œ…À∫¶
        * </pre>
        */
       public int getOrder() {
         return order_;
       }
       /**
-       * <code>optional int32 order = 8;</code>
+       * <code>optional int32 order = 9;</code>
        *
        * <pre>
-       *Á¨¨Âá†ÊÆµ‰º§ÂÆ≥
+       *µ⁄º∏∂Œ…À∫¶
        * </pre>
        */
       public Builder setOrder(int value) {
-        bitField0_ |= 0x00000080;
+        bitField0_ |= 0x00000100;
         order_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 order = 8;</code>
+       * <code>optional int32 order = 9;</code>
        *
        * <pre>
-       *Á¨¨Âá†ÊÆµ‰º§ÂÆ≥
+       *µ⁄º∏∂Œ…À∫¶
        * </pre>
        */
       public Builder clearOrder() {
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000100);
         order_ = 0;
         onChanged();
         return this;
@@ -1221,12 +1331,13 @@ public final class DamageMsgProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017DamageMsg.proto\"\234\001\n\tDamageMsg\022\020\n\010sourc" +
+      "\n\017DamageMsg.proto\"\255\001\n\tDamageMsg\022\020\n\010sourc" +
       "eId\030\001 \001(\003\022\020\n\010targetId\030\002 \001(\003\022\022\n\ndamageTyp" +
       "e\030\003 \001(\005\022\023\n\013damageValue\030\004 \001(\005\022\021\n\tleftValu" +
-      "e\030\005 \001(\005\022\017\n\007tipType\030\006 \001(\005\022\017\n\007skillId\030\007 \001(" +
-      "\005\022\r\n\005order\030\010 \001(\005B9\n\'com.chuangyou.common" +
-      ".protobuf.pb.battleB\016DamageMsgProto"
+      "e\030\005 \001(\005\022\017\n\007tipType\030\006 \001(\005\022\020\n\010fromType\030\007 \001" +
+      "(\005\022\016\n\006fromId\030\010 \001(\005\022\r\n\005order\030\t \001(\005B9\n\'com" +
+      ".chuangyou.common.protobuf.pb.battleB\016Da" +
+      "mageMsgProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1245,7 +1356,7 @@ public final class DamageMsgProto {
     internal_static_DamageMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_DamageMsg_descriptor,
-        new java.lang.String[] { "SourceId", "TargetId", "DamageType", "DamageValue", "LeftValue", "TipType", "SkillId", "Order", });
+        new java.lang.String[] { "SourceId", "TargetId", "DamageType", "DamageValue", "LeftValue", "TipType", "FromType", "FromId", "Order", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

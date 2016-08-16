@@ -195,6 +195,20 @@ public interface CenterProtocol {
 	public static final short C_REQ_SPACE_SET_COLLECTION       = 11603;
 	/** 设置礼物   */
 	public static final short C_REQ_SPACE_SET_GIFT             = 11604;
+	//==========================>魂幡<=========================================
+	/**
+	 * 请求信息
+	 */
+	public static final short C_REQ_GET_SOUL_INFO              = 11605;
+	/** 操作  */
+	public static final short C_REQ_SOUL_PIECE_COMBO           = 11606;
+	/** 增加经验值 */
+	public static final short C_REQ_SOUL_ADD_EXP               = 11607;
+	/**
+	 * 材料制作
+	 */
+	public static final short C_REQ_SOUL_MAKE                  = 11608;
+	
 	
 	// =========================>坐骑<===================================
 	/** 获取坐骑信息 */
@@ -364,5 +378,12 @@ public interface CenterProtocol {
 	/** 请求领取灵气液**/
 	public static final short	C_INVERSE_RECEIVE_AURA			=10707;
 	// =========================>vip<===============================
+	/** 购买 **/
 	public static final short	C_VIP_BUY						=10708;
+	/** 领取 **/
+	public static final short	C_VIP_RECEIVE					=10709;
+	/** 获取vip信息 **/
+	public static final short	C_GET_VIP_INFO					=10710;
+	// =========================><===============================
+	
 }

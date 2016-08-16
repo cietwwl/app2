@@ -589,6 +589,75 @@ public abstract class Living {
 		properties[EARTH_DEFENCE].setFashionPer(fashionPer.getEarthDefence());
 		properties[SPEED].setFashionPer(fashionPer.getSpeed());
 	}
+	
+	/**
+	 * 添加时装属性
+	 * 
+	 * @param petData
+	 */
+	public void addSoul(BaseProperty soulData, BaseProperty soulPer) {
+		// 添加时装属性
+		properties[SOUL].setSoulData(soulData.getSoul());
+		properties[BLOOD].setSoulData(soulData.getBlood());
+		properties[ATTACK].setSoulData(soulData.getAttack());
+		properties[DEFENCE].setSoulData(soulData.getDefence());
+		properties[SOUL_ATTACK].setSoulData(soulData.getSoulAttack());
+		properties[SOUL_DEFENCE].setSoulData(soulData.getSoulDefence());
+		properties[ACCURATE].setSoulData(soulData.getAccurate());
+		properties[DODGE].setSoulData(soulData.getDodge());
+		properties[CRIT].setSoulData(soulData.getCrit());
+		properties[CRIT_DEFENCE].setSoulData(soulData.getCritDefence());
+		properties[CRIT_ADDTION].setSoulData(soulData.getCritAddtion());
+		properties[CRIT_CUT].setSoulData(soulData.getCritCut());
+		properties[BLOOD_ATTACK_ADDTION].setSoulData(soulData.getBloodAttackAddtion());
+		properties[BLOOD_ATTACK_CUT].setSoulData(soulData.getBloodAttackCut());
+		properties[SOUL_ATTACK_ADDTION].setSoulData(soulData.getSoulAttackAddtion());
+		properties[SOUL_ATTACK_CUT].setSoulData(soulData.getBloodAttackCut());
+		properties[REGAIN_SOUL].setSoulData(soulData.getRegainSoul());
+		properties[REGAIN_BLOOD].setSoulData(soulData.getRegainBlood());
+		properties[METAL].setSoulData(soulData.getMetal());
+		properties[WOOD].setSoulData(soulData.getWood());
+		properties[WATER].setSoulData(soulData.getWater());
+		properties[FIRE].setSoulData(soulData.getFire());
+		properties[EARTH].setSoulData(soulData.getEarth());
+		properties[METAL_DEFENCE].setSoulData(soulData.getMetalDefence());
+		properties[WOOD_DEFENCE].setSoulData(soulData.getWoodDefence());
+		properties[WATER_DEFENCE].setSoulData(soulData.getWaterDefence());
+		properties[FIRE_DEFENCE].setSoulData(soulData.getFireDefence());
+		properties[EARTH_DEFENCE].setSoulData(soulData.getEarthDefence());
+
+		// 时装百分比加成
+		properties[SOUL].setSoulPer(soulPer.getSoul());
+		properties[BLOOD].setSoulPer(soulPer.getBlood());
+		properties[ATTACK].setSoulPer(soulPer.getAttack());
+		properties[DEFENCE].setSoulPer(soulPer.getDefence());
+		properties[SOUL_ATTACK].setSoulPer(soulPer.getSoulAttack());
+		properties[SOUL_DEFENCE].setSoulPer(soulPer.getSoulDefence());
+		properties[ACCURATE].setSoulPer(soulPer.getAccurate());
+		properties[DODGE].setSoulPer(soulPer.getDodge());
+		properties[CRIT].setSoulPer(soulPer.getCrit());
+		properties[CRIT_DEFENCE].setSoulPer(soulPer.getCritDefence());
+		properties[CRIT_ADDTION].setSoulPer(soulPer.getCritAddtion());
+		properties[CRIT_CUT].setSoulPer(soulPer.getCritCut());
+		properties[BLOOD_ATTACK_ADDTION].setSoulPer(soulPer.getBloodAttackAddtion());
+		properties[BLOOD_ATTACK_CUT].setSoulPer(soulPer.getBloodAttackCut());
+		properties[SOUL_ATTACK_ADDTION].setSoulPer(soulPer.getSoulAttackAddtion());
+		properties[SOUL_ATTACK_CUT].setSoulPer(soulPer.getBloodAttackCut());
+		properties[REGAIN_SOUL].setSoulPer(soulPer.getRegainSoul());
+		properties[REGAIN_BLOOD].setSoulPer(soulPer.getRegainBlood());
+		properties[METAL].setSoulPer(soulPer.getMetal());
+		properties[WOOD].setSoulPer(soulPer.getWood());
+		properties[WATER].setSoulPer(soulPer.getWater());
+		properties[FIRE].setSoulPer(soulPer.getFire());
+		properties[EARTH].setSoulPer(soulPer.getEarth());
+		properties[METAL_DEFENCE].setSoulPer(soulPer.getMetalDefence());
+		properties[WOOD_DEFENCE].setSoulPer(soulPer.getWoodDefence());
+		properties[WATER_DEFENCE].setSoulPer(soulPer.getWaterDefence());
+		properties[FIRE_DEFENCE].setSoulPer(soulPer.getFireDefence());
+		properties[EARTH_DEFENCE].setSoulPer(soulPer.getEarthDefence());
+		properties[SPEED].setSoulPer(soulPer.getSpeed());
+	}
+	
 
 	public void writeProto(GamePlayer player, PropertyListMsg.Builder propertyMsgs) {
 		PlayerJoinInfo joinInfo = player.getBasePlayer().getPlayerJoinInfo();

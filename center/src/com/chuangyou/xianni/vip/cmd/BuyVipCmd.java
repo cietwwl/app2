@@ -16,13 +16,15 @@ public class BuyVipCmd extends AbstractCommand {
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
 		ReqBuyVipMsg msg = ReqBuyVipMsg.parseFrom(packet.getBytes());
 		int id = msg.getVipId();
-		boolean res = VipManager.buyVip(player, id);
+		long playerId = msg.getPlayerId();
+		long handselPlayerId = msg.getHandselPlayerId();
+		boolean res = VipManager.buyVip(player, id, handselPlayerId);
 		if (res == true) {
 			ResBuyVipMsg.Builder resMsg = ResBuyVipMsg.newBuilder();
 			resMsg.setVipTimeLimit(player.getBasePlayer().getPlayerInfo().getVipTimeLimit().getTime());
 			resMsg.setVipInterimTimeLimit(player.getBasePlayer().getPlayerInfo().getVipInterimTimeLimit().getTime());
 
-			PBMessage p = MessageUtil.buildMessage(Protocol.U_PET_SKILL_OPEN, msg);
+			PBMessage p = MessageUtil.buildMessage(Protocol.U_VIP_BUY, msg);
 			player.sendPbMessage(p);
 		}
 	}

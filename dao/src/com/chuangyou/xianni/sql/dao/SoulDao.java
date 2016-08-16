@@ -2,9 +2,15 @@ package com.chuangyou.xianni.sql.dao;
 
 import java.util.Map;
 
+import com.chuangyou.xianni.entity.soul.CardLvConfig;
+import com.chuangyou.xianni.entity.soul.CardSkillConfig;
+import com.chuangyou.xianni.entity.soul.CardStarConfig;
+import com.chuangyou.xianni.entity.soul.SoulCardConfig;
 import com.chuangyou.xianni.entity.soul.SoulCardInfo;
 import com.chuangyou.xianni.entity.soul.SoulCardPiece;
 import com.chuangyou.xianni.entity.soul.SoulInfo;
+import com.chuangyou.xianni.entity.soul.SoulMake;
+import com.chuangyou.xianni.entity.soul.SoulMakeConfig;
 
 /**
  * 魂幡
@@ -24,6 +30,20 @@ public interface SoulDao {
 
 	public boolean addCardPieceInfo(SoulCardPiece info);
 	public boolean updateCardPieceInfo(SoulCardPiece info);
-	public Map<Integer, SoulCardInfo> getCardPieces(long playerId);
+	public Map<Integer, SoulCardPiece> getCardPieces(long playerId);
+	
+	public boolean addSoulMake(SoulMake info);
+	public boolean updateSoulMake(SoulMake info);
+	public SoulMake getSoulMake(long playerId);
+	
+	
+	public Map<Integer,SoulCardConfig> getCardConfigs();
+	public Map<Integer,CardLvConfig> getCardLvConfigs();
+	public Map<Integer, CardStarConfig> getCardStarConfig();
+	public Map<Integer,CardSkillConfig> getCardSkillCofig();
+	public Map<Integer, SoulMakeConfig> getSoulMakeConfig();
+	
+	
+	
 	
 }

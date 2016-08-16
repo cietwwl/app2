@@ -122,7 +122,7 @@ public class SpaceInventory extends AbstractEvent implements IInventory {
 				DBManager.getSpaceDao().del(temp);
 			}
 			info.setOp(Option.Insert);
-			actions.add(info);
+			actions.add(0, info);
 			DBManager.getSpaceDao().add(info);
 		}
 	}
@@ -268,6 +268,8 @@ public class SpaceInventory extends AbstractEvent implements IInventory {
 			this.spaceInfo.setOp(Option.Insert);
 			DBManager.getSpaceDao().add(spaceInfo);
 		}
+		messages = DBManager.getSpaceDao().getAll(player.getPlayerId(),spaceInfo.getMaxCollection()+MAX_NO_COLLECTION);
+		this.calcCurCollection();
 		return true;
 	}
 

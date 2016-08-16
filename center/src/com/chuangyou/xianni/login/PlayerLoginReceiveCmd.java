@@ -28,9 +28,11 @@ public class PlayerLoginReceiveCmd implements Command {
 			Log.error("player login error in PlayerLoginReceiveCmd，playerId:" + playerId);
 			return;
 		}
+		
+		player.setPlayerState(PlayerState.ONLINE);
 		player.setChannel(channel);
 		player.loadPersonData();
-		player.setPlayerState(PlayerState.ONLINE);
+
 
 		ChangeLineAction action = new ChangeLineAction(player, null, true);
 		action.getActionQueue().enqueue(action);

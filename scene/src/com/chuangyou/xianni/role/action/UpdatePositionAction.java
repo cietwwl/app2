@@ -7,7 +7,6 @@ import java.util.Set;
 import com.chuangyou.common.protobuf.pb.PlayerLeaveGridProto.PlayerLeaveGridMsg;
 import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.Vector3;
-import com.chuangyou.xianni.config.SceneGlobal;
 import com.chuangyou.xianni.manager.SceneManagers;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -66,9 +65,8 @@ public class UpdatePositionAction {// extends DelayAction {
 				activeLiving.setNavFail(false);
 				setPostion(target, playerSelector);
 			}
+			autoAddHatred();
 		}
-
-		autoAddHatred();
 
 		// setUpdate();
 	}
@@ -162,46 +160,47 @@ public class UpdatePositionAction {// extends DelayAction {
 	 * 将警戒内的对象加入仇恨列表
 	 */
 	protected void autoAddHatred() {
+
 		if (this.activeLiving.getType() == RoleType.monster) {
 			Monster monster = (Monster) this.activeLiving;
-			if(monster.getAiConfig()==null)
+			if (monster.getAiConfig() == null)
 				return;
-
 			boolean activeAttackPlayer = monster.getAiConfig().isActiveAttackPlayer();
 			boolean activeAttackSameMonster = monster.getAiConfig().isActiveAttackSameMonster();
 			boolean activeAttackNotSameMonster = monster.getAiConfig().isActiveAttackNotSameMonster();
-
-			Set<Long> ids = monster.getNears(playerSelector);// 获得警戒范围内的玩家
-			for (Long id : ids) {
-				Field f = this.activeLiving.getField();
-				Living nearLiving = f.getLiving(id);
-				if (nearLiving == null)
-					continue;
-
-				if (nearLiving.getType() == RoleType.player) {
-					if (!activeAttackPlayer)
+			if (activeAttackPlayer || activeAttackSameMonster || activeAttackNotSameMonster) {
+				Set<Long> ids = monster.getNears(playerSelector);// 获得警戒范围内的玩家
+				for (Long id : ids) {
+					Field f = this.activeLiving.getField();
+					Living nearLiving = f.getLiving(id);
+					if (nearLiving == null)
 						continue;
-				} else if (nearLiving.getType() == RoleType.monster) {
-					if (monster.getMonsterInfo().getMonsterType() == ((Monster) nearLiving).getMonsterInfo().getMonsterType()) {
-						if (!activeAttackSameMonster)
+
+					if (nearLiving.getType() == RoleType.player) {
+						if (!activeAttackPlayer)
 							continue;
-					} else {
-						if (!activeAttackNotSameMonster)
-							continue;
+					} else if (nearLiving.getType() == RoleType.monster) {
+						if (monster.getMonsterInfo().getMonsterType() == ((Monster) nearLiving).getMonsterInfo().getMonsterType()) {
+							if (!activeAttackSameMonster)
+								continue;
+						} else {
+							if (!activeAttackNotSameMonster)
+								continue;
+						}
 					}
-				}
-				List<Hatred> hatreds = monster.getHatreds();
-				for (int i = 0; i < hatreds.size(); i++) {
-					if (i < hatreds.size() && hatreds.get(i).getTarget() == id) {
-						return;
+					List<Hatred> hatreds = monster.getHatreds();
+					for (int i = 0; i < hatreds.size(); i++) {
+						if (i < hatreds.size() && hatreds.get(i).getTarget() == id) {
+							return;
+						}
 					}
+					Hatred hatred = SceneManagers.hatredManager.getHatred();
+					hatred.setTarget(id);
+					hatred.setFirstAttack(System.currentTimeMillis());
+					hatred.setHatred(0);
+					hatred.setLastAttack(System.currentTimeMillis());
+					hatreds.add(hatred);
 				}
-				Hatred hatred = SceneManagers.hatredManager.getHatred();
-				hatred.setTarget(id);
-				hatred.setFirstAttack(System.currentTimeMillis());
-				hatred.setHatred(0);
-				hatred.setLastAttack(System.currentTimeMillis());
-				hatreds.add(hatred);
 			}
 		}
 	}

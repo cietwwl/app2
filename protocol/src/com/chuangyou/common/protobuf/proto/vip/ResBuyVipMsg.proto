@@ -2,7 +2,7 @@
 option java_package = "com.chuangyou.common.protobuf.pb.vip";
 option java_outer_classname = "ResBuyVipMsgProto";
 
-//购买vip
+//购买或赠送vip成功
 message ResBuyVipMsg {
 	required int64 vipTimeLimit = 1;//vip 到期时间 （时间戳
 	required int64 vipInterimTimeLimit=2;//临时vip 到期时间（时间戳

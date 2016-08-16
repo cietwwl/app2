@@ -1,3 +1,4 @@
+
 package com.chuangyou.xianni.ai.proxy;
 
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
 
-public class MonsterAI {// extends BaseProxy {
+public class MonsterAI  implements AI{// extends BaseProxy {
 	protected Map<AIState, BaseBehavior> behaviors;
 	protected AIState current = AIState.IDLE;
 	protected Living living;

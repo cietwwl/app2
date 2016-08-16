@@ -135,6 +135,10 @@ public class SpwanNode {
 		this.blood = blood;
 	}
 
+	public void setDecorator(CampaignNodeDecorator decorator) {
+		this.decorator = decorator;
+	}
+
 	public void stateTransition(NodeState state) {
 		this.state = state;
 		state.work();

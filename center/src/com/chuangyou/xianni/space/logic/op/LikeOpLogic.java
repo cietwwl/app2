@@ -1,9 +1,12 @@
 package com.chuangyou.xianni.space.logic.op;
 
 import java.util.Date;
+import java.util.List;
 
 import com.chuangyou.common.protobuf.pb.space.OpSpaceRespProto.OpSpaceRespMsg;
 import com.chuangyou.common.util.Log;
+import com.chuangyou.xianni.common.ErrorCode;
+import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.item.ItemAddType;
 import com.chuangyou.xianni.entity.space.SpaceActionLogInfo;
 import com.chuangyou.xianni.entity.space.SpaceInfo;
@@ -28,6 +31,18 @@ public class LikeOpLogic implements ISpaceOpLogic {
 		
 		final String spaceScript = "spaceScript";
 		
+		List<SpaceActionLogInfo> list = reqPlayer.getSpaceInventory().getActions();
+		Date now = new Date();
+		for (SpaceActionLogInfo spaceActionLogInfo : list) {
+			if(spaceActionLogInfo.getAction() == 1 && spaceActionLogInfo.getSendPlayerId() == player.getPlayerId()){
+				if(spaceActionLogInfo.getCreateTime().getDate() == now.getDate() && 
+						spaceActionLogInfo.getCreateTime().getMonth()==now.getMonth()){
+					ErrorMsgUtil.sendErrorMsg(player, ErrorCode.LIKE_ONLY_ONE, Protocol.C_REQ_SPACE_ACTION,"每天只能点赞一次");
+					return;
+				}
+			}
+		}
+		
 		reqPlayer.getSpaceInventory().addLikes();
 		int items= 0;
 		if(reqPlayer.getSpaceInventory().consumeGift()){
@@ -41,6 +56,9 @@ public class LikeOpLogic implements ISpaceOpLogic {
 				}
 			}		
 		}
+		
+		
+		
 		doAll(player, reqPlayer, info, items, op);
 	}
 

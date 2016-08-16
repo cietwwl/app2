@@ -3,7 +3,7 @@ package com.chuangyou.xianni.battle.buffer;
 import com.chuangyou.xianni.battle.AttackOrder;
 import com.chuangyou.xianni.battle.damage.BloodDamageCalculator;
 import com.chuangyou.xianni.battle.damage.Damage;
-import com.chuangyou.xianni.battle.damage.SouDamageCalculator;
+import com.chuangyou.xianni.battle.damage.SoulDamageCalculator;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.role.objects.Living;
@@ -29,7 +29,8 @@ public class LivingDamageBuffer extends Buffer {
 			}
 			beDamage1.setTarget(target);
 			beDamage1.setSource(source);
-			beDamage1.setSkillId(0);
+			beDamage1.setFromType(Damage.BUFFER);
+			beDamage1.setFromId(getTemplateId());
 			beDamage1.setDamageType(type1);
 			beDamage1.setDamageValue(damageValue1);
 			beDamage1.setCalcType(getDamageType());
@@ -44,7 +45,8 @@ public class LivingDamageBuffer extends Buffer {
 			if (type2 == EnumAttr.CUR_SOUL.getValue()) {
 				damageValue2 = calSoul(bufferInfo.getValuePercent1(), bufferInfo.getValue1());
 			}
-			beDamage2.setSkillId(0);
+			beDamage1.setFromType(Damage.BUFFER);
+			beDamage1.setFromId(getTemplateId());
 			beDamage2.setTarget(target);
 			beDamage2.setSource(source);
 			beDamage2.setDamageType(type2);
@@ -60,6 +62,6 @@ public class LivingDamageBuffer extends Buffer {
 
 	// 向上取整{max（魂攻-对方魂防*1.2，0）*random（0.7,1.3）*MAX[1+（破魂-对方魂抗）/10000，0.1]}
 	private int calSoul(int percent, int value) {
-		return new SouDamageCalculator().calcDamage(source, target, percent, value);
+		return new SoulDamageCalculator().calcDamage(source, target, percent, value);
 	}
 }

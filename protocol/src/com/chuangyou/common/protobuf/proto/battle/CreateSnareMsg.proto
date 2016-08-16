@@ -1,0 +1,14 @@
+//protocol=20512;
+option java_package = "com.chuangyou.common.protobuf.pb.battle";
+option java_outer_classname = "CreateSnareMsgProto";
+
+
+import "common/PBVector3.proto";
+message CreateSnareMsg{
+	optional int64  indexId= 1;  //释放技能时，服务器返回的唯一ID
+	optional int32	snareid = 2; //陷阱ID
+	optional PBVector3 bornPos = 3; //当前位置
+	optional PBVector3 targetPos = 4; //当前位置
+	optional int64  lockingId=5;//锁定目标ID
+}
+

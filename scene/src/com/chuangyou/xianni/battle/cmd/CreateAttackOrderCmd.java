@@ -4,17 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.chuangyou.common.protobuf.pb.battle.AttackOrderProto.AttackOrderMsg;
 import com.chuangyou.common.util.Log;
-import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.battle.AttackOrder;
 import com.chuangyou.xianni.battle.OrderFactory;
 import com.chuangyou.xianni.battle.action.OrderExecAction;
 import com.chuangyou.xianni.battle.skill.Skill;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
-import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.BattleModeCode;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.drop.manager.DropManager;
@@ -41,7 +38,7 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 	public void execute(ArmyProxy army, PBMessage packet) throws Exception {
 		AttackOrderMsg orderMsg = AttackOrderMsg.parseFrom(packet.toByteArray());
 		int skillActionId = orderMsg.getSkillActionId();
-		 System.out.println(orderMsg);
+//		System.out.println(orderMsg);
 		// 该玩家是否具有此技能
 		Player player = army.getPlayer();
 		if (!player.hasSkillId(skillActionId)) {
@@ -69,7 +66,7 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 			Living living = field.getLiving(targetId);
 			if (living != null) {
 				// PK判定
-				if (living.getType() == RoleType.player && !attackCheck(field, player, living)) {
+				if ((living instanceof Player) && !OrderFactory.attackCheck(field, player, (Player) living)) {
 					continue;
 				}
 				// 怪物AI触发
@@ -78,6 +75,7 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 				}
 				if (battleMode == BattleModeCode.warBattleMode && living.getBattleMode() == BattleModeCode.peaceBattleMode && living.getType() == RoleType.player) {
 					isFlicker = true;
+					player.setFlashName(true);
 				}
 				targets.add(living);
 			}
@@ -106,29 +104,10 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 
 	}
 
-	private boolean attackCheck(Field field, Player player, Living target) {
-		String startTime = field.getFieldInfo().getStartBattleTime();
-		String endTime = field.getFieldInfo().getEndBattleTime();
-		if (field.getFieldInfo().isBattle()) {// pk 地图才能攻击
-			int openLv = SystemConfigTemplateMgr.getIntValue("pk.openLv");
-			if (((Player) target).getSimpleInfo().getLevel() < openLv)
-				return false;
-			if (player.getBattleMode() == BattleModeCode.sectsBattleMode) {
-				if (player.getTeamId() != 0 && player.getTeamId() == ((Player) target).getTeamId())// 队友
-					return false;
-			}
-			if (startTime != null && endTime != null && TimeUtil.checkPeriod(startTime, endTime)) {// 受保护时间
-				if (((Player) target).getColour(target.getPkVal()) == BattleModeCode.white) {// 受地图保护
-					return false;
-				}
-			}
-			return true;
-		}
-		return false;
-	}
-
 	private void monsterAiEvent(Player source, Monster target) {
 		int rewardExp = 0;
+		if (target.getAiConfig() == null)
+			return;
 		int exp = target.getAiConfig().getRewardExp();
 		rewardExp += exp;
 		// 掉落

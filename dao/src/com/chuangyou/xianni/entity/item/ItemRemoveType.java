@@ -44,8 +44,8 @@ public interface ItemRemoveType {
 	/**
 	 * 任务消耗
 	 */
-	public static final short	TASK_COMMIT		= 1010;
-
+	public static final short TASK_COMMIT = 1010;
+	
 	/**
 	 * 进入副本消耗
 	 */
@@ -55,4 +55,14 @@ public interface ItemRemoveType {
 	 * 分解
 	 */
 	public static final short	RESOLVE			= 1012;
+	/**
+	 * 空间消耗
+	 */
+	public static final short SPACE = 1013;
+	/**
+	 * 魂幡
+	 */
+	public static final short SOUL = 1014;
+	
+	
 }

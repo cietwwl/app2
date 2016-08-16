@@ -1,0 +1,11 @@
+//protocol=1607;
+option java_package = "com.chuangyou.common.protobuf.pb.soul";
+option java_outer_classname = "SoulInfoAddExpRespProto";
+
+import "army/PropertyMsg.proto";
+
+//吃道具加经验--增加魂魄
+message SoulInfoAddExpRespMsg{
+	required int64 exp = 1;
+	repeated PropertyMsg atts = 4;//加成属性
+}

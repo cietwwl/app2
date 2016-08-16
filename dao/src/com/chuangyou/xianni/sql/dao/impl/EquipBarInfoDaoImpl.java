@@ -48,7 +48,7 @@ public class EquipBarInfoDaoImpl extends BaseDao implements EquipBarInfoDao {
 		// TODO Auto-generated method stub
 		boolean result = false;
 		info.beginUpdate();
-		String sql = "update tb_u_equipbar_info set level=?,exp=?,grade=?,bless=? where playerId=? adn position=?";
+		String sql = "update tb_u_equipbar_info set level=?,exp=?,grade=?,bless=? where playerId=? and position=?";
 		Map<Integer, DbParameter> params = new HashMap<>();
 		params.put(1, new DbParameter(Types.INTEGER, info.getLevel()));
 		params.put(2, new DbParameter(Types.INTEGER, info.getExp()));

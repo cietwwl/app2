@@ -1,0 +1,9 @@
+//protocol= 10709;
+option java_package = "com.chuangyou.common.protobuf.pb.vip";
+option java_outer_classname = "ReqReceiveMsgProto";
+
+//vip 购买礼包或者是领取周奖励
+message ReqReceiveMsg {
+	required int32 type = 1; //1购买礼包,2 领取周奖励
+	required int32 id 	= 2; //要领取或购买的礼包。vip礼包配置标的id
+}

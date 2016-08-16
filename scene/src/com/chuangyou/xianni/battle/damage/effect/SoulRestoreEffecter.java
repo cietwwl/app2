@@ -13,7 +13,7 @@ public class SoulRestoreEffecter implements DamageEffecter {
 		int value = damage.getDamageValue();
 
 		if (damage.getDamageType() != EnumAttr.CUR_SOUL.getValue()) {
-			Log.error("battle error , blood only damage type is not cur_blood,skillId:" + damage.getSkillId());
+			Log.error("battle error , blood only damage type is not cur_blood,skillId:" + damage.getFromType() + " ---" + damage.getFromId());
 			damage.setDamageType(EnumAttr.CUR_SOUL.getValue());
 		}
 

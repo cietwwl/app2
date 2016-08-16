@@ -21,6 +21,8 @@ public class CommonType {
 		public final static int EXP				= 7150000;
 		/** 积分 */
 		public final static int POINTS          = 7160000;
+		/**vip 经验**/
+		public final static int VIP_EXP			= 7170000;
 
 	}
 

@@ -24,6 +24,9 @@ public class ReqPlayerDetailCmd extends AbstractCommand {
 		PlayerDetailReqMsg detailReq = PlayerDetailReqMsg.parseFrom(packet.getBytes());
 		long livingId = detailReq.getLivingId();
 		Field field = FieldMgr.getIns().getField(army.getFieldId());
+		if (field == null) {
+			return;
+		}
 		Living l = field.getLiving(livingId);
 		if (l != null) {
 			army.sendPbMessage(MessageUtil.buildMessage(Protocol.U_G_BATTLEPLAYERINFO, l.getBattlePlayerInfoMsg()));

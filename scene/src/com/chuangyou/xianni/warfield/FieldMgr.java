@@ -206,7 +206,7 @@ public class FieldMgr {
 		Field f = new Field();
 		f.setMapKey(mapkey);
 		f.id = mapkey;
-		fields.put(f.id, f);
+		fields.put(f.id, f);	
 		spwanInit(f);
 		Log.error("初始化地图，mapKey = " + mapkey);
 		return f;

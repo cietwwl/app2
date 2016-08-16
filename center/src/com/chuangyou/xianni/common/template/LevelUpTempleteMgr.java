@@ -70,6 +70,28 @@ public class LevelUpTempleteMgr {
 		return maxLevelMap.get(LevelUpType.PLAYER);
 	}
 	
+	
+	/**
+	 * 根据总经验获取等级
+	 * @param totalExp
+	 * @return
+	 */
+	public static int getSoulLevel(long totalExp){
+		List<LevelUp> list = levelUpListMap.get(LevelUpType.SOUL);
+		if(list == null){
+			return 1;
+		}
+		long templeteTotalExp = 0;
+		for(LevelUp levelUp:list){
+			templeteTotalExp += levelUp.getExp();
+			if(templeteTotalExp > totalExp){
+				return levelUp.getLevel();
+			}
+		}
+		return maxLevelMap.get(LevelUpType.SOUL);
+	}
+	
+	
 	/**
 	 * 根据人物等级获得当前等级需要的总经验
 	 * @param level
@@ -96,6 +118,10 @@ public class LevelUpTempleteMgr {
 	 * @return
 	 */
 	public static int getPlayerMaxLevel(){
+		
+		if(!maxLevelMap.containsKey(LevelUpType.PLAYER)){
+			return 0;
+		}
 		return maxLevelMap.get(LevelUpType.PLAYER);
 	}
 	
@@ -118,6 +144,9 @@ public class LevelUpTempleteMgr {
 	 * @return
 	 */
 	public static int getEquipBarMaxLevel(short position){
+		if(!maxLevelMap.containsKey(LevelUpType.EQUIPBARSTART + position)){
+			return 0;
+		}
 		return maxLevelMap.get(LevelUpType.EQUIPBARSTART + position);
 	}
 	/**

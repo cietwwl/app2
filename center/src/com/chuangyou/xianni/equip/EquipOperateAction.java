@@ -20,6 +20,11 @@ public class EquipOperateAction {
 		 * 栏位加持
 		 */
 		public static final short GRADE_UP = 3;
+		
+		/**
+		 * 一键升到最高级
+		 */
+		public static final short LEVEL_UP_ONEKEY = 4;
 	}
 	
 	/**

@@ -12,7 +12,7 @@
 	</gateway_server>
 
 	<maindb_server>
-		<db id="401" name="hw_xn_new" address="192.168.1.242" port="3306"
+		<db id="401" name="xn_new" address="192.168.1.242" port="3306"
 			user="root" password="123456" />
 	</maindb_server>
 

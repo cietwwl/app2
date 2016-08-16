@@ -45,6 +45,7 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.shop.ShopInventory;
 import com.chuangyou.xianni.skill.SkillInventory;
+import com.chuangyou.xianni.soul.SoulInventory;
 import com.chuangyou.xianni.space.SpaceInventory;
 import com.chuangyou.xianni.task.TaskInventory;
 import com.chuangyou.xianni.word.WorldMgr;
@@ -107,6 +108,11 @@ public class GamePlayer extends AbstractEvent {
 	
 	/** 装备 */
 	private EquipInventory		equipInventory;
+	
+	/**
+	 * 魂幡
+	 */
+	private SoulInventory 		soulInventory;
 
 	private Channel channel;			// 服务器持有连接
 
@@ -174,6 +180,10 @@ public class GamePlayer extends AbstractEvent {
 
 		if(equipInventory != null){
 			equipInventory.saveToDatabase();
+		}
+		
+		if(soulInventory != null){
+			soulInventory.saveToDatabase();
 		}
 
 	}
@@ -271,7 +281,10 @@ public class GamePlayer extends AbstractEvent {
 		if(!initData(equipInventory.loadFromDataBase(), "装备数据")){
 			return false;
 		}
-		
+		soulInventory = new SoulInventory(this);
+		if(!initData(soulInventory.loadFromDataBase(), "魂幡数据")){
+			return false;
+		}
 		//创建时会计算所有属性，所以要在最后面加载
 		armyInventory = new ArmyInventory(this);
 		if (!initData(armyInventory.loadFromDataBase(), "用户部队")) {
@@ -299,7 +312,6 @@ public class GamePlayer extends AbstractEvent {
 			emailInventory.unloadData();
 			emailInventory = null;
 		}
-
 		if (mountInventory != null) {
 			mountInventory.unloadData();
 			mountInventory = null;
@@ -334,7 +346,10 @@ public class GamePlayer extends AbstractEvent {
 			equipInventory.unloadData();
 			equipInventory = null;
 		}
-
+		if(soulInventory != null){
+			soulInventory.unloadData();
+			soulInventory = null;
+		}
 		return true;
 	}
 
@@ -605,6 +620,11 @@ public class GamePlayer extends AbstractEvent {
 		return spaceInventory;
 	}
 
+
+	public SoulInventory getSoulInventory() {
+		return soulInventory;
+	}
+	
 	/** 重置玩家数据 */
 	public void resetPlayerData() {
 		try {

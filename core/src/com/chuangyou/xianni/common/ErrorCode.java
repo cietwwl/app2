@@ -464,7 +464,12 @@ public class ErrorCode {
 	/** 已经购买过了**/
 	public static final int VIPBAG_ERROR4 = 6023;
 	/** 只能领取对应礼包 **/
-	public static final int VIPBAG_ERROR5 = 6023;
+	public static final int VIPBAG_ERROR5 = 6024;
+	/** 这周已经领取了 **/
+	public static final int VIPBAG_ERROR6 = 6025;
+	/** 点赞每天只能一次   */
+	public static final int LIKE_ONLY_ONE = 6026;
+	
 //	public static final int CHANGE_BATTLE3 = 6009;
 //	public static final int CHANGE_BATTLE4 = 6009;
 //	public static final int CHANGE_BATTLE5 = 6009;

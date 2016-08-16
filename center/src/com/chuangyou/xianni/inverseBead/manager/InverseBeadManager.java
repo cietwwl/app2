@@ -129,6 +129,7 @@ public class InverseBeadManager {
 		List<Integer> list = new ArrayList<>();
 		list.add(InverseBeadInventory.spawnId);
 		msg.addAllMonsterRefreshId(list);
+		msg.setCurCampaign(player.getCurCampaign());
 		PBMessage c2s = MessageUtil.buildMessage(Protocol.S_CREATE_INVERSE_SYNC_MONSTER, msg);
 		player.sendPbMessage(c2s);
 
@@ -151,7 +152,8 @@ public class InverseBeadManager {
 			playerTimeInfo.setAuraNum(0);
 		}
 		if (num > 0) {
-			player.getBagInventory().addItemInBagOrEmail(InverseBeadInventory.auraId, num, ItemAddType.OVERLAY, false);
+			int auraId = SystemConfigTemplateMgr.getIntValue("inverseBead.auraId");
+			player.getBagInventory().addItemInBagOrEmail(auraId, num, ItemAddType.OVERLAY, false);
 		}
 		return num;
 	}
@@ -184,13 +186,14 @@ public class InverseBeadManager {
 		List<Integer> list = InverseBeadManager.getBeadRefreshId(playerBeadTimeInfo.getBeadRefreshId());
 		SyncMonsterPoolMsg.Builder msg = SyncMonsterPoolMsg.newBuilder();
 		msg.addAllMonsterRefreshId(list);
+		msg.setCurCampaign(player.getCurCampaign());
 		PBMessage c2s = MessageUtil.buildMessage(Protocol.S_CREATE_INVERSE_SYNC_MONSTER, msg);
 		player.sendPbMessage(c2s);
 	}
 
-	public static void main(String[] args) {
-		List<Integer> list = getBeadRefreshId("");
-		System.out.println(list.size());
-	}
+//	public static void main(String[] args) {
+//		List<Integer> list = getBeadRefreshId("");
+////		System.out.println(list.size());
+//	}
 
 }

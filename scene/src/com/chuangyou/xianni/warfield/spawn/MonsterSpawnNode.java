@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import com.chuangyou.common.util.Log;
-import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.buffer.BufferFactory;
@@ -29,11 +27,9 @@ import com.chuangyou.xianni.role.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.warfield.field.Field;
 
 public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
-	protected int					toalCount;							// 刷怪总数
-	protected int					curCount;							// 当前数量
-	private ThreadSafeRandom	random	= new ThreadSafeRandom();
-	protected Map<Long, Living>	children;							// 子孙们
-
+	protected int					toalCount;	// 刷怪总数
+	protected int					curCount;	// 当前数量
+	protected Map<Long, Living>	children;	// 子孙们
 
 	public MonsterSpawnNode(SpawnInfo info, Field field) {
 		super(info, field);
@@ -61,6 +57,7 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 		super.start();
 		System.err.println("spwanInfo :" + spwanInfo.getId());
 		while (curCount < spwanInfo.getMaxCount() && (toalCount < spwanInfo.getToalCount() || spwanInfo.getToalCount() <= 0)) {
+			curCount++;
 			createChildren();
 		}
 	}
@@ -69,11 +66,13 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 		if (field != null) {
 			children.remove(living.getId());
 			field.addDeathLiving(living);
+			curCount--;
 			if (isOver()) {
 				stateTransition(new OverState(this));
 			} else {
-				if (spwanInfo.getToalCount() == 0 || toalCount < spwanInfo.getToalCount()) {
+				if (((spwanInfo.getToalCount() == 0 || toalCount < spwanInfo.getToalCount()) && curCount < spwanInfo.getMaxCount())) {
 					field.enDelayQueue(new CreateChildAction());
+					curCount++;
 				}
 			}
 		}
@@ -94,7 +93,6 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 		if (isOver() || (state != null && state.code >= NodeState.OVER)) {
 			return;
 		}
-		curCount++;
 		toalCount++;
 
 		int randomx = spwanInfo.getBound_x();
@@ -109,7 +107,6 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 			monster.setPostion(new Vector3(randomx / Vector3.Accuracy, randomy / Vector3.Accuracy, randomz / Vector3.Accuracy));
 			instill(monster, monsterInfo);
 			children.put(monster.getId(), monster);
-			System.out.println("怪物进入地图。。。。。monster.getId(): "+monster.getId()+"field.getMapKey"+field.getMapKey());
 			field.enterField(monster);
 			// NotifyNearHelper.notifyNearPlayer(field, monster,
 			// monster.getPostion());

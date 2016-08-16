@@ -12,8 +12,8 @@ public class EntityIdBuilder {
 	private static AtomicLong		ITEM_INFO_ID;
 	private static AtomicInteger	CAMPAIGN_RECORD_ID;
 	private static AtomicInteger	TEAM_ID;
-	private static AtomicInteger    SPACE_MSG_ID;
-	
+	private static AtomicInteger	SPACE_MSG_ID;
+
 	public static boolean init() {
 		USER_ID = new AtomicLong(DBManager.getUserDao().getMaxId());
 		PLAYER_ID = new AtomicLong(DBManager.getPlayerInfoDao().getMaxPlayerId());
@@ -35,6 +35,7 @@ public class EntityIdBuilder {
 
 	public static long playerIdBuilder() {
 		synchronized (PLAYER_ID) {
+			
 			if (SystemConfigTemplateMgr.getIdBuiderWay() != 0) {
 				return DBManager.getPlayerInfoDao().getMaxPlayerId();
 			}
@@ -44,34 +45,27 @@ public class EntityIdBuilder {
 
 	public static long itemIdBuilder() {
 		synchronized (ITEM_INFO_ID) {
-			if (SystemConfigTemplateMgr.getIdBuiderWay() != 0) {
-				return DBManager.getItemInfoDao().getMaxItemId();
-			}
 			return ITEM_INFO_ID.getAndIncrement();
 		}
 	}
 
 	public static int cmRecordIdBuilder() {
 		synchronized (CAMPAIGN_RECORD_ID) {
-			if (SystemConfigTemplateMgr.getIdBuiderWay() != 0) {
-				return DBManager.getCampaignRecordInfoDao().getMaxId();
-			}
 			return CAMPAIGN_RECORD_ID.getAndIncrement();
 		}
 	}
 
 	/**
-	 *  获取
+	 * 获取
+	 * 
 	 * @return
 	 */
 	public static int spaceMsgIdBuilder() {
 		synchronized (SPACE_MSG_ID) {
-			if (SystemConfigTemplateMgr.getIdBuiderWay() != 0) {
-				return DBManager.getSpaceDao().getMaxId();
-			}
 			return SPACE_MSG_ID.getAndIncrement();
 		}
 	}
+
 	/**
 	 * 队伍ID生成器
 	 * 

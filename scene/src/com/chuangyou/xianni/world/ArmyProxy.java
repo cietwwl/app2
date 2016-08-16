@@ -26,7 +26,6 @@ import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.role.objects.Pet;
 import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.team.NotifyHelper;
-import com.chuangyou.xianni.team.TeamMgr;
 import com.chuangyou.xianni.warfield.FieldMgr;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.helper.NotifyNearHelper;
@@ -213,8 +212,10 @@ public class ArmyProxy extends AbstractActionQueue {
 				}
 				// 离开地图
 				field.leaveField(player);
+				player.clearData();
 				if (pet != null) {
 					field.leaveField(pet);
+					pet.clearData();
 				}
 			}
 

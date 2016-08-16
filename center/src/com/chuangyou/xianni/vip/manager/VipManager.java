@@ -2,10 +2,11 @@ package com.chuangyou.xianni.vip.manager;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.chuangyou.common.protobuf.pb.vip.ResGetVipInfoMsgProto.ResGetVipInfoMsg;
+import com.chuangyou.common.util.DateTimeUtil;
 import com.chuangyou.common.util.StringUtils;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
@@ -13,30 +14,44 @@ import com.chuangyou.xianni.entity.item.ItemAddType;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.vip.VipBagTemplate;
 import com.chuangyou.xianni.entity.vip.VipTemplate;
-import com.chuangyou.xianni.inverseBead.InverseBeadInventory;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.proto.MessageUtil;
+import com.chuangyou.xianni.proto.PBMessage;
+import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.sql.dao.DBManager;
 import com.chuangyou.xianni.vip.templete.VipTemplateMgr;
-
-import io.netty.util.internal.StringUtil;
+import com.chuangyou.xianni.word.WorldMgr;
 
 public class VipManager {
 	/**
 	 * 购买vip
 	 * 
+	 * @param player
 	 * @param vipId
+	 * @param handselPlayerId 接收者
 	 * @return
 	 */
-	public static boolean buyVip(GamePlayer player, int vipId) {
+	public static boolean buyVip(GamePlayer player, int vipId, long handselPlayerId) {
+
 		VipTemplate temp = VipTemplateMgr.getVipTemplate(vipId);
 		if (temp == null)
 			return false;
 
+		int cash = temp.getCash();
 		int vipDuration = temp.getVipDuration();
+		PlayerInfo playerInfo = null;
+		if (handselPlayerId > 0) {
+			GamePlayer handselPlayer = WorldMgr.getPlayerFromCache(handselPlayerId);
+			if (handselPlayer == null)
+				playerInfo = DBManager.getPlayerInfoDao().getPlayerInfo(handselPlayerId);
+			else
+				playerInfo = handselPlayer.getBasePlayer().getPlayerInfo();
+		} else {
+			playerInfo = player.getBasePlayer().getPlayerInfo();
+		}
 
-		PlayerInfo playerInfo = player.getBasePlayer().getPlayerInfo();
 		Date vipInterimTimeLimit = playerInfo.getVipInterimTimeLimit();// 临时到期时间
 		Date vipTimeLimit = playerInfo.getVipTimeLimit();
-
 		long timeLength = vipTimeLimit.getTime() - System.currentTimeMillis();
 		long timeLength2 = vipInterimTimeLimit.getTime() - System.currentTimeMillis();
 		long time = 0;
@@ -49,6 +64,7 @@ public class VipManager {
 		playerInfo.setVipTimeLimit(new Date(System.currentTimeMillis() + vipDuration * 24 * 60 * 60 + time));
 		playerInfo.setVipInterimTimeLimit(new Date());
 
+		player.getBasePlayer().addCash(cash);
 		return true;
 	}
 
@@ -56,11 +72,6 @@ public class VipManager {
 
 		String rec = player.getBasePlayer().getPlayerInfo().getVipReceiveRecording();
 		Map<String, List<Object>> map = StringUtils.strToMap(rec);// 领取记录
-		if (map.containsKey(type + "") && map.get(type + "").contains(id)) {
-			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR4, code);// 已经购买过了
-			return false;
-		}
-
 		VipBagTemplate bag = VipTemplateMgr.getvipBagTemplate(type, id);
 		if (bag == null) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR, code);// vip 礼包不存在
@@ -68,6 +79,10 @@ public class VipManager {
 		}
 		PlayerInfo playerInfo = player.getBasePlayer().getPlayerInfo();
 		if (bag.getType() == 1) {// vip购买礼包
+			if (map.containsKey(type + "") && map.get(type + "").contains(id)) {
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR4, code);// 已经购买过了
+				return false;
+			}
 			if (!isInterimVip(player) && !isVip(player)) {
 				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR3, code);// 您不是 vip
 				return false;
@@ -100,15 +115,29 @@ public class VipManager {
 				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR3, code);// 您不是 vip
 				return false;
 			}
+			if (!map.containsKey(type + "")) {
+				Date date = new Date((long) (map.get(type + "").get(0)));
+				if (DateTimeUtil.isSameWeekWithToday(new Date(), date)) {
+					ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR6, code);// 这周已经领取了
+					return false;
+				}
+			}
+
 			int vipLv = playerInfo.getVipLevel();
 			int condition = bag.getCondition();
 			if (vipLv != condition) {
 				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR5, code);// 只能领取对应礼包
 				return false;
 			}
+
 			// 记录领取
-			
-			
+			if (!map.containsKey(type + "")) {
+				List<Object> obj = new ArrayList<>();
+				map.put(type + "", obj);
+			}
+			map.get(type + "").clear();
+			map.get(type + "").add(System.currentTimeMillis());
+			player.getBasePlayer().getPlayerInfo().setVipReceiveRecording(StringUtils.mapToStr(map));
 		}
 
 		// 发物品
@@ -129,6 +158,52 @@ public class VipManager {
 			player.getBagInventory().addItemInBagOrEmail(item5, bag.getNum5(), ItemAddType.OVERLAY, false);
 
 		return true;
+	}
+
+	public static void getVipInfo(GamePlayer player) {
+		PlayerInfo playerInfo = player.getBasePlayer().getPlayerInfo();
+		int vipLv = playerInfo.getVipLevel();
+		int exp = playerInfo.getVipExp();
+		Date vipTimeLimit = playerInfo.getVipTimeLimit();
+		Date interimTimeLimit = playerInfo.getVipInterimTimeLimit();
+		String str = playerInfo.getVipReceiveRecording();
+		Map<String, List<Object>> map = StringUtils.strToMap(str);// 领取记录
+		if (!map.containsKey(1 + "")) {
+			List<Object> obj = new ArrayList<>();
+			map.put(1 + "", obj);
+		}
+		if (!map.containsKey(2 + "")) {
+			List<Object> obj = new ArrayList<>();
+			map.put(1 + "", obj);
+		}
+
+		ResGetVipInfoMsg.Builder resMsg = ResGetVipInfoMsg.newBuilder();
+		resMsg.setVipLv(vipLv);
+		resMsg.setVipExp(exp);
+		if (interimTimeLimit != null) {
+			resMsg.setVipInterimTimeLimit(interimTimeLimit.getTime());
+		} else {
+			resMsg.setVipInterimTimeLimit(0);
+		}
+		if (vipTimeLimit != null) {
+			resMsg.setVipTimeLimit(vipTimeLimit.getTime());
+		} else {
+			resMsg.setVipTimeLimit(0);
+		}
+		for (Object obj : map.get(1 + "")) {
+			resMsg.addBuy((Integer) obj);
+		}
+		resMsg.setIsReceive(0);
+		if (map.containsKey("2")) {
+			if (map.get("2").get(0) != null) {
+				Date date = new Date((long) (map.get("2").get(0)));
+				if (DateTimeUtil.isSameWeekWithToday(new Date(), date)) {
+					resMsg.setIsReceive(1);
+				}
+			}
+		}
+		PBMessage p = MessageUtil.buildMessage(Protocol.U_GET_VIP_INFO, resMsg);
+		player.sendPbMessage(p);
 	}
 
 	private static boolean isInterimVip(GamePlayer player) {

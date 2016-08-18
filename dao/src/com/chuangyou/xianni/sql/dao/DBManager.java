@@ -41,6 +41,7 @@ import com.chuangyou.xianni.sql.dao.impl.PlayerInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PlayerInverseBeadDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PlayerPositionInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PropertyFightingTemplateDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.RelationInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.RoleConfigImplDao;
 import com.chuangyou.xianni.sql.dao.impl.ShopConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.ShopDaoImpl;
@@ -572,6 +573,15 @@ public class DBManager {
 
 	public static EquipBarInfoDao getEquipBarInfoDao() {
 		return equipBarInfoDao;
+	}
+	
+	/**
+	 * 玩家关系数据
+	 */
+	private static final RelationInfoDao relationInfoDao = new RelationInfoDaoImpl();
+	
+	public static RelationInfoDao getRelationInfoDao(){
+		return relationInfoDao;
 	}
 
 

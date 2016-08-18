@@ -159,6 +159,10 @@ public class Living extends AbstractActionQueue {
 	 * 位置
 	 */
 	protected Vector3							postion;
+	/**
+	 * 方向
+	 */
+	protected Vector3							dir = Vector3.Zero();
 
 	/**
 	 * 目标位置
@@ -233,6 +237,16 @@ public class Living extends AbstractActionQueue {
 	public void setPostion(Vector3 postion) {
 		// System.out.println("id = " + id + " setPosition --- " + postion);
 		this.postion = postion;
+	}
+	
+	public Vector3 getDir()
+	{
+		return dir;
+	}
+	
+	public void setDir(Vector3 dir)
+	{
+		this.dir = dir;
 	}
 
 	public Vector3 getTargetPostion() {
@@ -311,6 +325,7 @@ public class Living extends AbstractActionQueue {
 	 */
 	public void enterField(Field f) {
 		field = f;
+		// Log.error("enterField + livingId :"+ this.id +" "+ f);
 	}
 
 	/**
@@ -585,10 +600,10 @@ public class Living extends AbstractActionQueue {
 						long maxBlood = getProperty(EnumAttr.MAX_BLOOD.getValue());
 						long newMaxB = maxBlood + add;
 						setProperty(EnumAttr.MAX_BLOOD, newMaxB);
-						PropertyMsg.Builder speedMsg = PropertyMsg.newBuilder();
-						speedMsg.setType(EnumAttr.MAX_BLOOD.getValue());
-						speedMsg.setTotalPoint(newMaxB);
-						properties.add(speedMsg.build());
+						PropertyMsg.Builder mbMsg = PropertyMsg.newBuilder();
+						mbMsg.setType(EnumAttr.MAX_BLOOD.getValue());
+						mbMsg.setTotalPoint(newMaxB);
+						properties.add(mbMsg.build());
 						addCurBlood((int) add, DamageEffecterType.BLOOD);
 					}
 				}
@@ -599,10 +614,10 @@ public class Living extends AbstractActionQueue {
 						long maxSoul = getProperty(EnumAttr.MAX_SOUL.getValue());
 						long newMaxS = maxSoul + add;
 						setProperty(EnumAttr.MAX_SOUL, newMaxS);
-						PropertyMsg.Builder speedMsg = PropertyMsg.newBuilder();
-						speedMsg.setType(EnumAttr.MAX_SOUL.getValue());
-						speedMsg.setTotalPoint(newMaxS);
-						properties.add(speedMsg.build());
+						PropertyMsg.Builder msMsg = PropertyMsg.newBuilder();
+						msMsg.setType(EnumAttr.MAX_SOUL.getValue());
+						msMsg.setTotalPoint(newMaxS);
+						properties.add(msMsg.build());
 						addCurSoul((int) add, DamageEffecterType.SOUL);
 					}
 				}
@@ -1269,9 +1284,9 @@ public class Living extends AbstractActionQueue {
 
 	/** 脱离战斗 */
 	public void leaveFight() {
-		if (this.getType() == RoleType.player){
+		if (this.getType() == RoleType.player) {
 			changeFlickerName(false);
-			((Player)this).setFlashName(false);
+			((Player) this).setFlashName(false);
 		}
 
 		if (!fightState) {
@@ -2107,5 +2122,6 @@ public class Living extends AbstractActionQueue {
 		allBuffers.clear();
 		livingStatus.clear();
 		cooldowns.clear();
+		livingState = DISTORY;
 	}
 }

@@ -6,7 +6,7 @@ import com.chuangyou.xianni.ai.AIState;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
 
-public class RunAway extends BaseBehavior {
+public class RunAway extends MonsterBaseBehavior {
 
 	public RunAway(Monster m) {
 		super(AIState.RUNAWAY, m);

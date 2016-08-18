@@ -324,21 +324,22 @@ public class BasePlayer extends AbstractEvent {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * 消耗装备经验
+	 * 
 	 * @param count
 	 * @return
 	 */
-	public boolean consumeEquipExp(long count){
-		if(playerInfo.getEquipExp() < count)
+	public boolean consumeEquipExp(long count) {
+		if (playerInfo.getEquipExp() < count)
 			return false;
 		beginChanges();
 		try {
-			if(moneyLock.beginLock()){
+			if (moneyLock.beginLock()) {
 				this.playerInfo.setEquipExp(playerInfo.getEquipExp() - count);
 				this.playerInfo.setOp(Option.Update);
-			}else{
+			} else {
 				Log.error("playerId : " + getPlayerInfo().getPlayerId() + "consumeEquipExp Lock");
 				return false;
 			}
@@ -352,18 +353,20 @@ public class BasePlayer extends AbstractEvent {
 		}
 		return true;
 	}
+
 	/**
 	 * 添加装备经验
+	 * 
 	 * @param count
 	 * @return
 	 */
-	public boolean addEquipExp(long count){
+	public boolean addEquipExp(long count) {
 		beginChanges();
 		try {
-			if(moneyLock.beginLock()){
+			if (moneyLock.beginLock()) {
 				this.playerInfo.setEquipExp(playerInfo.getEquipExp() + count);
 				this.playerInfo.setOp(Option.Update);
-			}else{
+			} else {
 				Log.error("playerId : " + getPlayerInfo().getPlayerId() + "addEquipExp Lock");
 				return false;
 			}
@@ -583,15 +586,16 @@ public class BasePlayer extends AbstractEvent {
 		boolean hasLevelUp = false;
 		try {
 			this.playerInfo.setVipExp(this.playerInfo.getVipExp() + addValue);
-			VipLevelTemplate temp = VipTemplateMgr.getVipLevelTemplate(playerInfo.getVipLevel());
 
-			if (temp.getNeedExp() > 0 && this.playerInfo.getVipExp() >= temp.getNeedExp()) {// 升级
+			VipLevelTemplate temp = VipTemplateMgr.getVipLevelTemplate(playerInfo.getVipLevel());
+			while (temp != null && temp.getNeedExp() > 0 && this.playerInfo.getVipExp() >= temp.getNeedExp()) {// 升级
 				hasLevelUp = true;
 				playerInfo.setVipLevel((short) (playerInfo.getVipLevel() + 1));
 				playerInfo.setVipExp((int) (playerInfo.getVipExp() - temp.getNeedExp()));
+				temp = VipTemplateMgr.getVipLevelTemplate(playerInfo.getVipLevel());
 			}
 
-			changeMap.put(EnumAttr.VIP_EXP.getValue(), (long)playerInfo.getVipExp());
+			changeMap.put(EnumAttr.VIP_EXP.getValue(), (long) playerInfo.getVipExp());
 			this.playerInfo.setOp(Option.Update);
 		} catch (Exception e) {
 			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " updateVipExp", e);

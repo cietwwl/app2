@@ -38,7 +38,7 @@ public class VipManager {
 			return false;
 
 		int cash = temp.getCash();
-		int vipDuration = temp.getVipDuration();
+		long vipDuration = temp.getVipDuration();
 		PlayerInfo playerInfo = null;
 		if (handselPlayerId > 0) {
 			GamePlayer handselPlayer = WorldMgr.getPlayerFromCache(handselPlayerId);
@@ -52,8 +52,15 @@ public class VipManager {
 
 		Date vipInterimTimeLimit = playerInfo.getVipInterimTimeLimit();// 临时到期时间
 		Date vipTimeLimit = playerInfo.getVipTimeLimit();
-		long timeLength = vipTimeLimit.getTime() - System.currentTimeMillis();
-		long timeLength2 = vipInterimTimeLimit.getTime() - System.currentTimeMillis();
+
+		long timeLength = 0;
+		long timeLength2 = 0;
+		if (vipTimeLimit != null)
+			timeLength = vipTimeLimit.getTime() - System.currentTimeMillis();
+
+		if (vipInterimTimeLimit != null)
+			timeLength2 = vipInterimTimeLimit.getTime() - System.currentTimeMillis();
+
 		long time = 0;
 		if (timeLength > 0) {
 			time += timeLength;
@@ -61,9 +68,12 @@ public class VipManager {
 		if (timeLength2 > 0) {
 			time += timeLength2;
 		}
-		playerInfo.setVipTimeLimit(new Date(System.currentTimeMillis() + vipDuration * 24 * 60 * 60 + time));
+		playerInfo.setVipTimeLimit(new Date(System.currentTimeMillis() + vipDuration * 24 * 60 * 60 * 1000 + time));
 		playerInfo.setVipInterimTimeLimit(new Date());
 
+		// System.out.println(System.currentTimeMillis() + vipDuration * 24 * 60 * 60 * 1000 + time);
+		// System.out.println(DateTimeUtil.format(playerInfo.getVipTimeLimit()));
+		// System.out.println(DateTimeUtil.format(playerInfo.getVipInterimTimeLimit()));
 		player.getBasePlayer().addCash(cash);
 		return true;
 	}
@@ -79,7 +89,7 @@ public class VipManager {
 		}
 		PlayerInfo playerInfo = player.getBasePlayer().getPlayerInfo();
 		if (bag.getType() == 1) {// vip购买礼包
-			if (map.containsKey(type + "") && map.get(type + "").contains(id)) {
+			if (map.containsKey(type + "") && map.get(type + "").contains(id + "")) {
 				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR4, code);// 已经购买过了
 				return false;
 			}
@@ -87,7 +97,6 @@ public class VipManager {
 				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR3, code);// 您不是 vip
 				return false;
 			}
-
 			int buyNeedStone = bag.getBuyNeedStone();
 			int condition = bag.getCondition();
 			if (playerInfo.getVipLevel() < condition) {
@@ -115,11 +124,13 @@ public class VipManager {
 				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR3, code);// 您不是 vip
 				return false;
 			}
-			if (!map.containsKey(type + "")) {
-				Date date = new Date((long) (map.get(type + "").get(0)));
-				if (DateTimeUtil.isSameWeekWithToday(new Date(), date)) {
-					ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR6, code);// 这周已经领取了
-					return false;
+			if (map.containsKey(type + "")) {
+				if (map.get(type + "") != null && !map.get(type + "").isEmpty()) {
+					Date date = new Date(Long.valueOf(map.get(type + "").get(0).toString()));
+					if (DateTimeUtil.isSameWeek(new Date(), date)) {
+						ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR6, code);// 这周已经领取了
+						return false;
+					}
 				}
 			}
 
@@ -174,7 +185,7 @@ public class VipManager {
 		}
 		if (!map.containsKey(2 + "")) {
 			List<Object> obj = new ArrayList<>();
-			map.put(1 + "", obj);
+			map.put(2 + "", obj);
 		}
 
 		ResGetVipInfoMsg.Builder resMsg = ResGetVipInfoMsg.newBuilder();
@@ -191,13 +202,13 @@ public class VipManager {
 			resMsg.setVipTimeLimit(0);
 		}
 		for (Object obj : map.get(1 + "")) {
-			resMsg.addBuy((Integer) obj);
+			resMsg.addBuy(Integer.valueOf(obj.toString()));
 		}
 		resMsg.setIsReceive(0);
 		if (map.containsKey("2")) {
-			if (map.get("2").get(0) != null) {
-				Date date = new Date((long) (map.get("2").get(0)));
-				if (DateTimeUtil.isSameWeekWithToday(new Date(), date)) {
+			if (!map.get("2").isEmpty()) {
+				Date date = new Date(Long.valueOf((map.get("2").get(0).toString())));
+				if (DateTimeUtil.isSameWeek(new Date(), date)) {
 					resMsg.setIsReceive(1);
 				}
 			}

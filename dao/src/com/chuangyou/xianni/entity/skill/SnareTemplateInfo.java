@@ -20,6 +20,8 @@ public class SnareTemplateInfo {
 	private int		bornlength;		// 距离
 
 	private int		moveType;		// 移动模式 1 不动 2 直线移动 3 跟踪移动 4 随机移动(在生成点)
+	private int		moveSpeed;		// 移动速度
+	private int		distance;		// 直线最大移动距离
 	private int		lockingType;	// 锁定模式 1 不锁定目标 2 释放时释放者的目标 3 攻击到的第一个目标 4
 									// 攻击陷阱的目标
 
@@ -65,7 +67,7 @@ public class SnareTemplateInfo {
 	}
 
 	public int getValidCount() {
-		return validCount  + 10;
+		return validCount + 10;
 	}
 
 	public void setValidCount(int validCount) {
@@ -223,6 +225,22 @@ public class SnareTemplateInfo {
 
 	public void setBornlength(int bornlength) {
 		this.bornlength = bornlength;
+	}
+
+	public int getMoveSpeed() {
+		return moveSpeed;
+	}
+
+	public void setMoveSpeed(int moveSpeed) {
+		this.moveSpeed = moveSpeed;
+	}
+
+	public int getDistance() {
+		return distance;
+	}
+
+	public void setDistance(int distance) {
+		this.distance = distance;
 	}
 
 }

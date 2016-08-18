@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import com.chuangyou.common.protobuf.pb.battle.AttackOrderProto.AttackOrderMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.Vector3;
@@ -38,7 +39,7 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 	public void execute(ArmyProxy army, PBMessage packet) throws Exception {
 		AttackOrderMsg orderMsg = AttackOrderMsg.parseFrom(packet.toByteArray());
 		int skillActionId = orderMsg.getSkillActionId();
-//		System.out.println(orderMsg);
+		// System.out.println(orderMsg);
 		// 该玩家是否具有此技能
 		Player player = army.getPlayer();
 		if (!player.hasSkillId(skillActionId)) {

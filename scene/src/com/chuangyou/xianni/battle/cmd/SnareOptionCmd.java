@@ -26,8 +26,13 @@ public class SnareOptionCmd extends AbstractCommand {
 			return;
 		}
 		Living living = field.getLiving(snareId);
-		if (living == null || living.getLivingState() == Living.DIE) {
+		if (living == null) {
 			Log.error("对陷阱进行操作时，陷阱已经移除了");
+			return;
+		}
+		if (living.getLivingState() == Living.DIE) {
+			field.leaveField(living);
+			Log.error("对陷阱进行操作时，陷阱已经死亡，但是没有从地图中移除");
 			return;
 		}
 		if (!(living instanceof Snare)) {
@@ -43,11 +48,11 @@ public class SnareOptionCmd extends AbstractCommand {
 		Snare snare = (Snare) living;
 		if (msg.getType() == IN) {
 			snare.in(injured);
-			System.err.println("-----------进入陷阱---------" + injured);
+			Log.error("-----------进入陷阱---------" + injured);
 		}
 		if (msg.getType() == OUT) {
 			snare.out(injured);
-			System.err.println("-----------退出陷阱---------" + injured);
+			Log.error("-----------退出陷阱---------" + injured);
 		}
 	}
 

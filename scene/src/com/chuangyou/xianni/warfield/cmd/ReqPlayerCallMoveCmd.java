@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.chuangyou.common.protobuf.pb.scene.PlayerCallMoveReqProto.PlayerCallMoveReqMsg;
+import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -37,6 +38,7 @@ public class ReqPlayerCallMoveCmd extends AbstractCommand {
 
 		Vector3 current = Vector3BuilderHelper.get(movemsg.getCur());
 		living.setTargetPostion(Vector3BuilderHelper.get(movemsg.getTar()));
+		living.setDir(MathUtils.getDirByXZ(living.getTargetPostion(), living.getPostion()));
 		// NotifyNearHelper.notifyHelper(f, army, current,
 		// NotifyNearHelper.MOVE);
 

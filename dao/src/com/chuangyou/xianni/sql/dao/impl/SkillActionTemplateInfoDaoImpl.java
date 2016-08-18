@@ -42,6 +42,7 @@ public class SkillActionTemplateInfoDaoImpl extends BaseDao implements SkillActi
 					skillTemp.setParamValue3(rs.getInt("paramValue3"));
 					skillTemp.setParamParent3(rs.getInt("paramParent3"));
 					skillTemp.setBufferIds(rs.getString("bufferIds"));
+					skillTemp.setSnareIds(rs.getString("snareIds"));
 					skillTemp.setRandom(rs.getInt("random"));
 					skillTemp.setIsCrit(rs.getInt("isCrit"));
 					skillTemp.setCooldown(rs.getInt("cooldown"));// 10秒CD时间

@@ -1,5 +1,6 @@
 package com.chuangyou.xianni.warfield.navi.seeker;
 
+import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.Rect;
 import com.chuangyou.common.util.Vector2;
 import com.chuangyou.common.util.Vector3;
@@ -375,7 +376,7 @@ public class NavmeshTriangle {
     	if(index >= 3)
     	{
     		//log.error("etWallDis:The index is large than 3.");
-    		System.out.println("setWallDis:The index is large than 3.");
+    		Log.error("setWallDis:The index is large than 3.");
     		return -1;
     	}
     	return _wallDistance[index];

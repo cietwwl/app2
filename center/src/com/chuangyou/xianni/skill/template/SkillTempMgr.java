@@ -1,14 +1,11 @@
 package com.chuangyou.xianni.skill.template;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.chuangyou.common.util.SplitUtil;
-import com.chuangyou.xianni.army.Living;
-import com.chuangyou.xianni.entity.property.BaseProperty;
-import com.chuangyou.xianni.entity.property.SkillPropertyTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillStage;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.sql.dao.DBManager;
@@ -23,6 +20,13 @@ public class SkillTempMgr {
 	 * 技能配置数据
 	 */
 	private static Map<Integer, SkillTempateInfo>	skillTemp	= new HashMap<Integer, SkillTempateInfo>();
+	
+	/**
+	 * 魂幡融合技能列表
+	 */
+	private static Map<Integer,	List<SkillTempateInfo>> fuseSkillTemp;
+	
+	
 	// /**
 	// * 技能属性配置
 	// */
@@ -40,10 +44,18 @@ public class SkillTempMgr {
 
 	public static boolean reloadPb() {
 		// 加载基础技能
+		fuseSkillTemp =  new HashMap<Integer, List<SkillTempateInfo>>();
 		List<SkillTempateInfo> skillTempInfos = DBManager.getSkillTempateInfoDao().load();
 		if (skillTempInfos != null && skillTempInfos.size() > 0) {
 			for (SkillTempateInfo stemp : skillTempInfos) {
 				skillTemp.put(stemp.getTemplateId(), stemp);
+				int tempKey = (int)(stemp.getTemplateId()/100000);
+				if(tempKey>=601 && tempKey<=604){					
+					if(!fuseSkillTemp.containsKey(tempKey)){
+						fuseSkillTemp.put(tempKey, new ArrayList<SkillTempateInfo>());
+					}
+					fuseSkillTemp.get(tempKey).add(stemp);
+				}	
 			}
 		}
 		// 加载技能属性模板
@@ -131,6 +143,10 @@ public class SkillTempMgr {
 			return skillStage.get(lv);
 		}
 		return null;
+	}
+
+	public static Map<Integer, List<SkillTempateInfo>> getFuseSkillTemp() {
+		return fuseSkillTemp;
 	}
 
 	// /** 属性赋值 */

@@ -1,0 +1,15 @@
+//protocol=1611;
+option java_package = "com.chuangyou.common.protobuf.pb.soul";
+option java_outer_classname = "SoulFuseRespProto";
+
+import "soul/SoulInfoMsg.proto";
+import "army/PropertyMsg.proto";
+
+//魂幡融合
+message SoulFuseRespMsg{
+	required int32 op = 1;  //操作 1：开始融合   2： 确定选择融合后的技能  3：确定取消融合后的技能
+	required int32 index = 2;  //位置（1--4）
+	required SoulInfoMsg soulInfo = 3; //基本信息
+	repeated PropertyMsg atts = 4;//加成属性
+	optional int32 tempSkill = 5;//临时技能ID （op=1时，非第一次融合。会先产一条临时技能。让用户自己选择）
+}

@@ -4,9 +4,10 @@ package com.chuangyou.xianni.ai.proxy;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.ai.AIState;
 import com.chuangyou.xianni.ai.behavior.Attack;
-import com.chuangyou.xianni.ai.behavior.BaseBehavior;
+import com.chuangyou.xianni.ai.behavior.MonsterBaseBehavior;
 import com.chuangyou.xianni.ai.behavior.BeAttack;
 import com.chuangyou.xianni.ai.behavior.Chase;
 import com.chuangyou.xianni.ai.behavior.Idle;
@@ -19,8 +20,8 @@ import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
 
-public class MonsterAI  implements AI{// extends BaseProxy {
-	protected Map<AIState, BaseBehavior> behaviors;
+public class MonsterAI implements AI {// extends BaseProxy {
+	protected Map<AIState, MonsterBaseBehavior> behaviors;
 	protected AIState current = AIState.IDLE;
 	protected Living living;
 	protected int delay;
@@ -31,7 +32,7 @@ public class MonsterAI  implements AI{// extends BaseProxy {
 
 	public MonsterAI(Monster m) {
 		this.living = m;
-		behaviors = new HashMap<AIState, BaseBehavior>();
+		behaviors = new HashMap<AIState, MonsterBaseBehavior>();
 		createStates();
 		// super(m, SceneGlobal.AI_MONSTER_DELAY);
 		// recountHatred.setRate(SceneGlobal.AI_MONSTER_HETRED_RECOUNT);
@@ -65,9 +66,10 @@ public class MonsterAI  implements AI{// extends BaseProxy {
 
 		AIState next = behaviors.get(current).next();
 
-		// if (living.getId() == 1000000000026L) {
-		// System.out.println("怪物 id： " + living.getId() + " 状态： " + current + " 下一个状态：" + next + " 位置：" + living.getPostion() + " 目标：" + living.getTargetPostion());
-		// }
+//		if (living.getId() == 1000000000083L) {
+//			System.out.println("怪物 id： " + living.getId() + " 状态： " + current + " 下一个状态：" + next + " 位置：" + living.getPostion() + " 目标：" + living.getTargetPostion() + "距离："
+//					+ Vector3.distance(living.getPostion(), living.getTargetPostion()));
+//		}
 
 		if (next == AIState.INVALID)
 			return;

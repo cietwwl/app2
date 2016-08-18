@@ -39,6 +39,8 @@ public class SnareTemplateInfoDaoImpl extends BaseDao implements SnareTemplateIn
 					templateInfo.setBornAngle(rs.getInt("bornAngle"));
 					templateInfo.setBornlength(rs.getInt("bornlength"));
 					templateInfo.setMoveType(rs.getInt("moveType"));
+					templateInfo.setMoveSpeed(rs.getInt("moveSpeed"));
+					templateInfo.setDistance(rs.getInt("distance"));
 					templateInfo.setLockingType(rs.getInt("lockingType"));
 					templateInfo.setStateId(rs.getInt("stateId"));
 					templateInfo.setAddBuffers(rs.getString("addBuffers"));

@@ -33,7 +33,7 @@ public class LimitlessCampaignRecordInfoDaoImpl extends BaseDao implements Limit
 
 	@Override
 	public LimitlessCampaignRecordInfo getByPlayerId(long playerId) {
-		String sql = "SELECT * FROM tb_u_limitless_campaign_record_info;";
+		String sql = "SELECT * FROM tb_u_limitless_campaign_record_info where playerId = " + playerId + ";";
 		List<LimitlessCampaignRecordInfo> result = read(sql, null);
 		if (result != null && result.size() > 0) {
 			return result.get(0);

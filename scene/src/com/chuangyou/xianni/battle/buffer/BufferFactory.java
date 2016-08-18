@@ -22,10 +22,12 @@ public class BufferFactory {
 			case BufferType.ONLY_RESTORE_BLOOD:
 			case BufferType.ONLY_RESTORE_SOUL:
 				buffer = new LivingDamageBuffer(IDMakerHelper.bufferId(), source, target, bufferInfo);
+				break;
 			case BufferType.ATTR_BODY:
-				buffer = new LivingDamageBuffer(IDMakerHelper.bufferId(), source, target, bufferInfo);
-			default:
 				buffer = new AttributesBuffer(IDMakerHelper.bufferId(), source, target, bufferInfo);
+				break;
+			default:
+				buffer = new LivingDamageBuffer(IDMakerHelper.bufferId(), source, target, bufferInfo);
 		}
 		buffer.setExecuted(false);
 		return buffer;

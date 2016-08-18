@@ -23,9 +23,8 @@ public class CreateSnareCmd extends AbstractCommand {
 	@Override
 	public void execute(ArmyProxy army, PBMessage packet) throws Exception {
 		CreateSnareMsg msg = CreateSnareMsg.parseFrom(packet.getBytes());
-		
-		AccessTextFile.saveRecord("PLAYERID :" + army.getPlayerId() + msg.toString());
-		
+
+
 		if (!SnareCreateFilter.checkFilter(army.getPlayerId(), msg.getIndexId(), msg.getSnareid())) {
 			Log.info("CreateSnareCmd error" + army.getPlayerId() + "----" + msg.toString());
 			return;
@@ -42,11 +41,10 @@ public class CreateSnareCmd extends AbstractCommand {
 			return;
 		}
 
-		Snare snare = new Snare(info, army.getPlayer());
+		Snare snare = new Snare(info, army.getPlayer(), null);
 		army.getPlayer().addSnare(snare);
 		snare.setArmyId(army.getPlayerId());
 		snare.setPostion(Vector3BuilderHelper.get(msg.getBornPos()));
-		snare.setSoulState(true);
 
 		Field field = army.getPlayer().getField();
 		if (field != null) {

@@ -132,7 +132,7 @@ public final class DamageMsgProto {
     int getFromType();
 
     /**
-     * <code>optional int32 fromId = 8;</code>
+     * <code>optional int64 fromId = 8;</code>
      *
      * <pre>
      *技能ID
@@ -140,13 +140,13 @@ public final class DamageMsgProto {
      */
     boolean hasFromId();
     /**
-     * <code>optional int32 fromId = 8;</code>
+     * <code>optional int64 fromId = 8;</code>
      *
      * <pre>
      *技能ID
      * </pre>
      */
-    int getFromId();
+    long getFromId();
 
     /**
      * <code>optional int32 order = 9;</code>
@@ -254,7 +254,7 @@ public final class DamageMsgProto {
             }
             case 64: {
               bitField0_ |= 0x00000080;
-              fromId_ = input.readInt32();
+              fromId_ = input.readInt64();
               break;
             }
             case 72: {
@@ -464,9 +464,9 @@ public final class DamageMsgProto {
     }
 
     public static final int FROMID_FIELD_NUMBER = 8;
-    private int fromId_;
+    private long fromId_;
     /**
-     * <code>optional int32 fromId = 8;</code>
+     * <code>optional int64 fromId = 8;</code>
      *
      * <pre>
      *技能ID
@@ -476,13 +476,13 @@ public final class DamageMsgProto {
       return ((bitField0_ & 0x00000080) == 0x00000080);
     }
     /**
-     * <code>optional int32 fromId = 8;</code>
+     * <code>optional int64 fromId = 8;</code>
      *
      * <pre>
      *技能ID
      * </pre>
      */
-    public int getFromId() {
+    public long getFromId() {
       return fromId_;
     }
 
@@ -517,7 +517,7 @@ public final class DamageMsgProto {
       leftValue_ = 0;
       tipType_ = 0;
       fromType_ = 0;
-      fromId_ = 0;
+      fromId_ = 0L;
       order_ = 0;
     }
     private byte memoizedIsInitialized = -1;
@@ -555,7 +555,7 @@ public final class DamageMsgProto {
         output.writeInt32(7, fromType_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeInt32(8, fromId_);
+        output.writeInt64(8, fromId_);
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         output.writeInt32(9, order_);
@@ -599,7 +599,7 @@ public final class DamageMsgProto {
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(8, fromId_);
+          .computeInt64Size(8, fromId_);
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         size += com.google.protobuf.CodedOutputStream
@@ -736,7 +736,7 @@ public final class DamageMsgProto {
         bitField0_ = (bitField0_ & ~0x00000020);
         fromType_ = 0;
         bitField0_ = (bitField0_ & ~0x00000040);
-        fromId_ = 0;
+        fromId_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000080);
         order_ = 0;
         bitField0_ = (bitField0_ & ~0x00000100);
@@ -1210,9 +1210,9 @@ public final class DamageMsgProto {
         return this;
       }
 
-      private int fromId_ ;
+      private long fromId_ ;
       /**
-       * <code>optional int32 fromId = 8;</code>
+       * <code>optional int64 fromId = 8;</code>
        *
        * <pre>
        *技能ID
@@ -1222,30 +1222,30 @@ public final class DamageMsgProto {
         return ((bitField0_ & 0x00000080) == 0x00000080);
       }
       /**
-       * <code>optional int32 fromId = 8;</code>
+       * <code>optional int64 fromId = 8;</code>
        *
        * <pre>
        *技能ID
        * </pre>
        */
-      public int getFromId() {
+      public long getFromId() {
         return fromId_;
       }
       /**
-       * <code>optional int32 fromId = 8;</code>
+       * <code>optional int64 fromId = 8;</code>
        *
        * <pre>
        *技能ID
        * </pre>
        */
-      public Builder setFromId(int value) {
+      public Builder setFromId(long value) {
         bitField0_ |= 0x00000080;
         fromId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 fromId = 8;</code>
+       * <code>optional int64 fromId = 8;</code>
        *
        * <pre>
        *技能ID
@@ -1253,7 +1253,7 @@ public final class DamageMsgProto {
        */
       public Builder clearFromId() {
         bitField0_ = (bitField0_ & ~0x00000080);
-        fromId_ = 0;
+        fromId_ = 0L;
         onChanged();
         return this;
       }
@@ -1335,7 +1335,7 @@ public final class DamageMsgProto {
       "eId\030\001 \001(\003\022\020\n\010targetId\030\002 \001(\003\022\022\n\ndamageTyp" +
       "e\030\003 \001(\005\022\023\n\013damageValue\030\004 \001(\005\022\021\n\tleftValu" +
       "e\030\005 \001(\005\022\017\n\007tipType\030\006 \001(\005\022\020\n\010fromType\030\007 \001" +
-      "(\005\022\016\n\006fromId\030\010 \001(\005\022\r\n\005order\030\t \001(\005B9\n\'com" +
+      "(\005\022\016\n\006fromId\030\010 \001(\003\022\r\n\005order\030\t \001(\005B9\n\'com" +
       ".chuangyou.common.protobuf.pb.battleB\016Da" +
       "mageMsgProto"
     };

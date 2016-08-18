@@ -1,11 +1,9 @@
 package com.chuangyou.xianni.warfield.helper.selectors;
 
 import com.chuangyou.common.util.Vector3;
-import com.chuangyou.xianni.entity.spawn.AiConfig;
 import com.chuangyou.xianni.role.helper.RoleConstants;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
-import com.chuangyou.xianni.role.template.AiConfigTemplateMgr;
 import com.chuangyou.xianni.warfield.helper.Selector;
 
 public class MonsterSelectPlayerSelectorHelper extends Selector {

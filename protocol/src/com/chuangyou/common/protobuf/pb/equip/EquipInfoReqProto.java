@@ -30,106 +30,54 @@ public final class EquipInfoReqProto {
     int getAction();
 
     /**
-     * <code>optional int32 bagType = 2;</code>
+     * <code>optional .ItemPosMsg equipPos = 2;</code>
      *
      * <pre>
-     * 装备所在背包类型
+     *物品位置ID信息
      * </pre>
      */
-    boolean hasBagType();
+    boolean hasEquipPos();
     /**
-     * <code>optional int32 bagType = 2;</code>
+     * <code>optional .ItemPosMsg equipPos = 2;</code>
      *
      * <pre>
-     * 装备所在背包类型
+     *物品位置ID信息
      * </pre>
      */
-    int getBagType();
+    com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg getEquipPos();
+    /**
+     * <code>optional .ItemPosMsg equipPos = 2;</code>
+     *
+     * <pre>
+     *物品位置ID信息
+     * </pre>
+     */
+    com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsgOrBuilder getEquipPosOrBuilder();
 
     /**
-     * <code>optional int32 position = 3;</code>
+     * <code>optional .ItemPosMsg stonePos = 3;</code>
      *
      * <pre>
-     * 装备位置
-     * </pre>
-     */
-    boolean hasPosition();
-    /**
-     * <code>optional int32 position = 3;</code>
-     *
-     * <pre>
-     * 装备位置
-     * </pre>
-     */
-    int getPosition();
-
-    /**
-     * <code>optional int32 equipId = 4;</code>
-     *
-     * <pre>
-     * 装备ID
-     * </pre>
-     */
-    boolean hasEquipId();
-    /**
-     * <code>optional int32 equipId = 4;</code>
-     *
-     * <pre>
-     * 装备ID
-     * </pre>
-     */
-    int getEquipId();
-
-    /**
-     * <code>optional int32 stoneBagType = 5;</code>
-     *
-     * <pre>
-     * 宝石所在背包类型
-     * </pre>
-     */
-    boolean hasStoneBagType();
-    /**
-     * <code>optional int32 stoneBagType = 5;</code>
-     *
-     * <pre>
-     * 宝石所在背包类型
-     * </pre>
-     */
-    int getStoneBagType();
-
-    /**
-     * <code>optional int32 stonePos = 6;</code>
-     *
-     * <pre>
-     *宝石所在背包位置
+     * 魂石位置ID信息
      * </pre>
      */
     boolean hasStonePos();
     /**
-     * <code>optional int32 stonePos = 6;</code>
+     * <code>optional .ItemPosMsg stonePos = 3;</code>
      *
      * <pre>
-     *宝石所在背包位置
+     * 魂石位置ID信息
      * </pre>
      */
-    int getStonePos();
-
+    com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg getStonePos();
     /**
-     * <code>optional int32 stoneId = 7;</code>
+     * <code>optional .ItemPosMsg stonePos = 3;</code>
      *
      * <pre>
-     * 要注入的魂石道具ID(请求注魂时使用)
+     * 魂石位置ID信息
      * </pre>
      */
-    boolean hasStoneId();
-    /**
-     * <code>optional int32 stoneId = 7;</code>
-     *
-     * <pre>
-     * 要注入的魂石道具ID(请求注魂时使用)
-     * </pre>
-     */
-    int getStoneId();
+    com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsgOrBuilder getStonePosOrBuilder();
   }
   /**
    * Protobuf type {@code EquipInfoReqMsg}
@@ -192,34 +140,30 @@ public final class EquipInfoReqProto {
               action_ = input.readInt32();
               break;
             }
-            case 16: {
+            case 18: {
+              com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = equipPos_.toBuilder();
+              }
+              equipPos_ = input.readMessage(com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(equipPos_);
+                equipPos_ = subBuilder.buildPartial();
+              }
               bitField0_ |= 0x00000002;
-              bagType_ = input.readInt32();
               break;
             }
-            case 24: {
+            case 26: {
+              com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                subBuilder = stonePos_.toBuilder();
+              }
+              stonePos_ = input.readMessage(com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(stonePos_);
+                stonePos_ = subBuilder.buildPartial();
+              }
               bitField0_ |= 0x00000004;
-              position_ = input.readInt32();
-              break;
-            }
-            case 32: {
-              bitField0_ |= 0x00000008;
-              equipId_ = input.readInt32();
-              break;
-            }
-            case 40: {
-              bitField0_ |= 0x00000010;
-              stoneBagType_ = input.readInt32();
-              break;
-            }
-            case 48: {
-              bitField0_ |= 0x00000020;
-              stonePos_ = input.readInt32();
-              break;
-            }
-            case 56: {
-              bitField0_ |= 0x00000040;
-              stoneId_ = input.readInt32();
               break;
             }
           }
@@ -285,152 +229,76 @@ public final class EquipInfoReqProto {
       return action_;
     }
 
-    public static final int BAGTYPE_FIELD_NUMBER = 2;
-    private int bagType_;
+    public static final int EQUIPPOS_FIELD_NUMBER = 2;
+    private com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg equipPos_;
     /**
-     * <code>optional int32 bagType = 2;</code>
+     * <code>optional .ItemPosMsg equipPos = 2;</code>
      *
      * <pre>
-     * 装备所在背包类型
+     *物品位置ID信息
      * </pre>
      */
-    public boolean hasBagType() {
+    public boolean hasEquipPos() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional int32 bagType = 2;</code>
+     * <code>optional .ItemPosMsg equipPos = 2;</code>
      *
      * <pre>
-     * 装备所在背包类型
+     *物品位置ID信息
      * </pre>
      */
-    public int getBagType() {
-      return bagType_;
+    public com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg getEquipPos() {
+      return equipPos_;
+    }
+    /**
+     * <code>optional .ItemPosMsg equipPos = 2;</code>
+     *
+     * <pre>
+     *物品位置ID信息
+     * </pre>
+     */
+    public com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsgOrBuilder getEquipPosOrBuilder() {
+      return equipPos_;
     }
 
-    public static final int POSITION_FIELD_NUMBER = 3;
-    private int position_;
+    public static final int STONEPOS_FIELD_NUMBER = 3;
+    private com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg stonePos_;
     /**
-     * <code>optional int32 position = 3;</code>
+     * <code>optional .ItemPosMsg stonePos = 3;</code>
      *
      * <pre>
-     * 装备位置
-     * </pre>
-     */
-    public boolean hasPosition() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>optional int32 position = 3;</code>
-     *
-     * <pre>
-     * 装备位置
-     * </pre>
-     */
-    public int getPosition() {
-      return position_;
-    }
-
-    public static final int EQUIPID_FIELD_NUMBER = 4;
-    private int equipId_;
-    /**
-     * <code>optional int32 equipId = 4;</code>
-     *
-     * <pre>
-     * 装备ID
-     * </pre>
-     */
-    public boolean hasEquipId() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>optional int32 equipId = 4;</code>
-     *
-     * <pre>
-     * 装备ID
-     * </pre>
-     */
-    public int getEquipId() {
-      return equipId_;
-    }
-
-    public static final int STONEBAGTYPE_FIELD_NUMBER = 5;
-    private int stoneBagType_;
-    /**
-     * <code>optional int32 stoneBagType = 5;</code>
-     *
-     * <pre>
-     * 宝石所在背包类型
-     * </pre>
-     */
-    public boolean hasStoneBagType() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    /**
-     * <code>optional int32 stoneBagType = 5;</code>
-     *
-     * <pre>
-     * 宝石所在背包类型
-     * </pre>
-     */
-    public int getStoneBagType() {
-      return stoneBagType_;
-    }
-
-    public static final int STONEPOS_FIELD_NUMBER = 6;
-    private int stonePos_;
-    /**
-     * <code>optional int32 stonePos = 6;</code>
-     *
-     * <pre>
-     *宝石所在背包位置
+     * 魂石位置ID信息
      * </pre>
      */
     public boolean hasStonePos() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
+      return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional int32 stonePos = 6;</code>
+     * <code>optional .ItemPosMsg stonePos = 3;</code>
      *
      * <pre>
-     *宝石所在背包位置
+     * 魂石位置ID信息
      * </pre>
      */
-    public int getStonePos() {
+    public com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg getStonePos() {
       return stonePos_;
     }
-
-    public static final int STONEID_FIELD_NUMBER = 7;
-    private int stoneId_;
     /**
-     * <code>optional int32 stoneId = 7;</code>
+     * <code>optional .ItemPosMsg stonePos = 3;</code>
      *
      * <pre>
-     * 要注入的魂石道具ID(请求注魂时使用)
+     * 魂石位置ID信息
      * </pre>
      */
-    public boolean hasStoneId() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
-    }
-    /**
-     * <code>optional int32 stoneId = 7;</code>
-     *
-     * <pre>
-     * 要注入的魂石道具ID(请求注魂时使用)
-     * </pre>
-     */
-    public int getStoneId() {
-      return stoneId_;
+    public com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsgOrBuilder getStonePosOrBuilder() {
+      return stonePos_;
     }
 
     private void initFields() {
       action_ = 0;
-      bagType_ = 0;
-      position_ = 0;
-      equipId_ = 0;
-      stoneBagType_ = 0;
-      stonePos_ = 0;
-      stoneId_ = 0;
+      equipPos_ = com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.getDefaultInstance();
+      stonePos_ = com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -449,22 +317,10 @@ public final class EquipInfoReqProto {
         output.writeInt32(1, action_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, bagType_);
+        output.writeMessage(2, equipPos_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeInt32(3, position_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeInt32(4, equipId_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeInt32(5, stoneBagType_);
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeInt32(6, stonePos_);
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeInt32(7, stoneId_);
+        output.writeMessage(3, stonePos_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -481,27 +337,11 @@ public final class EquipInfoReqProto {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, bagType_);
+          .computeMessageSize(2, equipPos_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, position_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, equipId_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(5, stoneBagType_);
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(6, stonePos_);
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(7, stoneId_);
+          .computeMessageSize(3, stonePos_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -616,6 +456,8 @@ public final class EquipInfoReqProto {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getEquipPosFieldBuilder();
+          getStonePosFieldBuilder();
         }
       }
       private static Builder create() {
@@ -626,18 +468,18 @@ public final class EquipInfoReqProto {
         super.clear();
         action_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
-        bagType_ = 0;
+        if (equipPosBuilder_ == null) {
+          equipPos_ = com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.getDefaultInstance();
+        } else {
+          equipPosBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000002);
-        position_ = 0;
+        if (stonePosBuilder_ == null) {
+          stonePos_ = com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.getDefaultInstance();
+        } else {
+          stonePosBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000004);
-        equipId_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
-        stoneBagType_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
-        stonePos_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000020);
-        stoneId_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -673,27 +515,19 @@ public final class EquipInfoReqProto {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.bagType_ = bagType_;
+        if (equipPosBuilder_ == null) {
+          result.equipPos_ = equipPos_;
+        } else {
+          result.equipPos_ = equipPosBuilder_.build();
+        }
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.position_ = position_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
+        if (stonePosBuilder_ == null) {
+          result.stonePos_ = stonePos_;
+        } else {
+          result.stonePos_ = stonePosBuilder_.build();
         }
-        result.equipId_ = equipId_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.stoneBagType_ = stoneBagType_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        result.stonePos_ = stonePos_;
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000040;
-        }
-        result.stoneId_ = stoneId_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -713,23 +547,11 @@ public final class EquipInfoReqProto {
         if (other.hasAction()) {
           setAction(other.getAction());
         }
-        if (other.hasBagType()) {
-          setBagType(other.getBagType());
-        }
-        if (other.hasPosition()) {
-          setPosition(other.getPosition());
-        }
-        if (other.hasEquipId()) {
-          setEquipId(other.getEquipId());
-        }
-        if (other.hasStoneBagType()) {
-          setStoneBagType(other.getStoneBagType());
+        if (other.hasEquipPos()) {
+          mergeEquipPos(other.getEquipPos());
         }
         if (other.hasStonePos()) {
-          setStonePos(other.getStonePos());
-        }
-        if (other.hasStoneId()) {
-          setStoneId(other.getStoneId());
+          mergeStonePos(other.getStonePos());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -806,292 +628,308 @@ public final class EquipInfoReqProto {
         return this;
       }
 
-      private int bagType_ ;
+      private com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg equipPos_ = com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg, com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.Builder, com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsgOrBuilder> equipPosBuilder_;
       /**
-       * <code>optional int32 bagType = 2;</code>
+       * <code>optional .ItemPosMsg equipPos = 2;</code>
        *
        * <pre>
-       * 装备所在背包类型
+       *物品位置ID信息
        * </pre>
        */
-      public boolean hasBagType() {
+      public boolean hasEquipPos() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional int32 bagType = 2;</code>
+       * <code>optional .ItemPosMsg equipPos = 2;</code>
        *
        * <pre>
-       * 装备所在背包类型
+       *物品位置ID信息
        * </pre>
        */
-      public int getBagType() {
-        return bagType_;
+      public com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg getEquipPos() {
+        if (equipPosBuilder_ == null) {
+          return equipPos_;
+        } else {
+          return equipPosBuilder_.getMessage();
+        }
       }
       /**
-       * <code>optional int32 bagType = 2;</code>
+       * <code>optional .ItemPosMsg equipPos = 2;</code>
        *
        * <pre>
-       * 装备所在背包类型
+       *物品位置ID信息
        * </pre>
        */
-      public Builder setBagType(int value) {
+      public Builder setEquipPos(com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg value) {
+        if (equipPosBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          equipPos_ = value;
+          onChanged();
+        } else {
+          equipPosBuilder_.setMessage(value);
+        }
         bitField0_ |= 0x00000002;
-        bagType_ = value;
-        onChanged();
         return this;
       }
       /**
-       * <code>optional int32 bagType = 2;</code>
+       * <code>optional .ItemPosMsg equipPos = 2;</code>
        *
        * <pre>
-       * 装备所在背包类型
+       *物品位置ID信息
        * </pre>
        */
-      public Builder clearBagType() {
+      public Builder setEquipPos(
+          com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.Builder builderForValue) {
+        if (equipPosBuilder_ == null) {
+          equipPos_ = builderForValue.build();
+          onChanged();
+        } else {
+          equipPosBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .ItemPosMsg equipPos = 2;</code>
+       *
+       * <pre>
+       *物品位置ID信息
+       * </pre>
+       */
+      public Builder mergeEquipPos(com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg value) {
+        if (equipPosBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              equipPos_ != com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.getDefaultInstance()) {
+            equipPos_ =
+              com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.newBuilder(equipPos_).mergeFrom(value).buildPartial();
+          } else {
+            equipPos_ = value;
+          }
+          onChanged();
+        } else {
+          equipPosBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .ItemPosMsg equipPos = 2;</code>
+       *
+       * <pre>
+       *物品位置ID信息
+       * </pre>
+       */
+      public Builder clearEquipPos() {
+        if (equipPosBuilder_ == null) {
+          equipPos_ = com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.getDefaultInstance();
+          onChanged();
+        } else {
+          equipPosBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000002);
-        bagType_ = 0;
-        onChanged();
         return this;
+      }
+      /**
+       * <code>optional .ItemPosMsg equipPos = 2;</code>
+       *
+       * <pre>
+       *物品位置ID信息
+       * </pre>
+       */
+      public com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.Builder getEquipPosBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getEquipPosFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .ItemPosMsg equipPos = 2;</code>
+       *
+       * <pre>
+       *物品位置ID信息
+       * </pre>
+       */
+      public com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsgOrBuilder getEquipPosOrBuilder() {
+        if (equipPosBuilder_ != null) {
+          return equipPosBuilder_.getMessageOrBuilder();
+        } else {
+          return equipPos_;
+        }
+      }
+      /**
+       * <code>optional .ItemPosMsg equipPos = 2;</code>
+       *
+       * <pre>
+       *物品位置ID信息
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg, com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.Builder, com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsgOrBuilder> 
+          getEquipPosFieldBuilder() {
+        if (equipPosBuilder_ == null) {
+          equipPosBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg, com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.Builder, com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsgOrBuilder>(
+                  getEquipPos(),
+                  getParentForChildren(),
+                  isClean());
+          equipPos_ = null;
+        }
+        return equipPosBuilder_;
       }
 
-      private int position_ ;
+      private com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg stonePos_ = com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg, com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.Builder, com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsgOrBuilder> stonePosBuilder_;
       /**
-       * <code>optional int32 position = 3;</code>
+       * <code>optional .ItemPosMsg stonePos = 3;</code>
        *
        * <pre>
-       * 装备位置
-       * </pre>
-       */
-      public boolean hasPosition() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional int32 position = 3;</code>
-       *
-       * <pre>
-       * 装备位置
-       * </pre>
-       */
-      public int getPosition() {
-        return position_;
-      }
-      /**
-       * <code>optional int32 position = 3;</code>
-       *
-       * <pre>
-       * 装备位置
-       * </pre>
-       */
-      public Builder setPosition(int value) {
-        bitField0_ |= 0x00000004;
-        position_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 position = 3;</code>
-       *
-       * <pre>
-       * 装备位置
-       * </pre>
-       */
-      public Builder clearPosition() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        position_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int equipId_ ;
-      /**
-       * <code>optional int32 equipId = 4;</code>
-       *
-       * <pre>
-       * 装备ID
-       * </pre>
-       */
-      public boolean hasEquipId() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>optional int32 equipId = 4;</code>
-       *
-       * <pre>
-       * 装备ID
-       * </pre>
-       */
-      public int getEquipId() {
-        return equipId_;
-      }
-      /**
-       * <code>optional int32 equipId = 4;</code>
-       *
-       * <pre>
-       * 装备ID
-       * </pre>
-       */
-      public Builder setEquipId(int value) {
-        bitField0_ |= 0x00000008;
-        equipId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 equipId = 4;</code>
-       *
-       * <pre>
-       * 装备ID
-       * </pre>
-       */
-      public Builder clearEquipId() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        equipId_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int stoneBagType_ ;
-      /**
-       * <code>optional int32 stoneBagType = 5;</code>
-       *
-       * <pre>
-       * 宝石所在背包类型
-       * </pre>
-       */
-      public boolean hasStoneBagType() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      /**
-       * <code>optional int32 stoneBagType = 5;</code>
-       *
-       * <pre>
-       * 宝石所在背包类型
-       * </pre>
-       */
-      public int getStoneBagType() {
-        return stoneBagType_;
-      }
-      /**
-       * <code>optional int32 stoneBagType = 5;</code>
-       *
-       * <pre>
-       * 宝石所在背包类型
-       * </pre>
-       */
-      public Builder setStoneBagType(int value) {
-        bitField0_ |= 0x00000010;
-        stoneBagType_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 stoneBagType = 5;</code>
-       *
-       * <pre>
-       * 宝石所在背包类型
-       * </pre>
-       */
-      public Builder clearStoneBagType() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        stoneBagType_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int stonePos_ ;
-      /**
-       * <code>optional int32 stonePos = 6;</code>
-       *
-       * <pre>
-       *宝石所在背包位置
+       * 魂石位置ID信息
        * </pre>
        */
       public boolean hasStonePos() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional int32 stonePos = 6;</code>
+       * <code>optional .ItemPosMsg stonePos = 3;</code>
        *
        * <pre>
-       *宝石所在背包位置
+       * 魂石位置ID信息
        * </pre>
        */
-      public int getStonePos() {
-        return stonePos_;
+      public com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg getStonePos() {
+        if (stonePosBuilder_ == null) {
+          return stonePos_;
+        } else {
+          return stonePosBuilder_.getMessage();
+        }
       }
       /**
-       * <code>optional int32 stonePos = 6;</code>
+       * <code>optional .ItemPosMsg stonePos = 3;</code>
        *
        * <pre>
-       *宝石所在背包位置
+       * 魂石位置ID信息
        * </pre>
        */
-      public Builder setStonePos(int value) {
-        bitField0_ |= 0x00000020;
-        stonePos_ = value;
-        onChanged();
+      public Builder setStonePos(com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg value) {
+        if (stonePosBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          stonePos_ = value;
+          onChanged();
+        } else {
+          stonePosBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000004;
         return this;
       }
       /**
-       * <code>optional int32 stonePos = 6;</code>
+       * <code>optional .ItemPosMsg stonePos = 3;</code>
        *
        * <pre>
-       *宝石所在背包位置
+       * 魂石位置ID信息
+       * </pre>
+       */
+      public Builder setStonePos(
+          com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.Builder builderForValue) {
+        if (stonePosBuilder_ == null) {
+          stonePos_ = builderForValue.build();
+          onChanged();
+        } else {
+          stonePosBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .ItemPosMsg stonePos = 3;</code>
+       *
+       * <pre>
+       * 魂石位置ID信息
+       * </pre>
+       */
+      public Builder mergeStonePos(com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg value) {
+        if (stonePosBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004) &&
+              stonePos_ != com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.getDefaultInstance()) {
+            stonePos_ =
+              com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.newBuilder(stonePos_).mergeFrom(value).buildPartial();
+          } else {
+            stonePos_ = value;
+          }
+          onChanged();
+        } else {
+          stonePosBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .ItemPosMsg stonePos = 3;</code>
+       *
+       * <pre>
+       * 魂石位置ID信息
        * </pre>
        */
       public Builder clearStonePos() {
-        bitField0_ = (bitField0_ & ~0x00000020);
-        stonePos_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int stoneId_ ;
-      /**
-       * <code>optional int32 stoneId = 7;</code>
-       *
-       * <pre>
-       * 要注入的魂石道具ID(请求注魂时使用)
-       * </pre>
-       */
-      public boolean hasStoneId() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
-      }
-      /**
-       * <code>optional int32 stoneId = 7;</code>
-       *
-       * <pre>
-       * 要注入的魂石道具ID(请求注魂时使用)
-       * </pre>
-       */
-      public int getStoneId() {
-        return stoneId_;
-      }
-      /**
-       * <code>optional int32 stoneId = 7;</code>
-       *
-       * <pre>
-       * 要注入的魂石道具ID(请求注魂时使用)
-       * </pre>
-       */
-      public Builder setStoneId(int value) {
-        bitField0_ |= 0x00000040;
-        stoneId_ = value;
-        onChanged();
+        if (stonePosBuilder_ == null) {
+          stonePos_ = com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.getDefaultInstance();
+          onChanged();
+        } else {
+          stonePosBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
       /**
-       * <code>optional int32 stoneId = 7;</code>
+       * <code>optional .ItemPosMsg stonePos = 3;</code>
        *
        * <pre>
-       * 要注入的魂石道具ID(请求注魂时使用)
+       * 魂石位置ID信息
        * </pre>
        */
-      public Builder clearStoneId() {
-        bitField0_ = (bitField0_ & ~0x00000040);
-        stoneId_ = 0;
+      public com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.Builder getStonePosBuilder() {
+        bitField0_ |= 0x00000004;
         onChanged();
-        return this;
+        return getStonePosFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .ItemPosMsg stonePos = 3;</code>
+       *
+       * <pre>
+       * 魂石位置ID信息
+       * </pre>
+       */
+      public com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsgOrBuilder getStonePosOrBuilder() {
+        if (stonePosBuilder_ != null) {
+          return stonePosBuilder_.getMessageOrBuilder();
+        } else {
+          return stonePos_;
+        }
+      }
+      /**
+       * <code>optional .ItemPosMsg stonePos = 3;</code>
+       *
+       * <pre>
+       * 魂石位置ID信息
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg, com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.Builder, com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsgOrBuilder> 
+          getStonePosFieldBuilder() {
+        if (stonePosBuilder_ == null) {
+          stonePosBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg, com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.Builder, com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsgOrBuilder>(
+                  getStonePos(),
+                  getParentForChildren(),
+                  isClean());
+          stonePos_ = null;
+        }
+        return stonePosBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:EquipInfoReqMsg)
@@ -1119,12 +957,12 @@ public final class EquipInfoReqProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\033equip/EquipInfoReqMsg.proto\"\216\001\n\017EquipI" +
-      "nfoReqMsg\022\016\n\006action\030\001 \001(\005\022\017\n\007bagType\030\002 \001" +
-      "(\005\022\020\n\010position\030\003 \001(\005\022\017\n\007equipId\030\004 \001(\005\022\024\n" +
-      "\014stoneBagType\030\005 \001(\005\022\020\n\010stonePos\030\006 \001(\005\022\017\n" +
-      "\007stoneId\030\007 \001(\005B;\n&com.chuangyou.common.p" +
-      "rotobuf.pb.equipB\021EquipInfoReqProto"
+      "\n\033equip/EquipInfoReqMsg.proto\032\025item/Item" +
+      "PosMsg.proto\"_\n\017EquipInfoReqMsg\022\016\n\006actio" +
+      "n\030\001 \001(\005\022\035\n\010equipPos\030\002 \001(\0132\013.ItemPosMsg\022\035" +
+      "\n\010stonePos\030\003 \001(\0132\013.ItemPosMsgB;\n&com.chu" +
+      "angyou.common.protobuf.pb.equipB\021EquipIn" +
+      "foReqProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1137,13 +975,15 @@ public final class EquipInfoReqProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.chuangyou.common.protobuf.pb.item.ItemPosProto.getDescriptor(),
         }, assigner);
     internal_static_EquipInfoReqMsg_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_EquipInfoReqMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_EquipInfoReqMsg_descriptor,
-        new java.lang.String[] { "Action", "BagType", "Position", "EquipId", "StoneBagType", "StonePos", "StoneId", });
+        new java.lang.String[] { "Action", "EquipPos", "StonePos", });
+    com.chuangyou.common.protobuf.pb.item.ItemPosProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

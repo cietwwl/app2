@@ -24,8 +24,10 @@ public class BuyVipCmd extends AbstractCommand {
 			resMsg.setVipTimeLimit(player.getBasePlayer().getPlayerInfo().getVipTimeLimit().getTime());
 			resMsg.setVipInterimTimeLimit(player.getBasePlayer().getPlayerInfo().getVipInterimTimeLimit().getTime());
 
-			PBMessage p = MessageUtil.buildMessage(Protocol.U_VIP_BUY, msg);
+			PBMessage p = MessageUtil.buildMessage(Protocol.U_VIP_BUY, resMsg);
 			player.sendPbMessage(p);
+			System.out.println(p);
+			
 		}
 	}
 }

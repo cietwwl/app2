@@ -8,6 +8,11 @@ import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.event.ObjectListener;
 import com.chuangyou.xianni.player.GamePlayer;
 
+/**
+ * 杀怪监听器
+ * @author laofan
+ *
+ */
 public class KillMonsterListener implements ObjectListener {
 
 	private GamePlayer player;
@@ -31,6 +36,8 @@ public class KillMonsterListener implements ObjectListener {
 			player.getSoulInventory().getSoulMake().setKillNum(count);
 		}
 		
+		//todo通知客户端====
+		new SoulMakeTaskLogic().syncSoulMakeTask(player);
 	}
 
 }

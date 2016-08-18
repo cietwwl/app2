@@ -21,7 +21,7 @@ public class LivingDamageBuffer extends Buffer {
 		int type1 = bufferInfo.getValueType();
 
 		if (type1 > 0) {
-			if (type1 == EnumAttr.CUR_BLOOD.getValue()) {
+			if (type1 == EnumAttr.CUR_BLOOD.getValue()) { 
 				damageValue1 = calBlood(bufferInfo.getValuePercent(), bufferInfo.getValue());
 			}
 			if (type1 == EnumAttr.CUR_SOUL.getValue()) {
@@ -30,7 +30,7 @@ public class LivingDamageBuffer extends Buffer {
 			beDamage1.setTarget(target);
 			beDamage1.setSource(source);
 			beDamage1.setFromType(Damage.BUFFER);
-			beDamage1.setFromId(getTemplateId());
+			beDamage1.setFromId(this.getBufferId());
 			beDamage1.setDamageType(type1);
 			beDamage1.setDamageValue(damageValue1);
 			beDamage1.setCalcType(getDamageType());
@@ -45,8 +45,8 @@ public class LivingDamageBuffer extends Buffer {
 			if (type2 == EnumAttr.CUR_SOUL.getValue()) {
 				damageValue2 = calSoul(bufferInfo.getValuePercent1(), bufferInfo.getValue1());
 			}
-			beDamage1.setFromType(Damage.BUFFER);
-			beDamage1.setFromId(getTemplateId());
+			beDamage2.setFromType(Damage.BUFFER);
+			beDamage2.setFromId(this.getBufferId());
 			beDamage2.setTarget(target);
 			beDamage2.setSource(source);
 			beDamage2.setDamageType(type2);

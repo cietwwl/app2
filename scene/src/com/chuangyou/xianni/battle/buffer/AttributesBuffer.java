@@ -14,7 +14,7 @@ public class AttributesBuffer extends Buffer {
 
 	@Override
 	protected void exec(AttackOrder attackOrder, Damage beDamage1, Damage beDamage2) {
-		
+
 	}
 
 }

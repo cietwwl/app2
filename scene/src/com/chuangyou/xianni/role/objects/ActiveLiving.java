@@ -30,6 +30,8 @@ public class ActiveLiving extends Living {
 	protected List<Vector3>	path;
 	/// 移动所需要的时间
 	protected int			moveTime;
+	// 移动计数
+	protected long			moveCounter;
 	/// 寻路等待中
 	protected boolean		navWaiting	= false;
 	private boolean			navFail		= false;
@@ -77,14 +79,13 @@ public class ActiveLiving extends Living {
 	 * @param goal
 	 */
 	public void moveto(Vector3 goal) {
-		this.goal = goal;
-		this.moveTime = (int) ((Vector3.distance(getPostion(), goal) / getSpeed()) * 1000);
-		// if (id == 1000000000033L)
-		// System.out.println("moveto " + id + " 目标位：" + goal + " 起始位：" +
-		// this.getPostion() + " this.moveTime: " + this.moveTime + " getSpeed:
-		// " + getSpeed());
 
+		this.goal = goal;
+		// @auto living.setSpeed*100
+		this.moveTime = (int) ((Vector3.distance(getPostion(), goal) / (getSpeed() / 100)) * 1000);
+		// 记录更新时间
 		setTargetPostion(goal);
+		setDir(MathUtils.getDirByXZ(getTargetPostion(), getPostion()));
 		Set<Long> nearPlayers = getNears(new PlayerSelectorHelper(this));
 		for (Long id : nearPlayers) {
 			ArmyProxy neararmy = WorldMgr.getArmy(id);
@@ -97,7 +98,6 @@ public class ActiveLiving extends Living {
 			msg.setPreArriveTargetServerTime(System.currentTimeMillis());
 			PBMessage pkg = MessageUtil.buildMessage(Protocol.U_BC_MOVE, msg);
 			neararmy.sendPbMessage(pkg);
-
 		}
 	}
 
@@ -166,6 +166,14 @@ public class ActiveLiving extends Living {
 		this.moveTime = moveTime;
 	}
 
+	public long getMoveCounter() {
+		return moveCounter;
+	}
+
+	public void setMoveCounter(long moveCounter) {
+		this.moveCounter = moveCounter;
+	}
+
 	/**
 	 * 寻路到达目的地
 	 */
@@ -175,6 +183,7 @@ public class ActiveLiving extends Living {
 		if (code == NavmeshSeekerStatuCode.Success) {
 			this.path = path;
 			moveto(this.path.remove(0));
+			setNavFail(false);
 		} else {
 			setNavFail(true);
 			goal = Vector3.Invalid;

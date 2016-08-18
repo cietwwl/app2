@@ -7,7 +7,7 @@ import com.chuangyou.xianni.cooldown.CoolDownTypes;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
 
-public class Idle extends BaseBehavior {
+public class Idle extends MonsterBaseBehavior {
 
 	public Idle(Monster m) {
 		super(AIState.IDLE, m);

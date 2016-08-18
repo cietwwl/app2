@@ -10,7 +10,7 @@ import com.chuangyou.xianni.cooldown.CoolDownTypes;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
 
-public class Attack extends BaseBehavior {
+public class Attack extends MonsterBaseBehavior {
 	// 需要追击
 	private boolean needChase = false;
 	// 本次攻击处理无效，切换到IDLE走下一次轮询
@@ -73,6 +73,7 @@ public class Attack extends BaseBehavior {
 		// System.out.println(tmpTarget.getPostion());
 		// AttackOrderControler.attackOrder(getMonster(), getMonster().getCurSkillID(), targets, getMonster().getPostion(), tmpTarget.getPostion());
 		Skill skill = getMonster().getAttackSkill();
+		getMonster().stop(true);
 		AttackOrderControler.attackOrder(getMonster(), skill.getActionId(), targets, getMonster().getPostion(), tmpTarget.getPostion());
 		// SceneManagers.cooldownManager.addCooldown(getMonster(), CoolDownTypes.SKILL, null, SceneGlobal.AI_MONSTER_ATTACK_COOL_DOWN);
 		getMonster().addCooldown(CoolDownTypes.SKILL, null, getMonster().getMonsterInfo().getAttackSpeed() * 1000);

@@ -1,5 +1,6 @@
 package com.chuangyou.xianni.warfield.spawn;
 
+import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.entity.spawn.NpcInfo;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
@@ -17,7 +18,7 @@ public class NpcSpawnNode extends SpwanNode {
 	@Override
 	public void start() {
 		super.start();
-		System.out.println("spawn - skin = " + spwanInfo.getEntityId());
+		//System.out.println("spawn - skin = " + spwanInfo.getEntityId());
 		NpcInfo npcInfo = NpcInfoTemplateMgr.npcInfoTemps.get(spwanInfo.getEntityId());
 		if (npcInfo != null) {
 			NPC npc = new NPC(IDMakerHelper.nextID(), npcInfo.getName(), this);
@@ -26,9 +27,9 @@ public class NpcSpawnNode extends SpwanNode {
 			npc.setPostion(new Vector3(spwanInfo.getBound_x() / Vector3.Accuracy, spwanInfo.getBound_y() / Vector3.Accuracy, spwanInfo.getBound_z() / Vector3.Accuracy));
 			field.enterField(npc);
 
-			System.out.println("npcId :" + npc.getId() + " skinId :" + npc.getSkin());
+			//System.out.println("npcId :" + npc.getId() + " skinId :" + npc.getSkin());
 		} else {
-			System.err.println(spwanInfo.getId() + "----------" + spwanInfo.getEntityId() + " 在NpcInfo里面未找到配置");
+			Log.error(spwanInfo.getId() + "----------" + spwanInfo.getEntityId() + " 在NpcInfo里面未找到配置");
 		}
 	}
 }

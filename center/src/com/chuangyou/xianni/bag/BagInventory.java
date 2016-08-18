@@ -239,6 +239,34 @@ public class BagInventory extends AbstractEvent implements IInventory {
 		}
 		return result;
 	}
+	
+	/**
+	 * 添加动态可变设置属性的物品
+	 * @param templateId
+	 * @param count
+	 * @param addType
+	 * @param isBind
+	 * @return
+	 */
+	public BaseItem addDynItem(int templateId, int count, short addType, boolean isBind,int attCount){
+		ItemTemplateInfo tempInfo = ItemManager.findItemTempInfo(templateId);
+		if (tempInfo == null) {
+			Log.error("add item bu template is  not exists,tempId :" + templateId + "  playerId :" + player.getPlayerId());
+			return null;
+		}
+		BaseItem item = BaseItem.createBaseItem(tempInfo, count, addType);
+		item.getItemInfo().setPro(attCount);
+		playerBag.beginChanges();
+		boolean result = playerBag.addTemplate(item, item.getItemInfo().getCount());
+		playerBag.commitChanges();
+		if (result) {		
+			this.notifyListeners(new ObjectEvent(this, templateId, EventNameType.TASK_ITEM_CHANGE_ADD));
+		}else{
+			return null;
+		}
+		return item;
+	}
+	
 
 	/**
 	 * 添加物品到背包。如果背包满了。就以邮件发给玩家

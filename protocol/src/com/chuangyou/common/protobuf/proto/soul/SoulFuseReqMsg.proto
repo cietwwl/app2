@@ -1,0 +1,11 @@
+//protocol=11609;
+option java_package = "com.chuangyou.common.protobuf.pb.soul";
+option java_outer_classname = "SoulFuseReqProto";
+
+//魂幡融合
+message SoulFuseReqMsg{
+	required int32 op = 1;  //操作 1：开始融合   2： 确定选择融合后的技能  3：确定取消融合后的技能
+	required int32 index = 2;  //位置（1--4）
+	optional int32 useItemId = 3; //使用材料的唯一ID
+	optional int32 useItemPos = 4; //使用材料在背包中的位置
+}

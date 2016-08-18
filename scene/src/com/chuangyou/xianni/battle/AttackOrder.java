@@ -3,6 +3,7 @@ package com.chuangyou.xianni.battle;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
 import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
 import com.chuangyou.common.protobuf.pb.battle.AttackBroadcastMsgProto.AttackBroadcastMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
@@ -17,11 +18,17 @@ import com.chuangyou.xianni.battle.calc.SkillCalc;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.skill.Skill;
+import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
+import com.chuangyou.xianni.entity.skill.SnareTemplateInfo;
 import com.chuangyou.xianni.proto.BroadcastUtil;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.objects.Living;
+import com.chuangyou.xianni.role.objects.Monster;
+import com.chuangyou.xianni.role.objects.Snare;
+import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 
 /**
@@ -81,6 +88,8 @@ public class AttackOrder {
 		}
 		// 添加/执行技能Buffer
 		addSkillBuffers();
+		// 技能创建陷阱
+		createSnare();
 		// 计算技能攻击伤害值
 		damages.addAll(skillCalc.calcEffect(source, targets, this));
 		// 计算受伤到一定程度后，一些特殊处理，以及伤害生效
@@ -132,7 +141,7 @@ public class AttackOrder {
 		}
 		// Log.error("----发送给客户端伤害包-------" + attackBroMsg.build());
 		BroadcastUtil.sendBroadcastPacket(players, Protocol.U_G_ATTACK_SKILL, attackBroMsg.build());
-		AccessTextFile.saveRecord(JSONUtil.getJSONString(players) + "---" + attackBroMsg.toString());
+
 	}
 
 	/** 再次判断该技能是否能释放执行 */
@@ -228,6 +237,41 @@ public class AttackOrder {
 				Buffer buff = BufferFactory.createBuffer(source, target, sbinfo);
 				buff.setPermanent(false);
 				target.addBuffer(buff);
+			}
+		}
+	}
+
+	/**
+	 * 技能创建陷阱
+	 */
+	private void createSnare() {
+		if (source.getType() != RoleType.monster) {
+			return;
+		}
+		SkillActionTemplateInfo skillAction = skill.getTemplateInfo();
+		Monster monster = (Monster) source;
+		int[] snareArr = skillAction.getSnareIdArr();
+		if (snareArr == null || snareArr.length == 0) {
+			return;
+		}
+		for (int snareId : snareArr) {
+			SnareTemplateInfo stemp = BattleTempMgr.getSnareTemp(snareId);
+			if (stemp == null) {
+				continue;
+			}
+
+			Living target = null;
+			if (targets != null && targets.size() > 0) {
+				target = targets.get(0);
+			}
+			Snare snare = new Snare(stemp, monster, target);
+			monster.addSnare(snare);
+			snare.setArmyId(monster.getArmyId());
+
+			snare.setPostion(BattleUtil.getBornPos(monster, target, stemp));
+			Field field = monster.getField();
+			if (field != null) {
+				field.enterField(snare);
 			}
 		}
 	}

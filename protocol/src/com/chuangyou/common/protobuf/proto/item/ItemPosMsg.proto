@@ -1,0 +1,8 @@
+option java_package = "com.chuangyou.common.protobuf.pb.item";
+option java_outer_classname = "ItemPosProto";
+
+message ItemPosMsg{
+	optional int32 bagType = 1; // 物品所在背包
+	optional int32 position = 2; // 物品位置
+	optional int64 itemId = 3; // 物品ID
+}

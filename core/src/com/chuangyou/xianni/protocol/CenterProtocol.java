@@ -208,7 +208,10 @@ public interface CenterProtocol {
 	 * 材料制作
 	 */
 	public static final short C_REQ_SOUL_MAKE                  = 11608;
-	
+	/**
+	 * 融合
+	 */
+	public static final short C_REQ_SOUL_FUSE                  = 11609;
 	
 	// =========================>坐骑<===================================
 	/** 获取坐骑信息 */
@@ -331,6 +334,9 @@ public interface CenterProtocol {
 	
 	/** 装备信息 */
 	public static short			C_EQUIP_INFO					= 10151;
+	
+	/** 装备一键分解 */
+	public static short			C_EQUIP_RESOLVE_ONEKEY			= 10152;
 
 	// =========================>时装<===================================
 	/** 获取时装信息 */

@@ -12,7 +12,8 @@ import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.entity.inverseBead.PlayerBeadTimeInfo;
 import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
-import com.chuangyou.xianni.exec.LoopAction;
+import com.chuangyou.xianni.exec.ActionQueue;
+import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.inverseBead.manager.InverseBeadManager;
 import com.chuangyou.xianni.inverseBead.template.InverseBeadTemMgr;
 import com.chuangyou.xianni.player.GamePlayer;
@@ -26,25 +27,27 @@ import com.chuangyou.xianni.protocol.Protocol;
  * @author Administrator
  *
  */
-public class InverseBeadLoopAction extends LoopAction {
-	private GamePlayer player;
-	private static final int count = Integer.MAX_VALUE;
-	private static final int delay = 500;
-	public static int intervalTime; // 间隔时间
-	private List<Integer> list;
+public class InverseBeadLoopAction extends DelayAction {
+	private GamePlayer		player;
+	// private static final int count = Integer.MAX_VALUE;
+	// private static final int delay = 50000;
+	public static int		intervalTime	= 0;	// 下一次时间
+	private List<Integer>	list;
+	private boolean			isLoop			= true;
 
-	public InverseBeadLoopAction(GamePlayer player, List<Integer> list) {
-		super(player.getActionQueue(), delay, count);
+	public InverseBeadLoopAction(GamePlayer player, ActionQueue queue, List<Integer> list) {
+		super(queue, intervalTime);
 		this.player = player;
 		this.list = list;
 	}
 
 	@Override
-	public void loopExecute() {
+	public void execute() {
 		boolean res = refreshSpawn();
 		boolean res2 = refreshAura();
 		if (res || res2) {
-			// PlayerTimeInfo playerTimeInfo = player.getBasePlayer().getPlayerTimeInfo();
+			// PlayerTimeInfo playerTimeInfo =
+			// player.getBasePlayer().getPlayerTimeInfo();
 			PlayerBeadTimeInfo playerTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
 
 			RefreshInverseBeadMsg.Builder msg = RefreshInverseBeadMsg.newBuilder();
@@ -59,15 +62,25 @@ public class InverseBeadLoopAction extends LoopAction {
 			if (lastTime < 0)
 				lastTime = 0;
 			SpawnInfo tem = InverseBeadTemMgr.getSpwanId(playerTimeInfo.getCurrRefreshId());
-			if(tem == null){
+			if (tem == null) {
 				return;
 			}
 			MonsterInfo monsterInfo = MonsterInfoTemplateMgr.get(tem.getEntityId());
+
+			if (monsterInfo == null) {
+				System.err.println("配置错误。。entityId:" + tem.getEntityId());
+				return;
+			}
+
 			msg.setMonsterLv(monsterInfo.getLevel());
 			msg.setLastTime((int) Math.ceil(lastTime));
 
 			PBMessage pbm = MessageUtil.buildMessage(Protocol.U_REFRESH_INVERSE_BEAD, msg);
 			this.player.sendPbMessage(pbm);
+		}
+		if (isLoop) {
+			this.execTime = System.currentTimeMillis() + intervalTime;
+			getActionQueue().enDelayQueue(this);
 		}
 	}
 
@@ -80,13 +93,13 @@ public class InverseBeadLoopAction extends LoopAction {
 		int a = SystemConfigTemplateMgr.getIntValue("fiveElements.a");
 		int b = SystemConfigTemplateMgr.getIntValue("fiveElements.b");
 		// T = Random( A - B*N , A )
-		int t = Math.max(1, MathUtils.randomClamp(a - b * 0, a));
+		int t = Math.max(1, MathUtils.randomClamp(a - b * 1, a));
 		return t * 60 * 1000;
 	}
 
 	private boolean refreshSpawn() {
 		boolean need2s = false;
-		if(player.getInverseBeadRefreshInventory()==null)
+		if (player.getInverseBeadRefreshInventory() == null)
 			return false;
 		PlayerBeadTimeInfo playerTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
 		if (playerTimeInfo == null)
@@ -113,8 +126,8 @@ public class InverseBeadLoopAction extends LoopAction {
 				int curr = playerTimeInfo.getCurrRefreshId();
 				SpawnInfo tem = InverseBeadTemMgr.getSpwanId(curr);
 				if (tem == null) {
-//					System.err.println("配置丢失。。。。。。。");
-					Log.error("缺少配置。Spwan："+curr);
+					// System.err.println("配置丢失。。。。。。。");
+					Log.error("缺少配置。Spwan：" + curr);
 					break;
 				}
 				int[] nextIds = tem.getNextSpawanIdAttr();
@@ -150,28 +163,42 @@ public class InverseBeadLoopAction extends LoopAction {
 	}
 
 	private boolean refreshAura() {
-		// PlayerTimeInfo playerTimeInfo = player.getBasePlayer().getPlayerTimeInfo();
-		if(player.getInverseBeadRefreshInventory()==null)
+		// PlayerTimeInfo playerTimeInfo =
+		// player.getBasePlayer().getPlayerTimeInfo();
+		if (player.getInverseBeadRefreshInventory() == null)
 			return false;
 		PlayerBeadTimeInfo playerTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
 		if (playerTimeInfo == null)
 			return false;
-		boolean need2s = false;
-		while (true) {
-			int auraNum = playerTimeInfo.getAuraNum();
-			Date auraRefreshDateTime = playerTimeInfo.getAuraRefreshDateTime();
-			if (auraRefreshDateTime == null) {
-				playerTimeInfo.setAuraRefreshDateTime(new Date());
-				auraRefreshDateTime = playerTimeInfo.getAuraRefreshDateTime();
-			}
-			if (System.currentTimeMillis() - auraRefreshDateTime.getTime() < 30 * 60 * 1000)
-				break;
-			auraNum++;
-			playerTimeInfo.setAuraNum(auraNum);
-			playerTimeInfo.setAuraRefreshDateTime(new Date(auraRefreshDateTime.getTime() + 30 * 60 * 1000));
-			need2s = true;
+		// boolean need2s = false;
+		// while (true) {
+		int auraNum = playerTimeInfo.getAuraNum();
+		Date auraRefreshDateTime = playerTimeInfo.getAuraRefreshDateTime();
+		if (auraRefreshDateTime == null) {
+			playerTimeInfo.setAuraRefreshDateTime(new Date());
+			auraRefreshDateTime = playerTimeInfo.getAuraRefreshDateTime();
 		}
-		return need2s;
+
+		long timeLen = System.currentTimeMillis() - auraRefreshDateTime.getTime();
+		int addNum = (int) (timeLen / 30 * 60 * 1000);
+		if (addNum <= 0)
+			return false;
+
+		auraNum += addNum;
+		playerTimeInfo.setAuraNum(auraNum);
+		playerTimeInfo.setAuraRefreshDateTime(new Date(auraRefreshDateTime.getTime() + 30 * 60 * 1000 * addNum));
+
+		// if (System.currentTimeMillis() - auraRefreshDateTime.getTime() < 30 *
+		// 60 * 1000)
+		// break;
+		// auraNum++;
+		// playerTimeInfo.setAuraNum(auraNum);
+		// playerTimeInfo.setAuraRefreshDateTime(new
+		// Date(auraRefreshDateTime.getTime() + 30 * 60 * 1000));
+		// need2s = true;
+		// }
+
+		return true;
 	}
 	// public static void main(String[] args) {
 	// List<Integer> list = new ArrayList<>();

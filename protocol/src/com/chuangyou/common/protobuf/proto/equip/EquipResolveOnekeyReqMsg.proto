@@ -1,0 +1,9 @@
+//protocol=10152;
+option java_package = "com.chuangyou.common.protobuf.pb.equip";
+option java_outer_classname = "EquipResolveOnekeyReqProto";
+
+import "item/ItemPosMsg.proto";
+
+message EquipResolveOnekeyReqMsg{
+	repeated ItemPosMsg items = 1; // 要分解的物品
+}

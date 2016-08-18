@@ -45,6 +45,20 @@ public class MathUtils {
 		}
 		return value;
 	}
+	
+	public static void main(String[] args)
+	{
+		Vector3 a = new Vector3(40.27079f,-1.0845418f,-129.52719f);
+		Vector3 b = new Vector3(40.559185f,-1.1f,-132.47057f);
+		float dist = Vector3.distance(a, b);
+		System.out.println(dist);
+		int timer = 2957;
+		for(int i = 2957; i>0; i=i-100)
+		{
+			a = GetVector3InDistance(a, b, 0.1f);
+			System.out.println(a);
+		}
+	}
 
 	/**
 	 * 求2点之前的插值-目标点的计算
@@ -105,6 +119,17 @@ public class MathUtils {
 		return GetRandomVector3ByCenter(center, radius, true);
 	}
 
+	/**
+	 * 在XZ水平上的方向
+	 * @param src
+	 * @param tar
+	 * @return
+	 */
+	public static Vector3 getDirByXZ(Vector3 src, Vector3 tar)
+	{
+		return new Vector3(src.x - tar.x, 0, src.z - tar.z).getNormalize();
+	}
+	
 	/**
 	 * 在一个中心随机一个点
 	 * 

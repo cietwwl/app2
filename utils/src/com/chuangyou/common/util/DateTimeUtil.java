@@ -52,7 +52,7 @@ public class DateTimeUtil {
 	 * @param date2
 	 * @return
 	 */
-	public static boolean isSameWeekWithToday(Date date, Date date2) {
+	public static boolean isSameWeek(Date date, Date date2) {
 		if (date == null || date2 == null)
 			return false;
 		// 0.先把Date类型的对象转换Calendar类型的对象
@@ -60,8 +60,18 @@ public class DateTimeUtil {
 		Calendar date2Cal = Calendar.getInstance();
 		dateCal.setTime(date);
 		date2Cal.setTime(date2);
+
+		dateCal.set(Calendar.DATE, -1);
+		date2Cal.set(Calendar.DATE, -1);
 		// 1.比较当前日期在年份中的周数是否相同
 		return date2Cal.get(Calendar.WEEK_OF_YEAR) == dateCal.get(Calendar.WEEK_OF_YEAR);
 	}
+
+	// public static void main(String[] args) {
+	// Date date = new Date(System.currentTimeMillis() + 5 * 24 * 60 * 60 * 1000);
+	// Date date2 = new Date();
+	// boolean res = isSameWeek(date, date2);
+	// System.out.println(res);
+	// }
 
 }

@@ -78,6 +78,7 @@ public class Campaign extends AbstractActionQueue {
 
 	protected Map<Integer, Map<Integer, List<SpwanNode>>>	teamNodes;					// 将同组的节点分组<所属召唤阵ID,<分组ID,组成员集>>
 	protected CampaignTask									task;						// 挑战任务
+	private int												taskId;
 
 	public Campaign(CampaignTemplateInfo tempInfo, ArmyProxy creater, int taskId) {
 		super(ThreadManager.actionExecutor);
@@ -94,11 +95,7 @@ public class Campaign extends AbstractActionQueue {
 		this.teamNodes = new HashMap<>();
 		this.creater = creater.getPlayerId();
 		this.random = new ThreadSafeRandom();
-
-		CampaignTaskTemplateInfo ttemp = CampaignTaskTempMgr.get(taskId);
-		if (ttemp != null) {
-			task = new CampaignTask(this, ttemp);
-		}
+		this.taskId = taskId;
 	}
 
 	/** 地图开始 */
@@ -129,9 +126,16 @@ public class Campaign extends AbstractActionQueue {
 		} else {
 			this.endTime = beginTime + campaignTemplateInfo.getOpenTime() * 60l * 1000;
 		}
+
+		CampaignTaskTemplateInfo ttemp = CampaignTaskTempMgr.get(taskId);
+		if (ttemp != null) {
+			task = new CampaignTask(this, ttemp);
+		}
+
 		expiredTime = endTime;
 		CampaignCheckAction action = new CampaignCheckAction(this);
 		enDelayQueue(action);
+
 	}
 
 	/**
@@ -204,7 +208,7 @@ public class Campaign extends AbstractActionQueue {
 			army.sendPbMessage(statuMsg);
 		}
 
-		endTime = System.currentTimeMillis() + 10 * 1000;// 10秒后结束副本
+		endTime = System.currentTimeMillis() + 60 * 1000;// 60秒后结束副本
 	}
 
 	/**
@@ -241,7 +245,7 @@ public class Campaign extends AbstractActionQueue {
 		// PBMessage passFbpkg =
 		// MessageUtil.buildMessage(Protocol.C_REQ_PASS_FB, passFbMsg);
 		// GatewayLinkedSet.send2Server(passFbpkg);
-		setExpiredTime(System.currentTimeMillis() + 5 * 60 * 1000);
+		setExpiredTime(System.currentTimeMillis() + 1 * 60 * 1000);
 	}
 
 	/** 清理副本信息 */

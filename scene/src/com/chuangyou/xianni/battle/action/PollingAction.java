@@ -20,6 +20,7 @@ public abstract class PollingAction extends DelayAction {
 	Living	living;
 	int		delay;
 
+	public static final int DELAY = 400;
 	public PollingAction(Living queue, int delay) {
 		super(queue, delay);
 		this.living = queue;

@@ -44,4 +44,9 @@ public interface ItemAddType {
 	 * 装备分解获得
 	 */
 	public static final short	EQUIP_RESOLVE = 2009;
+	
+	/**
+	 * 魂幡
+	 */
+	public static final short  SOUL = 2010;
 }

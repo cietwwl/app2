@@ -1,0 +1,7 @@
+//protocol=154;
+option java_package = "com.chuangyou.common.protobuf.pb.equip";
+option java_outer_classname = "EquipResolveOnekeyRespProto";
+
+message EquipResolveOnekeyRespMsg{
+	optional int32 result = 1; // 分解结果，分解装备成功数量大于0就是成功(0成功 1失败)
+}

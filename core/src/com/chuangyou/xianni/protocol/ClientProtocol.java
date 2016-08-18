@@ -241,8 +241,15 @@ public interface ClientProtocol {
 	 */
 	public static final short U_RESP_SOUL_MAKE                  = 1609;
 	
-	
+	/**
+	 * 制作任务同步
+	 */
 	public static final short U_RESP_SOUL_MAKE_TASK             = 1610;
+	
+	/**
+	 * 融合
+	 */
+	public static final short  U_RESP_SOUL_FUSE                 = 1611;
 	// =========================>坐骑<===================================
 	/** 返回坐骑信息 */
 	public static final short U_MOUNT_GETINFO = 101;
@@ -365,6 +372,9 @@ public interface ClientProtocol {
 	
 	/** 装备信息 */
 	public static final short U_EQUIP_INFO = 153;
+	
+	/** 装备一键分解 */
+	public static final short U_EQUIP_RESOLVE_ONEKEY = 154;
 	//==========================================================
 
 	/** 获取时装信息 */

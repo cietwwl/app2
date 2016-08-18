@@ -9,7 +9,7 @@ import com.chuangyou.xianni.cooldown.CoolDownTypes;
 import com.chuangyou.xianni.role.objects.Monster;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 
-public class Patrol extends BaseBehavior {
+public class Patrol extends MonsterBaseBehavior {
 
 	private final int PatrolProbability = 30;
 	private Vector3 patrolTarget;

@@ -18,28 +18,28 @@ import com.chuangyou.xianni.sql.dao.DBManager;
 
 public class InverseBeadInventory extends AbstractEvent implements IInventory {
 	/** 金 */
-	public static final int gold = 1;
+	public static final int					gold					= 1;
 	/** 木 */
-	public static final int wood = 2;
+	public static final int					wood					= 2;
 	/** 水 */
-	public static final int water = 3;
+	public static final int					water					= 3;
 	/** 火 */
-	public static final int fire = 4;
+	public static final int					fire					= 4;
 	/** 土 */
-	public static final int earth = 5;
+	public static final int					earth					= 5;
 	/** 刷怪初始id **/
-	public static final int spawnId = 30201001;
-	public static final int campaignId = 30201;	// 天逆珠副本id
-	public static final int auraId = 6130011;	// 灵气液id
+	public static final int					spawnId					= 30201001;
+	public static final int					campaignId				= 30201;					// 天逆珠副本id
+	public static final int					auraId					= 6130011;					// 灵气液id
 
-	private GamePlayer player;
-	private Map<String, PlayerInverseBead> playerInverseBeadList = null;
-	private static List<Integer> beadRefreshIdList = new ArrayList<Integer>();// 怪物池
+	private GamePlayer						player;
+	private Map<String, PlayerInverseBead>	playerInverseBeadList	= null;
+	private static List<Integer>			beadRefreshIdList		= new ArrayList<Integer>();	// 怪物池
 
 	public InverseBeadInventory(GamePlayer player) {
 		this.player = player;
 
-		InverseBeadLoopAction action = new InverseBeadLoopAction(player, beadRefreshIdList);
+		InverseBeadLoopAction action = new InverseBeadLoopAction(player, player.getActionQueue(), beadRefreshIdList);
 		player.getActionQueue().enqueue(action);
 	}
 
@@ -144,26 +144,26 @@ public class InverseBeadInventory extends AbstractEvent implements IInventory {
 			int attVal2 = inverseBead.getAttVal2();
 			// 属性计算
 			switch (fiveElements) {
-			case InverseBeadInventory.gold:
-				SkillUtil.joinPro(proData, Living.METAL + 1, attVal);
-				SkillUtil.joinPro(proData, Living.METAL_DEFENCE + 1, attVal2);
-				break;
-			case InverseBeadInventory.wood:
-				SkillUtil.joinPro(proData, Living.WOOD + 1, attVal);
-				SkillUtil.joinPro(proData, Living.WOOD_DEFENCE + 1, attVal2);
-				break;
-			case InverseBeadInventory.water:
-				SkillUtil.joinPro(proData, Living.WATER + 1, attVal);
-				SkillUtil.joinPro(proData, Living.WATER_DEFENCE + 1, attVal2);
-				break;
-			case InverseBeadInventory.fire:
-				SkillUtil.joinPro(proData, Living.FIRE + 1, attVal);
-				SkillUtil.joinPro(proData, Living.FIRE_DEFENCE + 1, attVal2);
-				break;
-			case InverseBeadInventory.earth:
-				SkillUtil.joinPro(proData, Living.EARTH + 1, attVal);
-				SkillUtil.joinPro(proData, Living.EARTH_DEFENCE + 1, attVal2);
-				break;
+				case InverseBeadInventory.gold:
+					SkillUtil.joinPro(proData, Living.METAL + 1, attVal);
+					SkillUtil.joinPro(proData, Living.METAL_DEFENCE + 1, attVal2);
+					break;
+				case InverseBeadInventory.wood:
+					SkillUtil.joinPro(proData, Living.WOOD + 1, attVal);
+					SkillUtil.joinPro(proData, Living.WOOD_DEFENCE + 1, attVal2);
+					break;
+				case InverseBeadInventory.water:
+					SkillUtil.joinPro(proData, Living.WATER + 1, attVal);
+					SkillUtil.joinPro(proData, Living.WATER_DEFENCE + 1, attVal2);
+					break;
+				case InverseBeadInventory.fire:
+					SkillUtil.joinPro(proData, Living.FIRE + 1, attVal);
+					SkillUtil.joinPro(proData, Living.FIRE_DEFENCE + 1, attVal2);
+					break;
+				case InverseBeadInventory.earth:
+					SkillUtil.joinPro(proData, Living.EARTH + 1, attVal);
+					SkillUtil.joinPro(proData, Living.EARTH_DEFENCE + 1, attVal2);
+					break;
 			}
 
 		}

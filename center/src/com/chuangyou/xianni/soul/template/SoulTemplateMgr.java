@@ -26,7 +26,15 @@ public class SoulTemplateMgr {
 	
 	public static List<Integer> skillPool;
 	
+	/**
+	 * 最大卡牌等级
+	 */
 	public static int MAX_CARD_LV;
+	
+	/**
+	 * 技能有限时间
+	 */
+	public static final int MAX_SOUL_SKILL_CD = 24*60*60*1000;
 	
 	/**
 	 * QTE——CD时间

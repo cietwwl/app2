@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.chuangyou.common.protobuf.pb.PlayerAttSnapProto.PlayerAttSnapMsg;
+import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.ai.proxy.SnareAI;
 import com.chuangyou.xianni.battle.OrderFactory;
@@ -16,12 +17,15 @@ import com.chuangyou.xianni.battle.damage.SoulDamageCalculator;
 import com.chuangyou.xianni.battle.damage.effect.DamageEffecterType;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.snare.SnareConstant.ExeWay;
+import com.chuangyou.xianni.battle.snare.SnareConstant.LockType;
 import com.chuangyou.xianni.battle.snare.SnareConstant.TargetType;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SnareTemplateInfo;
+import com.chuangyou.xianni.role.action.UpdatePositionAction;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
+import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 
 public class Snare extends ActiveLiving {
 
@@ -34,10 +38,12 @@ public class Snare extends ActiveLiving {
 	private ActiveLiving	creater;
 	private long			exeTime		= 0;
 	private Object			lock		= new Object();
+	private Living			target;
+	private Living			locking;
 
 	public static final int	ACTION_EXE	= 101;			// 陷阱执行
 
-	public Snare(SnareTemplateInfo snareInfo, Living creater) {
+	public Snare(SnareTemplateInfo snareInfo, ActiveLiving creater, Living target) {
 		super(IDMakerHelper.nextID());
 		setType(RoleType.snare);
 		setSkin(snareInfo.getTemplateId());
@@ -47,8 +53,17 @@ public class Snare extends ActiveLiving {
 		affected = new HashSet<>();
 		affectingState = new HashSet<>();
 		curSoul = snareInfo.getHp();
-		this.creater = (ActiveLiving) creater;
-		enDelayQueue(new SnarePollingAction(this, new SnareAI(this)));
+		this.creater = creater;
+		this.armyId = creater.getArmyId();
+		this.setSpeed(snareInfo.getMoveSpeed() * 100);
+		setSoulState(true);
+
+		if (creater.getType() == RoleType.monster && snareInfo.getLockingType() == LockType.FIRST_TARGET) {
+			locking = target;
+		}
+		this.target = target;
+
+		enDelayQueue(new SnarePollingAction(this, new SnareAI(this), new UpdatePositionAction(this, new PlayerSelectorHelper(this))));
 	}
 
 	// 陷阱执行 -- 对范围内玩家生效
@@ -60,6 +75,9 @@ public class Snare extends ActiveLiving {
 			return;
 		}
 		if (System.currentTimeMillis() < exeTime + snareInfo.getCoolDown() * 1000) {
+			return;
+		}
+		if (inRange == null || inRange.size() == 0) {
 			return;
 		}
 		for (Living living : inRange) {
@@ -81,7 +99,7 @@ public class Snare extends ActiveLiving {
 			for (int bufferId : snareInfo.getArrBufferIds()) {
 				SkillBufferTemplateInfo bufferTemp = BattleTempMgr.getBufferInfo(bufferId);
 				if (bufferTemp != null) {
-					Buffer buffer = BufferFactory.createBuffer(living, this, bufferTemp);
+					Buffer buffer = BufferFactory.createBuffer(this, living, bufferTemp);
 					living.addBuffer(buffer);
 				}
 			}
@@ -93,6 +111,10 @@ public class Snare extends ActiveLiving {
 		living.addCurSoul(-soulDamage, DamageEffecterType.COMMON);
 
 		affected.add(living.getId());
+
+		if (creater.getType() == RoleType.monster && snareInfo.getLockingType() == LockType.FIRST_BE_ATTACK && locking == null) {
+			locking = living;
+		}
 	}
 
 	// 进入陷阱范围
@@ -161,7 +183,9 @@ public class Snare extends ActiveLiving {
 		}
 		creater.removeSnare(this);
 		if (getField() != null) {
-			field.leaveField(this);
+			getField().leaveField(this);
+		} else {
+			Log.error("----------------------------------------" + this.id);
 		}
 		return true;
 	}
@@ -203,12 +227,12 @@ public class Snare extends ActiveLiving {
 		if (source.getField() != target.getField()) {
 			return false;
 		}
+		if (target.isDie()) {
+			return false;
+		}
 
-		int offsetX = Math.abs((int) (source.getPostion().x - target.getPostion().x));
-		int offsetY = Math.abs((int) (source.getPostion().y - target.getPostion().y));
-		int offsetZ = Math.abs((int) (source.getPostion().z - target.getPostion().z));
-
-		if (offsetX > 5 || offsetY > 5 || offsetZ > 5) {
+		float dist = Vector3.distance(new Vector3(source.getPostion().x, 0, source.getPostion().z), new Vector3(target.getPostion().x, 0, target.getPostion().z));
+		if (dist > snareInfo.getCheckX() + 50) {
 			return false;
 		}
 
@@ -218,6 +242,9 @@ public class Snare extends ActiveLiving {
 
 		// --------------- 无差别攻击----------------
 		if (snareInfo.getTarget() == TargetType.ALL_OTHER) {
+			if (target.getId() == source.getId()) {
+				return false;
+			}
 			return true;
 		}
 
@@ -294,6 +321,27 @@ public class Snare extends ActiveLiving {
 
 	public int takeDamage(Damage damage) {
 		damage.setDamageValue(0);
+
+		if (creater.getType() == RoleType.monster && snareInfo.getLockingType() == LockType.ATTACKER && locking == null) {
+			locking = damage.getSource();
+		}
 		return 0;
 	}
+
+	public Living getLocking() {
+		return locking;
+	}
+
+	public SnareTemplateInfo getSnareInfo() {
+		return snareInfo;
+	}
+
+	public ActiveLiving getCreater() {
+		return creater;
+	}
+
+	public Living getTarget() {
+		return target;
+	}
+
 }

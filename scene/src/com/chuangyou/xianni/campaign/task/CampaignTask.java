@@ -1,6 +1,7 @@
 package com.chuangyou.xianni.campaign.task;
 
 import com.chuangyou.common.protobuf.pb.campaign.CampaignTaskInfoMsgProto.CampaignTaskInfoMsg;
+import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.entity.campaign.CampaignTaskTemplateInfo;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -8,6 +9,7 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
 import com.chuangyou.xianni.warfield.spawn.WorkingState;
+import com.chuangyou.xianni.warfield.template.SpawnTemplateMgr;
 import com.chuangyou.xianni.world.ArmyProxy;
 
 /** 副本任务,任意状态，只有在副本通关时候，才结算奖励 */
@@ -43,7 +45,11 @@ public class CampaignTask {
 			if (strIds != null && !strIds.equals("")) {
 				String[] arrIds = strIds.split(",");
 				for (String id : arrIds) {
-					SpwanNode node = campaign.getNode(Integer.valueOf(id));
+					SpwanNode node = campaign.getNode(SpawnTemplateMgr.getSpwanId(Integer.valueOf(id)));
+					if (node == null) {
+						Log.error("创建副本任务怪物异常,taskId :" + getTemp().getTaskId() + " id:" + id);
+						continue;
+					}
 					node.stateTransition(new WorkingState(node));
 				}
 			}

@@ -53,71 +53,69 @@ import com.chuangyou.xianni.word.WorldMgr;
 import io.netty.channel.Channel;
 
 public class GamePlayer extends AbstractEvent {
-	private CmdTaskQueue cmdTaskQueue;
-	private ActionQueue actionQueue;
+	private CmdTaskQueue				cmdTaskQueue;
+	private ActionQueue					actionQueue;
 
 	/** 玩家所有数据 */
-	private BasePlayer basePlayer;
+	private BasePlayer					basePlayer;
 
 	/*************************** 各模块数据管理 ****************************/
 	// <<----** 共享数据，离线保留内存一段时间 ,并且提供离线加载*/---------------->>
 	/** 部队数据 */
 
-	private ArmyInventory		armyInventory;
+	private ArmyInventory				armyInventory;
 
 	/** 空间数据 */
-	private SpaceInventory		spaceInventory;
-
+	private SpaceInventory				spaceInventory;
 
 	/** 好友数据 */
-	private FriendInventory friendInventory;
+	private FriendInventory				friendInventory;
 
 	// <<----** 非共享数据，玩家下线时卸载 */---------------->>
 	/** 邮件数据 */
 
-	private EmailInventory		emailInventory;
-
+	private EmailInventory				emailInventory;
 
 	/** 坐骑数据 */
-	private MountInventory mountInventory;
+	private MountInventory				mountInventory;
 	/** 法宝数据 */
-	private MagicwpInventory magicwpInventory;
+	private MagicwpInventory			magicwpInventory;
 	/** 宠物数据 */
-	private PetInventory petInventory;
+	private PetInventory				petInventory;
 
 	/** 商店购购买信息 */
-	private ShopInventory shopInventory;
+	private ShopInventory				shopInventory;
 
 	/** 背包 */
-	private BagInventory bagInventory;
+	private BagInventory				bagInventory;
 
 	/** 时装 */
-	private FashionInventory fashionInventory;
+	private FashionInventory			fashionInventory;
 
 	/** 任务 */
-	private TaskInventory taskInventory;
+	private TaskInventory				taskInventory;
 
 	/** 副本 */
-	private CampaignInventory campaignInventory;
+	private CampaignInventory			campaignInventory;
 	/** 英雄技能 **/
-	private SkillInventory skillInventory;
+	private SkillInventory				skillInventory;
 	/** 天逆珠 **/
-	private InverseBeadInventory inverseBeadInventory;
+	private InverseBeadInventory		inverseBeadInventory;
 	/** 天逆珠刷新数据 **/
-	private InverseBeadRefreshInventory inverseBeadRefreshInventory;
-	
+	private InverseBeadRefreshInventory	inverseBeadRefreshInventory;
+
 	/** 装备 */
-	private EquipInventory		equipInventory;
-	
+	private EquipInventory				equipInventory;
+
 	/**
 	 * 魂幡
 	 */
-	private SoulInventory 		soulInventory;
+	private SoulInventory				soulInventory;
 
-	private Channel channel;			// 服务器持有连接
+	private Channel						channel;					// 服务器持有连接
 
-	private int curMapId = -1;	// 玩家当前地图ID
-	private int curCampaign = 0;	// 玩家当前地图ID
+	private int							curMapId	= -1;			// 玩家当前地图ID
+	private int							curCampaign	= 0;			// 玩家当前地图ID
 
 	public GamePlayer() {
 		cmdTaskQueue = new AbstractCmdTaskQueue(ThreadManager.cmdExecutor);
@@ -178,11 +176,11 @@ public class GamePlayer extends AbstractEvent {
 			inverseBeadRefreshInventory.saveToDatabase();
 		}
 
-		if(equipInventory != null){
+		if (equipInventory != null) {
 			equipInventory.saveToDatabase();
 		}
-		
-		if(soulInventory != null){
+
+		if (soulInventory != null) {
 			soulInventory.saveToDatabase();
 		}
 
@@ -278,14 +276,14 @@ public class GamePlayer extends AbstractEvent {
 			return false;
 		}
 		equipInventory = new EquipInventory(this);
-		if(!initData(equipInventory.loadFromDataBase(), "装备数据")){
+		if (!initData(equipInventory.loadFromDataBase(), "装备数据")) {
 			return false;
 		}
 		soulInventory = new SoulInventory(this);
-		if(!initData(soulInventory.loadFromDataBase(), "魂幡数据")){
+		if (!initData(soulInventory.loadFromDataBase(), "魂幡数据")) {
 			return false;
 		}
-		//创建时会计算所有属性，所以要在最后面加载
+		// 创建时会计算所有属性，所以要在最后面加载
 		armyInventory = new ArmyInventory(this);
 		if (!initData(armyInventory.loadFromDataBase(), "用户部队")) {
 			return false;
@@ -342,11 +340,11 @@ public class GamePlayer extends AbstractEvent {
 			campaignInventory.unloadData();
 			campaignInventory = null;
 		}
-		if(equipInventory != null){
+		if (equipInventory != null) {
 			equipInventory.unloadData();
 			equipInventory = null;
 		}
-		if(soulInventory != null){
+		if (soulInventory != null) {
 			soulInventory.unloadData();
 			soulInventory = null;
 		}
@@ -596,7 +594,6 @@ public class GamePlayer extends AbstractEvent {
 	public InverseBeadInventory getInverseBeadInventory() {
 		return inverseBeadInventory;
 	}
-	
 
 	public InverseBeadRefreshInventory getInverseBeadRefreshInventory() {
 		return inverseBeadRefreshInventory;
@@ -604,7 +601,7 @@ public class GamePlayer extends AbstractEvent {
 
 	/** 回到出生点 */
 	public void backBornPoint() {
-		int born_map = SystemConfigTemplateMgr.getInitBorn();
+		int born_map = SystemConfigTemplateMgr.getReBorn();
 		FieldInfo fieldTemp = MapProxyManager.getFieldTempInfo(born_map);
 		ReqChangeMapMsg.Builder reqBuilder = ReqChangeMapMsg.newBuilder();
 		PostionMsg.Builder postion = PostionMsg.newBuilder();
@@ -620,11 +617,10 @@ public class GamePlayer extends AbstractEvent {
 		return spaceInventory;
 	}
 
-
 	public SoulInventory getSoulInventory() {
 		return soulInventory;
 	}
-	
+
 	/** 重置玩家数据 */
 	public void resetPlayerData() {
 		try {

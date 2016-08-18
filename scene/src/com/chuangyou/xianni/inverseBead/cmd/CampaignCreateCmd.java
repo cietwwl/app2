@@ -14,7 +14,7 @@ public class CampaignCreateCmd extends AbstractCommand {
 	@Override
 	public void execute(ArmyProxy army, PBMessage packet) throws Exception {
 		CreateCampaignMsg msg = CreateCampaignMsg.parseFrom(packet.getBytes());
-		CreateCampaignAction createAction = new CreateCampaignAction(army, msg.getCampaign(), 1);
+		CreateCampaignAction createAction = new CreateCampaignAction(army, msg.getCampaign());
 		army.enqueue(createAction);
 	}
 

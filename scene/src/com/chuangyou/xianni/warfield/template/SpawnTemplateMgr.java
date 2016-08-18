@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.constant.SpwanInfoType;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
@@ -22,7 +23,11 @@ public class SpawnTemplateMgr {
 	}
 
 	public static Map<Integer, SpawnInfo> getFieldSpawnInfos(int mapKey) {
-		return spwnInfo.get(mapKey);
+		Map<Integer, SpawnInfo> result =  spwnInfo.get(mapKey);
+		if(result == null){
+			result = new HashMap<>();
+		}
+		return result;
 	}
 
 	public static int getSpwanId(int tagId) {

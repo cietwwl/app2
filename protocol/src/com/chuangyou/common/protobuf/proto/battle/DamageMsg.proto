@@ -9,7 +9,7 @@ message DamageMsg {
 	optional int32 leftValue = 5; //剩余值
 	optional int32 tipType = 6; // 0 正常 1 暴击 2 MISS
 	optional int32 fromType = 7; //伤害源类型 1 技能，2 buffer ，3 陷阱
-	optional int32 fromId = 8; //技能ID
+	optional int64 fromId = 8; //技能ID
 	optional int32 order = 9; //第几段伤害
 }
 

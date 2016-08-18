@@ -21,7 +21,7 @@ public class CreateCampaignAction extends Action {
 	private ArmyProxy army;
 	private int campaignId;
 
-	public CreateCampaignAction(ArmyProxy army, int campaignId, int taskId) {
+	public CreateCampaignAction(ArmyProxy army, int campaignId) {
 		super(army);
 		this.army = army;
 		this.campaignId = campaignId;

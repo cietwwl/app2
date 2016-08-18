@@ -90,6 +90,15 @@ public class ItemTemplateInfo extends BaseProperty {
 	private int suit_id; // 作者:套装id
 
 	private String des; // 作者:描述
+	
+	/**
+	 * 分解物品ID
+	 */
+	private int resolveId;
+	/**
+	 * 分解物品数量
+	 */
+	private int resolveCount;
 
 	public int getId() {
 		return id;
@@ -449,6 +458,22 @@ public class ItemTemplateInfo extends BaseProperty {
 
 	public void setSonType(int sonType) {
 		this.sonType = sonType;
+	}
+
+	public int getResolveId() {
+		return resolveId;
+	}
+
+	public void setResolveId(int resolveId) {
+		this.resolveId = resolveId;
+	}
+
+	public int getResolveCount() {
+		return resolveCount;
+	}
+
+	public void setResolveCount(int resolveCount) {
+		this.resolveCount = resolveCount;
 	}
 
 }

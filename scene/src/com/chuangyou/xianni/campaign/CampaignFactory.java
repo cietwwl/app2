@@ -8,7 +8,6 @@ import com.chuangyou.xianni.inverseBead.InverseBeadCampaign;
 import com.chuangyou.xianni.world.ArmyProxy;
 
 public class CampaignFactory {
-	public static final int INVERSEBEAD=3;//天逆珠逆境
 
 	/**
 	 * 创建副本
@@ -21,7 +20,7 @@ public class CampaignFactory {
 				return new TeamCampaign(tempInfo, creater, taskId);
 			case CampaignType.CHALLENG:
 				return new ChallengeCampaign(tempInfo, creater, taskId);
-			case INVERSEBEAD:
+			case CampaignType.BEAD:
 				return new InverseBeadCampaign(tempInfo, creater, taskId);
 			default:
 				break;

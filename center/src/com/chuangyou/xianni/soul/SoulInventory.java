@@ -1,5 +1,6 @@
 package com.chuangyou.xianni.soul;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,9 @@ public class SoulInventory extends AbstractEvent implements IInventory {
 	 */
 	private KillMonsterListener listener;
 	
+	/** 临时位置《--》技能  */
+	private Map<Integer, Integer> tempMap = new HashMap<>();
+	
 	
 	public SoulInventory(GamePlayer palyer) {
 		this.player = palyer;
@@ -93,12 +97,25 @@ public class SoulInventory extends AbstractEvent implements IInventory {
 		return true;
 	}
 
+	/**
+	 * 初始化监听
+	 */
 	public void initListener(){
 		if(this.listener!=null){			
 			this.player.removeListener(this.listener, EventNameType.TASK_KILL_MONSTER);
 		}
 		this.listener = new KillMonsterListener(this.player);
 		this.player.addListener(listener, EventNameType.TASK_KILL_MONSTER);
+	}
+	
+	
+	/**
+	 * 移除监听
+	 */
+	public void removeListener(){
+		if(this.listener!=null){			
+			this.player.removeListener(this.listener, EventNameType.TASK_KILL_MONSTER);
+		}
 	}
 	
 	@Override
@@ -114,11 +131,12 @@ public class SoulInventory extends AbstractEvent implements IInventory {
 		}
 		soulInfo = null;
 		this.soulMake = null;
-		if(this.listener!=null){			
-			this.player.removeListener(this.listener, EventNameType.TASK_KILL_MONSTER);
-		}
+		
+		removeListener();
 		this.listener = null;
 		
+		this.tempMap.clear();
+		this.tempMap = null;
 		return true;
 	}
 
@@ -218,6 +236,10 @@ public class SoulInventory extends AbstractEvent implements IInventory {
 			DBManager.getSoulDao().addSoulMake(soulMake);
 		}
 		return soulMake;
+	}
+
+	public Map<Integer, Integer> getTempMap() {
+		return tempMap;
 	}
 
 }

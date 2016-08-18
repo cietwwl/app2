@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import com.chuangyou.common.protobuf.pb.PlayerKillMonsterProto.PlayerKillMonsterMsg;
 import com.chuangyou.common.protobuf.pb.battle.BufferMsgProto.BufferMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
@@ -43,6 +44,7 @@ import com.chuangyou.xianni.role.template.AiConfigTemplateMgr;
 import com.chuangyou.xianni.script.IScript;
 import com.chuangyou.xianni.script.manager.ScriptManager;
 import com.chuangyou.xianni.warfield.field.Field;
+import com.chuangyou.xianni.warfield.helper.selectors.MonsterSelectPlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.spawn.MonsterSpawnNode;
 import com.chuangyou.xianni.world.ArmyProxy;
@@ -107,8 +109,8 @@ public class Monster extends ActiveLiving {
 		this.invincibleBuffer = BufferFactory.createBuffer(this, this, sbinfo);
 		this.invincibleBuffer.setPermanent(false);
 		// enDelayQueue(new MonsterAI(this));
-		// enDelayQueue(new UpdatePositionAction(this));
-		enDelayQueue(new MonsterPollingAction(this, new MonsterAI(this), new UpdatePositionAction(this)));
+		// enDelayQueue(new UpdatePositionAction(this));new PlayerSelectorHelper(this.activeLiving);
+		enDelayQueue(new MonsterPollingAction(this, new MonsterAI(this), new UpdatePositionAction(this,new PlayerSelectorHelper(this))));
 		// setCurSkillID(1001);
 	}
 

@@ -3,7 +3,7 @@ package com.chuangyou.xianni.ai.behavior;
 import com.chuangyou.xianni.ai.AIState;
 import com.chuangyou.xianni.role.objects.Monster;
 
-public class RunBack extends BaseBehavior {
+public class RunBack extends MonsterBaseBehavior {
 
 	public RunBack(Monster m) {
 		super(AIState.RUNBACK, m);

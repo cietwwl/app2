@@ -28,47 +28,58 @@ import com.chuangyou.xianni.world.WorldMgr;
 
 public class UpdatePositionAction {// extends DelayAction {
 
-	private static final int TICK = 100;
-	private ActiveLiving activeLiving;
-	private Selector playerSelector;
+	// private static final int TICK = 100;
+	private ActiveLiving	activeLiving;
+	private Selector		playerSelector;
+	private Selector		monsterSelector;
 	// private int Speed = 6;
 
-	public UpdatePositionAction(ActiveLiving living) {
+	public UpdatePositionAction(ActiveLiving living, Selector playerSelector) {
 		// super(living, TICK);
 		this.activeLiving = living;
-		playerSelector = new MonsterSelectPlayerSelectorHelper(this.activeLiving);
+		this.playerSelector = playerSelector;
+		this.monsterSelector = new MonsterSelectPlayerSelectorHelper(this.activeLiving);
+		this.activeLiving.setMoveCounter(System.currentTimeMillis());
+
 	}
 
 	// @Override
 	public void exe() {
-		if (!activeLiving.isArrial()) {
-			Vector3 target = MathUtils.GetVector3InDistance(activeLiving.getPostion(), activeLiving.getGoal(), getStep(activeLiving.getSpeed()));
-			// System.out.println("moveTarget = " + target + " activeLiving.getPostion() = " + activeLiving.getPostion() + " activeLiving.getGoal() = " + activeLiving.getGoal());
 
-			if (!isValidPoint(target) && !this.activeLiving.isNavFail()) { // 不可站立的点
+		if (!activeLiving.isArrial()) {
+			// System.out.println("---------------------------------------------------------------------------");
+			long moveTime = System.currentTimeMillis() - this.activeLiving.getMoveCounter();
+			Vector3 target = MathUtils.GetVector3InDistance(activeLiving.getPostion(), activeLiving.getGoal(), getStep(activeLiving.getSpeed() / 100, (int) moveTime));
+			// System.out.println(activeLiving.getPostion() + " - " +
+			// activeLiving.getGoal() + " target = " + target + " step = " +
+			// getStep(activeLiving.getSpeed() / 100, (int) moveTime));
+			this.activeLiving.setMoveTime(this.activeLiving.getMoveTime() - (int) moveTime);
+			if (!isValidPoint(target) && this.activeLiving.isNavFail()) { // 不可站立的点
 				this.activeLiving.stop(true);
 				// activeLiving.navigateto(activeLiving.getGoal());
 				// setUpdate();
 				return;
 			}
 
-			this.activeLiving.setMoveTime(this.activeLiving.getMoveTime() - TICK);
+			// if (activeLiving.getId() == 1000000000001l) {
+			// System.out.println(System.currentTimeMillis() + "---- moveTime:"
+			// + moveTime);
+			// }
+
 			if (this.activeLiving.getMoveTime() <= 0) {
-				// if (activeLiving.getId() == 1000000000033L)
-				// System.out.println(this.activeLiving.getPostion().toString()+" 到达目标位置：" + target + " this.activeLiving.getMoveTime()： " + this.activeLiving.getMoveTime());
 				setPostion(activeLiving.getGoal(), playerSelector);
 				this.activeLiving.arrial();
 			} else {
-				// if (activeLiving.getId() == 1000000000033L)
-				// System.out.println(this.activeLiving.getPostion().toString() + " 设置位置：" + target + " this.activeLiving.getMoveTime()： " + this.activeLiving.getMoveTime()
-				// + "getStep(Speed): " + getStep(activeLiving.getSpeed()));
-				activeLiving.setNavFail(false);
+				// activeLiving.setNavFail(false);
 				setPostion(target, playerSelector);
 			}
 			autoAddHatred();
 		}
-
+		this.activeLiving.setMoveCounter(System.currentTimeMillis());
 		// setUpdate();
+	}
+
+	public void setExecTime(long beginTime) {
 	}
 
 	// private void setUpdate() {
@@ -83,12 +94,14 @@ public class UpdatePositionAction {// extends DelayAction {
 		Field f = this.activeLiving.getField();
 		GridItem curGI = f.getGrid().getGridItem(this.activeLiving.getPostion());
 		GridItem tarGI = f.getGrid().getGridItem(cur);
-		if (curGI == null || tarGI == null)
+		if (curGI == null || tarGI == null) {
 			return; // 找不到对应的格子， 返回。。
+		}
 		if (curGI.id == tarGI.id) {
 			this.activeLiving.setPostion(cur);
 			return; // 当前格子与目标格子一致
 		}
+		//
 		// 获取目前周围的玩家
 		Set<Long> oldNears = this.activeLiving.getNears(selector);
 		// 设置位置
@@ -152,8 +165,9 @@ public class UpdatePositionAction {// extends DelayAction {
 	 * @param speed
 	 * @return
 	 */
-	protected float getStep(float speed) {
-		return speed * TICK * 0.001f;
+	protected float getStep(float speed, int moveTime) {
+		// System.out.println("speed = " + speed + " moveTime = " + moveTime);
+		return speed * moveTime * 0.001f;
 	}
 
 	/**
@@ -169,7 +183,7 @@ public class UpdatePositionAction {// extends DelayAction {
 			boolean activeAttackSameMonster = monster.getAiConfig().isActiveAttackSameMonster();
 			boolean activeAttackNotSameMonster = monster.getAiConfig().isActiveAttackNotSameMonster();
 			if (activeAttackPlayer || activeAttackSameMonster || activeAttackNotSameMonster) {
-				Set<Long> ids = monster.getNears(playerSelector);// 获得警戒范围内的玩家
+				Set<Long> ids = monster.getNears(this.monsterSelector);// 获得警戒范围内的玩家
 				for (Long id : ids) {
 					Field f = this.activeLiving.getField();
 					Living nearLiving = f.getLiving(id);

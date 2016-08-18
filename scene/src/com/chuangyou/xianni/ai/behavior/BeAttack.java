@@ -9,7 +9,7 @@ import com.chuangyou.xianni.role.objects.Monster;
  * @author wkghost
  *
  */
-public class BeAttack extends BaseBehavior {
+public class BeAttack extends MonsterBaseBehavior {
 
 	public BeAttack(Monster m) {
 		super(AIState.BEATTACK, m);

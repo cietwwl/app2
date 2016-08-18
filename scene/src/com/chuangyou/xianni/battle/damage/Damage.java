@@ -18,7 +18,7 @@ public class Damage {
 	private int				leftValue;		// 伤害后的当前值
 	private int				tipType;		// 是否暴击 0x0001
 	private int				fromType;		// 来源类型 0 无来源，1 技能，2 buffer ，3 陷阱
-	private int				fromId;			// 由什么技能造成
+	private long			fromId;			// 由什么技能造成
 	private int				order;			// 第几次伤害
 	private boolean			deadly;			// 致死伤害
 	private int				calcType;		// 计算类型 1 混合计算 （先扣血后扣魂，先加魂后加血） 2
@@ -147,11 +147,11 @@ public class Damage {
 		this.fromType = fromType;
 	}
 
-	public int getFromId() {
+	public long getFromId() {
 		return fromId;
 	}
 
-	public void setFromId(int fromId) {
+	public void setFromId(long fromId) {
 		this.fromId = fromId;
 	}
 

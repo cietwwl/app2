@@ -11,7 +11,7 @@ public class KillerMonsterKindsCondition extends CTBaseCondition {
 	}
 
 	public boolean addProgress(int param) {
-		if (tempInfo.getStrParam1().indexOf(param) >= 0 && !record.getAttrParams().contains(param) && !isComplated()) {
+		if (tempInfo.getStrParam1().indexOf(String.valueOf(param)) >= 0 && !record.getAttrParams().contains(param) && !isComplated()) {
 			record.setProgress(record.getProgress() + 1);
 			record.getAttrParams().add(param);
 			return true;

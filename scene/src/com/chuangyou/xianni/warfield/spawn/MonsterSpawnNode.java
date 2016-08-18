@@ -27,8 +27,8 @@ import com.chuangyou.xianni.role.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.warfield.field.Field;
 
 public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
-	protected int					toalCount;	// 刷怪总数
-	protected int					curCount;	// 当前数量
+	protected int				toalCount;	// 刷怪总数
+	protected int				curCount;	// 当前数量
 	protected Map<Long, Living>	children;	// 子孙们
 
 	public MonsterSpawnNode(SpawnInfo info, Field field) {
@@ -100,7 +100,7 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 		int randomz = spwanInfo.getBound_z();
 
 		Monster monster = new Monster(this);
-		System.out.println("monster - skin = " + spwanInfo.getEntityId() + "map:" + field.getMapKey());
+		//System.out.println("monster - skin = " + spwanInfo.getEntityId() + "map:" + field.getMapKey());
 		MonsterInfo monsterInfo = MonsterInfoTemplateMgr.get(spwanInfo.getEntityId());
 		if (monsterInfo != null) {
 			// monster.setSkin(monsterInfo.getSkin());
@@ -111,7 +111,7 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 			// NotifyNearHelper.notifyNearPlayer(field, monster,
 			// monster.getPostion());
 		} else {
-			System.err.println(spwanInfo.getId() + "----" + spwanInfo.getEntityId() + " 在MonsterInfo里面未找到配置");
+			Log.error(spwanInfo.getId() + "----" + spwanInfo.getEntityId() + " 在MonsterInfo里面未找到配置");
 		}
 
 		// 添加副本挑战任务buff
@@ -136,7 +136,7 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 	/** 浸染 */
 	public static void instill(Monster monster, MonsterInfo monsterInfo) {
 		monster.setMonsterInfo(monsterInfo);
-		monster.setSpeed(monsterInfo.getMoveSpeed());
+		monster.setSpeed(monsterInfo.getMoveSpeed() * 100);
 		monster.setSkin(monsterInfo.getMonsterId());
 
 		monster.setProperty(EnumAttr.MAX_BLOOD, monsterInfo.getHp());

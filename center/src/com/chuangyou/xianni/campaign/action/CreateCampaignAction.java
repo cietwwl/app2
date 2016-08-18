@@ -71,6 +71,7 @@ public class CreateCampaignAction extends Action {
 				player.getBagInventory().removeItem(itemId, 1, ItemRemoveType.JOIN_CAMPAIGN);
 			}
 		}
-		return true;
+		return hasEnough;
+
 	}
 }

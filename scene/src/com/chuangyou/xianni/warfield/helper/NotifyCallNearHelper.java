@@ -29,7 +29,7 @@ public class NotifyCallNearHelper {
 		
 		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_BC_MOVE, msg.build());
 		
-		System.out.println("通知玩家" + nears + "召唤物" + living.getId() + "移动");
+		//System.out.println("通知玩家" + nears + "召唤物" + living.getId() + "移动");
 	}
 	
 	/**
@@ -39,7 +39,7 @@ public class NotifyCallNearHelper {
 		
 		PlayerAttSnapMsg msg = l.getAttSnapMsg().build();
 		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_RESP_ATT_SNAP, msg);
-		System.out.println("通知玩家" + nears + "召唤物" + l.getId() + "进入");
+		//System.out.println("通知玩家" + nears + "召唤物" + l.getId() + "进入");
 	}
 	
 

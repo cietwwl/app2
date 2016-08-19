@@ -110,95 +110,71 @@ public final class SoulInfoProto {
     int getCard8();
 
     /**
-     * <code>required int32 fuseSkillId1 = 10;</code>
+     * <code>required .FuseSkillMsg fuseSkill1 = 10;</code>
      *
      * <pre>
-     *融合技能 1--4
+     *融合技能1--4
      * </pre>
      */
-    boolean hasFuseSkillId1();
+    boolean hasFuseSkill1();
     /**
-     * <code>required int32 fuseSkillId1 = 10;</code>
+     * <code>required .FuseSkillMsg fuseSkill1 = 10;</code>
      *
      * <pre>
-     *融合技能 1--4
+     *融合技能1--4
      * </pre>
      */
-    int getFuseSkillId1();
-
+    com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg getFuseSkill1();
     /**
-     * <code>required int32 fuseSkillId2 = 11;</code>
-     */
-    boolean hasFuseSkillId2();
-    /**
-     * <code>required int32 fuseSkillId2 = 11;</code>
-     */
-    int getFuseSkillId2();
-
-    /**
-     * <code>required int32 fuseSkillId3 = 12;</code>
-     */
-    boolean hasFuseSkillId3();
-    /**
-     * <code>required int32 fuseSkillId3 = 12;</code>
-     */
-    int getFuseSkillId3();
-
-    /**
-     * <code>required int32 fuseSkillId4 = 13;</code>
-     */
-    boolean hasFuseSkillId4();
-    /**
-     * <code>required int32 fuseSkillId4 = 13;</code>
-     */
-    int getFuseSkillId4();
-
-    /**
-     * <code>required int64 fuseSkillCreateTime1 = 14;</code>
+     * <code>required .FuseSkillMsg fuseSkill1 = 10;</code>
      *
      * <pre>
-     * 融合技能 1--4 创建时间
+     *融合技能1--4
      * </pre>
      */
-    boolean hasFuseSkillCreateTime1();
-    /**
-     * <code>required int64 fuseSkillCreateTime1 = 14;</code>
-     *
-     * <pre>
-     * 融合技能 1--4 创建时间
-     * </pre>
-     */
-    long getFuseSkillCreateTime1();
+    com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder getFuseSkill1OrBuilder();
 
     /**
-     * <code>required int64 fuseSkillCreateTime2 = 15;</code>
+     * <code>required .FuseSkillMsg fuseSkill2 = 11;</code>
      */
-    boolean hasFuseSkillCreateTime2();
+    boolean hasFuseSkill2();
     /**
-     * <code>required int64 fuseSkillCreateTime2 = 15;</code>
+     * <code>required .FuseSkillMsg fuseSkill2 = 11;</code>
      */
-    long getFuseSkillCreateTime2();
+    com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg getFuseSkill2();
+    /**
+     * <code>required .FuseSkillMsg fuseSkill2 = 11;</code>
+     */
+    com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder getFuseSkill2OrBuilder();
 
     /**
-     * <code>required int64 fuseSkillCreateTime3 = 16;</code>
+     * <code>required .FuseSkillMsg fuseSkill3 = 12;</code>
      */
-    boolean hasFuseSkillCreateTime3();
+    boolean hasFuseSkill3();
     /**
-     * <code>required int64 fuseSkillCreateTime3 = 16;</code>
+     * <code>required .FuseSkillMsg fuseSkill3 = 12;</code>
      */
-    long getFuseSkillCreateTime3();
+    com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg getFuseSkill3();
+    /**
+     * <code>required .FuseSkillMsg fuseSkill3 = 12;</code>
+     */
+    com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder getFuseSkill3OrBuilder();
 
     /**
-     * <code>required int64 fuseSkillCreateTime4 = 17;</code>
+     * <code>required .FuseSkillMsg fuseSkill4 = 13;</code>
      */
-    boolean hasFuseSkillCreateTime4();
+    boolean hasFuseSkill4();
     /**
-     * <code>required int64 fuseSkillCreateTime4 = 17;</code>
+     * <code>required .FuseSkillMsg fuseSkill4 = 13;</code>
      */
-    long getFuseSkillCreateTime4();
+    com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg getFuseSkill4();
+    /**
+     * <code>required .FuseSkillMsg fuseSkill4 = 13;</code>
+     */
+    com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder getFuseSkill4OrBuilder();
 
     /**
-     * <code>required int32 proficiency = 18;</code>
+     * <code>required int32 proficiency = 14;</code>
      *
      * <pre>
      *制作熟悉度
@@ -206,7 +182,7 @@ public final class SoulInfoProto {
      */
     boolean hasProficiency();
     /**
-     * <code>required int32 proficiency = 18;</code>
+     * <code>required int32 proficiency = 14;</code>
      *
      * <pre>
      *制作熟悉度
@@ -311,48 +287,60 @@ public final class SoulInfoProto {
               card8_ = input.readInt32();
               break;
             }
-            case 80: {
+            case 82: {
+              com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000200) == 0x00000200)) {
+                subBuilder = fuseSkill1_.toBuilder();
+              }
+              fuseSkill1_ = input.readMessage(com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(fuseSkill1_);
+                fuseSkill1_ = subBuilder.buildPartial();
+              }
               bitField0_ |= 0x00000200;
-              fuseSkillId1_ = input.readInt32();
               break;
             }
-            case 88: {
+            case 90: {
+              com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000400) == 0x00000400)) {
+                subBuilder = fuseSkill2_.toBuilder();
+              }
+              fuseSkill2_ = input.readMessage(com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(fuseSkill2_);
+                fuseSkill2_ = subBuilder.buildPartial();
+              }
               bitField0_ |= 0x00000400;
-              fuseSkillId2_ = input.readInt32();
               break;
             }
-            case 96: {
+            case 98: {
+              com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000800) == 0x00000800)) {
+                subBuilder = fuseSkill3_.toBuilder();
+              }
+              fuseSkill3_ = input.readMessage(com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(fuseSkill3_);
+                fuseSkill3_ = subBuilder.buildPartial();
+              }
               bitField0_ |= 0x00000800;
-              fuseSkillId3_ = input.readInt32();
               break;
             }
-            case 104: {
+            case 106: {
+              com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder subBuilder = null;
+              if (((bitField0_ & 0x00001000) == 0x00001000)) {
+                subBuilder = fuseSkill4_.toBuilder();
+              }
+              fuseSkill4_ = input.readMessage(com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(fuseSkill4_);
+                fuseSkill4_ = subBuilder.buildPartial();
+              }
               bitField0_ |= 0x00001000;
-              fuseSkillId4_ = input.readInt32();
               break;
             }
             case 112: {
               bitField0_ |= 0x00002000;
-              fuseSkillCreateTime1_ = input.readInt64();
-              break;
-            }
-            case 120: {
-              bitField0_ |= 0x00004000;
-              fuseSkillCreateTime2_ = input.readInt64();
-              break;
-            }
-            case 128: {
-              bitField0_ |= 0x00008000;
-              fuseSkillCreateTime3_ = input.readInt64();
-              break;
-            }
-            case 136: {
-              bitField0_ |= 0x00010000;
-              fuseSkillCreateTime4_ = input.readInt64();
-              break;
-            }
-            case 144: {
-              bitField0_ |= 0x00020000;
               proficiency_ = input.readInt32();
               break;
             }
@@ -547,156 +535,116 @@ public final class SoulInfoProto {
       return card8_;
     }
 
-    public static final int FUSESKILLID1_FIELD_NUMBER = 10;
-    private int fuseSkillId1_;
+    public static final int FUSESKILL1_FIELD_NUMBER = 10;
+    private com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg fuseSkill1_;
     /**
-     * <code>required int32 fuseSkillId1 = 10;</code>
+     * <code>required .FuseSkillMsg fuseSkill1 = 10;</code>
      *
      * <pre>
-     *融合技能 1--4
+     *融合技能1--4
      * </pre>
      */
-    public boolean hasFuseSkillId1() {
+    public boolean hasFuseSkill1() {
       return ((bitField0_ & 0x00000200) == 0x00000200);
     }
     /**
-     * <code>required int32 fuseSkillId1 = 10;</code>
+     * <code>required .FuseSkillMsg fuseSkill1 = 10;</code>
      *
      * <pre>
-     *融合技能 1--4
+     *融合技能1--4
      * </pre>
      */
-    public int getFuseSkillId1() {
-      return fuseSkillId1_;
+    public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg getFuseSkill1() {
+      return fuseSkill1_;
+    }
+    /**
+     * <code>required .FuseSkillMsg fuseSkill1 = 10;</code>
+     *
+     * <pre>
+     *融合技能1--4
+     * </pre>
+     */
+    public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder getFuseSkill1OrBuilder() {
+      return fuseSkill1_;
     }
 
-    public static final int FUSESKILLID2_FIELD_NUMBER = 11;
-    private int fuseSkillId2_;
+    public static final int FUSESKILL2_FIELD_NUMBER = 11;
+    private com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg fuseSkill2_;
     /**
-     * <code>required int32 fuseSkillId2 = 11;</code>
+     * <code>required .FuseSkillMsg fuseSkill2 = 11;</code>
      */
-    public boolean hasFuseSkillId2() {
+    public boolean hasFuseSkill2() {
       return ((bitField0_ & 0x00000400) == 0x00000400);
     }
     /**
-     * <code>required int32 fuseSkillId2 = 11;</code>
+     * <code>required .FuseSkillMsg fuseSkill2 = 11;</code>
      */
-    public int getFuseSkillId2() {
-      return fuseSkillId2_;
+    public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg getFuseSkill2() {
+      return fuseSkill2_;
+    }
+    /**
+     * <code>required .FuseSkillMsg fuseSkill2 = 11;</code>
+     */
+    public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder getFuseSkill2OrBuilder() {
+      return fuseSkill2_;
     }
 
-    public static final int FUSESKILLID3_FIELD_NUMBER = 12;
-    private int fuseSkillId3_;
+    public static final int FUSESKILL3_FIELD_NUMBER = 12;
+    private com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg fuseSkill3_;
     /**
-     * <code>required int32 fuseSkillId3 = 12;</code>
+     * <code>required .FuseSkillMsg fuseSkill3 = 12;</code>
      */
-    public boolean hasFuseSkillId3() {
+    public boolean hasFuseSkill3() {
       return ((bitField0_ & 0x00000800) == 0x00000800);
     }
     /**
-     * <code>required int32 fuseSkillId3 = 12;</code>
+     * <code>required .FuseSkillMsg fuseSkill3 = 12;</code>
      */
-    public int getFuseSkillId3() {
-      return fuseSkillId3_;
+    public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg getFuseSkill3() {
+      return fuseSkill3_;
+    }
+    /**
+     * <code>required .FuseSkillMsg fuseSkill3 = 12;</code>
+     */
+    public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder getFuseSkill3OrBuilder() {
+      return fuseSkill3_;
     }
 
-    public static final int FUSESKILLID4_FIELD_NUMBER = 13;
-    private int fuseSkillId4_;
+    public static final int FUSESKILL4_FIELD_NUMBER = 13;
+    private com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg fuseSkill4_;
     /**
-     * <code>required int32 fuseSkillId4 = 13;</code>
+     * <code>required .FuseSkillMsg fuseSkill4 = 13;</code>
      */
-    public boolean hasFuseSkillId4() {
+    public boolean hasFuseSkill4() {
       return ((bitField0_ & 0x00001000) == 0x00001000);
     }
     /**
-     * <code>required int32 fuseSkillId4 = 13;</code>
+     * <code>required .FuseSkillMsg fuseSkill4 = 13;</code>
      */
-    public int getFuseSkillId4() {
-      return fuseSkillId4_;
+    public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg getFuseSkill4() {
+      return fuseSkill4_;
+    }
+    /**
+     * <code>required .FuseSkillMsg fuseSkill4 = 13;</code>
+     */
+    public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder getFuseSkill4OrBuilder() {
+      return fuseSkill4_;
     }
 
-    public static final int FUSESKILLCREATETIME1_FIELD_NUMBER = 14;
-    private long fuseSkillCreateTime1_;
-    /**
-     * <code>required int64 fuseSkillCreateTime1 = 14;</code>
-     *
-     * <pre>
-     * 融合技能 1--4 创建时间
-     * </pre>
-     */
-    public boolean hasFuseSkillCreateTime1() {
-      return ((bitField0_ & 0x00002000) == 0x00002000);
-    }
-    /**
-     * <code>required int64 fuseSkillCreateTime1 = 14;</code>
-     *
-     * <pre>
-     * 融合技能 1--4 创建时间
-     * </pre>
-     */
-    public long getFuseSkillCreateTime1() {
-      return fuseSkillCreateTime1_;
-    }
-
-    public static final int FUSESKILLCREATETIME2_FIELD_NUMBER = 15;
-    private long fuseSkillCreateTime2_;
-    /**
-     * <code>required int64 fuseSkillCreateTime2 = 15;</code>
-     */
-    public boolean hasFuseSkillCreateTime2() {
-      return ((bitField0_ & 0x00004000) == 0x00004000);
-    }
-    /**
-     * <code>required int64 fuseSkillCreateTime2 = 15;</code>
-     */
-    public long getFuseSkillCreateTime2() {
-      return fuseSkillCreateTime2_;
-    }
-
-    public static final int FUSESKILLCREATETIME3_FIELD_NUMBER = 16;
-    private long fuseSkillCreateTime3_;
-    /**
-     * <code>required int64 fuseSkillCreateTime3 = 16;</code>
-     */
-    public boolean hasFuseSkillCreateTime3() {
-      return ((bitField0_ & 0x00008000) == 0x00008000);
-    }
-    /**
-     * <code>required int64 fuseSkillCreateTime3 = 16;</code>
-     */
-    public long getFuseSkillCreateTime3() {
-      return fuseSkillCreateTime3_;
-    }
-
-    public static final int FUSESKILLCREATETIME4_FIELD_NUMBER = 17;
-    private long fuseSkillCreateTime4_;
-    /**
-     * <code>required int64 fuseSkillCreateTime4 = 17;</code>
-     */
-    public boolean hasFuseSkillCreateTime4() {
-      return ((bitField0_ & 0x00010000) == 0x00010000);
-    }
-    /**
-     * <code>required int64 fuseSkillCreateTime4 = 17;</code>
-     */
-    public long getFuseSkillCreateTime4() {
-      return fuseSkillCreateTime4_;
-    }
-
-    public static final int PROFICIENCY_FIELD_NUMBER = 18;
+    public static final int PROFICIENCY_FIELD_NUMBER = 14;
     private int proficiency_;
     /**
-     * <code>required int32 proficiency = 18;</code>
+     * <code>required int32 proficiency = 14;</code>
      *
      * <pre>
      *制作熟悉度
      * </pre>
      */
     public boolean hasProficiency() {
-      return ((bitField0_ & 0x00020000) == 0x00020000);
+      return ((bitField0_ & 0x00002000) == 0x00002000);
     }
     /**
-     * <code>required int32 proficiency = 18;</code>
+     * <code>required int32 proficiency = 14;</code>
      *
      * <pre>
      *制作熟悉度
@@ -716,14 +664,10 @@ public final class SoulInfoProto {
       card6_ = 0;
       card7_ = 0;
       card8_ = 0;
-      fuseSkillId1_ = 0;
-      fuseSkillId2_ = 0;
-      fuseSkillId3_ = 0;
-      fuseSkillId4_ = 0;
-      fuseSkillCreateTime1_ = 0L;
-      fuseSkillCreateTime2_ = 0L;
-      fuseSkillCreateTime3_ = 0L;
-      fuseSkillCreateTime4_ = 0L;
+      fuseSkill1_ = com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance();
+      fuseSkill2_ = com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance();
+      fuseSkill3_ = com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance();
+      fuseSkill4_ = com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance();
       proficiency_ = 0;
     }
     private byte memoizedIsInitialized = -1;
@@ -768,39 +712,39 @@ public final class SoulInfoProto {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasFuseSkillId1()) {
+      if (!hasFuseSkill1()) {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasFuseSkillId2()) {
+      if (!hasFuseSkill2()) {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasFuseSkillId3()) {
+      if (!hasFuseSkill3()) {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasFuseSkillId4()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasFuseSkillCreateTime1()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasFuseSkillCreateTime2()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasFuseSkillCreateTime3()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasFuseSkillCreateTime4()) {
+      if (!hasFuseSkill4()) {
         memoizedIsInitialized = 0;
         return false;
       }
       if (!hasProficiency()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getFuseSkill1().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getFuseSkill2().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getFuseSkill3().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getFuseSkill4().isInitialized()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -839,31 +783,19 @@ public final class SoulInfoProto {
         output.writeInt32(9, card8_);
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        output.writeInt32(10, fuseSkillId1_);
+        output.writeMessage(10, fuseSkill1_);
       }
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        output.writeInt32(11, fuseSkillId2_);
+        output.writeMessage(11, fuseSkill2_);
       }
       if (((bitField0_ & 0x00000800) == 0x00000800)) {
-        output.writeInt32(12, fuseSkillId3_);
+        output.writeMessage(12, fuseSkill3_);
       }
       if (((bitField0_ & 0x00001000) == 0x00001000)) {
-        output.writeInt32(13, fuseSkillId4_);
+        output.writeMessage(13, fuseSkill4_);
       }
       if (((bitField0_ & 0x00002000) == 0x00002000)) {
-        output.writeInt64(14, fuseSkillCreateTime1_);
-      }
-      if (((bitField0_ & 0x00004000) == 0x00004000)) {
-        output.writeInt64(15, fuseSkillCreateTime2_);
-      }
-      if (((bitField0_ & 0x00008000) == 0x00008000)) {
-        output.writeInt64(16, fuseSkillCreateTime3_);
-      }
-      if (((bitField0_ & 0x00010000) == 0x00010000)) {
-        output.writeInt64(17, fuseSkillCreateTime4_);
-      }
-      if (((bitField0_ & 0x00020000) == 0x00020000)) {
-        output.writeInt32(18, proficiency_);
+        output.writeInt32(14, proficiency_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -912,39 +844,23 @@ public final class SoulInfoProto {
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(10, fuseSkillId1_);
+          .computeMessageSize(10, fuseSkill1_);
       }
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(11, fuseSkillId2_);
+          .computeMessageSize(11, fuseSkill2_);
       }
       if (((bitField0_ & 0x00000800) == 0x00000800)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(12, fuseSkillId3_);
+          .computeMessageSize(12, fuseSkill3_);
       }
       if (((bitField0_ & 0x00001000) == 0x00001000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(13, fuseSkillId4_);
+          .computeMessageSize(13, fuseSkill4_);
       }
       if (((bitField0_ & 0x00002000) == 0x00002000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(14, fuseSkillCreateTime1_);
-      }
-      if (((bitField0_ & 0x00004000) == 0x00004000)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(15, fuseSkillCreateTime2_);
-      }
-      if (((bitField0_ & 0x00008000) == 0x00008000)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(16, fuseSkillCreateTime3_);
-      }
-      if (((bitField0_ & 0x00010000) == 0x00010000)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(17, fuseSkillCreateTime4_);
-      }
-      if (((bitField0_ & 0x00020000) == 0x00020000)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(18, proficiency_);
+          .computeInt32Size(14, proficiency_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1055,6 +971,10 @@ public final class SoulInfoProto {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getFuseSkill1FieldBuilder();
+          getFuseSkill2FieldBuilder();
+          getFuseSkill3FieldBuilder();
+          getFuseSkill4FieldBuilder();
         }
       }
       private static Builder create() {
@@ -1081,24 +1001,32 @@ public final class SoulInfoProto {
         bitField0_ = (bitField0_ & ~0x00000080);
         card8_ = 0;
         bitField0_ = (bitField0_ & ~0x00000100);
-        fuseSkillId1_ = 0;
+        if (fuseSkill1Builder_ == null) {
+          fuseSkill1_ = com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance();
+        } else {
+          fuseSkill1Builder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000200);
-        fuseSkillId2_ = 0;
+        if (fuseSkill2Builder_ == null) {
+          fuseSkill2_ = com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance();
+        } else {
+          fuseSkill2Builder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000400);
-        fuseSkillId3_ = 0;
+        if (fuseSkill3Builder_ == null) {
+          fuseSkill3_ = com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance();
+        } else {
+          fuseSkill3Builder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000800);
-        fuseSkillId4_ = 0;
+        if (fuseSkill4Builder_ == null) {
+          fuseSkill4_ = com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance();
+        } else {
+          fuseSkill4Builder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00001000);
-        fuseSkillCreateTime1_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00002000);
-        fuseSkillCreateTime2_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00004000);
-        fuseSkillCreateTime3_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00008000);
-        fuseSkillCreateTime4_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00010000);
         proficiency_ = 0;
-        bitField0_ = (bitField0_ & ~0x00020000);
+        bitField0_ = (bitField0_ & ~0x00002000);
         return this;
       }
 
@@ -1166,37 +1094,37 @@ public final class SoulInfoProto {
         if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
           to_bitField0_ |= 0x00000200;
         }
-        result.fuseSkillId1_ = fuseSkillId1_;
+        if (fuseSkill1Builder_ == null) {
+          result.fuseSkill1_ = fuseSkill1_;
+        } else {
+          result.fuseSkill1_ = fuseSkill1Builder_.build();
+        }
         if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
           to_bitField0_ |= 0x00000400;
         }
-        result.fuseSkillId2_ = fuseSkillId2_;
+        if (fuseSkill2Builder_ == null) {
+          result.fuseSkill2_ = fuseSkill2_;
+        } else {
+          result.fuseSkill2_ = fuseSkill2Builder_.build();
+        }
         if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
           to_bitField0_ |= 0x00000800;
         }
-        result.fuseSkillId3_ = fuseSkillId3_;
+        if (fuseSkill3Builder_ == null) {
+          result.fuseSkill3_ = fuseSkill3_;
+        } else {
+          result.fuseSkill3_ = fuseSkill3Builder_.build();
+        }
         if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
           to_bitField0_ |= 0x00001000;
         }
-        result.fuseSkillId4_ = fuseSkillId4_;
+        if (fuseSkill4Builder_ == null) {
+          result.fuseSkill4_ = fuseSkill4_;
+        } else {
+          result.fuseSkill4_ = fuseSkill4Builder_.build();
+        }
         if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
           to_bitField0_ |= 0x00002000;
-        }
-        result.fuseSkillCreateTime1_ = fuseSkillCreateTime1_;
-        if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
-          to_bitField0_ |= 0x00004000;
-        }
-        result.fuseSkillCreateTime2_ = fuseSkillCreateTime2_;
-        if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
-          to_bitField0_ |= 0x00008000;
-        }
-        result.fuseSkillCreateTime3_ = fuseSkillCreateTime3_;
-        if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
-          to_bitField0_ |= 0x00010000;
-        }
-        result.fuseSkillCreateTime4_ = fuseSkillCreateTime4_;
-        if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
-          to_bitField0_ |= 0x00020000;
         }
         result.proficiency_ = proficiency_;
         result.bitField0_ = to_bitField0_;
@@ -1242,29 +1170,17 @@ public final class SoulInfoProto {
         if (other.hasCard8()) {
           setCard8(other.getCard8());
         }
-        if (other.hasFuseSkillId1()) {
-          setFuseSkillId1(other.getFuseSkillId1());
+        if (other.hasFuseSkill1()) {
+          mergeFuseSkill1(other.getFuseSkill1());
         }
-        if (other.hasFuseSkillId2()) {
-          setFuseSkillId2(other.getFuseSkillId2());
+        if (other.hasFuseSkill2()) {
+          mergeFuseSkill2(other.getFuseSkill2());
         }
-        if (other.hasFuseSkillId3()) {
-          setFuseSkillId3(other.getFuseSkillId3());
+        if (other.hasFuseSkill3()) {
+          mergeFuseSkill3(other.getFuseSkill3());
         }
-        if (other.hasFuseSkillId4()) {
-          setFuseSkillId4(other.getFuseSkillId4());
-        }
-        if (other.hasFuseSkillCreateTime1()) {
-          setFuseSkillCreateTime1(other.getFuseSkillCreateTime1());
-        }
-        if (other.hasFuseSkillCreateTime2()) {
-          setFuseSkillCreateTime2(other.getFuseSkillCreateTime2());
-        }
-        if (other.hasFuseSkillCreateTime3()) {
-          setFuseSkillCreateTime3(other.getFuseSkillCreateTime3());
-        }
-        if (other.hasFuseSkillCreateTime4()) {
-          setFuseSkillCreateTime4(other.getFuseSkillCreateTime4());
+        if (other.hasFuseSkill4()) {
+          mergeFuseSkill4(other.getFuseSkill4());
         }
         if (other.hasProficiency()) {
           setProficiency(other.getProficiency());
@@ -1310,39 +1226,39 @@ public final class SoulInfoProto {
           
           return false;
         }
-        if (!hasFuseSkillId1()) {
+        if (!hasFuseSkill1()) {
           
           return false;
         }
-        if (!hasFuseSkillId2()) {
+        if (!hasFuseSkill2()) {
           
           return false;
         }
-        if (!hasFuseSkillId3()) {
+        if (!hasFuseSkill3()) {
           
           return false;
         }
-        if (!hasFuseSkillId4()) {
-          
-          return false;
-        }
-        if (!hasFuseSkillCreateTime1()) {
-          
-          return false;
-        }
-        if (!hasFuseSkillCreateTime2()) {
-          
-          return false;
-        }
-        if (!hasFuseSkillCreateTime3()) {
-          
-          return false;
-        }
-        if (!hasFuseSkillCreateTime4()) {
+        if (!hasFuseSkill4()) {
           
           return false;
         }
         if (!hasProficiency()) {
+          
+          return false;
+        }
+        if (!getFuseSkill1().isInitialized()) {
+          
+          return false;
+        }
+        if (!getFuseSkill2().isInitialized()) {
+          
+          return false;
+        }
+        if (!getFuseSkill3().isInitialized()) {
+          
+          return false;
+        }
+        if (!getFuseSkill4().isInitialized()) {
           
           return false;
         }
@@ -1688,307 +1604,519 @@ public final class SoulInfoProto {
         return this;
       }
 
-      private int fuseSkillId1_ ;
+      private com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg fuseSkill1_ = com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder> fuseSkill1Builder_;
       /**
-       * <code>required int32 fuseSkillId1 = 10;</code>
+       * <code>required .FuseSkillMsg fuseSkill1 = 10;</code>
        *
        * <pre>
-       *融合技能 1--4
+       *融合技能1--4
        * </pre>
        */
-      public boolean hasFuseSkillId1() {
+      public boolean hasFuseSkill1() {
         return ((bitField0_ & 0x00000200) == 0x00000200);
       }
       /**
-       * <code>required int32 fuseSkillId1 = 10;</code>
+       * <code>required .FuseSkillMsg fuseSkill1 = 10;</code>
        *
        * <pre>
-       *融合技能 1--4
+       *融合技能1--4
        * </pre>
        */
-      public int getFuseSkillId1() {
-        return fuseSkillId1_;
+      public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg getFuseSkill1() {
+        if (fuseSkill1Builder_ == null) {
+          return fuseSkill1_;
+        } else {
+          return fuseSkill1Builder_.getMessage();
+        }
       }
       /**
-       * <code>required int32 fuseSkillId1 = 10;</code>
+       * <code>required .FuseSkillMsg fuseSkill1 = 10;</code>
        *
        * <pre>
-       *融合技能 1--4
+       *融合技能1--4
        * </pre>
        */
-      public Builder setFuseSkillId1(int value) {
+      public Builder setFuseSkill1(com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg value) {
+        if (fuseSkill1Builder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          fuseSkill1_ = value;
+          onChanged();
+        } else {
+          fuseSkill1Builder_.setMessage(value);
+        }
         bitField0_ |= 0x00000200;
-        fuseSkillId1_ = value;
-        onChanged();
         return this;
       }
       /**
-       * <code>required int32 fuseSkillId1 = 10;</code>
+       * <code>required .FuseSkillMsg fuseSkill1 = 10;</code>
        *
        * <pre>
-       *融合技能 1--4
+       *融合技能1--4
        * </pre>
        */
-      public Builder clearFuseSkillId1() {
-        bitField0_ = (bitField0_ & ~0x00000200);
-        fuseSkillId1_ = 0;
-        onChanged();
+      public Builder setFuseSkill1(
+          com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder builderForValue) {
+        if (fuseSkill1Builder_ == null) {
+          fuseSkill1_ = builderForValue.build();
+          onChanged();
+        } else {
+          fuseSkill1Builder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000200;
         return this;
+      }
+      /**
+       * <code>required .FuseSkillMsg fuseSkill1 = 10;</code>
+       *
+       * <pre>
+       *融合技能1--4
+       * </pre>
+       */
+      public Builder mergeFuseSkill1(com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg value) {
+        if (fuseSkill1Builder_ == null) {
+          if (((bitField0_ & 0x00000200) == 0x00000200) &&
+              fuseSkill1_ != com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance()) {
+            fuseSkill1_ =
+              com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.newBuilder(fuseSkill1_).mergeFrom(value).buildPartial();
+          } else {
+            fuseSkill1_ = value;
+          }
+          onChanged();
+        } else {
+          fuseSkill1Builder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000200;
+        return this;
+      }
+      /**
+       * <code>required .FuseSkillMsg fuseSkill1 = 10;</code>
+       *
+       * <pre>
+       *融合技能1--4
+       * </pre>
+       */
+      public Builder clearFuseSkill1() {
+        if (fuseSkill1Builder_ == null) {
+          fuseSkill1_ = com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance();
+          onChanged();
+        } else {
+          fuseSkill1Builder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000200);
+        return this;
+      }
+      /**
+       * <code>required .FuseSkillMsg fuseSkill1 = 10;</code>
+       *
+       * <pre>
+       *融合技能1--4
+       * </pre>
+       */
+      public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder getFuseSkill1Builder() {
+        bitField0_ |= 0x00000200;
+        onChanged();
+        return getFuseSkill1FieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .FuseSkillMsg fuseSkill1 = 10;</code>
+       *
+       * <pre>
+       *融合技能1--4
+       * </pre>
+       */
+      public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder getFuseSkill1OrBuilder() {
+        if (fuseSkill1Builder_ != null) {
+          return fuseSkill1Builder_.getMessageOrBuilder();
+        } else {
+          return fuseSkill1_;
+        }
+      }
+      /**
+       * <code>required .FuseSkillMsg fuseSkill1 = 10;</code>
+       *
+       * <pre>
+       *融合技能1--4
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder> 
+          getFuseSkill1FieldBuilder() {
+        if (fuseSkill1Builder_ == null) {
+          fuseSkill1Builder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder>(
+                  getFuseSkill1(),
+                  getParentForChildren(),
+                  isClean());
+          fuseSkill1_ = null;
+        }
+        return fuseSkill1Builder_;
       }
 
-      private int fuseSkillId2_ ;
+      private com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg fuseSkill2_ = com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder> fuseSkill2Builder_;
       /**
-       * <code>required int32 fuseSkillId2 = 11;</code>
+       * <code>required .FuseSkillMsg fuseSkill2 = 11;</code>
        */
-      public boolean hasFuseSkillId2() {
+      public boolean hasFuseSkill2() {
         return ((bitField0_ & 0x00000400) == 0x00000400);
       }
       /**
-       * <code>required int32 fuseSkillId2 = 11;</code>
+       * <code>required .FuseSkillMsg fuseSkill2 = 11;</code>
        */
-      public int getFuseSkillId2() {
-        return fuseSkillId2_;
+      public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg getFuseSkill2() {
+        if (fuseSkill2Builder_ == null) {
+          return fuseSkill2_;
+        } else {
+          return fuseSkill2Builder_.getMessage();
+        }
       }
       /**
-       * <code>required int32 fuseSkillId2 = 11;</code>
+       * <code>required .FuseSkillMsg fuseSkill2 = 11;</code>
        */
-      public Builder setFuseSkillId2(int value) {
+      public Builder setFuseSkill2(com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg value) {
+        if (fuseSkill2Builder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          fuseSkill2_ = value;
+          onChanged();
+        } else {
+          fuseSkill2Builder_.setMessage(value);
+        }
         bitField0_ |= 0x00000400;
-        fuseSkillId2_ = value;
-        onChanged();
         return this;
       }
       /**
-       * <code>required int32 fuseSkillId2 = 11;</code>
+       * <code>required .FuseSkillMsg fuseSkill2 = 11;</code>
        */
-      public Builder clearFuseSkillId2() {
-        bitField0_ = (bitField0_ & ~0x00000400);
-        fuseSkillId2_ = 0;
-        onChanged();
+      public Builder setFuseSkill2(
+          com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder builderForValue) {
+        if (fuseSkill2Builder_ == null) {
+          fuseSkill2_ = builderForValue.build();
+          onChanged();
+        } else {
+          fuseSkill2Builder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000400;
         return this;
+      }
+      /**
+       * <code>required .FuseSkillMsg fuseSkill2 = 11;</code>
+       */
+      public Builder mergeFuseSkill2(com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg value) {
+        if (fuseSkill2Builder_ == null) {
+          if (((bitField0_ & 0x00000400) == 0x00000400) &&
+              fuseSkill2_ != com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance()) {
+            fuseSkill2_ =
+              com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.newBuilder(fuseSkill2_).mergeFrom(value).buildPartial();
+          } else {
+            fuseSkill2_ = value;
+          }
+          onChanged();
+        } else {
+          fuseSkill2Builder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000400;
+        return this;
+      }
+      /**
+       * <code>required .FuseSkillMsg fuseSkill2 = 11;</code>
+       */
+      public Builder clearFuseSkill2() {
+        if (fuseSkill2Builder_ == null) {
+          fuseSkill2_ = com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance();
+          onChanged();
+        } else {
+          fuseSkill2Builder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000400);
+        return this;
+      }
+      /**
+       * <code>required .FuseSkillMsg fuseSkill2 = 11;</code>
+       */
+      public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder getFuseSkill2Builder() {
+        bitField0_ |= 0x00000400;
+        onChanged();
+        return getFuseSkill2FieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .FuseSkillMsg fuseSkill2 = 11;</code>
+       */
+      public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder getFuseSkill2OrBuilder() {
+        if (fuseSkill2Builder_ != null) {
+          return fuseSkill2Builder_.getMessageOrBuilder();
+        } else {
+          return fuseSkill2_;
+        }
+      }
+      /**
+       * <code>required .FuseSkillMsg fuseSkill2 = 11;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder> 
+          getFuseSkill2FieldBuilder() {
+        if (fuseSkill2Builder_ == null) {
+          fuseSkill2Builder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder>(
+                  getFuseSkill2(),
+                  getParentForChildren(),
+                  isClean());
+          fuseSkill2_ = null;
+        }
+        return fuseSkill2Builder_;
       }
 
-      private int fuseSkillId3_ ;
+      private com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg fuseSkill3_ = com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder> fuseSkill3Builder_;
       /**
-       * <code>required int32 fuseSkillId3 = 12;</code>
+       * <code>required .FuseSkillMsg fuseSkill3 = 12;</code>
        */
-      public boolean hasFuseSkillId3() {
+      public boolean hasFuseSkill3() {
         return ((bitField0_ & 0x00000800) == 0x00000800);
       }
       /**
-       * <code>required int32 fuseSkillId3 = 12;</code>
+       * <code>required .FuseSkillMsg fuseSkill3 = 12;</code>
        */
-      public int getFuseSkillId3() {
-        return fuseSkillId3_;
+      public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg getFuseSkill3() {
+        if (fuseSkill3Builder_ == null) {
+          return fuseSkill3_;
+        } else {
+          return fuseSkill3Builder_.getMessage();
+        }
       }
       /**
-       * <code>required int32 fuseSkillId3 = 12;</code>
+       * <code>required .FuseSkillMsg fuseSkill3 = 12;</code>
        */
-      public Builder setFuseSkillId3(int value) {
+      public Builder setFuseSkill3(com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg value) {
+        if (fuseSkill3Builder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          fuseSkill3_ = value;
+          onChanged();
+        } else {
+          fuseSkill3Builder_.setMessage(value);
+        }
         bitField0_ |= 0x00000800;
-        fuseSkillId3_ = value;
-        onChanged();
         return this;
       }
       /**
-       * <code>required int32 fuseSkillId3 = 12;</code>
+       * <code>required .FuseSkillMsg fuseSkill3 = 12;</code>
        */
-      public Builder clearFuseSkillId3() {
-        bitField0_ = (bitField0_ & ~0x00000800);
-        fuseSkillId3_ = 0;
-        onChanged();
+      public Builder setFuseSkill3(
+          com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder builderForValue) {
+        if (fuseSkill3Builder_ == null) {
+          fuseSkill3_ = builderForValue.build();
+          onChanged();
+        } else {
+          fuseSkill3Builder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000800;
         return this;
+      }
+      /**
+       * <code>required .FuseSkillMsg fuseSkill3 = 12;</code>
+       */
+      public Builder mergeFuseSkill3(com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg value) {
+        if (fuseSkill3Builder_ == null) {
+          if (((bitField0_ & 0x00000800) == 0x00000800) &&
+              fuseSkill3_ != com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance()) {
+            fuseSkill3_ =
+              com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.newBuilder(fuseSkill3_).mergeFrom(value).buildPartial();
+          } else {
+            fuseSkill3_ = value;
+          }
+          onChanged();
+        } else {
+          fuseSkill3Builder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000800;
+        return this;
+      }
+      /**
+       * <code>required .FuseSkillMsg fuseSkill3 = 12;</code>
+       */
+      public Builder clearFuseSkill3() {
+        if (fuseSkill3Builder_ == null) {
+          fuseSkill3_ = com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance();
+          onChanged();
+        } else {
+          fuseSkill3Builder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000800);
+        return this;
+      }
+      /**
+       * <code>required .FuseSkillMsg fuseSkill3 = 12;</code>
+       */
+      public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder getFuseSkill3Builder() {
+        bitField0_ |= 0x00000800;
+        onChanged();
+        return getFuseSkill3FieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .FuseSkillMsg fuseSkill3 = 12;</code>
+       */
+      public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder getFuseSkill3OrBuilder() {
+        if (fuseSkill3Builder_ != null) {
+          return fuseSkill3Builder_.getMessageOrBuilder();
+        } else {
+          return fuseSkill3_;
+        }
+      }
+      /**
+       * <code>required .FuseSkillMsg fuseSkill3 = 12;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder> 
+          getFuseSkill3FieldBuilder() {
+        if (fuseSkill3Builder_ == null) {
+          fuseSkill3Builder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder>(
+                  getFuseSkill3(),
+                  getParentForChildren(),
+                  isClean());
+          fuseSkill3_ = null;
+        }
+        return fuseSkill3Builder_;
       }
 
-      private int fuseSkillId4_ ;
+      private com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg fuseSkill4_ = com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder> fuseSkill4Builder_;
       /**
-       * <code>required int32 fuseSkillId4 = 13;</code>
+       * <code>required .FuseSkillMsg fuseSkill4 = 13;</code>
        */
-      public boolean hasFuseSkillId4() {
+      public boolean hasFuseSkill4() {
         return ((bitField0_ & 0x00001000) == 0x00001000);
       }
       /**
-       * <code>required int32 fuseSkillId4 = 13;</code>
+       * <code>required .FuseSkillMsg fuseSkill4 = 13;</code>
        */
-      public int getFuseSkillId4() {
-        return fuseSkillId4_;
+      public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg getFuseSkill4() {
+        if (fuseSkill4Builder_ == null) {
+          return fuseSkill4_;
+        } else {
+          return fuseSkill4Builder_.getMessage();
+        }
       }
       /**
-       * <code>required int32 fuseSkillId4 = 13;</code>
+       * <code>required .FuseSkillMsg fuseSkill4 = 13;</code>
        */
-      public Builder setFuseSkillId4(int value) {
+      public Builder setFuseSkill4(com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg value) {
+        if (fuseSkill4Builder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          fuseSkill4_ = value;
+          onChanged();
+        } else {
+          fuseSkill4Builder_.setMessage(value);
+        }
         bitField0_ |= 0x00001000;
-        fuseSkillId4_ = value;
-        onChanged();
         return this;
       }
       /**
-       * <code>required int32 fuseSkillId4 = 13;</code>
+       * <code>required .FuseSkillMsg fuseSkill4 = 13;</code>
        */
-      public Builder clearFuseSkillId4() {
+      public Builder setFuseSkill4(
+          com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder builderForValue) {
+        if (fuseSkill4Builder_ == null) {
+          fuseSkill4_ = builderForValue.build();
+          onChanged();
+        } else {
+          fuseSkill4Builder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00001000;
+        return this;
+      }
+      /**
+       * <code>required .FuseSkillMsg fuseSkill4 = 13;</code>
+       */
+      public Builder mergeFuseSkill4(com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg value) {
+        if (fuseSkill4Builder_ == null) {
+          if (((bitField0_ & 0x00001000) == 0x00001000) &&
+              fuseSkill4_ != com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance()) {
+            fuseSkill4_ =
+              com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.newBuilder(fuseSkill4_).mergeFrom(value).buildPartial();
+          } else {
+            fuseSkill4_ = value;
+          }
+          onChanged();
+        } else {
+          fuseSkill4Builder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00001000;
+        return this;
+      }
+      /**
+       * <code>required .FuseSkillMsg fuseSkill4 = 13;</code>
+       */
+      public Builder clearFuseSkill4() {
+        if (fuseSkill4Builder_ == null) {
+          fuseSkill4_ = com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.getDefaultInstance();
+          onChanged();
+        } else {
+          fuseSkill4Builder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00001000);
-        fuseSkillId4_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private long fuseSkillCreateTime1_ ;
-      /**
-       * <code>required int64 fuseSkillCreateTime1 = 14;</code>
-       *
-       * <pre>
-       * 融合技能 1--4 创建时间
-       * </pre>
-       */
-      public boolean hasFuseSkillCreateTime1() {
-        return ((bitField0_ & 0x00002000) == 0x00002000);
-      }
-      /**
-       * <code>required int64 fuseSkillCreateTime1 = 14;</code>
-       *
-       * <pre>
-       * 融合技能 1--4 创建时间
-       * </pre>
-       */
-      public long getFuseSkillCreateTime1() {
-        return fuseSkillCreateTime1_;
-      }
-      /**
-       * <code>required int64 fuseSkillCreateTime1 = 14;</code>
-       *
-       * <pre>
-       * 融合技能 1--4 创建时间
-       * </pre>
-       */
-      public Builder setFuseSkillCreateTime1(long value) {
-        bitField0_ |= 0x00002000;
-        fuseSkillCreateTime1_ = value;
-        onChanged();
         return this;
       }
       /**
-       * <code>required int64 fuseSkillCreateTime1 = 14;</code>
-       *
-       * <pre>
-       * 融合技能 1--4 创建时间
-       * </pre>
+       * <code>required .FuseSkillMsg fuseSkill4 = 13;</code>
        */
-      public Builder clearFuseSkillCreateTime1() {
-        bitField0_ = (bitField0_ & ~0x00002000);
-        fuseSkillCreateTime1_ = 0L;
+      public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder getFuseSkill4Builder() {
+        bitField0_ |= 0x00001000;
         onChanged();
-        return this;
-      }
-
-      private long fuseSkillCreateTime2_ ;
-      /**
-       * <code>required int64 fuseSkillCreateTime2 = 15;</code>
-       */
-      public boolean hasFuseSkillCreateTime2() {
-        return ((bitField0_ & 0x00004000) == 0x00004000);
+        return getFuseSkill4FieldBuilder().getBuilder();
       }
       /**
-       * <code>required int64 fuseSkillCreateTime2 = 15;</code>
+       * <code>required .FuseSkillMsg fuseSkill4 = 13;</code>
        */
-      public long getFuseSkillCreateTime2() {
-        return fuseSkillCreateTime2_;
+      public com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder getFuseSkill4OrBuilder() {
+        if (fuseSkill4Builder_ != null) {
+          return fuseSkill4Builder_.getMessageOrBuilder();
+        } else {
+          return fuseSkill4_;
+        }
       }
       /**
-       * <code>required int64 fuseSkillCreateTime2 = 15;</code>
+       * <code>required .FuseSkillMsg fuseSkill4 = 13;</code>
        */
-      public Builder setFuseSkillCreateTime2(long value) {
-        bitField0_ |= 0x00004000;
-        fuseSkillCreateTime2_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required int64 fuseSkillCreateTime2 = 15;</code>
-       */
-      public Builder clearFuseSkillCreateTime2() {
-        bitField0_ = (bitField0_ & ~0x00004000);
-        fuseSkillCreateTime2_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private long fuseSkillCreateTime3_ ;
-      /**
-       * <code>required int64 fuseSkillCreateTime3 = 16;</code>
-       */
-      public boolean hasFuseSkillCreateTime3() {
-        return ((bitField0_ & 0x00008000) == 0x00008000);
-      }
-      /**
-       * <code>required int64 fuseSkillCreateTime3 = 16;</code>
-       */
-      public long getFuseSkillCreateTime3() {
-        return fuseSkillCreateTime3_;
-      }
-      /**
-       * <code>required int64 fuseSkillCreateTime3 = 16;</code>
-       */
-      public Builder setFuseSkillCreateTime3(long value) {
-        bitField0_ |= 0x00008000;
-        fuseSkillCreateTime3_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required int64 fuseSkillCreateTime3 = 16;</code>
-       */
-      public Builder clearFuseSkillCreateTime3() {
-        bitField0_ = (bitField0_ & ~0x00008000);
-        fuseSkillCreateTime3_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private long fuseSkillCreateTime4_ ;
-      /**
-       * <code>required int64 fuseSkillCreateTime4 = 17;</code>
-       */
-      public boolean hasFuseSkillCreateTime4() {
-        return ((bitField0_ & 0x00010000) == 0x00010000);
-      }
-      /**
-       * <code>required int64 fuseSkillCreateTime4 = 17;</code>
-       */
-      public long getFuseSkillCreateTime4() {
-        return fuseSkillCreateTime4_;
-      }
-      /**
-       * <code>required int64 fuseSkillCreateTime4 = 17;</code>
-       */
-      public Builder setFuseSkillCreateTime4(long value) {
-        bitField0_ |= 0x00010000;
-        fuseSkillCreateTime4_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required int64 fuseSkillCreateTime4 = 17;</code>
-       */
-      public Builder clearFuseSkillCreateTime4() {
-        bitField0_ = (bitField0_ & ~0x00010000);
-        fuseSkillCreateTime4_ = 0L;
-        onChanged();
-        return this;
+      private com.google.protobuf.SingleFieldBuilder<
+          com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder> 
+          getFuseSkill4FieldBuilder() {
+        if (fuseSkill4Builder_ == null) {
+          fuseSkill4Builder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg.Builder, com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsgOrBuilder>(
+                  getFuseSkill4(),
+                  getParentForChildren(),
+                  isClean());
+          fuseSkill4_ = null;
+        }
+        return fuseSkill4Builder_;
       }
 
       private int proficiency_ ;
       /**
-       * <code>required int32 proficiency = 18;</code>
+       * <code>required int32 proficiency = 14;</code>
        *
        * <pre>
        *制作熟悉度
        * </pre>
        */
       public boolean hasProficiency() {
-        return ((bitField0_ & 0x00020000) == 0x00020000);
+        return ((bitField0_ & 0x00002000) == 0x00002000);
       }
       /**
-       * <code>required int32 proficiency = 18;</code>
+       * <code>required int32 proficiency = 14;</code>
        *
        * <pre>
        *制作熟悉度
@@ -1998,27 +2126,27 @@ public final class SoulInfoProto {
         return proficiency_;
       }
       /**
-       * <code>required int32 proficiency = 18;</code>
+       * <code>required int32 proficiency = 14;</code>
        *
        * <pre>
        *制作熟悉度
        * </pre>
        */
       public Builder setProficiency(int value) {
-        bitField0_ |= 0x00020000;
+        bitField0_ |= 0x00002000;
         proficiency_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int32 proficiency = 18;</code>
+       * <code>required int32 proficiency = 14;</code>
        *
        * <pre>
        *制作熟悉度
        * </pre>
        */
       public Builder clearProficiency() {
-        bitField0_ = (bitField0_ & ~0x00020000);
+        bitField0_ = (bitField0_ & ~0x00002000);
         proficiency_ = 0;
         onChanged();
         return this;
@@ -2049,18 +2177,17 @@ public final class SoulInfoProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\026soul/SoulInfoMsg.proto\"\367\002\n\013SoulInfoMsg" +
-      "\022\013\n\003exp\030\001 \002(\003\022\r\n\005card1\030\002 \002(\005\022\r\n\005card2\030\003 " +
-      "\002(\005\022\r\n\005card3\030\004 \002(\005\022\r\n\005card4\030\005 \002(\005\022\r\n\005car" +
-      "d5\030\006 \002(\005\022\r\n\005card6\030\007 \002(\005\022\r\n\005card7\030\010 \002(\005\022\r" +
-      "\n\005card8\030\t \002(\005\022\024\n\014fuseSkillId1\030\n \002(\005\022\024\n\014f" +
-      "useSkillId2\030\013 \002(\005\022\024\n\014fuseSkillId3\030\014 \002(\005\022" +
-      "\024\n\014fuseSkillId4\030\r \002(\005\022\034\n\024fuseSkillCreate" +
-      "Time1\030\016 \002(\003\022\034\n\024fuseSkillCreateTime2\030\017 \002(" +
-      "\003\022\034\n\024fuseSkillCreateTime3\030\020 \002(\003\022\034\n\024fuseS" +
-      "killCreateTime4\030\021 \002(\003\022\023\n\013proficiency\030\022 \002",
-      "(\005B6\n%com.chuangyou.common.protobuf.pb.s" +
-      "oulB\rSoulInfoProto"
+      "\n\026soul/SoulInfoMsg.proto\032\027soul/FuseSkill" +
+      "Msg.proto\"\263\002\n\013SoulInfoMsg\022\013\n\003exp\030\001 \002(\003\022\r" +
+      "\n\005card1\030\002 \002(\005\022\r\n\005card2\030\003 \002(\005\022\r\n\005card3\030\004 " +
+      "\002(\005\022\r\n\005card4\030\005 \002(\005\022\r\n\005card5\030\006 \002(\005\022\r\n\005car" +
+      "d6\030\007 \002(\005\022\r\n\005card7\030\010 \002(\005\022\r\n\005card8\030\t \002(\005\022!" +
+      "\n\nfuseSkill1\030\n \002(\0132\r.FuseSkillMsg\022!\n\nfus" +
+      "eSkill2\030\013 \002(\0132\r.FuseSkillMsg\022!\n\nfuseSkil" +
+      "l3\030\014 \002(\0132\r.FuseSkillMsg\022!\n\nfuseSkill4\030\r " +
+      "\002(\0132\r.FuseSkillMsg\022\023\n\013proficiency\030\016 \002(\005B" +
+      "6\n%com.chuangyou.common.protobuf.pb.soul",
+      "B\rSoulInfoProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2073,13 +2200,15 @@ public final class SoulInfoProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.getDescriptor(),
         }, assigner);
     internal_static_SoulInfoMsg_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_SoulInfoMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_SoulInfoMsg_descriptor,
-        new java.lang.String[] { "Exp", "Card1", "Card2", "Card3", "Card4", "Card5", "Card6", "Card7", "Card8", "FuseSkillId1", "FuseSkillId2", "FuseSkillId3", "FuseSkillId4", "FuseSkillCreateTime1", "FuseSkillCreateTime2", "FuseSkillCreateTime3", "FuseSkillCreateTime4", "Proficiency", });
+        new java.lang.String[] { "Exp", "Card1", "Card2", "Card3", "Card4", "Card5", "Card6", "Card7", "Card8", "FuseSkill1", "FuseSkill2", "FuseSkill3", "FuseSkill4", "Proficiency", });
+    com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -12,9 +12,11 @@ import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.entity.soul.CardLvConfig;
 import com.chuangyou.xianni.entity.soul.CardSkillConfig;
 import com.chuangyou.xianni.entity.soul.CardStarConfig;
+import com.chuangyou.xianni.entity.soul.FuseItemConfig;
 import com.chuangyou.xianni.entity.soul.SoulCardConfig;
 import com.chuangyou.xianni.entity.soul.SoulCardInfo;
 import com.chuangyou.xianni.entity.soul.SoulCardPiece;
+import com.chuangyou.xianni.entity.soul.SoulFuseSkillConfig;
 import com.chuangyou.xianni.entity.soul.SoulInfo;
 import com.chuangyou.xianni.entity.soul.SoulMake;
 import com.chuangyou.xianni.entity.soul.SoulMakeConfig;
@@ -29,7 +31,7 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 	public boolean addSoulInfo(SoulInfo info) {
 		String sql = "insert into tb_u_soul_info (playerId,exp,card1,card2,card3,card4,card5,"
 				+ "card6,card7,card8,fuseSkillId1,fuseSkillId2,fuseSkillId3,fuseSkillId4,fuseSkillCreateTime1,"
-				+ "fuseSkillCreateTime2,fuseSkillCreateTime3,fuseSkillCreateTime4,proficiency) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "fuseSkillCreateTime2,fuseSkillCreateTime3,fuseSkillCreateTime4,fuseSkillColor1,fuseSkillColor2,fuseSkillColor3,fuseSkillColor4,proficiency) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		if(!info.beginAdd())return false;
 		Map<Integer, DbParameter> params = new HashMap<>();
@@ -51,7 +53,11 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 		params.put(16, new DbParameter(Types.TIMESTAMP, info.getFuseSkillCreateTime2()));
 		params.put(17, new DbParameter(Types.TIMESTAMP, info.getFuseSkillCreateTime3()));
 		params.put(18, new DbParameter(Types.TIMESTAMP, info.getFuseSkillCreateTime4()));	
-		params.put(19, new DbParameter(Types.INTEGER, info.getProficiency()));	
+		params.put(19, new DbParameter(Types.INTEGER, info.getFuseSkillColor1()));
+		params.put(20, new DbParameter(Types.INTEGER, info.getFuseSkillColor2()));
+		params.put(21, new DbParameter(Types.INTEGER, info.getFuseSkillColor3()));
+		params.put(22, new DbParameter(Types.INTEGER, info.getFuseSkillColor4()));
+		params.put(23, new DbParameter(Types.INTEGER, info.getProficiency()));	
 		
 		boolean result = execNoneQuery(sql, params) > -1 ? true : false;
 		info.commitAdd(result);
@@ -64,7 +70,7 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 		// TODO Auto-generated method stub
 		String sql = "update tb_u_soul_info set exp=?,card1=?,card2=?,card3=?,card4=?,card5=?,"
 				+ "card6=?,card7=?,card8=?,fuseSkillId1=?,fuseSkillId2=?,fuseSkillId3=?,fuseSkillId4=?,fuseSkillCreateTime1=?,"
-				+ "fuseSkillCreateTime2=?,fuseSkillCreateTime3=?,fuseSkillCreateTime4=?,proficiency=? "
+				+ "fuseSkillCreateTime2=?,fuseSkillCreateTime3=?,fuseSkillCreateTime4=?,fuseSkillColor1=?,fuseSkillColor2=?,fuseSkillColor3=?,fuseSkillColor4=?,proficiency=? "
 				+ "where playerId=?";
 		if(!info.beginUpdate())return false;
 		
@@ -86,8 +92,12 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 		params.put(15, new DbParameter(Types.TIMESTAMP, info.getFuseSkillCreateTime2()));
 		params.put(16, new DbParameter(Types.TIMESTAMP, info.getFuseSkillCreateTime3()));
 		params.put(17, new DbParameter(Types.TIMESTAMP, info.getFuseSkillCreateTime4()));	
-		params.put(18, new DbParameter(Types.INTEGER, info.getProficiency()));
-		params.put(19, new DbParameter(Types.BIGINT, info.getPlayerId()));
+		params.put(18, new DbParameter(Types.INTEGER, info.getFuseSkillColor1()));
+		params.put(19, new DbParameter(Types.INTEGER, info.getFuseSkillColor2()));
+		params.put(20, new DbParameter(Types.INTEGER, info.getFuseSkillColor3()));
+		params.put(21, new DbParameter(Types.INTEGER, info.getFuseSkillColor4()));
+		params.put(22, new DbParameter(Types.INTEGER, info.getProficiency()));
+		params.put(23, new DbParameter(Types.BIGINT, info.getPlayerId()));
 				
 		boolean result = execNoneQuery(sql, params) > -1 ? true : false;
 		info.commitUpdate(result);
@@ -200,6 +210,11 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 					info.setFuseSkillCreateTime2(rs.getTimestamp("fuseSkillCreateTime2"));
 					info.setFuseSkillCreateTime3(rs.getTimestamp("fuseSkillCreateTime3"));
 					info.setFuseSkillCreateTime4(rs.getTimestamp("fuseSkillCreateTime4"));
+					
+					info.setFuseSkillColor1(rs.getInt("fuseSkillColor1"));
+					info.setFuseSkillColor2(rs.getInt("fuseSkillColor2"));
+					info.setFuseSkillColor3(rs.getInt("fuseSkillColor3"));
+					info.setFuseSkillColor4(rs.getInt("fuseSkillColor4"));
 					
 					info.setProficiency(rs.getInt("proficiency"));
 					break;					
@@ -405,6 +420,7 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 				info = new CardSkillConfig();
 				info.setId(rs.getInt("id"));
 				info.setName(rs.getString("name"));
+				info.setWeight(rs.getInt("weight"));
 				infos.put(info.getId(), info);
 			}
 		} catch (SQLException e) {
@@ -510,6 +526,78 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 				info.setPurple(rs.getInt("purple"));
 				info.setOrange(rs.getInt("orange"));
 				infos.put(info.getProficiency(), info);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			infos = null;
+			Log.error("执行出错" + sql, e);
+		}finally{
+			closeConn(pst, rs);
+		}	
+		return infos;
+	}
+
+
+	/**
+	 * 获取融合技能相关的配置
+	 */
+	@Override
+	public Map<Integer, SoulFuseSkillConfig> getFuseSkillConfig() {
+		// TODO Auto-generated method stub
+		String sql = "select * from tb_z_soul_fuseSkill";
+		PreparedStatement pst = execQuery(sql);
+		ResultSet rs = null;
+		SoulFuseSkillConfig info = null;
+		Map<Integer, SoulFuseSkillConfig> infos = null;
+		try {
+			rs = pst.executeQuery();
+			infos = new HashMap<>();
+			while(rs.next()){
+				info = new SoulFuseSkillConfig();
+				info.setId(rs.getInt("id"));
+				info.setName(rs.getString("name"));
+				info.setWeight(rs.getInt("weight"));
+				info.setBuff(rs.getInt("buff"));
+				info.setChanceBase(rs.getInt("chanceBase"));
+				info.setChance1(rs.getInt("chance1"));
+				info.setChance2(rs.getInt("chance2"));
+				info.setChance3(rs.getInt("chance3"));
+				info.setChance4(rs.getInt("chance4"));
+				info.setEffectParam(rs.getInt("effectParam"));
+				infos.put(info.getId(), info);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			infos = null;
+			Log.error("执行出错" + sql, e);
+		}finally{
+			closeConn(pst, rs);
+		}	
+		return infos;
+	}
+
+
+	@Override
+	public Map<Integer, FuseItemConfig> getFuseItemConfig() {
+		// TODO Auto-generated method stub
+		String sql = "select * from tb_z_soul_fuseItem";
+		PreparedStatement pst = execQuery(sql);
+		ResultSet rs = null;
+		FuseItemConfig info = null;
+		Map<Integer, FuseItemConfig> infos = null;
+		try {
+			rs = pst.executeQuery();
+			infos = new HashMap<>();
+			while(rs.next()){
+				info = new FuseItemConfig();
+				info.setStype(rs.getInt("stype"));
+				info.setNeedItem1(rs.getInt("needItem1"));
+				info.setNeedItem2(rs.getInt("needItem2"));
+				info.setNeedItem3(rs.getInt("needItem3"));
+				info.setNeedItem4(rs.getInt("needItem4"));
+				infos.put(info.getStype(), info);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -14,6 +14,7 @@ import com.chuangyou.xianni.word.WorldMgr;
 public class FriendLogic {
 
 	public void doGetFirends(GamePlayer player){
+		if(player.getFriendInventory()==null)return;
 		Friend friend = player.getFriendInventory().getFriend();
 		List<Long> list = friend.toFriendIdList();
 		

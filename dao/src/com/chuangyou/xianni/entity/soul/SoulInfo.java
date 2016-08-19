@@ -2,6 +2,7 @@ package com.chuangyou.xianni.entity.soul;
 
 import java.util.Date;
 
+import com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg;
 import com.chuangyou.common.protobuf.pb.soul.SoulInfoProto.SoulInfoMsg;
 import com.chuangyou.xianni.entity.DataObject;
 
@@ -30,6 +31,12 @@ public class SoulInfo extends DataObject {
 	private Date fuseSkillCreateTime3=new Date();// ` timestamp NULL DEFAULT NULL COMMENT
 										// '创建时间',
 	private Date fuseSkillCreateTime4=new Date();// ` timestamp NULL DEFAULT NULL COMMENT
+	
+	private int fuseSkillColor1;
+	private int fuseSkillColor2;
+	private int fuseSkillColor3;
+	private int fuseSkillColor4;
+	
 										// '创建时间',
 
 	private int proficiency; //材料制作熟练度
@@ -46,16 +53,30 @@ public class SoulInfo extends DataObject {
 		msg.setCard7(card7);
 		msg.setCard8(card8);
 		
-		msg.setFuseSkillId1(fuseSkillId1);
-		msg.setFuseSkillId2(fuseSkillId2);
-		msg.setFuseSkillId3(fuseSkillId3);
-		msg.setFuseSkillId4(fuseSkillId4);
+		FuseSkillMsg.Builder subMsg = FuseSkillMsg.newBuilder();
+		subMsg.setFuseSkillId(fuseSkillId1);
+		subMsg.setFuseCreateTime(fuseSkillCreateTime1.getTime());
+		subMsg.setColor(fuseSkillColor1);
+		msg.setFuseSkill1(subMsg);
 		
-		msg.setFuseSkillCreateTime1(fuseSkillCreateTime1.getTime());
-		msg.setFuseSkillCreateTime2(fuseSkillCreateTime2.getTime());
-		msg.setFuseSkillCreateTime3(fuseSkillCreateTime3.getTime());
-		msg.setFuseSkillCreateTime4(fuseSkillCreateTime4.getTime());
+		FuseSkillMsg.Builder subMsg1 = FuseSkillMsg.newBuilder();
+		subMsg1.setFuseSkillId(fuseSkillId2);
+		subMsg1.setFuseCreateTime(fuseSkillCreateTime2.getTime());
+		subMsg1.setColor(fuseSkillColor2);
+		msg.setFuseSkill2(subMsg1);
 		
+		FuseSkillMsg.Builder subMsg2 = FuseSkillMsg.newBuilder();
+		subMsg2.setFuseSkillId(fuseSkillId3);
+		subMsg2.setFuseCreateTime(fuseSkillCreateTime3.getTime());
+		subMsg2.setColor(fuseSkillColor3);
+		msg.setFuseSkill3(subMsg2);
+		
+		FuseSkillMsg.Builder subMsg3 = FuseSkillMsg.newBuilder();
+		subMsg3.setFuseSkillId(fuseSkillId4);
+		subMsg3.setFuseCreateTime(fuseSkillCreateTime4.getTime());
+		subMsg3.setColor(fuseSkillColor4);
+		msg.setFuseSkill4(subMsg3);
+
 		msg.setProficiency(proficiency);
 		
 		return msg;
@@ -211,6 +232,38 @@ public class SoulInfo extends DataObject {
 
 	public void setProficiency(int proficiency) {
 		this.proficiency = proficiency;
+	}
+
+	public int getFuseSkillColor1() {
+		return fuseSkillColor1;
+	}
+
+	public void setFuseSkillColor1(int fuseSkillColor1) {
+		this.fuseSkillColor1 = fuseSkillColor1;
+	}
+
+	public int getFuseSkillColor2() {
+		return fuseSkillColor2;
+	}
+
+	public void setFuseSkillColor2(int fuseSkillColor2) {
+		this.fuseSkillColor2 = fuseSkillColor2;
+	}
+
+	public int getFuseSkillColor3() {
+		return fuseSkillColor3;
+	}
+
+	public void setFuseSkillColor3(int fuseSkillColor3) {
+		this.fuseSkillColor3 = fuseSkillColor3;
+	}
+
+	public int getFuseSkillColor4() {
+		return fuseSkillColor4;
+	}
+
+	public void setFuseSkillColor4(int fuseSkillColor4) {
+		this.fuseSkillColor4 = fuseSkillColor4;
 	}
 
 

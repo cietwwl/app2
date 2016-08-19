@@ -57,24 +57,24 @@ public class PlayerCreateCmd implements Command {
 			result = ErrorCode.ROLE_IS_ALREADY_EXISTS;
 		}
 
-		//名字合法性
+		// 名字合法性
 		short nameCheckResult = PlayerManager.nickNameCheck(req.getNickName());
-		if(nameCheckResult > 0){
-			switch(nameCheckResult){
-			case NickNameCheckResult.LENGTH_LIMIT:
-				result = ErrorCode.PLAYERNAME_LENGTH_LIMIT;
-				break;
-			case NickNameCheckResult.ILLEGAL_CHARACTER:
-				result = ErrorCode.PLAYERNAME_ILLEGAL_CHARACTER;
-				break;
-			case NickNameCheckResult.NAME_EXIST:
-				Log.error("角色名重复!");
-				result = ErrorCode.PLAYERNAME_IS_ALREADY_EXISTS;
-				break;
+		if (nameCheckResult > 0) {
+			switch (nameCheckResult) {
+				case NickNameCheckResult.LENGTH_LIMIT:
+					result = ErrorCode.PLAYERNAME_LENGTH_LIMIT;
+					break;
+				case NickNameCheckResult.ILLEGAL_CHARACTER:
+					result = ErrorCode.PLAYERNAME_ILLEGAL_CHARACTER;
+					break;
+				case NickNameCheckResult.NAME_EXIST:
+					Log.error("角色名重复!");
+					result = ErrorCode.PLAYERNAME_IS_ALREADY_EXISTS;
+					break;
 			}
 			return;
 		}
-		
+
 		RoleConfig roleConfig = roleConfigMgr.getRoleConfig(req.getRoleConfigId());
 		if (roleConfig == null) {
 			Log.error("缺少角色配置!id：" + req.getRoleConfigId());
@@ -118,13 +118,13 @@ public class PlayerCreateCmd implements Command {
 			playerInfo.setPkVal(0);
 			playerInfo.setChangeBattleModeTime(0);
 
-//			if (req.getRoleConfigId() == 1) {
-//				playerInfo.setWeaponId(2110001);
-//			} else if (req.getRoleConfigId() == 2) {
-//
-//			} else if (req.getRoleConfigId() == 3) {
-//				playerInfo.setWeaponId(2110004);
-//			}
+			// if (req.getRoleConfigId() == 1) {
+			// playerInfo.setWeaponId(2110001);
+			// } else if (req.getRoleConfigId() == 2) {
+			//
+			// } else if (req.getRoleConfigId() == 3) {
+			// playerInfo.setWeaponId(2110004);
+			// }
 
 			PlayerJoinInfo playerJoinInfo = new PlayerJoinInfo();
 			playerJoinInfo.setPlayerId(playerInfo.getPlayerId());
@@ -166,8 +166,8 @@ public class PlayerCreateCmd implements Command {
 			playerTimeInfo.setPlayerId(playerInfo.getPlayerId());
 			playerTimeInfo.setResetTime(new Date());
 			playerTimeInfo.setSigleCampCount(0);
-//			playerTimeInfo.setBeadRefreshId(InverseBeadInventory.spawnId+"");
-//			playerTimeInfo.setCurrRefreshId(InverseBeadInventory.spawnId);
+			// playerTimeInfo.setBeadRefreshId(InverseBeadInventory.spawnId+"");
+			// playerTimeInfo.setCurrRefreshId(InverseBeadInventory.spawnId);
 
 			PlayerPositionInfo playerPositionInfo = new PlayerPositionInfo();
 			playerPositionInfo.setPlayerId(playerInfo.getPlayerId());

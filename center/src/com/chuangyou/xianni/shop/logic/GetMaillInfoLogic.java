@@ -34,6 +34,7 @@ public class GetMaillInfoLogic {
 	 * 做正常的数据返回处理
 	 */
 	public void doNormalResult(GamePlayer player){
+		if(player.getShopInventory()==null)return;
 		GetMallInfoRespMsg.Builder resp = GetMallInfoRespMsg.newBuilder();
 		resp.setResultType(1);
 		resp.addInfos(getInfosMsg(ShopCfg.SHOP_NORMAL,player));

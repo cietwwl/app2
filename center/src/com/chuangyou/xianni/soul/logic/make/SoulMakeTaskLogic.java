@@ -12,7 +12,8 @@ public class SoulMakeTaskLogic {
 	 * 同步制作任务
 	 * @param player
 	 */
-	public void syncSoulMakeTask(GamePlayer player){	
+	public void syncSoulMakeTask(GamePlayer player){
+		if(player.getSoulInventory() == null)return;
 		if(player.getPlayerState() == PlayerState.OFFLINE)return;
 		if(player.getSoulInventory().getSoulMake() != null){
 			PBMessage pkg = MessageUtil.buildMessage(Protocol.U_RESP_SOUL_MAKE_TASK,player.getSoulInventory().getSoulMake().getMsg());

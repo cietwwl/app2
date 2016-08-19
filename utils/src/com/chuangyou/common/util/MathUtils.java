@@ -155,5 +155,21 @@ public class MathUtils {
 		int v = (int) (min + Math.random() * (max - min + 1));
 		return v;
 	}
+	
+	/**
+	 * 检测一个点是否在自己面向的夹角内
+	 * @param src
+	 * @param dir
+	 * @param tar
+	 * @param angle
+	 * @return
+	 */
+	public static boolean detectedAngle(Vector3 src, Vector3 dir, Vector3 tar, float angle)
+	{
+		Vector3 src2tar = getDirByXZ(dir, src);//Vector3.sub(tar, src).getNormalize();
+		float src2tarAngle = Vector3.angle(dir, src2tar);
+		if(Math.abs(src2tarAngle) < angle/2) return true;
+		return false;
+	}
 
 }

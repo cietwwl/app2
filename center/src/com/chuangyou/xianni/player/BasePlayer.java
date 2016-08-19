@@ -1,5 +1,6 @@
 package com.chuangyou.xianni.player;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -28,25 +29,25 @@ import com.chuangyou.xianni.vip.templete.VipTemplateMgr;
 public class BasePlayer extends AbstractEvent {
 
 	/** 玩家详细信息 */
-	private PlayerInfo playerInfo;
+	private PlayerInfo			playerInfo;
 
 	/** 玩家加成属性信息 */
-	private PlayerJoinInfo playerJoinInfo;
+	private PlayerJoinInfo		playerJoinInfo;
 
 	/** 玩家时间、硽码相关信息 */
-	private PlayerTimeInfo playerTimeInfo;
+	private PlayerTimeInfo		playerTimeInfo;
 
 	/** 玩家临时数据，不入库 */
-	private short onLineStatus = PlayerState.OFFLINE;
+	private short				onLineStatus	= PlayerState.OFFLINE;
 	/** 期望组队目标 */
-	private int teamTarget = 0;
+	private int					teamTarget		= 0;
 
 	/** 玩家移动位置信息 */
-	private PlayerPositionInfo playerPositionInfo;
+	private PlayerPositionInfo	playerPositionInfo;
 
-	private LockData moneyLock = new LockData();
+	private LockData			moneyLock		= new LockData();
 	/*-----------------------更新数据---------------------------*/
-	private AtomicInteger changeCount = new AtomicInteger(0);
+	private AtomicInteger		changeCount		= new AtomicInteger(0);
 
 	public BasePlayer(PlayerInfo playerInfo, PlayerJoinInfo playerJoinInfo, PlayerTimeInfo playerTimeInfo, PlayerPositionInfo playerPositionInfo) {
 		this.playerInfo = playerInfo;
@@ -381,7 +382,8 @@ public class BasePlayer extends AbstractEvent {
 	}
 
 	/**
-	 * @param quest 单条提交
+	 * @param quest
+	 *            单条提交
 	 */
 	public void onChanged() {
 		try {
@@ -608,6 +610,31 @@ public class BasePlayer extends AbstractEvent {
 			}
 		}
 
+		return true;
+	}
+
+	/**
+	 * 添加临时vip
+	 * 
+	 * @param dayCount
+	 * @return
+	 */
+	public boolean addVipTemporary(int dayCount) {
+		try {
+			long time = 0;
+			Date vipInterimTimeLimit = this.playerInfo.getVipInterimTimeLimit();
+			if (vipInterimTimeLimit != null && vipInterimTimeLimit.getTime() > System.currentTimeMillis()) {
+				time = this.playerInfo.getVipInterimTimeLimit().getTime();
+			} else {
+				time = System.currentTimeMillis();
+			}
+			this.playerInfo.setVipInterimTimeLimit(new Date(time + dayCount * 24l * 60 * 60 * 1000));
+		} catch (Exception e) {
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " addVipTemporary:" + dayCount);
+			return false;
+		} finally {
+			commitChages(EnumAttr.VIP_TEMPORARY.getValue(), this.playerInfo.getVipInterimTimeLimit().getTime());
+		}
 		return true;
 	}
 

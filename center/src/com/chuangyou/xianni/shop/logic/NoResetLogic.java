@@ -8,7 +8,7 @@ public class NoResetLogic extends BaseResetLogic {
 	@Override
 	protected void resetTime(ShopCfg cfg, GamePlayer player) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

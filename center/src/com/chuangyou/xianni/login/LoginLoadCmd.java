@@ -18,6 +18,7 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.shop.logic.GetMaillInfoLogic;
 import com.chuangyou.xianni.socket.Cmd;
+import com.chuangyou.xianni.soul.logic.GetSoulInfoLogic;
 import com.chuangyou.xianni.soul.logic.make.SoulMakeTaskLogic;
 import com.chuangyou.xianni.task.logic.GetTaskLogic;
 import com.chuangyou.xianni.team.reaction.GetTeamInfoAction;
@@ -43,6 +44,7 @@ public class LoginLoadCmd extends AbstractCommand {
 	static final int	FRIEND			= 10;
 	static final int	VIP				= 11;
 	static final int	SOUL_MAKE_TASK	= 12;
+	static final int    SOUL_INFO 		= 13;
 
 	@Override
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
@@ -89,7 +91,6 @@ public class LoginLoadCmd extends AbstractCommand {
 				if (campaignInventory != null) {
 					campaignInventory.updataAll();
 				}
-
 			}
 
 			// 队伍
@@ -118,11 +119,16 @@ public class LoginLoadCmd extends AbstractCommand {
 			if (dataType.getDataType() == VIP) {
 				VipManager.getVipInfo(player);
 			}
+
 			// soul task
 			if (dataType.getDataType() == SOUL_MAKE_TASK) {
 				new SoulMakeTaskLogic().syncSoulMakeTask(player);
 			}
-
+			
+			//soul 
+			if (dataType.getDataType() == SOUL_INFO) {
+				new GetSoulInfoLogic().process(player);
+			}
 		} catch (Exception e) {
 			Log.error("发送用户数据 失败,nickname " + "nickname" + ", userId " + player.getPlayerId(), e);
 		} finally {

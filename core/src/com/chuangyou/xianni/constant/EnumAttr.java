@@ -267,6 +267,16 @@ public enum EnumAttr {
 	 * vip 经验
 	 */
 	VIP_EXP(61),
+	
+	/**
+	 * 灵力
+	 */
+	MANA(62),
+	
+	/**
+	 * 武器觉醒
+	 */
+	WEAPON_AWAKEN(63),
 
 	/**
 	 * 灵石
@@ -298,11 +308,15 @@ public enum EnumAttr {
 	/**
 	 * PK 值
 	 */
-	PK_VAL(717),
+	PK_VAL(65),
 	/**
 	 * 攻击模式
 	 */
-	BATTLE_MODE(718);
+	BATTLE_MODE(66),
+	/**
+	 * 临时vip到期时间
+	 */
+	VIP_TEMPORARY(67);
 
 	private int value;
 

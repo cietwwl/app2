@@ -50,7 +50,7 @@ public class SoulInventory extends AbstractEvent implements IInventory {
 	private KillMonsterListener listener;
 	
 	/** 临时位置《--》技能  */
-	private Map<Integer, Integer> tempMap = new HashMap<>();
+	private Map<Integer, FuseSkillVo> tempMap = new HashMap<>();
 	
 	
 	public SoulInventory(GamePlayer palyer) {
@@ -135,8 +135,10 @@ public class SoulInventory extends AbstractEvent implements IInventory {
 		removeListener();
 		this.listener = null;
 		
-		this.tempMap.clear();
-		this.tempMap = null;
+		if(this.tempMap!=null){
+			this.tempMap.clear();
+			this.tempMap = null;
+		}
 		return true;
 	}
 
@@ -238,7 +240,7 @@ public class SoulInventory extends AbstractEvent implements IInventory {
 		return soulMake;
 	}
 
-	public Map<Integer, Integer> getTempMap() {
+	public Map<Integer, FuseSkillVo> getTempMap() {
 		return tempMap;
 	}
 

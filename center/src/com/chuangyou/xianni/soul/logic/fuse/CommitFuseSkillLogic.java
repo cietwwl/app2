@@ -6,6 +6,7 @@ import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.soul.FuseSkillVo;
 
 /**
  * 确定使用融合出来的技能
@@ -22,14 +23,14 @@ public class CommitFuseSkillLogic extends BaseFuseLogic implements IFuseLogic {
 	@Override
 	public void doProcess() {
 		// TODO Auto-generated method stub
-		Map<Integer, Integer> tempSkillMap = player.getSoulInventory().getTempMap();
+		Map<Integer, FuseSkillVo> tempSkillMap = player.getSoulInventory().getTempMap();
 		if (!tempSkillMap.containsKey(this.index)) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_FUSE, "没有需要确定的融合技能");
 			return;
 		}
 		
-		int newSkillID = tempSkillMap.get(this.index);
-		this.setNewSkill(newSkillID);
+		FuseSkillVo newSkillID = tempSkillMap.get(this.index);
+		this.setNewSkill(newSkillID.getSkillId(),newSkillID.getColor());
 		
 		this.sendResult(player);
 	

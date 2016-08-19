@@ -35,21 +35,21 @@ public class InverseBeadLoopAction extends DelayAction {
 	private List<Integer>	list;
 	private boolean			isLoop			= true;
 
-	public InverseBeadLoopAction(GamePlayer player, ActionQueue queue, List<Integer> list) {
+	public InverseBeadLoopAction(GamePlayer player, ActionQueue queue, List<Integer> list, boolean isLoop) {
 		super(queue, intervalTime);
 		this.player = player;
 		this.list = list;
+		this.isLoop = isLoop;
 	}
 
 	@Override
 	public void execute() {
 		boolean res = refreshSpawn();
 		boolean res2 = refreshAura();
+		PlayerBeadTimeInfo playerTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
 		if (res || res2) {
 			// PlayerTimeInfo playerTimeInfo =
 			// player.getBasePlayer().getPlayerTimeInfo();
-			PlayerBeadTimeInfo playerTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
-
 			RefreshInverseBeadMsg.Builder msg = RefreshInverseBeadMsg.newBuilder();
 			String beadRefreshId = playerTimeInfo.getBeadRefreshId();
 			List<Integer> list = InverseBeadManager.getBeadRefreshId(beadRefreshId);
@@ -78,7 +78,7 @@ public class InverseBeadLoopAction extends DelayAction {
 			PBMessage pbm = MessageUtil.buildMessage(Protocol.U_REFRESH_INVERSE_BEAD, msg);
 			this.player.sendPbMessage(pbm);
 		}
-		if (isLoop) {
+		if (isLoop && playerTimeInfo != null) {
 			this.execTime = System.currentTimeMillis() + intervalTime;
 			getActionQueue().enDelayQueue(this);
 		}

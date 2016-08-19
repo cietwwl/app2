@@ -28,7 +28,8 @@ public class VipManager {
 	 * 
 	 * @param player
 	 * @param vipId
-	 * @param handselPlayerId 接收者
+	 * @param handselPlayerId
+	 *            接收者
 	 * @return
 	 */
 	public static boolean buyVip(GamePlayer player, int vipId, long handselPlayerId) {
@@ -71,7 +72,8 @@ public class VipManager {
 		playerInfo.setVipTimeLimit(new Date(System.currentTimeMillis() + vipDuration * 24 * 60 * 60 * 1000 + time));
 		playerInfo.setVipInterimTimeLimit(new Date());
 
-		// System.out.println(System.currentTimeMillis() + vipDuration * 24 * 60 * 60 * 1000 + time);
+		// System.out.println(System.currentTimeMillis() + vipDuration * 24 * 60
+		// * 60 * 1000 + time);
 		// System.out.println(DateTimeUtil.format(playerInfo.getVipTimeLimit()));
 		// System.out.println(DateTimeUtil.format(playerInfo.getVipInterimTimeLimit()));
 		player.getBasePlayer().addCash(cash);
@@ -84,7 +86,8 @@ public class VipManager {
 		Map<String, List<Object>> map = StringUtils.strToMap(rec);// 领取记录
 		VipBagTemplate bag = VipTemplateMgr.getvipBagTemplate(type, id);
 		if (bag == null) {
-			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR, code);// vip 礼包不存在
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR, code);// vip
+																			// 礼包不存在
 			return false;
 		}
 		PlayerInfo playerInfo = player.getBasePlayer().getPlayerInfo();
@@ -94,7 +97,8 @@ public class VipManager {
 				return false;
 			}
 			if (!isInterimVip(player) && !isVip(player)) {
-				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR3, code);// 您不是 vip
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR3, code);// 您不是
+																					// vip
 				return false;
 			}
 			int buyNeedStone = bag.getBuyNeedStone();
@@ -121,7 +125,8 @@ public class VipManager {
 
 		} else if (bag.getType() == 2) {// vip周奖励
 			if (!isVip(player)) {
-				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR3, code);// 您不是 vip
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR3, code);// 您不是
+																					// vip
 				return false;
 			}
 			if (map.containsKey(type + "")) {
@@ -204,12 +209,14 @@ public class VipManager {
 		for (Object obj : map.get(1 + "")) {
 			resMsg.addBuy(Integer.valueOf(obj.toString()));
 		}
-		resMsg.setIsReceive(0);
+		resMsg.setIsReceive(1);
 		if (map.containsKey("2")) {
 			if (!map.get("2").isEmpty()) {
 				Date date = new Date(Long.valueOf((map.get("2").get(0).toString())));
 				if (DateTimeUtil.isSameWeek(new Date(), date)) {
 					resMsg.setIsReceive(1);
+				} else {
+					resMsg.setIsReceive(0);
 				}
 			}
 		}

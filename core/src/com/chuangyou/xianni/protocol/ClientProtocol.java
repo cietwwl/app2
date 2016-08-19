@@ -430,4 +430,6 @@ public interface ClientProtocol {
 	public static final short U_VIP_RECEIVE			 = 736;
 	/** 获取vip信息 **/
 	public static final short U_GET_VIP_INFO		=737;
+	/** 赠送vip **/
+	public static final short U_VIP_HANDSEL			= 738;
 }

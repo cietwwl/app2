@@ -16,6 +16,7 @@ import com.chuangyou.xianni.task.manager.TaskManager;
 public class GetTaskLogic {
 	
 	public void process(GamePlayer player){
+		if(player.getTaskInventory()==null)return;
 		TaskManager.clearDayTask(player, false);
 		player.getTaskInventory().setReady(true);
 		GetTaskListRespMsg.Builder resp = GetTaskListRespMsg.newBuilder();

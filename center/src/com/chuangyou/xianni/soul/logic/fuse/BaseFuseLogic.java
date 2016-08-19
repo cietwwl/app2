@@ -41,19 +41,23 @@ public class BaseFuseLogic {
 	 * 设置新技能
 	 * @param newSkillId
 	 */
-	protected void setNewSkill(int newSkillId){
+	protected void setNewSkill(int newSkillId,int color){
 		Date now = new Date();
 		if (index == 1) {
 			this.soulInfo.setFuseSkillId1(newSkillId);
+			this.soulInfo.setFuseSkillColor1(color);
 			this.soulInfo.setFuseSkillCreateTime1(now);
 		} else if (index == 2) {
 			this.soulInfo.setFuseSkillId2(newSkillId);
+			this.soulInfo.setFuseSkillColor2(color);
 			this.soulInfo.setFuseSkillCreateTime2(now);
 		} else if (index == 3) {
 			this.soulInfo.setFuseSkillId3(newSkillId);
+			this.soulInfo.setFuseSkillColor3(color);
 			this.soulInfo.setFuseSkillCreateTime3(now);
 		} else if (index == 4) {
 			this.soulInfo.setFuseSkillId4(newSkillId);
+			this.soulInfo.setFuseSkillColor4(color);
 			this.soulInfo.setFuseSkillCreateTime4(now);
 		}
 		soulInfo.setOp(Option.Update);

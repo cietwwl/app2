@@ -5,9 +5,11 @@ import java.util.Map;
 import com.chuangyou.xianni.entity.soul.CardLvConfig;
 import com.chuangyou.xianni.entity.soul.CardSkillConfig;
 import com.chuangyou.xianni.entity.soul.CardStarConfig;
+import com.chuangyou.xianni.entity.soul.FuseItemConfig;
 import com.chuangyou.xianni.entity.soul.SoulCardConfig;
 import com.chuangyou.xianni.entity.soul.SoulCardInfo;
 import com.chuangyou.xianni.entity.soul.SoulCardPiece;
+import com.chuangyou.xianni.entity.soul.SoulFuseSkillConfig;
 import com.chuangyou.xianni.entity.soul.SoulInfo;
 import com.chuangyou.xianni.entity.soul.SoulMake;
 import com.chuangyou.xianni.entity.soul.SoulMakeConfig;
@@ -42,8 +44,7 @@ public interface SoulDao {
 	public Map<Integer, CardStarConfig> getCardStarConfig();
 	public Map<Integer,CardSkillConfig> getCardSkillCofig();
 	public Map<Integer, SoulMakeConfig> getSoulMakeConfig();
-	
-	
-	
+	public Map<Integer, SoulFuseSkillConfig> getFuseSkillConfig();
+	public Map<Integer, FuseItemConfig> getFuseItemConfig();
 	
 }

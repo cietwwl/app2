@@ -222,6 +222,9 @@ public class BagInventory extends AbstractEvent implements IInventory {
 			case CurrencyItemType.VIP_EXP:
 				player.getBasePlayer().addVipExp(count);
 				return true;
+			case CurrencyItemType.VIP_TEMPORARY:
+				player.getBasePlayer().addVipTemporary(count);
+				return true;
 				
 		}
 

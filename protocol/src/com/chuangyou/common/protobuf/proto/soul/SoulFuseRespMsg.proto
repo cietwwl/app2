@@ -12,4 +12,5 @@ message SoulFuseRespMsg{
 	required SoulInfoMsg soulInfo = 3; //基本信息
 	repeated PropertyMsg atts = 4;//加成属性
 	optional int32 tempSkill = 5;//临时技能ID （op=1时，非第一次融合。会先产一条临时技能。让用户自己选择）
+	optional int32 tempSkillColor = 6;//临时技能品质颜色
 }

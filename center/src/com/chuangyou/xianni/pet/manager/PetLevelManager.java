@@ -30,7 +30,7 @@ public class PetLevelManager {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, protocolCode);
 			return false;
 		}
-		if(!player.getBagInventory().removeItemFromPlayerBag(useItem, 1, ItemRemoveType.USE)) return false;
+		if(!player.getBagInventory().removeItemFromPlayerBag(useItem, 1, ItemRemoveType.PET_LEVELUP)) return false;
 		
 		int curLevelExp = pet.getLevelExp();
 		int targetLevel = pet.getLevel();
@@ -71,13 +71,13 @@ public class PetLevelManager {
 				
 			}
 			//扣物品
-			if(!player.getBagInventory().removeItemFromPlayerBag(petLevel.getItemId1(), needItemNum1, ItemRemoveType.USE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(petLevel.getItemId1(), needItemNum1, ItemRemoveType.PET_LEVELUP)) return false;
 			
 			pet.setLevel(pet.getLevel() + 1);
 			pet.setLevelExp(needItemNum1 * petLevel.getItemExp1() - needExp);
 		}else{
 			//扣物品
-			if(!player.getBagInventory().removeItemFromPlayerBag(petLevel.getItemId1(), hasItemNum1, ItemRemoveType.USE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(petLevel.getItemId1(), hasItemNum1, ItemRemoveType.PET_LEVELUP)) return false;
 			
 			int addExp = hasItemNum1 * petLevel.getItemExp1();
 			pet.setLevelExp(pet.getLevelExp() + addExp);
@@ -90,13 +90,13 @@ public class PetLevelManager {
 					return PetLevelManager.petUpLevelByItem(player, pet, petLevel.getItemId2(), protocolCode);
 				}
 				//扣物品
-				if(!player.getBagInventory().removeItemFromPlayerBag(petLevel.getItemId2(), needItemNum2, ItemRemoveType.USE)) return false;
+				if(!player.getBagInventory().removeItemFromPlayerBag(petLevel.getItemId2(), needItemNum2, ItemRemoveType.PET_LEVELUP)) return false;
 				
 				pet.setLevel(pet.getLevel() + 1);
 				pet.setLevelExp(needItemNum2 * petLevel.getItemExp2() - needExp);
 			}else{
 				//扣物品
-				if(!player.getBagInventory().removeItemFromPlayerBag(petLevel.getItemId2(), hasItemNum2, ItemRemoveType.USE)) return false;
+				if(!player.getBagInventory().removeItemFromPlayerBag(petLevel.getItemId2(), hasItemNum2, ItemRemoveType.PET_LEVELUP)) return false;
 				
 				addExp = hasItemNum2 * petLevel.getItemExp2();
 				pet.setLevelExp(pet.getLevelExp() + addExp);
@@ -109,13 +109,13 @@ public class PetLevelManager {
 						return PetLevelManager.petUpLevelByItem(player, pet, petLevel.getItemId3(), protocolCode);
 					}
 					//扣物品
-					if(!player.getBagInventory().removeItemFromPlayerBag(petLevel.getItemId3(), needItemNum3, ItemRemoveType.USE)) return false;
+					if(!player.getBagInventory().removeItemFromPlayerBag(petLevel.getItemId3(), needItemNum3, ItemRemoveType.PET_LEVELUP)) return false;
 					
 					pet.setLevel(pet.getLevel() + 1);
 					pet.setLevelExp(needItemNum3 * petLevel.getItemExp3() - needExp);
 				}else{
 					//扣物品
-					if(!player.getBagInventory().removeItemFromPlayerBag(petLevel.getItemId3(), hasItemNum3, ItemRemoveType.USE)) return false;
+					if(!player.getBagInventory().removeItemFromPlayerBag(petLevel.getItemId3(), hasItemNum3, ItemRemoveType.PET_LEVELUP)) return false;
 					
 					addExp = hasItemNum3 * petLevel.getItemExp3();
 					pet.setLevelExp(pet.getLevelExp() + addExp);

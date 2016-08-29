@@ -17,10 +17,11 @@ import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 
 public abstract class PollingAction extends DelayAction {
-	Living	living;
-	int		delay;
+	Living					living;
+	int						delay;
 
-	public static final int DELAY = 400;
+	public static final int	DELAY	= 400;
+
 	public PollingAction(Living queue, int delay) {
 		super(queue, delay);
 		this.living = queue;
@@ -111,7 +112,7 @@ public abstract class PollingAction extends DelayAction {
 	/* pk值计算 **/
 	private void calPkVal() {
 		if (living.getType() == RoleType.player && living.getField() != null) {
-			if (System.currentTimeMillis() - living.getPkValCalTime() >= 10 * 1000 && living.getField().getFieldInfo().isBattle()) {
+			if (living.getPkVal() > 0 && System.currentTimeMillis() - living.getPkValCalTime() >= 10 * 1000 && living.getField().getFieldInfo().isBattle()) {
 				living.calPkVal();
 			}
 		}

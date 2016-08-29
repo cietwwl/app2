@@ -53,7 +53,7 @@ public class MountEquipUpCmd extends AbstractCommand {
 			return;
 		}
 		//扣道具
-		if(!player.getBagInventory().removeItemFromPlayerBag(levelCfg.getUpLevItem(), levelCfg.getUpLevItemNum(), ItemRemoveType.USE)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(levelCfg.getUpLevItem(), levelCfg.getUpLevItemNum(), ItemRemoveType.MOUNT_EQUIP_UP)) return;
 		
 		ThreadSafeRandom random = new ThreadSafeRandom();
 		

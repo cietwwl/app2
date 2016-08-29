@@ -256,25 +256,25 @@ public class ChatManager {
 	 */
 	public static void addOfflineMsg(ChatMsgInfo msg){
 		msg.setOp(Option.Insert);
-		
-		ConcurrentHashMap<Integer, List<ChatMsgInfo>> playerOfflineMsg = offlineMsgMap.get(msg.getReceiverId());
-		if(playerOfflineMsg == null){
-			playerOfflineMsg = new ConcurrentHashMap<>();
-			offlineMsgMap.put(msg.getReceiverId(), playerOfflineMsg);
-		}
-		List<ChatMsgInfo> msgList = playerOfflineMsg.get(msg.getChannel());
-		if(msgList == null){
-			msgList = new ArrayList<>();
-			playerOfflineMsg.put(msg.getChannel(), msgList);
-		}
-		
-		synchronized (msgList) {
-			if(offlineCountLimit.get(msg.getChannel()) == null) return;
-			int limitCount = offlineCountLimit.get(msg.getChannel());
-			if(msgList.size() >= limitCount){
-				msgList.remove(0);
+		synchronized (offlineMsgMap) {
+			ConcurrentHashMap<Integer, List<ChatMsgInfo>> playerOfflineMsg = offlineMsgMap.get(msg.getReceiverId());
+			if(playerOfflineMsg == null){
+				playerOfflineMsg = new ConcurrentHashMap<>();
+				offlineMsgMap.put(msg.getReceiverId(), playerOfflineMsg);
 			}
-			msgList.add(msg);
+			List<ChatMsgInfo> msgList = playerOfflineMsg.get(msg.getChannel());
+			if(msgList == null){
+				msgList = new ArrayList<>();
+				playerOfflineMsg.put(msg.getChannel(), msgList);
+			}
+			synchronized (msgList) {
+				if(offlineCountLimit.get(msg.getChannel()) == null) return;
+				int limitCount = offlineCountLimit.get(msg.getChannel());
+				if(msgList.size() >= limitCount){
+					msgList.remove(0);
+				}
+				msgList.add(msg);
+			}
 		}
 	}
 	

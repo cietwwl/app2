@@ -1,0 +1,11 @@
+//protocol=10155;
+option java_package = "com.chuangyou.common.protobuf.pb.artifact";
+option java_outer_classname = "ArtifactReqProto";
+
+//神器操作请求
+message ArtifactReqMsg{
+	optional int32 action = 1; // 功能号(1请求所有神器信息 2升级 3升星 4宝石激活 5宝石升级)
+	optional int32 artifactId = 2;
+	optional int32 stonePos = 3;
+	optional int32 param1 = 4; // 备用参数(升星时1使用幸运符0普通升星  宝石升级时1使用直升0普通升级 2普通升级物品一键升级)
+}

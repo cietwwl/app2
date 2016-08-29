@@ -9,6 +9,7 @@ import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpd
 import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.bag.BaseBag;
 import com.chuangyou.xianni.bag.BaseItem;
+import com.chuangyou.xianni.bag.ItemLogHelper;
 import com.chuangyou.xianni.bag.ItemManager;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
@@ -19,6 +20,7 @@ import com.chuangyou.xianni.entity.equip.EquipAwakenCfg;
 import com.chuangyou.xianni.entity.equip.EquipSuitCfg;
 import com.chuangyou.xianni.entity.item.BagType;
 import com.chuangyou.xianni.entity.item.ItemAddType;
+import com.chuangyou.xianni.entity.item.ItemChangeType;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
 import com.chuangyou.xianni.equip.EquipOperateAction;
@@ -53,8 +55,11 @@ public class EquipManager {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, protocol, "物品数量不足");
 			return;
 		}
-		if(!player.getBagInventory().removeItemFromPlayerBag(cfg.getNeedItem(), cfg.getNeedItemNum(), ItemRemoveType.USE)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(cfg.getNeedItem(), cfg.getNeedItemNum(), ItemRemoveType.EQUIP_AWAKEN)) return;
 		
+		
+		ItemLogHelper logHelper = new ItemLogHelper(equip);
+		boolean hasChange = false;
 		boolean uplevel = false;
 		boolean isSuccess = (new ThreadSafeRandom()).isSuccessful(cfg.getRate(), 10000);
 		if(isSuccess == true){
@@ -63,11 +68,16 @@ public class EquipManager {
 				equip.getItemInfo().setAwaken(equip.getItemInfo().getAwaken() + 1);
 				equip.getItemInfo().setAwakenPoint(0);
 				uplevel = true;
+				hasChange = true;
 			}
 		}else{
 			if(equip.getItemInfo().getAwakenPoint() > 0){
 				equip.getItemInfo().setAwakenPoint(equip.getItemInfo().getAwakenPoint() - 1);
+				hasChange = true;
 			}
+		}
+		if(hasChange == true){
+			logHelper.commitChanges(ItemChangeType.EQUIP_AWAKEN);
 		}
 		
 		EquipInfoRespMsg.Builder msg = EquipInfoRespMsg.newBuilder();
@@ -120,12 +130,13 @@ public class EquipManager {
 			return;
 		}
 		
-		if(!player.getBagInventory().getBag(stonePos.getBagType()).removeCountFromStack(stone, 1, ItemRemoveType.USE)){
+		if(!player.getBagInventory().getBag(stonePos.getBagType()).removeCountFromStack(stone, 1, ItemRemoveType.EQUIP_STONE)){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, protocol, "未知错误");
 			return;
 		}
-		
+		ItemLogHelper logHelper = new ItemLogHelper(equip);
 		equip.getItemInfo().setStone(stone.getTemplateId());
+		logHelper.commitChanges(ItemChangeType.EQUIP_STONE);
 		
 		EquipInfoRespMsg.Builder msg = EquipInfoRespMsg.newBuilder();
 		msg.setAction(EquipOperateAction.Equip.STONE);

@@ -1,0 +1,9 @@
+//protocol=25;
+option java_package = "com.chuangyou.common.protobuf.pb.battle";
+option java_outer_classname = "SnareTargetsChangeMsgProto";
+
+message SnareTargetsChangeMsg{
+	required int64	snareId=1;    //陷阱ID
+	repeated int64  livingIds=2;  //陷阱里面人数
+}
+

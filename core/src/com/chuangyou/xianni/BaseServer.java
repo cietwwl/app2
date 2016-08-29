@@ -9,7 +9,7 @@ import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.HttpCommandSet;
 
 public abstract class BaseServer {
-	private long			lastInitMillis;		// 模块加载时间
+	private static long		lastInitMillis;		// 模块加载时间
 	protected static String	configPath;
 	public static boolean	isCross		= false;
 
@@ -54,7 +54,7 @@ public abstract class BaseServer {
 	 * @param componentName
 	 * @return
 	 */
-	public boolean initComponent(boolean initResult, String componentName) {
+	public static boolean initComponent(boolean initResult, String componentName) {
 		if (!initResult) {
 			Log.error(componentName + "错误");
 		} else {

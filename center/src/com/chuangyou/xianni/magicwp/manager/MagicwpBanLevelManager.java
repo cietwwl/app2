@@ -88,11 +88,11 @@ public class MagicwpBanLevelManager {
 
 		//可升到满经
 		if (hasItemNum >= needItemNum) {
-			if(!player.getBagInventory().removeItemFromPlayerBag(needItem, needItemNum, ItemRemoveType.USE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(needItem, needItemNum, ItemRemoveType.MAGICWP_BAN_FRAGMENTUSE)) return false;
 			resultLevel = curLevel;
 		} else {
 			//不可升到满级
-			if(!player.getBagInventory().removeItemFromPlayerBag(needItem, hasItemNum, ItemRemoveType.USE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(needItem, hasItemNum, ItemRemoveType.MAGICWP_BAN_FRAGMENTUSE)) return false;
 			// 计算当前物品经验可以升到多少级，剩余多少经验
 			int hasExp = banCfg.getExp() * hasItemNum;
 
@@ -155,32 +155,32 @@ public class MagicwpBanLevelManager {
 		int leftExp = 0;
 
 		if (itemNum1 >= needItemNum) {
-			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem1(), needItemNum, ItemRemoveType.USE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem1(), needItemNum, ItemRemoveType.MAGICWP_BAN_FRAGMENTUSE)) return false;
 			
 			resultLevel = curLevel;
 		} else if (itemNum1 + itemNum2 >= needItemNum) {
-			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem1(), itemNum1, ItemRemoveType.USE)) return false;
-			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem2(), needItemNum - itemNum1, ItemRemoveType.USE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem1(), itemNum1, ItemRemoveType.MAGICWP_BAN_FRAGMENTUSE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem2(), needItemNum - itemNum1, ItemRemoveType.MAGICWP_BAN_FRAGMENTUSE)) return false;
 			
 			resultLevel = curLevel;
 		} else if (itemNum1 + itemNum2 + itemNum3 >= needItemNum) {
-			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem1(), itemNum1, ItemRemoveType.USE)) return false;
-			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem2(), itemNum2, ItemRemoveType.USE)) return false;
-			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem3(), needItemNum - itemNum1 - itemNum2, ItemRemoveType.USE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem1(), itemNum1, ItemRemoveType.MAGICWP_BAN_FRAGMENTUSE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem2(), itemNum2, ItemRemoveType.MAGICWP_BAN_FRAGMENTUSE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem3(), needItemNum - itemNum1 - itemNum2, ItemRemoveType.MAGICWP_BAN_FRAGMENTUSE)) return false;
 			
 			resultLevel = curLevel;
 		} else if (itemNum1 + itemNum2 + itemNum3 + itemNum4 >= needItemNum) {
-			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem1(), itemNum1, ItemRemoveType.USE)) return false;
-			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem2(), itemNum2, ItemRemoveType.USE)) return false;
-			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem3(), itemNum3, ItemRemoveType.USE)) return false;
-			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem4(), needItemNum - itemNum1 - itemNum2 - itemNum3, ItemRemoveType.USE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem1(), itemNum1, ItemRemoveType.MAGICWP_BAN_FRAGMENTUSE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem2(), itemNum2, ItemRemoveType.MAGICWP_BAN_FRAGMENTUSE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem3(), itemNum3, ItemRemoveType.MAGICWP_BAN_FRAGMENTUSE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem4(), needItemNum - itemNum1 - itemNum2 - itemNum3, ItemRemoveType.MAGICWP_BAN_FRAGMENTUSE)) return false;
 			
 			resultLevel = curLevel;
 		} else {
-			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem1(), itemNum1, ItemRemoveType.USE)) return false;
-			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem2(), itemNum2, ItemRemoveType.USE)) return false;
-			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem3(), itemNum3, ItemRemoveType.USE)) return false;
-			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem4(), itemNum4, ItemRemoveType.USE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem1(), itemNum1, ItemRemoveType.MAGICWP_BAN_FRAGMENTUSE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem2(), itemNum2, ItemRemoveType.MAGICWP_BAN_FRAGMENTUSE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem3(), itemNum3, ItemRemoveType.MAGICWP_BAN_FRAGMENTUSE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(banCfg.getActiveItem4(), itemNum4, ItemRemoveType.MAGICWP_BAN_FRAGMENTUSE)) return false;
 
 			// 计算当前物品经验可以升到多少级，剩余多少经验
 			int hasExp = banCfg.getExp() * (itemNum1 + itemNum2 + itemNum3 + itemNum4);

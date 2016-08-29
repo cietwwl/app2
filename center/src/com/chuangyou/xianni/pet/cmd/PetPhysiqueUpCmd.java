@@ -52,7 +52,7 @@ public class PetPhysiqueUpCmd extends AbstractCommand {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, packet.getCode());
 			return;
 		}
-		if(!player.getBagInventory().removeItemFromPlayerBag(phyCfg.getNeedItem(), phyCfg.getNeedNum(), ItemRemoveType.USE)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(phyCfg.getNeedItem(), phyCfg.getNeedNum(), ItemRemoveType.PET_PHYSIQUEUP)) return;
 		
 		pet.setPhysique(pet.getPhysique() + 1);
 		player.getPetInventory().updatePetInfo(pet);

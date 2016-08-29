@@ -267,17 +267,17 @@ public enum EnumAttr {
 	 * vip 经验
 	 */
 	VIP_EXP(61),
-	
+
 	/**
 	 * 灵力
 	 */
 	MANA(62),
-	
+
 	/**
 	 * 武器觉醒
 	 */
 	WEAPON_AWAKEN(63),
-	
+
 	/**
 	 * 魂幡经验
 	 */
@@ -306,8 +306,8 @@ public enum EnumAttr {
 	 */
 
 	REPAIR(715),
-	
-	/** 积分  */
+
+	/** 积分 */
 	POINTS(716),
 
 	/**

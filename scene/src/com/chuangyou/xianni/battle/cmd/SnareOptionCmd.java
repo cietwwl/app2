@@ -48,11 +48,9 @@ public class SnareOptionCmd extends AbstractCommand {
 		Snare snare = (Snare) living;
 		if (msg.getType() == IN) {
 			snare.in(injured);
-			Log.error("-----------进入陷阱---------" + injured);
 		}
 		if (msg.getType() == OUT) {
 			snare.out(injured);
-			Log.error("-----------退出陷阱---------" + injured);
 		}
 	}
 

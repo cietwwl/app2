@@ -138,7 +138,7 @@ public class RelationInventory extends AbstractEvent implements IInventory {
 	}
 	
 	/**
-	 * 判断玩家跟自己是否是某种关系
+	 * 判断玩家是否是自己的某种关系
 	 * @param playerId
 	 * @param relationType
 	 * @return
@@ -150,7 +150,12 @@ public class RelationInventory extends AbstractEvent implements IInventory {
 		}
 		return relation.getRelationType(player.getPlayerId()) == relationType;
 	}
-	
+	/**
+	 * 判断自己是否是玩家的某种关系
+	 * @param playerId
+	 * @param relationType
+	 * @return
+	 */
 	public boolean isRelationTypeSelfToTarget(long playerId, short relationType){
 		RelationInfo relation = this.getRelation(playerId);
 		if(relation == null){

@@ -102,7 +102,7 @@ public interface ItemRemoveType {
 	/** 宠物炼魂 */
 	public static final short	PET_SOUL_UP				= 1022;
 
-	/** 购买属性 */
+	/** 购买属性(灵力) */
 	public static final short	BUY_PROPERTY			= 1022;
 
 	/** 绑定仙玉购买 */
@@ -116,5 +116,89 @@ public interface ItemRemoveType {
 
 	/** VIP礼包购买 */
 	public static final short	BUY_VIP_GIFT			= 1026;
+	
+	/** 装备栏加持 */
+	public static final short	EQUIPBAR_GRADEUP		= 1027;
+	
+	/** 装备觉醒 */
+	public static final short	EQUIP_AWAKEN			= 1028;
+	
+	/** 装备注魂 */
+	public static final short	EQUIP_STONE				= 1029;
+	
+	/** 时装激活 */
+	public static final short	FASHION_ACTIVATE		= 1030;
+	
+	/** 时装进阶 */
+	public static final short	FASHION_GRADEUP			= 1031;
+	
+	/** 法宝禁制碎片激活或使用 */
+	public static final short	MAGICWP_BAN_FRAGMENTUSE	= 1032;
+	
+	/** 法宝使用属性丹 */
+	public static final short	MAGICWP_PROPERTY_DAN	= 1033;
+	
+	/** 法宝激活 */
+	public static final short	MAGICWP_ACTIVATE		= 1034;
+	
+	/** 法宝洗炼 */
+	public static final short	MAGICWP_REFINE			= 1035;
+	
+	/** 法宝进阶 */
+	public static final short	MAGICWP_GRADEUP			= 1036;
+	
+	/** 坐骑使用属性丹 */
+	public static final short	MOUNT_PROPERTY_DAN		= 1037;
+	
+	/** 坐骑装备升级 */
+	public static final short	MOUNT_EQUIP_UP			= 1038;
+	
+	/** 坐骑进阶 */
+	public static final short	MOUNT_GRADEUP			= 1039;
+	
+	/** 坐骑神兵进阶 */
+	public static final short	MOUNT_WEAPON_UP			= 1040;
+	
+	/** 宠物激活 */
+	public static final short	PET_ACTIVATE			= 1041;
+	
+	/** 宠物进阶 */
+	public static final short	PET_GRADEUP				= 1042;
+	
+	/** 宠物炼体 */
+	public static final short	PET_PHYSIQUEUP			= 1043;
+	
+	/** 宠物品质提升 */
+	public static final short	PET_QUALITY_UP			= 1044;
+	
+	/** 宠物资质提升 */
+	public static final short	PET_TALENT_UP			= 1045;
+	
+	/** 宠物技能激活 */
+	public static final short	PET_SKILL_ACTIVATE		= 1046;
+	
+	/** 宠物技能解封 */
+	public static final short	PET_SKILL_OPEN			= 1047;
+	
+	/** 宠物技能槽解锁 */
+	public static final short	PET_SKILLSLOT_UNLOCK	= 1048;
+	
+	/** 宠物升级 */
+	public static final short	PET_LEVELUP				= 1049;
+	
+	/** 神器升级 */
+	public static final short	ARTIFACT_LEVELUP		= 1050;
+	
+	/** 神器升星 */
+	public static final short	ARTIFACT_GRADEUP		= 1051;
+	
+	/** 神器宝石激活 */
+	public static final short	ARTIFACT_STONE_ACTIVATE	= 1052;
+	
+	/** 神器宝石升级 */
+	public static final short	ARTIFACT_STONE_LEVELUP	= 1053;
+	
+	/** 背包格子解锁 */
+	public static final short	BAG_GRID_UNLOCK			= 1054;
 
 }

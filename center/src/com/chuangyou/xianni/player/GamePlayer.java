@@ -6,6 +6,7 @@ import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpd
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.army.ArmyInventory;
+import com.chuangyou.xianni.artifact.ArtifactInventory;
 import com.chuangyou.xianni.bag.BagInventory;
 import com.chuangyou.xianni.campaign.CampaignInventory;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
@@ -109,6 +110,9 @@ public class GamePlayer extends AbstractEvent {
 
 	/** 关系数据 */
 	private RelationInventory			relationInventory;
+	
+	/** 神器数据 */
+	private ArtifactInventory			artifactInventory;
 
 	private Channel						channel;					// 服务器持有连接
 
@@ -181,6 +185,10 @@ public class GamePlayer extends AbstractEvent {
 
 		if (relationInventory != null) {
 			relationInventory.saveToDatabase();
+		}
+		
+		if(artifactInventory != null){
+			artifactInventory.saveToDatabase();
 		}
 
 	}
@@ -274,7 +282,11 @@ public class GamePlayer extends AbstractEvent {
 		if (!initData(relationInventory.loadFromDataBase(), "社交关系数据")) {
 			return false;
 		}
-		// 创建时会计算所有属性，所以要在最后面加载
+		artifactInventory = new ArtifactInventory(this);
+		if(!initData(artifactInventory.loadFromDataBase(), "神器数据")){
+			return false;
+		}
+		//创建时会计算所有属性，所以要在最后面加载
 		armyInventory = new ArmyInventory(this);
 		if (!initData(armyInventory.loadFromDataBase(), "用户部队")) {
 			return false;
@@ -342,6 +354,10 @@ public class GamePlayer extends AbstractEvent {
 		if (relationInventory != null) {
 			relationInventory.unloadData();
 			relationInventory = null;
+		}
+		if(artifactInventory != null){
+			artifactInventory.unloadData();
+			artifactInventory = null;
 		}
 		return true;
 	}
@@ -613,6 +629,10 @@ public class GamePlayer extends AbstractEvent {
 
 	public RelationInventory getRelationInventory() {
 		return relationInventory;
+	}
+
+	public ArtifactInventory getArtifactInventory() {
+		return artifactInventory;
 	}
 
 	/** 重置玩家数据 */

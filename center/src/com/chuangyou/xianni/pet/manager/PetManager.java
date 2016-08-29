@@ -26,31 +26,37 @@ public class PetManager {
 		
 		Map<Integer, PetInfo> rolePetInfo = player.getPetInventory().getPetInfoMap();
 		for(PetInfo pet:rolePetInfo.values()){
-			
+			Map<Integer, Integer> petAtts = new HashMap<>();
 			//等级加成
 			PetLevelCfg petLevelCfg = PetTemplateMgr.getLevelTemps().get(pet.getPetId() * 1000 + pet.getLevel());
-			AttributeUtil.putAttListToMap(attMap, petLevelCfg.getAttList());
+			AttributeUtil.putAttListToMap(petAtts, petLevelCfg.getAttList());
 			
 			PetInfoCfg petInfoCfg = PetTemplateMgr.getPetTemps().get(pet.getPetId());
 			if(petInfoCfg.getIsSpecial() == 0){
 				//炼体加成
 				if(pet.getPhysique() > 0){
 					PetPhysiqueCfg petPhyCfg = PetTemplateMgr.getPhysiqueTemps().get(pet.getPetId() * 1000 + pet.getPhysique());
-					AttributeUtil.putAttListToMap(attMap, petPhyCfg.getAttList());
-				}
-				
-				//品质加成
-				if(pet.getQuality() > 0){
-					PetQualityCfg petQualityCfg = PetTemplateMgr.getQualityTemps().get(pet.getPetId() * 1000 + pet.getQuality());
-					AttributeUtil.putAttListToMap(attMap, petQualityCfg.getAttList());
+					AttributeUtil.putAttListToMap(petAtts, petPhyCfg.getAttList());
 				}
 				
 				//进阶加成
 				if(pet.getGrade() > 0){
 					PetGradeCfg petGradeCfg = PetTemplateMgr.getGradeTemps().get(pet.getPetId() * 1000 + pet.getGrade());
-					AttributeUtil.putAttListToMap(attMap, petGradeCfg.getAttList());
+					AttributeUtil.putAttListToMap(petAtts, petGradeCfg.getAttList());
+				}
+				
+				//品质加成
+				if(pet.getQuality() > 0){
+					PetQualityCfg petQualityCfg = PetTemplateMgr.getQualityTemps().get(pet.getPetId() * 1000 + pet.getQuality());
+//					AttributeUtil.putAttListToMap(petAtts, petQualityCfg.getAttList());
+					
+					for(int attType:petAtts.keySet()){
+						int attValue = petAtts.get(attType) * (1 + petQualityCfg.getAttPer()/1000);
+						petAtts.put(attType, attValue);
+					}
 				}
 			}
+			AttributeUtil.putAttToMap(attMap, petAtts);
 		}
 		
 		//炼魂加成

@@ -1,0 +1,12 @@
+//protocol=157;
+option java_package = "com.chuangyou.common.protobuf.pb.artifact";
+option java_outer_classname = "ArtifactRespProto";
+
+//神器操作返回
+message ArtifactRespMsg{
+	optional int32 action = 1; // 功能号(意义见神器操作请求协议)
+	optional int32 result = 2; // 操作结果(0成功 1失败 后面如果需要错误码从2往后使用)
+	optional int32 artifactId = 3;
+	optional int32 stonePos = 4;
+	optional int32 param1 = 5; // 备用参数 (升星失败时表示幸运值增减量)
+}

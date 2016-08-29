@@ -45,7 +45,7 @@ public class PetActivateCmd extends AbstractCommand {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, packet.getCode());
 			return;
 		}
-		if(!player.getBagInventory().removeItemFromPlayerBag(needItem, 1, ItemRemoveType.USE)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(needItem, 1, ItemRemoveType.PET_ACTIVATE)) return;
 		
 		pet = new PetInfo(player.getPlayerId(), req.getPetId());
 		player.getPetInventory().addPetInfo(pet);

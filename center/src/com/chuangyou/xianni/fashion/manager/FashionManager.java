@@ -126,7 +126,7 @@ public class FashionManager {
 				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, protocolCode, "物品不足");
 				return false;
 			}
-			if(!player.getBagInventory().removeItemFromPlayerBag(needItem, needNum, ItemRemoveType.USE)) return false;
+			if(!player.getBagInventory().removeItemFromPlayerBag(needItem, needNum, ItemRemoveType.FASHION_GRADEUP)) return false;
 			//增加经验值
 	    	ThreadSafeRandom rnd = new ThreadSafeRandom();
 	    	int addExp = rnd.next(1, 3);
@@ -163,7 +163,7 @@ public class FashionManager {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, protocolCode, "物品不足");
 			return false;
 		}
-		player.getBagInventory().removeItemFromPlayerBag(fashionId, needNum, ItemRemoveType.USE);
+		player.getBagInventory().removeItemFromPlayerBag(fashionId, needNum, ItemRemoveType.FASHION_ACTIVATE);
 		
 		fashion = new FashionInfo(player.getPlayerId(), fashionId);
 		player.getFashionInventory().addFashion(fashion);

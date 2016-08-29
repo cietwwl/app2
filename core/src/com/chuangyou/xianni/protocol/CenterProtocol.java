@@ -343,6 +343,10 @@ public interface CenterProtocol {
 	
 	/** 玩家灵力回写 */
 	public static short			C_PLAYER_MANA_WRITEBACK			= 10154;
+	
+	// =========================>神器成长<==============================
+	
+	public static short			C_ARTIFACT_REQ					= 10155;
 
 	// =========================>时装<===================================
 	/** 获取时装信息 */

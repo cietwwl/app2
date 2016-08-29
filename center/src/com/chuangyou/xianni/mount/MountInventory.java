@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import com.chuangyou.xianni.bag.ItemManager;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.entity.Option;
@@ -19,7 +20,6 @@ import com.chuangyou.xianni.entity.mount.MountWeaponCfg;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.interfaces.IInventory;
-import com.chuangyou.xianni.mount.manager.MountManager;
 import com.chuangyou.xianni.mount.template.MountTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.skill.SkillUtil;
@@ -175,7 +175,7 @@ public class MountInventory extends AbstractEvent implements IInventory {
 	}
 
 	public boolean saveToDatabase() {
-		boolean result = false;
+		boolean result = true;
 
 		if (mountInfo != null) {
 			short option = mountInfo.getOp();
@@ -208,7 +208,7 @@ public class MountInventory extends AbstractEvent implements IInventory {
 			}
 		}
 
-		return true;
+		return result;
 	}
 
 	/**

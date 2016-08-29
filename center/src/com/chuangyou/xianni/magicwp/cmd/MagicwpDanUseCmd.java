@@ -36,7 +36,7 @@ public class MagicwpDanUseCmd extends AbstractCommand {
 			return;
 		}
 		//扣道具
-		if(!player.getBagInventory().removeItemFromPlayerBag(itemId, req.getUseNum(), ItemRemoveType.USE)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(itemId, req.getUseNum(), ItemRemoveType.MAGICWP_PROPERTY_DAN)) return;
 		
 		magicwpAtt.setUseDanNum(magicwpAtt.getUseDanNum() + req.getUseNum());
 		player.getMagicwpInventory().updateMagicwpAtt(magicwpAtt);

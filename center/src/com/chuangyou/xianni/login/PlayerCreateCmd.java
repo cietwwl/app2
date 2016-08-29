@@ -210,7 +210,7 @@ public class PlayerCreateCmd implements Command {
 				heroSkill.setGrandsonType(skillInfo.getGrandsonType());
 				heroSkill.setSkillLV(skillInfo.getLevel());
 				if (result == ErrorCode.SUCCESS && !DBManager.getHeroSkillDao().add(heroSkill)) {
-					Log.error("创建角色tb_u_playerPositionInfo未知错误");
+					Log.error("创建角色tb_u_hero_skill_info未知错误");
 					result = ErrorCode.UNKNOW_ERROR;
 				}
 			}

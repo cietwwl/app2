@@ -93,8 +93,10 @@ public class BasePlayer extends AbstractEvent {
 	 * @return
 	 */
 	public boolean consumeMoney(long count, int removeType) {
-		if (playerInfo.getMoney() < count)
+		if (playerInfo.getMoney() < count || count <= 0) {
+			Log.error("consumeMoney error, count : " + count + "  removeType : " + removeType);
 			return false;
+		}
 		beginChanges();
 		try {
 			if (moneyLock.beginLock()) {
@@ -149,8 +151,10 @@ public class BasePlayer extends AbstractEvent {
 	 * @return
 	 */
 	public boolean consumeCash(int count, int removeType) {
-		if (playerInfo.getCash() < count)
+		if (playerInfo.getCash() < count || count <= 0) {
+			Log.error("consumeCash error, count : " + count + "  removeType : " + removeType);
 			return false;
+		}
 		beginChanges();
 		try {
 			if (cashLock.beginLock()) {
@@ -178,8 +182,10 @@ public class BasePlayer extends AbstractEvent {
 	 * @return
 	 */
 	public boolean consumeRepair(int count) {
-		if (playerInfo.getRepair() < count)
+		if (playerInfo.getRepair() < count || count <= 0) {
+			Log.error("consumeCash error, count : " + count);
 			return false;
+		}
 		beginChanges();
 		try {
 			if (repairLock.beginLock()) {
@@ -259,8 +265,10 @@ public class BasePlayer extends AbstractEvent {
 	 * @return
 	 */
 	public boolean consumeBindCash(int count, int consumeType) {
-		if (playerInfo.getBindCash() < count)
+		if (playerInfo.getBindCash() < count || count <= 0) {
+			Log.error("consumeCash error, count : " + count + "  removeType : " + consumeType);
 			return false;
+		}
 		beginChanges();
 		try {
 			if (commonLock.beginLock()) {

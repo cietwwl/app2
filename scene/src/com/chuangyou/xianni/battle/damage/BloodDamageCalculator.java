@@ -29,7 +29,7 @@ public class BloodDamageCalculator implements DamageCalculator {
 		// 获得计算的护甲
 		defence -= dec;
 		int damageValue = (int) ((Math.max(attack - defence * 1.2, 0) + attack * 0.025) * random.next(80, 120) / 100);
-		damageValue = damageValue * percent / 10000 + value;
+		damageValue = (int) (1l * damageValue * percent / 10000 + value);
 
 		// 伤害实际值,受源与目标buffer状态修正
 		int changeValue = 0;
@@ -49,7 +49,7 @@ public class BloodDamageCalculator implements DamageCalculator {
 		if (percent == 0 && value == 0) {
 			return damageValue;
 		}
-		return damageValue <= 0 ? 1 : damageValue;
+		return damageValue == 0 ? 1 : damageValue;
 	}
 
 }

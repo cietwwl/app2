@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import com.chuangyou.common.protobuf.pb.PlayerAttSnapProto.PlayerAttSnapMsg;
 import com.chuangyou.common.protobuf.pb.PlayerKillMonsterProto.PlayerKillMonsterMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
@@ -451,7 +452,6 @@ public class Living extends AbstractActionQueue {
 		exeWayBuffers.add(buff);
 		typeBufList.add(buff);
 		allBuffers.put(buff.getBufferId(), buff);
-
 		BufferMsg.Builder bmsg = BufferMsg.newBuilder();
 		bmsg.setOption(1);// 添加
 		buff.writeProto(bmsg);
@@ -598,8 +598,6 @@ public class Living extends AbstractActionQueue {
 
 		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
 		nears.add(living.getArmyId());
-		// System.out.println("==========修改 living: " + living + " msg:" +
-		// msg.toString());
 		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_RESP_PLAYER_ATT_UPDATE, msg.build());
 
 	}
@@ -751,14 +749,9 @@ public class Living extends AbstractActionQueue {
 			pmsg.setTotalPoint(this.getProperty(attr.getValue()));
 			pmsg.setType(attr.getValue());
 			cachBattleInfoPacket.addPropertis(pmsg);
-
-			// System.out.println("val1: "+this.getProperty(attr.getValue()) + "
-			// type: "+attr.getValue());
 		}
 		BattleLivingInfoMsg.Builder msg = this.cachBattleInfoPacket;
 		this.cachBattleInfoPacket = null;
-
-		// System.out.println("----msg: "+msg);
 
 		return msg;
 	}
@@ -992,11 +985,9 @@ public class Living extends AbstractActionQueue {
 				break;
 			case PK_VAL:
 				this.setPkVal((int) value);
-				System.out.println("PK_VAL value:" + value);
 				break;
 			case BATTLE_MODE:
 				this.setBattleMode((int) value);
-				System.out.println("BATTLE_MODE value:" + value);
 				break;
 			case Weapon:
 				this.simpleInfo.setWeaponId((int) value);
@@ -1464,9 +1455,7 @@ public class Living extends AbstractActionQueue {
 
 	public List<Buffer> imageBuffs() {
 		List<Buffer> wbuff = new ArrayList<>();
-		synchronized (allBuffers) {
-			wbuff.addAll(allBuffers.values());
-		}
+		wbuff.addAll(allBuffers.values());
 		return wbuff;
 	}
 
@@ -1566,6 +1555,10 @@ public class Living extends AbstractActionQueue {
 		List<LivingState> affectedStates = temp.getAffected();
 		for (LivingState state : affectedStates) {
 			AtomicInteger value = livingStatus.get(state);
+			if (value == null) {
+				Log.error("the state is not exists  " + value);
+				continue;
+			}
 			value.incrementAndGet();
 			notityState(state);
 		}
@@ -1725,6 +1718,7 @@ public class Living extends AbstractActionQueue {
 		Set<Long> players = getNears(new PlayerSelectorHelper(this));
 		// 添加自己
 		players.add(getArmyId());
+
 		for (Long armyId : players) {
 			ArmyProxy army = WorldMgr.getArmy(armyId);
 			PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());

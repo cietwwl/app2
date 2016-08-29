@@ -217,7 +217,7 @@ public class ErrorCode {
 	/** 装备经验不足 */
 	public static final int	EQUIP_UNENOUGH_EXP							= 1902;
 
-	/** 装备等级不能大于人物等级 */
+	/** 人物等级不足 */
 	public static final int	RoleLevel_UnEnough							= 1903;
 
 	/** 材料不足 */
@@ -387,6 +387,31 @@ public class ErrorCode {
 	
 	/** 此装备不可分解 */
 	public static final int EQUIP_UN_RESOLVE							= 1963;
+	
+	/** 神器达到最高等级 */
+	public static final int ARTIFACT_MAX_LEVEL							= 1964;
+	
+	/** 神器达到最高星级 */
+	public static final int ARTIFACT_MAX_GRADE							= 1965;
+	
+	/** 神器升星符不足 */
+	public static final int ARTIFACT_GRADEUP_STARAMULET					= 1966;
+	
+	/** 神器宝石已激活 */
+	public static final int ARTIFACT_STONE_ALREADY_ACTIVATE				= 1967;
+	
+	/** 神器宝石未激活 */
+	public static final int ARTIFACT_STONE_NOT_ACTIVATE					= 1968;
+	
+	/** 神器宝石已达到最高级 */
+	public static final int ARTIFACT_STONE_LEVEL_MAX					= 1969;
+	
+	/** 神器未激活 */
+	public static final int ARTIFACT_NOT_ACTIVATE						= 1970;
+	
+	/** 神器不存在 */
+	public static final int ARTIFACT_NOT_EXIST							= 1971;
+	
 
 	/** 此NPC未绑定脚本 */
 	public static final int	NPC_NO_HAVE_SCRIPT							= 2501;

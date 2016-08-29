@@ -50,6 +50,9 @@ public class OrderFactory {
 				int openLv = SystemConfigTemplateMgr.getIntValue("pk.openLv");
 				if (target.getSimpleInfo().getLevel() < openLv)
 					return false;
+				if (player.getArmyId() == target.getArmyId()) {
+					return false;
+				}
 
 				if (player.getBattleMode() == BattleModeCode.sectsBattleMode) {
 					if (player.getTeamId() != 0 && player.getTeamId() == (target).getTeamId())// 队友
@@ -68,7 +71,8 @@ public class OrderFactory {
 					if (target.getColour(target.getPkVal()) == BattleModeCode.red) {
 						return true;
 					}
-					// if (target.getColour(target.getPkVal()) == BattleModeCode.white) {
+					// if (target.getColour(target.getPkVal()) ==
+					// BattleModeCode.white) {
 					// if (target.isFlashName())
 					// return true;
 					// return false;

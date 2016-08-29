@@ -1,0 +1,10 @@
+//protocol=156;
+option java_package = "com.chuangyou.common.protobuf.pb.artifact";
+option java_outer_classname = "ArtifactDataProto";
+
+import "artifact/ArtifactInfoMsg.proto";
+
+//神器数初始化返回或更新
+message ArtifactDataMsg{
+	repeated ArtifactInfoMsg artifactInfo = 1; // 神器信息
+}

@@ -1,6 +1,8 @@
 package com.chuangyou.xianni.sql.dao;
 
 import com.chuangyou.xianni.sql.dao.impl.AiConfigDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.ArtifactConfigDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.ArtifactInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.BaseBufferTemplateInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.CampaignRecordInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.CampaignTaskTemplateInfoDaoImpl;
@@ -610,5 +612,23 @@ public class DBManager {
 
 	public static SnareTemplateInfoDao getSnareTemplateInfoDao() {
 		return snareTemplateInfoDao;
+	}
+	
+	/**
+	 * 神器模板
+	 */
+	private static final ArtifactConfigDao artifactConfigDao = new ArtifactConfigDaoImpl();
+	
+	public static ArtifactConfigDao getArtifactConfigDao(){
+		return artifactConfigDao;
+	}
+	
+	/**
+	 * 神器数据
+	 */
+	private static final ArtifactInfoDao artifactInfoDao = new ArtifactInfoDaoImpl();
+	
+	public static ArtifactInfoDao getArtifactInfoDao(){
+		return artifactInfoDao;
 	}
 }

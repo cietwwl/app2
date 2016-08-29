@@ -32,13 +32,13 @@ public class AddItemResPonse implements BaseRespone {
 			}
 			playerId = info.getPlayerId();
 		}
-		if(playerId==0){
-			playerId = Integer.valueOf(pId);
+		if (playerId == 0) {
+			playerId = Long.valueOf(pId);
 		}
 
 		GamePlayer player = WorldMgr.getPlayerFromCache(playerId);
 		if (player != null && player.getPlayerState() == PlayerState.ONLINE) {
-			if(player.getBagInventory().addItem(itemTempId, count, addType, true) == true){
+			if (player.getBagInventory().addItem(itemTempId, count, addType, true) == true) {
 				return HttpResult.getResult(Code.SUCCESS, "物品添加成功");
 			}
 		}

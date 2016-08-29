@@ -25,6 +25,10 @@ public class MagicwpRefineGradeUpCmd extends AbstractCommand {
 
 		MagicwpRefineGradeUpReqMsg req = MagicwpRefineGradeUpReqMsg.parseFrom(packet.getBytes());
 		MagicwpCfg magicwpCfg = MagicwpTemplateMgr.getMagicwpTemps().get(req.getMagicwpId());
+		if(magicwpCfg == null){
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, packet.getCode(), "法宝配置错误");
+			return;
+		}
 		if(magicwpCfg.getIsSpecial() == 1){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Magicwp_Special_NotOpera, packet.getCode());
 			return;
@@ -55,7 +59,7 @@ public class MagicwpRefineGradeUpCmd extends AbstractCommand {
 			return;
 		}
 		//扣道具
-		if(!player.getBagInventory().removeItemFromPlayerBag(gradeCfg.getJinjieItem(), gradeCfg.getItemNum(), ItemRemoveType.USE)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(gradeCfg.getJinjieItem(), gradeCfg.getItemNum(), ItemRemoveType.MAGICWP_GRADEUP)) return;
 		
 		if(magicwp.getGrade() == 0){
 			String attStr = "";

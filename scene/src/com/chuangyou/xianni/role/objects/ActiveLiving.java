@@ -83,6 +83,14 @@ public class ActiveLiving extends Living {
 
 		this.goal = goal;
 		// @auto living.setSpeed*100
+		if (getPostion() == null) {
+			Log.error("当前位置为null," + this.getSkin());
+			return;
+		}
+		if (goal == null) {
+			Log.error("目标位置为null，" + this.getSkin());
+			return;
+		}
 		this.moveTime = (int) ((Vector3.distance(getPostion(), goal) / (getSpeed() / 100)) * 1000);
 		// 记录更新时间
 		setTargetPostion(goal);

@@ -55,7 +55,7 @@ public class PetTalentUpCmd extends AbstractCommand {
 			return;
 		}
 		//扣道具
-		if(!player.getBagInventory().removeItemFromPlayerBag(req.getUseItem(), 1, ItemRemoveType.USE)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(req.getUseItem(), 1, ItemRemoveType.PET_TALENT_UP)) return;
 		
 		pet.setTalent(pet.getTalent() + petCfg.getAddZizhi());
 		player.getPetInventory().updatePetInfo(pet);

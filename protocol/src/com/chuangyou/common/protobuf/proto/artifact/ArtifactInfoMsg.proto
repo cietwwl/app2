@@ -1,0 +1,15 @@
+option java_package = "com.chuangyou.common.protobuf.pb.artifact";
+option java_outer_classname = "ArtifactInfoProto";
+
+import "artifact/ArtifactStoneInfoMsg.proto";
+
+//某部位神器信息
+message ArtifactInfoMsg{
+	optional int32 artifactId = 1; // 神器ID
+	optional int32 level = 2; // 神器等级
+	optional int32 starLevel = 3; // 神器星级
+	optional int32 star = 4; // 当前星级星数
+	optional int32 starBless = 5; // 当前星数祝福值
+
+	repeated ArtifactStoneInfoMsg stoneInfo = 6; // 宝石信息
+}

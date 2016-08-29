@@ -47,7 +47,7 @@ public class PetSkillSlotUnlockCmd extends AbstractCommand {
 			return;
 		}
 		//扣物品
-		if(!player.getBagInventory().removeItemFromPlayerBag(needId, needNum, ItemRemoveType.USE)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(needId, needNum, ItemRemoveType.PET_SKILLSLOT_UNLOCK)) return;
 		//开锁
         petAtt.setSkillSlotNum(targetNum);
         player.getPetInventory().updatePetAtt(petAtt);

@@ -563,7 +563,7 @@ public class Player extends ActiveLiving {
 				if (tagId <= maxId)
 					continue;
 
-				System.out.println("integerinteger: " + tagId);
+				// System.out.println("integerinteger: " + tagId);
 				int spwanId = SpawnTemplateMgr.getSpwanId(tagId);
 				SpawnInfo sf = spawnInfos.get(spwanId);
 				if (sf == null)
@@ -586,7 +586,8 @@ public class Player extends ActiveLiving {
 		}
 
 		this.monsterRefreshIdList.clear();
-		System.out.println(" date: " + date + " monsterRefreshIdList: " + monsterRefreshIdList);
+		// System.out.println(" date: " + date + " monsterRefreshIdList: " +
+		// monsterRefreshIdList);
 		this.monsterRefreshIdList.addAll(monsterRefreshIdList);
 	}
 

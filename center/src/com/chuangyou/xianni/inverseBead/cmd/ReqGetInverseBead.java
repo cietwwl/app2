@@ -56,8 +56,12 @@ public class ReqGetInverseBead extends AbstractCommand {
 			msg.setAuraRefreshDateTime(playerTimeInfo.getAuraRefreshDateTime().getTime());
 		else
 			msg.setAuraRefreshDateTime(0);
-
-		long lastTime = InverseBeadLoopAction.intervalTime - (System.currentTimeMillis() - playerTimeInfo.getBeadRefreshDateTime().getTime());
+		
+		long beadRefreshDateTime = 0;
+		if(playerTimeInfo.getBeadRefreshDateTime()!=null)
+			beadRefreshDateTime = playerTimeInfo.getBeadRefreshDateTime().getTime();
+		
+		long lastTime = InverseBeadLoopAction.intervalTime - (System.currentTimeMillis() - beadRefreshDateTime);
 		if (lastTime < 0)
 			lastTime = 0;
 

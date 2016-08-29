@@ -39,7 +39,12 @@ public class ArmyInventory extends AbstractEvent implements UnlineInventory {
 			// 加入技能属性
 			player.getSkillInventory().getTotalPro(skillData, skillPer);
 			hero.addSkillPro(skillData, skillPer);
-
+		}
+		if(player.getInverseBeadInventory()!=null){
+			BaseProperty proData = new BaseProperty();
+			BaseProperty proPer = new BaseProperty();
+			player.getInverseBeadInventory().getTotalPro(proData, proPer);
+			hero.addInverseBead(proData, proPer);
 		}
 
 		if (player.getMountInventory() != null) {

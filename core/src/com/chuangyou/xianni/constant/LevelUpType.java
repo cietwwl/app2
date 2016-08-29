@@ -11,10 +11,10 @@ public class LevelUpType {
 	 * 装备栏升级类型为栏位位置加上该起始值
 	 * 10-17装备栏位升级占用
 	 */
-	public static final byte EQUIPBARSTART = 10;
+	public static final int EQUIPBARSTART = 10;
 	
 	/**
 	 * 魂幡
 	 */
-	public static final byte SOUL = 21;
+	public static final int SOUL = 21;
 }

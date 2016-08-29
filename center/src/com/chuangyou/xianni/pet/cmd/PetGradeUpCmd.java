@@ -52,7 +52,7 @@ public class PetGradeUpCmd extends AbstractCommand {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, packet.getCode());
 			return;
 		}
-		if(!player.getBagInventory().removeItemFromPlayerBag(gradeCfg.getUpgradeItem(), gradeCfg.getUpgradeItemNum(), ItemRemoveType.USE)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(gradeCfg.getUpgradeItem(), gradeCfg.getUpgradeItemNum(), ItemRemoveType.PET_GRADEUP)) return;
 		
 		//升阶
 		ThreadSafeRandom random = new ThreadSafeRandom();

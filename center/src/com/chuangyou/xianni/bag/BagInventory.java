@@ -41,6 +41,8 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	private BaseBag						playerBag;
 	// 英雄ID+英雄装备列表
 	private BagHeroEquipment			heroEquipment;
+	// 虚拟数值背包背包（注意 ：添加一些物品，但是物品不需要显示在背包中）
+	private BaseBag						virtualValue;
 	// 背包过期物品
 	private HashMap<Short, List<Short>>	validItemsPos;
 	// 位置异常物品
@@ -56,6 +58,7 @@ public class BagInventory extends AbstractEvent implements IInventory {
 
 		playerBag = new BaseBag((short) (SystemConfigTemplateMgr.getIntValue("bag.initGridNum") + (short) player.getBasePlayer().getPlayerInfo().getpBagCount()), BagType.Play, (short) 0, true, player,
 				0);
+		virtualValue = new BaseBag((short) 256, BagType.VirtualValue, (short) 0, true, player, 0);
 		validItemsPos = new HashMap<Short, List<Short>>();
 		unusualItemsPos = new HashMap<Short, List<Short>>();
 	}
@@ -448,20 +451,20 @@ public class BagInventory extends AbstractEvent implements IInventory {
 				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Exchange_Bag_Prop_Error, (byte) 0);
 				return;
 			}
-			if (beginItem.getItemTempInfo().getProfession() != 0 && beginItem.getItemTempInfo().getProfession() != player.getBasePlayer().getPlayerInfo().getJob()) {
+			endPos = heroEquipment.getPos(beginItem.getItemTempInfo());
+			if (endPos == -1 || (beginItem.getItemTempInfo().getProfession() != 0 && beginItem.getItemTempInfo().getProfession() != player.getBasePlayer().getPlayerInfo().getJob())) {
 				Log.error("hero equipment item error");
 				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Exchange_Bag_Prop_Error, (byte) 0);
 				return;
 			}
 			endBagType = BagType.HeroEquipment;
-			endPos = heroEquipment.getPos(beginItem.getItemTempInfo());
-			bagMoveReceive(beginBagType, beginPos, endBagType, endPos, (short) -1);
+			bagMoveReceive(beginBagType, beginPos, endBagType, endPos, (short) 1);
 			weaponId = beginItem.getTemplateId();
 			weaponAwaken = beginItem.getItemInfo().getAwaken();
 			updateHeroProperties(heroEquipment.getObjectId());
 		}
 
-		// 操作武器
+		// 操作武器 武器格子是0
 		if ((beginBagType == BagType.HeroEquipment && beginPos == 0) || endPos == 0) {
 			PlayerAttUpdateMsg.Builder attMsg = PlayerAttUpdateMsg.newBuilder();
 

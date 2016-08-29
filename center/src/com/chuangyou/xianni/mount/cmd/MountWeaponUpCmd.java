@@ -42,7 +42,7 @@ public class MountWeaponUpCmd extends AbstractCommand {
 			return;
 		}
 		//扣道具
-		if(!player.getBagInventory().removeItemFromPlayerBag(gradeCfg.getUpgradeItem(), gradeCfg.getUpgradeItemNum(), ItemRemoveType.USE)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(gradeCfg.getUpgradeItem(), gradeCfg.getUpgradeItemNum(), ItemRemoveType.MOUNT_WEAPON_UP)) return;
 		
 		ThreadSafeRandom random = new ThreadSafeRandom();
 		//骑兵升阶

@@ -7,6 +7,7 @@ import com.chuangyou.common.util.NetConfigSet;
 import com.chuangyou.common.util.NetConfigXml;
 import com.chuangyou.common.util.ServerType;
 import com.chuangyou.xianni.army.template.MonsterInfoTemplateMgr;
+import com.chuangyou.xianni.artifact.template.ArtifactTemplateMgr;
 import com.chuangyou.xianni.bag.ItemManager;
 import com.chuangyou.xianni.campaign.CampaignTaskTempMgr;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
@@ -91,7 +92,7 @@ public class CenterServer extends BaseServer {
 			return false;
 		}
 
-		if (!initComponent(ItemManager.init(), "背包模板初始化")) {
+		if (!initComponent(ItemManager.init(), "物品模板初始化")) {
 			return false;
 		}
 
@@ -163,6 +164,9 @@ public class CenterServer extends BaseServer {
 		}
 
 		if(!initComponent(EquipTemplateMgr.init(), "寝化装备模板数据")){
+			return false;
+		}
+		if(!initComponent(ArtifactTemplateMgr.init(), "神器模板数据")){
 			return false;
 		}
 		

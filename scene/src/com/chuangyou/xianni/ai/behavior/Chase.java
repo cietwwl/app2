@@ -140,6 +140,8 @@ public class Chase extends MonsterBaseBehavior {
 			{
 				chaseTarget = tmpChase;
 				changedChaseTarget = true;
+			}else {
+				chaseTarget = l.getPostion();
 			}
 		}
 	}

@@ -1,9 +1,14 @@
 package com.chuangyou.xianni.role.objects;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.chuangyou.common.protobuf.pb.PlayerAttSnapProto.PlayerAttSnapMsg;
+import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
+import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
+import com.chuangyou.common.protobuf.pb.battle.SnareTargetsChangeMsgProto.SnareTargetsChangeMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.ai.proxy.SnareAI;
@@ -22,28 +27,37 @@ import com.chuangyou.xianni.battle.snare.SnareConstant.ExeWay;
 import com.chuangyou.xianni.battle.snare.SnareConstant.LockType;
 import com.chuangyou.xianni.battle.snare.SnareConstant.TargetType;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
+import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SnareTemplateInfo;
+import com.chuangyou.xianni.proto.MessageUtil;
+import com.chuangyou.xianni.proto.PBMessage;
+import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.action.UpdatePositionAction;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
+import com.chuangyou.xianni.world.ArmyProxy;
+import com.chuangyou.xianni.world.WorldMgr;
 
 public class Snare extends ActiveLiving {
 
-	private long			createTime;					// 创建时间
-	private volatile int	exeCount;					// 执行次数
-	private Set<Living>		inRange;					// 陷阱范围内人员
-	private Set<Long>		affected;					// 影响过得人员
-	private Set<Living>		affectingState;				// 当前正作用状态的人员
+	private long			createTime;						// 创建时间
+	private volatile int	exeCount;						// 执行次数
+	private Set<Living>		inRange;						// 陷阱范围内人员
+	private Set<Long>		affected;						// 影响过得人员
+	private Set<Living>		affectingState;					// 当前正作用状态的人员
 	SnareTemplateInfo		snareInfo;
 	private ActiveLiving	creater;
-	private long			exeTime		= 0;
-	private Object			lock		= new Object();
+	private long			exeTime			= 0;
+	private Object			lock			= new Object();
 	private Living			target;
 	private Living			locking;
 
-	public static final int	ACTION_EXE	= 101;			// 陷阱执行
+	public static final int	ACTION_EXE		= 101;			// 陷阱执行
+
+	public static final int	STYPE_COMMON	= 1;			// 普通陷阱
+	public static final int	STYPE_AVE		= 2;			// 平摊伤害
 
 	public Snare(SnareTemplateInfo snareInfo, ActiveLiving creater, Living target) {
 		super(IDMakerHelper.nextID());
@@ -70,27 +84,36 @@ public class Snare extends ActiveLiving {
 
 	// 陷阱执行 -- 对范围内玩家生效
 	public void exe() {
+
 		if (expired()) {
 			onDie(this);
 		}
+
 		if (isDie()) {
+			return;
+		}
+		if (snareInfo.getExeWay() != ExeWay.TOUCH_PRE_TIME) {
 			return;
 		}
 		if (System.currentTimeMillis() < exeTime + snareInfo.getCoolDown() * 1000) {
 			return;
 		}
+		// 通知执行
+		notifyAction(ACTION_EXE);
 		if (inRange == null || inRange.size() == 0) {
 			return;
 		}
-		for (Living living : inRange) {
-			if (!canExe(creater, living)) {
-				continue;
+		synchronized (inRange) {
+			for (Living living : inRange) {
+				if (!canExe(creater, living)) {
+					continue;
+				}
+				exe(living);
+				// 计数
 			}
-			exe(living);
 		}
-		exeTime = System.currentTimeMillis();
 		counter();
-		notifyAction(ACTION_EXE);
+		exeTime = System.currentTimeMillis();
 
 	}
 
@@ -121,11 +144,13 @@ public class Snare extends ActiveLiving {
 		// 产生伤害
 		int bloodDamage = new BloodDamageCalculator().calcDamage(creater, living, snareInfo.getBloodPercent(), snareInfo.getBloodValue());
 		int soulDamage = new SoulDamageCalculator().calcDamage(creater, living, snareInfo.getSoulPercent(), snareInfo.getSoulValue());
-		living.addCurBlood(-bloodDamage, DamageEffecterType.COMMON, Damage.SNARE, this.getId());
-		living.addCurSoul(-soulDamage, DamageEffecterType.COMMON, Damage.SNARE, this.getId());
-
+		int humCount = inRange.size() <= 0 ? 1 : inRange.size();
+		if (snareInfo.getType() == STYPE_AVE) {
+			bloodDamage = bloodDamage / humCount;
+			soulDamage = soulDamage / humCount;
+		}
+		takeDamage(living, bloodDamage, soulDamage, DamageEffecterType.COMMON, Damage.SNARE, this.getId());
 		affected.add(living.getId());
-
 		if (creater.getType() == RoleType.monster && snareInfo.getLockingType() == LockType.FIRST_BE_ATTACK && locking == null) {
 			locking = living;
 		}
@@ -150,6 +175,7 @@ public class Snare extends ActiveLiving {
 				counter();
 				notifyAction(ACTION_EXE);
 			}
+			targetChange();
 		}
 	}
 
@@ -157,6 +183,7 @@ public class Snare extends ActiveLiving {
 	public void out(Living living) {
 		synchronized (lock) {
 			inRange.remove(living);
+			targetChange();
 			if (isDie()) {
 				return;
 			}
@@ -178,6 +205,24 @@ public class Snare extends ActiveLiving {
 	// 通知周边玩家，陷阱当前动作
 	public void notifyAction(int state) {
 		sendChangeStatuMsg(ACTION_STATU, state);
+	}
+
+	// 周边玩家人数变化
+	private void targetChange() {
+		SnareTargetsChangeMsg.Builder builder = SnareTargetsChangeMsg.newBuilder();
+		builder.setSnareId(this.getId());
+		for (Living target : inRange) {
+			builder.addLivingIds(target.getId());
+		}
+		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
+		nears.add(armyId);
+		for (Long armyId : nears) {
+			ArmyProxy army = WorldMgr.getArmy(armyId);
+			PBMessage message = MessageUtil.buildMessage(Protocol.U_SNARE_TARGETS_INFO, builder.build());
+			if (army != null) {
+				army.sendPbMessage(message);
+			}
+		}
 	}
 
 	// 陷阱死亡
@@ -340,6 +385,45 @@ public class Snare extends ActiveLiving {
 			locking = damage.getSource();
 		}
 		return 0;
+	}
+
+	public void takeDamage(Living target, int bloodDamageValue, int soulDamageValue, int type, int fromType, long fromId) {
+		List<Damage> damages = new ArrayList<>();
+		Damage blood = new Damage(target, getCreater());
+		blood.setDamageType(EnumAttr.CUR_BLOOD.getValue());
+		blood.setDamageValue(bloodDamageValue);
+		blood.setCalcType(type);
+		blood.setFromType(fromType);
+		blood.setFromId(fromId);
+		damages.add(blood);
+		target.takeDamage(blood);
+
+		Damage soul = new Damage(target, getCreater());
+		soul.setDamageType(EnumAttr.CUR_SOUL.getValue());
+		soul.setDamageValue(soulDamageValue);
+		soul.setCalcType(type);
+		soul.setFromType(fromType);
+		soul.setFromId(fromId);
+		damages.add(soul);
+		target.takeDamage(soul);
+
+		DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
+		damagesPb.setAttackId(-1);
+		for (Damage d : damages) {
+			DamageMsg.Builder dmsg = DamageMsg.newBuilder();
+			d.writeProto(dmsg);
+			damagesPb.addDamages(dmsg);
+		}
+		Set<Long> players = target.getNears(new PlayerSelectorHelper(this));
+		// 添加自己
+		players.add(target.getArmyId());
+		for (Long armyId : players) {
+			ArmyProxy army = WorldMgr.getArmy(armyId);
+			PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
+			if (army != null) {
+				army.sendPbMessage(message);
+			}
+		}
 	}
 
 	public Living getLocking() {

@@ -40,7 +40,7 @@ public class MountDanUseCmd extends AbstractCommand {
 			return;
 		}
 		//扣道具
-		if(!player.getBagInventory().removeItemFromPlayerBag(danItem, req.getUseNum(), ItemRemoveType.USE)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(danItem, req.getUseNum(), ItemRemoveType.MOUNT_PROPERTY_DAN)) return;
 		
 		mount.setUseDanNum(mount.getUseDanNum() + req.getUseNum());
 		player.getMountInventory().updateMount(mount);

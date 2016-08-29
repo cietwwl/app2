@@ -5,8 +5,6 @@ import java.util.List;
 import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.buffer.BufferType;
 import com.chuangyou.xianni.battle.buffer.FormulaBuffer;
-import com.chuangyou.xianni.battle.buffer.specialbuf.BeAttackDamageEffectBuffer;
-import com.chuangyou.xianni.battle.buffer.specialbuf.SoulDefenceBreakBuffer;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.role.objects.Living;
 
@@ -37,7 +35,7 @@ public class SoulDamageCalculator implements DamageCalculator {
 			soulDeffence -= soulDeffence * 0.3f;
 		}
 		int damageValue = (int) (Math.max(soulAttack - soulDeffence * 1.2, 0) * random.next(70, 130) / 100);
-		damageValue = damageValue * percent / 10000 + value;
+		damageValue = (int) (1l * damageValue * percent / 10000 + value);
 
 		// 伤害实际值,受源与目标buffer状态修正
 		int changeValue = 0;
@@ -57,7 +55,7 @@ public class SoulDamageCalculator implements DamageCalculator {
 			return damageValue;
 		}
 		damageValue = damageValue - changeValue;
-		return damageValue <= 0 ? 1 : damageValue;
+		return damageValue == 0 ? 1 : damageValue;
 	}
 
 }

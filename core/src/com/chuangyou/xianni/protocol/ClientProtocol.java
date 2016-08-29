@@ -25,6 +25,7 @@ public interface ClientProtocol {
 	public static final short U_G_BUFFER_OPTION = 22; // buffer操作
 	public static final short U_LIVING_STATE_CHANGE = 23; // 生命体状态变更
 	public static final short U_SNARE_CREATE_RESULT = 24;//陷阱创建结果
+	public static final short U_SNARE_TARGETS_INFO = 25;//陷阱人数变化
 	// ===========================>battle<==============================
 
 	// ===========================>campaign<==============================
@@ -379,6 +380,12 @@ public interface ClientProtocol {
 	
 	/** 系统消息提示 */
 	public static final short U_SYSTEM_PROMPT = 155;
+	
+	/** 神器数据 */
+	public static final short U_ARTIFACT_DATA = 156;
+	
+	/** 神器请求返回 */
+	public static final short U_ARTIFACT_RESP = 157;
 
 	/** 获取时装信息 */
 	public static short U_FASHION_GET = 201;

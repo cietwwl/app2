@@ -52,7 +52,7 @@ public class PetQualityUpCmd extends AbstractCommand {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, packet.getCode());
 			return;
 		}
-		if(!player.getBagInventory().removeItemFromPlayerBag(qualityCfg.getNeedItem(), qualityCfg.getNeedNum(), ItemRemoveType.USE)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(qualityCfg.getNeedItem(), qualityCfg.getNeedNum(), ItemRemoveType.PET_QUALITY_UP)) return;
 		
 		//是否升级品质
 		boolean hasUpLevel = false;

@@ -13,7 +13,7 @@ import com.chuangyou.xianni.soul.SoulManager;
 import com.chuangyou.xianni.sql.dao.DBManager;
 import com.chuangyou.xianni.word.WorldMgr;
 
-@HttpCmd(command="addCardPiece",desc="添加碎片")
+@HttpCmd(command = "addCardPiece", desc = "添加碎片")
 public class AddCardPiece implements BaseRespone {
 
 	@Override
@@ -32,18 +32,18 @@ public class AddCardPiece implements BaseRespone {
 			}
 			playerId = info.getPlayerId();
 		}
-		if(playerId==0){
-			playerId = Integer.valueOf(pId);
+		if (playerId == 0) {
+			playerId = Long.valueOf(pId);
 		}
 
 		GamePlayer player = WorldMgr.getPlayerFromCache(playerId);
 		if (player != null && player.getPlayerState() == PlayerState.ONLINE) {
-			if(SoulManager.addCardPiece(cardId, player, count)){
+			if (SoulManager.addCardPiece(cardId, player, count)) {
 				return HttpResult.getResult(Code.SUCCESS, "success");
 			}
 		}
 		return HttpResult.getResult(Code.ERROR, " fail");
-		
+
 	}
 
 }

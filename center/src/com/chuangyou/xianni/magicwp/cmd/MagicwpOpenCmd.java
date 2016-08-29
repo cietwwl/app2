@@ -47,7 +47,7 @@ public class MagicwpOpenCmd extends AbstractCommand {
 				return;
 			}
 			//扣道具
-			if(!player.getBagInventory().removeItemFromPlayerBag(magicwpCfg.getItemId(), 1, ItemRemoveType.USE)) return;
+			if(!player.getBagInventory().removeItemFromPlayerBag(magicwpCfg.getItemId(), 1, ItemRemoveType.MAGICWP_ACTIVATE)) return;
 		}else{
 		
 			//激活条件

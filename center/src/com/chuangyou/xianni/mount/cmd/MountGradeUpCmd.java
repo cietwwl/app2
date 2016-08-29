@@ -44,7 +44,7 @@ public class MountGradeUpCmd extends AbstractCommand {
 			return;
 		}
 		//扣道具
-		if(!player.getBagInventory().removeItemFromPlayerBag(gradeCfg.getUpgradeItem(), gradeCfg.getUpgradeItemNum(), ItemRemoveType.USE)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(gradeCfg.getUpgradeItem(), gradeCfg.getUpgradeItemNum(), ItemRemoveType.MOUNT_GRADEUP)) return;
 		
 		ThreadSafeRandom random = new ThreadSafeRandom();
 		//升阶

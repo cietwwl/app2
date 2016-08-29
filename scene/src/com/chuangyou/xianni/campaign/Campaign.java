@@ -2,9 +2,11 @@ package com.chuangyou.xianni.campaign;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.chuangyou.common.protobuf.pb.campaign.CampaignInfoMsgProto.CampaignInfoMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CampaignStatuMsgProto.CampaignStatuMsg;
@@ -62,6 +64,7 @@ public class Campaign extends AbstractActionQueue {
 	protected CampaignTemplateInfo							campaignTemplateInfo;		// 副本信息
 	protected long											creater;					// 创建人
 	protected Map<Long, ArmyProxy>							armys;						// 副本部队
+	protected Set<ArmyProxy>								JoinArmys;					// 所有进入过
 	protected Field											starField;					// 起始地图
 	protected Map<Integer, Field>							allFields;					// 副本地图
 	protected Map<Integer, Field>							tempFieldMapping;			// 模板ID映射
@@ -86,6 +89,7 @@ public class Campaign extends AbstractActionQueue {
 		this.campaignId = tempInfo.getTemplateId();
 		this.campaignTemplateInfo = tempInfo;
 		this.armys = new HashMap<>();
+		this.JoinArmys = new HashSet<>();
 		this.allFields = new HashMap<>();
 		this.spwanNodes = new HashMap<>();
 		this.state = new PrepareState(this);
@@ -144,6 +148,7 @@ public class Campaign extends AbstractActionQueue {
 	public void onPlayerEnter(ArmyProxy army) {
 		CampaignEnterAction enterAction = new CampaignEnterAction(this, army, starField);
 		enqueue(enterAction);
+		JoinArmys.add(army);
 	}
 
 	/**
@@ -157,6 +162,7 @@ public class Campaign extends AbstractActionQueue {
 		}
 		CampaignEnterAction enterAction = new CampaignEnterAction(this, army, field, v3);
 		enqueue(enterAction);
+		JoinArmys.add(army);
 	}
 
 	/**
@@ -235,11 +241,13 @@ public class Campaign extends AbstractActionQueue {
 		state = new StopState(this);
 
 		for (ArmyProxy army : getAllArmys()) {
-			sendCampaignInfo(army);
 			onPlayerLeave(army);
 			// 通知center服务器,玩家副本销毁了
 			army.sendPbMessage(statuMsg);
 			// passFbMsg.addPlayers(army.getPlayerId());
+		}
+		for (ArmyProxy army : JoinArmys) {
+			sendCampaignInfo(army);
 		}
 
 		// PBMessage passFbpkg =

@@ -28,6 +28,9 @@ public class Property {
 	
 	private int     soulData    = 0;    //魂幡属性加成
 	private int 	soulPer		= 0; 	//魂幡万分比加成
+	
+	private int artifactData = 0; // 神器属性加成
+	private int artifactPer = 0; // 神器万分比加成
 
 	private int petData = 0;	// 宠物属性加成
 	private int petPer = 0;	// 宠物万分比加成
@@ -52,8 +55,8 @@ public class Property {
 	private void fresh() {
 		// 计算总的属性
 
-		int totalData = tempData + bagData + skillData + mountData + magicwpData + petData + fashionData+ inverseBeadData + soulData;
-		int totalPer = tempPer + bagPer + skillPer + mountPer + magicwpPer + petPer + fashionPer+ inverseBeadper+ soulPer;
+		int totalData = tempData + bagData + skillData + mountData + magicwpData + petData + fashionData+ inverseBeadData + soulData + artifactData;
+		int totalPer = tempPer + bagPer + skillPer + mountPer + magicwpPer + petPer + fashionPer + inverseBeadper + soulPer + artifactPer;
 
 		totalJoin = totalData + totalData * totalPer / 10000;
 
@@ -293,5 +296,27 @@ public class Property {
 			this.setChange(true);			
 			this.soulPer = soulPer;
 		}
+	}
+
+	public int getArtifactData() {
+		return artifactData;
+	}
+
+	public void setArtifactData(int artifactData) {
+		if(artifactData != this.artifactData){
+			this.setChange(true);
+		}
+		this.artifactData = artifactData;
+	}
+
+	public int getArtifactPer() {
+		return artifactPer;
+	}
+
+	public void setArtifactPer(int artifactPer) {
+		if(artifactPer != this.artifactPer){
+			this.setChange(true);
+		}
+		this.artifactPer = artifactPer;
 	}
 }

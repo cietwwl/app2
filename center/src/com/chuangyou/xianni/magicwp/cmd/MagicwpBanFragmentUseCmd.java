@@ -79,7 +79,7 @@ public class MagicwpBanFragmentUseCmd extends AbstractCommand {
 			return;
 		}
 		//扣道具
-		if(!player.getBagInventory().removeItemFromPlayerBag(needItem, 1, ItemRemoveType.USE)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(needItem, 1, ItemRemoveType.MAGICWP_BAN_FRAGMENTUSE)) return;
 		
 		
 		//激活成功，重新生成字符串

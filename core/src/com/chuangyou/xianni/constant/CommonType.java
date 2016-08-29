@@ -16,18 +16,18 @@ public class CommonType {
 		/** 绑定仙玉 */
 		public final static int	CASH_BIND_ITEM	= 7130000;
 		/** 装备经验 */
-		public final static int EQUIP_EXP		= 7140000;
+		public final static int	EQUIP_EXP		= 7140000;
 		/** 修为 */
 		public final static int	REPAIR_ITEM		= 7150000;
 		/** 积分 */
-		public final static int POINTS          = 7160000;
-		/**vip 经验**/
-		public final static int VIP_EXP			= 7170000;
-		
+		public final static int	POINTS			= 7160000;
+		/** vip 经验 **/
+		public final static int	VIP_EXP			= 7170000;
+
 		/** 经验(假的,测试刷经验用) */
-		public final static int EXP				= 7190000;
+		public final static int	EXP				= 7190000;
 		/** 临时vip(假的,测试刷经验用) */
-		public final static int VIP_TEMPORARY	= 7180000;
+		public final static int	VIP_TEMPORARY	= 7180000;
 
 	}
 

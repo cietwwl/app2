@@ -57,7 +57,7 @@ public class MagicwpRefineCmd extends AbstractCommand {
 			return;
 		}
 		//扣道具
-		if(!player.getBagInventory().removeItemFromPlayerBag(useItem, useItemNum, ItemRemoveType.USE)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(useItem, useItemNum, ItemRemoveType.MAGICWP_REFINE)) return;
 		
 		MagicwpGradeCfg gradeCfg = MagicwpTemplateMgr.getGradeTemps().get(magicwp.getMagicwpId() * 1000 + magicwp.getGrade());
 		Map<Integer, Integer> curAttMap = MagicwpRefineManager.getRefineAttMap(magicwp.getRefineAtts());

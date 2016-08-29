@@ -175,7 +175,7 @@ public class EquipBarInfoCmd extends AbstractCommand {
 		}
 		for(int itemTempId: cfg.getNeedItems().keySet()){
 			int itemNum = cfg.getNeedItems().get(itemTempId);
-			if(player.getBagInventory().removeItemFromPlayerBag(itemTempId, itemNum, ItemRemoveType.USE) == false){
+			if(player.getBagInventory().removeItemFromPlayerBag(itemTempId, itemNum, ItemRemoveType.EQUIPBAR_GRADEUP) == false){
 				Log.error("playerId : " + player.getPlayerId() + " remove item :" + itemTempId + " count: " + itemNum + "  error");
 			}
 		}

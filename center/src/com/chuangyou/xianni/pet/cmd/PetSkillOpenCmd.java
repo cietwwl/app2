@@ -46,7 +46,7 @@ public class PetSkillOpenCmd extends AbstractCommand {
 			return;
 		}
 		//扣物品
-		if(!player.getBagInventory().removeItemFromPlayerBag(info.getItem(), needPropNum, ItemRemoveType.USE)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(info.getItem(), needPropNum, ItemRemoveType.PET_SKILL_OPEN)) return;
 		//解封
 		skill.setState(3);
 		player.getPetInventory().updatePetSkill(skill);

@@ -105,7 +105,7 @@ public class BagHeroEquipment extends BaseBag {
 	 * @return
 	 */
 	public short getPos(ItemTemplateInfo tempInfo) {
-		short pos = 0;
+		short pos = -1;
 		if (tempInfo.getMasterType() == ItemType.MainType.EQUIP) {
 			switch (tempInfo.getSonType()) {
 				case 11:// 武器
@@ -133,7 +133,7 @@ public class BagHeroEquipment extends BaseBag {
 					pos = 7;
 					break;
 				default:
-					pos = 0;
+					pos = -1;
 					break;
 			}
 		}

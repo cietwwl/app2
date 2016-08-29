@@ -1,10 +1,12 @@
 ﻿package com.chuangyou.xianni.word;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
@@ -28,7 +30,14 @@ import com.chuangyou.xianni.word.WorldMgr.Players.PlayerData;
 public class WorldMgr {
 
 	private static Players players;
-
+	
+	/** 在线(包括缓存)玩家等级排序表 */
+	private static List<GamePlayer> levelRankCache = new ArrayList<>();
+	/** 上次等级排序时间 */
+	private static long lastLevelRankTime = 0;
+	/** 排序最低间隔时间(单位：秒) */
+	private static final long RANK_CD = 300;
+	
 	public static boolean init() {
 		players = new Players();
 		return true;
@@ -275,7 +284,31 @@ public class WorldMgr {
 	private static void saveSystemData() {
 		ShopServerManager.saveToDatabase();
 	}
-
+	
+	/**
+	 * 获取玩家等级排行
+	 * @return
+	 */
+	public static List<GamePlayer> getPlayerLevelRank(){
+		if(System.currentTimeMillis() - lastLevelRankTime < RANK_CD*1000){
+			return levelRankCache;
+		}
+		List<GamePlayer> playerList = new ArrayList<>();
+		playerList.addAll(players.values());
+		
+		playerList.sort(new Comparator<GamePlayer>() {
+			@Override
+			public int compare(GamePlayer o1, GamePlayer o2) {
+				// TODO Auto-generated method stub
+				return Long.compare(o1.getLevel(), o2.getLevel());
+			}
+		});
+		levelRankCache = playerList;
+		lastLevelRankTime = System.currentTimeMillis();
+		
+		return levelRankCache;
+	}
+	
 	static class Players {
 		Hashtable<Long, PlayerData> context = new Hashtable<Long, PlayerData>();
 

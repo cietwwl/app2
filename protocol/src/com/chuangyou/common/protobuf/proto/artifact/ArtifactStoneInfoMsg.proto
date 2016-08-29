@@ -1,0 +1,11 @@
+option java_package = "com.chuangyou.common.protobuf.pb.artifact";
+option java_outer_classname = "ArtifactStoneInfoProto";
+
+// 宝石信息
+message ArtifactStoneInfoMsg{
+	optional int32 artifactId = 1; // 所属神器ID
+	optional int32 pos = 2; //宝石位置
+	optional int32 stoneId = 3; // 宝石模板ID
+	optional int32 level = 4; // 宝石等级
+	optional int64 exp = 5; // 宝石当前等级经验
+}

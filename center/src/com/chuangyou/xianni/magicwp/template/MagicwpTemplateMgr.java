@@ -38,6 +38,26 @@ public class MagicwpTemplateMgr {
 		banLevelTemps = DBManager.getMagicwpConfigDao().getBanLevel();
 		return true;
 	}
+	
+//	public static boolean reloadMagicwpCfg(){
+//		return true;
+//	}
+//	public static boolean reloadMagicwpCfg(){
+//		return true;
+//	}
+//	public static boolean reloadMagicwpCfg(){
+//		return true;
+//	}
+//	public static boolean reloadMagicwpCfg(){
+//		return true;
+//	}
+//	public static boolean reloadMagicwpCfg(){
+//		return true;
+//	}
+//	public static boolean reloadMagicwpCfg(){
+//		return true;
+//	}
+	
 
 	public static Map<Integer, MagicwpCfg> getMagicwpTemps() {
 		return magicwpTemps;

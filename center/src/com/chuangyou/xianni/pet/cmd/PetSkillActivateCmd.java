@@ -52,7 +52,7 @@ public class PetSkillActivateCmd extends AbstractCommand {
 				return;
 			}
 			//扣物品
-			if(!player.getBagInventory().removeItemFromPlayerBag(skillInfoCfg.getNeedjihuoitem(), needPropNum, ItemRemoveType.USE)) return;
+			if(!player.getBagInventory().removeItemFromPlayerBag(skillInfoCfg.getNeedjihuoitem(), needPropNum, ItemRemoveType.PET_SKILL_ACTIVATE)) return;
 		}
 		//激活
 		skill = new PetSkill(player.getPlayerId(), skillId);

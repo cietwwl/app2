@@ -1,23 +1,15 @@
 package com.chuangyou.xianni.pet;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.pet.PetAtt;
-import com.chuangyou.xianni.entity.pet.PetGradeCfg;
 import com.chuangyou.xianni.entity.pet.PetInfo;
-import com.chuangyou.xianni.entity.pet.PetInfoCfg;
-import com.chuangyou.xianni.entity.pet.PetLevelCfg;
-import com.chuangyou.xianni.entity.pet.PetPhysiqueCfg;
-import com.chuangyou.xianni.entity.pet.PetQualityCfg;
 import com.chuangyou.xianni.entity.pet.PetSkill;
-import com.chuangyou.xianni.entity.pet.PetSoulCfg;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.interfaces.IInventory;
 import com.chuangyou.xianni.pet.manager.PetManager;
-import com.chuangyou.xianni.pet.template.PetTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.skill.SkillUtil;
 import com.chuangyou.xianni.skill.template.SimpleProperty;
@@ -237,49 +229,59 @@ public class PetInventory extends AbstractEvent implements IInventory {
 	 * @throws MXY2Exception
 	 */
 	public void computePetAtt(BaseProperty petData, BaseProperty petPer) {
-		List<Integer> toalPro = new ArrayList<>();
-
-		Map<Integer, PetInfo> rolePetInfo = player.getPetInventory().getPetInfoMap();
-		for (PetInfo pet : rolePetInfo.values()) {
-			// 等级加成
-			PetLevelCfg petLevelCfg = PetTemplateMgr.getLevelTemps().get(pet.getPetId() * 1000 + pet.getLevel());
-			toalPro.addAll(petLevelCfg.getAttList());
-
-			PetInfoCfg petInfoCfg = PetTemplateMgr.getPetTemps().get(pet.getPetId());
-			if (petInfoCfg.getIsSpecial() == 0) {
-				// 炼体加成
-				if (pet.getPhysique() > 0) {
-					PetPhysiqueCfg petPhyCfg = PetTemplateMgr.getPhysiqueTemps().get(pet.getPetId() * 1000 + pet.getPhysique());
-					toalPro.addAll(petPhyCfg.getAttList());
-				}
-
-				// 品质加成
-				if (pet.getQuality() > 0) {
-					PetQualityCfg petQualityCfg = PetTemplateMgr.getQualityTemps().get(pet.getPetId() * 1000 + pet.getQuality());
-					toalPro.addAll(petQualityCfg.getAttList());
-				}
-
-				// 进阶加成
-				if (pet.getGrade() > 0) {
-					PetGradeCfg petGradeCfg = PetTemplateMgr.getGradeTemps().get(pet.getPetId() * 1000 + pet.getGrade());
-					toalPro.addAll(petGradeCfg.getAttList());
-				}
-			}
-		}
-
-		// 炼魂加成
-		PetAtt petAtt = player.getPetInventory().getPetAtt();
-		PetSoulCfg petSoulCfg = PetTemplateMgr.getSoulTemps().get(petAtt.getSoulLv());
-		toalPro.addAll(petSoulCfg.getAttList());
-
-		for (Integer pro : toalPro) {
-			SimpleProperty property = SkillUtil.readPro(pro);
+//		List<Integer> toalPro = new ArrayList<>();
+//
+//		Map<Integer, PetInfo> rolePetInfo = player.getPetInventory().getPetInfoMap();
+//		for (PetInfo pet : rolePetInfo.values()) {
+//			// 等级加成
+//			PetLevelCfg petLevelCfg = PetTemplateMgr.getLevelTemps().get(pet.getPetId() * 1000 + pet.getLevel());
+//			toalPro.addAll(petLevelCfg.getAttList());
+//
+//			PetInfoCfg petInfoCfg = PetTemplateMgr.getPetTemps().get(pet.getPetId());
+//			if (petInfoCfg.getIsSpecial() == 0) {
+//				// 炼体加成
+//				if (pet.getPhysique() > 0) {
+//					PetPhysiqueCfg petPhyCfg = PetTemplateMgr.getPhysiqueTemps().get(pet.getPetId() * 1000 + pet.getPhysique());
+//					toalPro.addAll(petPhyCfg.getAttList());
+//				}
+//
+//				// 品质加成
+//				if (pet.getQuality() > 0) {
+//					PetQualityCfg petQualityCfg = PetTemplateMgr.getQualityTemps().get(pet.getPetId() * 1000 + pet.getQuality());
+//					toalPro.addAll(petQualityCfg.getAttList());
+//				}
+//
+//				// 进阶加成
+//				if (pet.getGrade() > 0) {
+//					PetGradeCfg petGradeCfg = PetTemplateMgr.getGradeTemps().get(pet.getPetId() * 1000 + pet.getGrade());
+//					toalPro.addAll(petGradeCfg.getAttList());
+//				}
+//			}
+//		}
+//
+//		// 炼魂加成
+//		PetAtt petAtt = player.getPetInventory().getPetAtt();
+//		PetSoulCfg petSoulCfg = PetTemplateMgr.getSoulTemps().get(petAtt.getSoulLv());
+//		toalPro.addAll(petSoulCfg.getAttList());
+		
+		Map<Integer, Integer> attMap = PetManager.computePetAtt(player);
+		for(int attType:attMap.keySet()){
+			SimpleProperty property = SkillUtil.readPro(attType, attMap.get(attType));
 			if (property.isPre()) {
 				SkillUtil.joinPro(petPer, property.getType(), property.getValue());
 			} else {
 				SkillUtil.joinPro(petData, property.getType(), property.getValue());
 			}
 		}
+
+//		for (Integer pro : toalPro) {
+//			SimpleProperty property = SkillUtil.readPro(pro);
+//			if (property.isPre()) {
+//				SkillUtil.joinPro(petPer, property.getType(), property.getValue());
+//			} else {
+//				SkillUtil.joinPro(petData, property.getType(), property.getValue());
+//			}
+//		}
 	}
 
 	public void updataProperty() {

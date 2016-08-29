@@ -43,7 +43,7 @@ public class BagGridUnlockCmd extends AbstractCommand {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, packet.getCode(), "物品不足");
 			return;
 		}
-		if(!player.getBagInventory().removeItemFromPlayerBag(itemId, req.getUnlockNum(), ItemRemoveType.USE)) return;
+		if(!player.getBagInventory().removeItemFromPlayerBag(itemId, req.getUnlockNum(), ItemRemoveType.BAG_GRID_UNLOCK)) return;
 		
 		BagInventory bagIn = player.getBagInventory();
 		bagIn.getBag(BagType.Play).addCapability((short)req.getUnlockNum());

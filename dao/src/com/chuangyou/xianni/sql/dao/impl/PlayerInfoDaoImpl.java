@@ -216,8 +216,9 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		playerJoinInfo.beginAdd();
 		String sql = "insert tb_u_player_join_info(playerId,curSoul,curBlood,soul,blood,attack,defence,soulAttack,soulDefence,"
 				+ "accurate,dodge,crit,critDefence,critAddtion,critCut,bloodAttackAddtion,bloodAttackCut,"
-				+ "soulAttackAddtion,soulAttackCut,regainSoul,regainBlood,metal,wood,water,fire,earth,metalDefence,woodDefence," + "waterDefence,fireDefence,earthDefence,speed) "
-				+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "soulAttackAddtion,soulAttackCut,regainSoul,regainBlood,metal,wood,water,fire,earth,metalDefence,woodDefence,"
+				+ "waterDefence,fireDefence,earthDefence,speed,mana) "
+				+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		Map<Integer, DbParameter> params = new HashMap<Integer, DbParameter>();
 		params.put(1, new DbParameter(Types.BIGINT, playerJoinInfo.getPlayerId()));
 		params.put(2, new DbParameter(Types.INTEGER, playerJoinInfo.getCurSoul()));
@@ -252,6 +253,7 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		params.put(30, new DbParameter(Types.INTEGER, playerJoinInfo.getFireDefence()));
 		params.put(31, new DbParameter(Types.INTEGER, playerJoinInfo.getEarthDefence()));
 		params.put(32, new DbParameter(Types.INTEGER, playerJoinInfo.getSpeed()));
+		params.put(33, new DbParameter(Types.INTEGER, playerJoinInfo.getMana()));
 		result = execNoneQuery(sql, params) > -1 ? true : false;
 		playerJoinInfo.commitAdd(result);
 		return result;
@@ -265,7 +267,7 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		String sql = "update tb_u_player_join_info set curSoul=?,curBlood=?,soul=?,blood=?,attack=?,defence=?,soulAttack=?,soulDefence=?,"
 				+ "accurate=?,dodge=?,crit=?,critDefence=?,critAddtion=?,critCut=?,bloodAttackAddtion=?,bloodAttackCut=?,"
 				+ "soulAttackAddtion=?,soulAttackCut=?,regainSoul=?,regainBlood=?,metal=?,wood=?,water=?,fire=?,earth=?,metalDefence=?,woodDefence=?,"
-				+ "waterDefence=?,fireDefence=?,earthDefence=?,speed=? where playerId=?";
+				+ "waterDefence=?,fireDefence=?,earthDefence=?,speed=?,mana=? where playerId=?";
 		Map<Integer, DbParameter> params = new HashMap<Integer, DbParameter>();
 		params.put(1, new DbParameter(Types.INTEGER, playerJoinInfo.getCurSoul()));
 		params.put(2, new DbParameter(Types.INTEGER, playerJoinInfo.getCurBlood()));
@@ -299,8 +301,9 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		params.put(29, new DbParameter(Types.INTEGER, playerJoinInfo.getFireDefence()));
 		params.put(30, new DbParameter(Types.INTEGER, playerJoinInfo.getEarthDefence()));
 		params.put(31, new DbParameter(Types.INTEGER, playerJoinInfo.getSpeed()));
+		params.put(32, new DbParameter(Types.INTEGER, playerJoinInfo.getMana()));
 
-		params.put(32, new DbParameter(Types.BIGINT, playerJoinInfo.getPlayerId()));
+		params.put(33, new DbParameter(Types.BIGINT, playerJoinInfo.getPlayerId()));
 		result = execNoneQuery(sql, params) > -1 ? true : false;
 		playerJoinInfo.commitUpdate(result);
 		return result;
@@ -357,6 +360,9 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 					info.setFireDefence(rs.getInt("fireDefence"));
 					info.setEarthDefence(rs.getInt("earthDefence"));
 					info.setSpeed(rs.getInt("speed"));
+					info.setMana(rs.getInt("mana"));
+					
+					info.setOp(Option.None);
 				}
 			} catch (SQLException e) {
 				info = null;
@@ -423,6 +429,7 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 					if (time != null) {
 						info.setResetTime(new Date(time.getTime()));
 					}
+					info.setOp(Option.None);
 				}
 			} catch (SQLException e) {
 				info = null;

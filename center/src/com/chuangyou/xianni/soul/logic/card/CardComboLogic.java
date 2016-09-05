@@ -35,6 +35,7 @@ public class CardComboLogic extends BaseCardLogic {
 		
 		this.cardInfo = new SoulCardInfo();
 		this.cardInfo.setPlayerId(player.getPlayerId());
+		this.cardInfo.setCardId(this.piece.getCardId());
 		this.cardInfo.setSkill1(this.cardConfig.getSkill());
 		player.getSoulInventory().addSoulCard(cardInfo);
 		

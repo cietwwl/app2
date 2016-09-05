@@ -48,6 +48,9 @@ public class RelationInfo extends DataObject {
 		if(playerId1 < playerId2){
 			this.playerId1 = playerId1;
 			this.playerId2 = playerId2;
+		}else if(playerId1 > playerId2){
+			this.playerId1 = playerId2;
+			this.playerId2 = playerId1;
 		}
 	}
 
@@ -116,6 +119,19 @@ public class RelationInfo extends DataObject {
 		}else if(selfId == playerId2){
 			this.setRelation2(relation);
 		}
+	}
+	/**
+	 * 获取和玩家的关系
+	 * @param selfId
+	 * @return
+	 */
+	public short getRelationType(long selfId){
+		if(selfId == playerId1){
+			return this.relation1;
+		}else if(selfId == playerId2){
+			return this.relation2;
+		}
+		return -1;
 	}
 	/**
 	 * 设置玩家是否加载

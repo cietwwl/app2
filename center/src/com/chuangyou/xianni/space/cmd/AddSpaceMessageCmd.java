@@ -8,6 +8,7 @@ import com.chuangyou.common.protobuf.pb.space.MessageInfoProto.MessageInfoMsg;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
+import com.chuangyou.xianni.constant.PlayerRelationConstant;
 import com.chuangyou.xianni.entity.space.SpaceInfo;
 import com.chuangyou.xianni.entity.space.SpaceMessageInfo;
 import com.chuangyou.xianni.entity_id.EntityIdBuilder;
@@ -37,7 +38,8 @@ public class AddSpaceMessageCmd extends AbstractCommand {
 				return;
 			}
 			if(reqSpace.getIsNoMsg() == SpaceInfo.FRIEND_MSG){
-				if(!reqPlayer.getFriendInventory().getFriend().isFriend(player.getPlayerId())){
+				//自己是否是对方的好友
+				if(!player.getRelationInventory().isRelationTypeSelfToTarget(player.getPlayerId(), PlayerRelationConstant.FRIEND)){
 					ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SPACE_ADD_MSG,"非好友禁止留言");		
 					return;
 				}

@@ -1,0 +1,9 @@
+//protocol=143;
+option java_package = "com.chuangyou.common.protobuf.pb.item";
+option java_outer_classname = "ItemListProto";
+
+import "item/ItemFullInfoMsg.proto";
+
+message ItemListMsg{
+	repeated ItemFullInfoMsg item = 1; // 物品详情
+}

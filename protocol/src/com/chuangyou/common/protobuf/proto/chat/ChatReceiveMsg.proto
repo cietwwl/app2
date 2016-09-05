@@ -12,4 +12,5 @@ message ChatReceiveMsg{
 	optional int32 vip = 7;				//发送者VIP等级
 	optional string chatContent = 8;	//聊天内容
 	optional int64 receiver = 9;		//接收者ID，只有私聊的时候需要用到
+	optional int32 param1 = 10;			//备用参数(系统提示中用作提示类型)
 }

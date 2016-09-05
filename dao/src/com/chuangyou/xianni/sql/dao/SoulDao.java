@@ -2,6 +2,7 @@ package com.chuangyou.xianni.sql.dao;
 
 import java.util.Map;
 
+import com.chuangyou.xianni.entity.soul.CardComboConfig;
 import com.chuangyou.xianni.entity.soul.CardLvConfig;
 import com.chuangyou.xianni.entity.soul.CardSkillConfig;
 import com.chuangyou.xianni.entity.soul.CardStarConfig;
@@ -46,5 +47,6 @@ public interface SoulDao {
 	public Map<Integer, SoulMakeConfig> getSoulMakeConfig();
 	public Map<Integer, SoulFuseSkillConfig> getFuseSkillConfig();
 	public Map<Integer, FuseItemConfig> getFuseItemConfig();
+	public Map<Integer, CardComboConfig> getCardComboConfig();
 	
 }

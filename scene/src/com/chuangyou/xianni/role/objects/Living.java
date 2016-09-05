@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import com.chuangyou.common.protobuf.pb.PlayerAttSnapProto.PlayerAttSnapMsg;
 import com.chuangyou.common.protobuf.pb.PlayerKillMonsterProto.PlayerKillMonsterMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
@@ -25,11 +26,14 @@ import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpd
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.Vector3;
+import com.chuangyou.xianni.battle.AttackOrder;
 import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.buffer.BufferOverlayType;
 import com.chuangyou.xianni.battle.buffer.BufferState;
 import com.chuangyou.xianni.battle.buffer.BufferType;
 import com.chuangyou.xianni.battle.buffer.ExecWayType;
+import com.chuangyou.xianni.battle.buffer.specialbuf.AttackConvertSoulAttackBuffer;
+import com.chuangyou.xianni.battle.buffer.specialbuf.SoulAttackConvertAttackBuffer;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.damage.effect.DamageEffecter;
 import com.chuangyou.xianni.battle.damage.effect.DamageEffecterFactory;
@@ -63,6 +67,12 @@ import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.SimplePlayerInfo;
 import com.chuangyou.xianni.world.WorldMgr;
 
+/***
+ * 需要瘦身
+ * 
+ * @author Administrator
+ *
+ */
 public class Living extends AbstractActionQueue {
 	public static final int						ALIVE			= 0;				// 活着
 	public static final int						DIE				= 1;				// 死亡
@@ -104,6 +114,8 @@ public class Living extends AbstractActionQueue {
 	 * 离开战斗状态20秒后开始自动回复气血值 气血值>0 免疫硬直和浮空效果 战斗状态每10秒一次的自动回复气血
 	 **/
 	protected int								curBlood;							// 当前气血(变动)
+
+	protected int								mana;								// 灵力
 
 	protected int								initAttack;							// 初始攻击
 	protected int								attack;								// 攻击
@@ -162,7 +174,7 @@ public class Living extends AbstractActionQueue {
 	/**
 	 * 方向
 	 */
-	protected Vector3							dir = Vector3.Zero();
+	protected Vector3							dir				= Vector3.Zero();
 
 	/**
 	 * 目标位置
@@ -192,9 +204,14 @@ public class Living extends AbstractActionQueue {
 
 	protected Map<Integer, List<Buffer>>		workBuffers;
 
+	/** 根据buffer类型存放工作buffer映射 */
+	protected Map<Integer, List<Buffer>>		typeBuffers;
+
 	/** 所有的buffer */
 	protected Map<Long, Buffer>					allBuffers;
 
+	/** 武器携带buffer */
+	protected Buffer							weaponBuffer;
 	/** 状态管理器 */
 	protected Map<LivingState, AtomicInteger>	livingStatus;
 
@@ -217,6 +234,10 @@ public class Living extends AbstractActionQueue {
 	/** 队伍ID */
 	private int							teamId;
 
+	/** 
+	 * 魂幡值
+	 */
+	private long 						soulExp;
 	/** cd对象 */
 	protected HashMap<String, CoolDown>	cooldowns	= new HashMap<String, CoolDown>();
 
@@ -227,7 +248,7 @@ public class Living extends AbstractActionQueue {
 				EnumAttr.SOUL_ATTACK, EnumAttr.SOUL_DEFENCE, EnumAttr.ACCURATE, EnumAttr.DODGE, EnumAttr.CRIT, EnumAttr.CRIT_DEFENCE, EnumAttr.CRIT_ADDTION, EnumAttr.CRIT_CUT, EnumAttr.ATTACK_ADDTION,
 				EnumAttr.ATTACK_CUT, EnumAttr.SOUL_ATTACK_ADDTION, EnumAttr.SOUL_ATTACK_CUT, EnumAttr.REGAIN_SOUL, EnumAttr.REGAIN_BLOOD, EnumAttr.METAL, EnumAttr.WOOD, EnumAttr.WATER, EnumAttr.FIRE,
 				EnumAttr.EARTH, EnumAttr.METAL_DEFENCE, EnumAttr.WOOD_DEFENCE, EnumAttr.WATER_DEFENCE, EnumAttr.FIRE_DEFENCE, EnumAttr.EARTH_DEFENCE, EnumAttr.SPEED, EnumAttr.TEAM_ID, EnumAttr.PK_VAL,
-				EnumAttr.BATTLE_MODE };
+				EnumAttr.BATTLE_MODE, EnumAttr.MANA };
 	}
 
 	public Vector3 getPostion() {
@@ -238,14 +259,12 @@ public class Living extends AbstractActionQueue {
 		// System.out.println("id = " + id + " setPosition --- " + postion);
 		this.postion = postion;
 	}
-	
-	public Vector3 getDir()
-	{
+
+	public Vector3 getDir() {
 		return dir;
 	}
-	
-	public void setDir(Vector3 dir)
-	{
+
+	public void setDir(Vector3 dir) {
 		this.dir = dir;
 	}
 
@@ -277,6 +296,7 @@ public class Living extends AbstractActionQueue {
 		this.mapSkill = new HashMap<>();
 		this.permanentBuffer = new ConcurrentHashMap<>();
 		this.workBuffers = new ConcurrentHashMap<>();
+		this.typeBuffers = new ConcurrentHashMap<>();
 		this.livingState = ALIVE;
 		this.postion = Vector3.Invalid;
 		this.allBuffers = new ConcurrentHashMap<>();
@@ -290,6 +310,7 @@ public class Living extends AbstractActionQueue {
 		this.mapSkill = new HashMap<>();
 		this.permanentBuffer = new ConcurrentHashMap<>();
 		this.workBuffers = new ConcurrentHashMap<>();
+		this.typeBuffers = new ConcurrentHashMap<>();
 		this.postion = Vector3.Invalid;
 		this.livingState = ALIVE;
 		this.allBuffers = new ConcurrentHashMap<>();
@@ -371,6 +392,13 @@ public class Living extends AbstractActionQueue {
 			exeWayBuffers = new ArrayList<>();
 			permanentBuffer.put(buff.getExeWay(), exeWayBuffers);
 		}
+
+		List<Buffer> typeBufList = typeBuffers.get(buff.getType());
+		if (typeBuffers == null) {
+			typeBufList = new ArrayList<>();
+			typeBuffers.put(buff.getType(), typeBufList);
+		}
+
 		exeWayBuffers.add(buff);
 	}
 
@@ -393,8 +421,7 @@ public class Living extends AbstractActionQueue {
 		}
 
 		for (Buffer older : imageBuffs()) {
-			if (buff.getBufferId() != older.getBufferId() && buff.getOverlayType() != 0 && buff.getOverlayWay() != 0 && buff.getOverlayType() == older.getOverlayType()
-					&& buff.getOverlayWay() == older.getOverlayWay()) {
+			if (older.getOverlayType() != 0 && buff.getOverlayWay() != 0 && buff.getOverlayType() == older.getOverlayType() && buff.getOverlayWay() == older.getOverlayWay()) {
 				overlay(older, buff);
 				return;
 			}
@@ -408,25 +435,33 @@ public class Living extends AbstractActionQueue {
 	public void simpleAdd(Buffer buff) {
 
 		List<Buffer> exeWayBuffers = workBuffers.get(buff.getExeWay());
+
 		if (exeWayBuffers == null) {
 			exeWayBuffers = new ArrayList<>();
 			workBuffers.put(buff.getExeWay(), exeWayBuffers);
 		}
 
+		List<Buffer> typeBufList = typeBuffers.get(buff.getType());
+		if (typeBufList == null) {
+			typeBufList = new ArrayList<>();
+			typeBuffers.put(buff.getType(), typeBufList);
+		}
+
+		exeWayBuffers.add(buff);
+		typeBufList.add(buff);
+		allBuffers.put(buff.getBufferId(), buff);
+
 		BufferMsg.Builder bmsg = BufferMsg.newBuilder();
 		bmsg.setOption(1);// 添加
 		buff.writeProto(bmsg);
-
 		sendBufferChange(bmsg.build());
-		exeWayBuffers.add(buff);
-		allBuffers.put(buff.getBufferId(), buff);
 
 		if (buff.getStatus() != 0) {
 			addLivingState(buff.getStatus());
 		}
 
-		if (buff.getType() == BufferType.ATTR_BODY) {
-			refreshProperties(buff.getBufferInfo().getValueType());
+		if (buff.getBufferInfo().getExeWay() == ExecWayType.ADD && buff.checkValid()) {
+			buff.execute(null, Damage.DEFAULT, Damage.DEFAULT, ExecWayType.ADD);
 		}
 	}
 
@@ -448,39 +483,30 @@ public class Living extends AbstractActionQueue {
 			buff.stop();
 		}
 
+		List<Buffer> typeArr = typeBuffers.get(buff.getType());
+		if (typeArr != null) {
+			typeArr.remove(buff);
+		}
+
 		if (buff.getStatus() != 0) {
 			removeLivingState(buff.getStatus());
 		}
 		if (buff.getType() == BufferType.ATTR_BODY) {
-			refreshProperties(buff.getBufferInfo().getValueType());
+			if (buff.getBufferInfo().getValueType() != 0) {
+				refreshProperties(buff.getBufferInfo().getValueType());
+			}
+			if (buff.getBufferInfo().getValueType1() != 0) {
+				refreshProperties(buff.getBufferInfo().getValueType1());
+			}
 		}
 		return result;
 	}
-
-	// /**
-	// * 清空buffer
-	// *
-	// * @return
-	// */
-	// public boolean clearBuffer() {
-	// if (allBuffers != null)
-	// allBuffers.clear();
-	// return true;
-	// }
 
 	protected void sendBufferChange(BufferMsg msg) {
 		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
 		if (this.armyId > 0) {
 			nears.add(this.armyId);
 		}
-
-		// System.out.println("buffer 修改："+msg);
-		// for (long i : nears) {
-		// AccessTextFile.saveRecord("通知:" + i + "修改buffer,buffId:" +
-		// msg.getBufferId() + " buffer的操作类型是:" + msg.getOption() + " 模板ID:" +
-		// msg.getTemplateId());
-		// }
-
 		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_G_BUFFER_OPTION, msg);
 	}
 
@@ -498,6 +524,25 @@ public class Living extends AbstractActionQueue {
 		List<Buffer> wbuff = workBuffers.get(exeWay);
 		if (wbuff != null) {
 			toal.addAll(wbuff);
+		}
+
+		if (weaponBuffer != null && weaponBuffer.getExeWay() == exeWay) {
+			toal.add(weaponBuffer);
+		}
+		return toal;
+	}
+
+	/** 获取某种类型的buff */
+	public List<Buffer> getTypeBuffers(int type) {
+		List<Buffer> toal = new ArrayList<>();
+
+		List<Buffer> typeBuff = typeBuffers.get(type);
+		if (typeBuff != null) {
+			toal.addAll(typeBuff);
+		}
+
+		if (weaponBuffer != null && weaponBuffer.getType() == type) {
+			toal.add(weaponBuffer);
 		}
 		return toal;
 	}
@@ -517,21 +562,6 @@ public class Living extends AbstractActionQueue {
 		nears.add(getArmyId());
 		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_G_BATTLEPLAYERINFO, getBattlePlayerInfoMsg().build());
 	}
-
-	// /**
-	// * 单个人物属性更新方法
-	// * @param type
-	// * @param value
-	// */
-	// public void updataProperty(EnumAttr type,long value) {
-	// List<PropertyMsg> properties = new ArrayList<>();
-	// PropertyMsg.Builder p = PropertyMsg.newBuilder();
-	// p.setBasePoint(value);
-	// p.setTotalPoint(value);
-	// p.setType(type.getValue());
-	// properties.add(p.build());
-	// updataProperty(properties);
-	// }
 
 	/**
 	 * 单个人物属性更新方法
@@ -580,14 +610,6 @@ public class Living extends AbstractActionQueue {
 		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_RESP_PLAYER_ATT_UPDATE, msg.build());
 
 	}
-
-	// public void updata(List<PropertyMsg> properties) {
-	// readProperty(properties);
-	// Set<Long> nears = getNears(new PlayerSelectorHelper(this));
-	// nears.add(getArmyId());
-	// BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_G_BATTLEPLAYERINFO,
-	// getBattlePlayerInfoMsg().build());
-	// }
 
 	public void readProperty(List<PropertyMsg> properties) {
 		List<PropertyMsg> temp = new ArrayList<>(properties);
@@ -695,6 +717,7 @@ public class Living extends AbstractActionQueue {
 			cachBattleInfoPacket.setMountId(simpleInfo.getMountId());
 			cachBattleInfoPacket.setMagicWeaponId(simpleInfo.getMagicWeaponId());
 			cachBattleInfoPacket.setWingId(simpleInfo.getWingId());
+			cachBattleInfoPacket.setWeaponAwaken(simpleInfo.getWeaponAwaken());
 		} else {
 			cachBattleInfoPacket.setSkinId(getSkin());
 		}
@@ -881,6 +904,9 @@ public class Living extends AbstractActionQueue {
 				}
 				this.setCurBlood((int) value);
 				break;
+			case MANA:
+				this.setMana((int) value);
+				break;
 			case ATTACK:
 				this.setInitAttack((int) value);
 				refreshProperties(attr.getValue());
@@ -980,6 +1006,9 @@ public class Living extends AbstractActionQueue {
 			case Weapon:
 				this.simpleInfo.setWeaponId((int) value);
 				break;
+			case SOUL_EXP:
+				this.setSoulExp(value);
+				break;
 			default:
 				break;
 		}
@@ -1000,6 +1029,8 @@ public class Living extends AbstractActionQueue {
 				return this.getMaxBlood();
 			case CUR_BLOOD:
 				return this.getCurBlood();
+			case MANA:
+				return this.getMana();
 			case ATTACK:
 				return this.getAttack();
 			case DEFENCE:
@@ -1168,14 +1199,17 @@ public class Living extends AbstractActionQueue {
 		}
 	}
 
-	public void execWayBuffer(int execWay) {
+	public void execWayBuffer(AttackOrder order, int execWay) {
 		List<Buffer> buffers = getExeWayBuffers(execWay);
+		if (weaponBuffer != null && weaponBuffer.getExeWay() == execWay) {
+			buffers.add(weaponBuffer);
+		}
 		if (buffers != null && buffers.size() != 0) {
 			List<Damage> damages = new ArrayList<>();
 			for (Buffer buff : buffers) {
 				Damage damage1 = new Damage(this, buff.getSource());
 				Damage damage2 = new Damage(this, buff.getSource());
-				if (buff.checkValid() && buff.execute(null, damage1, damage2, execWay)) {
+				if (buff.checkValid() && buff.execute(order, damage1, damage2, execWay)) {
 					damages.add(damage1);
 					damages.add(damage2);
 					takeDamage(damage1);
@@ -1232,11 +1266,12 @@ public class Living extends AbstractActionQueue {
 	}
 
 	/* 根据属性类型添加修改的变化，刷新对应属性 */
-	protected void refreshProperties(int type) {
-		List<Buffer> buffers = imageBuffs();
+	public void refreshProperties(int type) {
+		// 获取所有影响该属性的buffer
+		List<Buffer> buffers = getTypeBuffers(BufferType.ATTR_BODY);
 		List<Buffer> invock = new ArrayList<>();
 		for (Buffer buffer : buffers) {
-			if (buffer.getType() == BufferType.ATTR_BODY && buffer.getBufferInfo().getValueType() == type) {
+			if (buffer.getBufferInfo().getValueType() == type) {
 				invock.add(buffer);
 			}
 		}
@@ -1245,18 +1280,42 @@ public class Living extends AbstractActionQueue {
 			Log.error("EnumAttr etype is null, type : " + type);
 			return;
 		}
-		int initValue = getInitValue(etype);
+		// 获取初始属性
+		int lastValue = getInitValue(etype);
+		// 计算变更值
 		int addValue = 0;
 		for (Buffer buffer : invock) {
-			addValue = buffer.getBufferInfo().getValue() + (int) Math.ceil(initValue * (buffer.getBufferInfo().getValuePercent() / 10000f));
+			if (buffer.getBufferInfo().getValueType() == type) {
+				addValue = buffer.getBufferInfo().getValue() + (int) Math.ceil(lastValue * (buffer.getBufferInfo().getValuePercent() / 10000f));
+			}
+			if (buffer.getBufferInfo().getValueType1() == type) {
+				addValue = buffer.getBufferInfo().getValue1() + (int) Math.ceil(lastValue * (buffer.getBufferInfo().getValuePercent1() / 10000f));
+			}
 		}
-		initValue += addValue;
-		setBufferProperty(etype, initValue);
+
+		// 当玩家身上存在魂攻物攻转换buffer时，在计算完毕所有属性加成，再做转换。
+		if (type == EnumAttr.ATTACK.getValue() || type == EnumAttr.SOUL_ATTACK.getValue()) {
+			List<Buffer> convertBuffers = getTypeBuffers(BufferType.ATTACK_COVENT_SOULATTACK);
+			for (Buffer as : convertBuffers) {
+				AttackConvertSoulAttackBuffer A2S = (AttackConvertSoulAttackBuffer) as;
+				addValue += A2S.getResult(type);
+			}
+
+			List<Buffer> convert2Buffers = getTypeBuffers(BufferType.SOULATTACK_COVENT_ATTACK);
+			for (Buffer sa : convert2Buffers) {
+				SoulAttackConvertAttackBuffer S2A = (SoulAttackConvertAttackBuffer) sa;
+				addValue += S2A.getResult(type);
+			}
+		}
+
+		// 更新终值
+		lastValue += addValue;
+		setBufferProperty(etype, lastValue);
 
 		PlayerAttUpdateMsg.Builder notifyMsg = PlayerAttUpdateMsg.newBuilder();
 		PropertyMsg.Builder speedMsg = PropertyMsg.newBuilder();
 		speedMsg.setType(etype.getValue());
-		speedMsg.setTotalPoint(initValue);
+		speedMsg.setTotalPoint(lastValue);
 		notifyMsg.addAtt(speedMsg);
 		notifyMsg.setPlayerId(getId());
 		// 通知附近玩家
@@ -1446,7 +1505,7 @@ public class Living extends AbstractActionQueue {
 			simpleAdd(newer);
 			return;
 		}
-		if (older.getOverlayWay() == BufferOverlayType.REPLACE) {
+		if (older.getOverlayWay() == BufferOverlayType.REPLACE && newer.getBufferInfo().getLevel() >= older.getBufferInfo().getLevel()) {
 			removeBuffer(older);
 			simpleAdd(newer);
 		}
@@ -1459,16 +1518,24 @@ public class Living extends AbstractActionQueue {
 		}
 
 		if (older.getOverlayWay() == BufferOverlayType.REPLACE_COUNT) {
-			if (newer.getLeftCount() > older.getLeftCount()) {
-				removeBuffer(older);
-				simpleAdd(newer);
-			}
+			older.setState(BufferState.VALID);
+			older.setLeftCount(newer.getBufferInfo().getExeCount());
+			older.setAliveTime(System.currentTimeMillis() + newer.getBufferInfo().getExeTime() * 1000);
+			upBuffer(older);
 		}
 
 		if (older.getOverlayWay() == BufferOverlayType.SUPERIMPOSED) {
 			older.setState(BufferState.VALID);
 			older.setLeftCount(older.getLeftCount() + newer.getBufferInfo().getExeCount());
 			older.setAliveTime(older.getAliveTime() + newer.getBufferInfo().getExeTime() * 1000);
+			upBuffer(older);
+		}
+
+		if (older.getOverlayWay() == BufferOverlayType.SUPERIMPOSED_EFFECT) {
+			older.setState(BufferState.VALID);
+			older.setLeftCount(newer.getBufferInfo().getExeCount());
+			older.setAliveTime(System.currentTimeMillis() + newer.getBufferInfo().getExeTime() * 1000);
+			older.addPressedNum(1);
 			upBuffer(older);
 		}
 	}
@@ -1706,7 +1773,7 @@ public class Living extends AbstractActionQueue {
 		GatewayLinkedSet.send2Server(pkg);
 	}
 
-	private int getInitValue(EnumAttr type) {
+	public int getInitValue(EnumAttr type) {
 		switch (type) {
 			case BLOOD:
 				return initBlood;
@@ -2106,8 +2173,33 @@ public class Living extends AbstractActionQueue {
 		this.initSoulDefence = initSoulDefence;
 	}
 
+	public int getMana() {
+		return mana;
+	}
+
+	public void setMana(int mana) {
+		this.mana = mana;
+	}
+
 	public boolean isClear() {
 		return false;
+	}
+
+	public Buffer getWeaponBuffer() {
+		return weaponBuffer;
+	}
+
+	public void setWeaponBuffer(Buffer weaponBuffer) {
+		this.weaponBuffer = weaponBuffer;
+	}
+
+	public boolean costMana(int count) {
+		if (this.mana >= count) {
+			this.mana = this.mana - count;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void clearData() {
@@ -2124,4 +2216,14 @@ public class Living extends AbstractActionQueue {
 		cooldowns.clear();
 		livingState = DISTORY;
 	}
+
+	public long getSoulExp() {
+		return soulExp;
+	}
+
+	public void setSoulExp(long soulExp) {
+		this.soulExp = soulExp;
+	}
+
+	
 }

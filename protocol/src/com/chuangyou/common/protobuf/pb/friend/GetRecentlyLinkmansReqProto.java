@@ -13,21 +13,29 @@ public final class GetRecentlyLinkmansReqProto {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional int32 id = 1;</code>
+     * <code>repeated int64 playerId = 1;</code>
      *
      * <pre>
-     *无意义
+     *玩家ID
      * </pre>
      */
-    boolean hasId();
+    java.util.List<java.lang.Long> getPlayerIdList();
     /**
-     * <code>optional int32 id = 1;</code>
+     * <code>repeated int64 playerId = 1;</code>
      *
      * <pre>
-     *无意义
+     *玩家ID
      * </pre>
      */
-    int getId();
+    int getPlayerIdCount();
+    /**
+     * <code>repeated int64 playerId = 1;</code>
+     *
+     * <pre>
+     *玩家ID
+     * </pre>
+     */
+    long getPlayerId(int index);
   }
   /**
    * Protobuf type {@code GetRecentlyLinkmansReqMsg}
@@ -86,8 +94,24 @@ public final class GetRecentlyLinkmansReqProto {
               break;
             }
             case 8: {
-              bitField0_ |= 0x00000001;
-              id_ = input.readInt32();
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                playerId_ = new java.util.ArrayList<java.lang.Long>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              playerId_.add(input.readInt64());
+              break;
+            }
+            case 10: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001) && input.getBytesUntilLimit() > 0) {
+                playerId_ = new java.util.ArrayList<java.lang.Long>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                playerId_.add(input.readInt64());
+              }
+              input.popLimit(limit);
               break;
             }
           }
@@ -98,6 +122,9 @@ public final class GetRecentlyLinkmansReqProto {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          playerId_ = java.util.Collections.unmodifiableList(playerId_);
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -129,32 +156,42 @@ public final class GetRecentlyLinkmansReqProto {
       return PARSER;
     }
 
-    private int bitField0_;
-    public static final int ID_FIELD_NUMBER = 1;
-    private int id_;
+    public static final int PLAYERID_FIELD_NUMBER = 1;
+    private java.util.List<java.lang.Long> playerId_;
     /**
-     * <code>optional int32 id = 1;</code>
+     * <code>repeated int64 playerId = 1;</code>
      *
      * <pre>
-     *无意义
+     *玩家ID
      * </pre>
      */
-    public boolean hasId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
+    public java.util.List<java.lang.Long>
+        getPlayerIdList() {
+      return playerId_;
     }
     /**
-     * <code>optional int32 id = 1;</code>
+     * <code>repeated int64 playerId = 1;</code>
      *
      * <pre>
-     *无意义
+     *玩家ID
      * </pre>
      */
-    public int getId() {
-      return id_;
+    public int getPlayerIdCount() {
+      return playerId_.size();
+    }
+    /**
+     * <code>repeated int64 playerId = 1;</code>
+     *
+     * <pre>
+     *玩家ID
+     * </pre>
+     */
+    public long getPlayerId(int index) {
+      return playerId_.get(index);
     }
 
     private void initFields() {
-      id_ = 0;
+      playerId_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -169,8 +206,8 @@ public final class GetRecentlyLinkmansReqProto {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, id_);
+      for (int i = 0; i < playerId_.size(); i++) {
+        output.writeInt64(1, playerId_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -181,9 +218,14 @@ public final class GetRecentlyLinkmansReqProto {
       if (size != -1) return size;
 
       size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, id_);
+      {
+        int dataSize = 0;
+        for (int i = 0; i < playerId_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(playerId_.get(i));
+        }
+        size += dataSize;
+        size += 1 * getPlayerIdList().size();
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -306,7 +348,7 @@ public final class GetRecentlyLinkmansReqProto {
 
       public Builder clear() {
         super.clear();
-        id_ = 0;
+        playerId_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
@@ -335,12 +377,11 @@ public final class GetRecentlyLinkmansReqProto {
       public com.chuangyou.common.protobuf.pb.friend.GetRecentlyLinkmansReqProto.GetRecentlyLinkmansReqMsg buildPartial() {
         com.chuangyou.common.protobuf.pb.friend.GetRecentlyLinkmansReqProto.GetRecentlyLinkmansReqMsg result = new com.chuangyou.common.protobuf.pb.friend.GetRecentlyLinkmansReqProto.GetRecentlyLinkmansReqMsg(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          playerId_ = java.util.Collections.unmodifiableList(playerId_);
+          bitField0_ = (bitField0_ & ~0x00000001);
         }
-        result.id_ = id_;
-        result.bitField0_ = to_bitField0_;
+        result.playerId_ = playerId_;
         onBuilt();
         return result;
       }
@@ -356,8 +397,15 @@ public final class GetRecentlyLinkmansReqProto {
 
       public Builder mergeFrom(com.chuangyou.common.protobuf.pb.friend.GetRecentlyLinkmansReqProto.GetRecentlyLinkmansReqMsg other) {
         if (other == com.chuangyou.common.protobuf.pb.friend.GetRecentlyLinkmansReqProto.GetRecentlyLinkmansReqMsg.getDefaultInstance()) return this;
-        if (other.hasId()) {
-          setId(other.getId());
+        if (!other.playerId_.isEmpty()) {
+          if (playerId_.isEmpty()) {
+            playerId_ = other.playerId_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensurePlayerIdIsMutable();
+            playerId_.addAll(other.playerId_);
+          }
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -386,50 +434,96 @@ public final class GetRecentlyLinkmansReqProto {
       }
       private int bitField0_;
 
-      private int id_ ;
-      /**
-       * <code>optional int32 id = 1;</code>
-       *
-       * <pre>
-       *无意义
-       * </pre>
-       */
-      public boolean hasId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
+      private java.util.List<java.lang.Long> playerId_ = java.util.Collections.emptyList();
+      private void ensurePlayerIdIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          playerId_ = new java.util.ArrayList<java.lang.Long>(playerId_);
+          bitField0_ |= 0x00000001;
+         }
       }
       /**
-       * <code>optional int32 id = 1;</code>
+       * <code>repeated int64 playerId = 1;</code>
        *
        * <pre>
-       *无意义
+       *玩家ID
        * </pre>
        */
-      public int getId() {
-        return id_;
+      public java.util.List<java.lang.Long>
+          getPlayerIdList() {
+        return java.util.Collections.unmodifiableList(playerId_);
       }
       /**
-       * <code>optional int32 id = 1;</code>
+       * <code>repeated int64 playerId = 1;</code>
        *
        * <pre>
-       *无意义
+       *玩家ID
        * </pre>
        */
-      public Builder setId(int value) {
-        bitField0_ |= 0x00000001;
-        id_ = value;
+      public int getPlayerIdCount() {
+        return playerId_.size();
+      }
+      /**
+       * <code>repeated int64 playerId = 1;</code>
+       *
+       * <pre>
+       *玩家ID
+       * </pre>
+       */
+      public long getPlayerId(int index) {
+        return playerId_.get(index);
+      }
+      /**
+       * <code>repeated int64 playerId = 1;</code>
+       *
+       * <pre>
+       *玩家ID
+       * </pre>
+       */
+      public Builder setPlayerId(
+          int index, long value) {
+        ensurePlayerIdIsMutable();
+        playerId_.set(index, value);
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 id = 1;</code>
+       * <code>repeated int64 playerId = 1;</code>
        *
        * <pre>
-       *无意义
+       *玩家ID
        * </pre>
        */
-      public Builder clearId() {
+      public Builder addPlayerId(long value) {
+        ensurePlayerIdIsMutable();
+        playerId_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int64 playerId = 1;</code>
+       *
+       * <pre>
+       *玩家ID
+       * </pre>
+       */
+      public Builder addAllPlayerId(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensurePlayerIdIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, playerId_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int64 playerId = 1;</code>
+       *
+       * <pre>
+       *玩家ID
+       * </pre>
+       */
+      public Builder clearPlayerId() {
+        playerId_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
-        id_ = 0;
         onChanged();
         return this;
       }
@@ -460,9 +554,9 @@ public final class GetRecentlyLinkmansReqProto {
   static {
     java.lang.String[] descriptorData = {
       "\n&friend/GetRecentlyLinkmansReqMsg.proto" +
-      "\"\'\n\031GetRecentlyLinkmansReqMsg\022\n\n\002id\030\001 \001(" +
-      "\005BF\n\'com.chuangyou.common.protobuf.pb.fr" +
-      "iendB\033GetRecentlyLinkmansReqProto"
+      "\"-\n\031GetRecentlyLinkmansReqMsg\022\020\n\010playerI" +
+      "d\030\001 \003(\003BF\n\'com.chuangyou.common.protobuf" +
+      ".pb.friendB\033GetRecentlyLinkmansReqProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -481,7 +575,7 @@ public final class GetRecentlyLinkmansReqProto {
     internal_static_GetRecentlyLinkmansReqMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_GetRecentlyLinkmansReqMsg_descriptor,
-        new java.lang.String[] { "Id", });
+        new java.lang.String[] { "PlayerId", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

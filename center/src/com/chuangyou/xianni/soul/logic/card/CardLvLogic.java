@@ -45,7 +45,7 @@ public class CardLvLogic extends AbstractCardLogic {
 		}
 		
 		//扣物品
-		if(player.getBagInventory().removeItem(cardLvConfig.getSpendItem(), count, ItemRemoveType.SOUL)){
+		if(player.getBagInventory().removeItem(cardLvConfig.getSpendItem(), 1, ItemRemoveType.SOUL)){
 			
 			int lv = this.cardInfo.getLv();
 			if(this.cardInfo.getLv()%10==0){

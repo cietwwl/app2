@@ -27,6 +27,7 @@ public class CardDownLogic extends AbstractCardLogic {
 		}
 		
 		downSoulCard();
+		this.soulInfo.setOp(Option.Update);
 		this.cardInfo.setIsPutOn(SoulCardInfo.OFF);
 		this.cardInfo.setOp(Option.Update);
 		this.player.getSoulInventory().updateProperty();

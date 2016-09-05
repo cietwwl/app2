@@ -376,6 +376,9 @@ public interface ClientProtocol {
 	/** 装备一键分解 */
 	public static final short U_EQUIP_RESOLVE_ONEKEY = 154;
 	//==========================================================
+	
+	/** 系统消息提示 */
+	public static final short U_SYSTEM_PROMPT = 155;
 
 	/** 获取时装信息 */
 	public static short U_FASHION_GET = 201;

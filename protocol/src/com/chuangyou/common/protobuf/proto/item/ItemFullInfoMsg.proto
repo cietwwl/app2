@@ -21,4 +21,6 @@ message ItemFullInfoMsg {
 	optional int32 grow=12;			//成长系数
 
 	optional EquipInfoMsg equip = 13; // 装备信息
+
+	optional int64 id = 14; // 道具ID
 }

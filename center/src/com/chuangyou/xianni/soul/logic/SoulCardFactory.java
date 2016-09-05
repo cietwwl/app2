@@ -3,6 +3,7 @@ package com.chuangyou.xianni.soul.logic;
 import com.chuangyou.xianni.soul.logic.card.CardComboLogic;
 import com.chuangyou.xianni.soul.logic.card.CardDownLogic;
 import com.chuangyou.xianni.soul.logic.card.CardLvLogic;
+import com.chuangyou.xianni.soul.logic.card.CardSkillLogic;
 import com.chuangyou.xianni.soul.logic.card.CardStarLogic;
 import com.chuangyou.xianni.soul.logic.card.CardUpLogic;
 import com.chuangyou.xianni.soul.logic.card.ICardLogic;
@@ -33,7 +34,7 @@ public class SoulCardFactory {
 			logic = new CardLvLogic(skillIndex);
 			break;
 		case 6:
-			logic = new CardStarLogic(skillIndex);
+			logic = new CardSkillLogic(skillIndex);
 			break;
 		}
 		return logic;

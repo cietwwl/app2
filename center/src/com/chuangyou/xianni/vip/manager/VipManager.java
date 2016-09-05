@@ -72,6 +72,16 @@ public class VipManager {
 		playerInfo.setVipTimeLimit(new Date(System.currentTimeMillis() + vipDuration * 24 * 60 * 60 * 1000 + time));
 		playerInfo.setVipInterimTimeLimit(new Date());
 
+		String rec = playerInfo.getVipReceiveRecording();
+		Map<String, List<Object>> map = StringUtils.strToMap(rec);// 领取记录
+		if (!map.containsKey(2 + "")) {
+			List<Object> obj = new ArrayList<>();
+			map.put(2 + "", obj);
+			// 记录领取
+			map.get(2 + "").add(System.currentTimeMillis());
+			playerInfo.setVipReceiveRecording(StringUtils.mapToStr(map));
+		}
+
 		// System.out.println(System.currentTimeMillis() + vipDuration * 24 * 60
 		// * 60 * 1000 + time);
 		// System.out.println(DateTimeUtil.format(playerInfo.getVipTimeLimit()));
@@ -125,8 +135,7 @@ public class VipManager {
 
 		} else if (bag.getType() == 2) {// vip周奖励
 			if (!isVip(player)) {
-				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR3, code);// 您不是
-																					// vip
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR3, code);// 您不是vip
 				return false;
 			}
 			if (map.containsKey(type + "")) {

@@ -30,7 +30,24 @@ public final class EquipInfoRespProto {
     int getAction();
 
     /**
-     * <code>optional .EquipInfoMsg equip = 2;</code>
+     * <code>optional int32 result = 2;</code>
+     *
+     * <pre>
+     * 操作结果
+     * </pre>
+     */
+    boolean hasResult();
+    /**
+     * <code>optional int32 result = 2;</code>
+     *
+     * <pre>
+     * 操作结果
+     * </pre>
+     */
+    int getResult();
+
+    /**
+     * <code>optional .EquipInfoMsg equip = 3;</code>
      *
      * <pre>
      * 装备信息
@@ -38,7 +55,7 @@ public final class EquipInfoRespProto {
      */
     boolean hasEquip();
     /**
-     * <code>optional .EquipInfoMsg equip = 2;</code>
+     * <code>optional .EquipInfoMsg equip = 3;</code>
      *
      * <pre>
      * 装备信息
@@ -46,7 +63,7 @@ public final class EquipInfoRespProto {
      */
     com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg getEquip();
     /**
-     * <code>optional .EquipInfoMsg equip = 2;</code>
+     * <code>optional .EquipInfoMsg equip = 3;</code>
      *
      * <pre>
      * 装备信息
@@ -115,9 +132,14 @@ public final class EquipInfoRespProto {
               action_ = input.readInt32();
               break;
             }
-            case 18: {
+            case 16: {
+              bitField0_ |= 0x00000002;
+              result_ = input.readInt32();
+              break;
+            }
+            case 26: {
               com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+              if (((bitField0_ & 0x00000004) == 0x00000004)) {
                 subBuilder = equip_.toBuilder();
               }
               equip_ = input.readMessage(com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg.PARSER, extensionRegistry);
@@ -125,7 +147,7 @@ public final class EquipInfoRespProto {
                 subBuilder.mergeFrom(equip_);
                 equip_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000002;
+              bitField0_ |= 0x00000004;
               break;
             }
           }
@@ -191,20 +213,43 @@ public final class EquipInfoRespProto {
       return action_;
     }
 
-    public static final int EQUIP_FIELD_NUMBER = 2;
+    public static final int RESULT_FIELD_NUMBER = 2;
+    private int result_;
+    /**
+     * <code>optional int32 result = 2;</code>
+     *
+     * <pre>
+     * 操作结果
+     * </pre>
+     */
+    public boolean hasResult() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional int32 result = 2;</code>
+     *
+     * <pre>
+     * 操作结果
+     * </pre>
+     */
+    public int getResult() {
+      return result_;
+    }
+
+    public static final int EQUIP_FIELD_NUMBER = 3;
     private com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg equip_;
     /**
-     * <code>optional .EquipInfoMsg equip = 2;</code>
+     * <code>optional .EquipInfoMsg equip = 3;</code>
      *
      * <pre>
      * 装备信息
      * </pre>
      */
     public boolean hasEquip() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
+      return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional .EquipInfoMsg equip = 2;</code>
+     * <code>optional .EquipInfoMsg equip = 3;</code>
      *
      * <pre>
      * 装备信息
@@ -214,7 +259,7 @@ public final class EquipInfoRespProto {
       return equip_;
     }
     /**
-     * <code>optional .EquipInfoMsg equip = 2;</code>
+     * <code>optional .EquipInfoMsg equip = 3;</code>
      *
      * <pre>
      * 装备信息
@@ -226,6 +271,7 @@ public final class EquipInfoRespProto {
 
     private void initFields() {
       action_ = 0;
+      result_ = 0;
       equip_ = com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
@@ -245,7 +291,10 @@ public final class EquipInfoRespProto {
         output.writeInt32(1, action_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeMessage(2, equip_);
+        output.writeInt32(2, result_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeMessage(3, equip_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -262,7 +311,11 @@ public final class EquipInfoRespProto {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, equip_);
+          .computeInt32Size(2, result_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, equip_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -388,12 +441,14 @@ public final class EquipInfoRespProto {
         super.clear();
         action_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
+        result_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
         if (equipBuilder_ == null) {
           equip_ = com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg.getDefaultInstance();
         } else {
           equipBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -429,6 +484,10 @@ public final class EquipInfoRespProto {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
+        result.result_ = result_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
         if (equipBuilder_ == null) {
           result.equip_ = equip_;
         } else {
@@ -452,6 +511,9 @@ public final class EquipInfoRespProto {
         if (other == com.chuangyou.common.protobuf.pb.equip.EquipInfoRespProto.EquipInfoRespMsg.getDefaultInstance()) return this;
         if (other.hasAction()) {
           setAction(other.getAction());
+        }
+        if (other.hasResult()) {
+          setResult(other.getResult());
         }
         if (other.hasEquip()) {
           mergeEquip(other.getEquip());
@@ -531,21 +593,69 @@ public final class EquipInfoRespProto {
         return this;
       }
 
+      private int result_ ;
+      /**
+       * <code>optional int32 result = 2;</code>
+       *
+       * <pre>
+       * 操作结果
+       * </pre>
+       */
+      public boolean hasResult() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional int32 result = 2;</code>
+       *
+       * <pre>
+       * 操作结果
+       * </pre>
+       */
+      public int getResult() {
+        return result_;
+      }
+      /**
+       * <code>optional int32 result = 2;</code>
+       *
+       * <pre>
+       * 操作结果
+       * </pre>
+       */
+      public Builder setResult(int value) {
+        bitField0_ |= 0x00000002;
+        result_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 result = 2;</code>
+       *
+       * <pre>
+       * 操作结果
+       * </pre>
+       */
+      public Builder clearResult() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        result_ = 0;
+        onChanged();
+        return this;
+      }
+
       private com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg equip_ = com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg, com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg.Builder, com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsgOrBuilder> equipBuilder_;
       /**
-       * <code>optional .EquipInfoMsg equip = 2;</code>
+       * <code>optional .EquipInfoMsg equip = 3;</code>
        *
        * <pre>
        * 装备信息
        * </pre>
        */
       public boolean hasEquip() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional .EquipInfoMsg equip = 2;</code>
+       * <code>optional .EquipInfoMsg equip = 3;</code>
        *
        * <pre>
        * 装备信息
@@ -559,7 +669,7 @@ public final class EquipInfoRespProto {
         }
       }
       /**
-       * <code>optional .EquipInfoMsg equip = 2;</code>
+       * <code>optional .EquipInfoMsg equip = 3;</code>
        *
        * <pre>
        * 装备信息
@@ -575,11 +685,11 @@ public final class EquipInfoRespProto {
         } else {
           equipBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000004;
         return this;
       }
       /**
-       * <code>optional .EquipInfoMsg equip = 2;</code>
+       * <code>optional .EquipInfoMsg equip = 3;</code>
        *
        * <pre>
        * 装备信息
@@ -593,11 +703,11 @@ public final class EquipInfoRespProto {
         } else {
           equipBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000004;
         return this;
       }
       /**
-       * <code>optional .EquipInfoMsg equip = 2;</code>
+       * <code>optional .EquipInfoMsg equip = 3;</code>
        *
        * <pre>
        * 装备信息
@@ -605,7 +715,7 @@ public final class EquipInfoRespProto {
        */
       public Builder mergeEquip(com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg value) {
         if (equipBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+          if (((bitField0_ & 0x00000004) == 0x00000004) &&
               equip_ != com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg.getDefaultInstance()) {
             equip_ =
               com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg.newBuilder(equip_).mergeFrom(value).buildPartial();
@@ -616,11 +726,11 @@ public final class EquipInfoRespProto {
         } else {
           equipBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000004;
         return this;
       }
       /**
-       * <code>optional .EquipInfoMsg equip = 2;</code>
+       * <code>optional .EquipInfoMsg equip = 3;</code>
        *
        * <pre>
        * 装备信息
@@ -633,23 +743,23 @@ public final class EquipInfoRespProto {
         } else {
           equipBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
       /**
-       * <code>optional .EquipInfoMsg equip = 2;</code>
+       * <code>optional .EquipInfoMsg equip = 3;</code>
        *
        * <pre>
        * 装备信息
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg.Builder getEquipBuilder() {
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000004;
         onChanged();
         return getEquipFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .EquipInfoMsg equip = 2;</code>
+       * <code>optional .EquipInfoMsg equip = 3;</code>
        *
        * <pre>
        * 装备信息
@@ -663,7 +773,7 @@ public final class EquipInfoRespProto {
         }
       }
       /**
-       * <code>optional .EquipInfoMsg equip = 2;</code>
+       * <code>optional .EquipInfoMsg equip = 3;</code>
        *
        * <pre>
        * 装备信息
@@ -709,10 +819,10 @@ public final class EquipInfoRespProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\034equip/EquipInfoRespMsg.proto\032\030equip/Eq" +
-      "uipInfoMsg.proto\"@\n\020EquipInfoRespMsg\022\016\n\006" +
-      "action\030\001 \001(\005\022\034\n\005equip\030\002 \001(\0132\r.EquipInfoM" +
-      "sgB<\n&com.chuangyou.common.protobuf.pb.e" +
-      "quipB\022EquipInfoRespProto"
+      "uipInfoMsg.proto\"P\n\020EquipInfoRespMsg\022\016\n\006" +
+      "action\030\001 \001(\005\022\016\n\006result\030\002 \001(\005\022\034\n\005equip\030\003 " +
+      "\001(\0132\r.EquipInfoMsgB<\n&com.chuangyou.comm" +
+      "on.protobuf.pb.equipB\022EquipInfoRespProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -732,7 +842,7 @@ public final class EquipInfoRespProto {
     internal_static_EquipInfoRespMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_EquipInfoRespMsg_descriptor,
-        new java.lang.String[] { "Action", "Equip", });
+        new java.lang.String[] { "Action", "Result", "Equip", });
     com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.getDescriptor();
   }
 

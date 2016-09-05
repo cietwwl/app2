@@ -9,6 +9,7 @@ import com.chuangyou.xianni.battle.AttackOrder;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.damage.effect.DamageEffecterType;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
+import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.objects.Living;
 
@@ -43,11 +44,11 @@ public abstract class Buffer {
 	/** 存活时间 */
 	protected long							aliveTime;
 
-	protected Buffer(long bufferId, Living source, Living target, SkillBufferTemplateInfo bufferInfo) {
+	protected Buffer(Living source, Living target, SkillBufferTemplateInfo bufferInfo) {
+		this.bufferId = IDMakerHelper.bufferId();
 		this.source = source;
 		this.target = target;
 		this.bufferInfo = bufferInfo;
-		this.bufferId = bufferId;
 		this.exeWay = bufferInfo.getExeWay();
 		init(); // 初始化
 	}
@@ -69,6 +70,9 @@ public abstract class Buffer {
 				return false;
 			}
 			if (System.currentTimeMillis() - this.lastExecTime < bufferInfo.getCooldown() * 1000) {
+				return false;
+			}
+			if (!exeCost()) {
 				return false;
 			}
 			// Buffer作用冷却CD
@@ -108,6 +112,7 @@ public abstract class Buffer {
 		if (state == BufferState.INVALID) {
 			return false;
 		}
+
 		if (!isPermanent) {
 			int durableType = bufferInfo.getDurableType();
 			if (durableType == DurableType.TIME || durableType == DurableType.TIME_AND_COUNT) {
@@ -124,7 +129,24 @@ public abstract class Buffer {
 				}
 			}
 		}
-		return true;
+		return enougthMana();
+	}
+
+	/** 扣费 */
+	public boolean exeCost() {
+		SkillBufferTemplateInfo temp = getBufferInfo();
+		if (temp.getFromType() == 1 && temp.getCostCount() > 0) {
+			return source.costMana(temp.getCostCount());
+		}
+		return false;
+	}
+
+	/** 费用是否足够执行 */
+	public boolean enougthMana() {
+		if (getBufferInfo().getFromType() != 1) {
+			return true;
+		}
+		return source.getMana() >= getBufferInfo().getCostCount();
 	}
 
 	/**
@@ -177,25 +199,8 @@ public abstract class Buffer {
 
 	}
 
-	/**
-	 * 叠加给定的BUFFER
-	 * 
-	 * @param buffer
-	 */
-	public boolean compress(Buffer buffer) {
-		// buffer id 不相同不叠加
-		if (bufferInfo.getTemplateId() != buffer.getBufferInfo().getTemplateId()) {
-			return false;
-		}
-		if (pressedNum < bufferInfo.getExeCount()) {
-			pressedNum++;
-		}
-		this.leftCount = bufferInfo.getExeCount();
-		return true;
-	}
-
 	/** 移除BUFFER */
-	protected void dispose() {
+	public void dispose() {
 		if (target.removeBuffer(this) && bufferInfo.getExeWay() == ExecWayType.REMOVE) {
 			// 从目标身上移除
 			target.execBuffer(this, ExecWayType.REMOVE);
@@ -239,7 +244,7 @@ public abstract class Buffer {
 		bufferMsg.setBufferId(bufferId);
 		bufferMsg.setTargetId(target.getId());
 	}
-	
+
 	public int getType() {
 		return bufferInfo.getType();
 	}
@@ -320,8 +325,8 @@ public abstract class Buffer {
 		return pressedNum;
 	}
 
-	public void setPressedNum(int pressedNum) {
-		this.pressedNum = pressedNum;
+	public void addPressedNum(int count) {
+		this.pressedNum += count;
 	}
 
 	/** 获取伤害计算类型 */

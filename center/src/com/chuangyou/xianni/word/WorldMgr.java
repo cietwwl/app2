@@ -85,6 +85,28 @@ public class WorldMgr {
 		players.put(playerId, player);
 		return player;
 	}
+	
+	/**
+	 * 直接从库里获取玩家基本信息
+	 * @param nickName
+	 * @return
+	 */
+	public static PlayerInfo getPlayerInfoFromDatabase(String nickName){
+		PlayerInfo playerInfo = null;
+		List<GamePlayer> list = getOnLinePlayers();
+		for(GamePlayer p: list){
+			if(p.getNickName().equals(nickName)){
+				playerInfo = p.getBasePlayer().getPlayerInfo();
+				break;
+			}
+		}
+		
+		if(playerInfo == null){
+			playerInfo = DBManager.getPlayerInfoDao().getPlayerInfo(nickName);
+		}
+		
+		return playerInfo;
+	}
 
 	/**
 	 * 缓存里面获取玩家数据

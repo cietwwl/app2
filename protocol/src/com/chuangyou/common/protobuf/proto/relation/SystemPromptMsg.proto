@@ -1,0 +1,12 @@
+//protocol=10522;
+option java_package = "com.chuangyou.common.protobuf.pb.relation";
+option java_outer_classname = "SystemPromptProto";
+
+//系统消息提示
+message SystemPromptMsg{
+	optional int64 sendTime = 1; // 发送时间
+	optional int32 msgType = 2; // 提示类型
+	optional string content = 3; // 文字内容
+	optional int64 operatorId = 4; // 操作者ID
+	optional string operatorName = 5; // 操作者名字
+}

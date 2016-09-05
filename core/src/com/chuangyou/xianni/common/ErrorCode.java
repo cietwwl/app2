@@ -96,6 +96,9 @@ public class ErrorCode {
 
 	/** 背包已满 */
 	public static final int	BAG_IS_FULL									= 908;
+	
+	/** 玩家不是自己的好友 */
+	public static final int FRIEND_NOT									= 909;
 
 	/** 已经赞过 */
 	public static final int	ALREADY_GIVE_THUMBUP						= 1001;

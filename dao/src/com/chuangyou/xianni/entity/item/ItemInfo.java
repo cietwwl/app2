@@ -5,6 +5,7 @@ import java.util.Date;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg;
 import com.chuangyou.common.protobuf.pb.item.ItemFullInfoMsgProto.ItemFullInfoMsg;
+import com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg;
 import com.chuangyou.xianni.entity.DataObject;
 import com.chuangyou.xianni.entity.Option;
 
@@ -268,6 +269,7 @@ public class ItemInfo extends DataObject implements Cloneable {
 	}
 
 	public void writeProto(ItemFullInfoMsg.Builder builder) {
+		builder.setId(this.getId());
 		builder.setTemplateId(this.getTemplateId());
 		builder.setPos(this.getPos());
 		builder.setBagType(this.getBagType());
@@ -280,7 +282,7 @@ public class ItemInfo extends DataObject implements Cloneable {
 		builder.setGrow(this.grow);
 		
 		EquipInfoMsg.Builder equip = EquipInfoMsg.newBuilder();
-		equip.setEquipId(this.id);
+		equip.setPos(this.getPosMsg());
 		equip.setAwakenLevel(this.getAwaken());
 		equip.setAwakenPoint(this.getAwakenPoint());
 		equip.setStoneTempId(this.getStone());
@@ -290,6 +292,14 @@ public class ItemInfo extends DataObject implements Cloneable {
 			builder.setBeginDate(this.beginDate.getTime());
 		}
 		builder.setIsNew(this.isNew);
+	}
+	
+	public ItemPosMsg getPosMsg(){
+		ItemPosMsg.Builder posMsg = ItemPosMsg.newBuilder();
+		posMsg.setBagType(this.getBagType());
+		posMsg.setPosition(this.getPos());
+		posMsg.setItemId(this.getId());
+		return posMsg.build();
 	}
 
 	@Override

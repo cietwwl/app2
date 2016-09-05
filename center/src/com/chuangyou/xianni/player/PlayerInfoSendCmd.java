@@ -1,5 +1,6 @@
 package com.chuangyou.xianni.player;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,12 +12,18 @@ import com.chuangyou.common.protobuf.pb.army.PetInfoProto.PetInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.item.ItemFaceListMsgProto.ItemFaceListMsg;
 import com.chuangyou.common.protobuf.pb.item.ItemFaceMsgProto.ItemFaceMsg;
+import com.chuangyou.common.protobuf.pb.item.ItemFullInfoMsgProto.ItemFullInfoMsg;
+import com.chuangyou.common.protobuf.pb.item.ItemListProto.ItemListMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerTimeMsgProto.PlayerTimeMsg;
+import com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.army.ArmyInventory;
 import com.chuangyou.xianni.bag.BagMessage;
+import com.chuangyou.xianni.bag.BaseItem;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
+import com.chuangyou.xianni.constant.EquipConstant;
+import com.chuangyou.xianni.entity.item.BagType;
 import com.chuangyou.xianni.entity.pet.PetAtt;
 import com.chuangyou.xianni.entity.pet.PetInfo;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
@@ -36,6 +43,10 @@ public class PlayerInfoSendCmd {
 
 			PlayerInfoMsg.Builder playerInfo = PlayerInfoMsg.newBuilder();
 			info.writeProto(playerInfo, SystemConfigTemplateMgr.getIntValue("bag.initGridNum"));
+			BaseItem weapon = gamePlayer.getBagInventory().getBag(BagType.HeroEquipment).getItemByPos(EquipConstant.EquipPosition.weaponPosition);
+			if(weapon != null){
+				playerInfo.setWeaponAwaken(weapon.getItemInfo().getAwaken());
+			}
 
 			PostionMsg.Builder postionBuilder = PostionMsg.newBuilder();
 			PlayerPositionInfo ppinfo = basePlayer.getPlayerPositionInfo();
@@ -118,6 +129,7 @@ public class PlayerInfoSendCmd {
 			}
 			army.setHeoBattleInfo(heroInfo);
 
+		
 			PetInfoMsg petInfo = getPetInfoPacket(gamePlayer);
 			army.setPetBattleInfo(petInfo);
 
@@ -128,6 +140,7 @@ public class PlayerInfoSendCmd {
 		return null;
 	}
 
+	
 	/**
 	 * 获取宠物信息包
 	 * 
@@ -170,31 +183,54 @@ public class PlayerInfoSendCmd {
 		if (player.getPlayerState() != PlayerState.ONLINE) {
 			return;
 		}
-		ItemFaceListMsg.Builder movedList = ItemFaceListMsg.newBuilder();
+		
+		ItemListMsg.Builder itemList = ItemListMsg.newBuilder();
 		try {
-			for (BagMessage info : bagMessages) {
-				ItemFaceMsg.Builder updated = ItemFaceMsg.newBuilder();
-				if (info.getItemInfo() != null) {
-					updated.setTemplateId(info.getItemInfo().getTemplateId());
-					updated.setPos(info.getItemInfo().getPos());
-					updated.setBagType(info.getItemInfo().getBagType());
-					updated.setBind(info.getItemInfo().isBinds());
-					updated.setCount(info.getItemInfo().getCount());
-				} else {
+			for(BagMessage info : bagMessages){
+				ItemFullInfoMsg.Builder updated = ItemFullInfoMsg.newBuilder();
+				if(info.getItemInfo() != null){
+					info.getItemInfo().writeProto(updated);
+				}else{
 					updated.setTemplateId(-1);
 					updated.setPos(info.getChangePos());
 					updated.setBagType(info.getChangeBagType());
 				}
-				movedList.addItemFace(updated);
+				itemList.addItem(updated);
 			}
-			// 发送到客户端
-			PBMessage resp = MessageUtil.buildMessage(Protocol.U_ITEM_FACE_LIST, movedList);
-			// System.out.println(player.getPlayerId() +
-			// "发送背包协议-=-------------------------------" + movedList);
+			
+			PBMessage resp = MessageUtil.buildMessage(Protocol.U_ITEM_FACE_LIST, itemList);
+			
 			player.sendPbMessage(resp);
 		} catch (Exception e) {
+			// TODO: handle exception
 			Log.error(String.format("用户%s物品位置更新出错!", player.getPlayerId()), e);
 		}
+		
+//		ItemFaceListMsg.Builder movedList = ItemFaceListMsg.newBuilder();
+//		try {
+//			for (BagMessage info : bagMessages) {
+//				ItemFaceMsg.Builder updated = ItemFaceMsg.newBuilder();
+//				if (info.getItemInfo() != null) {
+//					updated.setTemplateId(info.getItemInfo().getTemplateId());
+//					updated.setPos(info.getItemInfo().getPos());
+//					updated.setBagType(info.getItemInfo().getBagType());
+//					updated.setBind(info.getItemInfo().isBinds());
+//					updated.setCount(info.getItemInfo().getCount());
+//				} else {
+//					updated.setTemplateId(-1);
+//					updated.setPos(info.getChangePos());
+//					updated.setBagType(info.getChangeBagType());
+//				}
+//				movedList.addItemFace(updated);
+//			}
+//			// 发送到客户端
+//			PBMessage resp = MessageUtil.buildMessage(Protocol.U_ITEM_FACE_LIST, movedList);
+//			// System.out.println(player.getPlayerId() +
+//			// "发送背包协议-=-------------------------------" + movedList);
+//			player.sendPbMessage(resp);
+//		} catch (Exception e) {
+//			Log.error(String.format("用户%s物品位置更新出错!", player.getPlayerId()), e);
+//		}
 
 	}
 

@@ -14,6 +14,8 @@ import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.soul.SoulFuseSkillConfig;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.proto.MessageUtil;
+import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.soul.FuseSkillVo;
 import com.chuangyou.xianni.soul.template.SoulTemplateMgr;
@@ -74,12 +76,17 @@ public class FuseOpLogic extends BaseFuseLogic implements IFuseLogic {
 			tempSkill = new FuseSkillVo(newSkillID, item.getItemTempInfo().getItemcolor());
 			this.player.getSoulInventory().getTempMap().put(index, tempSkill);
 		}
+		
 		// 加魂魄值
 		this.soulInfo.setExp(this.soulInfo.getExp() + value);
 		this.soulInfo.setOp(Option.Update);
 
 		player.getSoulInventory().updateProperty();
 		sendResult(player);
+		
+		//经验值同步到scene服务器
+		PBMessage pkg =  MessageUtil.buildMessage(Protocol.S_REQ_SOUL_EXP,soulInfo.getMsg());
+		player.sendPbMessage(pkg);
 	}
 
 	/**

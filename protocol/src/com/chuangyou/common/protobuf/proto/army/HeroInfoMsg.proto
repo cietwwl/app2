@@ -2,9 +2,11 @@
 option java_package = "com.chuangyou.common.protobuf.pb.army";
 option java_outer_classname = "HeroInfoMsgProto";
 import "army/PropertyListMsg.proto";
+import "soul/FuseSkillMsg.proto";
 message HeroInfoMsg {
 	optional int64 playerId = 1; //角色ID
 	optional PropertyListMsg propertis = 2; //英雄属性
 	repeated int32 skillInfos = 3; //英雄全部技能
 	repeated int32 battleSkills = 4; //英雄出战技能
+	repeated FuseSkillMsg fuseSkills = 5;//魂幡技能
 }

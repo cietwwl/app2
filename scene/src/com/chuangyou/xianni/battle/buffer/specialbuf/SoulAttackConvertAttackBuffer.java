@@ -1,0 +1,43 @@
+package com.chuangyou.xianni.battle.buffer.specialbuf;
+
+import com.chuangyou.xianni.battle.AttackOrder;
+import com.chuangyou.xianni.battle.buffer.Buffer;
+import com.chuangyou.xianni.battle.damage.Damage;
+import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
+import com.chuangyou.xianni.role.objects.Living;
+
+/** 魂攻转换为物攻 */
+public class SoulAttackConvertAttackBuffer extends Buffer {
+	private int changeValue = 0;
+
+	public SoulAttackConvertAttackBuffer(Living source, Living target, SkillBufferTemplateInfo bufferInfo) {
+		super(source, target, bufferInfo);
+	}
+
+	@Override
+	protected void exec(AttackOrder attackOrder, Damage beDamage1, Damage beDamage2) {
+		int soulAttack = source.getInitValue(EnumAttr.SOUL_ATTACK);
+		changeValue = soulAttack * bufferInfo.getParam1() / 100;
+
+		source.refreshProperties(EnumAttr.SOUL_ATTACK.getValue());
+		source.refreshProperties(EnumAttr.ATTACK.getValue());
+	}
+
+	public void dispose() {
+		super.dispose();
+		changeValue = 0;
+		source.refreshProperties(EnumAttr.SOUL_ATTACK.getValue());
+		source.refreshProperties(EnumAttr.ATTACK.getValue());
+	}
+
+	public int getResult(int type) {
+		if (type == EnumAttr.SOUL_ATTACK.getValue()) {
+			return -changeValue;
+		}
+		if (type == EnumAttr.ATTACK.getValue()) {
+			return changeValue;
+		}
+		return 0;
+	}
+}

@@ -29,6 +29,7 @@ public class SkillBufferTemplateInfoDaoImpl extends BaseDao implements SkillBuff
 					skillBufferTmep.setIcon(rs.getInt("icon"));
 					skillBufferTmep.setIsHelpful(rs.getInt("isHelpful"));
 					skillBufferTmep.setType(rs.getInt("type"));
+					skillBufferTmep.setFromType(rs.getInt("fromType"));
 					skillBufferTmep.setTargetType(rs.getInt("targetType"));
 					skillBufferTmep.setExeWay(rs.getInt("exeWay"));
 					skillBufferTmep.setDurableType(rs.getInt("durableType"));// 耐久类型
@@ -38,6 +39,7 @@ public class SkillBufferTemplateInfoDaoImpl extends BaseDao implements SkillBuff
 																		// 100秒内免疫该类型BUUFF
 					skillBufferTmep.setOverlayType(rs.getInt("overlayType"));
 					skillBufferTmep.setOverlayWay(rs.getInt("overlayWay"));
+					skillBufferTmep.setLevel(rs.getInt("level"));
 					skillBufferTmep.setIsTips(rs.getInt("isTips"));
 					skillBufferTmep.setIsSave(rs.getInt("isSave"));
 					skillBufferTmep.setValueType(rs.getInt("valueType"));
@@ -49,9 +51,14 @@ public class SkillBufferTemplateInfoDaoImpl extends BaseDao implements SkillBuff
 					skillBufferTmep.setValuePercent1(rs.getInt("valuePercent1"));
 
 					skillBufferTmep.setStatus(rs.getInt("status"));
+					skillBufferTmep.setCostCount(rs.getInt("costCount"));
+
+					skillBufferTmep.setParam1(rs.getInt("param1"));
+					skillBufferTmep.setParam2(rs.getInt("param2"));
+					skillBufferTmep.setParam3(rs.getInt("param3"));
+					skillBufferTmep.setParam4(rs.getInt("param4"));
 					list.add(skillBufferTmep);
 				}
-
 			} catch (SQLException e) {
 				Log.error("执行出错:" + sql, e);
 			} finally {

@@ -1,11 +1,13 @@
 package com.chuangyou.xianni.soul;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
+import com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.entity.soul.SoulCardInfo;
@@ -16,8 +18,10 @@ import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.interfaces.IInventory;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.soul.logic.SoulCalcLogic;
+import com.chuangyou.xianni.soul.logic.calc.SoulCalcAddLogic;
+import com.chuangyou.xianni.soul.logic.calc.SoulCalcLogic;
 import com.chuangyou.xianni.soul.logic.make.KillMonsterListener;
+import com.chuangyou.xianni.soul.template.SoulTemplateMgr;
 import com.chuangyou.xianni.sql.dao.DBManager;
 
 public class SoulInventory extends AbstractEvent implements IInventory {
@@ -243,5 +247,47 @@ public class SoulInventory extends AbstractEvent implements IInventory {
 	public Map<Integer, FuseSkillVo> getTempMap() {
 		return tempMap;
 	}
+	
+	
+	/**
+	 * 获取魂幡技能列表消息
+	 * @param player
+	 * @return
+	 */
+	public List<FuseSkillMsg> getFuseSkillPacket(GamePlayer player){
+		List<FuseSkillMsg> list  = new ArrayList<>();
+		SoulCalcAddLogic logic = new SoulCalcAddLogic();
+		if(soulInfo.getFuseSkillId1()>0 && !logic.isExpire(soulInfo.getFuseSkillCreateTime1(), SoulTemplateMgr.MAX_SOUL_SKILL_CD)){
+			FuseSkillMsg.Builder msg = FuseSkillMsg.newBuilder();
+			msg.setIndex(1);
+			msg.setColor(soulInfo.getFuseSkillColor1());
+			msg.setFuseSkillId(soulInfo.getFuseSkillId1());
+			list.add(msg.build());
+		}
+		if(soulInfo.getFuseSkillId2()>0 && !logic.isExpire(soulInfo.getFuseSkillCreateTime2(), SoulTemplateMgr.MAX_SOUL_SKILL_CD)){
+			FuseSkillMsg.Builder msg = FuseSkillMsg.newBuilder();
+			msg.setIndex(2);
+			msg.setColor(soulInfo.getFuseSkillColor2());
+			msg.setFuseSkillId(soulInfo.getFuseSkillId2());
+			list.add(msg.build());
+		}
+		if(soulInfo.getFuseSkillId3()>0 && !logic.isExpire(soulInfo.getFuseSkillCreateTime3(), SoulTemplateMgr.MAX_SOUL_SKILL_CD)){
+			FuseSkillMsg.Builder msg = FuseSkillMsg.newBuilder();
+			msg.setIndex(3);
+			msg.setColor(soulInfo.getFuseSkillColor3());
+			msg.setFuseSkillId(soulInfo.getFuseSkillId3());
+			list.add(msg.build());
+		}
+		if(soulInfo.getFuseSkillId4()>0 && !logic.isExpire(soulInfo.getFuseSkillCreateTime4(), SoulTemplateMgr.MAX_SOUL_SKILL_CD)){
+			FuseSkillMsg.Builder msg = FuseSkillMsg.newBuilder();
+			msg.setIndex(4);
+			msg.setColor(soulInfo.getFuseSkillColor4());
+			msg.setFuseSkillId(soulInfo.getFuseSkillId4());
+			list.add(msg.build());
+		}
+		return list;
+		
+	}
+	
 
 }

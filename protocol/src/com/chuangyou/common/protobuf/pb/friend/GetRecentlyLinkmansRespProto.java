@@ -13,47 +13,47 @@ public final class GetRecentlyLinkmansRespProto {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .FriendInfoMsg roles = 1;</code>
+     * <code>repeated .FriendInfoMsg player = 1;</code>
      *
      * <pre>
      *用户信息列表
      * </pre>
      */
     java.util.List<com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg> 
-        getRolesList();
+        getPlayerList();
     /**
-     * <code>repeated .FriendInfoMsg roles = 1;</code>
+     * <code>repeated .FriendInfoMsg player = 1;</code>
      *
      * <pre>
      *用户信息列表
      * </pre>
      */
-    com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg getRoles(int index);
+    com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg getPlayer(int index);
     /**
-     * <code>repeated .FriendInfoMsg roles = 1;</code>
+     * <code>repeated .FriendInfoMsg player = 1;</code>
      *
      * <pre>
      *用户信息列表
      * </pre>
      */
-    int getRolesCount();
+    int getPlayerCount();
     /**
-     * <code>repeated .FriendInfoMsg roles = 1;</code>
+     * <code>repeated .FriendInfoMsg player = 1;</code>
      *
      * <pre>
      *用户信息列表
      * </pre>
      */
     java.util.List<? extends com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsgOrBuilder> 
-        getRolesOrBuilderList();
+        getPlayerOrBuilderList();
     /**
-     * <code>repeated .FriendInfoMsg roles = 1;</code>
+     * <code>repeated .FriendInfoMsg player = 1;</code>
      *
      * <pre>
      *用户信息列表
      * </pre>
      */
-    com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsgOrBuilder getRolesOrBuilder(
+    com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsgOrBuilder getPlayerOrBuilder(
         int index);
   }
   /**
@@ -115,10 +115,10 @@ public final class GetRecentlyLinkmansRespProto {
             }
             case 10: {
               if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                roles_ = new java.util.ArrayList<com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg>();
+                player_ = new java.util.ArrayList<com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg>();
                 mutable_bitField0_ |= 0x00000001;
               }
-              roles_.add(input.readMessage(com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.PARSER, extensionRegistry));
+              player_.add(input.readMessage(com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.PARSER, extensionRegistry));
               break;
             }
           }
@@ -130,7 +130,7 @@ public final class GetRecentlyLinkmansRespProto {
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-          roles_ = java.util.Collections.unmodifiableList(roles_);
+          player_ = java.util.Collections.unmodifiableList(player_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -163,63 +163,63 @@ public final class GetRecentlyLinkmansRespProto {
       return PARSER;
     }
 
-    public static final int ROLES_FIELD_NUMBER = 1;
-    private java.util.List<com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg> roles_;
+    public static final int PLAYER_FIELD_NUMBER = 1;
+    private java.util.List<com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg> player_;
     /**
-     * <code>repeated .FriendInfoMsg roles = 1;</code>
+     * <code>repeated .FriendInfoMsg player = 1;</code>
      *
      * <pre>
      *用户信息列表
      * </pre>
      */
-    public java.util.List<com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg> getRolesList() {
-      return roles_;
+    public java.util.List<com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg> getPlayerList() {
+      return player_;
     }
     /**
-     * <code>repeated .FriendInfoMsg roles = 1;</code>
+     * <code>repeated .FriendInfoMsg player = 1;</code>
      *
      * <pre>
      *用户信息列表
      * </pre>
      */
     public java.util.List<? extends com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsgOrBuilder> 
-        getRolesOrBuilderList() {
-      return roles_;
+        getPlayerOrBuilderList() {
+      return player_;
     }
     /**
-     * <code>repeated .FriendInfoMsg roles = 1;</code>
+     * <code>repeated .FriendInfoMsg player = 1;</code>
      *
      * <pre>
      *用户信息列表
      * </pre>
      */
-    public int getRolesCount() {
-      return roles_.size();
+    public int getPlayerCount() {
+      return player_.size();
     }
     /**
-     * <code>repeated .FriendInfoMsg roles = 1;</code>
+     * <code>repeated .FriendInfoMsg player = 1;</code>
      *
      * <pre>
      *用户信息列表
      * </pre>
      */
-    public com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg getRoles(int index) {
-      return roles_.get(index);
+    public com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg getPlayer(int index) {
+      return player_.get(index);
     }
     /**
-     * <code>repeated .FriendInfoMsg roles = 1;</code>
+     * <code>repeated .FriendInfoMsg player = 1;</code>
      *
      * <pre>
      *用户信息列表
      * </pre>
      */
-    public com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsgOrBuilder getRolesOrBuilder(
+    public com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsgOrBuilder getPlayerOrBuilder(
         int index) {
-      return roles_.get(index);
+      return player_.get(index);
     }
 
     private void initFields() {
-      roles_ = java.util.Collections.emptyList();
+      player_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -227,8 +227,8 @@ public final class GetRecentlyLinkmansRespProto {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      for (int i = 0; i < getRolesCount(); i++) {
-        if (!getRoles(i).isInitialized()) {
+      for (int i = 0; i < getPlayerCount(); i++) {
+        if (!getPlayer(i).isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -240,8 +240,8 @@ public final class GetRecentlyLinkmansRespProto {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
-      for (int i = 0; i < roles_.size(); i++) {
-        output.writeMessage(1, roles_.get(i));
+      for (int i = 0; i < player_.size(); i++) {
+        output.writeMessage(1, player_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -252,9 +252,9 @@ public final class GetRecentlyLinkmansRespProto {
       if (size != -1) return size;
 
       size = 0;
-      for (int i = 0; i < roles_.size(); i++) {
+      for (int i = 0; i < player_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, roles_.get(i));
+          .computeMessageSize(1, player_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -370,7 +370,7 @@ public final class GetRecentlyLinkmansRespProto {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getRolesFieldBuilder();
+          getPlayerFieldBuilder();
         }
       }
       private static Builder create() {
@@ -379,11 +379,11 @@ public final class GetRecentlyLinkmansRespProto {
 
       public Builder clear() {
         super.clear();
-        if (rolesBuilder_ == null) {
-          roles_ = java.util.Collections.emptyList();
+        if (playerBuilder_ == null) {
+          player_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000001);
         } else {
-          rolesBuilder_.clear();
+          playerBuilder_.clear();
         }
         return this;
       }
@@ -412,14 +412,14 @@ public final class GetRecentlyLinkmansRespProto {
       public com.chuangyou.common.protobuf.pb.friend.GetRecentlyLinkmansRespProto.GetRecentlyLinkmansRespMsg buildPartial() {
         com.chuangyou.common.protobuf.pb.friend.GetRecentlyLinkmansRespProto.GetRecentlyLinkmansRespMsg result = new com.chuangyou.common.protobuf.pb.friend.GetRecentlyLinkmansRespProto.GetRecentlyLinkmansRespMsg(this);
         int from_bitField0_ = bitField0_;
-        if (rolesBuilder_ == null) {
+        if (playerBuilder_ == null) {
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
-            roles_ = java.util.Collections.unmodifiableList(roles_);
+            player_ = java.util.Collections.unmodifiableList(player_);
             bitField0_ = (bitField0_ & ~0x00000001);
           }
-          result.roles_ = roles_;
+          result.player_ = player_;
         } else {
-          result.roles_ = rolesBuilder_.build();
+          result.player_ = playerBuilder_.build();
         }
         onBuilt();
         return result;
@@ -436,29 +436,29 @@ public final class GetRecentlyLinkmansRespProto {
 
       public Builder mergeFrom(com.chuangyou.common.protobuf.pb.friend.GetRecentlyLinkmansRespProto.GetRecentlyLinkmansRespMsg other) {
         if (other == com.chuangyou.common.protobuf.pb.friend.GetRecentlyLinkmansRespProto.GetRecentlyLinkmansRespMsg.getDefaultInstance()) return this;
-        if (rolesBuilder_ == null) {
-          if (!other.roles_.isEmpty()) {
-            if (roles_.isEmpty()) {
-              roles_ = other.roles_;
+        if (playerBuilder_ == null) {
+          if (!other.player_.isEmpty()) {
+            if (player_.isEmpty()) {
+              player_ = other.player_;
               bitField0_ = (bitField0_ & ~0x00000001);
             } else {
-              ensureRolesIsMutable();
-              roles_.addAll(other.roles_);
+              ensurePlayerIsMutable();
+              player_.addAll(other.player_);
             }
             onChanged();
           }
         } else {
-          if (!other.roles_.isEmpty()) {
-            if (rolesBuilder_.isEmpty()) {
-              rolesBuilder_.dispose();
-              rolesBuilder_ = null;
-              roles_ = other.roles_;
+          if (!other.player_.isEmpty()) {
+            if (playerBuilder_.isEmpty()) {
+              playerBuilder_.dispose();
+              playerBuilder_ = null;
+              player_ = other.player_;
               bitField0_ = (bitField0_ & ~0x00000001);
-              rolesBuilder_ = 
+              playerBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getRolesFieldBuilder() : null;
+                   getPlayerFieldBuilder() : null;
             } else {
-              rolesBuilder_.addAllMessages(other.roles_);
+              playerBuilder_.addAllMessages(other.player_);
             }
           }
         }
@@ -467,8 +467,8 @@ public final class GetRecentlyLinkmansRespProto {
       }
 
       public final boolean isInitialized() {
-        for (int i = 0; i < getRolesCount(); i++) {
-          if (!getRoles(i).isInitialized()) {
+        for (int i = 0; i < getPlayerCount(); i++) {
+          if (!getPlayer(i).isInitialized()) {
             
             return false;
           }
@@ -495,316 +495,316 @@ public final class GetRecentlyLinkmansRespProto {
       }
       private int bitField0_;
 
-      private java.util.List<com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg> roles_ =
+      private java.util.List<com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg> player_ =
         java.util.Collections.emptyList();
-      private void ensureRolesIsMutable() {
+      private void ensurePlayerIsMutable() {
         if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-          roles_ = new java.util.ArrayList<com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg>(roles_);
+          player_ = new java.util.ArrayList<com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg>(player_);
           bitField0_ |= 0x00000001;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg, com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.Builder, com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsgOrBuilder> rolesBuilder_;
+          com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg, com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.Builder, com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsgOrBuilder> playerBuilder_;
 
       /**
-       * <code>repeated .FriendInfoMsg roles = 1;</code>
+       * <code>repeated .FriendInfoMsg player = 1;</code>
        *
        * <pre>
        *用户信息列表
        * </pre>
        */
-      public java.util.List<com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg> getRolesList() {
-        if (rolesBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(roles_);
+      public java.util.List<com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg> getPlayerList() {
+        if (playerBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(player_);
         } else {
-          return rolesBuilder_.getMessageList();
+          return playerBuilder_.getMessageList();
         }
       }
       /**
-       * <code>repeated .FriendInfoMsg roles = 1;</code>
+       * <code>repeated .FriendInfoMsg player = 1;</code>
        *
        * <pre>
        *用户信息列表
        * </pre>
        */
-      public int getRolesCount() {
-        if (rolesBuilder_ == null) {
-          return roles_.size();
+      public int getPlayerCount() {
+        if (playerBuilder_ == null) {
+          return player_.size();
         } else {
-          return rolesBuilder_.getCount();
+          return playerBuilder_.getCount();
         }
       }
       /**
-       * <code>repeated .FriendInfoMsg roles = 1;</code>
+       * <code>repeated .FriendInfoMsg player = 1;</code>
        *
        * <pre>
        *用户信息列表
        * </pre>
        */
-      public com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg getRoles(int index) {
-        if (rolesBuilder_ == null) {
-          return roles_.get(index);
+      public com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg getPlayer(int index) {
+        if (playerBuilder_ == null) {
+          return player_.get(index);
         } else {
-          return rolesBuilder_.getMessage(index);
+          return playerBuilder_.getMessage(index);
         }
       }
       /**
-       * <code>repeated .FriendInfoMsg roles = 1;</code>
+       * <code>repeated .FriendInfoMsg player = 1;</code>
        *
        * <pre>
        *用户信息列表
        * </pre>
        */
-      public Builder setRoles(
+      public Builder setPlayer(
           int index, com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg value) {
-        if (rolesBuilder_ == null) {
+        if (playerBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureRolesIsMutable();
-          roles_.set(index, value);
+          ensurePlayerIsMutable();
+          player_.set(index, value);
           onChanged();
         } else {
-          rolesBuilder_.setMessage(index, value);
+          playerBuilder_.setMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .FriendInfoMsg roles = 1;</code>
+       * <code>repeated .FriendInfoMsg player = 1;</code>
        *
        * <pre>
        *用户信息列表
        * </pre>
        */
-      public Builder setRoles(
+      public Builder setPlayer(
           int index, com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.Builder builderForValue) {
-        if (rolesBuilder_ == null) {
-          ensureRolesIsMutable();
-          roles_.set(index, builderForValue.build());
+        if (playerBuilder_ == null) {
+          ensurePlayerIsMutable();
+          player_.set(index, builderForValue.build());
           onChanged();
         } else {
-          rolesBuilder_.setMessage(index, builderForValue.build());
+          playerBuilder_.setMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .FriendInfoMsg roles = 1;</code>
+       * <code>repeated .FriendInfoMsg player = 1;</code>
        *
        * <pre>
        *用户信息列表
        * </pre>
        */
-      public Builder addRoles(com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg value) {
-        if (rolesBuilder_ == null) {
+      public Builder addPlayer(com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg value) {
+        if (playerBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureRolesIsMutable();
-          roles_.add(value);
+          ensurePlayerIsMutable();
+          player_.add(value);
           onChanged();
         } else {
-          rolesBuilder_.addMessage(value);
+          playerBuilder_.addMessage(value);
         }
         return this;
       }
       /**
-       * <code>repeated .FriendInfoMsg roles = 1;</code>
+       * <code>repeated .FriendInfoMsg player = 1;</code>
        *
        * <pre>
        *用户信息列表
        * </pre>
        */
-      public Builder addRoles(
+      public Builder addPlayer(
           int index, com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg value) {
-        if (rolesBuilder_ == null) {
+        if (playerBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureRolesIsMutable();
-          roles_.add(index, value);
+          ensurePlayerIsMutable();
+          player_.add(index, value);
           onChanged();
         } else {
-          rolesBuilder_.addMessage(index, value);
+          playerBuilder_.addMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .FriendInfoMsg roles = 1;</code>
+       * <code>repeated .FriendInfoMsg player = 1;</code>
        *
        * <pre>
        *用户信息列表
        * </pre>
        */
-      public Builder addRoles(
+      public Builder addPlayer(
           com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.Builder builderForValue) {
-        if (rolesBuilder_ == null) {
-          ensureRolesIsMutable();
-          roles_.add(builderForValue.build());
+        if (playerBuilder_ == null) {
+          ensurePlayerIsMutable();
+          player_.add(builderForValue.build());
           onChanged();
         } else {
-          rolesBuilder_.addMessage(builderForValue.build());
+          playerBuilder_.addMessage(builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .FriendInfoMsg roles = 1;</code>
+       * <code>repeated .FriendInfoMsg player = 1;</code>
        *
        * <pre>
        *用户信息列表
        * </pre>
        */
-      public Builder addRoles(
+      public Builder addPlayer(
           int index, com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.Builder builderForValue) {
-        if (rolesBuilder_ == null) {
-          ensureRolesIsMutable();
-          roles_.add(index, builderForValue.build());
+        if (playerBuilder_ == null) {
+          ensurePlayerIsMutable();
+          player_.add(index, builderForValue.build());
           onChanged();
         } else {
-          rolesBuilder_.addMessage(index, builderForValue.build());
+          playerBuilder_.addMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .FriendInfoMsg roles = 1;</code>
+       * <code>repeated .FriendInfoMsg player = 1;</code>
        *
        * <pre>
        *用户信息列表
        * </pre>
        */
-      public Builder addAllRoles(
+      public Builder addAllPlayer(
           java.lang.Iterable<? extends com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg> values) {
-        if (rolesBuilder_ == null) {
-          ensureRolesIsMutable();
+        if (playerBuilder_ == null) {
+          ensurePlayerIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, roles_);
+              values, player_);
           onChanged();
         } else {
-          rolesBuilder_.addAllMessages(values);
+          playerBuilder_.addAllMessages(values);
         }
         return this;
       }
       /**
-       * <code>repeated .FriendInfoMsg roles = 1;</code>
+       * <code>repeated .FriendInfoMsg player = 1;</code>
        *
        * <pre>
        *用户信息列表
        * </pre>
        */
-      public Builder clearRoles() {
-        if (rolesBuilder_ == null) {
-          roles_ = java.util.Collections.emptyList();
+      public Builder clearPlayer() {
+        if (playerBuilder_ == null) {
+          player_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
-          rolesBuilder_.clear();
+          playerBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>repeated .FriendInfoMsg roles = 1;</code>
+       * <code>repeated .FriendInfoMsg player = 1;</code>
        *
        * <pre>
        *用户信息列表
        * </pre>
        */
-      public Builder removeRoles(int index) {
-        if (rolesBuilder_ == null) {
-          ensureRolesIsMutable();
-          roles_.remove(index);
+      public Builder removePlayer(int index) {
+        if (playerBuilder_ == null) {
+          ensurePlayerIsMutable();
+          player_.remove(index);
           onChanged();
         } else {
-          rolesBuilder_.remove(index);
+          playerBuilder_.remove(index);
         }
         return this;
       }
       /**
-       * <code>repeated .FriendInfoMsg roles = 1;</code>
+       * <code>repeated .FriendInfoMsg player = 1;</code>
        *
        * <pre>
        *用户信息列表
        * </pre>
        */
-      public com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.Builder getRolesBuilder(
+      public com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.Builder getPlayerBuilder(
           int index) {
-        return getRolesFieldBuilder().getBuilder(index);
+        return getPlayerFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .FriendInfoMsg roles = 1;</code>
+       * <code>repeated .FriendInfoMsg player = 1;</code>
        *
        * <pre>
        *用户信息列表
        * </pre>
        */
-      public com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsgOrBuilder getRolesOrBuilder(
+      public com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsgOrBuilder getPlayerOrBuilder(
           int index) {
-        if (rolesBuilder_ == null) {
-          return roles_.get(index);  } else {
-          return rolesBuilder_.getMessageOrBuilder(index);
+        if (playerBuilder_ == null) {
+          return player_.get(index);  } else {
+          return playerBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>repeated .FriendInfoMsg roles = 1;</code>
+       * <code>repeated .FriendInfoMsg player = 1;</code>
        *
        * <pre>
        *用户信息列表
        * </pre>
        */
       public java.util.List<? extends com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsgOrBuilder> 
-           getRolesOrBuilderList() {
-        if (rolesBuilder_ != null) {
-          return rolesBuilder_.getMessageOrBuilderList();
+           getPlayerOrBuilderList() {
+        if (playerBuilder_ != null) {
+          return playerBuilder_.getMessageOrBuilderList();
         } else {
-          return java.util.Collections.unmodifiableList(roles_);
+          return java.util.Collections.unmodifiableList(player_);
         }
       }
       /**
-       * <code>repeated .FriendInfoMsg roles = 1;</code>
+       * <code>repeated .FriendInfoMsg player = 1;</code>
        *
        * <pre>
        *用户信息列表
        * </pre>
        */
-      public com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.Builder addRolesBuilder() {
-        return getRolesFieldBuilder().addBuilder(
+      public com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.Builder addPlayerBuilder() {
+        return getPlayerFieldBuilder().addBuilder(
             com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.getDefaultInstance());
       }
       /**
-       * <code>repeated .FriendInfoMsg roles = 1;</code>
+       * <code>repeated .FriendInfoMsg player = 1;</code>
        *
        * <pre>
        *用户信息列表
        * </pre>
        */
-      public com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.Builder addRolesBuilder(
+      public com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.Builder addPlayerBuilder(
           int index) {
-        return getRolesFieldBuilder().addBuilder(
+        return getPlayerFieldBuilder().addBuilder(
             index, com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.getDefaultInstance());
       }
       /**
-       * <code>repeated .FriendInfoMsg roles = 1;</code>
+       * <code>repeated .FriendInfoMsg player = 1;</code>
        *
        * <pre>
        *用户信息列表
        * </pre>
        */
       public java.util.List<com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.Builder> 
-           getRolesBuilderList() {
-        return getRolesFieldBuilder().getBuilderList();
+           getPlayerBuilderList() {
+        return getPlayerFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
           com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg, com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.Builder, com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsgOrBuilder> 
-          getRolesFieldBuilder() {
-        if (rolesBuilder_ == null) {
-          rolesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+          getPlayerFieldBuilder() {
+        if (playerBuilder_ == null) {
+          playerBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg, com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.Builder, com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsgOrBuilder>(
-                  roles_,
+                  player_,
                   ((bitField0_ & 0x00000001) == 0x00000001),
                   getParentForChildren(),
                   isClean());
-          roles_ = null;
+          player_ = null;
         }
-        return rolesBuilder_;
+        return playerBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:GetRecentlyLinkmansRespMsg)
@@ -833,11 +833,11 @@ public final class GetRecentlyLinkmansRespProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\'friend/GetRecentlyLinkmansRespMsg.prot" +
-      "o\032\032friend/FriendInfoMsg.proto\";\n\032GetRece" +
-      "ntlyLinkmansRespMsg\022\035\n\005roles\030\001 \003(\0132\016.Fri" +
-      "endInfoMsgBG\n\'com.chuangyou.common.proto" +
-      "buf.pb.friendB\034GetRecentlyLinkmansRespPr" +
-      "oto"
+      "o\032\032friend/FriendInfoMsg.proto\"<\n\032GetRece" +
+      "ntlyLinkmansRespMsg\022\036\n\006player\030\001 \003(\0132\016.Fr" +
+      "iendInfoMsgBG\n\'com.chuangyou.common.prot" +
+      "obuf.pb.friendB\034GetRecentlyLinkmansRespP" +
+      "roto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -857,7 +857,7 @@ public final class GetRecentlyLinkmansRespProto {
     internal_static_GetRecentlyLinkmansRespMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_GetRecentlyLinkmansRespMsg_descriptor,
-        new java.lang.String[] { "Roles", });
+        new java.lang.String[] { "Player", });
     com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.getDescriptor();
   }
 

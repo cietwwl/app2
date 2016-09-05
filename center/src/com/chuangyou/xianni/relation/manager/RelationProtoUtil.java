@@ -1,9 +1,10 @@
-package com.chuangyou.xianni.friend.manager;
+package com.chuangyou.xianni.relation.manager;
 
 import com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg;
+import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.player.GamePlayer;
 
-public class FriendManager {
+public class RelationProtoUtil {
 
 	/**
 	 * 转换为PB对象
@@ -22,6 +23,17 @@ public class FriendManager {
 		msg.setLevel(player.getBasePlayer().getPlayerInfo().getLevel());
 		msg.setFight(player.getBasePlayer().getPlayerInfo().getFight());
 		return msg;
-
+	}
+	
+	public static FriendInfoMsg.Builder change(PlayerInfo playerInfo, short onlineState){
+		FriendInfoMsg.Builder msg = FriendInfoMsg.newBuilder();
+		msg.setRoleId(playerInfo.getPlayerId());
+		msg.setRoleName(playerInfo.getNickName());
+		msg.setOnlineStatus(onlineState);
+		msg.setVipLevel(playerInfo.getVipLevel());
+		msg.setSkinId(playerInfo.getSkinId());
+		msg.setLevel(playerInfo.getLevel());
+		msg.setFight(playerInfo.getFight());
+		return msg;
 	}
 }

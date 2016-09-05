@@ -11,8 +11,8 @@ import com.chuangyou.xianni.role.objects.Living;
 /** 伤害类型buffer */
 public class LivingDamageBuffer extends Buffer {
 
-	protected LivingDamageBuffer(long bufferId, Living source, Living target, SkillBufferTemplateInfo bufferInfo) {
-		super(bufferId, source, target, bufferInfo);
+	protected LivingDamageBuffer(Living source, Living target, SkillBufferTemplateInfo bufferInfo) {
+		super(source, target, bufferInfo);
 	}
 
 	@Override
@@ -21,7 +21,7 @@ public class LivingDamageBuffer extends Buffer {
 		int type1 = bufferInfo.getValueType();
 
 		if (type1 > 0) {
-			if (type1 == EnumAttr.CUR_BLOOD.getValue()) { 
+			if (type1 == EnumAttr.CUR_BLOOD.getValue()) {
 				damageValue1 = calBlood(bufferInfo.getValuePercent(), bufferInfo.getValue());
 			}
 			if (type1 == EnumAttr.CUR_SOUL.getValue()) {

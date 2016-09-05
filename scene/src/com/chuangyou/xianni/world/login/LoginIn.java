@@ -7,7 +7,6 @@ import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
-import com.chuangyou.xianni.role.helper.RoleConstants;
 import com.chuangyou.xianni.role.objects.Pet;
 import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.socket.Cmd;
@@ -33,16 +32,18 @@ public class LoginIn implements Command {
 		// 初始化英雄数据
 		Player player = new Player(playerId);
 		Team t = TeamMgr.getTeam(playerId);
-		if(t==null){
+		if (t == null) {
 			player.setTeamId(0);
-		}else{
+		} else {
 			player.setTeamId(t.getTeamid());
 		}
-		player.setType(RoleConstants.RoleType.player);
+		player.setSimpleInfo(simPlayer);
+		// 初始化觉醒技能buff
+		player.updateWeaponBuff();
 		player.readHeroInfo(msg.getHeoBattleInfo());
 
 		Pet pet = null;
-		if(msg.getPetBattleInfo().getPetTempId() > 0){
+		if (msg.getPetBattleInfo().getPetTempId() > 0) {
 			// 初始化宠物数据
 			pet = new Pet(playerId, IDMakerHelper.nextID());
 			pet.readPetInfo(msg.getPetBattleInfo());

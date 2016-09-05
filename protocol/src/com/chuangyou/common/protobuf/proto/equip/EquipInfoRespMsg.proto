@@ -7,5 +7,6 @@ import "equip/EquipInfoMsg.proto";
 //返回装备信息
 message EquipInfoRespMsg{
 	optional int32 action = 1; // 功能号(1装备觉醒结果返回  2装备注魂结果返回)
-	optional EquipInfoMsg equip = 2; // 装备信息
+	optional int32 result = 2; // 操作结果(0成功  1失败)
+	optional EquipInfoMsg equip = 3; // 装备信息
 }

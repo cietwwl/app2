@@ -29,6 +29,8 @@ import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.navi.seeker.NavmeshSeeker;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
 import com.chuangyou.xianni.warfield.template.FieldTemplateMgr;
+import com.chuangyou.xianni.world.ArmyProxy;
+import com.chuangyou.xianni.world.WorldMgr;
 
 /**
  * 地图基类
@@ -81,7 +83,7 @@ public class Field extends AbstractActionQueue {
 	/**
 	 * 场景里的掉落物
 	 */
-	protected Map<Integer, DropPackage>			dropItems	= new HashMap<>();
+	protected ConcurrentHashMap<Integer, DropPackage>			dropItems	= new ConcurrentHashMap<Integer, DropPackage>();
 
 	/** 所属副本ID(唯一ID) */
 	protected int								campaignId;
@@ -137,6 +139,15 @@ public class Field extends AbstractActionQueue {
 	 */
 	public void leaveField(Living l) {
 		leaveField(l, true);
+//		//如果是玩家，判断是否有宠物，并移除宠物
+//		if(l.getType() == RoleType.player){
+//			ArmyProxy army = WorldMgr.getArmy(l.getArmyId());
+//			if(army != null){
+//				if(army.getPet() != null && army.getPet().getField() != null){
+//					if(this.getLiving(army.getPet().getId()) != null) leaveField(army.getPet(), true);
+//				}
+//			}
+//		}
 	}
 
 	public void leaveField(Living l, boolean notifyClient) {

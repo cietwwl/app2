@@ -28,7 +28,6 @@ public class BuyVipCmd extends AbstractCommand {
 
 			PBMessage p = MessageUtil.buildMessage(Protocol.U_VIP_BUY, resMsg);
 			player.sendPbMessage(p);
-			System.out.println(p);
 			if (handselPlayerId > 0) {
 				GamePlayer handselPlayer = WorldMgr.getPlayerFromCache(handselPlayerId);
 				if (handselPlayer != null) {

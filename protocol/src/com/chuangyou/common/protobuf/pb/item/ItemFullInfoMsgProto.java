@@ -240,6 +240,23 @@ public final class ItemFullInfoMsgProto {
      * </pre>
      */
     com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsgOrBuilder getEquipOrBuilder();
+
+    /**
+     * <code>optional int64 id = 14;</code>
+     *
+     * <pre>
+     * 道具ID
+     * </pre>
+     */
+    boolean hasId();
+    /**
+     * <code>optional int64 id = 14;</code>
+     *
+     * <pre>
+     * 道具ID
+     * </pre>
+     */
+    long getId();
   }
   /**
    * Protobuf type {@code ItemFullInfoMsg}
@@ -368,6 +385,11 @@ public final class ItemFullInfoMsgProto {
                 equip_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00001000;
+              break;
+            }
+            case 112: {
+              bitField0_ |= 0x00002000;
+              id_ = input.readInt64();
               break;
             }
           }
@@ -719,6 +741,29 @@ public final class ItemFullInfoMsgProto {
       return equip_;
     }
 
+    public static final int ID_FIELD_NUMBER = 14;
+    private long id_;
+    /**
+     * <code>optional int64 id = 14;</code>
+     *
+     * <pre>
+     * 道具ID
+     * </pre>
+     */
+    public boolean hasId() {
+      return ((bitField0_ & 0x00002000) == 0x00002000);
+    }
+    /**
+     * <code>optional int64 id = 14;</code>
+     *
+     * <pre>
+     * 道具ID
+     * </pre>
+     */
+    public long getId() {
+      return id_;
+    }
+
     private void initFields() {
       templateId_ = 0;
       pos_ = 0;
@@ -733,6 +778,7 @@ public final class ItemFullInfoMsgProto {
       pro_ = 0;
       grow_ = 0;
       equip_ = com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg.getDefaultInstance();
+      id_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -785,6 +831,9 @@ public final class ItemFullInfoMsgProto {
       }
       if (((bitField0_ & 0x00001000) == 0x00001000)) {
         output.writeMessage(13, equip_);
+      }
+      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+        output.writeInt64(14, id_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -846,6 +895,10 @@ public final class ItemFullInfoMsgProto {
       if (((bitField0_ & 0x00001000) == 0x00001000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(13, equip_);
+      }
+      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(14, id_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -999,6 +1052,8 @@ public final class ItemFullInfoMsgProto {
           equipBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00001000);
+        id_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00002000);
         return this;
       }
 
@@ -1083,6 +1138,10 @@ public final class ItemFullInfoMsgProto {
         } else {
           result.equip_ = equipBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
+          to_bitField0_ |= 0x00002000;
+        }
+        result.id_ = id_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1137,6 +1196,9 @@ public final class ItemFullInfoMsgProto {
         }
         if (other.hasEquip()) {
           mergeEquip(other.getEquip());
+        }
+        if (other.hasId()) {
+          setId(other.getId());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1893,6 +1955,54 @@ public final class ItemFullInfoMsgProto {
         return equipBuilder_;
       }
 
+      private long id_ ;
+      /**
+       * <code>optional int64 id = 14;</code>
+       *
+       * <pre>
+       * 道具ID
+       * </pre>
+       */
+      public boolean hasId() {
+        return ((bitField0_ & 0x00002000) == 0x00002000);
+      }
+      /**
+       * <code>optional int64 id = 14;</code>
+       *
+       * <pre>
+       * 道具ID
+       * </pre>
+       */
+      public long getId() {
+        return id_;
+      }
+      /**
+       * <code>optional int64 id = 14;</code>
+       *
+       * <pre>
+       * 道具ID
+       * </pre>
+       */
+      public Builder setId(long value) {
+        bitField0_ |= 0x00002000;
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 id = 14;</code>
+       *
+       * <pre>
+       * 道具ID
+       * </pre>
+       */
+      public Builder clearId() {
+        bitField0_ = (bitField0_ & ~0x00002000);
+        id_ = 0L;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:ItemFullInfoMsg)
     }
 
@@ -1919,15 +2029,16 @@ public final class ItemFullInfoMsgProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\032item/ItemFullInfoMsg.proto\032\026army/Prope" +
-      "rtyMsg.proto\032\030equip/EquipInfoMsg.proto\"\370" +
-      "\001\n\017ItemFullInfoMsg\022\022\n\ntemplateId\030\001 \001(\005\022\013" +
+      "rtyMsg.proto\032\030equip/EquipInfoMsg.proto\"\204" +
+      "\002\n\017ItemFullInfoMsg\022\022\n\ntemplateId\030\001 \001(\005\022\013" +
       "\n\003pos\030\002 \001(\005\022\017\n\007bagType\030\003 \001(\005\022\014\n\004bind\030\004 \001" +
       "(\010\022\014\n\004used\030\005 \001(\010\022\r\n\005count\030\006 \001(\005\022\021\n\tvalid" +
       "Date\030\007 \001(\005\022\021\n\tbeginDate\030\010 \001(\003\022\r\n\005isNew\030\t" +
       " \001(\010\022\032\n\022qualityCoefficient\030\n \001(\005\022\013\n\003pro\030" +
       "\013 \001(\005\022\014\n\004grow\030\014 \001(\005\022\034\n\005equip\030\r \001(\0132\r.Equ" +
-      "ipInfoMsgB=\n%com.chuangyou.common.protob" +
-      "uf.pb.itemB\024ItemFullInfoMsgProto"
+      "ipInfoMsg\022\n\n\002id\030\016 \001(\003B=\n%com.chuangyou.c" +
+      "ommon.protobuf.pb.itemB\024ItemFullInfoMsgP",
+      "roto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1948,7 +2059,7 @@ public final class ItemFullInfoMsgProto {
     internal_static_ItemFullInfoMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ItemFullInfoMsg_descriptor,
-        new java.lang.String[] { "TemplateId", "Pos", "BagType", "Bind", "Used", "Count", "ValidDate", "BeginDate", "IsNew", "QualityCoefficient", "Pro", "Grow", "Equip", });
+        new java.lang.String[] { "TemplateId", "Pos", "BagType", "Bind", "Used", "Count", "ValidDate", "BeginDate", "IsNew", "QualityCoefficient", "Pro", "Grow", "Equip", "Id", });
     com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.getDescriptor();
     com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.getDescriptor();
   }

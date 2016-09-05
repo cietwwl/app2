@@ -1,6 +1,8 @@
 package com.chuangyou.xianni.entity.soul;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg;
 import com.chuangyou.common.protobuf.pb.soul.SoulInfoProto.SoulInfoMsg;
@@ -37,9 +39,44 @@ public class SoulInfo extends DataObject {
 	private int fuseSkillColor3;
 	private int fuseSkillColor4;
 	
-										// '创建时间',
+										
+	
 
 	private int proficiency; //材料制作熟练度
+	
+	
+	/**
+	 * 获取卡牌列表
+	 * @return
+	 */
+	public List<Integer> getCardsList(){
+		List<Integer> list = new ArrayList<>();
+		if(this.card1>0){
+			list.add(this.card1);
+		}
+		if(this.card2>0){
+			list.add(this.card2);
+		}
+		if(this.card3>0){
+			list.add(this.card3);
+		}
+		if(this.card4>0){
+			list.add(this.card4);
+		}
+		if(this.card5>0){
+			list.add(this.card5);
+		}
+		if(this.card6>0){
+			list.add(this.card6);
+		}
+		if(this.card7>0){
+			list.add(this.card7);
+		}
+		if(this.card8>0){
+			list.add(this.card8);
+		}
+		return list;
+	}
 	
 	public SoulInfoMsg.Builder getMsg(){
 		SoulInfoMsg.Builder msg = SoulInfoMsg.newBuilder();

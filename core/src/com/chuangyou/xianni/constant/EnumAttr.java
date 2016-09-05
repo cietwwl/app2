@@ -277,6 +277,11 @@ public enum EnumAttr {
 	 * 武器觉醒
 	 */
 	WEAPON_AWAKEN(63),
+	
+	/**
+	 * 魂幡经验
+	 */
+	SOUL_EXP(64),
 
 	/**
 	 * 灵石

@@ -47,6 +47,8 @@ public interface SceneProtocol {
 
 	public static final short	S_PLAYER_MOUNT_STATE_REQ	= 20033;	// 请求上下坐骑
 	public static final short	S_PLAYER_UPDATE				= 20034;	// 玩家数据更新
+	
+	public static final short	S_PLAYER_MANA_UPDATE		= 20035;	// 玩家灵力更新
 
 	// ===========================>campaign<=========================
 	public static final short	S_CREATE_CAMPAIGN			= 20050;	// 请求创建副本
@@ -73,7 +75,8 @@ public interface SceneProtocol {
 	public static final short	S_SEARCH_PRIVATE_MONSTER	= 20508;
 	/** 请求队伍信息 */
 	public static final short	S_REQ_TEAM_INFO				= 20509;
-	// =======================================================================
+	
+	//===================================================================
 	/**请求创建天逆珠秘境副本**/
 	public static final short	S_CREATE_INVERSE_BEAD_CAMPAIGN =  20602;
 	/**怪物**/
@@ -91,7 +94,14 @@ public interface SceneProtocol {
 	/** 玩家创建陷阱 */
 	public static final short	S_CREATE_SNARE				= 20512;
 
-	/** 玩家进出副本 */
+	/** 陷阱操作 */
 	public static final short	S_TOUCHU_SNARE_STATU		= 20513;
+	// =============================>魂幡融合技能<=========================
+	/**
+	 * 魂幡融合技能更新同步
+	 */
+	public static final short   S_REQ_SOUL_FUSESKILL_UPDATE = 20514;
+	/** 魂幡数更新   */
+	public static final short 	S_REQ_SOUL_EXP              = 20515;
 
 }

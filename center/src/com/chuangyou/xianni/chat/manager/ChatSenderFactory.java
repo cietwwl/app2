@@ -6,6 +6,7 @@ import java.util.Map;
 import com.chuangyou.xianni.chat.manager.action.ChatBaseAction;
 import com.chuangyou.xianni.chat.manager.action.ChatFactionAction;
 import com.chuangyou.xianni.chat.manager.action.ChatPrivateAction;
+import com.chuangyou.xianni.chat.manager.action.ChatPromptAction;
 import com.chuangyou.xianni.chat.manager.action.ChatSceneAction;
 import com.chuangyou.xianni.chat.manager.action.ChatSearchTeamAction;
 import com.chuangyou.xianni.chat.manager.action.ChatSystemAction;
@@ -15,7 +16,7 @@ import com.chuangyou.xianni.constant.ChatConstant;
 
 public class ChatSenderFactory {
 
-	private Map<Short, ChatBaseAction> _chatSenderMap = new HashMap<Short, ChatBaseAction>();
+	private Map<Integer, ChatBaseAction> _chatSenderMap = new HashMap<Integer, ChatBaseAction>();
 	
 	private static ChatSenderFactory ins = new ChatSenderFactory();
 	
@@ -36,9 +37,10 @@ public class ChatSenderFactory {
 		_chatSenderMap.put(ChatConstant.Channel.TEAM, new ChatTeamAction());
 		_chatSenderMap.put(ChatConstant.Channel.SEARCH_TEAM, new ChatSearchTeamAction());
 		_chatSenderMap.put(ChatConstant.Channel.PRIVATE, new ChatPrivateAction());
+		_chatSenderMap.put(ChatConstant.Channel.PROMPT, new ChatPromptAction());
 	}
 	
-	public ChatBaseAction getAction(short channel){
+	public ChatBaseAction getAction(int channel){
 		return _chatSenderMap.get(channel);
 	}
 }

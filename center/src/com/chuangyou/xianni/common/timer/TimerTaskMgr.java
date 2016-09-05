@@ -151,7 +151,7 @@ class SaveChatOfflineData extends Task {
 	@Override
 	public void exec() {
 		// TODO Auto-generated method stub
-		ChatManager.savePrivateOfflineMsg();
+		ChatManager.saveOfflineMsg();
 	}
 }
 

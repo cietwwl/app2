@@ -3,6 +3,7 @@ package com.chuangyou.xianni.player.cmd;
 import com.chuangyou.common.protobuf.pb.PlayerSimpleSnapReqProto.PlayerSimpleSnapReqMsg;
 import com.chuangyou.common.protobuf.pb.PlayerSimpleSnapRespProto.PlayerSimpleSnapRespMsg;
 import com.chuangyou.xianni.base.AbstractCommand;
+import com.chuangyou.xianni.constant.PlayerRelationConstant;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -35,7 +36,10 @@ public class PlayerSimpleSnapReqCmd extends AbstractCommand {
 			resp.setLevel(p.getBasePlayer().getPlayerInfo().getLevel());
 			resp.setSkinId(p.getBasePlayer().getPlayerInfo().getSkinId());
 			resp.setNickName(p.getBasePlayer().getPlayerInfo().getNickName());
-			resp.setIsFriend(p.getFriendInventory().getFriend().isFriend(player.getPlayerId()));
+			//自己是否是对方的好友
+			if(player.getRelationInventory()!= null){
+				resp.setIsFriend(player.getRelationInventory().isRelationTypeSelfToTarget(player.getPlayerId(), PlayerRelationConstant.FRIEND));
+			}
 			if (p.getPlayerState() == PlayerState.OFFLINE) {
 				resp.setIsOnline(false);
 			} else {

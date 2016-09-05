@@ -419,6 +419,23 @@ public final class PlayerInfoMsgProto {
      * </pre>
      */
     long getEquipExp();
+
+    /**
+     * <code>optional int32 weaponAwaken = 24;</code>
+     *
+     * <pre>
+     * 当前武器觉醒等级
+     * </pre>
+     */
+    boolean hasWeaponAwaken();
+    /**
+     * <code>optional int32 weaponAwaken = 24;</code>
+     *
+     * <pre>
+     * 当前武器觉醒等级
+     * </pre>
+     */
+    int getWeaponAwaken();
   }
   /**
    * Protobuf type {@code PlayerInfoMsg}
@@ -594,6 +611,11 @@ public final class PlayerInfoMsgProto {
             case 184: {
               bitField0_ |= 0x00400000;
               equipExp_ = input.readInt64();
+              break;
+            }
+            case 192: {
+              bitField0_ |= 0x00800000;
+              weaponAwaken_ = input.readInt32();
               break;
             }
           }
@@ -1206,6 +1228,29 @@ public final class PlayerInfoMsgProto {
       return equipExp_;
     }
 
+    public static final int WEAPONAWAKEN_FIELD_NUMBER = 24;
+    private int weaponAwaken_;
+    /**
+     * <code>optional int32 weaponAwaken = 24;</code>
+     *
+     * <pre>
+     * 当前武器觉醒等级
+     * </pre>
+     */
+    public boolean hasWeaponAwaken() {
+      return ((bitField0_ & 0x00800000) == 0x00800000);
+    }
+    /**
+     * <code>optional int32 weaponAwaken = 24;</code>
+     *
+     * <pre>
+     * 当前武器觉醒等级
+     * </pre>
+     */
+    public int getWeaponAwaken() {
+      return weaponAwaken_;
+    }
+
     private void initFields() {
       playerId_ = 0L;
       userId_ = 0L;
@@ -1230,6 +1275,7 @@ public final class PlayerInfoMsgProto {
       points_ = 0;
       job_ = 0;
       equipExp_ = 0L;
+      weaponAwaken_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1312,6 +1358,9 @@ public final class PlayerInfoMsgProto {
       }
       if (((bitField0_ & 0x00400000) == 0x00400000)) {
         output.writeInt64(23, equipExp_);
+      }
+      if (((bitField0_ & 0x00800000) == 0x00800000)) {
+        output.writeInt32(24, weaponAwaken_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -1413,6 +1462,10 @@ public final class PlayerInfoMsgProto {
       if (((bitField0_ & 0x00400000) == 0x00400000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(23, equipExp_);
+      }
+      if (((bitField0_ & 0x00800000) == 0x00800000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(24, weaponAwaken_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1582,6 +1635,8 @@ public final class PlayerInfoMsgProto {
         bitField0_ = (bitField0_ & ~0x00200000);
         equipExp_ = 0L;
         bitField0_ = (bitField0_ & ~0x00400000);
+        weaponAwaken_ = 0;
+        bitField0_ = (bitField0_ & ~0x00800000);
         return this;
       }
 
@@ -1706,6 +1761,10 @@ public final class PlayerInfoMsgProto {
           to_bitField0_ |= 0x00400000;
         }
         result.equipExp_ = equipExp_;
+        if (((from_bitField0_ & 0x00800000) == 0x00800000)) {
+          to_bitField0_ |= 0x00800000;
+        }
+        result.weaponAwaken_ = weaponAwaken_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1792,6 +1851,9 @@ public final class PlayerInfoMsgProto {
         }
         if (other.hasEquipExp()) {
           setEquipExp(other.getEquipExp());
+        }
+        if (other.hasWeaponAwaken()) {
+          setWeaponAwaken(other.getWeaponAwaken());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -3080,6 +3142,54 @@ public final class PlayerInfoMsgProto {
         return this;
       }
 
+      private int weaponAwaken_ ;
+      /**
+       * <code>optional int32 weaponAwaken = 24;</code>
+       *
+       * <pre>
+       * 当前武器觉醒等级
+       * </pre>
+       */
+      public boolean hasWeaponAwaken() {
+        return ((bitField0_ & 0x00800000) == 0x00800000);
+      }
+      /**
+       * <code>optional int32 weaponAwaken = 24;</code>
+       *
+       * <pre>
+       * 当前武器觉醒等级
+       * </pre>
+       */
+      public int getWeaponAwaken() {
+        return weaponAwaken_;
+      }
+      /**
+       * <code>optional int32 weaponAwaken = 24;</code>
+       *
+       * <pre>
+       * 当前武器觉醒等级
+       * </pre>
+       */
+      public Builder setWeaponAwaken(int value) {
+        bitField0_ |= 0x00800000;
+        weaponAwaken_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 weaponAwaken = 24;</code>
+       *
+       * <pre>
+       * 当前武器觉醒等级
+       * </pre>
+       */
+      public Builder clearWeaponAwaken() {
+        bitField0_ = (bitField0_ & ~0x00800000);
+        weaponAwaken_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:PlayerInfoMsg)
     }
 
@@ -3106,7 +3216,7 @@ public final class PlayerInfoMsgProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\032player/PlayerInfoMsg.proto\032\027player/Pos" +
-      "tionMsg.proto\"\254\003\n\rPlayerInfoMsg\022\021\n\tplaye" +
+      "tionMsg.proto\"\302\003\n\rPlayerInfoMsg\022\021\n\tplaye" +
       "r_id\030\001 \001(\003\022\017\n\007user_id\030\002 \001(\003\022\021\n\tnick_name" +
       "\030\003 \001(\t\022\r\n\005level\030\004 \001(\005\022\013\n\003exp\030\005 \001(\003\022\020\n\010to" +
       "al_exp\030\006 \001(\003\022\r\n\005money\030\007 \001(\003\022\021\n\tbind_cash" +
@@ -3117,8 +3227,9 @@ public final class PlayerInfoMsgProto {
       "BagCount\030\021 \001(\005\022\037\n\npostionMsg\030\022 \001(\0132\013.Pos",
       "tionMsg\022\014\n\004cash\030\023 \001(\005\022\016\n\006repair\030\024 \001(\005\022\016\n" +
       "\006points\030\025 \001(\005\022\013\n\003job\030\026 \001(\005\022\020\n\010equipExp\030\027" +
-      " \001(\003B6\n com.chuangyou.common.protobuf.pb" +
-      "B\022PlayerInfoMsgProto"
+      " \001(\003\022\024\n\014weaponAwaken\030\030 \001(\005B6\n com.chuang" +
+      "you.common.protobuf.pbB\022PlayerInfoMsgPro" +
+      "to"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3138,7 +3249,7 @@ public final class PlayerInfoMsgProto {
     internal_static_PlayerInfoMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_PlayerInfoMsg_descriptor,
-        new java.lang.String[] { "PlayerId", "UserId", "NickName", "Level", "Exp", "ToalExp", "Money", "BindCash", "VipLevel", "Fight", "SkinId", "FashionId", "WeaponId", "MountId", "MagicWeaponId", "WingId", "PBagCount", "PostionMsg", "Cash", "Repair", "Points", "Job", "EquipExp", });
+        new java.lang.String[] { "PlayerId", "UserId", "NickName", "Level", "Exp", "ToalExp", "Money", "BindCash", "VipLevel", "Fight", "SkinId", "FashionId", "WeaponId", "MountId", "MagicWeaponId", "WingId", "PBagCount", "PostionMsg", "Cash", "Repair", "Points", "Job", "EquipExp", "WeaponAwaken", });
     com.chuangyou.common.protobuf.pb.PostionMsgProto.getDescriptor();
   }
 

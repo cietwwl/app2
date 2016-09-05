@@ -7,6 +7,7 @@ public class SkillBufferTemplateInfo {
 	private int		icon;			// buffer图标
 	private int		isHelpful;		// 1 有益
 	private int		type;			// 作用类型
+	private int		fromType;		// 源类型
 	private int		targetType;		// 作用目标
 	private int		targetLimit;	// 目标限定
 	private int		exeWay;			// 生效时机
@@ -21,6 +22,7 @@ public class SkillBufferTemplateInfo {
 	 * 新buff的时间与次数增加到老buff上 5
 	 */
 	private int		overlayWay;		// 操作方式
+	private int		level;			// 定义等级
 	private int		isTips;			// 是否显示图标
 	private int		isSave;			// 是否离线保存
 	private int		valueType;		// 作用属性类型
@@ -32,6 +34,12 @@ public class SkillBufferTemplateInfo {
 	private int		valuePercent1;	// 百分比1
 
 	private int		status;			// buff作用状态ID
+	private int		costCount;		// 消耗类型
+
+	private int		param1;			// 配置参数1
+	private int		param2;			// 配置参数2
+	private int		param3;			// 配置参数3
+	private int		param4;			// 配置参数4
 
 	public int getTemplateId() {
 		return templateId;
@@ -185,6 +193,14 @@ public class SkillBufferTemplateInfo {
 		this.overlayWay = overlayWay;
 	}
 
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
 	public int getStatus() {
 		return status;
 	}
@@ -215,6 +231,54 @@ public class SkillBufferTemplateInfo {
 
 	public void setValueType1(int valueType1) {
 		this.valueType1 = valueType1;
+	}
+
+	public int getParam1() {
+		return param1;
+	}
+
+	public void setParam1(int param1) {
+		this.param1 = param1;
+	}
+
+	public int getParam2() {
+		return param2;
+	}
+
+	public void setParam2(int param2) {
+		this.param2 = param2;
+	}
+
+	public int getParam3() {
+		return param3;
+	}
+
+	public void setParam3(int param3) {
+		this.param3 = param3;
+	}
+
+	public int getParam4() {
+		return param4;
+	}
+
+	public void setParam4(int param4) {
+		this.param4 = param4;
+	}
+
+	public int getFromType() {
+		return fromType;
+	}
+
+	public void setFromType(int fromType) {
+		this.fromType = fromType;
+	}
+
+	public int getCostCount() {
+		return costCount;
+	}
+
+	public void setCostCount(int costCount) {
+		this.costCount = costCount;
 	}
 
 }

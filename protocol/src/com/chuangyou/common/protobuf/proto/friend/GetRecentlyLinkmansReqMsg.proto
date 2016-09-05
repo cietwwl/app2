@@ -4,5 +4,5 @@ option java_outer_classname = "GetRecentlyLinkmansReqProto";
 
 //获取最近联系人列表
 message GetRecentlyLinkmansReqMsg {
-	optional int32 id = 1; //无意义
+	repeated int64 playerId = 1; //玩家ID
 }

@@ -13,21 +13,29 @@ public final class EquipInfoProto {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional int64 equipId = 1;</code>
+     * <code>optional .ItemPosMsg pos = 1;</code>
      *
      * <pre>
-     * 装备道具ID
+     * 物品位置
      * </pre>
      */
-    boolean hasEquipId();
+    boolean hasPos();
     /**
-     * <code>optional int64 equipId = 1;</code>
+     * <code>optional .ItemPosMsg pos = 1;</code>
      *
      * <pre>
-     * 装备道具ID
+     * 物品位置
      * </pre>
      */
-    long getEquipId();
+    com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg getPos();
+    /**
+     * <code>optional .ItemPosMsg pos = 1;</code>
+     *
+     * <pre>
+     * 物品位置
+     * </pre>
+     */
+    com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsgOrBuilder getPosOrBuilder();
 
     /**
      * <code>optional int32 awakenLevel = 2;</code>
@@ -136,9 +144,17 @@ public final class EquipInfoProto {
               }
               break;
             }
-            case 8: {
+            case 10: {
+              com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                subBuilder = pos_.toBuilder();
+              }
+              pos_ = input.readMessage(com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(pos_);
+                pos_ = subBuilder.buildPartial();
+              }
               bitField0_ |= 0x00000001;
-              equipId_ = input.readInt64();
               break;
             }
             case 16: {
@@ -196,27 +212,37 @@ public final class EquipInfoProto {
     }
 
     private int bitField0_;
-    public static final int EQUIPID_FIELD_NUMBER = 1;
-    private long equipId_;
+    public static final int POS_FIELD_NUMBER = 1;
+    private com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg pos_;
     /**
-     * <code>optional int64 equipId = 1;</code>
+     * <code>optional .ItemPosMsg pos = 1;</code>
      *
      * <pre>
-     * 装备道具ID
+     * 物品位置
      * </pre>
      */
-    public boolean hasEquipId() {
+    public boolean hasPos() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional int64 equipId = 1;</code>
+     * <code>optional .ItemPosMsg pos = 1;</code>
      *
      * <pre>
-     * 装备道具ID
+     * 物品位置
      * </pre>
      */
-    public long getEquipId() {
-      return equipId_;
+    public com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg getPos() {
+      return pos_;
+    }
+    /**
+     * <code>optional .ItemPosMsg pos = 1;</code>
+     *
+     * <pre>
+     * 物品位置
+     * </pre>
+     */
+    public com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsgOrBuilder getPosOrBuilder() {
+      return pos_;
     }
 
     public static final int AWAKENLEVEL_FIELD_NUMBER = 2;
@@ -289,7 +315,7 @@ public final class EquipInfoProto {
     }
 
     private void initFields() {
-      equipId_ = 0L;
+      pos_ = com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.getDefaultInstance();
       awakenLevel_ = 0;
       awakenPoint_ = 0;
       stoneTempId_ = 0;
@@ -308,7 +334,7 @@ public final class EquipInfoProto {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt64(1, equipId_);
+        output.writeMessage(1, pos_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeInt32(2, awakenLevel_);
@@ -330,7 +356,7 @@ public final class EquipInfoProto {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(1, equipId_);
+          .computeMessageSize(1, pos_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
@@ -457,6 +483,7 @@ public final class EquipInfoProto {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getPosFieldBuilder();
         }
       }
       private static Builder create() {
@@ -465,7 +492,11 @@ public final class EquipInfoProto {
 
       public Builder clear() {
         super.clear();
-        equipId_ = 0L;
+        if (posBuilder_ == null) {
+          pos_ = com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.getDefaultInstance();
+        } else {
+          posBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000001);
         awakenLevel_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -504,7 +535,11 @@ public final class EquipInfoProto {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.equipId_ = equipId_;
+        if (posBuilder_ == null) {
+          result.pos_ = pos_;
+        } else {
+          result.pos_ = posBuilder_.build();
+        }
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
@@ -533,8 +568,8 @@ public final class EquipInfoProto {
 
       public Builder mergeFrom(com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg other) {
         if (other == com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg.getDefaultInstance()) return this;
-        if (other.hasEquipId()) {
-          setEquipId(other.getEquipId());
+        if (other.hasPos()) {
+          mergePos(other.getPos());
         }
         if (other.hasAwakenLevel()) {
           setAwakenLevel(other.getAwakenLevel());
@@ -572,52 +607,156 @@ public final class EquipInfoProto {
       }
       private int bitField0_;
 
-      private long equipId_ ;
+      private com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg pos_ = com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg, com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.Builder, com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsgOrBuilder> posBuilder_;
       /**
-       * <code>optional int64 equipId = 1;</code>
+       * <code>optional .ItemPosMsg pos = 1;</code>
        *
        * <pre>
-       * 装备道具ID
+       * 物品位置
        * </pre>
        */
-      public boolean hasEquipId() {
+      public boolean hasPos() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional int64 equipId = 1;</code>
+       * <code>optional .ItemPosMsg pos = 1;</code>
        *
        * <pre>
-       * 装备道具ID
+       * 物品位置
        * </pre>
        */
-      public long getEquipId() {
-        return equipId_;
+      public com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg getPos() {
+        if (posBuilder_ == null) {
+          return pos_;
+        } else {
+          return posBuilder_.getMessage();
+        }
       }
       /**
-       * <code>optional int64 equipId = 1;</code>
+       * <code>optional .ItemPosMsg pos = 1;</code>
        *
        * <pre>
-       * 装备道具ID
+       * 物品位置
        * </pre>
        */
-      public Builder setEquipId(long value) {
+      public Builder setPos(com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg value) {
+        if (posBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          pos_ = value;
+          onChanged();
+        } else {
+          posBuilder_.setMessage(value);
+        }
         bitField0_ |= 0x00000001;
-        equipId_ = value;
-        onChanged();
         return this;
       }
       /**
-       * <code>optional int64 equipId = 1;</code>
+       * <code>optional .ItemPosMsg pos = 1;</code>
        *
        * <pre>
-       * 装备道具ID
+       * 物品位置
        * </pre>
        */
-      public Builder clearEquipId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        equipId_ = 0L;
-        onChanged();
+      public Builder setPos(
+          com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.Builder builderForValue) {
+        if (posBuilder_ == null) {
+          pos_ = builderForValue.build();
+          onChanged();
+        } else {
+          posBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
         return this;
+      }
+      /**
+       * <code>optional .ItemPosMsg pos = 1;</code>
+       *
+       * <pre>
+       * 物品位置
+       * </pre>
+       */
+      public Builder mergePos(com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg value) {
+        if (posBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              pos_ != com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.getDefaultInstance()) {
+            pos_ =
+              com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.newBuilder(pos_).mergeFrom(value).buildPartial();
+          } else {
+            pos_ = value;
+          }
+          onChanged();
+        } else {
+          posBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .ItemPosMsg pos = 1;</code>
+       *
+       * <pre>
+       * 物品位置
+       * </pre>
+       */
+      public Builder clearPos() {
+        if (posBuilder_ == null) {
+          pos_ = com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.getDefaultInstance();
+          onChanged();
+        } else {
+          posBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>optional .ItemPosMsg pos = 1;</code>
+       *
+       * <pre>
+       * 物品位置
+       * </pre>
+       */
+      public com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.Builder getPosBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getPosFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .ItemPosMsg pos = 1;</code>
+       *
+       * <pre>
+       * 物品位置
+       * </pre>
+       */
+      public com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsgOrBuilder getPosOrBuilder() {
+        if (posBuilder_ != null) {
+          return posBuilder_.getMessageOrBuilder();
+        } else {
+          return pos_;
+        }
+      }
+      /**
+       * <code>optional .ItemPosMsg pos = 1;</code>
+       *
+       * <pre>
+       * 物品位置
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg, com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.Builder, com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsgOrBuilder> 
+          getPosFieldBuilder() {
+        if (posBuilder_ == null) {
+          posBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg, com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg.Builder, com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsgOrBuilder>(
+                  getPos(),
+                  getParentForChildren(),
+                  isClean());
+          pos_ = null;
+        }
+        return posBuilder_;
       }
 
       private int awakenLevel_ ;
@@ -789,11 +928,12 @@ public final class EquipInfoProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\030equip/EquipInfoMsg.proto\"^\n\014EquipInfoM" +
-      "sg\022\017\n\007equipId\030\001 \001(\003\022\023\n\013awakenLevel\030\002 \001(\005" +
-      "\022\023\n\013awakenPoint\030\003 \001(\005\022\023\n\013stoneTempId\030\004 \001" +
-      "(\005B8\n&com.chuangyou.common.protobuf.pb.e" +
-      "quipB\016EquipInfoProto"
+      "\n\030equip/EquipInfoMsg.proto\032\025item/ItemPos" +
+      "Msg.proto\"g\n\014EquipInfoMsg\022\030\n\003pos\030\001 \001(\0132\013" +
+      ".ItemPosMsg\022\023\n\013awakenLevel\030\002 \001(\005\022\023\n\013awak" +
+      "enPoint\030\003 \001(\005\022\023\n\013stoneTempId\030\004 \001(\005B8\n&co" +
+      "m.chuangyou.common.protobuf.pb.equipB\016Eq" +
+      "uipInfoProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -806,13 +946,15 @@ public final class EquipInfoProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.chuangyou.common.protobuf.pb.item.ItemPosProto.getDescriptor(),
         }, assigner);
     internal_static_EquipInfoMsg_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_EquipInfoMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_EquipInfoMsg_descriptor,
-        new java.lang.String[] { "EquipId", "AwakenLevel", "AwakenPoint", "StoneTempId", });
+        new java.lang.String[] { "Pos", "AwakenLevel", "AwakenPoint", "StoneTempId", });
+    com.chuangyou.common.protobuf.pb.item.ItemPosProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -337,6 +337,12 @@ public interface CenterProtocol {
 	
 	/** 装备一键分解 */
 	public static short			C_EQUIP_RESOLVE_ONEKEY			= 10152;
+	
+	/** 属性购买 */
+	public static short			C_PROPERTY_BUY					= 10153;
+	
+	/** 玩家灵力回写 */
+	public static short			C_PLAYER_MANA_WRITEBACK			= 10154;
 
 	// =========================>时装<===================================
 	/** 获取时装信息 */

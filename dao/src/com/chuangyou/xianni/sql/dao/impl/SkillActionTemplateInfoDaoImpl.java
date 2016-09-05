@@ -31,10 +31,10 @@ public class SkillActionTemplateInfoDaoImpl extends BaseDao implements SkillActi
 					skillTemp.setCombo(rs.getInt("combo"));
 					skillTemp.setMaxCombo(rs.getInt("maxCombo"));
 					skillTemp.setAnimation(rs.getInt("animation"));
-					//skillTemp
+					// skillTemp
 					skillTemp.setAttackTimes(rs.getInt("attackTimes"));
 					skillTemp.setCostType(rs.getInt("costType"));
-					skillTemp.setAttackType(rs.getInt("attackType"));// 气血攻击
+					// skillTemp.setAttackType(rs.getInt("attackType"));// 气血攻击
 					skillTemp.setParamValue1(rs.getInt("paramValue1"));
 					skillTemp.setParamParent1(rs.getInt("paramParent1"));
 					skillTemp.setParamValue2(rs.getInt("paramValue2"));
@@ -42,7 +42,7 @@ public class SkillActionTemplateInfoDaoImpl extends BaseDao implements SkillActi
 					skillTemp.setParamValue3(rs.getInt("paramValue3"));
 					skillTemp.setParamParent3(rs.getInt("paramParent3"));
 					skillTemp.setBufferIds(rs.getString("bufferIds"));
-					skillTemp.setSnareIds(rs.getString("snareIds"));
+					skillTemp.setSnareIds(rs.getString("trapIds"));
 					skillTemp.setRandom(rs.getInt("random"));
 					skillTemp.setIsCrit(rs.getInt("isCrit"));
 					skillTemp.setCooldown(rs.getInt("cooldown"));// 10秒CD时间

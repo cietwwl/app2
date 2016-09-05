@@ -14,12 +14,15 @@ import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLi
 import com.chuangyou.common.protobuf.pb.battle.BufferMsgProto.BufferMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
+import com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.xianni.battle.action.HeroPollingAction;
 import com.chuangyou.xianni.battle.buffer.Buffer;
+import com.chuangyou.xianni.battle.buffer.BufferFactory;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
+import com.chuangyou.xianni.battle.skill.FuseSkillVo;
 import com.chuangyou.xianni.battle.skill.Skill;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignMgr;
@@ -28,10 +31,13 @@ import com.chuangyou.xianni.campaign.task.CTBaseCondition;
 import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.BattleModeCode;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
+import com.chuangyou.xianni.entity.equip.EquipAwakenCfg;
 import com.chuangyou.xianni.entity.mount.MountGradeCfg;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
+import com.chuangyou.xianni.equip.template.EquipTemplateMgr;
 import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.exec.ThreadManager;
 import com.chuangyou.xianni.mount.MountTempleteMgr;
@@ -46,23 +52,45 @@ import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.spawn.BeadMonsterSpawnNode;
 import com.chuangyou.xianni.warfield.spawn.PerareState;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
-import com.chuangyou.xianni.warfield.spawn.WorkingState;
 import com.chuangyou.xianni.warfield.template.SpawnTemplateMgr;
 import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.WorldMgr;
 
 public class Player extends ActiveLiving {
 	/** 是否复活中 */
-	private volatile boolean revivaling = false;
+	private volatile boolean	revivaling				= false;
 	/**
 	 * 玩家坐骑状态 0未乘骑 1乘骑坐骑
 	 */
-	private int mountState = 1;
-	private List<Integer> monsterRefreshIdList = new ArrayList<Integer>();
-	private boolean flashName=false;
+	private int					mountState				= 1;
+	private List<Integer>		monsterRefreshIdList	= new ArrayList<Integer>();
+	private boolean				flashName				= false;
 
 	/** 副本buffer */
-	private List<Buffer> campaignBuffers = new ArrayList<>();
+	private List<Buffer>		campaignBuffers			= new ArrayList<>();
+
+	/**
+	 * 魂幡融合技能1段
+	 */
+	private FuseSkillVo			fuseSkill1;
+
+	/**
+	 * 魂幡融合技能2段
+	 */
+	private FuseSkillVo			fuseSkill2;
+
+	/**
+	 * 魂幡融合技能3段
+	 */
+	private FuseSkillVo			fuseSkill3;
+
+	/**
+	 * 魂幡融合技能4段
+	 */
+	private FuseSkillVo			fuseSkill4;
+
+	/** 武器技能(觉醒获得) */
+	private int					weaponBuffId			= 0;
 
 	public Player(long playerId) {
 		super(playerId, playerId);
@@ -86,6 +114,21 @@ public class Player extends ActiveLiving {
 		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_G_BATTLEPLAYERINFO, getBattlePlayerInfoMsg().build());
 	}
 
+	public void updateWeaponBuff() {
+		if (simpleInfo.getWeaponId() == 0 || simpleInfo.getWeaponAwaken() == 0) {
+			this.setWeaponBuffId(0);
+		} else {
+			EquipAwakenCfg cfg = EquipTemplateMgr.getAwakenMap().get(simpleInfo.getWeaponId() * 10000 + simpleInfo.getWeaponAwaken() * 100 + 0);
+			if (cfg != null) {
+				this.setWeaponBuffId(cfg.getSkillId());
+			} else {
+				this.setWeaponBuffId(0);
+			}
+
+		}
+		addWeaponBuffer(this.getWeaponBuffId());
+	}
+
 	@Override
 	public boolean onDie(Living source) {
 		if (super.onDie(source)) {
@@ -104,8 +147,8 @@ public class Player extends ActiveLiving {
 	}
 
 	class DieAction extends DelayAction {
-		Living deather;
-		Living source;
+		Living	deather;
+		Living	source;
 
 		public DieAction(Living deather, Living source, int delay) {
 			super(source, delay);
@@ -318,6 +361,49 @@ public class Player extends ActiveLiving {
 			}
 		}
 
+		List<FuseSkillMsg> fuseSkills = hero.getFuseSkillsList();
+		this.setFuseSkill1(null);
+		this.setFuseSkill2(null);
+		this.setFuseSkill3(null);
+		this.setFuseSkill4(null);
+		if (fuseSkills != null && fuseSkills.size() != 0) {
+			for (FuseSkillMsg fuseSkillMsg : fuseSkills) {
+				// FuseSkillVo vo = new FuseSkillVo()
+				if (fuseSkillMsg.getIndex() == 1) {
+					this.setFuseSkill1(new FuseSkillVo(fuseSkillMsg.getFuseSkillId(), fuseSkillMsg.getColor()));
+				} else if (fuseSkillMsg.getIndex() == 2) {
+					this.setFuseSkill2(new FuseSkillVo(fuseSkillMsg.getFuseSkillId(), fuseSkillMsg.getColor()));
+				} else if (fuseSkillMsg.getIndex() == 3) {
+					this.setFuseSkill3(new FuseSkillVo(fuseSkillMsg.getFuseSkillId(), fuseSkillMsg.getColor()));
+				} else if (fuseSkillMsg.getIndex() == 4) {
+					this.setFuseSkill4(new FuseSkillVo(fuseSkillMsg.getFuseSkillId(), fuseSkillMsg.getColor()));
+				}
+			}
+		}
+	}
+
+	/** 武器buffer */
+	public void addWeaponBuffer(int weaponBufId) {
+		Buffer older = this.getWeaponBuffer();
+		if (weaponBufId == 0) {
+			this.setWeaponBuffer(null);
+			return;
+		}
+		SkillBufferTemplateInfo sbinfo = BattleTempMgr.getBufferInfo(weaponBufId);
+		if (sbinfo == null) {
+			Log.error("cannot find buffer temp ,tempId : " + weaponBufId);
+			this.setWeaponBuffer(null);
+			return;
+		}
+
+		Buffer buff = BufferFactory.createBuffer(this, this, sbinfo);
+		buff.setPermanent(true);
+		this.setWeaponBuffer(buff);
+
+		if (older != null) {
+			older.setPermanent(false);
+			older.dispose();
+		}
 	}
 
 	@Override
@@ -498,6 +584,44 @@ public class Player extends ActiveLiving {
 		this.flashName = flashName;
 	}
 
- 
+	public FuseSkillVo getFuseSkill1() {
+		return fuseSkill1;
+	}
+
+	public void setFuseSkill1(FuseSkillVo fuseSkill1) {
+		this.fuseSkill1 = fuseSkill1;
+	}
+
+	public FuseSkillVo getFuseSkill2() {
+		return fuseSkill2;
+	}
+
+	public void setFuseSkill2(FuseSkillVo fuseSkill2) {
+		this.fuseSkill2 = fuseSkill2;
+	}
+
+	public FuseSkillVo getFuseSkill3() {
+		return fuseSkill3;
+	}
+
+	public void setFuseSkill3(FuseSkillVo fuseSkill3) {
+		this.fuseSkill3 = fuseSkill3;
+	}
+
+	public FuseSkillVo getFuseSkill4() {
+		return fuseSkill4;
+	}
+
+	public void setFuseSkill4(FuseSkillVo fuseSkill4) {
+		this.fuseSkill4 = fuseSkill4;
+	}
+
+	public int getWeaponBuffId() {
+		return weaponBuffId;
+	}
+
+	public void setWeaponBuffId(int weaponBuffId) {
+		this.weaponBuffId = weaponBuffId;
+	}
 
 }

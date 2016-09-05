@@ -9,5 +9,5 @@ import "friend/FriendInfoMsg.proto";
  //根据用户名查询用户信息
  //返回查询结构
 message GetRoleInfoByNameRespMsg{
-	required FriendInfoMsg roleInfo =1; //好友列表
+	optional FriendInfoMsg roleInfo =1; //好友列表
 }

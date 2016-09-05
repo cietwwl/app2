@@ -53,6 +53,7 @@ public class DateTimeUtil {
 	 * @return
 	 */
 	public static boolean isSameWeek(Date date, Date date2) {
+		System.out.println("date: "+date.getTime()+" data2: "+date2.getTime());
 		if (date == null || date2 == null)
 			return false;
 		// 0.先把Date类型的对象转换Calendar类型的对象
@@ -60,18 +61,16 @@ public class DateTimeUtil {
 		Calendar date2Cal = Calendar.getInstance();
 		dateCal.setTime(date);
 		date2Cal.setTime(date2);
-
-		dateCal.set(Calendar.DATE, -1);
-		date2Cal.set(Calendar.DATE, -1);
-		// 1.比较当前日期在年份中的周数是否相同
+		dateCal.add(Calendar.DATE, -1);
+		date2Cal.add(Calendar.DATE, -1);
 		return date2Cal.get(Calendar.WEEK_OF_YEAR) == dateCal.get(Calendar.WEEK_OF_YEAR);
 	}
 
-	// public static void main(String[] args) {
-	// Date date = new Date(System.currentTimeMillis() + 5 * 24 * 60 * 60 * 1000);
-	// Date date2 = new Date();
-	// boolean res = isSameWeek(date, date2);
-	// System.out.println(res);
-	// }
+//	 public static void main(String[] args) {
+//	 Date date = new Date(1471847555889L);
+//	 Date date2 = new Date(1472454802176L);
+//	 boolean res = isSameWeek(date, date2);
+//	 System.out.println(res);
+//	 }
 
 }

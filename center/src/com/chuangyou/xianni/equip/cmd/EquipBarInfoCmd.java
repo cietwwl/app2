@@ -174,7 +174,7 @@ public class EquipBarInfoCmd extends AbstractCommand {
 			return;
 		}
 		for(int itemTempId: cfg.getNeedItems().keySet()){
-			int itemNum = player.getBagInventory().getItemCount(itemTempId);
+			int itemNum = cfg.getNeedItems().get(itemTempId);
 			if(player.getBagInventory().removeItemFromPlayerBag(itemTempId, itemNum, ItemRemoveType.USE) == false){
 				Log.error("playerId : " + player.getPlayerId() + " remove item :" + itemTempId + " count: " + itemNum + "  error");
 			}
@@ -196,7 +196,7 @@ public class EquipBarInfoCmd extends AbstractCommand {
 			info.setBless(0);
 		}else{
 			int addBless = random.next(cfg.getFailBlessMin(), cfg.getFailBlessMax());
-			info.setBless(addBless);
+			info.setBless(info.getBless() + addBless);
 		}
 		
 		EquipBarInfoRespMsg.Builder msg = EquipBarInfoRespMsg.newBuilder();

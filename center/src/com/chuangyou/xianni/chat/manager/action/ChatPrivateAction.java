@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.chuangyou.common.protobuf.pb.chat.ChatReceiveProto.ChatReceiveMsg;
-import com.chuangyou.common.protobuf.pb.chat.ChatSendProto.ChatSendMsg;
 import com.chuangyou.xianni.chat.manager.ChatManager;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
@@ -21,7 +20,7 @@ import com.chuangyou.xianni.word.WorldMgr;
 public class ChatPrivateAction extends ChatBaseAction {
 	
 	@Override
-	public boolean sendChatMsg(GamePlayer sender, ChatSendMsg sendMsg) {
+	public boolean sendChatMsg(GamePlayer sender, ChatMsgInfo sendMsg) {
 		// TODO Auto-generated method stub
 		if(checkCd(sender, sendMsg, true) == false){
 			return false;
@@ -38,7 +37,7 @@ public class ChatPrivateAction extends ChatBaseAction {
 			chatMsgInfo.setSenderId(sender.getPlayerId());
 			chatMsgInfo.setReceiverId(sendMsg.getReceiverId());
 			chatMsgInfo.setChatContent(sendMsg.getChatContent());
-			ChatManager.addPrivateOfflineMsg(chatMsgInfo);
+			ChatManager.addOfflineMsg(chatMsgInfo);
 			
 			ChatReceiveMsg msg = this.buildReceiveProto(sender, sendMsg);
 			PBMessage p = MessageUtil.buildMessage(Protocol.U_CHAT_RECEIVE, msg);
@@ -53,7 +52,7 @@ public class ChatPrivateAction extends ChatBaseAction {
 	}
 
 	@Override
-	protected List<Long> getReceivers(GamePlayer sender, ChatSendMsg sendMsg) {
+	protected List<Long> getReceivers(GamePlayer sender, ChatMsgInfo sendMsg) {
 		// TODO Auto-generated method stub
 		List<Long> receivers = new ArrayList<>();
 		receivers.add(sender.getPlayerId());

@@ -13,7 +13,7 @@ public final class GetRoleInfoByNameRespProto {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required .FriendInfoMsg roleInfo = 1;</code>
+     * <code>optional .FriendInfoMsg roleInfo = 1;</code>
      *
      * <pre>
      *好友列表
@@ -21,7 +21,7 @@ public final class GetRoleInfoByNameRespProto {
      */
     boolean hasRoleInfo();
     /**
-     * <code>required .FriendInfoMsg roleInfo = 1;</code>
+     * <code>optional .FriendInfoMsg roleInfo = 1;</code>
      *
      * <pre>
      *好友列表
@@ -29,7 +29,7 @@ public final class GetRoleInfoByNameRespProto {
      */
     com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg getRoleInfo();
     /**
-     * <code>required .FriendInfoMsg roleInfo = 1;</code>
+     * <code>optional .FriendInfoMsg roleInfo = 1;</code>
      *
      * <pre>
      *好友列表
@@ -150,7 +150,7 @@ public final class GetRoleInfoByNameRespProto {
     public static final int ROLEINFO_FIELD_NUMBER = 1;
     private com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg roleInfo_;
     /**
-     * <code>required .FriendInfoMsg roleInfo = 1;</code>
+     * <code>optional .FriendInfoMsg roleInfo = 1;</code>
      *
      * <pre>
      *好友列表
@@ -160,7 +160,7 @@ public final class GetRoleInfoByNameRespProto {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required .FriendInfoMsg roleInfo = 1;</code>
+     * <code>optional .FriendInfoMsg roleInfo = 1;</code>
      *
      * <pre>
      *好友列表
@@ -170,7 +170,7 @@ public final class GetRoleInfoByNameRespProto {
       return roleInfo_;
     }
     /**
-     * <code>required .FriendInfoMsg roleInfo = 1;</code>
+     * <code>optional .FriendInfoMsg roleInfo = 1;</code>
      *
      * <pre>
      *好友列表
@@ -189,13 +189,11 @@ public final class GetRoleInfoByNameRespProto {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasRoleInfo()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!getRoleInfo().isInitialized()) {
-        memoizedIsInitialized = 0;
-        return false;
+      if (hasRoleInfo()) {
+        if (!getRoleInfo().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
       }
       memoizedIsInitialized = 1;
       return true;
@@ -409,13 +407,11 @@ public final class GetRoleInfoByNameRespProto {
       }
 
       public final boolean isInitialized() {
-        if (!hasRoleInfo()) {
-          
-          return false;
-        }
-        if (!getRoleInfo().isInitialized()) {
-          
-          return false;
+        if (hasRoleInfo()) {
+          if (!getRoleInfo().isInitialized()) {
+            
+            return false;
+          }
         }
         return true;
       }
@@ -443,7 +439,7 @@ public final class GetRoleInfoByNameRespProto {
       private com.google.protobuf.SingleFieldBuilder<
           com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg, com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsg.Builder, com.chuangyou.common.protobuf.pb.friend.FriendInfoProto.FriendInfoMsgOrBuilder> roleInfoBuilder_;
       /**
-       * <code>required .FriendInfoMsg roleInfo = 1;</code>
+       * <code>optional .FriendInfoMsg roleInfo = 1;</code>
        *
        * <pre>
        *好友列表
@@ -453,7 +449,7 @@ public final class GetRoleInfoByNameRespProto {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required .FriendInfoMsg roleInfo = 1;</code>
+       * <code>optional .FriendInfoMsg roleInfo = 1;</code>
        *
        * <pre>
        *好友列表
@@ -467,7 +463,7 @@ public final class GetRoleInfoByNameRespProto {
         }
       }
       /**
-       * <code>required .FriendInfoMsg roleInfo = 1;</code>
+       * <code>optional .FriendInfoMsg roleInfo = 1;</code>
        *
        * <pre>
        *好友列表
@@ -487,7 +483,7 @@ public final class GetRoleInfoByNameRespProto {
         return this;
       }
       /**
-       * <code>required .FriendInfoMsg roleInfo = 1;</code>
+       * <code>optional .FriendInfoMsg roleInfo = 1;</code>
        *
        * <pre>
        *好友列表
@@ -505,7 +501,7 @@ public final class GetRoleInfoByNameRespProto {
         return this;
       }
       /**
-       * <code>required .FriendInfoMsg roleInfo = 1;</code>
+       * <code>optional .FriendInfoMsg roleInfo = 1;</code>
        *
        * <pre>
        *好友列表
@@ -528,7 +524,7 @@ public final class GetRoleInfoByNameRespProto {
         return this;
       }
       /**
-       * <code>required .FriendInfoMsg roleInfo = 1;</code>
+       * <code>optional .FriendInfoMsg roleInfo = 1;</code>
        *
        * <pre>
        *好友列表
@@ -545,7 +541,7 @@ public final class GetRoleInfoByNameRespProto {
         return this;
       }
       /**
-       * <code>required .FriendInfoMsg roleInfo = 1;</code>
+       * <code>optional .FriendInfoMsg roleInfo = 1;</code>
        *
        * <pre>
        *好友列表
@@ -557,7 +553,7 @@ public final class GetRoleInfoByNameRespProto {
         return getRoleInfoFieldBuilder().getBuilder();
       }
       /**
-       * <code>required .FriendInfoMsg roleInfo = 1;</code>
+       * <code>optional .FriendInfoMsg roleInfo = 1;</code>
        *
        * <pre>
        *好友列表
@@ -571,7 +567,7 @@ public final class GetRoleInfoByNameRespProto {
         }
       }
       /**
-       * <code>required .FriendInfoMsg roleInfo = 1;</code>
+       * <code>optional .FriendInfoMsg roleInfo = 1;</code>
        *
        * <pre>
        *好友列表
@@ -618,7 +614,7 @@ public final class GetRoleInfoByNameRespProto {
     java.lang.String[] descriptorData = {
       "\n%friend/GetRoleInfoByNameRespMsg.proto\032" +
       "\032friend/FriendInfoMsg.proto\"<\n\030GetRoleIn" +
-      "foByNameRespMsg\022 \n\010roleInfo\030\001 \002(\0132\016.Frie" +
+      "foByNameRespMsg\022 \n\010roleInfo\030\001 \001(\0132\016.Frie" +
       "ndInfoMsgBE\n\'com.chuangyou.common.protob" +
       "uf.pb.friendB\032GetRoleInfoByNameRespProto"
     };

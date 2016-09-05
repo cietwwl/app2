@@ -2,6 +2,7 @@ package com.chuangyou.xianni.soul.logic.fuse;
 
 import java.util.Date;
 
+import com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg;
 import com.chuangyou.common.protobuf.pb.soul.SoulFuseRespProto.SoulFuseRespMsg;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.soul.SoulInfo;
@@ -43,6 +44,7 @@ public class BaseFuseLogic {
 	 */
 	protected void setNewSkill(int newSkillId,int color){
 		Date now = new Date();
+		
 		if (index == 1) {
 			this.soulInfo.setFuseSkillId1(newSkillId);
 			this.soulInfo.setFuseSkillColor1(color);
@@ -61,6 +63,14 @@ public class BaseFuseLogic {
 			this.soulInfo.setFuseSkillCreateTime4(now);
 		}
 		soulInfo.setOp(Option.Update);
+		//同步到scene服务器
+		FuseSkillMsg.Builder msg = FuseSkillMsg.newBuilder();
+		msg.setIndex(index);
+		msg.setColor(color);
+		msg.setFuseSkillId(newSkillId);
+		
+		PBMessage pkg = MessageUtil.buildMessage(Protocol.S_REQ_SOUL_FUSESKILL_UPDATE,msg);
+		player.sendPbMessage(pkg);
 	}
 	
 	

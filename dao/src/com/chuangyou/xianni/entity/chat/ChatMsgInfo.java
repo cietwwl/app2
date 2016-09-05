@@ -18,6 +18,9 @@ public class ChatMsgInfo extends DataObject {
 	
 	/** 聊天内容 */
 	private String chatContent;
+	
+	/** 备用参数(在系统提示中用作提示类型) */
+	private int param1;
 
 	public int getChannel() {
 		return channel;
@@ -57,5 +60,13 @@ public class ChatMsgInfo extends DataObject {
 
 	public void setChatContent(String chatContent) {
 		this.chatContent = chatContent;
+	}
+
+	public int getParam1() {
+		return param1;
+	}
+
+	public void setParam1(int param1) {
+		this.param1 = param1;
 	}
 }

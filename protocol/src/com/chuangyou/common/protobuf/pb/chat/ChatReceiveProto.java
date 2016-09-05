@@ -182,6 +182,23 @@ public final class ChatReceiveProto {
      * </pre>
      */
     long getReceiver();
+
+    /**
+     * <code>optional int32 param1 = 10;</code>
+     *
+     * <pre>
+     *备用参数(系统提示中用作提示类型)
+     * </pre>
+     */
+    boolean hasParam1();
+    /**
+     * <code>optional int32 param1 = 10;</code>
+     *
+     * <pre>
+     *备用参数(系统提示中用作提示类型)
+     * </pre>
+     */
+    int getParam1();
   }
   /**
    * Protobuf type {@code ChatReceiveMsg}
@@ -280,6 +297,11 @@ public final class ChatReceiveProto {
             case 72: {
               bitField0_ |= 0x00000100;
               receiver_ = input.readInt64();
+              break;
+            }
+            case 80: {
+              bitField0_ |= 0x00000200;
+              param1_ = input.readInt32();
               break;
             }
           }
@@ -591,6 +613,29 @@ public final class ChatReceiveProto {
       return receiver_;
     }
 
+    public static final int PARAM1_FIELD_NUMBER = 10;
+    private int param1_;
+    /**
+     * <code>optional int32 param1 = 10;</code>
+     *
+     * <pre>
+     *备用参数(系统提示中用作提示类型)
+     * </pre>
+     */
+    public boolean hasParam1() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional int32 param1 = 10;</code>
+     *
+     * <pre>
+     *备用参数(系统提示中用作提示类型)
+     * </pre>
+     */
+    public int getParam1() {
+      return param1_;
+    }
+
     private void initFields() {
       channel_ = 0;
       sendTime_ = 0L;
@@ -601,6 +646,7 @@ public final class ChatReceiveProto {
       vip_ = 0;
       chatContent_ = "";
       receiver_ = 0L;
+      param1_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -641,6 +687,9 @@ public final class ChatReceiveProto {
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         output.writeInt64(9, receiver_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeInt32(10, param1_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -686,6 +735,10 @@ public final class ChatReceiveProto {
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(9, receiver_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(10, param1_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -822,6 +875,8 @@ public final class ChatReceiveProto {
         bitField0_ = (bitField0_ & ~0x00000080);
         receiver_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000100);
+        param1_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
 
@@ -886,6 +941,10 @@ public final class ChatReceiveProto {
           to_bitField0_ |= 0x00000100;
         }
         result.receiver_ = receiver_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        result.param1_ = param1_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -932,6 +991,9 @@ public final class ChatReceiveProto {
         }
         if (other.hasReceiver()) {
           setReceiver(other.getReceiver());
+        }
+        if (other.hasParam1()) {
+          setParam1(other.getParam1());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1496,6 +1558,54 @@ public final class ChatReceiveProto {
         return this;
       }
 
+      private int param1_ ;
+      /**
+       * <code>optional int32 param1 = 10;</code>
+       *
+       * <pre>
+       *备用参数(系统提示中用作提示类型)
+       * </pre>
+       */
+      public boolean hasParam1() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional int32 param1 = 10;</code>
+       *
+       * <pre>
+       *备用参数(系统提示中用作提示类型)
+       * </pre>
+       */
+      public int getParam1() {
+        return param1_;
+      }
+      /**
+       * <code>optional int32 param1 = 10;</code>
+       *
+       * <pre>
+       *备用参数(系统提示中用作提示类型)
+       * </pre>
+       */
+      public Builder setParam1(int value) {
+        bitField0_ |= 0x00000200;
+        param1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 param1 = 10;</code>
+       *
+       * <pre>
+       *备用参数(系统提示中用作提示类型)
+       * </pre>
+       */
+      public Builder clearParam1() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        param1_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:ChatReceiveMsg)
     }
 
@@ -1521,13 +1631,13 @@ public final class ChatReceiveProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\031chat/ChatReceiveMsg.proto\"\254\001\n\016ChatRece" +
+      "\n\031chat/ChatReceiveMsg.proto\"\274\001\n\016ChatRece" +
       "iveMsg\022\017\n\007channel\030\001 \001(\005\022\020\n\010sendTime\030\002 \001(" +
       "\003\022\020\n\010senderId\030\003 \001(\003\022\022\n\nsenderName\030\004 \001(\t\022" +
       "\016\n\006skinId\030\005 \001(\005\022\r\n\005level\030\006 \001(\005\022\013\n\003vip\030\007 " +
       "\001(\005\022\023\n\013chatContent\030\010 \001(\t\022\020\n\010receiver\030\t \001" +
-      "(\003B9\n%com.chuangyou.common.protobuf.pb.c" +
-      "hatB\020ChatReceiveProto"
+      "(\003\022\016\n\006param1\030\n \001(\005B9\n%com.chuangyou.comm" +
+      "on.protobuf.pb.chatB\020ChatReceiveProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1546,7 +1656,7 @@ public final class ChatReceiveProto {
     internal_static_ChatReceiveMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ChatReceiveMsg_descriptor,
-        new java.lang.String[] { "Channel", "SendTime", "SenderId", "SenderName", "SkinId", "Level", "Vip", "ChatContent", "Receiver", });
+        new java.lang.String[] { "Channel", "SendTime", "SenderId", "SenderName", "SkinId", "Level", "Vip", "ChatContent", "Receiver", "Param1", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

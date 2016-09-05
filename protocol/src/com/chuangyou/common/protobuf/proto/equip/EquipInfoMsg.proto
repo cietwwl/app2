@@ -1,9 +1,11 @@
 option java_package = "com.chuangyou.common.protobuf.pb.equip";
 option java_outer_classname = "EquipInfoProto";
 
+import "item/ItemPosMsg.proto";
+
 //装备信息
 message EquipInfoMsg{
-	optional int64 equipId = 1; // 装备道具ID
+	optional ItemPosMsg pos = 1; // 物品位置
 
 	optional int32 awakenLevel = 2; // 装备觉醒等级
 	optional int32 awakenPoint = 3; // 觉醒当前级突破点

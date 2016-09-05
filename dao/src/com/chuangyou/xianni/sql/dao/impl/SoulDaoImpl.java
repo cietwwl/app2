@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.chuangyou.common.util.Log;
+import com.chuangyou.xianni.entity.soul.CardComboConfig;
 import com.chuangyou.xianni.entity.soul.CardLvConfig;
 import com.chuangyou.xianni.entity.soul.CardSkillConfig;
 import com.chuangyou.xianni.entity.soul.CardStarConfig;
@@ -421,6 +422,7 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 				info.setId(rs.getInt("id"));
 				info.setName(rs.getString("name"));
 				info.setWeight(rs.getInt("weight"));
+				info.setItemId(rs.getInt("itemId"));
 				infos.put(info.getId(), info);
 			}
 		} catch (SQLException e) {
@@ -608,6 +610,59 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 			closeConn(pst, rs);
 		}	
 		return infos;
+	}
+
+
+	@Override
+	public Map<Integer, CardComboConfig> getCardComboConfig() {
+		// TODO Auto-generated method stub
+		String sql = "select * from tb_z_soul_combo";
+		PreparedStatement pst = execQuery(sql);
+		ResultSet rs = null;
+		CardComboConfig info = null;
+		Map<Integer, CardComboConfig> infos = null;
+		try {
+			rs = pst.executeQuery();
+			infos = new HashMap<>();
+			while(rs.next()){
+				info = new CardComboConfig();
+				info.setId(rs.getInt("id"));
+				info.setType(rs.getInt("type"));
+				info.setEffectAttr1(rs.getInt("effectAttr1"));
+				info.setEffectAttr2(rs.getInt("effectAttr2"));
+				info.setMate1(rs.getInt("mate1"));
+				info.setMate2(rs.getInt("mate2"));
+				info.setMate3(rs.getInt("mate3"));
+				info.setMate4(rs.getInt("mate4"));
+				if(info.getEffectAttr1()>0){
+					info.getEffectList().add(info.getEffectAttr1());
+				}
+				if(info.getEffectAttr2()>0){
+					info.getEffectList().add(info.getEffectAttr2());
+				}
+				if(info.getMate1()>0){
+					info.getMateList().add(info.getMate1());
+				}
+				if(info.getMate2()>0){
+					info.getMateList().add(info.getMate2());
+				}
+				if(info.getMate3()>0){
+					info.getMateList().add(info.getMate3());
+				}
+				if(info.getMate3()>0){
+					info.getMateList().add(info.getMate3());
+				}
+				infos.put(info.getId(), info);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			infos = null;
+			Log.error("执行出错" + sql, e);
+		}finally{
+			closeConn(pst, rs);
+		}	
+		return infos;		
 	}
 	
 }

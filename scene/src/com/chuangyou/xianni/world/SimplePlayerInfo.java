@@ -28,6 +28,7 @@ public class SimplePlayerInfo {
 	private int wingId;			// 翅膀ID
 	// private int battleMode; // 战斗模式
 	// private int pkVal; // pk值
+	private int weaponAwaken;	//武器觉醒等级
 
 	public void writeProto(PlayerInfoMsg.Builder proto) {
 		proto.setPlayerId(this.getPlayerId());
@@ -46,6 +47,7 @@ public class SimplePlayerInfo {
 		proto.setMountId(this.getMountId());
 		proto.setMagicWeaponId(this.getMagicWeaponId());
 		proto.setWingId(this.getWingId());
+		proto.setWeaponAwaken(this.getWeaponAwaken());
 	}
 
 	public void readProto(PlayerInfoMsg proto) {
@@ -65,6 +67,7 @@ public class SimplePlayerInfo {
 		this.setMountId(proto.getMountId());
 		this.setMagicWeaponId(proto.getMagicWeaponId());
 		this.setWingId(proto.getWingId());
+		this.setWeaponAwaken(proto.getWeaponAwaken());
 	}
 
 	public long getPlayerId() {
@@ -196,6 +199,14 @@ public class SimplePlayerInfo {
 	}
 
 
+	public int getWeaponAwaken() {
+		return weaponAwaken;
+	}
+
+	public void setWeaponAwaken(int weaponAwaken) {
+		this.weaponAwaken = weaponAwaken;
+	}
+
 	public void readProperty(List<PropertyMsg> properties) {
 		for (PropertyMsg p : properties) {
 			EnumAttr attr = EnumAttr.getEnumAttrByValue(p.getType());
@@ -208,17 +219,35 @@ public class SimplePlayerInfo {
 			value = 0;
 		}
 		switch (attr) {
-		case Mount:
-			this.setMountId((int) value);
-			break;
-		case FaBao:
-			this.setMagicWeaponId((int) value);
-			break;
-		case Level:
-			this.setLevel((int) value);
-			break;
-		default:
-			break;
+			case Level:
+				this.setLevel((int) value);
+				break;
+			case VipLevel:
+				this.setVipLevel((int) value);
+				break;
+			case FightValue:
+				this.setFight((int) value);
+				break;
+			case Clothes:
+				this.setFashionId((int) value);
+				break;
+			case Weapon:
+				this.setWeaponId((int) value);
+				break;
+			case Mount:
+				this.setMountId((int) value);
+				break;
+			case FaBao:
+				this.setMagicWeaponId((int) value);
+				break;
+			case BeiShi:
+				this.setWingId((int) value);
+				break;
+			case WEAPON_AWAKEN:
+				this.setWeaponAwaken((int)value);
+				break;
+			default:
+				break;
 		}
 	}
 

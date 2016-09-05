@@ -33,7 +33,8 @@ public class Damage {
 	public static final int	BUFFER	= 2;
 	// 陷阱
 	public static final int	SNARE	= 3;
-
+	
+	public static final Damage DEFAULT = new Damage();
 	/**
 	 * 技能计算伤害
 	 * 
@@ -44,6 +45,10 @@ public class Damage {
 		this.source = source;
 		damageType = DamageType.CUR_BLOOD;// 默认伤害气血
 		calcType = DamageEffecterType.COMMON;
+	}
+
+	public Damage() {
+
 	}
 
 	public void writeProto(DamageMsg.Builder dmsg) {

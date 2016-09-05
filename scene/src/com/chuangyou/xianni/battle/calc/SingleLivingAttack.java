@@ -2,11 +2,14 @@ package com.chuangyou.xianni.battle.calc;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.battle.AttackOrder;
+import com.chuangyou.xianni.battle.buffer.Buffer;
+import com.chuangyou.xianni.battle.buffer.BufferType;
+import com.chuangyou.xianni.battle.buffer.FormulaBuffer;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.damage.DamageCalculator;
-import com.chuangyou.xianni.battle.damage.SoulDamageCalculator;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
 import com.chuangyou.xianni.role.objects.Living;
@@ -80,7 +83,19 @@ public class SingleLivingAttack extends AbstractSkillCalc {
 		}
 		// 是否暴击
 		boolean isCrit = isCrit(tempInfo.getIsCrit(), source.getCrit(), target.getCritDefence());
+		// 如果未暴击，计算施法者影响暴击的buff效果（武器buffer）
 
+		if (!isCrit) {
+			// 获取所有破甲buffer
+			List<Buffer> crit4Bloods = source.getTypeBuffers(BufferType.CRIT_4_BLOOD);
+			for (Buffer buff : crit4Bloods) {
+				FormulaBuffer formuBuff = (FormulaBuffer) buff;
+				if (formuBuff.formulaExe(target.getCurBlood(), target.getMaxBlood()) == 1) {
+					isCrit = true;
+					break;
+				}
+			}
+		}
 		// 未暴击时，计算miss概率
 		if (!isCrit) {
 			if (!isHit(source.getAccurate(), target.getDodge())) {

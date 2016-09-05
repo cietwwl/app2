@@ -328,6 +328,12 @@ public final class ArmyInfoMsgProto {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
+      if (hasHeoBattleInfo()) {
+        if (!getHeoBattleInfo().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -585,6 +591,12 @@ public final class ArmyInfoMsgProto {
       }
 
       public final boolean isInitialized() {
+        if (hasHeoBattleInfo()) {
+          if (!getHeoBattleInfo().isInitialized()) {
+            
+            return false;
+          }
+        }
         return true;
       }
 

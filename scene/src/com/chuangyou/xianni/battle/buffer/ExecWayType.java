@@ -15,4 +15,8 @@ public class ExecWayType {
 
 	/** 受伤时 */
 	public static final int	HURT		= 4;
+
+	/** 添加时 */
+	public static final int	ADD			= 5;
+
 }

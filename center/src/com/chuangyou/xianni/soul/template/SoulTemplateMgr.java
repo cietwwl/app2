@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.chuangyou.xianni.entity.soul.CardComboConfig;
 import com.chuangyou.xianni.entity.soul.CardLvConfig;
 import com.chuangyou.xianni.entity.soul.CardSkillConfig;
 import com.chuangyou.xianni.entity.soul.CardStarConfig;
@@ -50,6 +51,11 @@ public class SoulTemplateMgr {
 	 * 融合制作材料时.生成相关物品配置表
 	 */
 	private static Map<Integer, FuseItemConfig> fuseItemConfigMap;
+	
+	/**
+	 * 卡牌组合配置表
+	 */
+	private static Map<Integer, CardComboConfig> cardComboMap;
 	
 	/**
 	 * 最大卡牌等级
@@ -102,6 +108,11 @@ public class SoulTemplateMgr {
 		}
 		fuseItemConfigMap = DBManager.getSoulDao().getFuseItemConfig();
 		if(fuseItemConfigMap == null)return false;
+		
+		cardComboMap = DBManager.getSoulDao().getCardComboConfig();
+		if(cardComboMap == null || cardComboMap.values().size()==0){
+			return false;
+		}
 		return true;
 	}
 	
@@ -128,6 +139,10 @@ public class SoulTemplateMgr {
 
 	public static Map<Integer, FuseItemConfig> getFuseItemConfigMap() {
 		return fuseItemConfigMap;
+	}
+
+	public static Map<Integer, CardComboConfig> getCardComboMap() {
+		return cardComboMap;
 	}
 	
 }

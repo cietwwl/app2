@@ -34,9 +34,23 @@ public class ChatHistoryReqCmd extends AbstractCommand {
 			ChatHistoryRespMsg.Builder offlineMsg = ChatHistoryRespMsg.newBuilder();
 			offlineMsg.setChannel(req.getChannel());
 			
-			List<ChatMsgInfo> msgList = ChatManager.getPrivateOfflineMsgs(player.getPlayerId());
+			List<ChatMsgInfo> msgList = ChatManager.getOfflineMsgs(player.getPlayerId(), req.getChannel());
 			for(ChatMsgInfo msgInfo: msgList){
-				offlineMsg.addChatMsg(ChatManager.buildChatReceiveProto(msgInfo));
+				if(msgInfo.getChannel() == ChatConstant.Channel.PRIVATE){
+					offlineMsg.addChatMsg(ChatManager.buildChatReceiveProto(msgInfo));
+				}
+			}
+			PBMessage p = MessageUtil.buildMessage(Protocol.U_CHAT_HISTORY_RESP, offlineMsg);
+			player.sendPbMessage(p);
+		}else if(req.getChannel() == ChatConstant.Channel.PROMPT){
+			ChatHistoryRespMsg.Builder offlineMsg = ChatHistoryRespMsg.newBuilder();
+			offlineMsg.setChannel(req.getChannel());
+			
+			List<ChatMsgInfo> msgList = ChatManager.getOfflineMsgs(player.getPlayerId(), req.getChannel());
+			for(ChatMsgInfo msgInfo: msgList){
+				if(msgInfo.getChannel() == ChatConstant.Channel.PROMPT){
+					offlineMsg.addChatMsg(ChatManager.buildChatReceiveProto(msgInfo));
+				}
 			}
 			PBMessage p = MessageUtil.buildMessage(Protocol.U_CHAT_HISTORY_RESP, offlineMsg);
 			player.sendPbMessage(p);

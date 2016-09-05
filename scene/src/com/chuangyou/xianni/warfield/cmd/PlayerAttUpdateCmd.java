@@ -34,17 +34,26 @@ public class PlayerAttUpdateCmd extends AbstractCommand {
 		// 修改玩家属性
 		List<PropertyMsg> attList = req.getAttList();
 
-		// 升级直接满血
+		boolean hasWeaponUpdate = false;
 		for (PropertyMsg property : attList) {
+			// 升级直接满血
 			if (property.getType() == EnumAttr.Level.getValue()) {
 				pArmy.getPlayer().addCurBlood(Integer.MAX_VALUE, DamageEffecterType.BLOOD);
 				pArmy.getPlayer().addCurSoul(Integer.MAX_VALUE, DamageEffecterType.SOUL);
 				break;
 			}
+			if (property.getType() == EnumAttr.Weapon.getValue() || property.getType() == EnumAttr.WEAPON_AWAKEN.getValue()) {
+				hasWeaponUpdate = true;
+			}
 		}
 
 		// 读取属性
 		pArmy.getPlayer().getSimpleInfo().readProperty(attList);
+
+		// 武器技能更新
+		if (hasWeaponUpdate == true) {
+			pArmy.getPlayer().updateWeaponBuff();
+		}
 
 		// 创建同步消息
 		PlayerAttUpdateMsg.Builder resp = PlayerAttUpdateMsg.newBuilder();

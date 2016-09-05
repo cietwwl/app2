@@ -11,5 +11,6 @@ message BufferMsg {
 	optional int64 aliveTime = 6; //截止时间
 	optional int32 leftCount = 7; //剩余次数
 	optional int64 targetId = 8; //目标id
+	optional int32 pressedNum = 9; //叠加数量
 }
 

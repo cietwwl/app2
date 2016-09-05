@@ -1,0 +1,9 @@
+//protocol=10153;
+option java_package = "com.chuangyou.common.protobuf.pb.player";
+option java_outer_classname = "PropertyBuyProto";
+
+//武器灵力购买
+message PropertyBuyMsg{
+	optional int32 type = 1; // 属性类型
+	optional int32 buyNum = 2; // 属性购买数量
+}

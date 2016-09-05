@@ -11,6 +11,7 @@ import com.chuangyou.xianni.campaign.CampaignTempMgr;
 import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.common.timer.TimerTaskMgr;
 import com.chuangyou.xianni.drop.templete.DropTempleteMgr;
+import com.chuangyou.xianni.equip.template.EquipTemplateMgr;
 import com.chuangyou.xianni.mount.MountTempleteMgr;
 import com.chuangyou.xianni.netty.codec.PBMessageDecoder;
 import com.chuangyou.xianni.netty.codec.PBMessageEncoder;
@@ -133,6 +134,9 @@ public class SceneServer extends BaseServer {
 		}
 
 		if (!initComponent(MountTempleteMgr.init(), "坐骑模板初始化")) {
+			return false;
+		}
+		if(!initComponent(EquipTemplateMgr.init(), "装备觉醒")){
 			return false;
 		}
 

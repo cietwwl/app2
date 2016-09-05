@@ -58,6 +58,10 @@ public class ReloadData4SceneCmd extends AbstractCommand {
 				if (property.getType() == EnumAttr.CUR_BLOOD.getValue()) {
 					join.setCurBlood((int) property.getTotalPoint());
 				}
+				
+				if(property.getType() == EnumAttr.MANA.getValue()){
+					join.setMana((int)property.getTotalPoint());
+				}
 
 			}
 		}

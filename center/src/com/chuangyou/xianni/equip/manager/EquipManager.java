@@ -1,15 +1,18 @@
 package com.chuangyou.xianni.equip.manager;
 
+import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg;
 import com.chuangyou.common.protobuf.pb.equip.EquipInfoReqProto.EquipInfoReqMsg;
 import com.chuangyou.common.protobuf.pb.equip.EquipInfoRespProto.EquipInfoRespMsg;
 import com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg;
+import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
 import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.bag.BaseBag;
 import com.chuangyou.xianni.bag.BaseItem;
 import com.chuangyou.xianni.bag.ItemManager;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
+import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.constant.EquipConstant;
 import com.chuangyou.xianni.constant.ItemType;
 import com.chuangyou.xianni.entity.equip.EquipAwakenCfg;
@@ -34,13 +37,14 @@ public class EquipManager {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, protocol, "类型错误");
 			return;
 		}
-		
-		EquipAwakenCfg cfg = EquipTemplateMgr.getAwakenMap().get(equip.getTemplateId()*10000 + equip.getItemInfo().getAwaken()*100 + equip.getItemInfo().getAwakenPoint());
+		long awakenTempId = (long)equip.getTemplateId()*10000 + equip.getItemInfo().getAwaken()*100 + equip.getItemInfo().getAwakenPoint();
+		EquipAwakenCfg cfg = EquipTemplateMgr.getAwakenMap().get(awakenTempId);
 		if(cfg == null){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, protocol, "装备觉醒配置错误");
 			return;
 		}
-		if(EquipTemplateMgr.getAwakenMap().get(equip.getTemplateId()*10000 + (equip.getItemInfo().getAwaken()+1)*100 + 0) == null){
+		long nextAwakenTempId = (long)equip.getTemplateId()*10000 + (equip.getItemInfo().getAwaken()+1)*100 + 0;
+		if(EquipTemplateMgr.getAwakenMap().get(nextAwakenTempId) == null){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.EQUIP_AWAKEN_MAX, protocol, "觉醒等级已达到上限");
 			return;
 		}
@@ -51,12 +55,14 @@ public class EquipManager {
 		}
 		if(!player.getBagInventory().removeItemFromPlayerBag(cfg.getNeedItem(), cfg.getNeedItemNum(), ItemRemoveType.USE)) return;
 		
+		boolean uplevel = false;
 		boolean isSuccess = (new ThreadSafeRandom()).isSuccessful(cfg.getRate(), 10000);
 		if(isSuccess == true){
 			equip.getItemInfo().setAwakenPoint(equip.getItemInfo().getAwakenPoint() + 1);
 			if(equip.getItemInfo().getAwakenPoint() >= cfg.getMaxPoint()){
 				equip.getItemInfo().setAwaken(equip.getItemInfo().getAwaken() + 1);
 				equip.getItemInfo().setAwakenPoint(0);
+				uplevel = true;
 			}
 		}else{
 			if(equip.getItemInfo().getAwakenPoint() > 0){
@@ -66,13 +72,33 @@ public class EquipManager {
 		
 		EquipInfoRespMsg.Builder msg = EquipInfoRespMsg.newBuilder();
 		msg.setAction(EquipOperateAction.Equip.AWAKEN);
+		if(isSuccess){
+			msg.setResult(0);
+		}else{
+			msg.setResult(1);
+		}
 		EquipInfoMsg.Builder infoMsg = EquipInfoMsg.newBuilder();
-		infoMsg.setEquipId(equip.getItemInfo().getId());
+		infoMsg.setPos(equip.getItemInfo().getPosMsg());
 		infoMsg.setAwakenLevel(equip.getItemInfo().getAwaken());
 		infoMsg.setAwakenPoint(equip.getItemInfo().getAwakenPoint());
 		infoMsg.setStoneTempId(equip.getItemInfo().getStone());
-		PBMessage p = MessageUtil.buildMessage(Protocol.C_EQUIP_INFO, msg);
+		msg.setEquip(infoMsg);
+		PBMessage p = MessageUtil.buildMessage(Protocol.U_EQUIP_INFO, msg);
 		player.sendPbMessage(p);
+		
+		if(uplevel == true){
+			if(equip.getItemInfo().getBagType() == BagType.HeroEquipment && equip.getItemInfo().getPos() == EquipConstant.EquipPosition.weaponPosition){
+				PlayerAttUpdateMsg.Builder attMsg = PlayerAttUpdateMsg.newBuilder();
+				PropertyMsg.Builder awakenMsg = PropertyMsg.newBuilder();
+				awakenMsg.setType(EnumAttr.WEAPON_AWAKEN.getValue());
+				awakenMsg.setTotalPoint(equip.getItemInfo().getAwaken());
+				attMsg.addAtt(awakenMsg);
+				attMsg.setPlayerId(player.getPlayerId());
+				
+				PBMessage pkg = MessageUtil.buildMessage(Protocol.S_ATTRIBUTE_SCENE_UPDATE, attMsg);
+				player.sendPbMessage(pkg);
+			}
+		}
 	}
 	
 	public static void equipStone(GamePlayer player, ItemPosMsg equipPos, ItemPosMsg stonePos, short protocol){
@@ -104,7 +130,7 @@ public class EquipManager {
 		EquipInfoRespMsg.Builder msg = EquipInfoRespMsg.newBuilder();
 		msg.setAction(EquipOperateAction.Equip.STONE);
 		EquipInfoMsg.Builder infoMsg = EquipInfoMsg.newBuilder();
-		infoMsg.setEquipId(equip.getItemInfo().getId());
+		infoMsg.setPos(equip.getItemInfo().getPosMsg());
 		infoMsg.setAwakenLevel(equip.getItemInfo().getAwaken());
 		infoMsg.setAwakenPoint(equip.getItemInfo().getAwakenPoint());
 		infoMsg.setStoneTempId(equip.getItemInfo().getStone());
@@ -162,7 +188,7 @@ public class EquipManager {
 			EquipInfoRespMsg.Builder msg = EquipInfoRespMsg.newBuilder();
 			msg.setAction(EquipOperateAction.Equip.STONE);
 			EquipInfoMsg.Builder infoMsg = EquipInfoMsg.newBuilder();
-			infoMsg.setEquipId(equip.getItemInfo().getId());
+			infoMsg.setPos(equip.getItemInfo().getPosMsg());
 			infoMsg.setAwakenLevel(equip.getItemInfo().getAwaken());
 			infoMsg.setAwakenPoint(equip.getItemInfo().getAwakenPoint());
 			infoMsg.setStoneTempId(equip.getItemInfo().getStone());

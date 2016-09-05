@@ -3,7 +3,6 @@ package com.chuangyou.xianni.player;
 import com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg;
 import com.chuangyou.common.protobuf.pb.ReqChangeMapMsgProto.ReqChangeMapMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
-import com.chuangyou.common.util.AccessTextFile;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.army.ArmyInventory;
@@ -30,7 +29,6 @@ import com.chuangyou.xianni.exec.CmdTask;
 import com.chuangyou.xianni.exec.CmdTaskQueue;
 import com.chuangyou.xianni.exec.ThreadManager;
 import com.chuangyou.xianni.fashion.FashionInventory;
-import com.chuangyou.xianni.friend.FriendInventory;
 import com.chuangyou.xianni.inverseBead.InverseBeadInventory;
 import com.chuangyou.xianni.inverseBead.InverseBeadRefreshInventory;
 import com.chuangyou.xianni.magicwp.MagicwpInventory;
@@ -43,6 +41,7 @@ import com.chuangyou.xianni.player.manager.PlayerManager;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.relation.RelationInventory;
 import com.chuangyou.xianni.shop.ShopInventory;
 import com.chuangyou.xianni.skill.SkillInventory;
 import com.chuangyou.xianni.soul.SoulInventory;
@@ -68,12 +67,8 @@ public class GamePlayer extends AbstractEvent {
 	/** 空间数据 */
 	private SpaceInventory				spaceInventory;
 
-	/** 好友数据 */
-	private FriendInventory				friendInventory;
-
 	// <<----** 非共享数据，玩家下线时卸载 */---------------->>
 	/** 邮件数据 */
-
 	private EmailInventory				emailInventory;
 
 	/** 坐骑数据 */
@@ -111,6 +106,9 @@ public class GamePlayer extends AbstractEvent {
 	 * 魂幡
 	 */
 	private SoulInventory				soulInventory;
+	
+	/** 关系数据 */
+	private RelationInventory relationInventory;
 
 	private Channel						channel;					// 服务器持有连接
 
@@ -131,9 +129,6 @@ public class GamePlayer extends AbstractEvent {
 
 		if (emailInventory != null) {
 			emailInventory.saveToDatabase();
-		}
-		if (friendInventory != null) {
-			friendInventory.saveToDatabase();
 		}
 		if (mountInventory != null) {
 			mountInventory.saveToDatabase();
@@ -183,6 +178,10 @@ public class GamePlayer extends AbstractEvent {
 		if (soulInventory != null) {
 			soulInventory.saveToDatabase();
 		}
+		
+		if(relationInventory != null){
+			relationInventory.saveToDatabase();
+		}
 
 	}
 
@@ -192,10 +191,6 @@ public class GamePlayer extends AbstractEvent {
 
 		spaceInventory = new SpaceInventory(this);
 		if (!initData(spaceInventory.loadFromDataBase(), "玩家空间数据加载")) {
-			return false;
-		}
-		friendInventory = new FriendInventory(this);
-		if (!initData(friendInventory.loadFromDataBase(), "玩家好友数据加载")) {
 			return false;
 		}
 		regeditEvent();
@@ -208,10 +203,6 @@ public class GamePlayer extends AbstractEvent {
 			spaceInventory.unloadData();
 			spaceInventory = null;
 		}
-		if (friendInventory != null) {
-			friendInventory.unloadData();
-			friendInventory = null;
-		}
 		return true;
 	}
 
@@ -219,10 +210,6 @@ public class GamePlayer extends AbstractEvent {
 	public boolean loadPersonData() {
 		emailInventory = new EmailInventory(this);
 		if (!initData(emailInventory.loadFromDataBase(), "玩家邮件")) {
-			return false;
-		}
-		friendInventory = new FriendInventory(this);
-		if (!initData(friendInventory.loadFromDataBase(), "玩家好友")) {
 			return false;
 		}
 
@@ -283,7 +270,11 @@ public class GamePlayer extends AbstractEvent {
 		if (!initData(soulInventory.loadFromDataBase(), "魂幡数据")) {
 			return false;
 		}
-		// 创建时会计算所有属性，所以要在最后面加载
+		relationInventory = new RelationInventory(this);
+		if(!initData(relationInventory.loadFromDataBase(), "社交关系数据")){
+			return false;
+		}
+		//创建时会计算所有属性，所以要在最后面加载
 		armyInventory = new ArmyInventory(this);
 		if (!initData(armyInventory.loadFromDataBase(), "用户部队")) {
 			return false;
@@ -347,6 +338,10 @@ public class GamePlayer extends AbstractEvent {
 		if (soulInventory != null) {
 			soulInventory.unloadData();
 			soulInventory = null;
+		}
+		if(relationInventory != null){
+			relationInventory.unloadData();
+			relationInventory = null;
 		}
 		return true;
 	}
@@ -483,16 +478,11 @@ public class GamePlayer extends AbstractEvent {
 		}
 		message.setPlayerId(getPlayerId());
 		try {
-
 			channel.write(message);
 			channel.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public FriendInventory getFriendInventory() {
-		return friendInventory;
 	}
 
 	public BasePlayer getBasePlayer() {
@@ -619,6 +609,10 @@ public class GamePlayer extends AbstractEvent {
 
 	public SoulInventory getSoulInventory() {
 		return soulInventory;
+	}
+
+	public RelationInventory getRelationInventory() {
+		return relationInventory;
 	}
 
 	/** 重置玩家数据 */

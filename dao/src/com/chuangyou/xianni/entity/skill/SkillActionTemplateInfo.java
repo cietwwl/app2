@@ -142,13 +142,13 @@ public class SkillActionTemplateInfo {
 		this.costCount = costCount;
 	}
 
-	public int getAttackType() {
-		return attackType;
-	}
-
-	public void setAttackType(int attackType) {
-		this.attackType = attackType;
-	}
+	// public int getAttackType() {
+	// return attackType;
+	// }
+	//
+	// public void setAttackType(int attackType) {
+	// this.attackType = attackType;
+	// }
 
 	public int getParamValue1() {
 		return paramValue1;

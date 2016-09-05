@@ -16,6 +16,8 @@ public class Hero extends Living {
 	private int			curBlood	= 100000;
 	private int			curSoul		= 100000;
 
+	private int			mana		= 0;
+
 	public GamePlayer getPlayer() {
 		return player;
 	}
@@ -38,6 +40,14 @@ public class Hero extends Living {
 
 	public void setCurSoul(int curSoul) {
 		this.curSoul = curSoul;
+	}
+
+	public int getMana() {
+		return mana;
+	}
+
+	public void setMana(int mana) {
+		this.mana = mana;
 	}
 
 	public Hero(GamePlayer player) {
@@ -78,6 +88,11 @@ public class Hero extends Living {
 		cur_blood.setTotalPoint(cBloold);
 		propertis.addPropertys(cur_blood);
 
+		PropertyMsg.Builder mana = PropertyMsg.newBuilder();
+		mana.setType(EnumAttr.MANA.getValue());
+		mana.setTotalPoint(getMana());
+		propertis.addPropertys(mana);
+
 		// 添加pk值
 		PropertyMsg.Builder pkVal = PropertyMsg.newBuilder();
 		pkVal.setType(EnumAttr.PK_VAL.getValue());
@@ -95,17 +110,16 @@ public class Hero extends Living {
 		// System.out.println("-----------------------#");
 		for (Entry<String, HeroSkill> entry : heroSkills.entrySet()) {
 			HeroSkill heroSkill = entry.getValue();
-			if (heroSkill.getType() == SkillInventory.passiveSkillType)// 被动技能
+			if (heroSkill.getType() == SkillInventory.passiveSkillType) {// 被动技能
 				continue;
-			// }else if (heroSkill.getType()==1) {
+			}
 			heroInfo.addBattleSkills(heroSkill.getSkillId());
-			// System.out.println("skillId======" + heroSkill.getSkillId());
-			// }
 			heroInfo.addSkillInfos(heroSkill.getSkillId());
-
-			// System.out.println("同步技能scene："+heroSkill.getSkillId());
 		}
+		// // 添加武器BUFFER
+		// heroInfo.setWeaponsBufferId(40040001);
 
+		heroInfo.addAllFuseSkills(player.getSoulInventory().getFuseSkillPacket(gamePlayer));
 		// // // 同步技能
 		// heroInfo.addSkillInfos(1001);
 		// // // 出战技能

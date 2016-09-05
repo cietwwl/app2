@@ -27,4 +27,5 @@ message PlayerInfoMsg{
 	optional int32 points = 21; //积分
 	optional int32 job = 22; //职业
 	optional int64 equipExp = 23; // 装备经验
+	optional int32 weaponAwaken = 24; // 当前武器觉醒等级
 }

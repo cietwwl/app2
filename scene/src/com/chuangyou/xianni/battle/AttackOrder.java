@@ -27,6 +27,7 @@ import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
+import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.role.objects.Snare;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
@@ -86,6 +87,7 @@ public class AttackOrder {
 			isAttack = false;
 			return false;
 		}
+
 		// 添加/执行技能Buffer
 		addSkillBuffers();
 		// 技能创建陷阱
@@ -183,14 +185,14 @@ public class AttackOrder {
 	 */
 	private void calcDamage() {
 		// 攻击者行动BUFFER执行
-		source.execWayBuffer(ExecWayType.ATTACT);
+		source.execWayBuffer(this, ExecWayType.ATTACT);
 
 		for (Damage damage : damages) {
 			Living target = damage.getTarget();
 			if (target != null) {
 				// 受伤时
 				if (damage.isHurt()) {
-					target.execWayBuffer(ExecWayType.HURT);
+					target.execWayBuffer(this, ExecWayType.HURT);
 				}
 				// 回复时
 				if (damage.isRestore()) {

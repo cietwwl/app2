@@ -3,11 +3,11 @@ package com.chuangyou.xianni.chat.manager.action;
 import java.util.List;
 
 import com.chuangyou.common.protobuf.pb.chat.ChatReceiveProto.ChatReceiveMsg;
-import com.chuangyou.common.protobuf.pb.chat.ChatSendProto.ChatSendMsg;
 import com.chuangyou.xianni.chat.manager.ChatManager;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.constant.ChatConstant;
+import com.chuangyou.xianni.entity.chat.ChatMsgInfo;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.BroadcastUtil;
@@ -21,7 +21,7 @@ public abstract class ChatBaseAction {
 	 * @param sendMsg 发送消息
 	 * @return 是否成功
 	 */
-	public boolean sendChatMsg(GamePlayer sender, ChatSendMsg sendMsg){
+	public boolean sendChatMsg(GamePlayer sender, ChatMsgInfo sendMsg){
 		if(checkCd(sender, sendMsg, true) == false){
 			return false;
 		}
@@ -38,7 +38,7 @@ public abstract class ChatBaseAction {
 	 * @param sendMsg 发送消息
 	 * @return 是否可以发送
 	 */
-	public boolean checkCd(GamePlayer sender, ChatSendMsg sendMsg, boolean errorTip){
+	public boolean checkCd(GamePlayer sender, ChatMsgInfo sendMsg, boolean errorTip){
 		boolean result = true;
 		long lastTime = ChatManager.getLastTime(sendMsg.getChannel(), sender.getPlayerId());
 		if(lastTime > 0){
@@ -62,7 +62,7 @@ public abstract class ChatBaseAction {
 	 * @param sendMsg 发送消息
 	 * @return 接收协议包
 	 */
-	public ChatReceiveMsg buildReceiveProto(GamePlayer sender, ChatSendMsg sendMsg){
+	public ChatReceiveMsg buildReceiveProto(GamePlayer sender, ChatMsgInfo sendMsg){
 		ChatReceiveMsg.Builder msg = ChatReceiveMsg.newBuilder();
 		msg.setChannel(sendMsg.getChannel());
 		msg.setSendTime(System.currentTimeMillis());
@@ -76,6 +76,7 @@ public abstract class ChatBaseAction {
 		if(sendMsg.getChannel() == ChatConstant.Channel.PRIVATE){
 			msg.setReceiver(sendMsg.getReceiverId());
 		}
+		msg.setParam1(sendMsg.getParam1());
 		return msg.build();
 	}
 	
@@ -85,7 +86,7 @@ public abstract class ChatBaseAction {
 	 * @param sendMsg 发送消息
 	 * @return 接收者ID集合
 	 */
-	protected abstract List<Long> getReceivers(GamePlayer sender, ChatSendMsg sendMsg);
+	protected abstract List<Long> getReceivers(GamePlayer sender, ChatMsgInfo sendMsg);
 	
 	/**
 	 * 获取CD时间

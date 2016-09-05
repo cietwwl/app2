@@ -204,18 +204,24 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	 */
 	public boolean addItem(int templateId, int count, short addType, boolean isBind) {
 		switch (templateId) {
+			case CurrencyItemType.MONEY_ITEM:
+				player.getBasePlayer().addMoney(count);
+				return true;
 			case CurrencyItemType.CASH_ITEM:
 				player.getBasePlayer().addCash(count);
 				return true;
 			case CurrencyItemType.CASH_BIND_ITEM:
 				player.getBasePlayer().addBindCash(count);
 				return true;
-			case CurrencyItemType.MONEY_ITEM:
-				player.getBasePlayer().addMoney(count);
-				return true;
+			case CurrencyItemType.EQUIP_EXP:
+				player.getBasePlayer().addEquipExp(count);
+				break;
 			case CurrencyItemType.REPAIR_ITEM:
 				player.getBasePlayer().addRepair(count);
 				return true;
+			case CurrencyItemType.POINTS:
+				player.getBasePlayer().addPoints(count);
+				break;
 			case CurrencyItemType.EXP:
 				player.getBasePlayer().addExp(count);
 				return true;
@@ -465,6 +471,7 @@ public class BagInventory extends AbstractEvent implements IInventory {
 		int endBagType = 0;
 		short endPos = -1;
 		int weaponId = 0;
+		int weaponAwaken = 0;
 
 		if (beginBagType == BagType.HeroEquipment) { // 卸下装备
 			endBagType = BagType.Play;
@@ -490,18 +497,26 @@ public class BagInventory extends AbstractEvent implements IInventory {
 			endPos = heroEquipment.getPos(beginItem.getItemTempInfo());
 			bagMoveReceive(beginBagType, beginPos, endBagType, endPos, (short) -1);
 			weaponId = beginItem.getTemplateId();
+			weaponAwaken = beginItem.getItemInfo().getAwaken();
 			updateHeroProperties(heroEquipment.getObjectId());
 		}
 
 		// 操作武器
 		if ((beginBagType == BagType.HeroEquipment && beginPos == 0) || endPos == 0) {
 			PlayerAttUpdateMsg.Builder attMsg = PlayerAttUpdateMsg.newBuilder();
+			
 			PropertyMsg.Builder proMsg = PropertyMsg.newBuilder();
 			proMsg.setType(EnumAttr.Weapon.getValue());
 			proMsg.setTotalPoint(weaponId);
 			attMsg.addAtt(proMsg);
+			
+			PropertyMsg.Builder awakenMsg = PropertyMsg.newBuilder();
+			awakenMsg.setType(EnumAttr.WEAPON_AWAKEN.getValue());
+			awakenMsg.setTotalPoint(weaponAwaken);
+			attMsg.addAtt(awakenMsg);
+			
 			attMsg.setPlayerId(player.getPlayerId());
-			PBMessage message = MessageUtil.buildMessage(Protocol.S_PROPERTY_UPDATE, attMsg);
+			PBMessage message = MessageUtil.buildMessage(Protocol.S_ATTRIBUTE_SCENE_UPDATE, attMsg);
 			player.sendPbMessage(message);
 
 			player.getBasePlayer().getPlayerInfo().setWeaponId(weaponId);

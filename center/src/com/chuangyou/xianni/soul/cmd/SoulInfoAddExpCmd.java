@@ -58,6 +58,10 @@ public class SoulInfoAddExpCmd extends AbstractCommand {
 		PBMessage pkg = MessageUtil.buildMessage(Protocol.U_RESP_SOUL_ADD_EXP,resp);
 		player.sendPbMessage(pkg);
 		
+		//经验值同步到scene服务器
+		pkg =  MessageUtil.buildMessage(Protocol.S_REQ_SOUL_EXP,soulInfo.getMsg());
+		player.sendPbMessage(pkg);
+		
 	}
 	
 	private boolean check(int item,int count,GamePlayer player){

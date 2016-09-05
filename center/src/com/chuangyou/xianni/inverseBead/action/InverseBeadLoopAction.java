@@ -44,9 +44,15 @@ public class InverseBeadLoopAction extends DelayAction {
 
 	@Override
 	public void execute() {
+		if (player.getInverseBeadRefreshInventory() == null)
+			return;
+		PlayerBeadTimeInfo playerTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
+		if (playerTimeInfo == null)
+			return;
+
 		boolean res = refreshSpawn();
 		boolean res2 = refreshAura();
-		PlayerBeadTimeInfo playerTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
+
 		if (res || res2) {
 			// PlayerTimeInfo playerTimeInfo =
 			// player.getBasePlayer().getPlayerTimeInfo();

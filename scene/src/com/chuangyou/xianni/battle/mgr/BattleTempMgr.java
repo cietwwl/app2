@@ -10,8 +10,8 @@ import com.chuangyou.xianni.entity.skill.SkillActionMoveTempleteInfo;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.entity.skill.SnareTemplateInfo;
+import com.chuangyou.xianni.entity.soul.SoulFuseSkillConfig;
 import com.chuangyou.xianni.sql.dao.DBManager;
-import com.chuangyou.xianni.sql.dao.LivingStatusTemplateInfoDao;
 
 public class BattleTempMgr {
 	private static Map<Integer, SkillActionTemplateInfo>		skillActionTemps	= new HashMap<Integer, SkillActionTemplateInfo>();
@@ -25,6 +25,11 @@ public class BattleTempMgr {
 	private static Map<Integer, LivingStatusTemplateInfo>		livingStatusTemps	= new HashMap<Integer, LivingStatusTemplateInfo>();
 
 	private static Map<Integer, SnareTemplateInfo>				snareInfoTemps		= new HashMap<Integer, SnareTemplateInfo>();
+	/**
+	 * 融合技能模板
+	 */
+	private static Map<Integer, SoulFuseSkillConfig>            fuseSkillTemps		= new HashMap<>();
+	
 
 	public static boolean init() {
 		reloadPb();
@@ -68,6 +73,9 @@ public class BattleTempMgr {
 				snareInfoTemps.put(temp.getTemplateId(), temp);
 			}
 		}
+		//加载融合技能模板
+		fuseSkillTemps = DBManager.getSoulDao().getFuseSkillConfig();
+		if(fuseSkillTemps == null)return false;
 		return true;
 	}
 
@@ -112,4 +120,10 @@ public class BattleTempMgr {
 		}
 		return null;
 	}
+
+	public static Map<Integer, SoulFuseSkillConfig> getFuseSkillTemps() {
+		return fuseSkillTemps;
+	}
+
+
 }

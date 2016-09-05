@@ -5,6 +5,7 @@ import com.chuangyou.common.protobuf.pb.space.GetSpaceInfoRespProto.GetSpaceInfo
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
+import com.chuangyou.xianni.constant.PlayerRelationConstant;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -23,7 +24,8 @@ public class GetSpaceInfoCmd extends AbstractCommand {
 		GamePlayer reqPlayer = WorldMgr.getPlayer(reqPlayerId);
 		if(reqPlayer!=null){
 			GetSpaceInfoRespMsg.Builder msg = reqPlayer.getSpaceInventory().getSpaceInfoMsg();
-			boolean isFriends = reqPlayer.getFriendInventory().getFriend().isFriend(player.getPlayerId());
+			//自己是否是对方的好友
+			boolean isFriends = player.getRelationInventory().isRelationTypeSelfToTarget(player.getPlayerId(), PlayerRelationConstant.FRIEND);
 			msg.setIsFriends(isFriends);
 			PBMessage pkg = MessageUtil.buildMessage(Protocol.U_RESP_GET_SPACE_INFO,msg);
 			player.sendPbMessage(pkg);		

@@ -23,7 +23,7 @@ import com.chuangyou.xianni.player.event.PlayerSceneAttEvent;
 import com.chuangyou.xianni.vip.templete.VipTemplateMgr;
 
 /**
- * 玩家临时数据,只作临时记录和使用，不入库
+ * 玩家数据
  *
  */
 public class BasePlayer extends AbstractEvent {
@@ -616,7 +616,7 @@ public class BasePlayer extends AbstractEvent {
 	/**
 	 * 添加临时vip
 	 * 
-	 * @param dayCount
+	 * @param dayCount 单位天
 	 * @return
 	 */
 	public boolean addVipTemporary(int dayCount) {
@@ -628,12 +628,13 @@ public class BasePlayer extends AbstractEvent {
 			} else {
 				time = System.currentTimeMillis();
 			}
-			this.playerInfo.setVipInterimTimeLimit(new Date(time + dayCount * 24l * 60 * 60 * 1000));
+			time +=  dayCount * 24l * 60 * 60 * 1000;
+			this.playerInfo.setVipInterimTimeLimit(new Date(time));
 		} catch (Exception e) {
 			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " addVipTemporary:" + dayCount);
 			return false;
 		} finally {
-			commitChages(EnumAttr.VIP_TEMPORARY.getValue(), this.playerInfo.getVipInterimTimeLimit().getTime());
+			commitChages(EnumAttr.VIP_TEMPORARY.getValue(), this.playerInfo.getVipInterimTimeLimit().getTime()/1000);
 		}
 		return true;
 	}

@@ -16,7 +16,7 @@ public final class BufferMsgProto {
      * <code>optional int32 option = 1;</code>
      *
      * <pre>
-     *æ“ä½œç±»å‹  4 åˆ é™¤ï¼Œå…¶ä»–å¢åŠ æˆ–è€…ä¿®æ”¹
+     *²Ù×÷ÀàĞÍ 1 Ìí¼Ó£¬2 ĞŞ¸Ä 4 É¾³ı£¬ÆäËûÔö¼Ó»òÕßĞŞ¸Ä
      * </pre>
      */
     boolean hasOption();
@@ -24,7 +24,7 @@ public final class BufferMsgProto {
      * <code>optional int32 option = 1;</code>
      *
      * <pre>
-     *æ“ä½œç±»å‹  4 åˆ é™¤ï¼Œå…¶ä»–å¢åŠ æˆ–è€…ä¿®æ”¹
+     *²Ù×÷ÀàĞÍ 1 Ìí¼Ó£¬2 ĞŞ¸Ä 4 É¾³ı£¬ÆäËûÔö¼Ó»òÕßĞŞ¸Ä
      * </pre>
      */
     int getOption();
@@ -33,7 +33,7 @@ public final class BufferMsgProto {
      * <code>optional int64 bufferId = 2;</code>
      *
      * <pre>
-     *bufferå”¯ä¸€ID
+     *bufferÎ¨Ò»ID
      * </pre>
      */
     boolean hasBufferId();
@@ -41,7 +41,7 @@ public final class BufferMsgProto {
      * <code>optional int64 bufferId = 2;</code>
      *
      * <pre>
-     *bufferå”¯ä¸€ID
+     *bufferÎ¨Ò»ID
      * </pre>
      */
     long getBufferId();
@@ -50,7 +50,7 @@ public final class BufferMsgProto {
      * <code>optional int64 sourceId = 3;</code>
      *
      * <pre>
-     *bufferæºID
+     *bufferÔ´ID
      * </pre>
      */
     boolean hasSourceId();
@@ -58,7 +58,7 @@ public final class BufferMsgProto {
      * <code>optional int64 sourceId = 3;</code>
      *
      * <pre>
-     *bufferæºID
+     *bufferÔ´ID
      * </pre>
      */
     long getSourceId();
@@ -67,7 +67,7 @@ public final class BufferMsgProto {
      * <code>optional string sourcename = 4;</code>
      *
      * <pre>
-     *bufferæ¥æºå
+     *bufferÀ´Ô´Ãû
      * </pre>
      */
     boolean hasSourcename();
@@ -75,7 +75,7 @@ public final class BufferMsgProto {
      * <code>optional string sourcename = 4;</code>
      *
      * <pre>
-     *bufferæ¥æºå
+     *bufferÀ´Ô´Ãû
      * </pre>
      */
     java.lang.String getSourcename();
@@ -83,7 +83,7 @@ public final class BufferMsgProto {
      * <code>optional string sourcename = 4;</code>
      *
      * <pre>
-     *bufferæ¥æºå
+     *bufferÀ´Ô´Ãû
      * </pre>
      */
     com.google.protobuf.ByteString
@@ -93,7 +93,7 @@ public final class BufferMsgProto {
      * <code>optional int32 templateId = 5;</code>
      *
      * <pre>
-     *æ¨¡æ¿ID
+     *Ä£°åID
      * </pre>
      */
     boolean hasTemplateId();
@@ -101,7 +101,7 @@ public final class BufferMsgProto {
      * <code>optional int32 templateId = 5;</code>
      *
      * <pre>
-     *æ¨¡æ¿ID
+     *Ä£°åID
      * </pre>
      */
     int getTemplateId();
@@ -110,7 +110,7 @@ public final class BufferMsgProto {
      * <code>optional int64 aliveTime = 6;</code>
      *
      * <pre>
-     *æˆªæ­¢æ—¶é—´
+     *½ØÖ¹Ê±¼ä
      * </pre>
      */
     boolean hasAliveTime();
@@ -118,7 +118,7 @@ public final class BufferMsgProto {
      * <code>optional int64 aliveTime = 6;</code>
      *
      * <pre>
-     *æˆªæ­¢æ—¶é—´
+     *½ØÖ¹Ê±¼ä
      * </pre>
      */
     long getAliveTime();
@@ -127,7 +127,7 @@ public final class BufferMsgProto {
      * <code>optional int32 leftCount = 7;</code>
      *
      * <pre>
-     *å‰©ä½™æ¬¡æ•°
+     *Ê£Óà´ÎÊı
      * </pre>
      */
     boolean hasLeftCount();
@@ -135,7 +135,7 @@ public final class BufferMsgProto {
      * <code>optional int32 leftCount = 7;</code>
      *
      * <pre>
-     *å‰©ä½™æ¬¡æ•°
+     *Ê£Óà´ÎÊı
      * </pre>
      */
     int getLeftCount();
@@ -144,7 +144,7 @@ public final class BufferMsgProto {
      * <code>optional int64 targetId = 8;</code>
      *
      * <pre>
-     *ç›®æ ‡id
+     *Ä¿±êid
      * </pre>
      */
     boolean hasTargetId();
@@ -152,16 +152,33 @@ public final class BufferMsgProto {
      * <code>optional int64 targetId = 8;</code>
      *
      * <pre>
-     *ç›®æ ‡id
+     *Ä¿±êid
      * </pre>
      */
     long getTargetId();
+
+    /**
+     * <code>optional int32 pressedNum = 9;</code>
+     *
+     * <pre>
+     *µş¼ÓÊıÁ¿
+     * </pre>
+     */
+    boolean hasPressedNum();
+    /**
+     * <code>optional int32 pressedNum = 9;</code>
+     *
+     * <pre>
+     *µş¼ÓÊıÁ¿
+     * </pre>
+     */
+    int getPressedNum();
   }
   /**
    * Protobuf type {@code BufferMsg}
    *
    * <pre>
-   *å˜æ›´ç”¨æˆ·å½“å‰æŸä¸ªbuffer
+   *±ä¸üÓÃ»§µ±Ç°Ä³¸öbuffer
    * </pre>
    */
   public static final class BufferMsg extends
@@ -254,6 +271,11 @@ public final class BufferMsgProto {
               targetId_ = input.readInt64();
               break;
             }
+            case 72: {
+              bitField0_ |= 0x00000100;
+              pressedNum_ = input.readInt32();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -300,7 +322,7 @@ public final class BufferMsgProto {
      * <code>optional int32 option = 1;</code>
      *
      * <pre>
-     *æ“ä½œç±»å‹  4 åˆ é™¤ï¼Œå…¶ä»–å¢åŠ æˆ–è€…ä¿®æ”¹
+     *²Ù×÷ÀàĞÍ 1 Ìí¼Ó£¬2 ĞŞ¸Ä 4 É¾³ı£¬ÆäËûÔö¼Ó»òÕßĞŞ¸Ä
      * </pre>
      */
     public boolean hasOption() {
@@ -310,7 +332,7 @@ public final class BufferMsgProto {
      * <code>optional int32 option = 1;</code>
      *
      * <pre>
-     *æ“ä½œç±»å‹  4 åˆ é™¤ï¼Œå…¶ä»–å¢åŠ æˆ–è€…ä¿®æ”¹
+     *²Ù×÷ÀàĞÍ 1 Ìí¼Ó£¬2 ĞŞ¸Ä 4 É¾³ı£¬ÆäËûÔö¼Ó»òÕßĞŞ¸Ä
      * </pre>
      */
     public int getOption() {
@@ -323,7 +345,7 @@ public final class BufferMsgProto {
      * <code>optional int64 bufferId = 2;</code>
      *
      * <pre>
-     *bufferå”¯ä¸€ID
+     *bufferÎ¨Ò»ID
      * </pre>
      */
     public boolean hasBufferId() {
@@ -333,7 +355,7 @@ public final class BufferMsgProto {
      * <code>optional int64 bufferId = 2;</code>
      *
      * <pre>
-     *bufferå”¯ä¸€ID
+     *bufferÎ¨Ò»ID
      * </pre>
      */
     public long getBufferId() {
@@ -346,7 +368,7 @@ public final class BufferMsgProto {
      * <code>optional int64 sourceId = 3;</code>
      *
      * <pre>
-     *bufferæºID
+     *bufferÔ´ID
      * </pre>
      */
     public boolean hasSourceId() {
@@ -356,7 +378,7 @@ public final class BufferMsgProto {
      * <code>optional int64 sourceId = 3;</code>
      *
      * <pre>
-     *bufferæºID
+     *bufferÔ´ID
      * </pre>
      */
     public long getSourceId() {
@@ -369,7 +391,7 @@ public final class BufferMsgProto {
      * <code>optional string sourcename = 4;</code>
      *
      * <pre>
-     *bufferæ¥æºå
+     *bufferÀ´Ô´Ãû
      * </pre>
      */
     public boolean hasSourcename() {
@@ -379,7 +401,7 @@ public final class BufferMsgProto {
      * <code>optional string sourcename = 4;</code>
      *
      * <pre>
-     *bufferæ¥æºå
+     *bufferÀ´Ô´Ãû
      * </pre>
      */
     public java.lang.String getSourcename() {
@@ -400,7 +422,7 @@ public final class BufferMsgProto {
      * <code>optional string sourcename = 4;</code>
      *
      * <pre>
-     *bufferæ¥æºå
+     *bufferÀ´Ô´Ãû
      * </pre>
      */
     public com.google.protobuf.ByteString
@@ -423,7 +445,7 @@ public final class BufferMsgProto {
      * <code>optional int32 templateId = 5;</code>
      *
      * <pre>
-     *æ¨¡æ¿ID
+     *Ä£°åID
      * </pre>
      */
     public boolean hasTemplateId() {
@@ -433,7 +455,7 @@ public final class BufferMsgProto {
      * <code>optional int32 templateId = 5;</code>
      *
      * <pre>
-     *æ¨¡æ¿ID
+     *Ä£°åID
      * </pre>
      */
     public int getTemplateId() {
@@ -446,7 +468,7 @@ public final class BufferMsgProto {
      * <code>optional int64 aliveTime = 6;</code>
      *
      * <pre>
-     *æˆªæ­¢æ—¶é—´
+     *½ØÖ¹Ê±¼ä
      * </pre>
      */
     public boolean hasAliveTime() {
@@ -456,7 +478,7 @@ public final class BufferMsgProto {
      * <code>optional int64 aliveTime = 6;</code>
      *
      * <pre>
-     *æˆªæ­¢æ—¶é—´
+     *½ØÖ¹Ê±¼ä
      * </pre>
      */
     public long getAliveTime() {
@@ -469,7 +491,7 @@ public final class BufferMsgProto {
      * <code>optional int32 leftCount = 7;</code>
      *
      * <pre>
-     *å‰©ä½™æ¬¡æ•°
+     *Ê£Óà´ÎÊı
      * </pre>
      */
     public boolean hasLeftCount() {
@@ -479,7 +501,7 @@ public final class BufferMsgProto {
      * <code>optional int32 leftCount = 7;</code>
      *
      * <pre>
-     *å‰©ä½™æ¬¡æ•°
+     *Ê£Óà´ÎÊı
      * </pre>
      */
     public int getLeftCount() {
@@ -492,7 +514,7 @@ public final class BufferMsgProto {
      * <code>optional int64 targetId = 8;</code>
      *
      * <pre>
-     *ç›®æ ‡id
+     *Ä¿±êid
      * </pre>
      */
     public boolean hasTargetId() {
@@ -502,11 +524,34 @@ public final class BufferMsgProto {
      * <code>optional int64 targetId = 8;</code>
      *
      * <pre>
-     *ç›®æ ‡id
+     *Ä¿±êid
      * </pre>
      */
     public long getTargetId() {
       return targetId_;
+    }
+
+    public static final int PRESSEDNUM_FIELD_NUMBER = 9;
+    private int pressedNum_;
+    /**
+     * <code>optional int32 pressedNum = 9;</code>
+     *
+     * <pre>
+     *µş¼ÓÊıÁ¿
+     * </pre>
+     */
+    public boolean hasPressedNum() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional int32 pressedNum = 9;</code>
+     *
+     * <pre>
+     *µş¼ÓÊıÁ¿
+     * </pre>
+     */
+    public int getPressedNum() {
+      return pressedNum_;
     }
 
     private void initFields() {
@@ -518,6 +563,7 @@ public final class BufferMsgProto {
       aliveTime_ = 0L;
       leftCount_ = 0;
       targetId_ = 0L;
+      pressedNum_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -555,6 +601,9 @@ public final class BufferMsgProto {
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         output.writeInt64(8, targetId_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeInt32(9, pressedNum_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -596,6 +645,10 @@ public final class BufferMsgProto {
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(8, targetId_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(9, pressedNum_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -679,7 +732,7 @@ public final class BufferMsgProto {
      * Protobuf type {@code BufferMsg}
      *
      * <pre>
-     *å˜æ›´ç”¨æˆ·å½“å‰æŸä¸ªbuffer
+     *±ä¸üÓÃ»§µ±Ç°Ä³¸öbuffer
      * </pre>
      */
     public static final class Builder extends
@@ -734,6 +787,8 @@ public final class BufferMsgProto {
         bitField0_ = (bitField0_ & ~0x00000040);
         targetId_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000080);
+        pressedNum_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
@@ -794,6 +849,10 @@ public final class BufferMsgProto {
           to_bitField0_ |= 0x00000080;
         }
         result.targetId_ = targetId_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.pressedNum_ = pressedNum_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -836,6 +895,9 @@ public final class BufferMsgProto {
         if (other.hasTargetId()) {
           setTargetId(other.getTargetId());
         }
+        if (other.hasPressedNum()) {
+          setPressedNum(other.getPressedNum());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -868,7 +930,7 @@ public final class BufferMsgProto {
        * <code>optional int32 option = 1;</code>
        *
        * <pre>
-       *æ“ä½œç±»å‹  4 åˆ é™¤ï¼Œå…¶ä»–å¢åŠ æˆ–è€…ä¿®æ”¹
+       *²Ù×÷ÀàĞÍ 1 Ìí¼Ó£¬2 ĞŞ¸Ä 4 É¾³ı£¬ÆäËûÔö¼Ó»òÕßĞŞ¸Ä
        * </pre>
        */
       public boolean hasOption() {
@@ -878,7 +940,7 @@ public final class BufferMsgProto {
        * <code>optional int32 option = 1;</code>
        *
        * <pre>
-       *æ“ä½œç±»å‹  4 åˆ é™¤ï¼Œå…¶ä»–å¢åŠ æˆ–è€…ä¿®æ”¹
+       *²Ù×÷ÀàĞÍ 1 Ìí¼Ó£¬2 ĞŞ¸Ä 4 É¾³ı£¬ÆäËûÔö¼Ó»òÕßĞŞ¸Ä
        * </pre>
        */
       public int getOption() {
@@ -888,7 +950,7 @@ public final class BufferMsgProto {
        * <code>optional int32 option = 1;</code>
        *
        * <pre>
-       *æ“ä½œç±»å‹  4 åˆ é™¤ï¼Œå…¶ä»–å¢åŠ æˆ–è€…ä¿®æ”¹
+       *²Ù×÷ÀàĞÍ 1 Ìí¼Ó£¬2 ĞŞ¸Ä 4 É¾³ı£¬ÆäËûÔö¼Ó»òÕßĞŞ¸Ä
        * </pre>
        */
       public Builder setOption(int value) {
@@ -901,7 +963,7 @@ public final class BufferMsgProto {
        * <code>optional int32 option = 1;</code>
        *
        * <pre>
-       *æ“ä½œç±»å‹  4 åˆ é™¤ï¼Œå…¶ä»–å¢åŠ æˆ–è€…ä¿®æ”¹
+       *²Ù×÷ÀàĞÍ 1 Ìí¼Ó£¬2 ĞŞ¸Ä 4 É¾³ı£¬ÆäËûÔö¼Ó»òÕßĞŞ¸Ä
        * </pre>
        */
       public Builder clearOption() {
@@ -916,7 +978,7 @@ public final class BufferMsgProto {
        * <code>optional int64 bufferId = 2;</code>
        *
        * <pre>
-       *bufferå”¯ä¸€ID
+       *bufferÎ¨Ò»ID
        * </pre>
        */
       public boolean hasBufferId() {
@@ -926,7 +988,7 @@ public final class BufferMsgProto {
        * <code>optional int64 bufferId = 2;</code>
        *
        * <pre>
-       *bufferå”¯ä¸€ID
+       *bufferÎ¨Ò»ID
        * </pre>
        */
       public long getBufferId() {
@@ -936,7 +998,7 @@ public final class BufferMsgProto {
        * <code>optional int64 bufferId = 2;</code>
        *
        * <pre>
-       *bufferå”¯ä¸€ID
+       *bufferÎ¨Ò»ID
        * </pre>
        */
       public Builder setBufferId(long value) {
@@ -949,7 +1011,7 @@ public final class BufferMsgProto {
        * <code>optional int64 bufferId = 2;</code>
        *
        * <pre>
-       *bufferå”¯ä¸€ID
+       *bufferÎ¨Ò»ID
        * </pre>
        */
       public Builder clearBufferId() {
@@ -964,7 +1026,7 @@ public final class BufferMsgProto {
        * <code>optional int64 sourceId = 3;</code>
        *
        * <pre>
-       *bufferæºID
+       *bufferÔ´ID
        * </pre>
        */
       public boolean hasSourceId() {
@@ -974,7 +1036,7 @@ public final class BufferMsgProto {
        * <code>optional int64 sourceId = 3;</code>
        *
        * <pre>
-       *bufferæºID
+       *bufferÔ´ID
        * </pre>
        */
       public long getSourceId() {
@@ -984,7 +1046,7 @@ public final class BufferMsgProto {
        * <code>optional int64 sourceId = 3;</code>
        *
        * <pre>
-       *bufferæºID
+       *bufferÔ´ID
        * </pre>
        */
       public Builder setSourceId(long value) {
@@ -997,7 +1059,7 @@ public final class BufferMsgProto {
        * <code>optional int64 sourceId = 3;</code>
        *
        * <pre>
-       *bufferæºID
+       *bufferÔ´ID
        * </pre>
        */
       public Builder clearSourceId() {
@@ -1012,7 +1074,7 @@ public final class BufferMsgProto {
        * <code>optional string sourcename = 4;</code>
        *
        * <pre>
-       *bufferæ¥æºå
+       *bufferÀ´Ô´Ãû
        * </pre>
        */
       public boolean hasSourcename() {
@@ -1022,7 +1084,7 @@ public final class BufferMsgProto {
        * <code>optional string sourcename = 4;</code>
        *
        * <pre>
-       *bufferæ¥æºå
+       *bufferÀ´Ô´Ãû
        * </pre>
        */
       public java.lang.String getSourcename() {
@@ -1043,7 +1105,7 @@ public final class BufferMsgProto {
        * <code>optional string sourcename = 4;</code>
        *
        * <pre>
-       *bufferæ¥æºå
+       *bufferÀ´Ô´Ãû
        * </pre>
        */
       public com.google.protobuf.ByteString
@@ -1063,7 +1125,7 @@ public final class BufferMsgProto {
        * <code>optional string sourcename = 4;</code>
        *
        * <pre>
-       *bufferæ¥æºå
+       *bufferÀ´Ô´Ãû
        * </pre>
        */
       public Builder setSourcename(
@@ -1080,7 +1142,7 @@ public final class BufferMsgProto {
        * <code>optional string sourcename = 4;</code>
        *
        * <pre>
-       *bufferæ¥æºå
+       *bufferÀ´Ô´Ãû
        * </pre>
        */
       public Builder clearSourcename() {
@@ -1093,7 +1155,7 @@ public final class BufferMsgProto {
        * <code>optional string sourcename = 4;</code>
        *
        * <pre>
-       *bufferæ¥æºå
+       *bufferÀ´Ô´Ãû
        * </pre>
        */
       public Builder setSourcenameBytes(
@@ -1112,7 +1174,7 @@ public final class BufferMsgProto {
        * <code>optional int32 templateId = 5;</code>
        *
        * <pre>
-       *æ¨¡æ¿ID
+       *Ä£°åID
        * </pre>
        */
       public boolean hasTemplateId() {
@@ -1122,7 +1184,7 @@ public final class BufferMsgProto {
        * <code>optional int32 templateId = 5;</code>
        *
        * <pre>
-       *æ¨¡æ¿ID
+       *Ä£°åID
        * </pre>
        */
       public int getTemplateId() {
@@ -1132,7 +1194,7 @@ public final class BufferMsgProto {
        * <code>optional int32 templateId = 5;</code>
        *
        * <pre>
-       *æ¨¡æ¿ID
+       *Ä£°åID
        * </pre>
        */
       public Builder setTemplateId(int value) {
@@ -1145,7 +1207,7 @@ public final class BufferMsgProto {
        * <code>optional int32 templateId = 5;</code>
        *
        * <pre>
-       *æ¨¡æ¿ID
+       *Ä£°åID
        * </pre>
        */
       public Builder clearTemplateId() {
@@ -1160,7 +1222,7 @@ public final class BufferMsgProto {
        * <code>optional int64 aliveTime = 6;</code>
        *
        * <pre>
-       *æˆªæ­¢æ—¶é—´
+       *½ØÖ¹Ê±¼ä
        * </pre>
        */
       public boolean hasAliveTime() {
@@ -1170,7 +1232,7 @@ public final class BufferMsgProto {
        * <code>optional int64 aliveTime = 6;</code>
        *
        * <pre>
-       *æˆªæ­¢æ—¶é—´
+       *½ØÖ¹Ê±¼ä
        * </pre>
        */
       public long getAliveTime() {
@@ -1180,7 +1242,7 @@ public final class BufferMsgProto {
        * <code>optional int64 aliveTime = 6;</code>
        *
        * <pre>
-       *æˆªæ­¢æ—¶é—´
+       *½ØÖ¹Ê±¼ä
        * </pre>
        */
       public Builder setAliveTime(long value) {
@@ -1193,7 +1255,7 @@ public final class BufferMsgProto {
        * <code>optional int64 aliveTime = 6;</code>
        *
        * <pre>
-       *æˆªæ­¢æ—¶é—´
+       *½ØÖ¹Ê±¼ä
        * </pre>
        */
       public Builder clearAliveTime() {
@@ -1208,7 +1270,7 @@ public final class BufferMsgProto {
        * <code>optional int32 leftCount = 7;</code>
        *
        * <pre>
-       *å‰©ä½™æ¬¡æ•°
+       *Ê£Óà´ÎÊı
        * </pre>
        */
       public boolean hasLeftCount() {
@@ -1218,7 +1280,7 @@ public final class BufferMsgProto {
        * <code>optional int32 leftCount = 7;</code>
        *
        * <pre>
-       *å‰©ä½™æ¬¡æ•°
+       *Ê£Óà´ÎÊı
        * </pre>
        */
       public int getLeftCount() {
@@ -1228,7 +1290,7 @@ public final class BufferMsgProto {
        * <code>optional int32 leftCount = 7;</code>
        *
        * <pre>
-       *å‰©ä½™æ¬¡æ•°
+       *Ê£Óà´ÎÊı
        * </pre>
        */
       public Builder setLeftCount(int value) {
@@ -1241,7 +1303,7 @@ public final class BufferMsgProto {
        * <code>optional int32 leftCount = 7;</code>
        *
        * <pre>
-       *å‰©ä½™æ¬¡æ•°
+       *Ê£Óà´ÎÊı
        * </pre>
        */
       public Builder clearLeftCount() {
@@ -1256,7 +1318,7 @@ public final class BufferMsgProto {
        * <code>optional int64 targetId = 8;</code>
        *
        * <pre>
-       *ç›®æ ‡id
+       *Ä¿±êid
        * </pre>
        */
       public boolean hasTargetId() {
@@ -1266,7 +1328,7 @@ public final class BufferMsgProto {
        * <code>optional int64 targetId = 8;</code>
        *
        * <pre>
-       *ç›®æ ‡id
+       *Ä¿±êid
        * </pre>
        */
       public long getTargetId() {
@@ -1276,7 +1338,7 @@ public final class BufferMsgProto {
        * <code>optional int64 targetId = 8;</code>
        *
        * <pre>
-       *ç›®æ ‡id
+       *Ä¿±êid
        * </pre>
        */
       public Builder setTargetId(long value) {
@@ -1289,12 +1351,60 @@ public final class BufferMsgProto {
        * <code>optional int64 targetId = 8;</code>
        *
        * <pre>
-       *ç›®æ ‡id
+       *Ä¿±êid
        * </pre>
        */
       public Builder clearTargetId() {
         bitField0_ = (bitField0_ & ~0x00000080);
         targetId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int pressedNum_ ;
+      /**
+       * <code>optional int32 pressedNum = 9;</code>
+       *
+       * <pre>
+       *µş¼ÓÊıÁ¿
+       * </pre>
+       */
+      public boolean hasPressedNum() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional int32 pressedNum = 9;</code>
+       *
+       * <pre>
+       *µş¼ÓÊıÁ¿
+       * </pre>
+       */
+      public int getPressedNum() {
+        return pressedNum_;
+      }
+      /**
+       * <code>optional int32 pressedNum = 9;</code>
+       *
+       * <pre>
+       *µş¼ÓÊıÁ¿
+       * </pre>
+       */
+      public Builder setPressedNum(int value) {
+        bitField0_ |= 0x00000100;
+        pressedNum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 pressedNum = 9;</code>
+       *
+       * <pre>
+       *µş¼ÓÊıÁ¿
+       * </pre>
+       */
+      public Builder clearPressedNum() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        pressedNum_ = 0;
         onChanged();
         return this;
       }
@@ -1324,12 +1434,13 @@ public final class BufferMsgProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017BufferMsg.proto\"\237\001\n\tBufferMsg\022\016\n\006optio" +
+      "\n\017BufferMsg.proto\"\263\001\n\tBufferMsg\022\016\n\006optio" +
       "n\030\001 \001(\005\022\020\n\010bufferId\030\002 \001(\003\022\020\n\010sourceId\030\003 " +
       "\001(\003\022\022\n\nsourcename\030\004 \001(\t\022\022\n\ntemplateId\030\005 " +
       "\001(\005\022\021\n\taliveTime\030\006 \001(\003\022\021\n\tleftCount\030\007 \001(" +
-      "\005\022\020\n\010targetId\030\010 \001(\003B9\n\'com.chuangyou.com" +
-      "mon.protobuf.pb.battleB\016BufferMsgProto"
+      "\005\022\020\n\010targetId\030\010 \001(\003\022\022\n\npressedNum\030\t \001(\005B" +
+      "9\n\'com.chuangyou.common.protobuf.pb.batt" +
+      "leB\016BufferMsgProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1348,7 +1459,7 @@ public final class BufferMsgProto {
     internal_static_BufferMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BufferMsg_descriptor,
-        new java.lang.String[] { "Option", "BufferId", "SourceId", "Sourcename", "TemplateId", "AliveTime", "LeftCount", "TargetId", });
+        new java.lang.String[] { "Option", "BufferId", "SourceId", "Sourcename", "TemplateId", "AliveTime", "LeftCount", "TargetId", "PressedNum", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

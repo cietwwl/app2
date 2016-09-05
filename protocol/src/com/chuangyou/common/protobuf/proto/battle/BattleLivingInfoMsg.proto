@@ -26,4 +26,5 @@ message BattleLivingInfoMsg {
 	optional int32 liveState  = 19; //状态 0 活着   1死亡
 	optional int32  soulState  = 20; //是否是元魂状态 0 气血状态 1 元魂状态
 	optional int32 mountState = 21; // 坐骑状态
+	optional int32 weaponAwaken = 22; // 武器觉醒等级
 }

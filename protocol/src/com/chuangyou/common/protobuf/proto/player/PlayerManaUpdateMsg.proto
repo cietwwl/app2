@@ -1,0 +1,6 @@
+option java_package = "com.chuangyou.common.protobuf.pb.player";
+option java_outer_classname = "PlayerManaUpdateProto";
+
+message PlayerManaUpdateMsg{
+	optional int32 mana = 1; // 更新值，通知scene服更新时是增量，scene传给center回写时是总值
+}

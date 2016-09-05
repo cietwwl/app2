@@ -8,14 +8,15 @@ import com.chuangyou.xianni.army.ArmyInventory;
 import com.chuangyou.xianni.bag.BagInventory;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.campaign.CampaignInventory;
+import com.chuangyou.xianni.constant.PlayerRelationConstant;
 import com.chuangyou.xianni.equip.EquipInventory;
-import com.chuangyou.xianni.friend.logic.FriendLogic;
 import com.chuangyou.xianni.inverseBead.manager.InverseBeadManager;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerInfoSendCmd;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.relation.RelationInventory;
 import com.chuangyou.xianni.shop.logic.GetMaillInfoLogic;
 import com.chuangyou.xianni.socket.Cmd;
 import com.chuangyou.xianni.soul.logic.GetSoulInfoLogic;
@@ -106,7 +107,10 @@ public class LoginLoadCmd extends AbstractCommand {
 
 			// 加载好友列表
 			if (dataType.getDataType() == FRIEND) {
-				new FriendLogic().doGetFirends(player);
+				RelationInventory relationInventory = player.getRelationInventory();
+				if(relationInventory != null){
+					relationInventory.sendRelationList(PlayerRelationConstant.FRIEND);
+				}
 			}
 
 			// 装备栏位信息

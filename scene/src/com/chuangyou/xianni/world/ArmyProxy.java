@@ -53,7 +53,6 @@ public class ArmyProxy extends AbstractActionQueue {
 		this.site = site;
 		this.channel = channel;
 		this.player = hero;
-		this.player.setSimpleInfo(simplePlayerInfo);
 		this.pet = pet;
 		this.cmdTaskQueue = new AbstractCmdTaskQueue(ThreadManager.cmdExecutor);
 	}
@@ -183,7 +182,7 @@ public class ArmyProxy extends AbstractActionQueue {
 
 	}
 
-	private static final EnumAttr[] reloadAttrs = { EnumAttr.CUR_SOUL, EnumAttr.CUR_BLOOD };
+	private static final EnumAttr[] reloadAttrs = { EnumAttr.CUR_SOUL, EnumAttr.CUR_BLOOD, EnumAttr.MANA };
 
 	public void unload() {
 		Field field = FieldMgr.getIns().getField(getFieldId());

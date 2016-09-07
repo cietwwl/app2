@@ -1,17 +1,20 @@
 package com.chuangyou.xianni.battle.buffer.specialbuf;
 
 import java.util.List;
-
 import com.chuangyou.common.util.Log;
-import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.battle.AttackOrder;
 import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.buffer.BufferFactory;
 import com.chuangyou.xianni.battle.buffer.TargetType;
+import com.chuangyou.xianni.battle.buffer.BufferType.FromType;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
+import com.chuangyou.xianni.battle.skill.FuseSkillVo;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
+import com.chuangyou.xianni.entity.soul.SoulFuseSkillConfig;
+import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.objects.Living;
+import com.chuangyou.xianni.role.objects.Player;
 
 /** 可以产生buffer的buffer */
 public class BufferCreaterBuffer extends Buffer {
@@ -23,7 +26,7 @@ public class BufferCreaterBuffer extends Buffer {
 	@Override
 	protected void exec(AttackOrder attackOrder, Damage beDamage1, Damage beDamage2) {
 		SkillBufferTemplateInfo temp = getBufferInfo();
-		int random = temp.getParam2();
+		int random = calSoulQuality(temp.getParam2());
 		if (RND.next(10000) >= random) {
 			return;
 		}
@@ -53,6 +56,23 @@ public class BufferCreaterBuffer extends Buffer {
 				target.addBuffer(buff);
 			}
 		}
+	}
+
+	private int calSoulQuality(int param) {
+		if (bufferInfo.getFromType() == FromType.FUSE && source.getType() == RoleType.player) {
+			Player player = (Player) source;
+			FuseSkillVo fv = player.getFuseSkill(getTemplateId());
+			if (fv != null) {
+				SoulFuseSkillConfig config = BattleTempMgr.getFuseSkillTemp(getTemplateId());
+				if (config != null) {
+					int addValue = config.getChance(fv.getSkillColor()) * 100;
+					param += addValue;
+				} else {
+					Log.error("SoulFuseSkillConfig " + getTemplateId());
+				}
+			}
+		}
+		return param;
 	}
 
 }

@@ -27,6 +27,7 @@ public class BaseSoulMakeLogic {
 	protected void sendResultMsg(){
 		MakeSoulRespMsg.Builder resp = MakeSoulRespMsg.newBuilder();
 		resp.setOp(this.op);
+		
 		resp.setSoulMake(this.soulMake.getMsg());
 		resp.setProficiency(this.soulInfo.getProficiency());
 		

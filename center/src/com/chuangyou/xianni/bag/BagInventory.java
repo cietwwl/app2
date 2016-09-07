@@ -215,13 +215,13 @@ public class BagInventory extends AbstractEvent implements IInventory {
 				return true;
 			case CurrencyItemType.EQUIP_EXP:
 				player.getBasePlayer().addEquipExp(count);
-				break;
+				return true;
 			case CurrencyItemType.REPAIR_ITEM:
 				player.getBasePlayer().addRepair(count);
 				return true;
 			case CurrencyItemType.POINTS:
 				player.getBasePlayer().addPoints(count);
-				break;
+				return true;
 			case CurrencyItemType.EXP:
 				player.getBasePlayer().addExp(count);
 				return true;

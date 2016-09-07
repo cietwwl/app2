@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.chuangyou.common.protobuf.pb.soul.SoulInfoAddExpReqProto.SoulInfoAddExpReqMsg;
 import com.chuangyou.common.protobuf.pb.soul.SoulInfoAddExpRespProto.SoulInfoAddExpRespMsg;
+import com.chuangyou.common.protobuf.pb.soul.SyncSoulProto.SyncSoulLv;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
@@ -59,7 +60,10 @@ public class SoulInfoAddExpCmd extends AbstractCommand {
 		player.sendPbMessage(pkg);
 		
 		//经验值同步到scene服务器
-		pkg =  MessageUtil.buildMessage(Protocol.S_REQ_SOUL_EXP,soulInfo.getMsg());
+		lv = LevelUpTempleteMgr.getSoulLevel(soulInfo.getExp());
+		SyncSoulLv.Builder sync = SyncSoulLv.newBuilder();
+		sync.setSoulLv(lv);
+		pkg =  MessageUtil.buildMessage(Protocol.S_REQ_SOUL_EXP,sync);
 		player.sendPbMessage(pkg);
 		
 	}

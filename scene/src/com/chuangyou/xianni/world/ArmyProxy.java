@@ -8,6 +8,7 @@ import com.chuangyou.common.protobuf.pb.army.ArmyInfoReloadMsgProto.ArmyInfoRelo
 import com.chuangyou.common.protobuf.pb.army.PetInfoProto.PetInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
+import com.chuangyou.common.protobuf.pb.player.PlayerManaUpdateProto.PlayerManaUpdateMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.campaign.Campaign;
@@ -22,6 +23,7 @@ import com.chuangyou.xianni.exec.ThreadManager;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.CenterProtocol;
+import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.role.objects.Pet;
 import com.chuangyou.xianni.role.objects.Player;
@@ -180,6 +182,29 @@ public class ArmyProxy extends AbstractActionQueue {
 			}
 		}
 
+	}
+	
+	public void notifyMana(){
+		//总值回写给center
+		PlayerManaUpdateMsg.Builder msg = PlayerManaUpdateMsg.newBuilder();
+		msg.setMana(this.getPlayer().getMana());
+		PBMessage p = MessageUtil.buildMessage(Protocol.C_PLAYER_MANA_WRITEBACK, msg);
+		this.sendPbMessage(p);
+		
+		PlayerAttUpdateMsg.Builder resp = PlayerAttUpdateMsg.newBuilder();
+		resp.setPlayerId(this.getPlayerId());
+		PropertyMsg.Builder propertyMsg = PropertyMsg.newBuilder();
+		propertyMsg.setType(EnumAttr.MANA.getValue());
+		propertyMsg.setTotalPoint(this.getPlayer().getMana());
+		resp.addAtt(propertyMsg);
+		
+		//通知自己
+		PBMessage selfPkg = MessageUtil.buildMessage(Protocol.U_RESP_PLAYER_ATT_UPDATE, resp);
+		this.sendPbMessage(selfPkg);
+		
+		// 通知附近玩家
+		Set<Long> nears = this.getPlayer().getNears(new PlayerSelectorHelper(this.getPlayer()));
+		NotifyNearHelper.notifyAttrChange(this, nears, resp.build());
 	}
 
 	private static final EnumAttr[] reloadAttrs = { EnumAttr.CUR_SOUL, EnumAttr.CUR_BLOOD, EnumAttr.MANA };

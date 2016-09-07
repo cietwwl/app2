@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import com.chuangyou.common.util.Log;
+import com.chuangyou.common.util.StringUtils;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.buffer.BufferFactory;
@@ -55,8 +56,13 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 	@Override
 	public void start() {
 		super.start();
-		System.err.println("spwanInfo :" + spwanInfo.getId());
+		System.err.println("spwanInfo :" + spwanInfo.getTagId());
+		if(!(curCount < spwanInfo.getMaxCount() && (toalCount < spwanInfo.getToalCount() || spwanInfo.getToalCount() <= 0))){
+			System.out.println("--------------------------------curCount: "+curCount+" spwanInfo :" + spwanInfo.getTagId());
+		}
+		
 		while (curCount < spwanInfo.getMaxCount() && (toalCount < spwanInfo.getToalCount() || spwanInfo.getToalCount() <= 0)) {
+			System.out.println("---------curCount: "+curCount+" spwanInfo :" + spwanInfo.getTagId());
 			curCount++;
 			createChildren();
 		}
@@ -73,6 +79,7 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 				if (((spwanInfo.getToalCount() == 0 || toalCount < spwanInfo.getToalCount()) && curCount < spwanInfo.getMaxCount())) {
 					field.enDelayQueue(new CreateChildAction());
 					curCount++;
+					System.out.println("---------&&&curCount: "+curCount+" spwanInfo :" + spwanInfo.getTagId());
 				}
 			}
 		}
@@ -100,7 +107,8 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 		int randomz = spwanInfo.getBound_z();
 
 		Monster monster = new Monster(this);
-		//System.out.println("monster - skin = " + spwanInfo.getEntityId() + "map:" + field.getMapKey());
+		// System.out.println("monster - skin = " + spwanInfo.getEntityId() +
+		// "map:" + field.getMapKey());
 		MonsterInfo monsterInfo = MonsterInfoTemplateMgr.get(spwanInfo.getEntityId());
 		if (monsterInfo != null) {
 			// monster.setSkin(monsterInfo.getSkin());
@@ -165,8 +173,11 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 			monster.setSoulState(true);
 		}
 		String skillIds = monsterInfo.getSkillIds();
-		if (skillIds != null && !skillIds.isEmpty()) {
+		if (skillIds != null && StringUtils.isNullOrEmpty(skillIds)) {
 			for (String str : skillIds.split(",")) {
+				if (StringUtils.isNullOrEmpty(str)) {
+					continue;
+				}
 				SkillTempateInfo skillTempateInfo = BattleTempMgr.getBSkillInfo(Integer.valueOf(str));
 				if (skillTempateInfo == null) {
 					continue;
@@ -200,6 +211,7 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 		}
 		toalCount = spwanInfo.getToalCount();
 		curCount = spwanInfo.getMaxCount();
+		System.out.println("==---------curCount: "+curCount+" spwanInfo :" + spwanInfo.getTagId());
 		this.state = new OverState(this);
 		return result;
 	}

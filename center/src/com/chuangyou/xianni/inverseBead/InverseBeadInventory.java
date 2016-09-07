@@ -39,7 +39,7 @@ public class InverseBeadInventory extends AbstractEvent implements IInventory {
 	public InverseBeadInventory(GamePlayer player) {
 		this.player = player;
 
-		InverseBeadLoopAction action = new InverseBeadLoopAction(player, player.getActionQueue(), beadRefreshIdList, false);
+		InverseBeadLoopAction action = new InverseBeadLoopAction(player, player.getActionQueue(), beadRefreshIdList, true);
 		player.getActionQueue().enqueue(action);
 	}
 

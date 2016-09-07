@@ -101,7 +101,7 @@ public final class SoulMakeProto {
      * <code>required int64 lastQteTime = 6;</code>
      *
      * <pre>
-     *上一次执行QTE时间
+     *上一次执行QTE时间  (UTC时间：单位豪秒)
      * </pre>
      */
     boolean hasLastQteTime();
@@ -109,7 +109,7 @@ public final class SoulMakeProto {
      * <code>required int64 lastQteTime = 6;</code>
      *
      * <pre>
-     *上一次执行QTE时间
+     *上一次执行QTE时间  (UTC时间：单位豪秒)
      * </pre>
      */
     long getLastQteTime();
@@ -130,6 +130,23 @@ public final class SoulMakeProto {
      * </pre>
      */
     int getQte();
+
+    /**
+     * <code>required int32 index = 8;</code>
+     *
+     * <pre>
+     *正制作的材料在选择列表上的位置
+     * </pre>
+     */
+    boolean hasIndex();
+    /**
+     * <code>required int32 index = 8;</code>
+     *
+     * <pre>
+     *正制作的材料在选择列表上的位置
+     * </pre>
+     */
+    int getIndex();
   }
   /**
    * Protobuf type {@code SoulMakeMsg}
@@ -216,6 +233,11 @@ public final class SoulMakeProto {
             case 56: {
               bitField0_ |= 0x00000040;
               qte_ = input.readInt32();
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000080;
+              index_ = input.readInt32();
               break;
             }
           }
@@ -379,7 +401,7 @@ public final class SoulMakeProto {
      * <code>required int64 lastQteTime = 6;</code>
      *
      * <pre>
-     *上一次执行QTE时间
+     *上一次执行QTE时间  (UTC时间：单位豪秒)
      * </pre>
      */
     public boolean hasLastQteTime() {
@@ -389,7 +411,7 @@ public final class SoulMakeProto {
      * <code>required int64 lastQteTime = 6;</code>
      *
      * <pre>
-     *上一次执行QTE时间
+     *上一次执行QTE时间  (UTC时间：单位豪秒)
      * </pre>
      */
     public long getLastQteTime() {
@@ -419,6 +441,29 @@ public final class SoulMakeProto {
       return qte_;
     }
 
+    public static final int INDEX_FIELD_NUMBER = 8;
+    private int index_;
+    /**
+     * <code>required int32 index = 8;</code>
+     *
+     * <pre>
+     *正制作的材料在选择列表上的位置
+     * </pre>
+     */
+    public boolean hasIndex() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>required int32 index = 8;</code>
+     *
+     * <pre>
+     *正制作的材料在选择列表上的位置
+     * </pre>
+     */
+    public int getIndex() {
+      return index_;
+    }
+
     private void initFields() {
       state_ = 0;
       startTime_ = 0L;
@@ -427,6 +472,7 @@ public final class SoulMakeProto {
       itemId_ = 0;
       lastQteTime_ = 0L;
       qte_ = 0;
+      index_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -462,6 +508,10 @@ public final class SoulMakeProto {
         memoizedIsInitialized = 0;
         return false;
       }
+      if (!hasIndex()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -489,6 +539,9 @@ public final class SoulMakeProto {
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeInt32(7, qte_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeInt32(8, index_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -526,6 +579,10 @@ public final class SoulMakeProto {
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(7, qte_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(8, index_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -658,6 +715,8 @@ public final class SoulMakeProto {
         bitField0_ = (bitField0_ & ~0x00000020);
         qte_ = 0;
         bitField0_ = (bitField0_ & ~0x00000040);
+        index_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -714,6 +773,10 @@ public final class SoulMakeProto {
           to_bitField0_ |= 0x00000040;
         }
         result.qte_ = qte_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.index_ = index_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -751,6 +814,9 @@ public final class SoulMakeProto {
         if (other.hasQte()) {
           setQte(other.getQte());
         }
+        if (other.hasIndex()) {
+          setIndex(other.getIndex());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -781,6 +847,10 @@ public final class SoulMakeProto {
           return false;
         }
         if (!hasQte()) {
+          
+          return false;
+        }
+        if (!hasIndex()) {
           
           return false;
         }
@@ -1051,7 +1121,7 @@ public final class SoulMakeProto {
        * <code>required int64 lastQteTime = 6;</code>
        *
        * <pre>
-       *上一次执行QTE时间
+       *上一次执行QTE时间  (UTC时间：单位豪秒)
        * </pre>
        */
       public boolean hasLastQteTime() {
@@ -1061,7 +1131,7 @@ public final class SoulMakeProto {
        * <code>required int64 lastQteTime = 6;</code>
        *
        * <pre>
-       *上一次执行QTE时间
+       *上一次执行QTE时间  (UTC时间：单位豪秒)
        * </pre>
        */
       public long getLastQteTime() {
@@ -1071,7 +1141,7 @@ public final class SoulMakeProto {
        * <code>required int64 lastQteTime = 6;</code>
        *
        * <pre>
-       *上一次执行QTE时间
+       *上一次执行QTE时间  (UTC时间：单位豪秒)
        * </pre>
        */
       public Builder setLastQteTime(long value) {
@@ -1084,7 +1154,7 @@ public final class SoulMakeProto {
        * <code>required int64 lastQteTime = 6;</code>
        *
        * <pre>
-       *上一次执行QTE时间
+       *上一次执行QTE时间  (UTC时间：单位豪秒)
        * </pre>
        */
       public Builder clearLastQteTime() {
@@ -1142,6 +1212,54 @@ public final class SoulMakeProto {
         return this;
       }
 
+      private int index_ ;
+      /**
+       * <code>required int32 index = 8;</code>
+       *
+       * <pre>
+       *正制作的材料在选择列表上的位置
+       * </pre>
+       */
+      public boolean hasIndex() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>required int32 index = 8;</code>
+       *
+       * <pre>
+       *正制作的材料在选择列表上的位置
+       * </pre>
+       */
+      public int getIndex() {
+        return index_;
+      }
+      /**
+       * <code>required int32 index = 8;</code>
+       *
+       * <pre>
+       *正制作的材料在选择列表上的位置
+       * </pre>
+       */
+      public Builder setIndex(int value) {
+        bitField0_ |= 0x00000080;
+        index_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 index = 8;</code>
+       *
+       * <pre>
+       *正制作的材料在选择列表上的位置
+       * </pre>
+       */
+      public Builder clearIndex() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        index_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:SoulMakeMsg)
     }
 
@@ -1167,12 +1285,12 @@ public final class SoulMakeProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\026soul/SoulMakeMsg.proto\"\205\001\n\013SoulMakeMsg" +
+      "\n\026soul/SoulMakeMsg.proto\"\224\001\n\013SoulMakeMsg" +
       "\022\r\n\005state\030\001 \002(\005\022\021\n\tstartTime\030\002 \002(\003\022\017\n\007ki" +
       "llNum\030\003 \002(\005\022\021\n\ttotalTime\030\004 \002(\005\022\016\n\006itemId" +
       "\030\005 \002(\005\022\023\n\013lastQteTime\030\006 \002(\003\022\013\n\003qte\030\007 \002(\005" +
-      "B6\n%com.chuangyou.common.protobuf.pb.sou" +
-      "lB\rSoulMakeProto"
+      "\022\r\n\005index\030\010 \002(\005B6\n%com.chuangyou.common." +
+      "protobuf.pb.soulB\rSoulMakeProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1191,7 +1309,7 @@ public final class SoulMakeProto {
     internal_static_SoulMakeMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_SoulMakeMsg_descriptor,
-        new java.lang.String[] { "State", "StartTime", "KillNum", "TotalTime", "ItemId", "LastQteTime", "Qte", });
+        new java.lang.String[] { "State", "StartTime", "KillNum", "TotalTime", "ItemId", "LastQteTime", "Qte", "Index", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

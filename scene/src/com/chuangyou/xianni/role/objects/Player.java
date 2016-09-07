@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import com.chuangyou.common.protobuf.pb.army.HeroInfoMsgProto.HeroInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLivingInfoMsg;
@@ -58,39 +57,32 @@ import com.chuangyou.xianni.world.WorldMgr;
 
 public class Player extends ActiveLiving {
 	/** 是否复活中 */
-	private volatile boolean	revivaling				= false;
+	private volatile boolean			revivaling				= false;
 	/**
 	 * 玩家坐骑状态 0未乘骑 1乘骑坐骑
 	 */
-	private int					mountState				= 1;
-	private List<Integer>		monsterRefreshIdList	= new ArrayList<Integer>();
-	private boolean				flashName				= false;
+	private int							mountState				= 1;
+	private List<Integer>				monsterRefreshIdList	= new ArrayList<Integer>();
+	private boolean						flashName				= false;
 
 	/** 副本buffer */
-	private List<Buffer>		campaignBuffers			= new ArrayList<>();
+	private List<Buffer>				campaignBuffers			= new ArrayList<>();
 
-	/**
-	 * 魂幡融合技能1段
-	 */
-	private FuseSkillVo			fuseSkill1;
+	/** 魂幡携带buffer */
+	private Map<Integer, FuseSkillVo>	fuseSkillVos			= new HashMap<>();
 
-	/**
-	 * 魂幡融合技能2段
-	 */
-	private FuseSkillVo			fuseSkill2;
+	/** 魂幡buffers */
+	private Buffer[]					fuseSkillBuffers		= new Buffer[4];
 
-	/**
-	 * 魂幡融合技能3段
-	 */
-	private FuseSkillVo			fuseSkill3;
-
-	/**
-	 * 魂幡融合技能4段
-	 */
-	private FuseSkillVo			fuseSkill4;
+	/** 武器携带buffer */
+	private Buffer						weaponBuffer;
 
 	/** 武器技能(觉醒获得) */
-	private int					weaponBuffId			= 0;
+	private int							weaponBuffId			= 0;
+	/**
+	 * 魂幡等级
+	 */
+	private int							soulLv					= 0;
 
 	public Player(long playerId) {
 		super(playerId, playerId);
@@ -103,6 +95,7 @@ public class Player extends ActiveLiving {
 	public void readHeroInfo(HeroInfoMsg hero) {
 		readProperty(hero.getPropertis());
 		readSkillInfo(hero);
+		this.setSoulLv(hero.getSoulLv());
 	}
 
 	public void updateHeroInfo(HeroInfoMsg hero) {
@@ -169,11 +162,6 @@ public class Player extends ActiveLiving {
 				revivaling = true;
 			}
 
-			// System.out.println("source playerId: " + source.toString() + "
-			// source.getPkVal(): " + source.getPkVal()+"
-			// source.getBattleMode():"+source.getBattleMode()+"
-			// getBattleMode():"+getBattleMode());
-
 			// 攻击源处理
 			if (source.getBattleMode() == BattleModeCode.warBattleMode && getBattleMode() == BattleModeCode.peaceBattleMode) {// 增加pk值
 				source.setPkVal(source.getPkVal() + 1000);
@@ -191,9 +179,6 @@ public class Player extends ActiveLiving {
 				updateProperty(source, properties);
 			}
 
-			// System.out.println("source playerId: " + source.getArmyId() + "
-			// source.getPkVal(): " + source.getPkVal());
-
 			// 自己
 			List<PropertyMsg> properties = new ArrayList<>();
 			Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
@@ -206,11 +191,6 @@ public class Player extends ActiveLiving {
 				changePkVal = MathUtils.randomClamp(40, 80);
 				notifyCenter(2, (int) source.getArmyId(), (int) getArmyId());
 			}
-
-			// System.out.println(" playerId: " + getArmyId() + " exp: " + "
-			// changePkVal: " + changePkVal + " this.getPkVal(): " +
-			// getPkVal());
-
 			if (changePkVal > 0) {
 				changePkVal = getPkVal() - changePkVal < 0 ? 0 : getPkVal() - changePkVal;
 				setPkVal(changePkVal);
@@ -223,11 +203,6 @@ public class Player extends ActiveLiving {
 				notifyCenter(changeMap, getArmyId());
 				updateProperty(deather, properties);
 			}
-
-			// System.out.println(" ---playerId: " + getArmyId() + "
-			// changePkVal: " + changePkVal + " this.getPkVal(): " +
-			// getPkVal());
-
 			calPKValue(source, deather);
 
 		}
@@ -250,35 +225,7 @@ public class Player extends ActiveLiving {
 			return BattleModeCode.yellow;
 		}
 		return BattleModeCode.white;
-
-		// if (val >= 1000) {
-		// return BattleModeCode.red;
-		// } else if (val > 0) {
-		// return BattleModeCode.yellow;
-		// }
-		// return BattleModeCode.white;
 	}
-
-	// /**
-	// * 通知
-	// *
-	// * @param changeMap
-	// * @param playerId
-	// * @return
-	// */
-	// public void notifyCenter(Map<Integer, Long> changeMap, long playerId) {
-	// PlayerAttUpdateMsg.Builder msg = PlayerAttUpdateMsg.newBuilder();
-	// msg.setPlayerId(playerId);
-	// for (int type : changeMap.keySet()) {
-	// PropertyMsg.Builder attMsg = PropertyMsg.newBuilder();
-	// attMsg.setType(type);
-	// attMsg.setTotalPoint(changeMap.get(type));
-	// msg.addAtt(attMsg);
-	// }
-	// PBMessage pkg = MessageUtil.buildMessage(Protocol.C_PLAYER_UPDATA_PRO,
-	// msg);
-	// GatewayLinkedSet.send2Server(pkg);
-	// }
 
 	/* 满血复活 */
 	public boolean renascence() {
@@ -329,6 +276,35 @@ public class Player extends ActiveLiving {
 		return true;
 	}
 
+	public List<Buffer> getExeWayBuffers(int exeWay) {
+		List<Buffer> buffers = super.getExeWayBuffers(exeWay);
+		if (weaponBuffer != null && weaponBuffer.getExeWay() == exeWay) {
+			buffers.add(weaponBuffer);
+		}
+		for (int i = 0; i < fuseSkillBuffers.length; i++) {
+			Buffer fuseBuff = fuseSkillBuffers[i];
+			if (fuseBuff != null && fuseBuff.getExeWay() == exeWay) {
+				buffers.add(fuseBuff);
+			}
+		}
+		return buffers;
+	}
+
+	public List<Buffer> getTypeBuffers(int type) {
+		List<Buffer> toal = super.getTypeBuffers(type);
+		if (weaponBuffer != null && weaponBuffer.getType() == type) {
+			toal.add(weaponBuffer);
+		}
+		for (int i = 0; i < fuseSkillBuffers.length; i++) {
+			Buffer fuseBuff = fuseSkillBuffers[i];
+			if (fuseBuff != null && fuseBuff.getType() == type) {
+				toal.add(fuseBuff);
+			}
+		}
+		return toal;
+
+	}
+
 	/**
 	 * 初始化技能
 	 */
@@ -362,27 +338,45 @@ public class Player extends ActiveLiving {
 		}
 
 		List<FuseSkillMsg> fuseSkills = hero.getFuseSkillsList();
-		this.setFuseSkill1(null);
-		this.setFuseSkill2(null);
-		this.setFuseSkill3(null);
-		this.setFuseSkill4(null);
+		this.setFuseSkill(null, 0);
+		this.setFuseSkill(null, 1);
+		this.setFuseSkill(null, 2);
+		this.setFuseSkill(null, 3);
 		if (fuseSkills != null && fuseSkills.size() != 0) {
 			for (FuseSkillMsg fuseSkillMsg : fuseSkills) {
-				// FuseSkillVo vo = new FuseSkillVo()
-				if (fuseSkillMsg.getIndex() == 1) {
-					this.setFuseSkill1(new FuseSkillVo(fuseSkillMsg.getFuseSkillId(), fuseSkillMsg.getColor()));
-				} else if (fuseSkillMsg.getIndex() == 2) {
-					this.setFuseSkill2(new FuseSkillVo(fuseSkillMsg.getFuseSkillId(), fuseSkillMsg.getColor()));
-				} else if (fuseSkillMsg.getIndex() == 3) {
-					this.setFuseSkill3(new FuseSkillVo(fuseSkillMsg.getFuseSkillId(), fuseSkillMsg.getColor()));
-				} else if (fuseSkillMsg.getIndex() == 4) {
-					this.setFuseSkill4(new FuseSkillVo(fuseSkillMsg.getFuseSkillId(), fuseSkillMsg.getColor()));
+				if (fuseSkillMsg.getIndex() > 4) {
+					Log.error("------------index is error------------" + fuseSkillMsg.getIndex());
+					continue;
 				}
+				this.setFuseSkill(new FuseSkillVo(fuseSkillMsg.getFuseSkillId(), fuseSkillMsg.getColor()), fuseSkillMsg.getIndex() - 1);
 			}
 		}
 	}
 
 	/** 武器buffer */
+	public void addFuseBuffer(int bufferId, int index) {
+		Buffer older = this.fuseSkillBuffers[index];
+		if (bufferId == 0) {
+			this.fuseSkillBuffers[index] = null;
+			return;
+		}
+		SkillBufferTemplateInfo sbinfo = BattleTempMgr.getBufferInfo(bufferId);
+		if (sbinfo == null) {
+			Log.error("cannot find buffer temp ,tempId : " + bufferId);
+			this.fuseSkillBuffers[index] = null;
+			return;
+		}
+
+		Buffer buff = BufferFactory.createBuffer(this, this, sbinfo);
+		buff.setPermanent(true);
+		this.fuseSkillBuffers[index] = buff;
+		if (older != null) {
+			older.setPermanent(false);
+			older.dispose();
+		}
+	}
+
+	/** 魂幡buffer */
 	public void addWeaponBuffer(int weaponBufId) {
 		Buffer older = this.getWeaponBuffer();
 		if (weaponBufId == 0) {
@@ -546,22 +540,32 @@ public class Player extends ActiveLiving {
 		date.addAll(monsterRefreshIdList);
 
 		date.removeAll(this.monsterRefreshIdList);// 新增加的
+		int maxId = 0; // 副本中最大刷怪点
 		Campaign campaign = CampaignMgr.getCampagin(curCampaign);
 		if (campaign != null) {
 			Field f = campaign.getEnterField(0);
 			Map<Integer, SpawnInfo> spawnInfos = SpawnTemplateMgr.getFieldSpawnInfos(f.getMapKey());
 			if (date.size() > 0) {
 				for (Entry<Integer, SpwanNode> entry : campaign.getSpwanNodes().entrySet()) {
-					entry.getValue().setDecorator(new CampaignNodeDecorator());
+					int tagId = entry.getValue().getSpawnInfo().getTagId();
+					date.remove(Integer.valueOf(tagId));
+					if (tagId > maxId)
+						maxId = tagId;
 				}
 			}
+			int endId = 0;
 			for (int i = 0; i < date.size(); i++) {
-				Integer integer = date.get(i);
-				int spwanId = SpawnTemplateMgr.getSpwanId(integer);
+				Integer tagId = date.get(i);
+				if (tagId <= maxId)
+					continue;
+
+				System.out.println("integerinteger: " + tagId);
+				int spwanId = SpawnTemplateMgr.getSpwanId(tagId);
 				SpawnInfo sf = spawnInfos.get(spwanId);
 				if (sf == null)
 					continue;
 				if (i == date.size() - 1) {
+					endId = sf.getTagId();
 					sf.setCampaignFeatures(Campaign.TERMINATOR);
 				}
 				SpwanNode node = new BeadMonsterSpawnNode(sf, f);
@@ -570,9 +574,15 @@ public class Player extends ActiveLiving {
 				node.stateTransition(new PerareState(node));
 				campaign.getSpwanNodes().put(node.getSpwanId(), node);
 			}
+			for (Entry<Integer, SpwanNode> entry : campaign.getSpwanNodes().entrySet()) {
+				if (endId > 0 && entry.getValue().getSpawnInfo().getTagId() != endId) {
+					entry.getValue().setDecorator(new CampaignNodeDecorator());
+				}
+			}
 		}
 
 		this.monsterRefreshIdList.clear();
+		System.out.println(" date: " + date + " monsterRefreshIdList: " + monsterRefreshIdList);
 		this.monsterRefreshIdList.addAll(monsterRefreshIdList);
 	}
 
@@ -584,36 +594,17 @@ public class Player extends ActiveLiving {
 		this.flashName = flashName;
 	}
 
-	public FuseSkillVo getFuseSkill1() {
-		return fuseSkill1;
+	public FuseSkillVo getFuseSkill(int bufferId) {
+		return fuseSkillVos.get(bufferId);
 	}
 
-	public void setFuseSkill1(FuseSkillVo fuseSkill1) {
-		this.fuseSkill1 = fuseSkill1;
-	}
-
-	public FuseSkillVo getFuseSkill2() {
-		return fuseSkill2;
-	}
-
-	public void setFuseSkill2(FuseSkillVo fuseSkill2) {
-		this.fuseSkill2 = fuseSkill2;
-	}
-
-	public FuseSkillVo getFuseSkill3() {
-		return fuseSkill3;
-	}
-
-	public void setFuseSkill3(FuseSkillVo fuseSkill3) {
-		this.fuseSkill3 = fuseSkill3;
-	}
-
-	public FuseSkillVo getFuseSkill4() {
-		return fuseSkill4;
-	}
-
-	public void setFuseSkill4(FuseSkillVo fuseSkill4) {
-		this.fuseSkill4 = fuseSkill4;
+	public void setFuseSkill(FuseSkillVo fuseSkill, int index) {
+		if (fuseSkill != null) {
+			addFuseBuffer(fuseSkill.getSkillId(), index);
+			this.fuseSkillVos.put(fuseSkill.getBufferId(), fuseSkill);
+		} else {
+			addFuseBuffer(0, index);
+		}
 	}
 
 	public int getWeaponBuffId() {
@@ -622,6 +613,22 @@ public class Player extends ActiveLiving {
 
 	public void setWeaponBuffId(int weaponBuffId) {
 		this.weaponBuffId = weaponBuffId;
+	}
+
+	public Buffer getWeaponBuffer() {
+		return weaponBuffer;
+	}
+
+	public void setWeaponBuffer(Buffer weaponBuffer) {
+		this.weaponBuffer = weaponBuffer;
+	}
+
+	public int getSoulLv() {
+		return soulLv;
+	}
+
+	public void setSoulLv(int soulLv) {
+		this.soulLv = soulLv;
 	}
 
 }

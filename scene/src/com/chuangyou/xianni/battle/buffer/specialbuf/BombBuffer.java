@@ -15,6 +15,7 @@ import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.damage.SoulDamageCalculator;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
+import com.chuangyou.xianni.entity.soul.SoulFuseSkillConfig;
 import com.chuangyou.xianni.proto.BroadcastUtil;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.objects.Living;
@@ -70,6 +71,7 @@ public class BombBuffer extends Buffer {
 				if (type1 == EnumAttr.CUR_SOUL.getValue()) {
 					damageValue1 = new SoulDamageCalculator().calcDamage(source, target, bufferInfo.getValuePercent(), bufferInfo.getValue());
 				}
+				damageValue1 = calSoullv(damageValue1, SoulFuseSkillConfig.EFFECT);
 				damage1.setTarget(target);
 				damage1.setSource(source);
 				damage1.setFromType(Damage.BUFFER);
@@ -92,6 +94,7 @@ public class BombBuffer extends Buffer {
 				if (type2 == EnumAttr.CUR_SOUL.getValue()) {
 					damageValue2 = new SoulDamageCalculator().calcDamage(source, target, bufferInfo.getValuePercent1(), bufferInfo.getValue1());
 				}
+				damageValue2 = calSoullv(damageValue2, SoulFuseSkillConfig.EFFECT);
 				damage2.setFromType(Damage.BUFFER);
 				damage2.setFromId(this.getBufferId());
 				damage2.setTarget(target);

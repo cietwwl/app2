@@ -238,7 +238,7 @@ public class SoulInventory extends AbstractEvent implements IInventory {
 		if(soulMake == null){
 			soulMake = new SoulMake();
 			soulMake.setPlayerId(player.getPlayerId());
-			soulMake.setOp(Option.Update);
+			soulMake.setOp(Option.Insert);
 			DBManager.getSoulDao().addSoulMake(soulMake);
 		}
 		return soulMake;

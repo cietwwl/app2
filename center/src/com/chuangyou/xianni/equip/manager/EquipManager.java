@@ -104,7 +104,7 @@ public class EquipManager {
 	public static void equipStone(GamePlayer player, ItemPosMsg equipPos, ItemPosMsg stonePos, short protocol){
 		BaseItem equip = checkItem(player, equipPos.getBagType(), equipPos.getPosition(), equipPos.getItemId(), protocol, true);
 		if(equip == null) return;
-		if(equip.getItemTempInfo().getMasterType() != ItemType.MainType.EQUIP || equip.getItemTempInfo().getSonType() != EquipConstant.EquipType.weapon){
+		if(equip.getItemTempInfo().getMasterType() != ItemType.MainType.EQUIP){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, protocol, "类型错误");
 			return;
 		}
@@ -120,7 +120,7 @@ public class EquipManager {
 			return;
 		}
 		
-		if(!player.getBagInventory().getBag(stonePos.getBagType()).removeByPos((short)stonePos.getPosition(), ItemRemoveType.USE)){
+		if(!player.getBagInventory().getBag(stonePos.getBagType()).removeCountFromStack(stone, 1, ItemRemoveType.USE)){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, protocol, "未知错误");
 			return;
 		}
@@ -134,7 +134,8 @@ public class EquipManager {
 		infoMsg.setAwakenLevel(equip.getItemInfo().getAwaken());
 		infoMsg.setAwakenPoint(equip.getItemInfo().getAwakenPoint());
 		infoMsg.setStoneTempId(equip.getItemInfo().getStone());
-		PBMessage p = MessageUtil.buildMessage(Protocol.C_EQUIP_INFO, msg);
+		msg.setEquip(infoMsg);
+		PBMessage p = MessageUtil.buildMessage(Protocol.U_EQUIP_INFO, msg);
 		player.sendPbMessage(p);
 		
 		if(equip.getItemInfo().getBagType() == BagType.HeroEquipment){
@@ -156,7 +157,7 @@ public class EquipManager {
 //			return;
 //		}
 		
-		if(!player.getBagInventory().getBag(req.getBagType()).removeByPos((short)req.getPosition(), ItemRemoveType.RESOLVE)){
+		if(!player.getBagInventory().getBag(req.getBagType()).removeCountFromStack(equip, 1, ItemRemoveType.RESOLVE)){
 			if(hint == true) ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, protocol, "物品扣除失败");
 			return false;
 		}
@@ -192,7 +193,7 @@ public class EquipManager {
 			infoMsg.setAwakenLevel(equip.getItemInfo().getAwaken());
 			infoMsg.setAwakenPoint(equip.getItemInfo().getAwakenPoint());
 			infoMsg.setStoneTempId(equip.getItemInfo().getStone());
-			PBMessage p = MessageUtil.buildMessage(Protocol.C_EQUIP_INFO, msg);
+			PBMessage p = MessageUtil.buildMessage(Protocol.U_EQUIP_INFO, msg);
 			player.sendPbMessage(p);
 		}
 		

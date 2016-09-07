@@ -66,7 +66,7 @@ public class SpwanNode {
 		if (spwanInfo.getWakeType() != WAKE_START) {
 			return;
 		}
-		
+
 		if (spwanInfo.getWakeDelay() == 0) {
 			wakeNext();
 		} else {
@@ -166,6 +166,7 @@ public class SpwanNode {
 		int[] spwanIds = spwanInfo.getNextSpawanIdAttr();
 
 		if (spwanIds == null || spwanIds.length == 0) {
+			System.out.println("aaaaaaaac");
 			return;
 		}
 		// 呼唤下一个节点，并且检测下一个节点的前置节点，是否均结束
@@ -176,6 +177,7 @@ public class SpwanNode {
 			int nextNodeId = SpawnTemplateMgr.getSpwanId(nextTagId);
 			SpwanNode node = field.getSpawnNode(nextNodeId);
 			if (node == null) {
+				System.out.println("aaaaaaaa");
 				return;
 			}
 			int[] preSpwanIds = node.getSpawnInfo().getPreSpawanIdAttr();
@@ -190,6 +192,7 @@ public class SpwanNode {
 						continue;
 					}
 					if (pre.getSpawnInfo().getWakeType() == WAKE_OVER && pre.getState().getCode() != NodeState.OVER && pre.getState().getCode() != NodeState.DELETE) {
+						System.out.println("aaaaaaaab");
 						return;
 					}
 				}

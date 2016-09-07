@@ -5,6 +5,7 @@ import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
+import com.chuangyou.xianni.entity.soul.SoulFuseSkillConfig;
 import com.chuangyou.xianni.role.objects.Living;
 
 /** 物攻转换成魂攻 */
@@ -33,14 +34,16 @@ public class AttackConvertSoulAttackBuffer extends Buffer {
 	}
 
 	public int getResult(int type) {
+		int result = 0;
 		if (type == EnumAttr.ATTACK.getValue()) {
-			return -changeValue;
+			result = -changeValue;
 		}
 
 		if (type == EnumAttr.SOUL_ATTACK.getValue()) {
-			return changeValue;
+			result = changeValue;
 		}
-		return 0;
+		result = calSoullv(result, SoulFuseSkillConfig.EFFECT);
+		return result;
 	}
 
 }

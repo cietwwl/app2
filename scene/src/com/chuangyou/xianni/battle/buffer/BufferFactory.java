@@ -1,6 +1,7 @@
 package com.chuangyou.xianni.battle.buffer;
 
 import com.chuangyou.xianni.battle.buffer.specialbuf.AttackConvertSoulAttackBuffer;
+import com.chuangyou.xianni.battle.buffer.specialbuf.AttributesBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.BeAttackDamageEffectBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.BombBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.BufferCreaterBuffer;

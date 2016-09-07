@@ -6,13 +6,17 @@ import java.util.Map;
 import java.util.Random;
 
 import com.chuangyou.common.protobuf.pb.soul.SoulFuseRespProto.SoulFuseRespMsg;
+import com.chuangyou.common.protobuf.pb.soul.SyncSoulProto.SyncSoulLv;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.bag.BaseItem;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
+import com.chuangyou.xianni.common.template.LevelUpTempleteMgr;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
+import com.chuangyou.xianni.entity.soul.FuseItemConfig;
 import com.chuangyou.xianni.entity.soul.SoulFuseSkillConfig;
+import com.chuangyou.xianni.entity.soul.SoulInfo;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -31,6 +35,7 @@ public class FuseOpLogic extends BaseFuseLogic implements IFuseLogic {
 	protected int	pos;
 	protected int	useItemId;
 	protected FuseSkillVo tempSkill;
+	protected int value;
 
 	public FuseOpLogic(int op, GamePlayer player, int index, int pos, int useItemId) {
 		super(op, player, index);
@@ -43,9 +48,20 @@ public class FuseOpLogic extends BaseFuseLogic implements IFuseLogic {
 		// TODO Auto-generated method stub
 
 		BaseItem item = player.getBagInventory().getPlayerBag().getItemByPos(pos);
-		int value = item.getItemInfo().getPro();
-		if (item == null || item.getItemInfo().getId() != useItemId) {
+//		if (item == null || item.getItemInfo().getId() != useItemId) {
+		if (item == null) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_FUSE, "客户端传来的数据有误：" + useItemId + ":::" + pos);
+			return;
+		}
+		value = item.getItemInfo().getPro();
+		
+		FuseItemConfig fuseItemConfig = SoulTemplateMgr.getFuseItemConfigMap().get(index);
+		if(fuseItemConfig == null){
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_FUSE, "FuseItemConfig配置表数据错误");
+			return;
+		}
+		if(fuseItemConfig.getNeedItems().indexOf(item.getItemTempInfo().getId())==-1){
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_FUSE, "材料使用不对");
 			return;
 		}
 		Map<Integer, FuseSkillVo> tempSkillMap = player.getSoulInventory().getTempMap();
@@ -85,7 +101,12 @@ public class FuseOpLogic extends BaseFuseLogic implements IFuseLogic {
 		sendResult(player);
 		
 		//经验值同步到scene服务器
-		PBMessage pkg =  MessageUtil.buildMessage(Protocol.S_REQ_SOUL_EXP,soulInfo.getMsg());
+		
+		SoulInfo soulInfo = player.getSoulInventory().getSoulInfo();
+		int lv = LevelUpTempleteMgr.getSoulLevel(soulInfo.getExp());
+		SyncSoulLv.Builder sync = SyncSoulLv.newBuilder();
+		sync.setSoulLv(lv);
+		PBMessage pkg =  MessageUtil.buildMessage(Protocol.S_REQ_SOUL_EXP,sync);
 		player.sendPbMessage(pkg);
 	}
 
@@ -128,6 +149,7 @@ public class FuseOpLogic extends BaseFuseLogic implements IFuseLogic {
 		if (tempSkill!=null){
 			msg.setTempSkill(tempSkill.getSkillId());
 			msg.setTempSkillColor(tempSkill.getColor());
+			msg.setSoulExp(value);
 		}
 		return msg;
 	}

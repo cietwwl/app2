@@ -64,9 +64,7 @@ public class Monster extends ActiveLiving {
 	private Long				target;
 	// 当前使用的技能id
 	private int					curSkillID;
-	private static final int	invincibleBufferId	= 99999999;												// 无敌buffer
-																											// id
-	private Buffer				invincibleBuffer	= null;
+
 	// 攻击者
 	private Long				attacker;
 
@@ -74,9 +72,6 @@ public class Monster extends ActiveLiving {
 		return curSkillID;
 	}
 
-	public Buffer getInvincibleBuffer() {
-		return invincibleBuffer;
-	}
 
 	public void setCurSkillID(int curSkillID) {
 		this.curSkillID = curSkillID;
@@ -105,9 +100,7 @@ public class Monster extends ActiveLiving {
 		super(IDMakerHelper.nextID());
 		setType(RoleType.monster);
 		this.node = node;
-		SkillBufferTemplateInfo sbinfo = BattleTempMgr.getBufferInfo(invincibleBufferId);
-		this.invincibleBuffer = BufferFactory.createBuffer(this, this, sbinfo);
-		this.invincibleBuffer.setPermanent(false);
+
 		// enDelayQueue(new MonsterAI(this));
 		// enDelayQueue(new UpdatePositionAction(this));new PlayerSelectorHelper(this.activeLiving);
 		enDelayQueue(new MonsterPollingAction(this, new MonsterAI(this), new UpdatePositionAction(this,new PlayerSelectorHelper(this))));

@@ -31,6 +31,7 @@ public class SoulMake extends DataObject {
 	private int itemId;
 	private long lastQteTime;
 	private int qteIndex;
+	private int makeIndex;
 		
 	public SoulMakeMsg.Builder getMsg(){
 		SoulMakeMsg.Builder msg = SoulMakeMsg.newBuilder();
@@ -41,6 +42,7 @@ public class SoulMake extends DataObject {
 		msg.setItemId(itemId);
 		msg.setLastQteTime(lastQteTime);
 		msg.setQte(qteIndex);
+		msg.setIndex(makeIndex);
 		return msg;
 	}
 	
@@ -95,6 +97,14 @@ public class SoulMake extends DataObject {
 
 	public void setQteIndex(int qteIndex) {
 		this.qteIndex = qteIndex;
+	}
+
+	public int getMakeIndex() {
+		return makeIndex;
+	}
+
+	public void setMakeIndex(int makeIndex) {
+		this.makeIndex = makeIndex;
 	}
 	
 }

@@ -28,8 +28,7 @@ public class BattleTempMgr {
 	/**
 	 * 融合技能模板
 	 */
-	private static Map<Integer, SoulFuseSkillConfig>            fuseSkillTemps		= new HashMap<>();
-	
+	private static Map<Integer, SoulFuseSkillConfig>			fuseSkillTemps		= new HashMap<>();
 
 	public static boolean init() {
 		reloadPb();
@@ -73,9 +72,13 @@ public class BattleTempMgr {
 				snareInfoTemps.put(temp.getTemplateId(), temp);
 			}
 		}
-		//加载融合技能模板
-		fuseSkillTemps = DBManager.getSoulDao().getFuseSkillConfig();
-		if(fuseSkillTemps == null)return false;
+		// 加载融合技能模板
+		Map<Integer, SoulFuseSkillConfig> temp = DBManager.getSoulDao().getFuseSkillConfig();
+		if (temp != null) {
+			for (SoulFuseSkillConfig sconfig : temp.values()) {
+				fuseSkillTemps.put(sconfig.getBuff(), sconfig);
+			}
+		}
 		return true;
 	}
 
@@ -121,9 +124,11 @@ public class BattleTempMgr {
 		return null;
 	}
 
-	public static Map<Integer, SoulFuseSkillConfig> getFuseSkillTemps() {
-		return fuseSkillTemps;
+	public static SoulFuseSkillConfig getFuseSkillTemp(int bufferId) {
+		if (fuseSkillTemps.containsKey(bufferId)) {
+			return fuseSkillTemps.get(bufferId);
+		}
+		return null;
 	}
-
 
 }

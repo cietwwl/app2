@@ -53,7 +53,7 @@ public class DateTimeUtil {
 	 * @return
 	 */
 	public static boolean isSameWeek(Date date, Date date2) {
-		System.out.println("date: "+date.getTime()+" data2: "+date2.getTime());
+//		System.out.println("date: "+date.getTime()+" data2: "+date2.getTime());
 		if (date == null || date2 == null)
 			return false;
 		// 0.先把Date类型的对象转换Calendar类型的对象

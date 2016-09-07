@@ -148,6 +148,23 @@ public final class SoulFuseRespProto {
      * </pre>
      */
     int getTempSkillColor();
+
+    /**
+     * <code>optional int32 soulExp = 7;</code>
+     *
+     * <pre>
+     *当配合成功后获取的魂魄值
+     * </pre>
+     */
+    boolean hasSoulExp();
+    /**
+     * <code>optional int32 soulExp = 7;</code>
+     *
+     * <pre>
+     *当配合成功后获取的魂魄值
+     * </pre>
+     */
+    int getSoulExp();
   }
   /**
    * Protobuf type {@code SoulFuseRespMsg}
@@ -244,6 +261,11 @@ public final class SoulFuseRespProto {
             case 48: {
               bitField0_ |= 0x00000010;
               tempSkillColor_ = input.readInt32();
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000020;
+              soulExp_ = input.readInt32();
               break;
             }
           }
@@ -469,6 +491,29 @@ public final class SoulFuseRespProto {
       return tempSkillColor_;
     }
 
+    public static final int SOULEXP_FIELD_NUMBER = 7;
+    private int soulExp_;
+    /**
+     * <code>optional int32 soulExp = 7;</code>
+     *
+     * <pre>
+     *当配合成功后获取的魂魄值
+     * </pre>
+     */
+    public boolean hasSoulExp() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional int32 soulExp = 7;</code>
+     *
+     * <pre>
+     *当配合成功后获取的魂魄值
+     * </pre>
+     */
+    public int getSoulExp() {
+      return soulExp_;
+    }
+
     private void initFields() {
       op_ = 0;
       index_ = 0;
@@ -476,6 +521,7 @@ public final class SoulFuseRespProto {
       atts_ = java.util.Collections.emptyList();
       tempSkill_ = 0;
       tempSkillColor_ = 0;
+      soulExp_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -524,6 +570,9 @@ public final class SoulFuseRespProto {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeInt32(6, tempSkillColor_);
       }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeInt32(7, soulExp_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -556,6 +605,10 @@ public final class SoulFuseRespProto {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(6, tempSkillColor_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(7, soulExp_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -700,6 +753,8 @@ public final class SoulFuseRespProto {
         bitField0_ = (bitField0_ & ~0x00000010);
         tempSkillColor_ = 0;
         bitField0_ = (bitField0_ & ~0x00000020);
+        soulExp_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -761,6 +816,10 @@ public final class SoulFuseRespProto {
           to_bitField0_ |= 0x00000010;
         }
         result.tempSkillColor_ = tempSkillColor_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.soulExp_ = soulExp_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -817,6 +876,9 @@ public final class SoulFuseRespProto {
         }
         if (other.hasTempSkillColor()) {
           setTempSkillColor(other.getTempSkillColor());
+        }
+        if (other.hasSoulExp()) {
+          setSoulExp(other.getSoulExp());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1517,6 +1579,54 @@ public final class SoulFuseRespProto {
         return this;
       }
 
+      private int soulExp_ ;
+      /**
+       * <code>optional int32 soulExp = 7;</code>
+       *
+       * <pre>
+       *当配合成功后获取的魂魄值
+       * </pre>
+       */
+      public boolean hasSoulExp() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional int32 soulExp = 7;</code>
+       *
+       * <pre>
+       *当配合成功后获取的魂魄值
+       * </pre>
+       */
+      public int getSoulExp() {
+        return soulExp_;
+      }
+      /**
+       * <code>optional int32 soulExp = 7;</code>
+       *
+       * <pre>
+       *当配合成功后获取的魂魄值
+       * </pre>
+       */
+      public Builder setSoulExp(int value) {
+        bitField0_ |= 0x00000040;
+        soulExp_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 soulExp = 7;</code>
+       *
+       * <pre>
+       *当配合成功后获取的魂魄值
+       * </pre>
+       */
+      public Builder clearSoulExp() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        soulExp_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:SoulFuseRespMsg)
     }
 
@@ -1543,13 +1653,13 @@ public final class SoulFuseRespProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\032soul/SoulFuseRespMsg.proto\032\026soul/SoulI" +
-      "nfoMsg.proto\032\026army/PropertyMsg.proto\"\223\001\n" +
+      "nfoMsg.proto\032\026army/PropertyMsg.proto\"\244\001\n" +
       "\017SoulFuseRespMsg\022\n\n\002op\030\001 \002(\005\022\r\n\005index\030\002 " +
       "\002(\005\022\036\n\010soulInfo\030\003 \002(\0132\014.SoulInfoMsg\022\032\n\004a" +
       "tts\030\004 \003(\0132\014.PropertyMsg\022\021\n\ttempSkill\030\005 \001" +
-      "(\005\022\026\n\016tempSkillColor\030\006 \001(\005B:\n%com.chuang" +
-      "you.common.protobuf.pb.soulB\021SoulFuseRes" +
-      "pProto"
+      "(\005\022\026\n\016tempSkillColor\030\006 \001(\005\022\017\n\007soulExp\030\007 " +
+      "\001(\005B:\n%com.chuangyou.common.protobuf.pb." +
+      "soulB\021SoulFuseRespProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1570,7 +1680,7 @@ public final class SoulFuseRespProto {
     internal_static_SoulFuseRespMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_SoulFuseRespMsg_descriptor,
-        new java.lang.String[] { "Op", "Index", "SoulInfo", "Atts", "TempSkill", "TempSkillColor", });
+        new java.lang.String[] { "Op", "Index", "SoulInfo", "Atts", "TempSkill", "TempSkillColor", "SoulExp", });
     com.chuangyou.common.protobuf.pb.soul.SoulInfoProto.getDescriptor();
     com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.getDescriptor();
   }

@@ -26,10 +26,10 @@ public class CardUpLogic extends AbstractCardLogic {
 		}
 		
 		upSoulCard();
-		this.soulInfo.setOp(Option.Update);
 		
 		this.cardInfo.setIsPutOn(SoulCardInfo.ON);
 		this.cardInfo.setOp(Option.Update);
+		this.soulInfo.setOp(Option.Update);
 		this.player.getSoulInventory().updateProperty();
 		this.sendResultMsg();
 	}

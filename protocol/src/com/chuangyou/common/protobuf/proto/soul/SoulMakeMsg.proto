@@ -8,6 +8,7 @@ message SoulMakeMsg{
 	required int32 killNum = 3;//杀怪数量
 	required int32 totalTime = 4;//总时间（单位秒）
 	required int32 itemId = 5;//材料ID
-	required int64 lastQteTime = 6;//上一次执行QTE时间
+	required int64 lastQteTime = 6;//上一次执行QTE时间  (UTC时间：单位豪秒)
 	required int32 qte = 7;//上一次qte
+	required int32 index = 8;//正制作的材料在选择列表上的位置
 }

@@ -1,0 +1,7 @@
+option java_package = "com.chuangyou.common.protobuf.pb.soul";
+option java_outer_classname = "SyncSoulProto";
+
+//服务器内部同步协议（ 与客户端无关）
+message SyncSoulLv{
+	required int32 soulLv = 1;
+}

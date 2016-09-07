@@ -42,7 +42,8 @@ public class QTEMakeLogic extends BaseSoulMakeLogic implements ISoulMakeLogic {
 		this.soulMake.setState(SoulMake.STATE_QTE);
 		this.soulMake.setLastQteTime(now.getTime());
 		this.soulMake.setQteIndex(qte);
-		this.soulMake.setItemId(this.index);
+		this.soulMake.setItemId(0);
+		this.soulMake.setMakeIndex(index);
 		this.soulMake.setOp(Option.Update);
 		
 		this.sendResultMsg();

@@ -22,7 +22,7 @@ public class CardSkillLogic extends AbstractCardLogic {
 			return;
 		}
 		
-		int needItemId = SoulTemplateMgr.getCardSkillCofig(getOldSkillID()).getId();
+		int needItemId = SoulTemplateMgr.getCardSkillCofig(getOldSkillID()).getItemId();
 		
 		int count = this.cardInfo.getRemainTime()+player.getBagInventory().getItemCount(needItemId);
 		if(count==0){

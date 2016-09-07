@@ -6,12 +6,17 @@ import com.chuangyou.common.protobuf.pb.battle.BufferMsgProto.BufferMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.battle.AttackOrder;
+import com.chuangyou.xianni.battle.buffer.BufferType.FromType;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.damage.effect.DamageEffecterType;
+import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
+import com.chuangyou.xianni.battle.skill.FuseSkillVo;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
+import com.chuangyou.xianni.entity.soul.SoulFuseSkillConfig;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.objects.Living;
+import com.chuangyou.xianni.role.objects.Player;
 
 public abstract class Buffer {
 
@@ -216,7 +221,7 @@ public abstract class Buffer {
 		pressedNum = 1;
 		lastExecTime = System.currentTimeMillis();
 
-		long exeTime = 0;
+		int exeTime = 0;
 		int exeCount = 0;
 		// 元魂状态享受有害buff时间延长50%
 		if (bufferInfo.getIsHelpful() == 0 && target.isSoulState()) {
@@ -226,7 +231,14 @@ public abstract class Buffer {
 			exeTime = bufferInfo.getExeTime();
 			exeCount = bufferInfo.getExeCount();
 		}
-		aliveTime = System.currentTimeMillis() + exeTime * 1000;
+		// 转化为毫秒数
+		exeTime = exeTime * 1000;
+
+		// 如果buff来自魂幡，享受魂幡加成
+		exeTime = calSoullv(exeTime, SoulFuseSkillConfig.TIME);
+
+		aliveTime = System.currentTimeMillis() + exeTime;
+
 		this.leftCount = exeCount;
 	}
 
@@ -243,6 +255,23 @@ public abstract class Buffer {
 		bufferMsg.setLeftCount(leftCount);
 		bufferMsg.setBufferId(bufferId);
 		bufferMsg.setTargetId(target.getId());
+	}
+
+	public int calSoullv(int param, int effectParam) {
+		if (bufferInfo.getFromType() == FromType.FUSE && source.getType() == RoleType.player) {
+			Player player = (Player) source;
+			FuseSkillVo fv = player.getFuseSkill(getTemplateId());
+			if (fv != null) {
+				SoulFuseSkillConfig config = BattleTempMgr.getFuseSkillTemp(getTemplateId());
+				if (config != null && config.getEffectParam() == SoulFuseSkillConfig.EFFECT) {
+					int addPercent = player.getSoulLv() * 10;
+					param += param * addPercent / 100;
+				} else {
+					Log.error("SoulFuseSkillConfig " + getTemplateId());
+				}
+			}
+		}
+		return param;
 	}
 
 	public int getType() {

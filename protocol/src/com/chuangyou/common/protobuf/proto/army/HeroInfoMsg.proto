@@ -9,4 +9,5 @@ message HeroInfoMsg {
 	repeated int32 skillInfos = 3; //英雄全部技能
 	repeated int32 battleSkills = 4; //英雄出战技能
 	repeated FuseSkillMsg fuseSkills = 5;//魂幡技能
+	optional int32 soulLv  = 6;//魂幡等级
 }

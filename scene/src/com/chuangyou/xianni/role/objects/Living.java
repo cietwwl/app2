@@ -47,6 +47,7 @@ import com.chuangyou.xianni.cooldown.obj.CoolDown;
 import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.entity.buffer.LivingStatusTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
+import com.chuangyou.xianni.entity.soul.SoulFuseSkillConfig;
 import com.chuangyou.xianni.exec.AbstractActionQueue;
 import com.chuangyou.xianni.exec.ThreadManager;
 import com.chuangyou.xianni.netty.GatewayLinkedSet;
@@ -125,10 +126,13 @@ public class Living extends AbstractActionQueue {
 	protected int								soulAttack;							// 魂攻
 	protected int								initSoulDefence;					// 初始魂防
 	protected int								soulDefence;						// 魂防
-
+	protected int								initAccurate;						// 初始命中
 	protected int								accurate;							// 命中
+	protected int								initDodge;							// 初始闪避
 	protected int								dodge;								// 闪避
+	protected int								initCrit;							// 初始暴击
 	protected int								crit;								// 暴击
+
 	protected int								critDefence;						// 抗暴
 	protected int								critAddtion;						// 暴击伤害
 	protected int								critCut;							// 抗暴减伤
@@ -210,8 +214,6 @@ public class Living extends AbstractActionQueue {
 	/** 所有的buffer */
 	protected Map<Long, Buffer>					allBuffers;
 
-	/** 武器携带buffer */
-	protected Buffer							weaponBuffer;
 	/** 状态管理器 */
 	protected Map<LivingState, AtomicInteger>	livingStatus;
 
@@ -234,10 +236,10 @@ public class Living extends AbstractActionQueue {
 	/** 队伍ID */
 	private int							teamId;
 
-	/** 
+	/**
 	 * 魂幡值
 	 */
-	private long 						soulExp;
+	private long						soulExp;
 	/** cd对象 */
 	protected HashMap<String, CoolDown>	cooldowns	= new HashMap<String, CoolDown>();
 
@@ -525,10 +527,6 @@ public class Living extends AbstractActionQueue {
 		if (wbuff != null) {
 			toal.addAll(wbuff);
 		}
-
-		if (weaponBuffer != null && weaponBuffer.getExeWay() == exeWay) {
-			toal.add(weaponBuffer);
-		}
 		return toal;
 	}
 
@@ -539,10 +537,6 @@ public class Living extends AbstractActionQueue {
 		List<Buffer> typeBuff = typeBuffers.get(type);
 		if (typeBuff != null) {
 			toal.addAll(typeBuff);
-		}
-
-		if (weaponBuffer != null && weaponBuffer.getType() == type) {
-			toal.add(weaponBuffer);
 		}
 		return toal;
 	}
@@ -877,7 +871,6 @@ public class Living extends AbstractActionQueue {
 			value = 0;
 		}
 		switch (attr) {
-
 			case CUR_SOUL:
 				if (value > this.getMaxSoul()) {
 					value = this.getMaxSoul();
@@ -924,13 +917,16 @@ public class Living extends AbstractActionQueue {
 				refreshProperties(attr.getValue());
 				break;
 			case ACCURATE:
-				this.setAccurate((int) value);
+				this.setInitAccurate((int) value);
+				refreshProperties(attr.getValue());
 				break;
 			case DODGE:
-				this.setDodge((int) value);
+				this.setInitDodge((int) value);
+				refreshProperties(attr.getValue());
 				break;
 			case CRIT:
-				this.setCrit((int) value);
+				this.setInitCrit((int) value);
+				refreshProperties(attr.getValue());
 				break;
 			case CRIT_DEFENCE:
 				this.setCritDefence((int) value);
@@ -1201,9 +1197,6 @@ public class Living extends AbstractActionQueue {
 
 	public void execWayBuffer(AttackOrder order, int execWay) {
 		List<Buffer> buffers = getExeWayBuffers(execWay);
-		if (weaponBuffer != null && weaponBuffer.getExeWay() == execWay) {
-			buffers.add(weaponBuffer);
-		}
 		if (buffers != null && buffers.size() != 0) {
 			List<Damage> damages = new ArrayList<>();
 			for (Buffer buff : buffers) {
@@ -1286,10 +1279,12 @@ public class Living extends AbstractActionQueue {
 		int addValue = 0;
 		for (Buffer buffer : invock) {
 			if (buffer.getBufferInfo().getValueType() == type) {
-				addValue = buffer.getBufferInfo().getValue() + (int) Math.ceil(lastValue * (buffer.getBufferInfo().getValuePercent() / 10000f));
+				int effectValue = buffer.getBufferInfo().getValue() + (int) Math.ceil(lastValue * (buffer.getBufferInfo().getValuePercent() / 10000f));
+				addValue = buffer.calSoullv(effectValue, SoulFuseSkillConfig.EFFECT);
 			}
 			if (buffer.getBufferInfo().getValueType1() == type) {
-				addValue = buffer.getBufferInfo().getValue1() + (int) Math.ceil(lastValue * (buffer.getBufferInfo().getValuePercent1() / 10000f));
+				int effectValue = buffer.getBufferInfo().getValue1() + (int) Math.ceil(lastValue * (buffer.getBufferInfo().getValuePercent1() / 10000f));
+				addValue = buffer.calSoullv(effectValue, SoulFuseSkillConfig.EFFECT);
 			}
 		}
 
@@ -1520,21 +1515,21 @@ public class Living extends AbstractActionQueue {
 		if (older.getOverlayWay() == BufferOverlayType.REPLACE_COUNT) {
 			older.setState(BufferState.VALID);
 			older.setLeftCount(newer.getBufferInfo().getExeCount());
-			older.setAliveTime(System.currentTimeMillis() + newer.getBufferInfo().getExeTime() * 1000);
+			older.setAliveTime(newer.getAliveTime());
 			upBuffer(older);
 		}
 
 		if (older.getOverlayWay() == BufferOverlayType.SUPERIMPOSED) {
 			older.setState(BufferState.VALID);
 			older.setLeftCount(older.getLeftCount() + newer.getBufferInfo().getExeCount());
-			older.setAliveTime(older.getAliveTime() + newer.getBufferInfo().getExeTime() * 1000);
+			older.setAliveTime(newer.getAliveTime());
 			upBuffer(older);
 		}
 
 		if (older.getOverlayWay() == BufferOverlayType.SUPERIMPOSED_EFFECT) {
 			older.setState(BufferState.VALID);
 			older.setLeftCount(newer.getBufferInfo().getExeCount());
-			older.setAliveTime(System.currentTimeMillis() + newer.getBufferInfo().getExeTime() * 1000);
+			older.setAliveTime(newer.getAliveTime());
 			older.addPressedNum(1);
 			upBuffer(older);
 		}
@@ -1787,6 +1782,12 @@ public class Living extends AbstractActionQueue {
 				return initSoulAttack;
 			case SOUL_DEFENCE:
 				return initSoulDefence;
+			case ACCURATE:
+				return initAccurate;
+			case DODGE:
+				return initDodge;
+			case CRIT:
+				return initCrit;
 			default:
 				Log.error("not suppot type :" + type.getValue());
 				return getProperty(type.getValue());
@@ -2185,17 +2186,24 @@ public class Living extends AbstractActionQueue {
 		return false;
 	}
 
-	public Buffer getWeaponBuffer() {
-		return weaponBuffer;
+	public void setInitAccurate(int initAccurate) {
+		this.initAccurate = initAccurate;
 	}
 
-	public void setWeaponBuffer(Buffer weaponBuffer) {
-		this.weaponBuffer = weaponBuffer;
+	public void setInitDodge(int initDodge) {
+		this.initDodge = initDodge;
+	}
+
+	public void setInitCrit(int initCrit) {
+		this.initCrit = initCrit;
 	}
 
 	public boolean costMana(int count) {
 		if (this.mana >= count) {
 			this.mana = this.mana - count;
+
+			ArmyProxy army = WorldMgr.getArmy(this.getArmyId());
+			army.notifyMana();
 			return true;
 		} else {
 			return false;
@@ -2225,5 +2233,4 @@ public class Living extends AbstractActionQueue {
 		this.soulExp = soulExp;
 	}
 
-	
 }

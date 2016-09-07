@@ -30,10 +30,8 @@ public class BeadFieldManager extends FieldMgr {
 
 	@Override
 	protected void spwanInit(Field f) {
-		System.out.println("___________创建怪物______________"+f.getCampaignId());
 		List<Integer> list = army.getPlayer().getMonsterRefreshIdList();
 		if (list.size() == 0) {
-			System.err.println("怪物不存在。。。.");
 			return;
 		}
 		Map<Integer, SpawnInfo> spawnInfos = SpawnTemplateMgr.getFieldSpawnInfos(f.getMapKey());
@@ -55,29 +53,29 @@ public class BeadFieldManager extends FieldMgr {
 
 			SpwanNode node = null;
 			switch (sf.getEntityType()) {
-			case SpwanInfoType.MONSTER:
-				node = new BeadMonsterSpawnNode(sf, f);
-				break;
-			case SpwanInfoType.NPC:
-				node = new NpcSpawnNode(sf, f);
-				break;
-			case SpwanInfoType.TRANSPOINT:
-				node = new TouchPointSpwanNode(sf, f);
-				break;
-			case SpwanInfoType.GATHER_POINT:
-				node = new GatherSpawnNode(sf, f);
-				break;
-			case SpwanInfoType.TASK_TRIGGER:
-				node = new TriggerPointSpwanNode(sf, f);
-				break;
-			case SpwanInfoType.COMMON_TRIGGER:
-				node = new ActiveSpwanNode(sf, f);
-				break;
-			default:
-				node = new SpwanNode(sf, f);
+				case SpwanInfoType.MONSTER:
+					node = new BeadMonsterSpawnNode(sf, f);
+					break;
+				case SpwanInfoType.NPC:
+					node = new NpcSpawnNode(sf, f);
+					break;
+				case SpwanInfoType.TRANSPOINT:
+					node = new TouchPointSpwanNode(sf, f);
+					break;
+				case SpwanInfoType.GATHER_POINT:
+					node = new GatherSpawnNode(sf, f);
+					break;
+				case SpwanInfoType.TASK_TRIGGER:
+					node = new TriggerPointSpwanNode(sf, f);
+					break;
+				case SpwanInfoType.COMMON_TRIGGER:
+					node = new ActiveSpwanNode(sf, f);
+					break;
+				default:
+					node = new SpwanNode(sf, f);
 			}
 			f.addSpawnNode(node);
-			//System.out.println("nodenode--:"+node);
+			// System.out.println("nodenode--:"+node);
 			node.build();
 			if (node.getSpawnInfo().getInitStatu() == 1) {
 				node.stateTransition(new WorkingState(node));

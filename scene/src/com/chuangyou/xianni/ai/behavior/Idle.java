@@ -22,7 +22,7 @@ public class Idle extends MonsterBaseBehavior {
 
 	@Override
 	public AIState next() {
-		if (getMonster().getAiConfig()!= null && getMonster().getAiConfig().isRunAway()) {// 是否逃跑
+		if (getMonster().getAiConfig() != null && getMonster().getAiConfig().isRunAway()) {// 是否逃跑
 			if (getMonster().getAttacker() != null)
 				return AIState.RUNAWAY;
 		}
@@ -43,7 +43,8 @@ public class Idle extends MonsterBaseBehavior {
 			// 计算距离， 根据出生点判断
 			float distance = Vector3.distance(getMonster().getInitPosition(), tmpTarget.getPostion());
 			// 脱离追击范围
-			// System.out.println("----怪物出生点：" + getMonster().getInitPosition() + "怪物目标位置：" + tmpTarget.getPostion() + "距离：" + distance);
+			// System.out.println("----怪物出生点：" + getMonster().getInitPosition()
+			// + "怪物目标位置：" + tmpTarget.getPostion() + "距离：" + distance);
 
 			int followUpDistance = getMonster().getMonsterInfo().getFollowUpDistance(); // 追击距离
 			if (followUpDistance == 0) {
@@ -73,6 +74,8 @@ public class Idle extends MonsterBaseBehavior {
 			}
 		}
 
+		if (getMonster().getInitPosition() == null || getMonster().getPostion() == null)
+			return AIState.INVALID;
 		float leaveBornDistance = Vector3.distance(getMonster().getInitPosition(), getMonster().getPostion());
 		if (leaveBornDistance < getMonster().getMonsterInfo().getSeekEnemyRange()) {
 			return AIState.PATROL;

@@ -47,14 +47,14 @@ public class BeadMonsterSpawnNode extends MonsterSpawnNode { // 刷怪模板
 		}
 	}
 
-	@Override
-	public void start() {
-		// super.start();
-		System.err.println("---------------创建怪物  spwanInfo :" + spwanInfo.getId());
-		while (curCount < spwanInfo.getMaxCount() && (toalCount < spwanInfo.getToalCount() || spwanInfo.getToalCount() <= 0)) {
-			curCount++;
-			createChildren();
-		}
-	}
+//	@Override
+//	public void start() {
+//		// super.start();
+//		System.err.println("---------------创建怪物  spwanInfo :" + spwanInfo.getId());
+//		while (curCount < spwanInfo.getMaxCount() && (toalCount < spwanInfo.getToalCount() || spwanInfo.getToalCount() <= 0)) {
+//			curCount++;
+//			createChildren();
+//		}
+//	}
 
 }

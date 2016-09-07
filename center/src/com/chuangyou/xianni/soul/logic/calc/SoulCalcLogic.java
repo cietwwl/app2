@@ -32,7 +32,7 @@ public class SoulCalcLogic {
 		// 计算卡牌给魂幡功能加成的属性
 		calcCardsAtts(player, map);
 		// 计算卡牌组合给魂幡功能加成属性
-//		calcCardComboAtts(player,map);
+		calcCardComboAtts(player,map);
 		// 计算魂幡等级给魂幡功能加成的属性
 		List<PropertyMsg> list = calcExpAdd(player, map);
 		player.getSoulInventory().setList(list);
@@ -91,9 +91,10 @@ public class SoulCalcLogic {
 				SimpleProperty spro = it.next();
 				if (spro.getValue() > 0) {
 					PropertyMsg.Builder msg = PropertyMsg.newBuilder();
+					msg.setType(spro.getType());
 					msg.setBasePoint(spro.getValue());
 					spro.setValue((int) (spro.getValue() + temp * spro.getValue()));
-					msg.setBasePoint(spro.getValue());
+					msg.setTotalPoint(spro.getValue());
 					list.add(msg.build());
 				}
 			}
@@ -161,6 +162,8 @@ public class SoulCalcLogic {
 			if (map.containsKey(pro.getType())) {
 				SimpleProperty t = map.get(pro.getType());
 				t.setValue(t.getValue() + temp);
+			}else{
+				map.put(pro.getType(), pro);
 			}
 		}
 	}
@@ -176,6 +179,8 @@ public class SoulCalcLogic {
 			if (map.containsKey(pro.getType())) {
 				SimpleProperty t = map.get(pro.getType());
 				t.setValue(t.getValue() + pro.getValue());
+			}else{
+				map.put(pro.getType(), pro);
 			}
 		}
 	}

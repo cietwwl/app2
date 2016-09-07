@@ -1,6 +1,7 @@
-package com.chuangyou.xianni.battle.buffer;
+package com.chuangyou.xianni.battle.buffer.specialbuf;
 
 import com.chuangyou.xianni.battle.AttackOrder;
+import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.role.objects.Living;
@@ -8,7 +9,7 @@ import com.chuangyou.xianni.role.objects.Living;
 /** 属性类型buffer */
 public class AttributesBuffer extends Buffer {
 
-	protected AttributesBuffer(Living source, Living target, SkillBufferTemplateInfo bufferInfo) {
+	public AttributesBuffer(Living source, Living target, SkillBufferTemplateInfo bufferInfo) {
 		super(source, target, bufferInfo);
 	}
 

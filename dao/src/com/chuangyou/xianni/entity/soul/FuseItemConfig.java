@@ -1,17 +1,31 @@
 package com.chuangyou.xianni.entity.soul;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 融合材料配置
  * @author laofan
  *
  */
 public class FuseItemConfig {
+	
 	private int stype;
 	private int needItem1;
 	private int needItem2;
 	private int needItem3;
 	private int needItem4;
 	
+	
+	public List<Integer> getNeedItems(){
+		List<Integer> list = new ArrayList<>();
+		list.add(needItem1);
+		list.add(needItem2);
+		list.add(needItem3);
+		list.add(needItem4);
+		return list;
+	}
+ 	
 	public int getStype() {
 		return stype;
 	}

@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 import com.chuangyou.common.protobuf.pb.army.HeroInfoMsgProto.HeroInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
+import com.chuangyou.xianni.common.template.LevelUpTempleteMgr;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.hero.HeroSkill;
 import com.chuangyou.xianni.entity.property.BaseProperty;
@@ -118,8 +119,11 @@ public class Hero extends Living {
 		}
 		// // 添加武器BUFFER
 		// heroInfo.setWeaponsBufferId(40040001);
-
+		//添加融合技能
 		heroInfo.addAllFuseSkills(player.getSoulInventory().getFuseSkillPacket(gamePlayer));
+		//添加魂幡等级
+		int lv = LevelUpTempleteMgr.getSoulLevel(player.getSoulInventory().getSoulInfo().getExp());
+		heroInfo.setSoulLv(lv);
 		// // // 同步技能
 		// heroInfo.addSkillInfos(1001);
 		// // // 出战技能

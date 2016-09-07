@@ -17,6 +17,7 @@ import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.inverseBead.manager.InverseBeadManager;
 import com.chuangyou.xianni.inverseBead.template.InverseBeadTemMgr;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
@@ -74,7 +75,7 @@ public class InverseBeadLoopAction extends DelayAction {
 			MonsterInfo monsterInfo = MonsterInfoTemplateMgr.get(tem.getEntityId());
 
 			if (monsterInfo == null) {
-				System.err.println("配置错误。。entityId:" + tem.getEntityId());
+				// System.err.println("配置错误。。entityId:" + tem.getEntityId());
 				return;
 			}
 
@@ -84,7 +85,7 @@ public class InverseBeadLoopAction extends DelayAction {
 			PBMessage pbm = MessageUtil.buildMessage(Protocol.U_REFRESH_INVERSE_BEAD, msg);
 			this.player.sendPbMessage(pbm);
 		}
-		if (isLoop && playerTimeInfo != null) {
+		if (isLoop && playerTimeInfo != null && player.getPlayerState() == PlayerState.ONLINE) {
 			this.execTime = System.currentTimeMillis() + intervalTime;
 			getActionQueue().enDelayQueue(this);
 		}
@@ -186,11 +187,12 @@ public class InverseBeadLoopAction extends DelayAction {
 		}
 
 		long timeLen = System.currentTimeMillis() - auraRefreshDateTime.getTime();
-		int addNum = (int) (timeLen / 30 * 60 * 1000);
+		int addNum = (int) (timeLen / 1800000);// 30 分钟
 		if (addNum <= 0)
 			return false;
 
 		auraNum += addNum;
+		auraNum = Math.min(99, auraNum);
 		playerTimeInfo.setAuraNum(auraNum);
 		playerTimeInfo.setAuraRefreshDateTime(new Date(auraRefreshDateTime.getTime() + 30 * 60 * 1000 * addNum));
 

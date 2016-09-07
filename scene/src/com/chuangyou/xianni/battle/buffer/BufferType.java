@@ -24,4 +24,10 @@ public class BufferType {
 	public static final int	ATTACK_COVENT_SOULATTACK	= 401;	// x%攻击转化为魂攻
 	public static final int	SOULATTACK_COVENT_ATTACK	= 402;	// x%魂攻转化为物攻
 
+	public static class FromType {
+		public static final int	COMMON	= 0;	// 正常来源（技能）
+		public static final int	WEAPON	= 1;	// 武器
+		public static final int	FUSE	= 2;	// 魂幡
+	}
+
 }

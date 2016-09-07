@@ -47,9 +47,9 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 		params.put(9, new DbParameter(Types.INTEGER, info.getCard7()));
 		params.put(10, new DbParameter(Types.INTEGER, info.getCard8()));
 		params.put(11, new DbParameter(Types.INTEGER, info.getFuseSkillId1()));
-		params.put(12, new DbParameter(Types.INTEGER, info.getFuseSkillId1()));
-		params.put(13, new DbParameter(Types.INTEGER, info.getFuseSkillId1()));
-		params.put(14, new DbParameter(Types.INTEGER, info.getFuseSkillId1()));
+		params.put(12, new DbParameter(Types.INTEGER, info.getFuseSkillId2()));
+		params.put(13, new DbParameter(Types.INTEGER, info.getFuseSkillId3()));
+		params.put(14, new DbParameter(Types.INTEGER, info.getFuseSkillId4()));
 		params.put(15, new DbParameter(Types.TIMESTAMP, info.getFuseSkillCreateTime1()));
 		params.put(16, new DbParameter(Types.TIMESTAMP, info.getFuseSkillCreateTime2()));
 		params.put(17, new DbParameter(Types.TIMESTAMP, info.getFuseSkillCreateTime3()));
@@ -86,9 +86,9 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 		params.put(8, new DbParameter(Types.INTEGER, info.getCard7()));
 		params.put(9, new DbParameter(Types.INTEGER, info.getCard8()));
 		params.put(10, new DbParameter(Types.INTEGER, info.getFuseSkillId1()));
-		params.put(11, new DbParameter(Types.INTEGER, info.getFuseSkillId1()));
-		params.put(12, new DbParameter(Types.INTEGER, info.getFuseSkillId1()));
-		params.put(13, new DbParameter(Types.INTEGER, info.getFuseSkillId1()));
+		params.put(11, new DbParameter(Types.INTEGER, info.getFuseSkillId2()));
+		params.put(12, new DbParameter(Types.INTEGER, info.getFuseSkillId3()));
+		params.put(13, new DbParameter(Types.INTEGER, info.getFuseSkillId4()));
 		params.put(14, new DbParameter(Types.TIMESTAMP, info.getFuseSkillCreateTime1()));
 		params.put(15, new DbParameter(Types.TIMESTAMP, info.getFuseSkillCreateTime2()));
 		params.put(16, new DbParameter(Types.TIMESTAMP, info.getFuseSkillCreateTime3()));
@@ -441,7 +441,7 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 	@Override
 	public boolean addSoulMake(SoulMake info) {
 		// TODO Auto-generated method stub
-		String sql ="insert into tb_u_soul_itemMake (playerId,state,startTime,killNum,totalTime,itemId) values(?,?,?,?,?,?)";
+		String sql ="insert into tb_u_soul_itemMake (playerId,state,startTime,killNum,totalTime,itemId,lastQteTime,qteIndex,makeIndex) values(?,?,?,?,?,?,?,?,?)";
 		if(!info.beginAdd())return false;
 		Map<Integer, DbParameter> params = new HashMap<>();
 		params.put(1, new DbParameter(Types.BIGINT, info.getPlayerId()));
@@ -450,6 +450,9 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 		params.put(4, new DbParameter(Types.INTEGER, info.getKillNum()));
 		params.put(5, new DbParameter(Types.INTEGER, info.getTotalTime()));
 		params.put(6, new DbParameter(Types.INTEGER, info.getItemId()));
+		params.put(7, new DbParameter(Types.BIGINT, info.getLastQteTime()));
+		params.put(8, new DbParameter(Types.INTEGER, info.getQteIndex()));
+		params.put(9, new DbParameter(Types.INTEGER, info.getMakeIndex()));
 		boolean result = execNoneQuery(sql, params) > -1 ? true : false;
 		info.commitUpdate(result);
 		return result;	
@@ -459,7 +462,7 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 	@Override
 	public boolean updateSoulMake(SoulMake info) {
 		// TODO Auto-generated method stub
-		String sql = "update tb_u_soul_itemMake set state=?,startTime=?,killNum=?,totalTime=?,itemId=? where playerId=?";
+		String sql = "update tb_u_soul_itemMake set state=?,startTime=?,killNum=?,totalTime=?,itemId=?,lastQteTime=?,qteIndex=?,makeIndex=? where playerId=?";
 		if(!info.beginUpdate())return false;
 		
 		Map<Integer, DbParameter> params = new HashMap<>();
@@ -468,8 +471,10 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 		params.put(3, new DbParameter(Types.INTEGER, info.getKillNum()));
 		params.put(4, new DbParameter(Types.INTEGER, info.getTotalTime()));
 		params.put(5, new DbParameter(Types.INTEGER, info.getItemId()));
-		params.put(6, new DbParameter(Types.BIGINT, info.getPlayerId()));
-		
+		params.put(6, new DbParameter(Types.INTEGER, info.getLastQteTime()));
+		params.put(7, new DbParameter(Types.INTEGER, info.getQteIndex()));
+		params.put(8, new DbParameter(Types.INTEGER, info.getMakeIndex()));
+		params.put(9, new DbParameter(Types.BIGINT, info.getPlayerId()));
 		boolean result = execNoneQuery(sql, params) > -1 ? true : false;
 		info.commitUpdate(result);
 		return result;		
@@ -494,6 +499,9 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 					info.setKillNum(rs.getInt("killNum"));
 					info.setTotalTime(rs.getInt("totalTime"));
 					info.setItemId(rs.getInt("itemId"));
+					info.setLastQteTime(rs.getLong("lastQteTime"));
+					info.setQteIndex(rs.getInt("qteIndex"));
+					info.setMakeIndex(rs.getInt("makeIndex"));
 					break;					
 				}
 			} catch (SQLException e) {
@@ -559,6 +567,7 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 				info = new SoulFuseSkillConfig();
 				info.setId(rs.getInt("id"));
 				info.setName(rs.getString("name"));
+				info.setPoolId(rs.getInt("poolId"));
 				info.setWeight(rs.getInt("weight"));
 				info.setBuff(rs.getInt("buff"));
 				info.setChanceBase(rs.getInt("chanceBase"));

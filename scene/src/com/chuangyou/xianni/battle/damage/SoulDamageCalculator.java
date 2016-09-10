@@ -53,7 +53,9 @@ public class SoulDamageCalculator implements DamageCalculator {
 			FormulaBuffer fbuff = (FormulaBuffer) buff;
 			changeValue += fbuff.formulaExe(damageValue, EnumAttr.SOUL.getValue());
 		}
-
+		if (percent == 0 && value == 0) {
+			return damageValue;
+		}
 		damageValue = damageValue - changeValue;
 		return damageValue <= 0 ? 1 : damageValue;
 	}

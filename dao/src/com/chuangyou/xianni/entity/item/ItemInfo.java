@@ -2,7 +2,6 @@ package com.chuangyou.xianni.entity.item;
 
 import java.util.Date;
 
-import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg;
 import com.chuangyou.common.protobuf.pb.item.ItemFullInfoMsgProto.ItemFullInfoMsg;
 import com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg;
@@ -10,35 +9,35 @@ import com.chuangyou.xianni.entity.DataObject;
 import com.chuangyou.xianni.entity.Option;
 
 public class ItemInfo extends DataObject implements Cloneable {
-	private long id;
-	private int templateId;	// 模板ID
-	private long playerId;	// 用户ID
-	private short pos;		// 位置
-	private boolean isExist;	// 是否存在
-	private long objectId;	// 所属对象ID（多对象装备背包使用）
-	private short bagType;	// 背包类型
-	private boolean isBinds;	// 是否绑定
-	private boolean isUsed;		// 是否使用
-	private int validDate;	// 单位分钟
-	private Date beginDate;	// 添加时间
-	private int count;		// 数量
-	private short removeType;	// 删除类型
-	private Date removeDate;	// 删除时间
-	private short addType;	// 添加类型
-	private Date addDate;	// 添加时间
-	private boolean isTips;		// 全屏幕提示,及时保存
-	private boolean isNew;		//
-	private int pro;// 基础属性
-	private int qualityCoefficient;// 品质系数
-	private int grow;// 成长系数
-	
+	private long	id;
+	private int		templateId;			// 模板ID
+	private long	playerId;			// 用户ID
+	private short	pos;				// 位置
+	private boolean	isExist;			// 是否存在
+	private long	objectId;			// 所属对象ID（多对象装备背包使用）
+	private short	bagType;			// 背包类型
+	private boolean	isBinds;			// 是否绑定
+	private boolean	isUsed;				// 是否使用
+	private int		validDate;			// 单位分钟
+	private Date	beginDate;			// 添加时间
+	private int		count;				// 数量
+	private short	removeType;			// 删除类型
+	private Date	removeDate;			// 删除时间
+	private short	addType;			// 添加类型
+	private Date	addDate;			// 添加时间
+	private boolean	isTips;				// 全屏幕提示,及时保存
+	private boolean	isNew;				//
+	private int		pro;				// 基础属性
+	private int		qualityCoefficient;	// 品质系数
+	private int		grow;				// 成长系数
+
 	/** 觉醒等级 */
-	private int awaken;
+	private int		awaken;
 	/** 觉醒突破点 */
-	private int awakenPoint;
+	private int		awakenPoint;
 	/** 注入魂石 */
-	private int stone;
-	
+	private int		stone;
+
 	public ItemInfo() {
 		setOp(Option.Insert);
 	}
@@ -280,21 +279,23 @@ public class ItemInfo extends DataObject implements Cloneable {
 		builder.setPro(this.getPro());
 		builder.setQualityCoefficient(this.getQualityCoefficient());
 		builder.setGrow(this.grow);
-		
+
 		EquipInfoMsg.Builder equip = EquipInfoMsg.newBuilder();
 		equip.setPos(this.getPosMsg());
 		equip.setAwakenLevel(this.getAwaken());
 		equip.setAwakenPoint(this.getAwakenPoint());
 		equip.setStoneTempId(this.getStone());
 		builder.setEquip(equip);
-		
+
 		if (this.beginDate != null) {
 			builder.setBeginDate(this.beginDate.getTime());
 		}
 		builder.setIsNew(this.isNew);
+		
+		this.setNew(false);
 	}
-	
-	public ItemPosMsg getPosMsg(){
+
+	public ItemPosMsg getPosMsg() {
 		ItemPosMsg.Builder posMsg = ItemPosMsg.newBuilder();
 		posMsg.setBagType(this.getBagType());
 		posMsg.setPosition(this.getPos());

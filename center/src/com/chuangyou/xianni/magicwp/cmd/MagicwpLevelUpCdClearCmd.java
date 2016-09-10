@@ -7,6 +7,7 @@ import com.chuangyou.common.protobuf.pb.magicwp.MagicwpLevelUpCdClearRespProto.M
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.magicwp.MagicwpCfg;
 import com.chuangyou.xianni.entity.magicwp.MagicwpInfo;
 import com.chuangyou.xianni.entity.magicwp.MagicwpLevelCfg;
@@ -25,35 +26,36 @@ public class MagicwpLevelUpCdClearCmd extends AbstractCommand {
 		// TODO Auto-generated method stub
 
 		MagicwpLevelUpCdClearReqMsg req = MagicwpLevelUpCdClearReqMsg.parseFrom(packet.getBytes());
-		
+
 		MagicwpInfo magicwpInfo = player.getMagicwpInventory().getMagicwpInfo(req.getMagicwpId());
-		
-		if(magicwpInfo == null){
+
+		if (magicwpInfo == null) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Magicwp_UnGet, packet.getCode());
 			return;
 		}
-		//不在冷却中，不需要清除
-		if(magicwpInfo.getUpLevelCd() <= (new Date()).getTime()){
+		// 不在冷却中，不需要清除
+		if (magicwpInfo.getUpLevelCd() <= (new Date()).getTime()) {
 			return;
 		}
-		
+
 		MagicwpCfg magicwpCfg = MagicwpTemplateMgr.getMagicwpTemps().get(req.getMagicwpId());
-		if(magicwpCfg.getIsSpecial() == 1){
+		if (magicwpCfg.getIsSpecial() == 1) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Magicwp_Special_NotOpera, packet.getCode());
 			return;
 		}
-		
+
 		MagicwpLevelCfg magicwpLevel = MagicwpTemplateMgr.getLevelTemps().get(magicwpInfo.getMagicwpId() * 1000 + magicwpInfo.getLevel());
-		//扣钱
-		if(player.getBasePlayer().getPlayerInfo().getCash() < magicwpLevel.getClearCdCash()){
+		// 扣钱
+		if (player.getBasePlayer().getPlayerInfo().getCash() < magicwpLevel.getClearCdCash()) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Money_UnEnough, packet.getCode());
 			return;
 		}
-		if(!player.getBasePlayer().consumeCash(magicwpLevel.getClearCdCash())) return;
-		
+		if (!player.getBasePlayer().consumeCash(magicwpLevel.getClearCdCash(), ItemRemoveType.MAGICWP_CLEAR_CD))
+			return;
+
 		magicwpInfo.setUpLevelCd(0);
 		player.getMagicwpInventory().updateMagicwpInfo(magicwpInfo);
-		
+
 		MagicwpLevelUpCdClearRespMsg.Builder msg = MagicwpLevelUpCdClearRespMsg.newBuilder();
 		msg.setMagicwpId(magicwpInfo.getMagicwpId());
 		msg.setUpLevelCd(0);

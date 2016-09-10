@@ -7,6 +7,7 @@ import com.chuangyou.common.protobuf.pb.mount.MountLevelUpCdClearRespProto.Mount
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.mount.MountInfo;
 import com.chuangyou.xianni.entity.mount.MountLevelCfg;
 import com.chuangyou.xianni.mount.template.MountTemplateMgr;
@@ -22,44 +23,47 @@ public class MountLevelUpCdClearCmd extends AbstractCommand {
 	@Override
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
 		// TODO Auto-generated method stub
-		//玩家坐骑信息
+		// 玩家坐骑信息
 		MountInfo mount = player.getMountInventory().getMount();
-		//不在冷却中，不需要清除
-		if(mount.getUpLevCd() <= (new Date()).getTime()){
+		// 不在冷却中，不需要清除
+		if (mount.getUpLevCd() <= (new Date()).getTime()) {
 			return;
 		}
-		
-		//坐骑升级配置表
+
+		// 坐骑升级配置表
 		Map<Integer, MountLevelCfg> mountLevCfg = MountTemplateMgr.getLevelTemps();
 		MountLevelCfg mountLevel = mountLevCfg.get(mount.getLevel());
-		
-		////////////////////////////////////////////////////////////7.23 范加伟改 
+
+		//////////////////////////////////////////////////////////// 7.23 范加伟改
 		long totalPrice = mountLevel.getClearCdCash();
-		if (totalPrice > player.getBasePlayer().getPlayerInfo().getBindCash() +  player.getBasePlayer().getPlayerInfo().getCash()) {
-			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Money_UnEnough,packet.getCode(),"数据错误--绑定仙玉不足");
+		if (totalPrice > player.getBasePlayer().getPlayerInfo().getBindCash() + player.getBasePlayer().getPlayerInfo().getCash()) {
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Money_UnEnough, packet.getCode(), "数据错误--绑定仙玉不足");
 			return;
 		} else {
-			if(totalPrice>player.getBasePlayer().getPlayerInfo().getBindCash()){
+			if (totalPrice > player.getBasePlayer().getPlayerInfo().getBindCash()) {
 				long temp = (totalPrice - player.getBasePlayer().getPlayerInfo().getBindCash());
-				player.getBasePlayer().consumeBindCach(player.getBasePlayer().getPlayerInfo().getBindCash());
-				player.getBasePlayer().consumeCash((int)temp);
-			}else{							
-				player.getBasePlayer().consumeBindCach((int) totalPrice);
+				player.getBasePlayer().consumeBindCash(player.getBasePlayer().getPlayerInfo().getBindCash(), ItemRemoveType.MOUNT_CLEAR_CD);
+				player.getBasePlayer().consumeCash((int) temp, ItemRemoveType.MOUNT_CLEAR_CD);
+			} else {
+				player.getBasePlayer().consumeBindCash((int) totalPrice, ItemRemoveType.MOUNT_CLEAR_CD);
 			}
 		}
 		/////////////////////////////////////////////////////////////
-//		//判断元宝
-//		if(player.getBasePlayer().getPlayerInfo().getCash() < mountLevel.getClearCdCash()){
-//			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Money_UnEnough, packet.getCode());
-//			return;
-//		}
-//		if(!player.getBasePlayer().consumeCash(mountLevel.getClearCdCash())) return;
-		
-		//清除成功
+		// //判断元宝
+		// if(player.getBasePlayer().getPlayerInfo().getCash() <
+		// mountLevel.getClearCdCash()){
+		// ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Money_UnEnough,
+		// packet.getCode());
+		// return;
+		// }
+		// if(!player.getBasePlayer().consumeCash(mountLevel.getClearCdCash()))
+		// return;
+
+		// 清除成功
 		mount.setUpLevCd(0);
 		player.getMountInventory().updateMount(mount);
-		
-		//返回消息
+
+		// 返回消息
 		MountLevelUpCdClearRespMsg.Builder msg = MountLevelUpCdClearRespMsg.newBuilder();
 		PBMessage p = MessageUtil.buildMessage(Protocol.U_MOUNT_LEVELUPCD_CLEAR, msg);
 		player.sendPbMessage(p);

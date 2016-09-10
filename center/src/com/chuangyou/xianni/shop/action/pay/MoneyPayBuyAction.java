@@ -2,6 +2,7 @@ package com.chuangyou.xianni.shop.action.pay;
 
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.shop.ShopCfg;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.protocol.Protocol;
@@ -10,6 +11,7 @@ import com.chuangyou.xianni.shop.action.IPayBuyGoods;
 
 /**
  * 灵石购买
+ * 
  * @author laofan
  *
  */
@@ -20,17 +22,16 @@ public class MoneyPayBuyAction extends BaseBuyGoodsAction implements IPayBuyGood
 		// TODO Auto-generated constructor stub
 	}
 
-	
 	@Override
 	public boolean payBuyGoods(int num, long totalPrice) {
 		// TODO Auto-generated method stub
-		if(player.getBasePlayer().getPlayerInfo().getMoney()<totalPrice){
-			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR,Protocol.C_REQ_BUYGOODS,"数据错误--金币不足");
+		if (player.getBasePlayer().getPlayerInfo().getMoney() < totalPrice) {
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_BUYGOODS, "数据错误--金币不足");
 			return false;
 		}
-		
-		//todo扣金币
-		player.getBasePlayer().consumeMoney(totalPrice);
+
+		// todo扣金币
+		player.getBasePlayer().consumeMoney(totalPrice, ItemRemoveType.PAY_BUY_GOODS);
 		return true;
 	}
 

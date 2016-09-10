@@ -67,7 +67,7 @@ public class SnareTemplateInfo {
 	}
 
 	public int getValidCount() {
-		return validCount + 10;
+		return validCount;
 	}
 
 	public void setValidCount(int validCount) {

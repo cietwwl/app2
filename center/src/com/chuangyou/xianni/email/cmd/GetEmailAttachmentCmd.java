@@ -1,6 +1,5 @@
 package com.chuangyou.xianni.email.cmd;
 
-
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
@@ -23,7 +22,6 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
 
-
 @Cmd(code = Protocol.C_REQ_GETEMAILATTACKMENT, desc = "提取邮件附件")
 public class GetEmailAttachmentCmd extends AbstractCommand {
 
@@ -31,81 +29,82 @@ public class GetEmailAttachmentCmd extends AbstractCommand {
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
 		// TODO Auto-generated method stub
 		GetEmailAttachmentReqMsg req = GetEmailAttachmentReqMsg.parseFrom(packet.getBytes());
-		
-		
+
 		Email email = player.getEmailInventory().getEmailById(req.getPrivateId());
-		if(email ==null){
-			//todo抛错误码
+		if (email == null) {
+			// todo抛错误码
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Email_IS_NOT_EXIST, packet.getCode());
-			return ;
+			return;
 		}
-		if(email.isExpiration(EmailInventory.EXPIRATION_TIME)){
+		if (email.isExpiration(EmailInventory.EXPIRATION_TIME)) {
 			player.getEmailInventory().deleteEmail(email);
-			//todo抛错误码 邮件过期 
+			// todo抛错误码 邮件过期
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Email_Is_Expiration, packet.getCode());
 			return;
 		}
-		if(email.getAttachment().equals("")){
-			//throw new MXY2Exception(ErrorCode.Email_Not_hava_Attachment,"此邮件无附件可取");
+		if (email.getAttachment().equals("")) {
+			// throw new
+			// MXY2Exception(ErrorCode.Email_Not_hava_Attachment,"此邮件无附件可取");
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Email_Not_hava_Attachment, packet.getCode());
 			return;
 		}
-		if(email.getStatus() == Email.READED_GETATTACHMENT_EMAIL){
-			//throw new MXY2Exception(ErrorCode.Email_Attackment_Has_Get,"附件已经提取过");
+		if (email.getStatus() == Email.READED_GETATTACHMENT_EMAIL) {
+			// throw new
+			// MXY2Exception(ErrorCode.Email_Attackment_Has_Get,"附件已经提取过");
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Email_Attackment_Has_Get, packet.getCode());
 			return;
 		}
-		
-		//todo取附件（如果背包满了抛出背包已满exception）
+
+		// todo取附件（如果背包满了抛出背包已满exception）
 		Map<Integer, Integer> map = email.toItemsMap();
 		Iterator<Entry<Integer, Integer>> it = map.entrySet().iterator();
-		while(it.hasNext()){
+		while (it.hasNext()) {
 			Entry<Integer, Integer> item = it.next();
-			if(item.getKey() == CommonType.CurrencyItemType.MONEY_ITEM){
-				player.getBasePlayer().addMoney(item.getValue());
+			if (item.getKey() == CommonType.CurrencyItemType.MONEY_ITEM) {
+				player.getBasePlayer().addMoney(item.getValue(), ItemAddType.EMAIL_ADD);
 				it.remove();
-			}else if(item.getKey() == CommonType.CurrencyItemType.CASH_ITEM){
-				player.getBasePlayer().addCash(item.getValue());
+			} else if (item.getKey() == CommonType.CurrencyItemType.CASH_ITEM) {
+				player.getBasePlayer().addCash(item.getValue(), ItemAddType.EMAIL_ADD);
 				it.remove();
-			}else if(item.getKey() == CommonType.CurrencyItemType.CASH_BIND_ITEM){
-				player.getBasePlayer().addBindCash(item.getValue());
+			} else if (item.getKey() == CommonType.CurrencyItemType.CASH_BIND_ITEM) {
+				player.getBasePlayer().addBindCash(item.getValue(), ItemAddType.EMAIL_ADD);
 				it.remove();
-			}else{
-				if(player.getBagInventory().addItem(item.getKey(), item.getValue(), ItemAddType.EMAIL_ADD, true)){
+			} else {
+				if (player.getBagInventory().addItem(item.getKey(), item.getValue(), ItemAddType.EMAIL_ADD, true)) {
 					it.remove();
-				}else{
-					ErrorMsgUtil.sendErrorMsg(player, ErrorCode.BAG_IS_FULL, Protocol.C_REQ_GETEMAILATTACKMENT,"背包已满");
+				} else {
+					ErrorMsgUtil.sendErrorMsg(player, ErrorCode.BAG_IS_FULL, Protocol.C_REQ_GETEMAILATTACKMENT, "背包已满");
 					break;
 				}
 			}
 		}
-		if(map.size()==0){
+		if (map.size() == 0) {
 			email.setGetAttachmentTime(new Date());
 			email.setStatus(Email.READED_GETATTACHMENT_EMAIL);
 			player.getEmailInventory().updateEmail(email);
-		}else{
+		} else {
 			String str = "";
 			Iterator<Entry<Integer, Integer>> tempIt = map.entrySet().iterator();
-			while(tempIt.hasNext()){
+			while (tempIt.hasNext()) {
 				Entry<Integer, Integer> item = tempIt.next();
-				str+=item.getKey()+","+item.getValue()+";";
+				str += item.getKey() + "," + item.getValue() + ";";
 			}
 			email.setGetAttachmentTime(new Date());
 			email.setAttachment(str);
 			player.getEmailInventory().updateEmail(email);
 		}
-		
+
 		OperationEmailRespMsg.Builder notify = OperationEmailRespMsg.newBuilder();
 		notify.setType(2);
 		notify.addEmails(EmailManager.changeEmail(email));
 		PBMessage pkg = MessageUtil.buildMessage(Protocol.U_RESP_OPERATIONEMAIL, notify);
 		player.sendPbMessage(pkg);
-		
+
 		GetEmailAttachmentRespMsg.Builder msg = GetEmailAttachmentRespMsg.newBuilder();
 		msg.setPrivateId(email.getPrivateId());
 		pkg = MessageUtil.buildMessage(Protocol.U_RESP_GETEMAILATTACKMENT, msg);
 		player.sendPbMessage(pkg);
-		
+
 	}
 
 }

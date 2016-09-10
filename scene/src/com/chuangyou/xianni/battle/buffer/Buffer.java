@@ -143,7 +143,7 @@ public abstract class Buffer {
 		if (temp.getFromType() == 1 && temp.getCostCount() > 0) {
 			return source.costMana(temp.getCostCount());
 		}
-		return false;
+		return true;
 	}
 
 	/** 费用是否足够执行 */
@@ -206,7 +206,7 @@ public abstract class Buffer {
 
 	/** 移除BUFFER */
 	public void dispose() {
-		if (target.removeBuffer(this) && bufferInfo.getExeWay() == ExecWayType.REMOVE) {
+		if (target.removeBuffer(this) && bufferInfo.getExeWay() == ExecWayType.REMOVE && state != BufferState.DEAD_REMOVE) {
 			// 从目标身上移除
 			target.execBuffer(this, ExecWayType.REMOVE);
 		}
@@ -238,7 +238,6 @@ public abstract class Buffer {
 		exeTime = calSoullv(exeTime, SoulFuseSkillConfig.TIME);
 
 		aliveTime = System.currentTimeMillis() + exeTime;
-
 		this.leftCount = exeCount;
 	}
 

@@ -21,8 +21,8 @@ import com.chuangyou.xianni.soul.template.SoulTemplateMgr;
 
 public class StartMakeLogic extends BaseSoulMakeLogic implements ISoulMakeLogic {
 
-	public StartMakeLogic(int op, GamePlayer player) {
-		super(op, player);
+	public StartMakeLogic(int op, int index, GamePlayer player) {
+		super(op, index, player);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -34,11 +34,11 @@ public class StartMakeLogic extends BaseSoulMakeLogic implements ISoulMakeLogic 
 			return;
 		}
 
-		String items = SystemConfigTemplateMgr.getMakeConfig()[this.soulMake.getQteIndex()];
+		String items = SystemConfigTemplateMgr.getMakeConfig()[this.soulMake.getQteIndex() - 1];
 		String strs[] = items.split(",");
 		Map<Integer, Integer> tempMap = new HashMap<>();
 		for (String str : strs) {
-			String it[] = str.split("*");
+			String it[] = str.split("\\*");
 			if (it.length == 2) {
 				int templateId = Integer.parseInt(it[0]);
 				int count = Integer.parseInt(it[1]);
@@ -81,7 +81,7 @@ public class StartMakeLogic extends BaseSoulMakeLogic implements ISoulMakeLogic 
 	 * @return
 	 */
 	private int getItemID() {
-		int index = this.soulMake.getItemId();
+		int index = this.soulMake.getMakeIndex();
 		FuseItemConfig config = SoulTemplateMgr.getFuseItemConfigMap().get(index);
 		if (config == null) {
 			Log.error("FuseItemConfig配置表错误：" + index);
@@ -110,7 +110,7 @@ public class StartMakeLogic extends BaseSoulMakeLogic implements ISoulMakeLogic 
 	 */
 	private int getTaskTotalTime() {
 		int m = new Random().nextInt(25) + 5;
-		return m * 60 * 5;
+		return m * 60;
 	}
 
 	/**

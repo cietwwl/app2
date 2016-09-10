@@ -34,6 +34,7 @@ public class SkillBufferTemplateInfo {
 	private int		valuePercent1;	// 百分比1
 
 	private int		status;			// buff作用状态ID
+	private int		delay;			// buff延迟添加
 	private int		costCount;		// 消耗类型
 
 	private int		param1;			// 配置参数1
@@ -279,6 +280,14 @@ public class SkillBufferTemplateInfo {
 
 	public void setCostCount(int costCount) {
 		this.costCount = costCount;
+	}
+
+	public int getDelay() {
+		return delay;
+	}
+
+	public void setDelay(int delay) {
+		this.delay = delay;
 	}
 
 }

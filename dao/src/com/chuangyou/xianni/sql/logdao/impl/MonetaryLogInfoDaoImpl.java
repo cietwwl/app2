@@ -1,16 +1,17 @@
 package com.chuangyou.xianni.sql.logdao.impl;
 
 import java.util.List;
+
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.entity.log.ItemLogInfo;
+import com.chuangyou.xianni.entity.log.MonetaryLogInfo;
 import com.chuangyou.xianni.sql.db.LogBaseDao;
-import com.chuangyou.xianni.sql.logdao.ItemLogDao;
+import com.chuangyou.xianni.sql.logdao.MonetaryLogInfoDao;
 
-public class ItemLogDaoImpl extends LogBaseDao implements ItemLogDao {
-
+public class MonetaryLogInfoDaoImpl extends LogBaseDao implements MonetaryLogInfoDao {
 	@Override
-	public boolean addList(List<ItemLogInfo> logs) {
+	public boolean addList(List<MonetaryLogInfo> logs) {
 		if (logs == null || logs.size() == 0) {
 			return true;
 		}
@@ -24,20 +25,17 @@ public class ItemLogDaoImpl extends LogBaseDao implements ItemLogDao {
 		return true;
 	}
 
-	private boolean addListFast(List<ItemLogInfo> messages, int begin, int end) {
+	private boolean addListFast(List<MonetaryLogInfo> messages, int begin, int end) {
 		boolean result = false;
 		try {
 			if (messages == null || messages.size() == 0 || begin == end) {
 				return true;
 			}
-			StringBuffer sqlbuf = new StringBuffer("INSERT INTO tb_log_itemlog(templateId,itemId,playerId,oldCount,nowCount,oldPro,newPro,oldGrow,newGrow,"
-					+ "oldAwaken,newAwaken,oldAwakenPoint,newAwakenPoint,newStone,oldStone,changeType,createDate) VALUES ");
+			StringBuffer sqlbuf = new StringBuffer("INSERT INTO tb_log_monetarylog(playerId,moneyType,changeWay,toalCount,changeCount,changeTime) VALUES ");
 			for (int i = begin; i < end; i++) {
-				ItemLogInfo t = messages.get(i);
-				String value = "(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'%s')";
-				value = String.format(value, t.getTemplateId(), t.getItemId(), t.getPlayerId(), t.getOldCount(), t.getNowCount(), t.getOldPro(), t.getNewPro(), t.getOldGrow(), t.getNewGrow(),
-						t.getOldAwaken(), t.getNewAwaken(), t.getOldAwakenPoint(), t.getNewAwakenPoint(), t.getOldStone(), t.getNewStone(), t.getChangeType(),
-						TimeUtil.getDateFormat(t.getCreateDate()));
+				MonetaryLogInfo t = messages.get(i);
+				String value = "(%s,%s,%s,%s,%s,'%s')";
+				value = String.format(value, t.getPlayerId(), t.getMoneyType(), t.getChangeWay(), t.getToalCount(), t.getChangeCount(), TimeUtil.getDateFormat(t.getChangeTime()));
 				if (i == end - 1) {
 					sqlbuf.append(value + ";");
 				} else {
@@ -50,4 +48,5 @@ public class ItemLogDaoImpl extends LogBaseDao implements ItemLogDao {
 		}
 		return result;
 	}
+
 }

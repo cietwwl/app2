@@ -7,18 +7,17 @@ import java.util.Set;
 import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
 import com.chuangyou.common.protobuf.pb.battle.AttackBroadcastMsgProto.AttackBroadcastMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
-import com.chuangyou.common.util.AccessTextFile;
-import com.chuangyou.common.util.JSONUtil;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.ThreadSafeRandom;
+import com.chuangyou.xianni.battle.action.AddDelayBuffAction;
 import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.buffer.BufferFactory;
+import com.chuangyou.xianni.battle.buffer.BufferTargetType;
 import com.chuangyou.xianni.battle.buffer.ExecWayType;
 import com.chuangyou.xianni.battle.calc.SkillCalc;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.skill.Skill;
-import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SnareTemplateInfo;
@@ -229,16 +228,43 @@ public class AttackOrder {
 
 		for (int i = 0; i < bufferIds.length; i++) {
 			int bufferId = bufferIds[i];
-			SkillBufferTemplateInfo sbinfo = BattleTempMgr.getBufferInfo(bufferId);
+			SkillBufferTemplateInfo temp = BattleTempMgr.getBufferInfo(bufferId);
 
-			if (sbinfo == null) {
+			if (temp == null) {
 				continue;
 			}
+			if (temp.getDelay() == 0) {
+				if (temp.getTargetType() == BufferTargetType.SOURCE) {
+					Buffer buff = BufferFactory.createBuffer(source, source, temp);
+					source.addBuffer(buff);
+				}
+				if (temp.getTargetType() == BufferTargetType.SKILL_TARGET) {
+					for (Living target : targets) {
+						Buffer buff = BufferFactory.createBuffer(source, target, temp);
+						buff.setPermanent(false);
+						target.addBuffer(buff);
+					}
+				}
+			} else {
+				AddDelayBuffAction delayAction = new AddDelayBuffAction(source, targets, temp);
+				source.enDelayQueue(delayAction);
+			}
+		}
 
-			for (Living target : targets) {
-				Buffer buff = BufferFactory.createBuffer(source, target, sbinfo);
-				buff.setPermanent(false);
-				target.addBuffer(buff);
+		// 魂幡技能buffer
+		if (source.getType() != RoleType.player) {
+			return;
+		}
+		// 是否属于普攻技能（普攻技能主类型3）
+		if (skill.getTemplateInfo() == null || skill.getTemplateInfo().getMasterType() != 3) {
+			return;
+		}
+		Player player = (Player) source;
+		int index = skill.getTemplateInfo().getSonType() - 1;
+		Buffer bufCreater = player.getFuseBuffer(index);
+		if (bufCreater != null) {
+			if (bufCreater.checkValid()) {
+				bufCreater.execute(null, Damage.DEFAULT, Damage.DEFAULT, ExecWayType.FUSE);
 			}
 		}
 	}

@@ -10,7 +10,6 @@ import com.chuangyou.common.protobuf.pb.army.HeroInfoMsgProto.HeroInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLivingInfoMsg;
 import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLivingInfoMsg.Builder;
-import com.chuangyou.common.protobuf.pb.battle.BufferMsgProto.BufferMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
 import com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg;
@@ -281,12 +280,12 @@ public class Player extends ActiveLiving {
 		if (weaponBuffer != null && weaponBuffer.getExeWay() == exeWay) {
 			buffers.add(weaponBuffer);
 		}
-		for (int i = 0; i < fuseSkillBuffers.length; i++) {
-			Buffer fuseBuff = fuseSkillBuffers[i];
-			if (fuseBuff != null && fuseBuff.getExeWay() == exeWay) {
-				buffers.add(fuseBuff);
-			}
-		}
+		// for (int i = 0; i < fuseSkillBuffers.length; i++) {
+		// Buffer fuseBuff = fuseSkillBuffers[i];
+		// if (fuseBuff != null && fuseBuff.getExeWay() == exeWay) {
+		// buffers.add(fuseBuff);
+		// }
+		// }
 		return buffers;
 	}
 
@@ -295,12 +294,12 @@ public class Player extends ActiveLiving {
 		if (weaponBuffer != null && weaponBuffer.getType() == type) {
 			toal.add(weaponBuffer);
 		}
-		for (int i = 0; i < fuseSkillBuffers.length; i++) {
-			Buffer fuseBuff = fuseSkillBuffers[i];
-			if (fuseBuff != null && fuseBuff.getType() == type) {
-				toal.add(fuseBuff);
-			}
-		}
+		// for (int i = 0; i < fuseSkillBuffers.length; i++) {
+		// Buffer fuseBuff = fuseSkillBuffers[i];
+		// if (fuseBuff != null && fuseBuff.getType() == type) {
+		// toal.add(fuseBuff);
+		// }
+		// }
 		return toal;
 
 	}
@@ -376,6 +375,11 @@ public class Player extends ActiveLiving {
 		}
 	}
 
+	/** 获取武器buff */
+	public Buffer getFuseBuffer(int index) {
+		return fuseSkillBuffers[index];
+	}
+
 	/** 魂幡buffer */
 	public void addWeaponBuffer(int weaponBufId) {
 		Buffer older = this.getWeaponBuffer();
@@ -408,27 +412,27 @@ public class Player extends ActiveLiving {
 		return super.getBattlePlayerInfoMsg();
 	}
 
-	public void clearWorkBuffer() {
-		List<Buffer> allbuffer = new ArrayList<>();
-		synchronized (workBuffers) {
-			for (Entry<Integer, List<Buffer>> entry : workBuffers.entrySet()) {
-				List<Buffer> wayBufs = entry.getValue();
-				allbuffer.addAll(wayBufs);
-				wayBufs.clear();
-			}
-			workBuffers.clear();
-		}
-
-		for (Buffer buff : allbuffer) {
-			buff.stop();
-			BufferMsg.Builder bmsg = BufferMsg.newBuilder();
-			bmsg.setBufferId(buff.getBufferId());
-			bmsg.setOption(4);// 4 删除
-			bmsg.setSourceId(buff.getSource().getId());
-			bmsg.setTargetId(buff.getTarget().getId());
-			sendBufferChange(bmsg.build());
-		}
-	}
+	// public void clearWorkBuffer() {
+	// List<Buffer> allbuffer = new ArrayList<>();
+	// synchronized (workBuffers) {
+	// for (Entry<Integer, List<Buffer>> entry : workBuffers.entrySet()) {
+	// List<Buffer> wayBufs = entry.getValue();
+	// allbuffer.addAll(wayBufs);
+	// wayBufs.clear();
+	// }
+	// workBuffers.clear();
+	// }
+	//
+	// for (Buffer buff : allbuffer) {
+	// buff.stop();
+	// BufferMsg.Builder bmsg = BufferMsg.newBuilder();
+	// bmsg.setBufferId(buff.getBufferId());
+	// bmsg.setOption(4);// 4 删除
+	// bmsg.setSourceId(buff.getSource().getId());
+	// bmsg.setTargetId(buff.getTarget().getId());
+	// sendBufferChange(bmsg.build());
+	// }
+	// }
 
 	public void addCampaignBuff(Buffer buff) {
 		campaignBuffers.add(buff);

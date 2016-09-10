@@ -38,8 +38,8 @@ public class PlayerAttUpdateCmd extends AbstractCommand {
 		for (PropertyMsg property : attList) {
 			// 升级直接满血
 			if (property.getType() == EnumAttr.Level.getValue()) {
-				pArmy.getPlayer().addCurBlood(Integer.MAX_VALUE, DamageEffecterType.BLOOD);
-				pArmy.getPlayer().addCurSoul(Integer.MAX_VALUE, DamageEffecterType.SOUL);
+				pArmy.getPlayer().addCurBlood(Integer.MAX_VALUE, DamageEffecterType.BLOOD, 0, 0);
+				pArmy.getPlayer().addCurSoul(Integer.MAX_VALUE, DamageEffecterType.SOUL, 0, 0);
 				break;
 			}
 			if (property.getType() == EnumAttr.Weapon.getValue() || property.getType() == EnumAttr.WEAPON_AWAKEN.getValue()) {

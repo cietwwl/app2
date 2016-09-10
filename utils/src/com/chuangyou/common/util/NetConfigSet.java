@@ -25,6 +25,11 @@ public class NetConfigSet {
 	private static Map<Integer, NetConfigXml>	logDBMap		= new HashMap<Integer, NetConfigXml>();
 	private static Map<Integer, NetConfigXml>	adminMap		= new HashMap<Integer, NetConfigXml>();
 
+	// 服务器ID
+	public static int							server_id		= 9999;
+	// 默认值
+	public static String						server_name		= "DEFAULT";
+
 	public static boolean init() {
 		if (!initGlobal()) {
 			return false;
@@ -63,11 +68,42 @@ public class NetConfigSet {
 			Element admin_server = root.element("admin_server");
 			init(admin_server, "admin", adminMap);
 
-			return true;
+			Element server_info = root.element("server_info");
+			if (server_info != null) {
+				return initServerInfo(server_info);
+			} else {
+				Log.error("-------net_config.xml--文件--没有配置服务器ID或服务器名-----------");
+				return false;
+			}
 		} catch (Exception e) {
 			Log.error("init global config file fialed., server start failed.", e);
 			return false;
 		}
+	}
+
+	private static boolean initServerInfo(Element server_info) {
+		if (server_info != null) {
+			Iterator<?> itr = server_info.elementIterator("info");
+			while (itr.hasNext()) {
+				Element element = (Element) itr.next();
+				String id = element.attributeValue("id");
+				if (id != null && !id.equals("")) {
+					server_id = Integer.valueOf(id);
+				} else {
+					Log.error("-------net_config.xml--文件--没有配置服务器ID或服务器名-----------");
+					return false;
+				}
+				String name = element.attributeValue("name");
+				if (name != null && !name.equals("")) {
+					server_name = name;
+				} else {
+					Log.error("-------net_config.xml--文件--没有配置服务器ID或服务器名-----------");
+					return false;
+				}
+
+			}
+		}
+		return true;
 	}
 
 	private static void init(Element root, String nodeName, Map<Integer, NetConfigXml> map) {

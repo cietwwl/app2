@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
-
 import com.chuangyou.common.protobuf.pb.PlayerKillMonsterProto.PlayerKillMonsterMsg;
-import com.chuangyou.common.protobuf.pb.battle.BufferMsgProto.BufferMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
 import com.chuangyou.common.util.Log;
@@ -44,7 +41,6 @@ import com.chuangyou.xianni.role.template.AiConfigTemplateMgr;
 import com.chuangyou.xianni.script.IScript;
 import com.chuangyou.xianni.script.manager.ScriptManager;
 import com.chuangyou.xianni.warfield.field.Field;
-import com.chuangyou.xianni.warfield.helper.selectors.MonsterSelectPlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.spawn.MonsterSpawnNode;
 import com.chuangyou.xianni.world.ArmyProxy;
@@ -102,8 +98,9 @@ public class Monster extends ActiveLiving {
 		this.node = node;
 
 		// enDelayQueue(new MonsterAI(this));
-		// enDelayQueue(new UpdatePositionAction(this));new PlayerSelectorHelper(this.activeLiving);
-		enDelayQueue(new MonsterPollingAction(this, new MonsterAI(this), new UpdatePositionAction(this,new PlayerSelectorHelper(this))));
+		// enDelayQueue(new UpdatePositionAction(this));new
+		// PlayerSelectorHelper(this.activeLiving);
+		enDelayQueue(new MonsterPollingAction(this, new MonsterAI(this), new UpdatePositionAction(this, new PlayerSelectorHelper(this))));
 		// setCurSkillID(1001);
 	}
 
@@ -318,27 +315,27 @@ public class Monster extends ActiveLiving {
 		return getDefaultAttackTarget();
 	}
 
-	public void clearWorkBuffer() {
-		List<Buffer> allbuffer = new ArrayList<>();
-		synchronized (workBuffers) {
-			for (Entry<Integer, List<Buffer>> entry : workBuffers.entrySet()) {
-				List<Buffer> wayBufs = entry.getValue();
-				allbuffer.addAll(wayBufs);
-				wayBufs.clear();
-			}
-			workBuffers.clear();
-		}
-
-		for (Buffer buff : allbuffer) {
-			buff.stop();
-			BufferMsg.Builder bmsg = BufferMsg.newBuilder();
-			bmsg.setBufferId(buff.getBufferId());
-			bmsg.setOption(4);// 4 删除
-			bmsg.setSourceId(buff.getSource().getId());
-			bmsg.setTargetId(buff.getTarget().getId());
-			sendBufferChange(bmsg.build());
-		}
-	}
+	// public void clearWorkBuffer() {
+	// List<Buffer> allbuffer = new ArrayList<>();
+	// synchronized (workBuffers) {
+	// for (Entry<Integer, List<Buffer>> entry : workBuffers.entrySet()) {
+	// List<Buffer> wayBufs = entry.getValue();
+	// allbuffer.addAll(wayBufs);
+	// wayBufs.clear();
+	// }
+	// workBuffers.clear();
+	// }
+	//
+	// for (Buffer buff : allbuffer) {
+	// buff.stop();
+	// BufferMsg.Builder bmsg = BufferMsg.newBuilder();
+	// bmsg.setBufferId(buff.getBufferId());
+	// bmsg.setOption(4);// 4 删除
+	// bmsg.setSourceId(buff.getSource().getId());
+	// bmsg.setTargetId(buff.getTarget().getId());
+	// sendBufferChange(bmsg.build());
+	// }
+	// }
 
 	/**
 	 * 获取默认攻击目标

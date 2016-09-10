@@ -12,7 +12,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import com.chuangyou.common.protobuf.pb.PlayerAttSnapProto.PlayerAttSnapMsg;
 import com.chuangyou.common.protobuf.pb.PlayerKillMonsterProto.PlayerKillMonsterMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
@@ -152,7 +151,7 @@ public class Living extends AbstractActionQueue {
 	protected int								waterDefence;						// 水抗
 	protected int								fireDefence;						// 火抗
 	protected int								earthDefence;						// 土抗
-	protected int								speed			= 6;				// 移动速度
+	protected int								speed			= 600;				// 移动速度
 	protected int								pkVal;								// pk
 																					// 值
 	protected int								battleMode;							// 攻击模式
@@ -620,7 +619,7 @@ public class Living extends AbstractActionQueue {
 						mbMsg.setType(EnumAttr.MAX_BLOOD.getValue());
 						mbMsg.setTotalPoint(newMaxB);
 						properties.add(mbMsg.build());
-						addCurBlood((int) add, DamageEffecterType.BLOOD);
+						addCurBlood((int) add, DamageEffecterType.BLOOD, 0, 0);
 					}
 				}
 				// 设置最大元魂
@@ -634,7 +633,7 @@ public class Living extends AbstractActionQueue {
 						msMsg.setType(EnumAttr.MAX_SOUL.getValue());
 						msMsg.setTotalPoint(newMaxS);
 						properties.add(msMsg.build());
-						addCurSoul((int) add, DamageEffecterType.SOUL);
+						addCurSoul((int) add, DamageEffecterType.SOUL, 0, 0);
 					}
 				}
 			}
@@ -1322,7 +1321,16 @@ public class Living extends AbstractActionQueue {
 	}
 
 	public void clearWorkBuffer() {
+		List<Buffer> allbuffers = imageBuffs();
+		for (Buffer buff : allbuffers) {
+			buff.setState(BufferState.DEAD_REMOVE);
+			buff.dispose();
+		}
 		workBuffers.clear();
+		typeBuffers.clear();
+		allBuffers.clear();
+		livingStatus.clear();
+		initState();
 	}
 
 	public boolean isFighting() {
@@ -1497,6 +1505,7 @@ public class Living extends AbstractActionQueue {
 	/** buffer替换 */
 	public void overlay(Buffer older, Buffer newer) {
 		if (older.getState() == BufferState.INVALID) {
+			removeBuffer(older);
 			simpleAdd(newer);
 			return;
 		}
@@ -1558,6 +1567,7 @@ public class Living extends AbstractActionQueue {
 		for (LivingState state : affectedStates) {
 			AtomicInteger value = livingStatus.get(state);
 			value.incrementAndGet();
+			notityState(state);
 		}
 	}
 
@@ -1692,7 +1702,7 @@ public class Living extends AbstractActionQueue {
 		}
 	}
 
-	public void addCurBlood(int addValue, int type) {
+	public void addCurBlood(int addValue, int type, int fromType, long fromId) {
 		List<Damage> damages = new ArrayList<>();
 
 		Damage blood = new Damage(this, this);
@@ -1700,6 +1710,8 @@ public class Living extends AbstractActionQueue {
 		blood.setDamageValue(-addValue);
 		blood.setSource(this);
 		blood.setCalcType(type);
+		blood.setFromType(fromType);
+		blood.setFromId(fromId);
 		damages.add(blood);
 		takeDamage(blood);
 
@@ -1722,7 +1734,7 @@ public class Living extends AbstractActionQueue {
 		}
 	}
 
-	public void addCurSoul(int addValue, int type) {
+	public void addCurSoul(int addValue, int type, int fromType, long fromId) {
 		List<Damage> damages = new ArrayList<>();
 
 		Damage soul = new Damage(this, this);
@@ -1730,6 +1742,8 @@ public class Living extends AbstractActionQueue {
 		soul.setDamageValue(-addValue);
 		soul.setCalcType(type);
 		soul.setSource(this);
+		soul.setFromType(fromType);
+		soul.setFromId(fromId);
 		damages.add(soul);
 		takeDamage(soul);
 
@@ -2233,4 +2247,7 @@ public class Living extends AbstractActionQueue {
 		this.soulExp = soulExp;
 	}
 
+	protected void notityState(LivingState state) {
+
+	}
 }

@@ -19,7 +19,7 @@ public class AttackConvertSoulAttackBuffer extends Buffer {
 	@Override
 	protected void exec(AttackOrder attackOrder, Damage beDamage1, Damage beDamage2) {
 		int attack = source.getInitValue(EnumAttr.ATTACK);
-		changeValue = attack * bufferInfo.getParam1() / 100;
+		changeValue = attack * bufferInfo.getParam1() / 10000;
 		source.refreshProperties(EnumAttr.ATTACK.getValue());
 		source.refreshProperties(EnumAttr.SOUL_ATTACK.getValue());
 	}

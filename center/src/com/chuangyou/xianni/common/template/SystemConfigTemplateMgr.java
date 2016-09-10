@@ -1,7 +1,6 @@
 package com.chuangyou.xianni.common.template;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.chuangyou.common.util.Log;
@@ -64,20 +63,20 @@ public class SystemConfigTemplateMgr {
 		return cfg.getValue();
 	}
 
-	public static int getIdBuiderWay() {
-		SystemConfig cfg = systemTemps.get("id.builder.way");
-		if (cfg == null) {
-			Log.error("getIntValue is null ,key : id.builder.way");
-			return 0;
-		}
-		return cfg.getValue();
-	}
+//	public static int getIdBuiderWay() {
+//		SystemConfig cfg = systemTemps.get("id.builder.way");
+//		if (cfg == null) {
+//			Log.error("getIntValue is null ,key : id.builder.way");
+//			return 0;
+//		}
+//		return cfg.getValue();
+//	}
 
 	public static int getSpaceGiftPrice() {
 		SystemConfig cfg = systemTemps.get("space.gift.perPrice");
 		if (cfg == null) {
 			Log.error("getIntValue is null ,key : space.gift.perPrice");
-			return 0;
+			return 10000;
 		}
 		return cfg.getValue();
 	}
@@ -86,7 +85,7 @@ public class SystemConfigTemplateMgr {
 		SystemConfig cfg = systemTemps.get("space.addCollection.perPrice");
 		if (cfg == null) {
 			Log.error("getIntValue is null ,key : space.addCollection.perPrice");
-			return 0;
+			return 10000;
 		}
 		return cfg.getValue();
 	}

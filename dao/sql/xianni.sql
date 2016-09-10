@@ -54,3 +54,15 @@ CREATE TABLE `tb_u_item_info` (
   PRIMARY KEY (`id`),
   KEY `playerId` (`playerId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户物品表';
+
+CREATE TABLE `tb_u_campaign_info` (
+  `id` int(11) NOT NULL COMMENT '序列化自增id',
+  `playerId` bigint(20) NOT NULL COMMENT '玩家ID',
+  `campaignId` int(11) NOT NULL COMMENT '副本ID',
+  `statu` int(11) DEFAULT '0' COMMENT '完成状态',
+  `assess` int(11) DEFAULT '0' COMMENT '最好成绩',
+  `updateTime` datetime DEFAULT '2016-01-01 00:00:00' COMMENT '完成时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户副本完成进度表';
+
+

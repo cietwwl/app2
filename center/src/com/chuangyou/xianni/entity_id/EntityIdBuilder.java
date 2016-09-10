@@ -2,8 +2,7 @@ package com.chuangyou.xianni.entity_id;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-
-import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
+import com.chuangyou.common.util.NetConfigSet;
 import com.chuangyou.xianni.sql.dao.DBManager;
 
 public class EntityIdBuilder {
@@ -15,8 +14,17 @@ public class EntityIdBuilder {
 	private static AtomicInteger	SPACE_MSG_ID;
 
 	public static boolean init() {
-		USER_ID = new AtomicLong(DBManager.getUserDao().getMaxId());
-		PLAYER_ID = new AtomicLong(DBManager.getPlayerInfoDao().getMaxPlayerId());
+		long minId = NetConfigSet.server_id * 1000l * 10000;
+		long maxUserId = DBManager.getUserDao().getMaxId();
+		if (maxUserId < minId) {
+			maxUserId = minId;
+		}
+		USER_ID = new AtomicLong(maxUserId);
+		long maxPlayerId = DBManager.getPlayerInfoDao().getMaxPlayerId();
+		if (maxPlayerId < minId) {
+			maxPlayerId = minId;
+		}
+		PLAYER_ID = new AtomicLong(maxPlayerId);
 		ITEM_INFO_ID = new AtomicLong(DBManager.getItemInfoDao().getMaxItemId());
 		CAMPAIGN_RECORD_ID = new AtomicInteger(DBManager.getCampaignRecordInfoDao().getMaxId());
 		TEAM_ID = new AtomicInteger(1);
@@ -26,19 +34,12 @@ public class EntityIdBuilder {
 
 	public static long userIdBuilder() {
 		synchronized (USER_ID) {
-			if (SystemConfigTemplateMgr.getIdBuiderWay() != 0) {
-				return DBManager.getUserDao().getMaxId();
-			}
 			return USER_ID.getAndIncrement();
 		}
 	}
 
 	public static long playerIdBuilder() {
 		synchronized (PLAYER_ID) {
-			
-			if (SystemConfigTemplateMgr.getIdBuiderWay() != 0) {
-				return DBManager.getPlayerInfoDao().getMaxPlayerId();
-			}
 			return PLAYER_ID.getAndIncrement();
 		}
 	}

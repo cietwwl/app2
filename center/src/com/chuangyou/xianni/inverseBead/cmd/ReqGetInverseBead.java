@@ -26,9 +26,9 @@ public class ReqGetInverseBead extends AbstractCommand {
 	@Override
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
 		Map<String, PlayerInverseBead> playerInverseBeadList = player.getInverseBeadInventory().getInverseBead();
-		InverseBeadLoopAction action = new InverseBeadLoopAction(player, player.getActionQueue(), InverseBeadInventory.getBeadRefreshIdList(), true);
-		//player.getActionQueue().enqueue(action);
-		action.execute();
+//		InverseBeadLoopAction action = new InverseBeadLoopAction(player, player.getActionQueue(), InverseBeadInventory.getBeadRefreshIdList(), true);
+//		//player.getActionQueue().enqueue(action);
+//		action.execute();
 		
 		ResGetInverseBeadMsg.Builder msg = ResGetInverseBeadMsg.newBuilder();
 		for (PlayerInverseBead inverseBead : playerInverseBeadList.values()) {

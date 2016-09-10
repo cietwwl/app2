@@ -106,9 +106,9 @@ public class GamePlayer extends AbstractEvent {
 	 * 魂幡
 	 */
 	private SoulInventory				soulInventory;
-	
+
 	/** 关系数据 */
-	private RelationInventory relationInventory;
+	private RelationInventory			relationInventory;
 
 	private Channel						channel;					// 服务器持有连接
 
@@ -178,8 +178,8 @@ public class GamePlayer extends AbstractEvent {
 		if (soulInventory != null) {
 			soulInventory.saveToDatabase();
 		}
-		
-		if(relationInventory != null){
+
+		if (relationInventory != null) {
 			relationInventory.saveToDatabase();
 		}
 
@@ -271,10 +271,10 @@ public class GamePlayer extends AbstractEvent {
 			return false;
 		}
 		relationInventory = new RelationInventory(this);
-		if(!initData(relationInventory.loadFromDataBase(), "社交关系数据")){
+		if (!initData(relationInventory.loadFromDataBase(), "社交关系数据")) {
 			return false;
 		}
-		//创建时会计算所有属性，所以要在最后面加载
+		// 创建时会计算所有属性，所以要在最后面加载
 		armyInventory = new ArmyInventory(this);
 		if (!initData(armyInventory.loadFromDataBase(), "用户部队")) {
 			return false;
@@ -339,7 +339,7 @@ public class GamePlayer extends AbstractEvent {
 			soulInventory.unloadData();
 			soulInventory = null;
 		}
-		if(relationInventory != null){
+		if (relationInventory != null) {
 			relationInventory.unloadData();
 			relationInventory = null;
 		}
@@ -464,16 +464,16 @@ public class GamePlayer extends AbstractEvent {
 
 	public void sendPbMessage(PBMessage message) {
 		if (this.getPlayerState() == PlayerState.OFFLINE) {
-			Log.error("send msg but player is not onLine" + message.getCode());
+			Log.error("send msg but player is not onLine, code : " + message.getCode() + " playerId :" + getPlayerId());
 			return;
 		}
 
 		if (channel == null || channel.isActive() == false) {
-			Log.error("send msg but player is not onLine1" + message.getCode());
+			Log.error("send msg but player is not onLine1,code :" + message.getCode() + " playerId :" + getPlayerId());
 			return;
 		}
 		if (message == null) {
-			Log.error("send msg but player is not onLine2");
+			Log.error("send msg but player is not onLine2 , playerId :" + getPlayerId());
 			return;
 		}
 		message.setPlayerId(getPlayerId());

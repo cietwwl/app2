@@ -5,6 +5,7 @@ import com.chuangyou.common.protobuf.pb.pet.PetSkillUpRespProto.PetSkillUpRespMs
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.pet.PetSkill;
 import com.chuangyou.xianni.entity.pet.PetSkillInfoCfg;
 import com.chuangyou.xianni.entity.pet.PetSkillLevelCfg;
@@ -25,34 +26,36 @@ public class PetSkillUpCmd extends AbstractCommand {
 		PetSkillUpReqMsg req = PetSkillUpReqMsg.parseFrom(packet.getBytes());
 		int skillId = req.getSkillId();
 		PetSkillInfoCfg info = PetTemplateMgr.getSkillInfoTemps().get(skillId);
-		if (info==null) {
+		if (info == null) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Pet_Skill_NotFound, packet.getCode());
 			return;
 		}
 		PetSkill skill = player.getPetInventory().getPetSkill(skillId);
-		if (skill==null) {
+		if (skill == null) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Pet_Skill_NotFound, packet.getCode());
 			return;
 		}
-		if (skill.getLevel()>=PetAttManager.PET_SKILL_LV_MAX) {
+		if (skill.getLevel() >= PetAttManager.PET_SKILL_LV_MAX) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Pet_Skill_LvMax, packet.getCode());
 			return;
 		}
-		//检测消耗
+		// 检测消耗
 		int key = PetAttManager.getPetSkillKey(skill);
 		PetSkillLevelCfg lvInfo = PetTemplateMgr.getSkillLevelTemps().get(key);
 		int moneyNum = lvInfo.getLvupGold();
 
-		if(player.getBasePlayer().getPlayerInfo().getMoney() < moneyNum){
+		if (player.getBasePlayer().getPlayerInfo().getMoney() < moneyNum) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Money_UnEnough, packet.getCode(), "灵石不足");
 		}
-        //扣除消耗
-		if(!player.getBasePlayer().consumeMoney(moneyNum)) return;
-		//升级
-		skill.setLevel(skill.getLevel()+1);
-		//更新前后台
+		// 扣除消耗
+		if (!player.getBasePlayer().consumeMoney(moneyNum, ItemRemoveType.PET_SKILL_UP)) {
+			return;
+		}
+		// 升级
+		skill.setLevel(skill.getLevel() + 1);
+		// 更新前后台
 		PetAttManager.updateSkill(player, skill);
-		
+
 		PetSkillUpRespMsg.Builder msg = PetSkillUpRespMsg.newBuilder();
 		PBMessage p = MessageUtil.buildMessage(Protocol.U_PET_SKILL_UP, msg);
 		player.sendPbMessage(p);

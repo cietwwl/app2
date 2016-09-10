@@ -52,6 +52,11 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 			Log.error("skill is null,playerId : " + player.getArmyId() + "  skillActionId:" + skillActionId);
 			return;
 		}
+		// 技能是否在CD中
+		if (!skill.canUse()) {
+			Log.error("client req attack ,but the skill is not in cd,skillId:" + skillActionId);
+			return;
+		}
 
 		Field field = FieldMgr.getIns().getField(army.getFieldId());
 		if (field == null) {

@@ -16,6 +16,10 @@ import com.chuangyou.xianni.player.GamePlayer;
 public class KillMonsterListener implements ObjectListener {
 
 	private GamePlayer player;
+	/**
+	 *杀怪的等级范围
+	 */
+	final int MONSTER_LV_RANGE = 5;
 	
 	public KillMonsterListener(GamePlayer player) {
 		this.player = player;
@@ -27,8 +31,8 @@ public class KillMonsterListener implements ObjectListener {
 		int monsterId = (int) event.getObject();
 		MonsterInfo info = MonsterInfoTemplateMgr.get(monsterId);
 		if(info==null)return;
-		if(player.getBasePlayer().getPlayerInfo().getLevel()>info.getLevel()+5)return;
-		if(player.getBasePlayer().getPlayerInfo().getLevel()<info.getLevel()-5)return;
+		if(player.getBasePlayer().getPlayerInfo().getLevel()>info.getLevel()+MONSTER_LV_RANGE)return;
+		if(player.getBasePlayer().getPlayerInfo().getLevel()<info.getLevel()-MONSTER_LV_RANGE)return;
 		Date now = new Date();
 		if(now.getTime() - player.getSoulInventory().getSoulMake().getStartTime().getTime()<
 				player.getSoulInventory().getSoulMake().getTotalTime()*1000){

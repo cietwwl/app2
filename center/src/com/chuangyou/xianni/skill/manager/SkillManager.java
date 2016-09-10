@@ -42,12 +42,15 @@ public class SkillManager {
 	 * 英雄技能升级
 	 * 
 	 * @param player
-	 * @param skillId 要升级的技能id
+	 * @param skillId
+	 *            要升级的技能id
 	 * @return
 	 */
 	public static boolean upSkill(GamePlayer player, int skillId, PBMessage packet) {
 		// System.out.println(
-		// "Repair: " + player.getBasePlayer().getPlayerInfo().getRepair() + " playerId: " + player.getBasePlayer().getPlayerInfo().getPlayerId() + " skillId: " + skillId);
+		// "Repair: " + player.getBasePlayer().getPlayerInfo().getRepair() + "
+		// playerId: " + player.getBasePlayer().getPlayerInfo().getPlayerId() +
+		// " skillId: " + skillId);
 		SkillTempateInfo skillInfo = SkillTempMgr.getSkillTemp(skillId);// 要学习的技能配置
 		if (skillInfo == null) { // 已经至最高级
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.SKILL_UP_ERROR5, packet.getCode());
@@ -90,7 +93,8 @@ public class SkillManager {
 				int lv = skill.getLevel();// 前置技能等级(需要的等级)
 				int skillLV = getSkillTypeLv(player, masterType, sonType, grandsonType);
 				if (skillLV < lv) {
-					// System.out.println("前置技能id：" + id + " 不满足 类型 ：" + masterType + " " + sonType + " " + grandsonType);
+					// System.out.println("前置技能id：" + id + " 不满足 类型 ：" +
+					// masterType + " " + sonType + " " + grandsonType);
 					ErrorMsgUtil.sendErrorMsg(player, ErrorCode.SKILL_UP_ERROR3, packet.getCode());
 					return false;
 				}
@@ -125,10 +129,10 @@ public class SkillManager {
 
 		// 扣灵石
 		if (needStone > 0)
-			player.getBasePlayer().consumeMoney(needStone);
+			player.getBasePlayer().consumeMoney(needStone, ItemRemoveType.UP_SKILL);
 		// 扣仙玉
 		if (needJade > 0)
-			player.getBasePlayer().consumeCash(needJade);
+			player.getBasePlayer().consumeCash(needJade, ItemRemoveType.UP_SKILL);
 		// 扣修为
 		if (needRepair > 0)
 			player.getBasePlayer().consumeRepair(needRepair);
@@ -222,7 +226,8 @@ public class SkillManager {
 				String key = entry.getKey();
 				if (map2.get(key) == null) {
 					falseCount++;
-					// System.out.println("key: " + key + " map2.get(key): " + map2.get(key));
+					// System.out.println("key: " + key + " map2.get(key): " +
+					// map2.get(key));
 					continue;
 				}
 				SkillTempateInfo tempinfo = SkillTempMgr.getSkillTemp(map2.get(key));
@@ -237,7 +242,8 @@ public class SkillManager {
 				} else {
 					falseCount++;
 				}
-				// System.out.println("skillId: " + map2.get(key) + " nextSkillId:" + nextSkillId + " res:" + res);
+				// System.out.println("skillId: " + map2.get(key) + "
+				// nextSkillId:" + nextSkillId + " res:" + res);
 				studySkillIds.add(nextSkillId);
 			}
 			if (infoIds.size() == falseCount) {
@@ -269,7 +275,8 @@ public class SkillManager {
 	/**
 	 * 
 	 * @param player
-	 * @param skillId 要升到的等级
+	 * @param skillId
+	 *            要升到的等级
 	 * @param useStone
 	 * @param useRepair
 	 * @param useJade
@@ -347,12 +354,12 @@ public class SkillManager {
 
 		// 扣灵石
 		if (needStone > 0) {
-			player.getBasePlayer().consumeMoney(needStone);
+			player.getBasePlayer().consumeMoney(needStone, ItemRemoveType.UP_SKILL);
 			useStone += needStone;
 		}
 		// 扣仙玉
 		if (needJade > 0) {
-			player.getBasePlayer().consumeCash(needJade);
+			player.getBasePlayer().consumeCash(needJade, ItemRemoveType.UP_SKILL);
 			useJade += needJade;
 		}
 		// 扣修为
@@ -399,9 +406,11 @@ public class SkillManager {
 	// map.put("c", 1);
 	// map.put("b", 1);
 	// map.put("a", 3);
-	// List<Map.Entry<String, Integer>> infoIds = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
+	// List<Map.Entry<String, Integer>> infoIds = new
+	// ArrayList<Map.Entry<String, Integer>>(map.entrySet());
 	// Collections.sort(infoIds, new Comparator<Map.Entry<String, Integer>>() {
-	// public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+	// public int compare(Map.Entry<String, Integer> o1, Map.Entry<String,
+	// Integer> o2) {
 	// return (o1.getValue() - o2.getValue());
 	// }
 	// });
@@ -416,14 +425,17 @@ public class SkillManager {
 	 * 升技能阶段
 	 * 
 	 * @param player
-	 * @param stage 要升的技能阶段id
+	 * @param stage
+	 *            要升的技能阶段id
 	 * @return
 	 */
 	public static boolean UpSkillStage(GamePlayer player, int stage, PBMessage packet) {
 		// 技能阶段处理
 		int skillStage = player.getBasePlayer().getPlayerInfo().getSkillStage() + 1;
 		boolean isOpen = checkSkillStage(player, skillStage);
-		// System.out.println("playerId:" + player.getBasePlayer().getPlayerInfo().getPlayerId() + " skillStage:" + skillStage + " res:" + isOpen);
+		// System.out.println("playerId:" +
+		// player.getBasePlayer().getPlayerInfo().getPlayerId() + " skillStage:"
+		// + skillStage + " res:" + isOpen);
 		if (isOpen) {
 			player.getBasePlayer().getPlayerInfo().setSkillStage(skillStage);
 			if (player.getSkillInventory() != null) {
@@ -475,7 +487,8 @@ public class SkillManager {
 	/**
 	 * 检测技能阶段是否开启了
 	 * 
-	 * @param stageLv 要检测的节能阶段
+	 * @param stageLv
+	 *            要检测的节能阶段
 	 * @return
 	 */
 	public static boolean checkSkillStage(GamePlayer player, int stageLv) {
@@ -568,93 +581,93 @@ public class SkillManager {
 	/** 属性赋值 */
 	public static SkillBaseProperty setPro(SkillBaseProperty proData, int type, int v) {
 		switch (type) {
-		case Living.SOUL:
-			proData.addSoul(v);
-			break;
-		case Living.BLOOD:
-			proData.addBlood(v);
-			break;
-		case Living.ATTACK:
-			proData.addAttack(v);
-			break;
-		case Living.DEFENCE:
-			proData.addDefence(v);
-			break;
-		case Living.SOUL_ATTACK:
-			proData.addSoulAttack(v);
-			break;
-		case Living.SOUL_DEFENCE:
-			proData.addSoulDefence(v);
-			break;
-		case Living.ACCURATE:
-			proData.addAccurate(v);
-			break;
-		case Living.DODGE:
-			proData.addDodge(v);
-			break;
-		case Living.CRIT:
-			proData.addCrit(v);
-			break;
-		case Living.CRIT_DEFENCE:
-			proData.addCritDefence(v);
-			break;
-		case Living.CRIT_ADDTION:
-			proData.addCritAddtion(v);
-			break;
-		case Living.CRIT_CUT:
-			proData.addCritCut(v);
-			break;
-		case Living.BLOOD_ATTACK_ADDTION:
-			proData.addBloodAttackAddtion(v);
-			break;
-		case Living.BLOOD_ATTACK_CUT:
-			proData.addBloodAttackCut(v);
-			break;
-		case Living.SOUL_ATTACK_ADDTION:
-			proData.addSoulAttackAddtion(v);
-			break;
-		case Living.SOUL_ATTACK_CUT:
-			proData.addSoulAttackCut(v);
-			break;
-		case Living.REGAIN_SOUL:
-			proData.addRegainSoul(v);
-			break;
-		case Living.REGAIN_BLOOD:
-			proData.addRegainBlood(v);
-			break;
-		case Living.METAL:
-			proData.addMetal(v);
-			break;
-		case Living.WOOD:
-			proData.addWood(v);
-			break;
-		case Living.WATER:
-			proData.addWater(v);
-			break;
-		case Living.FIRE:
-			proData.addFire(v);
-			break;
-		case Living.EARTH:
-			proData.addEarth(v);
-			break;
-		case Living.METAL_DEFENCE:
-			proData.addMetalDefence(v);
-			break;
-		case Living.WOOD_DEFENCE:
-			proData.addWoodDefence(v);
-			break;
-		case Living.WATER_DEFENCE:
-			proData.addWaterDefence(v);
-			break;
-		case Living.FIRE_DEFENCE:
-			proData.addFireDefence(v);
-			break;
-		case Living.EARTH_DEFENCE:
-			proData.addEarthDefence(v);
-			break;
-		case Living.SPEED:
-			proData.addSpeed(v);
-			break;
+			case Living.SOUL:
+				proData.addSoul(v);
+				break;
+			case Living.BLOOD:
+				proData.addBlood(v);
+				break;
+			case Living.ATTACK:
+				proData.addAttack(v);
+				break;
+			case Living.DEFENCE:
+				proData.addDefence(v);
+				break;
+			case Living.SOUL_ATTACK:
+				proData.addSoulAttack(v);
+				break;
+			case Living.SOUL_DEFENCE:
+				proData.addSoulDefence(v);
+				break;
+			case Living.ACCURATE:
+				proData.addAccurate(v);
+				break;
+			case Living.DODGE:
+				proData.addDodge(v);
+				break;
+			case Living.CRIT:
+				proData.addCrit(v);
+				break;
+			case Living.CRIT_DEFENCE:
+				proData.addCritDefence(v);
+				break;
+			case Living.CRIT_ADDTION:
+				proData.addCritAddtion(v);
+				break;
+			case Living.CRIT_CUT:
+				proData.addCritCut(v);
+				break;
+			case Living.BLOOD_ATTACK_ADDTION:
+				proData.addBloodAttackAddtion(v);
+				break;
+			case Living.BLOOD_ATTACK_CUT:
+				proData.addBloodAttackCut(v);
+				break;
+			case Living.SOUL_ATTACK_ADDTION:
+				proData.addSoulAttackAddtion(v);
+				break;
+			case Living.SOUL_ATTACK_CUT:
+				proData.addSoulAttackCut(v);
+				break;
+			case Living.REGAIN_SOUL:
+				proData.addRegainSoul(v);
+				break;
+			case Living.REGAIN_BLOOD:
+				proData.addRegainBlood(v);
+				break;
+			case Living.METAL:
+				proData.addMetal(v);
+				break;
+			case Living.WOOD:
+				proData.addWood(v);
+				break;
+			case Living.WATER:
+				proData.addWater(v);
+				break;
+			case Living.FIRE:
+				proData.addFire(v);
+				break;
+			case Living.EARTH:
+				proData.addEarth(v);
+				break;
+			case Living.METAL_DEFENCE:
+				proData.addMetalDefence(v);
+				break;
+			case Living.WOOD_DEFENCE:
+				proData.addWoodDefence(v);
+				break;
+			case Living.WATER_DEFENCE:
+				proData.addWaterDefence(v);
+				break;
+			case Living.FIRE_DEFENCE:
+				proData.addFireDefence(v);
+				break;
+			case Living.EARTH_DEFENCE:
+				proData.addEarthDefence(v);
+				break;
+			case Living.SPEED:
+				proData.addSpeed(v);
+				break;
 		}
 		return proData;
 	}

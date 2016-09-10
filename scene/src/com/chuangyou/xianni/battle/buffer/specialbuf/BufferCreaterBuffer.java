@@ -5,7 +5,7 @@ import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.battle.AttackOrder;
 import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.buffer.BufferFactory;
-import com.chuangyou.xianni.battle.buffer.TargetType;
+import com.chuangyou.xianni.battle.buffer.BufferTargetType;
 import com.chuangyou.xianni.battle.buffer.BufferType.FromType;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
@@ -40,12 +40,12 @@ public class BufferCreaterBuffer extends Buffer {
 			Log.error("cannot find buffer temp ,tempId : " + bufferId);
 			return;
 		}
-		if (temp.getTargetType() == TargetType.SOURCE) {
+		if (temp.getTargetType() == BufferTargetType.SOURCE) {
 			Buffer buff = BufferFactory.createBuffer(source, source, sbinfo);
 			source.addBuffer(buff);
 		}
 
-		if (temp.getTargetType() == TargetType.SKILL_TARGET) {
+		if (temp.getTargetType() == BufferTargetType.SKILL_TARGET) {
 			List<Living> targets = attackOrder.getTargets();
 			if (targets == null) {
 				return;

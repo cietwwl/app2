@@ -8,9 +8,11 @@ import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.ai.proxy.SnareAI;
 import com.chuangyou.xianni.battle.OrderFactory;
+import com.chuangyou.xianni.battle.action.AddDelayBuffAction;
 import com.chuangyou.xianni.battle.action.SnarePollingAction;
 import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.buffer.BufferFactory;
+import com.chuangyou.xianni.battle.buffer.BufferTargetType;
 import com.chuangyou.xianni.battle.damage.BloodDamageCalculator;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.damage.SoulDamageCalculator;
@@ -97,18 +99,30 @@ public class Snare extends ActiveLiving {
 		// 添加buffer
 		if (snareInfo.getArrBufferIds() != null && snareInfo.getArrBufferIds().length > 0) {
 			for (int bufferId : snareInfo.getArrBufferIds()) {
-				SkillBufferTemplateInfo bufferTemp = BattleTempMgr.getBufferInfo(bufferId);
-				if (bufferTemp != null) {
-					Buffer buffer = BufferFactory.createBuffer(this, living, bufferTemp);
-					living.addBuffer(buffer);
+				SkillBufferTemplateInfo temp = BattleTempMgr.getBufferInfo(bufferId);
+				if (temp == null) {
+					continue;
+				}
+				if (temp.getDelay() == 0) {
+					if (temp.getTargetType() == BufferTargetType.SOURCE) {
+						Buffer buff = BufferFactory.createBuffer(getCreater(), getCreater(), temp);
+						getCreater().addBuffer(buff);
+					}
+					if (temp.getTargetType() == BufferTargetType.SKILL_TARGET) {
+						Buffer buff = BufferFactory.createBuffer(getCreater(), living, temp);
+						living.addBuffer(buff);
+					}
+				} else {
+					AddDelayBuffAction delayAction = new AddDelayBuffAction(getCreater(), living, temp);
+					getCreater().enDelayQueue(delayAction);
 				}
 			}
 		}
 		// 产生伤害
 		int bloodDamage = new BloodDamageCalculator().calcDamage(creater, living, snareInfo.getBloodPercent(), snareInfo.getBloodValue());
 		int soulDamage = new SoulDamageCalculator().calcDamage(creater, living, snareInfo.getSoulPercent(), snareInfo.getSoulValue());
-		living.addCurBlood(-bloodDamage, DamageEffecterType.COMMON);
-		living.addCurSoul(-soulDamage, DamageEffecterType.COMMON);
+		living.addCurBlood(-bloodDamage, DamageEffecterType.COMMON, Damage.SNARE, this.getId());
+		living.addCurSoul(-soulDamage, DamageEffecterType.COMMON, Damage.SNARE, this.getId());
 
 		affected.add(living.getId());
 

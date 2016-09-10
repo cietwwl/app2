@@ -24,5 +24,11 @@
 	<admin_server>
 		<admin id="501" name="admin_http" address="127.0.0.1" port="6606" />
 	</admin_server>
+	<server_info>
+		<info id="1001" name="zhanghuibin" />
+	</server_info>
+	<db_log id="402" name="xn_new_log" address="192.168.1.242" port="3306"
+		user="root" password="123456" />
+
 </root>
 

@@ -205,13 +205,13 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	public boolean addItem(int templateId, int count, short addType, boolean isBind) {
 		switch (templateId) {
 			case CurrencyItemType.MONEY_ITEM:
-				player.getBasePlayer().addMoney(count);
+				player.getBasePlayer().addMoney(count, addType);
 				return true;
 			case CurrencyItemType.CASH_ITEM:
-				player.getBasePlayer().addCash(count);
+				player.getBasePlayer().addCash(count, addType);
 				return true;
 			case CurrencyItemType.CASH_BIND_ITEM:
-				player.getBasePlayer().addBindCash(count);
+				player.getBasePlayer().addBindCash(count, addType);
 				return true;
 			case CurrencyItemType.EQUIP_EXP:
 				player.getBasePlayer().addEquipExp(count);
@@ -231,7 +231,7 @@ public class BagInventory extends AbstractEvent implements IInventory {
 			case CurrencyItemType.VIP_TEMPORARY:
 				player.getBasePlayer().addVipTemporary(count);
 				return true;
-				
+
 		}
 
 		ItemTemplateInfo tempInfo = ItemManager.findItemTempInfo(templateId);
@@ -248,16 +248,17 @@ public class BagInventory extends AbstractEvent implements IInventory {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 添加动态可变设置属性的物品
+	 * 
 	 * @param templateId
 	 * @param count
 	 * @param addType
 	 * @param isBind
 	 * @return
 	 */
-	public BaseItem addDynItem(int templateId, int count, short addType, boolean isBind,int attCount){
+	public BaseItem addDynItem(int templateId, int count, short addType, boolean isBind, int attCount) {
 		ItemTemplateInfo tempInfo = ItemManager.findItemTempInfo(templateId);
 		if (tempInfo == null) {
 			Log.error("add item bu template is  not exists,tempId :" + templateId + "  playerId :" + player.getPlayerId());
@@ -268,14 +269,13 @@ public class BagInventory extends AbstractEvent implements IInventory {
 		playerBag.beginChanges();
 		boolean result = playerBag.addTemplate(item, item.getItemInfo().getCount());
 		playerBag.commitChanges();
-		if (result) {		
+		if (result) {
 			this.notifyListeners(new ObjectEvent(this, templateId, EventNameType.TASK_ITEM_CHANGE_ADD));
-		}else{
+		} else {
 			return null;
 		}
 		return item;
 	}
-	
 
 	/**
 	 * 添加物品到背包。如果背包满了。就以邮件发给玩家
@@ -375,46 +375,6 @@ public class BagInventory extends AbstractEvent implements IInventory {
 		return heroEquipment;
 	}
 
-	public boolean addTempItem(List<BaseItem> items) {
-		if (playerBag == null) {
-			return false;
-		}
-		if ((items == null) || (items.size() == 0)) {
-			return false;
-		}
-		// 一、物品分类
-		List<BaseItem> bagItems = new ArrayList<BaseItem>();
-		for (BaseItem info : items) {
-			if (info == null || info.isEffective() == false || info.isAdd() == true) {
-				continue;
-			}
-			info.setAdd(true);
-			int tempId = info.getItemTempInfo().getId();
-			int count = info.getItemInfo().getCount();
-			switch (tempId) {
-				case -100: // 添加货币X
-					player.getBasePlayer().addMoney(count);
-					break;
-				default:
-					bagItems.add(info);
-					break;
-			}
-			if (info.getItemInfo().isTips()) {
-				saveToDatabase();
-			}
-		}
-
-		// 二、加入背包
-		if (bagItems.size() > 0) {
-			playerBag.beginChanges();
-			for (BaseItem baseItem : bagItems) {
-				playerBag.addTemplate(baseItem, baseItem.getItemInfo().getCount());
-			}
-			playerBag.commitChanges();
-		}
-		return true;
-	}
-
 	public int getEmptyCount() {
 		if (playerBag == null)
 			return 0;
@@ -504,17 +464,17 @@ public class BagInventory extends AbstractEvent implements IInventory {
 		// 操作武器
 		if ((beginBagType == BagType.HeroEquipment && beginPos == 0) || endPos == 0) {
 			PlayerAttUpdateMsg.Builder attMsg = PlayerAttUpdateMsg.newBuilder();
-			
+
 			PropertyMsg.Builder proMsg = PropertyMsg.newBuilder();
 			proMsg.setType(EnumAttr.Weapon.getValue());
 			proMsg.setTotalPoint(weaponId);
 			attMsg.addAtt(proMsg);
-			
+
 			PropertyMsg.Builder awakenMsg = PropertyMsg.newBuilder();
 			awakenMsg.setType(EnumAttr.WEAPON_AWAKEN.getValue());
 			awakenMsg.setTotalPoint(weaponAwaken);
 			attMsg.addAtt(awakenMsg);
-			
+
 			attMsg.setPlayerId(player.getPlayerId());
 			PBMessage message = MessageUtil.buildMessage(Protocol.S_ATTRIBUTE_SCENE_UPDATE, attMsg);
 			player.sendPbMessage(message);
@@ -542,8 +502,7 @@ public class BagInventory extends AbstractEvent implements IInventory {
 						// 自动添加
 						if (endBag.stackByItem(beginItem) || (endBag.addEmptyByItem(beginItem))) {
 							beginBag.takeOutByItem(beginItem);
-						} else {
-						}
+						} else {}
 					} else {
 						/* 相同背包 */
 						if (beginBagType == endBagType) {
@@ -653,9 +612,9 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	public void onUseItem(int templateId, boolean isUseItem) {
 		// TODO 触发使用物品事件
 	}
-	
-	/**物品是否足够*/
-	public boolean isEnought(int templateId,int count) {
+
+	/** 物品是否足够 */
+	public boolean isEnought(int templateId, int count) {
 		return playerBag.isEnough(templateId, count);
 	}
 

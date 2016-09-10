@@ -45,6 +45,7 @@ public class InverseBeadLoopAction extends DelayAction {
 
 	@Override
 	public void execute() {
+		long now = System.currentTimeMillis();
 		if (player.getInverseBeadRefreshInventory() == null)
 			return;
 		PlayerBeadTimeInfo playerTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
@@ -89,6 +90,7 @@ public class InverseBeadLoopAction extends DelayAction {
 			this.execTime = System.currentTimeMillis() + intervalTime;
 			getActionQueue().enDelayQueue(this);
 		}
+		System.err.println("exe loop : " + (System.currentTimeMillis() - now) + " playerId :" + player.getPlayerId());
 	}
 
 	/**
@@ -165,7 +167,6 @@ public class InverseBeadLoopAction extends DelayAction {
 			PBMessage c2s = MessageUtil.buildMessage(Protocol.S_CREATE_INVERSE_SYNC_MONSTER, msg);
 			player.sendPbMessage(c2s);
 		}
-
 		return need2s;
 	}
 

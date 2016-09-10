@@ -4,6 +4,7 @@ public class SoulCardConfig {
 	private int id;//` int(11) NOT NULL AUTO_INCREMENT,
 	private String name;//` varchar(30) NOT NULL DEFAULT '',
 	private int quality;//` tinyint(3) NOT NULL DEFAULT '0' COMMENT '品质',
+	private int maxStar;//星级上限
 	private int attrInit1;//` int(11) NOT NULL DEFAULT '0',
 	private int attrAdd1;//` int(11) NOT NULL DEFAULT '0',
 	private int attrInit2;//` int(11) NOT NULL DEFAULT '0',
@@ -119,6 +120,12 @@ public class SoulCardConfig {
 	}
 	public void setSkill(int skill) {
 		this.skill = skill;
+	}
+	public int getMaxStar() {
+		return maxStar;
+	}
+	public void setMaxStar(int maxStar) {
+		this.maxStar = maxStar;
 	}
 	
 

@@ -9,6 +9,7 @@ import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
+import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
@@ -236,7 +237,13 @@ public class ActiveLiving extends Living {
 			Log.error("isValidPoint ", e);
 		}
 		return false;
+	}
 
+	protected void notityState(LivingState state) {
+		super.notityState(state);
+		if (state == LivingState.MOVE) {
+			stop(true);
+		}
 	}
 
 	public boolean onDie(Living killer) {

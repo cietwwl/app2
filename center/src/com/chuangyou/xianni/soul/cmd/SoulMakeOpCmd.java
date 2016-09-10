@@ -10,9 +10,10 @@ import com.chuangyou.xianni.socket.Cmd;
 import com.chuangyou.xianni.soul.logic.make.CompleteMakeLogic;
 import com.chuangyou.xianni.soul.logic.make.ISoulMakeLogic;
 import com.chuangyou.xianni.soul.logic.make.QTEMakeLogic;
+import com.chuangyou.xianni.soul.logic.make.ReMakeLogic;
 import com.chuangyou.xianni.soul.logic.make.StartMakeLogic;
 
-@Cmd(code=Protocol.C_REQ_SOUL_MAKE,desc="材料制作")
+@Cmd(code = Protocol.C_REQ_SOUL_MAKE, desc = "材料制作")
 public class SoulMakeOpCmd extends AbstractCommand {
 
 	@Override
@@ -22,35 +23,36 @@ public class SoulMakeOpCmd extends AbstractCommand {
 		int op = req.getOp();
 		int index = 0;
 		int qte = 0;
-		if(req.hasIndex()){	
+		if (req.hasIndex()) {
 			index = req.getIndex();
 		}
-		if(req.hasQte()){
+		if (req.hasQte()) {
 			qte = req.getQte();
 		}
-		
-		
+
 		ISoulMakeLogic logic = null;
 		switch (op) {
-		case 1:
-			logic = new QTEMakeLogic(op, player, index, qte);
-			break;
-		case 2:
-			logic = new StartMakeLogic(op, player);
-			break;
-		case 3:
-			logic = new CompleteMakeLogic(op, player);
-			break;		
+			case 1:
+				logic = new QTEMakeLogic(op, index, player, qte);
+				break;
+			case 2:
+				logic = new StartMakeLogic(op, index, player);
+				break;
+			case 3:
+				logic = new CompleteMakeLogic(op, index, player);
+				break;
+			case 4:
+				logic = new ReMakeLogic(op, index, player);
+				break;
 		}
-		
-		if(logic!=null){
+
+		if (logic != null) {
 			logic.doProcess();
-		}else{
-			Log.error("不能处理的操作："+req.getOp()+"protcol:"+Protocol.C_REQ_SOUL_MAKE);
+		} else {
+			Log.error("不能处理的操作：" + req.getOp() + "protcol:" + Protocol.C_REQ_SOUL_MAKE);
 			return;
 		}
-		
-		
+
 	}
 
 }

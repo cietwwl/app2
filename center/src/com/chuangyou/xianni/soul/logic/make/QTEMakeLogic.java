@@ -12,42 +12,39 @@ import com.chuangyou.xianni.soul.template.SoulTemplateMgr;
 
 public class QTEMakeLogic extends BaseSoulMakeLogic implements ISoulMakeLogic {
 
-	protected int index;
 	protected int qte;
 
-	public QTEMakeLogic(int op, GamePlayer player, int index, int qte) {
-		super(op, player);
-		this.index = index;
+	public QTEMakeLogic(int op, int index, GamePlayer player, int qte) {
+		super(op, index, player);
 		this.qte = qte;
 	}
-
 
 	@Override
 	public void doProcess() {
 		// TODO Auto-generated method stub
 		Date now = new Date();
-		if(now.getTime() - this.soulMake.getLastQteTime()<SoulTemplateMgr.QTE_CD){
-			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_MAKE,"QTE_CD");		
-			return;	
-		}
-		if(index<1 || index>4 ||qte<1||qte>3){
-			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_MAKE,"数据不合法");		
+		if (now.getTime() - this.soulMake.getLastQteTime() < SoulTemplateMgr.QTE_CD) {
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_MAKE, "QTE_CD");
 			return;
 		}
-		if(this.soulMake.getState() == SoulMake.STATE_ING){
-			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_MAKE,"状态不对:"+this.op);		
+		if (index < 1 || index > 4 || qte < 1 || qte > 3) {
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_MAKE, "数据不合法");
 			return;
 		}
-		
+		if (this.soulMake.getState() == SoulMake.STATE_ING) {
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_MAKE, "状态不对:" + this.op);
+			return;
+		}
+
 		this.soulMake.setState(SoulMake.STATE_QTE);
 		this.soulMake.setLastQteTime(now.getTime());
 		this.soulMake.setQteIndex(qte);
 		this.soulMake.setItemId(0);
 		this.soulMake.setMakeIndex(index);
 		this.soulMake.setOp(Option.Update);
-		
+
 		this.sendResultMsg();
-		
+
 	}
 
 }

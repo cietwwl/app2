@@ -107,17 +107,12 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 		int randomz = spwanInfo.getBound_z();
 
 		Monster monster = new Monster(this);
-		// System.out.println("monster - skin = " + spwanInfo.getEntityId() +
-		// "map:" + field.getMapKey());
 		MonsterInfo monsterInfo = MonsterInfoTemplateMgr.get(spwanInfo.getEntityId());
 		if (monsterInfo != null) {
-			// monster.setSkin(monsterInfo.getSkin());
 			monster.setPostion(new Vector3(randomx / Vector3.Accuracy, randomy / Vector3.Accuracy, randomz / Vector3.Accuracy));
 			instill(monster, monsterInfo);
 			children.put(monster.getId(), monster);
 			field.enterField(monster);
-			// NotifyNearHelper.notifyNearPlayer(field, monster,
-			// monster.getPostion());
 		} else {
 			Log.error(spwanInfo.getId() + "----" + spwanInfo.getEntityId() + " 在MonsterInfo里面未找到配置");
 		}
@@ -188,7 +183,6 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 				Skill skill = new Skill(BattleTempMgr.getActionInfo(skillTempateInfo.getActionId()));
 				skill.setSkillTempateInfo(skillTempateInfo);
 				monster.addSkill(skill);
-				// monster.setSkillId(monsterInfo.get);
 			}
 		} else {
 			// 测试

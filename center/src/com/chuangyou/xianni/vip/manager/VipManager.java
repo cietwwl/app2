@@ -11,6 +11,7 @@ import com.chuangyou.common.util.StringUtils;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.item.ItemAddType;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.vip.VipBagTemplate;
 import com.chuangyou.xianni.entity.vip.VipTemplate;
@@ -86,7 +87,7 @@ public class VipManager {
 		// * 60 * 1000 + time);
 		// System.out.println(DateTimeUtil.format(playerInfo.getVipTimeLimit()));
 		// System.out.println(DateTimeUtil.format(playerInfo.getVipInterimTimeLimit()));
-		player.getBasePlayer().addCash(cash);
+		player.getBasePlayer().addCash(cash, ItemAddType.VIP_GET);
 		return true;
 	}
 
@@ -123,7 +124,7 @@ public class VipManager {
 				return false;
 			}
 			if (buyNeedStone > 0)
-				player.getBasePlayer().consumeCash(buyNeedStone);
+				player.getBasePlayer().consumeCash(buyNeedStone, ItemRemoveType.BUY_VIP_GIFT);
 
 			// 记录购买
 			if (!map.containsKey(type + "")) {

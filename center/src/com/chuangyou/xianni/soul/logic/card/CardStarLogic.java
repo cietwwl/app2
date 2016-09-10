@@ -20,7 +20,7 @@ public class CardStarLogic extends AbstractCardLogic {
 	}
 
 
-	private final int MAX_STAR = 6;
+//	private final int MAX_STAR = 6;
 	
 	@Override
 	public void doCardLogic() {
@@ -29,21 +29,21 @@ public class CardStarLogic extends AbstractCardLogic {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_PIECE_COMBO,"无碎片");		
 			return;
 		}
-		if(this.cardInfo.getStar() == MAX_STAR){
-			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_PIECE_COMBO,"星级已满");		
-			return;
-		}
+//		if(this.cardInfo.getStar() == MAX_STAR){
+//			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_PIECE_COMBO,"星级已满");		
+//			return;
+//		}
 		int needClip = SoulTemplateMgr.getCardStarConfig(this.cardInfo.getStar()+1).getSpendNum();
 		if(this.piece.getCount() < needClip){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_PIECE_COMBO,"碎片数量不够");		
 			return;
 		}
-		if(this.cardInfo.getStar()>=this.cardConfig.getQuality()){
+		if(this.cardInfo.getStar()>=this.cardConfig.getMaxStar()){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_PIECE_COMBO,"星级不够高于品质");		
 			return;
 		}
 		
-		//扣碎片
+		//TODO 扣碎片  BUG????????? 
 		this.piece.setCardId(this.piece.getCount()-needClip);
 		this.piece.setOp(Option.Update);
 		//加星

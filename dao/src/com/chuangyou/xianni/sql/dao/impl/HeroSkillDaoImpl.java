@@ -20,7 +20,7 @@ public class HeroSkillDaoImpl extends BaseDao implements HeroSkillDao {
 		boolean result = false;
 		String sql = "INSERT INTO tb_u_hero_skill_info (playerId,skillId,type,subType,grandsonType,skillLV)" + " VALUES (?,?,?,?,?,?);";
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
-		para.put(1, new DbParameter(Types.INTEGER, heroSkill.getPlayerId()));
+		para.put(1, new DbParameter(Types.BIGINT, heroSkill.getPlayerId()));
 		para.put(2, new DbParameter(Types.INTEGER, heroSkill.getSkillId()));
 		para.put(3, new DbParameter(Types.INTEGER, heroSkill.getType()));
 		para.put(4, new DbParameter(Types.INTEGER, heroSkill.getSubType()));
@@ -70,7 +70,7 @@ public class HeroSkillDaoImpl extends BaseDao implements HeroSkillDao {
 					info.setSubType(rs.getInt("subType"));
 					info.setGrandsonType(rs.getInt("grandsonType"));
 					info.setSkillLV(rs.getInt("skillLV"));
-					infos.put(rs.getInt("type")+"_"+rs.getInt("subType")+"_"+rs.getInt("grandsonType"), info);
+					infos.put(rs.getInt("type") + "_" + rs.getInt("subType") + "_" + rs.getInt("grandsonType"), info);
 				}
 			} catch (Exception e) {
 				Log.error("执行出错" + sql, e);

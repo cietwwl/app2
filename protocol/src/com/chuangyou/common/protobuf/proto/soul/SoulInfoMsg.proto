@@ -1,25 +1,18 @@
 option java_package = "com.chuangyou.common.protobuf.pb.soul";
 option java_outer_classname = "SoulInfoProto";
-
 import "soul/FuseSkillMsg.proto";
-
-message SoulInfoMsg{
-
-	required int64 exp=1;//'经验值',
-	required int32 card1=2;// 身上装备的card1--8
-	required int32 card2=3;
-	required int32 card3=4;
-	required int32 card4=5;
-	required int32 card5=6;
-	required int32 card6=7;
-	required int32 card7=8;
-	required int32 card8=9;
-
-	required FuseSkillMsg fuseSkill1 = 10;  //融合技能1--4
+message SoulInfoMsg {
+	required int64 exp = 1; //'经验值',
+	required int32 card1 = 2; // 身上装备的card1--8
+	required int32 card2 = 3;
+	required int32 card3 = 4;
+	required int32 card4 = 5;
+	required int32 card5 = 6;
+	required int32 card6 = 7;
+	required int32 card7 = 8;
+	required int32 card8 = 9;
+	required FuseSkillMsg fuseSkill1 = 10; //融合技能1--4
 	required FuseSkillMsg fuseSkill2 = 11;
 	required FuseSkillMsg fuseSkill3 = 12;
 	required FuseSkillMsg fuseSkill4 = 13;
-
-	required int32 proficiency = 14; //制作熟悉度
-
 }

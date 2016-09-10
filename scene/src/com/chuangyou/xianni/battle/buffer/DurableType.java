@@ -13,7 +13,7 @@ public class DurableType {
 	public static final int COUNT = 2;
 	
 	/**
-	 * 按作用次数减少
+	 * 按作用次数减少和时间同时控制
 	 */
 	public static final int TIME_AND_COUNT = 3;
 }

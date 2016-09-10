@@ -9,12 +9,10 @@ import com.chuangyou.xianni.entity.item.BagType;
 import com.chuangyou.xianni.entity.item.ItemInfo;
 import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
 
-import io.netty.util.internal.MathUtil;
-
 public class BaseItem {
-	private ItemTemplateInfo itemTempInfo;
-	private ItemInfo itemInfo;
-	private boolean isAdd;			// 是否已经添加
+	private ItemTemplateInfo	itemTempInfo;
+	private ItemInfo			itemInfo;
+	private boolean				isAdd;			// 是否已经添加
 
 	public BaseItem(ItemTemplateInfo temp, ItemInfo info) {
 		this.itemTempInfo = temp;
@@ -54,13 +52,14 @@ public class BaseItem {
 			getItemInfo().setPlayerId(playerId);
 			getItemInfo().setObjectId(objectId);
 			getItemInfo().setBagType(bagType);
-		}else{
-			//Log.error("----------------------");
+		} else {
+			// Log.error("----------------------");
 		}
 	}
 
 	/* 添加一个来源外部的物品 ，当前物品在数据库中已存在 */
 	public boolean addItemOther(long playerId, int itemCount, boolean isBind, short changeType) {
+		ItemLogHelper mgr = new ItemLogHelper(this);
 		getItemInfo().setPlayerId(playerId);
 		getItemInfo().setCount(itemCount);
 		getItemInfo().setAddType(changeType);
@@ -68,33 +67,40 @@ public class BaseItem {
 			getItemInfo().setBinds(isBind);
 		}
 		getItemInfo().setAddDate(TimeUtil.getSysteCurTime());
+		mgr.commitChanges(changeType);
 		return true;
 	}
 
 	/* 增加物品数量 */
 	public void addItem(int count, long affectId, boolean isBind, short changeType) {
+		ItemLogHelper mgr = new ItemLogHelper(this);
 		this.getItemInfo().addCount(count);
 		this.getItemInfo().setAddType(changeType);
 		if (isBind) {
 			this.getItemInfo().setBinds(isBind);
 		}
+		mgr.commitChanges(changeType);
 	}
 
 	/* 减少物品数量 */
 	public void decItem(int count, long affectId, short changeType) {
+		ItemLogHelper mgr = new ItemLogHelper(this);
 		this.getItemInfo().decCount(count);
 		this.getItemInfo().setRemoveDate(TimeUtil.getSysteCurTime());
 		this.getItemInfo().setRemoveType(changeType);
+		mgr.commitChanges(changeType);
 	}
 
 	/* 删除物品 */
 	public void delItem(int count, short changeType) {
+		ItemLogHelper mgr = new ItemLogHelper(this);
 		this.getItemInfo().setPos((short) -1);
 		this.getItemInfo().setBagType(BagType.Recycle);
 		this.getItemInfo().setRemoveType(changeType);
 		this.getItemInfo().setRemoveDate(TimeUtil.getSysteCurTime());
 		this.getItemInfo().setExist(false);
 		this.getItemInfo().setCount(0);
+		mgr.commitChanges(changeType);
 	}
 
 	/**
@@ -218,7 +224,7 @@ public class BaseItem {
 			float r2 = (100 + MathUtils.randomClamp(-5, 5)) / 100F;
 			int grow = (int) (template.getGrow() * r2);
 			info.setGrow(grow);
-			
+
 			info.setAwaken(0);
 			info.setAwakenPoint(0);
 			info.setStone(0);

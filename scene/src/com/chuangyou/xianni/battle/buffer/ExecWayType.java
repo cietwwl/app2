@@ -19,4 +19,7 @@ public class ExecWayType {
 	/** 添加时 */
 	public static final int	ADD			= 5;
 
+	/** 魂幡触发 */
+	public static final int	FUSE		= 6;
+
 }

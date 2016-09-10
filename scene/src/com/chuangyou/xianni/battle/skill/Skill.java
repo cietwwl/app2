@@ -9,11 +9,11 @@ import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
  * </pre>
  */
 public class Skill {
-	private SkillTempateInfo skillTempateInfo;
-	private SkillActionTemplateInfo templateInfo;
-	private int skillId;		// 技能ID
-	private long lastUsed;		// 最后一次使用时间
-	private int level;
+	private SkillTempateInfo		skillTempateInfo;
+	private SkillActionTemplateInfo	templateInfo;
+	private int						skillId;			// 技能ID
+	private long					lastUsed;			// 最后一次使用时间
+	private int						level;
 
 	public Skill(SkillActionTemplateInfo templateInfo) {
 		this(templateInfo, 1);
@@ -67,6 +67,14 @@ public class Skill {
 
 	public void setSkillTempateInfo(SkillTempateInfo skillTempateInfo) {
 		this.skillTempateInfo = skillTempateInfo;
+	}
+
+	public boolean canUse() {
+		if (System.currentTimeMillis() - this.lastUsed >= (templateInfo.getCooldown() * 1000 - 1000)) {
+			this.lastUsed = System.currentTimeMillis();
+			return true;
+		}
+		return false;
 	}
 
 }

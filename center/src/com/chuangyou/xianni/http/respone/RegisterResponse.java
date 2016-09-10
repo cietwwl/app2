@@ -1,7 +1,9 @@
 package com.chuangyou.xianni.http.respone;
 
+import java.util.Date;
 import java.util.Map;
 
+import com.chuangyou.common.util.NetConfigSet;
 import com.chuangyou.xianni.entity.User.UserInfo;
 import com.chuangyou.xianni.entity_id.EntityIdBuilder;
 import com.chuangyou.xianni.http.BaseRespone;
@@ -10,7 +12,7 @@ import com.chuangyou.xianni.http.HttpResult;
 import com.chuangyou.xianni.http.HttpResult.Code;
 import com.chuangyou.xianni.sql.dao.DBManager;
 
-@HttpCmd(command="register",desc="账号注册")
+@HttpCmd(command = "register", desc = "账号注册")
 public class RegisterResponse implements BaseRespone {
 
 	@Override
@@ -36,6 +38,9 @@ public class RegisterResponse implements BaseRespone {
 		user.setUserId(EntityIdBuilder.userIdBuilder());
 		user.setUserName(name);
 		user.setPassWord(password);
+		user.setCreateTime(new Date());
+		user.setServerId(NetConfigSet.server_id);
+		user.setServerName(NetConfigSet.server_name);
 
 		DBManager.getUserDao().save(user);
 

@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class IDMakerHelper {
 	private static AtomicInteger	current		= new AtomicInteger(100000);
-	private static AtomicLong		NPC_ID		= new AtomicLong(1000000000000l);
+	private static AtomicLong		NPC_ID		= new AtomicLong(1000000000000l);  			
 	private static AtomicLong		BUFFER_ID	= new AtomicLong(1);
 	private static AtomicInteger	CAMPAIGN_ID	= new AtomicInteger(1);
 	private static AtomicInteger	DROP_ID		= new AtomicInteger(1);
@@ -24,7 +24,7 @@ public class IDMakerHelper {
 	}
 
 	public static long nextID() {
-		synchronized (current) {
+		synchronized (NPC_ID) {
 			return NPC_ID.incrementAndGet();
 		}
 	}

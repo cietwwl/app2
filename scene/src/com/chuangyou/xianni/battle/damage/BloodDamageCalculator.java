@@ -46,6 +46,9 @@ public class BloodDamageCalculator implements DamageCalculator {
 			changeValue += fbuff.formulaExe(damageValue, EnumAttr.BLOOD.getValue());
 		}
 		damageValue = damageValue - changeValue;
+		if (percent == 0 && value == 0) {
+			return damageValue;
+		}
 		return damageValue <= 0 ? 1 : damageValue;
 	}
 

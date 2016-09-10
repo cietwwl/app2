@@ -8,6 +8,7 @@ import com.chuangyou.common.util.LockData;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.common.template.LevelUpTempleteMgr;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.constant.CommonType.CurrencyItemType;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.level.LevelUp;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
@@ -15,7 +16,6 @@ import com.chuangyou.xianni.entity.player.PlayerJoinInfo;
 import com.chuangyou.xianni.entity.player.PlayerPositionInfo;
 import com.chuangyou.xianni.entity.player.PlayerTimeInfo;
 import com.chuangyou.xianni.entity.vip.VipLevelTemplate;
-import com.chuangyou.xianni.entity.vip.VipTemplate;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.player.event.PlayerProperEvent;
 import com.chuangyou.xianni.player.event.PlayerPropertyUpdateEvent;
@@ -46,6 +46,9 @@ public class BasePlayer extends AbstractEvent {
 	private PlayerPositionInfo	playerPositionInfo;
 
 	private LockData			moneyLock		= new LockData();
+	private LockData			cashLock		= new LockData();
+	private LockData			repairLock		= new LockData();
+	private LockData			commonLock		= new LockData();
 	/*-----------------------更新数据---------------------------*/
 	private AtomicInteger		changeCount		= new AtomicInteger(0);
 
@@ -62,7 +65,7 @@ public class BasePlayer extends AbstractEvent {
 	 * @param count
 	 * @return
 	 */
-	public boolean addMoney(long count) {
+	public boolean addMoney(long count, int addType) {
 		beginChanges();
 		try {
 			if (moneyLock.beginLock()) {
@@ -73,12 +76,13 @@ public class BasePlayer extends AbstractEvent {
 				return false;
 			}
 		} catch (Exception e) {
-			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " addMoney", e);
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " addMoney" + " count :" + count + " addType" + addType, e);
 			return false;
 		} finally {
 			commitChages(EnumAttr.MONEY.getValue(), playerInfo.getMoney());
 			moneyLock.commitLock();
 		}
+		MonetaryLogHelper.addLog(playerInfo.getPlayerId(), (int) playerInfo.getMoney(), CurrencyItemType.MONEY_ITEM, addType, (int) count);
 		return true;
 	}
 
@@ -88,7 +92,7 @@ public class BasePlayer extends AbstractEvent {
 	 * @param count
 	 * @return
 	 */
-	public boolean consumeMoney(long count) {
+	public boolean consumeMoney(long count, int removeType) {
 		if (playerInfo.getMoney() < count)
 			return false;
 		beginChanges();
@@ -107,6 +111,7 @@ public class BasePlayer extends AbstractEvent {
 			commitChages(EnumAttr.MONEY.getValue(), playerInfo.getMoney());
 			moneyLock.commitLock();
 		}
+		MonetaryLogHelper.addLog(playerInfo.getPlayerId(), (int) playerInfo.getMoney(), CurrencyItemType.MONEY_ITEM, removeType, (int) -count);
 		return true;
 	}
 
@@ -116,10 +121,10 @@ public class BasePlayer extends AbstractEvent {
 	 * @param count
 	 * @return
 	 */
-	public boolean addCash(int count) {
+	public boolean addCash(int count, int addType) {
 		beginChanges();
 		try {
-			if (moneyLock.beginLock()) {
+			if (cashLock.beginLock()) {
 				this.playerInfo.setCash(playerInfo.getCash() + count);
 				this.playerInfo.setOp(Option.Update);
 			} else {
@@ -127,12 +132,13 @@ public class BasePlayer extends AbstractEvent {
 				return false;
 			}
 		} catch (Exception e) {
-			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " addCash", e);
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " addCash" + " count :" + count + " addType" + addType, e);
 			return false;
 		} finally {
 			commitChages(EnumAttr.CASH.getValue(), this.getPlayerInfo().getCash());
-			moneyLock.commitLock();
+			cashLock.commitLock();
 		}
+		MonetaryLogHelper.addLog(playerInfo.getPlayerId(), playerInfo.getCash(), CurrencyItemType.CASH_ITEM, addType, count);
 		return true;
 	}
 
@@ -142,12 +148,12 @@ public class BasePlayer extends AbstractEvent {
 	 * @param count
 	 * @return
 	 */
-	public boolean consumeCash(int count) {
+	public boolean consumeCash(int count, int removeType) {
 		if (playerInfo.getCash() < count)
 			return false;
 		beginChanges();
 		try {
-			if (moneyLock.beginLock()) {
+			if (cashLock.beginLock()) {
 				this.playerInfo.setCash(playerInfo.getCash() - count);
 				this.playerInfo.setOp(Option.Update);
 			} else {
@@ -155,12 +161,13 @@ public class BasePlayer extends AbstractEvent {
 				return false;
 			}
 		} catch (Exception e) {
-			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " consumeMoney", e);
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " consumeMoney" + " count :" + count + " removeType" + removeType, e);
 			return false;
 		} finally {
 			commitChages(EnumAttr.CASH.getValue(), this.getPlayerInfo().getCash());
-			moneyLock.commitLock();
+			cashLock.commitLock();
 		}
+		MonetaryLogHelper.addLog(playerInfo.getPlayerId(), playerInfo.getCash(), CurrencyItemType.CASH_ITEM, removeType, -count);
 		return true;
 	}
 
@@ -175,7 +182,7 @@ public class BasePlayer extends AbstractEvent {
 			return false;
 		beginChanges();
 		try {
-			if (moneyLock.beginLock()) {
+			if (repairLock.beginLock()) {
 				this.playerInfo.setRepair(playerInfo.getRepair() - count);
 				this.playerInfo.setOp(Option.Update);
 			} else {
@@ -183,11 +190,11 @@ public class BasePlayer extends AbstractEvent {
 				return false;
 			}
 		} catch (Exception e) {
-			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " consumeMoney", e);
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " consumeMoney" + " count :" + count, e);
 			return false;
 		} finally {
 			commitChages(EnumAttr.REPAIR.getValue(), this.getPlayerInfo().getRepair());
-			moneyLock.commitLock();
+			repairLock.commitLock();
 		}
 		return true;
 	}
@@ -201,7 +208,7 @@ public class BasePlayer extends AbstractEvent {
 	public boolean addRepair(int count) {
 		beginChanges();
 		try {
-			if (moneyLock.beginLock()) {
+			if (repairLock.beginLock()) {
 				this.playerInfo.setRepair(playerInfo.getRepair() + count);
 				this.playerInfo.setOp(Option.Update);
 			} else {
@@ -209,11 +216,11 @@ public class BasePlayer extends AbstractEvent {
 				return false;
 			}
 		} catch (Exception e) {
-			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " addRepair", e);
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " addRepair" + " count :" + count, e);
 			return false;
 		} finally {
 			commitChages(EnumAttr.REPAIR.getValue(), this.getPlayerInfo().getRepair());
-			moneyLock.commitLock();
+			repairLock.commitLock();
 		}
 		return true;
 	}
@@ -224,10 +231,10 @@ public class BasePlayer extends AbstractEvent {
 	 * @param count
 	 * @return
 	 */
-	public boolean addBindCash(int count) {
+	public boolean addBindCash(int count, int addType) {
 		beginChanges();
 		try {
-			if (moneyLock.beginLock()) {
+			if (commonLock.beginLock()) {
 				this.playerInfo.setBindCash(playerInfo.getBindCash() + count);
 				this.playerInfo.setOp(Option.Update);
 			} else {
@@ -235,12 +242,13 @@ public class BasePlayer extends AbstractEvent {
 				return false;
 			}
 		} catch (Exception e) {
-			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " addBindCash", e);
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " addBindCash" + " count :" + count + " removeType" + addType, e);
 			return false;
 		} finally {
 			commitChages(EnumAttr.CASH_BIND.getValue(), playerInfo.getBindCash());
-			moneyLock.commitLock();
+			commonLock.commitLock();
 		}
+		MonetaryLogHelper.addLog(playerInfo.getPlayerId(), playerInfo.getBindCash(), CurrencyItemType.CASH_BIND_ITEM, addType, count);
 		return true;
 	}
 
@@ -250,12 +258,12 @@ public class BasePlayer extends AbstractEvent {
 	 * @param count
 	 * @return
 	 */
-	public boolean consumeBindCach(int count) {
+	public boolean consumeBindCash(int count, int consumeType) {
 		if (playerInfo.getBindCash() < count)
 			return false;
 		beginChanges();
 		try {
-			if (moneyLock.beginLock()) {
+			if (commonLock.beginLock()) {
 				this.playerInfo.setBindCash(playerInfo.getBindCash() - count);
 				this.playerInfo.setOp(Option.Update);
 			} else {
@@ -263,12 +271,13 @@ public class BasePlayer extends AbstractEvent {
 				return false;
 			}
 		} catch (Exception e) {
-			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " consumeBindMoney", e);
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " consumeBindCash", e);
 			return false;
 		} finally {
 			commitChages(EnumAttr.CASH_BIND.getValue(), playerInfo.getBindCash());
-			moneyLock.commitLock();
+			commonLock.commitLock();
 		}
+		MonetaryLogHelper.addLog(playerInfo.getPlayerId(), playerInfo.getBindCash(), CurrencyItemType.CASH_BIND_ITEM, consumeType, -count);
 		return true;
 	}
 
@@ -281,7 +290,7 @@ public class BasePlayer extends AbstractEvent {
 	public boolean addPoints(int count) {
 		beginChanges();
 		try {
-			if (moneyLock.beginLock()) {
+			if (commonLock.beginLock()) {
 				this.playerInfo.setPoints(playerInfo.getPoints() + count);
 				this.playerInfo.setOp(Option.Update);
 			} else {
@@ -289,11 +298,11 @@ public class BasePlayer extends AbstractEvent {
 				return false;
 			}
 		} catch (Exception e) {
-			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " addPoints", e);
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " addPoints" + " count :" + count, e);
 			return false;
 		} finally {
 			commitChages(EnumAttr.POINTS.getValue(), playerInfo.getPoints());
-			moneyLock.commitLock();
+			commonLock.commitLock();
 		}
 		return true;
 	}
@@ -309,7 +318,7 @@ public class BasePlayer extends AbstractEvent {
 			return false;
 		beginChanges();
 		try {
-			if (moneyLock.beginLock()) {
+			if (commonLock.beginLock()) {
 				this.playerInfo.setPoints(playerInfo.getBindCash() - count);
 				this.playerInfo.setOp(Option.Update);
 			} else {
@@ -317,11 +326,11 @@ public class BasePlayer extends AbstractEvent {
 				return false;
 			}
 		} catch (Exception e) {
-			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " consumePoints", e);
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " consumePoints count :" + count, e);
 			return false;
 		} finally {
 			commitChages(EnumAttr.POINTS.getValue(), playerInfo.getPoints());
-			moneyLock.commitLock();
+			commonLock.commitLock();
 		}
 		return true;
 	}
@@ -337,7 +346,7 @@ public class BasePlayer extends AbstractEvent {
 			return false;
 		beginChanges();
 		try {
-			if (moneyLock.beginLock()) {
+			if (commonLock.beginLock()) {
 				this.playerInfo.setEquipExp(playerInfo.getEquipExp() - count);
 				this.playerInfo.setOp(Option.Update);
 			} else {
@@ -350,7 +359,7 @@ public class BasePlayer extends AbstractEvent {
 			return false;
 		} finally {
 			commitChages(EnumAttr.EQUIPEXP.getValue(), playerInfo.getEquipExp());
-			moneyLock.commitLock();
+			commonLock.commitLock();
 		}
 		return true;
 	}
@@ -364,7 +373,7 @@ public class BasePlayer extends AbstractEvent {
 	public boolean addEquipExp(long count) {
 		beginChanges();
 		try {
-			if (moneyLock.beginLock()) {
+			if (commonLock.beginLock()) {
 				this.playerInfo.setEquipExp(playerInfo.getEquipExp() + count);
 				this.playerInfo.setOp(Option.Update);
 			} else {
@@ -373,10 +382,12 @@ public class BasePlayer extends AbstractEvent {
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			Log.error("playerId : " + getPlayerInfo().getPlayerId() + "addEquipExp", e);
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + "addEquipExp  count :" + count, e);
 			return false;
 		} finally {
 			commitChages(EnumAttr.EQUIPEXP.getValue(), playerInfo.getEquipExp());
+			commonLock.commitLock();
+
 		}
 		return true;
 	}
@@ -600,7 +611,7 @@ public class BasePlayer extends AbstractEvent {
 			changeMap.put(EnumAttr.VIP_EXP.getValue(), (long) playerInfo.getVipExp());
 			this.playerInfo.setOp(Option.Update);
 		} catch (Exception e) {
-			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " updateVipExp", e);
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " updateVipExp,addValue:" + addValue, e);
 			return false;
 		} finally {
 			commitChages(changeMap);
@@ -616,7 +627,8 @@ public class BasePlayer extends AbstractEvent {
 	/**
 	 * 添加临时vip
 	 * 
-	 * @param dayCount 单位天
+	 * @param dayCount
+	 *            单位天
 	 * @return
 	 */
 	public boolean addVipTemporary(int dayCount) {
@@ -628,13 +640,13 @@ public class BasePlayer extends AbstractEvent {
 			} else {
 				time = System.currentTimeMillis();
 			}
-			time +=  dayCount * 24l * 60 * 60 * 1000;
+			time += dayCount * 24l * 60 * 60 * 1000;
 			this.playerInfo.setVipInterimTimeLimit(new Date(time));
 		} catch (Exception e) {
 			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " addVipTemporary:" + dayCount);
 			return false;
 		} finally {
-			commitChages(EnumAttr.VIP_TEMPORARY.getValue(), this.playerInfo.getVipInterimTimeLimit().getTime()/1000);
+			commitChages(EnumAttr.VIP_TEMPORARY.getValue(), this.playerInfo.getVipInterimTimeLimit().getTime() / 1000);
 		}
 		return true;
 	}

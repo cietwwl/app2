@@ -1,0 +1,14 @@
+//protocol=607;
+option java_package = "com.chuangyou.common.protobuf.pb.player";
+option java_outer_classname = "OtherEquipmentInfoProto";
+
+import "player/PlayerSimpleInfoMsg.proto";
+import "army/PropertyListMsg.proto";
+import "item/ItemListMsg.proto";
+import "equip/EquipBarInfoMsg.proto";
+message OtherEquipmentInfoMsg{
+	optional PlayerSimpleInfoMsg simpleInfoMsg = 1;//玩家简单信息
+	optional PropertyListMsg  propertitys=2;       //玩家属性列表
+	optional ItemListMsg	  itemListMsg=3;       //玩家装备列表
+	repeated EquipBarInfoMsg  equipBarInfoMsg=4;   //玩家装备栏信息
+}

@@ -456,6 +456,57 @@ public final class GoodsInfoProto {
      */
     com.google.protobuf.ByteString
         getDiscountEndBytes();
+
+    /**
+     * <code>optional int32 moneyType1 = 24;</code>
+     *
+     * <pre>
+     * 第二种消耗货币类型
+     * </pre>
+     */
+    boolean hasMoneyType1();
+    /**
+     * <code>optional int32 moneyType1 = 24;</code>
+     *
+     * <pre>
+     * 第二种消耗货币类型
+     * </pre>
+     */
+    int getMoneyType1();
+
+    /**
+     * <code>optional int64 price1 = 25;</code>
+     *
+     * <pre>
+     * 第二种消耗价格
+     * </pre>
+     */
+    boolean hasPrice1();
+    /**
+     * <code>optional int64 price1 = 25;</code>
+     *
+     * <pre>
+     * 第二种消耗价格
+     * </pre>
+     */
+    long getPrice1();
+
+    /**
+     * <code>optional int32 level = 26;</code>
+     *
+     * <pre>
+     * 备用等级要求(玩家帮派商店表示商店等级要求， 系统帮派商店表示玩家境界要求)
+     * </pre>
+     */
+    boolean hasLevel();
+    /**
+     * <code>optional int32 level = 26;</code>
+     *
+     * <pre>
+     * 备用等级要求(玩家帮派商店表示商店等级要求， 系统帮派商店表示玩家境界要求)
+     * </pre>
+     */
+    int getLevel();
   }
   /**
    * Protobuf type {@code GoodsInfo}
@@ -632,6 +683,21 @@ public final class GoodsInfoProto {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00400000;
               discountEnd_ = bs;
+              break;
+            }
+            case 192: {
+              bitField0_ |= 0x00800000;
+              moneyType1_ = input.readInt32();
+              break;
+            }
+            case 200: {
+              bitField0_ |= 0x01000000;
+              price1_ = input.readInt64();
+              break;
+            }
+            case 208: {
+              bitField0_ |= 0x02000000;
+              level_ = input.readInt32();
               break;
             }
           }
@@ -1389,6 +1455,75 @@ public final class GoodsInfoProto {
       }
     }
 
+    public static final int MONEYTYPE1_FIELD_NUMBER = 24;
+    private int moneyType1_;
+    /**
+     * <code>optional int32 moneyType1 = 24;</code>
+     *
+     * <pre>
+     * 第二种消耗货币类型
+     * </pre>
+     */
+    public boolean hasMoneyType1() {
+      return ((bitField0_ & 0x00800000) == 0x00800000);
+    }
+    /**
+     * <code>optional int32 moneyType1 = 24;</code>
+     *
+     * <pre>
+     * 第二种消耗货币类型
+     * </pre>
+     */
+    public int getMoneyType1() {
+      return moneyType1_;
+    }
+
+    public static final int PRICE1_FIELD_NUMBER = 25;
+    private long price1_;
+    /**
+     * <code>optional int64 price1 = 25;</code>
+     *
+     * <pre>
+     * 第二种消耗价格
+     * </pre>
+     */
+    public boolean hasPrice1() {
+      return ((bitField0_ & 0x01000000) == 0x01000000);
+    }
+    /**
+     * <code>optional int64 price1 = 25;</code>
+     *
+     * <pre>
+     * 第二种消耗价格
+     * </pre>
+     */
+    public long getPrice1() {
+      return price1_;
+    }
+
+    public static final int LEVEL_FIELD_NUMBER = 26;
+    private int level_;
+    /**
+     * <code>optional int32 level = 26;</code>
+     *
+     * <pre>
+     * 备用等级要求(玩家帮派商店表示商店等级要求， 系统帮派商店表示玩家境界要求)
+     * </pre>
+     */
+    public boolean hasLevel() {
+      return ((bitField0_ & 0x02000000) == 0x02000000);
+    }
+    /**
+     * <code>optional int32 level = 26;</code>
+     *
+     * <pre>
+     * 备用等级要求(玩家帮派商店表示商店等级要求， 系统帮派商店表示玩家境界要求)
+     * </pre>
+     */
+    public int getLevel() {
+      return level_;
+    }
+
     private void initFields() {
       privateId_ = 0;
       itemType_ = 0;
@@ -1413,6 +1548,9 @@ public final class GoodsInfoProto {
       vipLv_ = 0;
       discountStart_ = "";
       discountEnd_ = "";
+      moneyType1_ = 0;
+      price1_ = 0L;
+      level_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1540,6 +1678,15 @@ public final class GoodsInfoProto {
       if (((bitField0_ & 0x00400000) == 0x00400000)) {
         output.writeBytes(23, getDiscountEndBytes());
       }
+      if (((bitField0_ & 0x00800000) == 0x00800000)) {
+        output.writeInt32(24, moneyType1_);
+      }
+      if (((bitField0_ & 0x01000000) == 0x01000000)) {
+        output.writeInt64(25, price1_);
+      }
+      if (((bitField0_ & 0x02000000) == 0x02000000)) {
+        output.writeInt32(26, level_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1640,6 +1787,18 @@ public final class GoodsInfoProto {
       if (((bitField0_ & 0x00400000) == 0x00400000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(23, getDiscountEndBytes());
+      }
+      if (((bitField0_ & 0x00800000) == 0x00800000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(24, moneyType1_);
+      }
+      if (((bitField0_ & 0x01000000) == 0x01000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(25, price1_);
+      }
+      if (((bitField0_ & 0x02000000) == 0x02000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(26, level_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1808,6 +1967,12 @@ public final class GoodsInfoProto {
         bitField0_ = (bitField0_ & ~0x00200000);
         discountEnd_ = "";
         bitField0_ = (bitField0_ & ~0x00400000);
+        moneyType1_ = 0;
+        bitField0_ = (bitField0_ & ~0x00800000);
+        price1_ = 0L;
+        bitField0_ = (bitField0_ & ~0x01000000);
+        level_ = 0;
+        bitField0_ = (bitField0_ & ~0x02000000);
         return this;
       }
 
@@ -1928,6 +2093,18 @@ public final class GoodsInfoProto {
           to_bitField0_ |= 0x00400000;
         }
         result.discountEnd_ = discountEnd_;
+        if (((from_bitField0_ & 0x00800000) == 0x00800000)) {
+          to_bitField0_ |= 0x00800000;
+        }
+        result.moneyType1_ = moneyType1_;
+        if (((from_bitField0_ & 0x01000000) == 0x01000000)) {
+          to_bitField0_ |= 0x01000000;
+        }
+        result.price1_ = price1_;
+        if (((from_bitField0_ & 0x02000000) == 0x02000000)) {
+          to_bitField0_ |= 0x02000000;
+        }
+        result.level_ = level_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2024,6 +2201,15 @@ public final class GoodsInfoProto {
           bitField0_ |= 0x00400000;
           discountEnd_ = other.discountEnd_;
           onChanged();
+        }
+        if (other.hasMoneyType1()) {
+          setMoneyType1(other.getMoneyType1());
+        }
+        if (other.hasPrice1()) {
+          setPrice1(other.getPrice1());
+        }
+        if (other.hasLevel()) {
+          setLevel(other.getLevel());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -3512,6 +3698,150 @@ public final class GoodsInfoProto {
         return this;
       }
 
+      private int moneyType1_ ;
+      /**
+       * <code>optional int32 moneyType1 = 24;</code>
+       *
+       * <pre>
+       * 第二种消耗货币类型
+       * </pre>
+       */
+      public boolean hasMoneyType1() {
+        return ((bitField0_ & 0x00800000) == 0x00800000);
+      }
+      /**
+       * <code>optional int32 moneyType1 = 24;</code>
+       *
+       * <pre>
+       * 第二种消耗货币类型
+       * </pre>
+       */
+      public int getMoneyType1() {
+        return moneyType1_;
+      }
+      /**
+       * <code>optional int32 moneyType1 = 24;</code>
+       *
+       * <pre>
+       * 第二种消耗货币类型
+       * </pre>
+       */
+      public Builder setMoneyType1(int value) {
+        bitField0_ |= 0x00800000;
+        moneyType1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 moneyType1 = 24;</code>
+       *
+       * <pre>
+       * 第二种消耗货币类型
+       * </pre>
+       */
+      public Builder clearMoneyType1() {
+        bitField0_ = (bitField0_ & ~0x00800000);
+        moneyType1_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private long price1_ ;
+      /**
+       * <code>optional int64 price1 = 25;</code>
+       *
+       * <pre>
+       * 第二种消耗价格
+       * </pre>
+       */
+      public boolean hasPrice1() {
+        return ((bitField0_ & 0x01000000) == 0x01000000);
+      }
+      /**
+       * <code>optional int64 price1 = 25;</code>
+       *
+       * <pre>
+       * 第二种消耗价格
+       * </pre>
+       */
+      public long getPrice1() {
+        return price1_;
+      }
+      /**
+       * <code>optional int64 price1 = 25;</code>
+       *
+       * <pre>
+       * 第二种消耗价格
+       * </pre>
+       */
+      public Builder setPrice1(long value) {
+        bitField0_ |= 0x01000000;
+        price1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 price1 = 25;</code>
+       *
+       * <pre>
+       * 第二种消耗价格
+       * </pre>
+       */
+      public Builder clearPrice1() {
+        bitField0_ = (bitField0_ & ~0x01000000);
+        price1_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int level_ ;
+      /**
+       * <code>optional int32 level = 26;</code>
+       *
+       * <pre>
+       * 备用等级要求(玩家帮派商店表示商店等级要求， 系统帮派商店表示玩家境界要求)
+       * </pre>
+       */
+      public boolean hasLevel() {
+        return ((bitField0_ & 0x02000000) == 0x02000000);
+      }
+      /**
+       * <code>optional int32 level = 26;</code>
+       *
+       * <pre>
+       * 备用等级要求(玩家帮派商店表示商店等级要求， 系统帮派商店表示玩家境界要求)
+       * </pre>
+       */
+      public int getLevel() {
+        return level_;
+      }
+      /**
+       * <code>optional int32 level = 26;</code>
+       *
+       * <pre>
+       * 备用等级要求(玩家帮派商店表示商店等级要求， 系统帮派商店表示玩家境界要求)
+       * </pre>
+       */
+      public Builder setLevel(int value) {
+        bitField0_ |= 0x02000000;
+        level_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 level = 26;</code>
+       *
+       * <pre>
+       * 备用等级要求(玩家帮派商店表示商店等级要求， 系统帮派商店表示玩家境界要求)
+       * </pre>
+       */
+      public Builder clearLevel() {
+        bitField0_ = (bitField0_ & ~0x02000000);
+        level_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:GoodsInfo)
     }
 
@@ -3537,7 +3867,7 @@ public final class GoodsInfoProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\024shop/GoodsInfo.proto\"\273\003\n\tGoodsInfo\022\021\n\t" +
+      "\n\024shop/GoodsInfo.proto\"\356\003\n\tGoodsInfo\022\021\n\t" +
       "privateId\030\001 \002(\005\022\020\n\010itemType\030\002 \001(\005\022\014\n\004bin" +
       "d\030\003 \001(\005\022\021\n\tmoneyType\030\004 \001(\005\022\r\n\005price\030\005 \002(" +
       "\003\022\020\n\010discount\030\006 \002(\005\022\026\n\016serverLimitNum\030\007 " +
@@ -3548,9 +3878,10 @@ public final class GoodsInfoProto {
       " \001(\005\022\024\n\014roleProcured\030\020 \001(\005\022\013\n\003tab\030\021 \001(\005\022" +
       "\014\n\004sort\030\022 \001(\005\022\021\n\tisPreview\030\023 \001(\005\022\017\n\007easy",
       "Buy\030\024 \001(\005\022\r\n\005vipLv\030\025 \001(\005\022\025\n\rdiscountStar" +
-      "t\030\026 \001(\t\022\023\n\013discountEnd\030\027 \001(\tB7\n%com.chua" +
-      "ngyou.common.protobuf.pb.shopB\016GoodsInfo" +
-      "Proto"
+      "t\030\026 \001(\t\022\023\n\013discountEnd\030\027 \001(\t\022\022\n\nmoneyTyp" +
+      "e1\030\030 \001(\005\022\016\n\006price1\030\031 \001(\003\022\r\n\005level\030\032 \001(\005B" +
+      "7\n%com.chuangyou.common.protobuf.pb.shop" +
+      "B\016GoodsInfoProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3569,7 +3900,7 @@ public final class GoodsInfoProto {
     internal_static_GoodsInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_GoodsInfo_descriptor,
-        new java.lang.String[] { "PrivateId", "ItemType", "Bind", "MoneyType", "Price", "Discount", "ServerLimitNum", "PersonLimitNum", "TimeType", "ShelvesTime", "ShelfTime", "StartTime", "EndTime", "ResetTime", "ServerProcured", "RoleProcured", "Tab", "Sort", "IsPreview", "EasyBuy", "VipLv", "DiscountStart", "DiscountEnd", });
+        new java.lang.String[] { "PrivateId", "ItemType", "Bind", "MoneyType", "Price", "Discount", "ServerLimitNum", "PersonLimitNum", "TimeType", "ShelvesTime", "ShelfTime", "StartTime", "EndTime", "ResetTime", "ServerProcured", "RoleProcured", "Tab", "Sort", "IsPreview", "EasyBuy", "VipLv", "DiscountStart", "DiscountEnd", "MoneyType1", "Price1", "Level", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

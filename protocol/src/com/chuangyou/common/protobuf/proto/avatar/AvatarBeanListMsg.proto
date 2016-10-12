@@ -1,0 +1,8 @@
+//protocol=628;
+option java_package = "com.chuangyou.common.protobuf.pb.avatar";
+option java_outer_classname = "AvatarBeanListMsgProto";
+import "avatar/AvatarBeanMsg.proto";
+//分身列表信息
+message AvatarBeanListMsg {
+	repeated AvatarBeanMsg avatarListInfos = 1;
+}

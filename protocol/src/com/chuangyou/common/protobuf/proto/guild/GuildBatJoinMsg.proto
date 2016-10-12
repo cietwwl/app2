@@ -1,0 +1,10 @@
+//protocol=166;
+option java_package = "com.chuangyou.common.protobuf.pb.guild";
+option java_outer_classname = "GuildBatJoinProto";
+
+import "guild/GuildMemberInfoMsg.proto";
+
+//玩家批量加入
+message GuildBatJoinMsg{
+	repeated GuildMemberInfoMsg member = 2; // 帮派成员
+}

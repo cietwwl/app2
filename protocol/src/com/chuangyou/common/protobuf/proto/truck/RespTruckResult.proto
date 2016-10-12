@@ -1,0 +1,13 @@
+//protocol=2622;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "RespTruckResultProto";
+
+
+//运镖完成
+message RespTruckResult {
+	required int32 type = 1;	//1.个人镖车 2.帮派镖车 3.镖师
+	required int32 state = 2;	//完成状态
+	required int32 exp = 3;		//当前经验
+	required int32 level = 4;	//当前等级
+	required int32 skillPoint = 5;	//当前技能点
+}

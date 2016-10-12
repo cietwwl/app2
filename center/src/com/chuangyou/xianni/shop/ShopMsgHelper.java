@@ -63,6 +63,10 @@ public class ShopMsgHelper {
 		info.setVipLv(cfg.getVipLv());
 		info.setDiscountStart(cfg.getDiscountStart());
 		info.setDiscountEnd(cfg.getDiscountEnd());
+		
+		info.setMoneyType1(cfg.getMoneyType1());
+		info.setPrice1(cfg.getPrice1());
+		info.setLevel(cfg.getLevel());
 		return info;
 	}
 	

@@ -12,6 +12,8 @@ public class EntityIdBuilder {
 	private static AtomicInteger	CAMPAIGN_RECORD_ID;
 	private static AtomicInteger	TEAM_ID;
 	private static AtomicInteger	SPACE_MSG_ID;
+	private static AtomicInteger	AVATAR_INFO_ID;
+	private static AtomicInteger	GUILD_ID;
 
 	public static boolean init() {
 		long minId = NetConfigSet.server_id * 1000l * 10000;
@@ -29,6 +31,8 @@ public class EntityIdBuilder {
 		CAMPAIGN_RECORD_ID = new AtomicInteger(DBManager.getCampaignRecordInfoDao().getMaxId());
 		TEAM_ID = new AtomicInteger(1);
 		SPACE_MSG_ID = new AtomicInteger(DBManager.getSpaceDao().getMaxId());
+		AVATAR_INFO_ID = new AtomicInteger(DBManager.getAvatarInfoDao().getMaxId());
+		GUILD_ID = new AtomicInteger(DBManager.getGuildInfoDao().getMaxGuildId());
 		return true;
 	}
 
@@ -75,6 +79,25 @@ public class EntityIdBuilder {
 	public static int teamIdBuilder() {
 		synchronized (TEAM_ID) {
 			return TEAM_ID.getAndIncrement();
+		}
+	}
+
+	/**
+	 * 分身ID
+	 */
+	public static int avatarIdBuilder() {
+		synchronized (AVATAR_INFO_ID) {
+			return AVATAR_INFO_ID.getAndIncrement();
+		}
+	}
+	
+	/**
+	 * 帮派ID生成
+	 * @return
+	 */
+	public static int guildIdBuild(){
+		synchronized (GUILD_ID) {
+			return GUILD_ID.getAndIncrement();
 		}
 	}
 }

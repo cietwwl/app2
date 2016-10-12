@@ -14,7 +14,7 @@ public class Skill {
 	private int						skillId;			// 技能ID
 	private long					lastUsed;			// 最后一次使用时间
 	private int						level;
-
+	
 	public Skill(SkillActionTemplateInfo templateInfo) {
 		this(templateInfo, 1);
 	}

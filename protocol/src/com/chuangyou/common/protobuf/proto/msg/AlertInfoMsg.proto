@@ -1,0 +1,14 @@
+//26;
+option java_package = "com.chuangyou.common.protobuf.pb.msg";
+option java_outer_classname = "AlertInfoMsgProto";
+//µ¯³öÏûÏ¢
+message AlertInfoMsg{
+	optional int32   alertCode= 1;// 
+	optional int32   intParam1= 2;//
+	optional int32   intParam2= 3;// 
+	optional int64 	 longParam1= 4;// 
+	optional int64   longParam2= 5;// 
+	optional string  strParam1= 6;// 
+	optional string  strParam2= 7;//  	
+ }
+

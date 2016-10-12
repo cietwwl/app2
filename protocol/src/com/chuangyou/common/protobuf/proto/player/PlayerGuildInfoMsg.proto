@@ -1,0 +1,11 @@
+//protocol=171;
+option java_package = "com.chuangyou.common.protobuf.pb.player";
+option java_outer_classname = "PlayerGuildInfoProto";
+
+//玩家帮派信息更新广播消息
+message PlayerGuildInfoMsg{
+	optional int64 playerId = 1; // 过膝ID
+	optional int32 guildId = 2; // 所在帮派ID
+	optional string guildName = 3; // 所在帮派名字
+	optional int32 guildJob = 4; // 在帮派里的职位
+}

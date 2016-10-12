@@ -1,0 +1,9 @@
+//protocol=10156;
+option java_package = "com.chuangyou.common.protobuf.pb.guild";
+option java_outer_classname = "GuildCreateReqProto";
+
+//门派创建请求
+message GuildCreateReqMsg{
+	optional int32 createType = 1; // 创建类型(1铜币创建  2道具创建)
+	optional string guildName = 2; // 帮派名字
+}

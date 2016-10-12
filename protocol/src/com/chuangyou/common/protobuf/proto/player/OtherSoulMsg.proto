@@ -1,0 +1,19 @@
+//protocol=611;
+option java_package = "com.chuangyou.common.protobuf.pb.player";
+option java_outer_classname = "OtherSoulgProto";
+import "army/PropertyListMsg.proto";
+import "soul/CardInfoMsg.proto";
+message OtherSoulMsg{
+	optional int64 playerId=1; //角色ID
+	optional int32 card1=2; //卡1
+	optional int32 card2=3; //卡2
+	optional int32 card3=4; //卡3
+	optional int32 card4=5; //卡4
+	optional int32 card5=6; //卡5
+	optional int32 card6=7; //卡6
+	optional int32 card7=8; //卡7
+	optional int32 card8=9; //卡8
+	repeated CardInfoMsg cardInfos = 10;//魂幡详细信息
+	optional PropertyListMsg  propertitys=11;       //魂幡属性列表
+
+}

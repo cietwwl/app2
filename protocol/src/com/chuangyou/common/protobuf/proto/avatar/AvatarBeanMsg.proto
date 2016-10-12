@@ -1,0 +1,22 @@
+//protocol=627;
+option java_package = "com.chuangyou.common.protobuf.pb.avatar";
+option java_outer_classname = "AvatarBeanProto";
+
+//分身信息
+message AvatarBeanMsg{	
+	optional int32 indexId=1;//分身唯一ID
+	optional int64 playerId=2;//玩家ID
+	optional int32 tempId=3;//模板ID
+	optional int32 grade=4;//等级
+	optional int32 star=5;//星级
+	optional int32 correspond=6;//默契等级
+	optional int32 schedule=7;//默契进度
+	optional int32 statu=8;//0 未出战 1 出战
+	optional int32 sort=9;//序号
+	optional int32	skillId=10; // 技能ID
+	optional int32	skillStrengthen1=11;	// 神通ID1
+	optional int32	skillStrengthen2=12;	// 神通ID2
+	optional int32	skillStrengthen3=13;	// 神通ID3
+	optional int32	skillStrengthen4=14;	// 神通ID4
+	optional int32	skillStrengthen5=15;	// 神通ID5
+}

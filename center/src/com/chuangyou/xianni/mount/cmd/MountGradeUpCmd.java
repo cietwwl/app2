@@ -12,6 +12,7 @@ import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.mount.MountGradeCfg;
 import com.chuangyou.xianni.entity.mount.MountInfo;
+import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.mount.manager.MountManager;
 import com.chuangyou.xianni.mount.template.MountTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
@@ -19,6 +20,7 @@ import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
+import com.chuangyou.xianni.state.event.MountStateEvent;
 
 @Cmd(code = Protocol.C_MOUNT_GRADE_UP, desc = "坐骑进阶")
 public class MountGradeUpCmd extends AbstractCommand {
@@ -63,6 +65,11 @@ public class MountGradeUpCmd extends AbstractCommand {
 		}else{
 			int addBless = random.next(gradeCfg.getFailBlessMin(), gradeCfg.getFailBlessMax());
 			mount.setBless(mount.getBless() + addBless);
+			if(mount.getBless() >= gradeCfg.getBlessMax()){
+				mount.setGrade(mount.getGrade() + 1);
+				mount.setBless(0);
+				isSuccess = true;
+			}
 		}
 		player.getMountInventory().updateMount(mount);
 		
@@ -72,20 +79,24 @@ public class MountGradeUpCmd extends AbstractCommand {
 		PBMessage p = MessageUtil.buildMessage(Protocol.U_MOUNT_GRADE_UP, msg);
 		player.sendPbMessage(p);
 		
-		//属性变更
-		MountAttUpdateRespMsg.Builder attMsg = MountAttUpdateRespMsg.newBuilder();
-		Map<Integer, Integer> attMap = MountManager.computeMountAtt(player);
-		for(Integer attType:attMap.keySet()){
-			AttributeBeanMsg.Builder bean = AttributeBeanMsg.newBuilder();
-			bean.setAttType(attType);
-			bean.setAttValue(attMap.get(attType));
-			attMsg.addAtts(bean);
+		if(isSuccess == true){
+			//属性变更
+			MountAttUpdateRespMsg.Builder attMsg = MountAttUpdateRespMsg.newBuilder();
+			Map<Integer, Integer> attMap = MountManager.computeMountAtt(player);
+			for(Integer attType:attMap.keySet()){
+				AttributeBeanMsg.Builder bean = AttributeBeanMsg.newBuilder();
+				bean.setAttType(attType);
+				bean.setAttValue(attMap.get(attType));
+				attMsg.addAtts(bean);
+			}
+			PBMessage pAtt = MessageUtil.buildMessage(Protocol.U_MOUNT_ATT_UPDATE, attMsg);
+			player.sendPbMessage(pAtt);
+			
+			//影响人物属性变更
+			player.getMountInventory().updataProperty();
+			
+			player.notifyListeners(new MountStateEvent(this,2, mount.getGrade(),0,EventNameType.MOUNT));
 		}
-		PBMessage pAtt = MessageUtil.buildMessage(Protocol.U_MOUNT_ATT_UPDATE, attMsg);
-		player.sendPbMessage(pAtt);
-		
-		//影响人物属性变更
-		player.getMountInventory().updataProperty();
 	}
 
 }

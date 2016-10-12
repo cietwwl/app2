@@ -5,6 +5,7 @@ import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.NetConfigSet;
 import com.chuangyou.common.util.NetConfigXml;
 import com.chuangyou.common.util.ServerType;
+import com.chuangyou.xianni.battle.mgr.AvatarTempManager;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.campaign.CampaignTaskTempMgr;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
@@ -23,6 +24,8 @@ import com.chuangyou.xianni.role.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.role.template.NpcInfoTemplateMgr;
 import com.chuangyou.xianni.script.manager.ScriptManager;
 import com.chuangyou.xianni.sql.db.pool.DBPoolMgr;
+import com.chuangyou.xianni.state.StateTemplateMgr;
+import com.chuangyou.xianni.truck.TruckTempMgr;
 import com.chuangyou.xianni.warfield.FieldMgr;
 import com.chuangyou.xianni.warfield.navi.NavigationManager;
 import com.chuangyou.xianni.warfield.template.FieldTemplateMgr;
@@ -136,10 +139,18 @@ public class SceneServer extends BaseServer {
 		if (!initComponent(MountTempleteMgr.init(), "坐骑模板初始化")) {
 			return false;
 		}
-		if(!initComponent(EquipTemplateMgr.init(), "装备觉醒")){
+		if (!initComponent(EquipTemplateMgr.init(), "装备觉醒")) {
 			return false;
 		}
-
+		if (!initComponent(TruckTempMgr.init(), "运镖")) {
+			return false;
+		}
+		if (!initComponent(StateTemplateMgr.init(), "消耗模板数据")) {
+			return false;
+		}
+		if (!initComponent(AvatarTempManager.init(), "分身默契模板")) {
+			return false;
+		}
 		return true;
 	}
 

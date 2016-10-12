@@ -28,9 +28,9 @@ public class CommitFuseSkillLogic extends BaseFuseLogic implements IFuseLogic {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_FUSE, "没有需要确定的融合技能");
 			return;
 		}
-		
 		FuseSkillVo newSkillID = tempSkillMap.get(this.index);
 		this.setNewSkill(newSkillID.getSkillId(),newSkillID.getColor());
+		tempSkillMap.remove(index);
 		
 		this.sendResult(player);
 	

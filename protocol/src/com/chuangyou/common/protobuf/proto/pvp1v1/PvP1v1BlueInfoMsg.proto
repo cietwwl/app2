@@ -1,0 +1,9 @@
+//protocol=624;
+option java_package = "com.chuangyou.common.protobuf.pb.pvp1v1";
+option java_outer_classname = "PvP1v1BlueInfoProto";
+
+import "player/PlayerSimpleInfoMsg.proto";
+//蓝色方信息
+message PvP1v1BlueInfoMsg{
+	optional PlayerSimpleInfoMsg blueInfo=1;//蓝色方用户信息
+}

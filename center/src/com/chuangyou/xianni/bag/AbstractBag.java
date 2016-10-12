@@ -448,6 +448,8 @@ public abstract class AbstractBag {
 				return true;
 			case BagType.HeroEquipment:
 				return true;
+			case BagType.VirtualValue:
+				return true;
 			default:
 				return false;
 		}

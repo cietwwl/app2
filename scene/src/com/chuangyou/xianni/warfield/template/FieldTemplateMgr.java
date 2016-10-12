@@ -23,7 +23,7 @@ public class FieldTemplateMgr {
 		List<FieldInfo> info = dao.getAll();
 		for (FieldInfo f : info) {
 			fieldTemps.put(f.getMapKey(), f);
-			if (f.getType() == 2) {
+			if (f.getCampaignId() != 0) {
 				if (!campaignFieldInfoMaps.containsKey(f.getCampaignId())) {
 					campaignFieldInfoMaps.put(f.getCampaignId(), new HashMap<>());
 				}

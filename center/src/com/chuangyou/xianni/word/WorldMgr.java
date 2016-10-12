@@ -7,6 +7,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
+import com.chuangyou.common.protobuf.pb.msg.AlertInfoMsgProto.AlertInfoMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
@@ -17,27 +18,32 @@ import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.player.PlayerJoinInfo;
 import com.chuangyou.xianni.entity.player.PlayerPositionInfo;
 import com.chuangyou.xianni.entity.player.PlayerTimeInfo;
+import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.exec.CmdTask;
 import com.chuangyou.xianni.map.MapProxyManager;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.player.cmd.GamePlayerDisposeCmd;
+import com.chuangyou.xianni.player.manager.PlayerManager;
+import com.chuangyou.xianni.proto.BroadcastUtil;
 import com.chuangyou.xianni.proto.PBMessage;
+import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.rank.RankServerManager;
 import com.chuangyou.xianni.shop.ShopServerManager;
 import com.chuangyou.xianni.sql.dao.DBManager;
 import com.chuangyou.xianni.word.WorldMgr.Players.PlayerData;
 
 public class WorldMgr {
 
-	private static Players players;
-	
+	private static Players			players;
+
 	/** 在线(包括缓存)玩家等级排序表 */
-	private static List<GamePlayer> levelRankCache = new ArrayList<>();
+	private static List<GamePlayer>	levelRankCache		= new ArrayList<>();
 	/** 上次等级排序时间 */
-	private static long lastLevelRankTime = 0;
+	private static long				lastLevelRankTime	= 0;
 	/** 排序最低间隔时间(单位：秒) */
-	private static final long RANK_CD = 300;
-	
+	private static final long		RANK_CD				= 300;
+
 	public static boolean init() {
 		players = new Players();
 		return true;
@@ -65,12 +71,52 @@ public class WorldMgr {
 			return null;
 		}
 		PlayerJoinInfo playerJoinInfo = DBManager.getPlayerInfoDao().getJoinInfo(playerId);
+		if(playerJoinInfo == null){
+			playerJoinInfo = new PlayerJoinInfo();
+			playerJoinInfo.setPlayerId(playerInfo.getPlayerId());
+
+			BaseProperty initProperty = PlayerManager.getPlayerBaseProperty(1);
+			playerJoinInfo.setCurSoul(initProperty.getSoul());
+			playerJoinInfo.setCurBlood(initProperty.getBlood());
+			playerJoinInfo.setSoul(initProperty.getSoul());
+			playerJoinInfo.setBlood(initProperty.getBlood());
+			playerJoinInfo.setAttack(0);
+			playerJoinInfo.setDefence(0);
+			playerJoinInfo.setSoulAttack(0);
+			playerJoinInfo.setSoulDefence(0);
+			playerJoinInfo.setAccurate(0);
+			playerJoinInfo.setDodge(0);
+			playerJoinInfo.setCrit(0);
+			playerJoinInfo.setCritDefence(0);
+			playerJoinInfo.setCritAddtion(0);
+			playerJoinInfo.setCritCut(0);
+			playerJoinInfo.setAttackAddtion(0);
+			playerJoinInfo.setAttackCut(0);
+			playerJoinInfo.setSoulAttackAddtion(0);
+			playerJoinInfo.setSoulAttackCut(0);
+			playerJoinInfo.setRegainSoul(0);
+			playerJoinInfo.setRegainBlood(0);
+			playerJoinInfo.setMetal(0);
+			playerJoinInfo.setWood(0);
+			playerJoinInfo.setWater(0);
+			playerJoinInfo.setFire(0);
+			playerJoinInfo.setEarth(0);
+			playerJoinInfo.setMetalDefence(0);
+			playerJoinInfo.setWoodDefence(0);
+			playerJoinInfo.setWaterDefence(0);
+			playerJoinInfo.setFireDefence(0);
+			playerJoinInfo.setEarthDefence(0);
+			playerJoinInfo.setSpeed(initProperty.getSpeed());
+			playerJoinInfo.setOp(Option.Insert);
+		}
 		PlayerTimeInfo playerTimeInfo = DBManager.getPlayerInfoDao().getTimeInfo(playerId);
 		if (playerTimeInfo == null) {
 			playerTimeInfo = new PlayerTimeInfo();
 			playerTimeInfo.setPlayerId(playerInfo.getPlayerId());
-			playerTimeInfo.setResetTime(new Date());
 			playerTimeInfo.setSigleCampCount(0);
+			playerTimeInfo.setChallengeCampCount(0);
+			playerTimeInfo.setResetTime(new Date());
+			playerTimeInfo.setOfflineTime(new Date());
 			playerTimeInfo.setOp(Option.Insert);
 		}
 		PlayerPositionInfo playerPositionInfo = DBManager.getPlayerPositionInfoDao().get(playerId);
@@ -94,26 +140,27 @@ public class WorldMgr {
 		players.put(playerId, player);
 		return player;
 	}
-	
+
 	/**
 	 * 直接从库里获取玩家基本信息
+	 * 
 	 * @param nickName
 	 * @return
 	 */
-	public static PlayerInfo getPlayerInfoFromDatabase(String nickName){
+	public static PlayerInfo getPlayerInfoFromDatabase(String nickName) {
 		PlayerInfo playerInfo = null;
 		List<GamePlayer> list = getOnLinePlayers();
-		for(GamePlayer p: list){
-			if(p.getNickName().equals(nickName)){
+		for (GamePlayer p : list) {
+			if (p.getNickName().equals(nickName)) {
 				playerInfo = p.getBasePlayer().getPlayerInfo();
 				break;
 			}
 		}
-		
-		if(playerInfo == null){
+
+		if (playerInfo == null) {
 			playerInfo = DBManager.getPlayerInfoDao().getPlayerInfo(nickName);
 		}
-		
+
 		return playerInfo;
 	}
 
@@ -283,19 +330,22 @@ public class WorldMgr {
 	 */
 	private static void saveSystemData() {
 		ShopServerManager.saveToDatabase();
+		RankServerManager.getInstance().saveToDatabase();
+
 	}
-	
+
 	/**
 	 * 获取玩家等级排行
+	 * 
 	 * @return
 	 */
-	public static List<GamePlayer> getPlayerLevelRank(){
-		if(System.currentTimeMillis() - lastLevelRankTime < RANK_CD*1000){
+	public static List<GamePlayer> getPlayerLevelRank() {
+		if (System.currentTimeMillis() - lastLevelRankTime < RANK_CD * 1000) {
 			return levelRankCache;
 		}
 		List<GamePlayer> playerList = new ArrayList<>();
 		playerList.addAll(players.values());
-		
+
 		playerList.sort(new Comparator<GamePlayer>() {
 			@Override
 			public int compare(GamePlayer o1, GamePlayer o2) {
@@ -305,10 +355,10 @@ public class WorldMgr {
 		});
 		levelRankCache = playerList;
 		lastLevelRankTime = System.currentTimeMillis();
-		
+
 		return levelRankCache;
 	}
-	
+
 	static class Players {
 		Hashtable<Long, PlayerData> context = new Hashtable<Long, PlayerData>();
 
@@ -447,5 +497,10 @@ public class WorldMgr {
 				player.resetPlayerData();
 			}
 		}
+	}
+
+	// 全服提示消息
+	public static void sendMsg2All(AlertInfoMsg.Builder alertMsg) {
+		BroadcastUtil.sendBroadcasePacketToAll(Protocol.U_ALERT_MSG, alertMsg.build());
 	}
 }

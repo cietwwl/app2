@@ -51,23 +51,124 @@ public class LevelUpTempleteMgr {
 	}
 	
 	/**
+	 * 根据总经验获取当前等级
+	 * @param type
+	 * @param totalExp
+	 * @return
+	 */
+	public static int getLevelByTotalExp(int type, long totalExp){
+		List<LevelUp> list = levelUpListMap.get(type);
+		if(list == null){
+			return 1;
+		}
+		long templateTotalExp = 0;
+		for(LevelUp levelUp: list){
+			templateTotalExp += levelUp.getExp();
+			if(templateTotalExp > totalExp){
+				return levelUp.getLevel();
+			}
+		}
+		return maxLevelMap.get(type);
+	}
+	
+	/**
+	 * 获取指定等级需要的总经验
+	 * @param type
+	 * @param level
+	 * @return
+	 */
+	public static long getLevelNeedExp(int type, int level){
+		List<LevelUp> list = levelUpListMap.get(type);
+		if(list == null){
+			return 0;
+		}
+		long templeteTotalExp = 0;
+		for(LevelUp levelUp:list){
+			if(levelUp.getLevel() == level){
+				return templeteTotalExp;
+			}
+			templeteTotalExp += levelUp.getExp();
+		}
+		LevelUp maxLevel = levelUpMap.get(type).get(maxLevelMap.get(type));
+		return maxLevel.getExp();
+	}
+	/**
+	 * 获取最大等级
+	 * @param type
+	 * @return
+	 */
+	public static int getMaxLevel(int type){
+		if(!maxLevelMap.containsKey(type)){
+			return 0;
+		}
+		return maxLevelMap.get(type);
+	}
+	
+	/**
+	 * 获取当前等级配置
+	 * @param type
+	 * @param level
+	 * @return
+	 */
+	public static LevelUp getLevelUp(int type, int level){
+		Map<Integer, LevelUp> typeLevelMap = levelUpMap.get(type);
+		if(typeLevelMap == null){
+			return new LevelUp();
+		}
+		return typeLevelMap.get(level);
+	}
+	
+	/**
 	 * 根据人物总经验获取人物等级
 	 * @param totalExp
 	 * @return
 	 */
 	public static int getPlayerLevel(long totalExp){
-		List<LevelUp> list = levelUpListMap.get(LevelUpType.PLAYER);
-		if(list == null){
-			return 1;
-		}
-		long templeteTotalExp = 0;
-		for(LevelUp levelUp:list){
-			templeteTotalExp += levelUp.getExp();
-			if(templeteTotalExp > totalExp){
-				return levelUp.getLevel();
-			}
-		}
-		return maxLevelMap.get(LevelUpType.PLAYER);
+		return getLevelByTotalExp(LevelUpType.PLAYER, totalExp);
+	}
+	
+	/**
+	 * 根据人物等级获得当前等级需要的总经验
+	 * @param level
+	 * @return
+	 */
+	public static long getPlayerLevelNeedExp(int level){
+		return getLevelNeedExp(LevelUpType.PLAYER, level);
+	}
+	
+	/**
+	 * 获取人物最大等级
+	 * @return
+	 */
+	public static int getPlayerMaxLevel(){
+		return getMaxLevel(LevelUpType.PLAYER);
+	}
+	
+	/**
+	 * 获取人物指定等级信息
+	 * @param level
+	 * @return
+	 */
+	public static LevelUp getPlayerLevelUp(int level){
+		return getLevelUp(LevelUpType.PLAYER, level);
+	}
+	
+	/**
+	 * 获取装备栏最高等级
+	 * @param position
+	 * @return
+	 */
+	public static int getEquipBarMaxLevel(short position){
+		return getMaxLevel(LevelUpType.EQUIPBARSTART + position);
+	}
+	/**
+	 * 获取装备栏升级信息
+	 * @param position
+	 * @param level
+	 * @return
+	 */
+	public static LevelUp getEquipBarLevel(short position, int level){
+		return getLevelUp(LevelUpType.EQUIPBARSTART + position, level);
 	}
 	
 	
@@ -81,85 +182,14 @@ public class LevelUpTempleteMgr {
 		if(list == null){
 			return 1;
 		}
-		long templeteTotalExp = 0;
 		for(LevelUp levelUp:list){
-			templeteTotalExp += levelUp.getExp();
-			if(templeteTotalExp > totalExp){
+			if(levelUp.getExp() >= totalExp){
 				return levelUp.getLevel();
 			}
 		}
 		return maxLevelMap.get(LevelUpType.SOUL);
 	}
 	
-	
-	/**
-	 * 根据人物等级获得当前等级需要的总经验
-	 * @param level
-	 * @return
-	 */
-	public static long getPlayerLevelNeedExp(int level){
-		List<LevelUp> list = levelUpListMap.get(LevelUpType.PLAYER);
-		if(list == null){
-			return 0;
-		}
-		long templeteTotalExp = 0;
-		for(LevelUp levelUp:list){
-			if(levelUp.getLevel() == level){
-				return templeteTotalExp;
-			}
-			templeteTotalExp += levelUp.getExp();
-		}
-		LevelUp maxLevel = levelUpMap.get(LevelUpType.PLAYER).get(maxLevelMap.get(LevelUpType.PLAYER));
-		return maxLevel.getExp();
-	}
-	
-	/**
-	 * 获取人物最大等级
-	 * @return
-	 */
-	public static int getPlayerMaxLevel(){
-		
-		if(!maxLevelMap.containsKey(LevelUpType.PLAYER)){
-			return 0;
-		}
-		return maxLevelMap.get(LevelUpType.PLAYER);
-	}
-	
-	/**
-	 * 获取人物指定等级信息
-	 * @param level
-	 * @return
-	 */
-	public static LevelUp getPlayerLevelUp(int level){
-		Map<Integer, LevelUp> typeLevelMap = levelUpMap.get(LevelUpType.PLAYER);
-		if(typeLevelMap == null){
-			return new LevelUp();
-		}
-		return typeLevelMap.get(level);
-	}
-	
-	/**
-	 * 获取装备栏最高等级
-	 * @param position
-	 * @return
-	 */
-	public static int getEquipBarMaxLevel(short position){
-		if(!maxLevelMap.containsKey(LevelUpType.EQUIPBARSTART + position)){
-			return 0;
-		}
-		return maxLevelMap.get(LevelUpType.EQUIPBARSTART + position);
-	}
-	/**
-	 * 获取装备栏升级信息
-	 * @param position
-	 * @param level
-	 * @return
-	 */
-	public static LevelUp getEquipBarLevel(short position, int level){
-		Map<Integer, LevelUp> levels = levelUpMap.get(LevelUpType.EQUIPBARSTART + position);
-		if(levels == null) return new LevelUp();
-		return levels.get(level);
-	}
 
 	public static Map<Integer, Map<Integer, LevelUp>> getLevelUpMap() {
 		return levelUpMap;

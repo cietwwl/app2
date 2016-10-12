@@ -1,3 +1,43 @@
+CREATE TABLE `tb_u_avatar_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '分身唯一ID',
+  `playerId` bigint(20) NOT NULL,
+  `tempId` int(11) NOT NULL COMMENT '模板ID',
+  `grade` int(11) NOT NULL DEFAULT '0' COMMENT '等级',
+  `star` int(11) NOT NULL DEFAULT '0' COMMENT '星级',
+  `correspond` int(11) NOT NULL DEFAULT '0' COMMENT '默契等级',
+  `schedule` int(11) NOT NULL DEFAULT '0' COMMENT '默契进度',
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `playerId` (`playerId`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='玩家分身表';
+
+DROP TABLE IF EXISTS tb_u_arena_info;
+CREATE TABLE `tb_u_arena_info` (
+  `playerId` bigint(20) NOT NULL COMMENT '用户ID',
+  `challengeCount` int(11) NOT NULL DEFAULT '0' COMMENT '挑战次数',
+  `winCount` int(11) NOT NULL DEFAULT '0' COMMENT '胜利次数',
+  `freshTime` datetime DEFAULT NULL COMMENT '刷新时间',
+  `opponenter1` bigint(20) NOT NULL COMMENT '对手1',
+  `result1` int(11) NOT NULL DEFAULT '0' COMMENT '战果',
+  `opponenter2` bigint(20) NOT NULL COMMENT '对手2',
+  `result2` int(11) NOT NULL DEFAULT '0' COMMENT '战果',
+  `opponenter3` bigint(20) NOT NULL COMMENT '对手3',
+  `result3` int(11) NOT NULL DEFAULT '0' COMMENT '战果',
+  `opponenter4` bigint(20) NOT NULL COMMENT '对手4',
+  `result4` int(11) NOT NULL DEFAULT '0' COMMENT '战果',
+  `opponenter5` bigint(20) NOT NULL COMMENT '对手5',
+  `result5` int(11) NOT NULL DEFAULT '0' COMMENT '战果',
+  `opponenter6` bigint(20) NOT NULL COMMENT '对手6',
+  `result6` int(11) NOT NULL DEFAULT '0' COMMENT '战果',
+  `opponenter7` bigint(20) NOT NULL COMMENT '对手7',
+  `result7` int(11) NOT NULL DEFAULT '0' COMMENT '战果',
+  PRIMARY KEY (`playerId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户挑战信息表';
+
+
+
+
+
 DROP TABLE IF EXISTS tb_templatetest;
 CREATE TABLE `tb_templatetest` (
   `id` int(11) NOT NULL COMMENT 'ID',

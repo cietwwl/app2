@@ -1,0 +1,15 @@
+//protocol=20710;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "InnerRespTruckInfoProto";
+
+
+//镖车数据
+message InnerRespTruckInfo {
+	required int64 playerId = 1;	//镖车ID
+	required int32 canDo	= 2;	//是否能运镖
+	required int32 truckType = 3;	//镖车数据
+	required int32 level = 4;	//等级
+	required int32 initMat = 5;	//初始物资
+	required int32 initWeight = 6;	//初始负重
+	required int32 initSpeed = 7;	//初始速度
+}

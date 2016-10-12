@@ -207,9 +207,14 @@ public class SkillActionTemplateInfo {
 			String[] bids = bufferIds.split(",");
 			bufferIdArr = new int[bids.length];
 			for (int i = 0; i < bids.length; i++) {
-				if (bids[i].isEmpty())
+				if (bids[i].isEmpty()) {
 					continue;
-				bufferIdArr[i] = Integer.valueOf(bids[i]);
+				}
+				int bufferId = Integer.valueOf(bids[i]);
+				if (bufferId == 0) {
+					continue;
+				}
+				bufferIdArr[i] = bufferId;
 			}
 		}
 		this.bufferIds = bufferIds;

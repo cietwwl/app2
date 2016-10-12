@@ -33,8 +33,22 @@ public class CampaignLeaveAction extends Action {
 			army.sendPbMessage(quit);
 		}
 		campaign.removeArmy(army);
+		//campaign.setExpiredTime(System.currentTimeMillis() + 30 * 60 * 1000);
 
-		campaign.setExpiredTime(System.currentTimeMillis() + 30 * 60 * 1000);
+		/** 挑战副本离开则销毁 */
+		if (campaign.getTemp().getType() == CampaignType.CHALLENG) {
+			campaign.over();
+		}
+		
+		/** 竞技场副本离开则销毁 */
+		if (campaign.getTemp().getType() == CampaignType.ARENA) {
+			campaign.over();
+		}
+		
+		if(campaign.getTemp().getType() == CampaignType.GUILD_SEIZE){
+			campaign.over();
+		}
+
 		/** 组队副本，当所有人离开时，销毁副本 */
 		if (campaign.getTemp().getType() == CampaignType.TEAM && campaign.isEmpty() && campaign.getState().getCode() != CampaignState.STOP) {
 			campaign.over();

@@ -10,7 +10,7 @@ public class CardSkillConfig {
 	/**
 	 *  洗技能消耗物品
 	 */
-	private int itemId;
+	private int costNum;
 	
 	public int getId() {
 		return id;
@@ -30,12 +30,13 @@ public class CardSkillConfig {
 	public void setWeight(int weight) {
 		this.weight = weight;
 	}
-	public int getItemId() {
-		return itemId;
+	public int getCostNum() {
+		return costNum;
 	}
-	public void setItemId(int itemId) {
-		this.itemId = itemId;
+	public void setCostNum(int costNum) {
+		this.costNum = costNum;
 	}
+	
 	
 	
 }

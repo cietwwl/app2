@@ -1,0 +1,11 @@
+//protocol=160;
+option java_package = "com.chuangyou.common.protobuf.pb.guild";
+option java_outer_classname = "GuildCreateRespProto";
+
+import "guild/GuildInfoRespMsg.proto";
+
+//帮派创建结果
+message GuildCreateRespMsg{
+	optional int32 result = 1; // 帮派创建结果(0成功 1失败)
+	optional GuildInfoRespMsg guildInfo = 2; // 帮派信息
+}

@@ -1,0 +1,11 @@
+//protocol=10727;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "InnerReqTruckCompleteProto";
+
+//运镖完成
+message InnerReqTruckComplete {
+	required int32 trucktype = 1;	//镖车类型	
+	required int32 state = 2;	//完成状态 1.正常完成 2.劫镖完成 3.超时完成
+	required int32 mat = 3;		//物资数量
+	repeated int64 protectors = 4;	//护镖者
+}

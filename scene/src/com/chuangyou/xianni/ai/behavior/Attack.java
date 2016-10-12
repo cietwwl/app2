@@ -73,6 +73,8 @@ public class Attack extends MonsterBaseBehavior {
 		// System.out.println(tmpTarget.getPostion());
 		// AttackOrderControler.attackOrder(getMonster(), getMonster().getCurSkillID(), targets, getMonster().getPostion(), tmpTarget.getPostion());
 		Skill skill = getMonster().getAttackSkill();
+		if(skill==null)
+			return;
 		getMonster().stop(true);
 		AttackOrderControler.attackOrder(getMonster(), skill.getActionId(), targets, getMonster().getPostion(), tmpTarget.getPostion());
 		// SceneManagers.cooldownManager.addCooldown(getMonster(), CoolDownTypes.SKILL, null, SceneGlobal.AI_MONSTER_ATTACK_COOL_DOWN);

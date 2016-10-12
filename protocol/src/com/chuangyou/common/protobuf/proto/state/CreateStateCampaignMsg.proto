@@ -1,0 +1,6 @@
+option java_package = "com.chuangyou.common.protobuf.pb.state";
+option java_outer_classname = "CreateStateCampaignProto";
+
+message CreateStateCampaignMsg{
+	required int32 campaignId = 1;  //副本ID
+}

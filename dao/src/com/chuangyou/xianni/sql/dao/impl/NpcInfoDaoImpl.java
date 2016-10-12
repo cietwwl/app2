@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.entity.spawn.NpcInfo;
 import com.chuangyou.xianni.sql.dao.NpcInfoDao;
 import com.chuangyou.xianni.sql.db.BaseDao;
@@ -54,8 +55,8 @@ public class NpcInfoDaoImpl extends BaseDao implements NpcInfoDao {
 				}
 			} catch (SQLException e) {
 				infos = null;
-				System.out.println("执行出错" + sqlText);
-				System.out.println(e);
+				Log.error("执行出错" + sqlText);
+
 			} finally {
 				closeConn(pstmt, rs);
 			}

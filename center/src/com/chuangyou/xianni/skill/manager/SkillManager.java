@@ -437,7 +437,7 @@ public class SkillManager {
 		// player.getBasePlayer().getPlayerInfo().getPlayerId() + " skillStage:"
 		// + skillStage + " res:" + isOpen);
 		if (isOpen) {
-			player.getBasePlayer().getPlayerInfo().setSkillStage(skillStage);
+			player.getBasePlayer().updateSkillStage(skillStage);
 			if (player.getSkillInventory() != null) {
 				player.getSkillInventory().updataProperty();
 			}

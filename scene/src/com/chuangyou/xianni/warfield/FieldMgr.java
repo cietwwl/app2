@@ -197,7 +197,7 @@ public class FieldMgr {
 		f.setMapKey(mapkey);
 		fields.put(f.id, f);
 		spwanInit(f);
-		Log.error("-初始化地图，mapKey = " + mapkey+" f.id: "+f.id);
+		//Log.error("-初始化地图，mapKey = " + mapkey+" f.id: "+f.id);
 		return f;
 	}
 

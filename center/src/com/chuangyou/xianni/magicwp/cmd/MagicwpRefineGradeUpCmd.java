@@ -9,6 +9,8 @@ import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.magicwp.MagicwpCfg;
 import com.chuangyou.xianni.entity.magicwp.MagicwpGradeCfg;
 import com.chuangyou.xianni.entity.magicwp.MagicwpInfo;
+import com.chuangyou.xianni.event.EventNameType;
+import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.magicwp.template.MagicwpTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -82,6 +84,8 @@ public class MagicwpRefineGradeUpCmd extends AbstractCommand {
 		PBMessage p = MessageUtil.buildMessage(Protocol.U_MAGICWP_REFINE_GRADE_UP, msg);
 		player.sendPbMessage(p);
 		
+		
+		player.notifyListeners(new ObjectEvent(this, magicwp, EventNameType.MAGICWP));
 		//法宝总属性改变
 //		MagicwpManager.changeMagicwpAtt(roleId);
 		//影响人物属性变更

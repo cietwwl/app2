@@ -1,0 +1,13 @@
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "TruckSkillProto";
+
+
+/**
+ * 镖车技能
+ */
+message TruckSkill{
+
+  	optional int32 id = 1; //镖车技能Id
+	optional int32 level = 2;	//镖车技能等级
+	optional int32 type = 3;	//镖车技能类型Id
+}

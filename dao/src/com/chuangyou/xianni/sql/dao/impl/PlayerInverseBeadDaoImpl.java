@@ -56,7 +56,7 @@ public class PlayerInverseBeadDaoImpl extends BaseDao implements PlayerInverseBe
 	}
 
 	@Override
-	public Map<String, PlayerInverseBead> getAll(long playerId) {
+	public Map<Integer, PlayerInverseBead> getAll(long playerId) {
 
 		String sql = "select * from tb_u_inverse_bead where playerId=?";
 		Map<Integer, DbParameter> params = new HashMap<Integer, DbParameter>();
@@ -64,7 +64,7 @@ public class PlayerInverseBeadDaoImpl extends BaseDao implements PlayerInverseBe
 
 		PreparedStatement pst = execQuery(sql, params);
 		ResultSet rs = null;
-		Map<String, PlayerInverseBead> infos = new HashMap<String, PlayerInverseBead>();
+		Map<Integer, PlayerInverseBead> infos = new HashMap<Integer, PlayerInverseBead>();
 		PlayerInverseBead info = null;
 		if (pst != null) {
 			try {
@@ -72,7 +72,7 @@ public class PlayerInverseBeadDaoImpl extends BaseDao implements PlayerInverseBe
 				while (rs.next()) {
 					info = new PlayerInverseBead();
 					info.setId(rs.getInt("id"));
-					info.setPlayerId(rs.getInt("playerId"));
+					info.setPlayerId(rs.getLong("playerId"));
 					info.setFiveElements(rs.getInt("fiveElements"));
 					info.setMarking(rs.getInt("marking"));
 					info.setStage(rs.getInt("stage"));
@@ -80,7 +80,7 @@ public class PlayerInverseBeadDaoImpl extends BaseDao implements PlayerInverseBe
 					info.setAttVal(rs.getInt("attVal"));
 					info.setAttVal2(rs.getInt("attVal2"));
 
-					infos.put(rs.getInt("fiveElements") + "_" + rs.getInt("marking"), info);
+					infos.put(rs.getInt("fiveElements"), info);
 				}
 			} catch (Exception e) {
 				Log.error("执行出错" + sql, e);

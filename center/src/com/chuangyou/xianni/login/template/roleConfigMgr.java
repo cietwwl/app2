@@ -12,7 +12,7 @@ import com.chuangyou.xianni.sql.dao.DBManager;
  * 
  * @author Administrator
  */
-public class roleConfigMgr {
+public class RoleConfigMgr {
 	/**
 	 * 技能配置数据
 	 */

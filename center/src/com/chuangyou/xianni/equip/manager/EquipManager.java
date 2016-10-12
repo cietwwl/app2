@@ -2,7 +2,6 @@ package com.chuangyou.xianni.equip.manager;
 
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg;
-import com.chuangyou.common.protobuf.pb.equip.EquipInfoReqProto.EquipInfoReqMsg;
 import com.chuangyou.common.protobuf.pb.equip.EquipInfoRespProto.EquipInfoRespMsg;
 import com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
@@ -39,7 +38,7 @@ public class EquipManager {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, protocol, "类型错误");
 			return;
 		}
-		long awakenTempId = (long)equip.getTemplateId()*10000 + equip.getItemInfo().getAwaken()*100 + equip.getItemInfo().getAwakenPoint();
+		long awakenTempId = equip.getTemplateId()*10000l + equip.getItemInfo().getAwaken()*100 + equip.getItemInfo().getAwakenPoint();
 		EquipAwakenCfg cfg = EquipTemplateMgr.getAwakenMap().get(awakenTempId);
 		if(cfg == null){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, protocol, "装备觉醒配置错误");
@@ -130,7 +129,7 @@ public class EquipManager {
 			return;
 		}
 		
-		if(!player.getBagInventory().getBag(stonePos.getBagType()).removeCountFromStack(stone, 1, ItemRemoveType.EQUIP_STONE)){
+		if(!player.getBagInventory().removeItemByBaseItem((short)stonePos.getBagType(), stone, 1, ItemRemoveType.EQUIP_STONE)){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, protocol, "未知错误");
 			return;
 		}
@@ -168,7 +167,7 @@ public class EquipManager {
 //			return;
 //		}
 		
-		if(!player.getBagInventory().getBag(req.getBagType()).removeCountFromStack(equip, 1, ItemRemoveType.RESOLVE)){
+		if(!player.getBagInventory().removeItemByBaseItem((short)req.getBagType(), equip, 1, ItemRemoveType.RESOLVE)){
 			if(hint == true) ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, protocol, "物品扣除失败");
 			return false;
 		}

@@ -2,6 +2,7 @@ package com.chuangyou.xianni.login;
 
 import com.chuangyou.common.protobuf.pb.PlayerLoginMsgProto.PlayerLoginMsg;
 import com.chuangyou.common.util.Log;
+import com.chuangyou.xianni.inverseBead.manager.InverseBeadManager;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerInfoSendCmd;
 import com.chuangyou.xianni.player.PlayerState;
@@ -28,23 +29,21 @@ public class PlayerLoginReceiveCmd implements Command {
 			Log.error("player login error in PlayerLoginReceiveCmd，playerId:" + playerId);
 			return;
 		}
-		
-		player.setPlayerState(PlayerState.ONLINE);
+
 		player.setChannel(channel);
 		player.loadPersonData();
-
+		player.setPlayerState(PlayerState.ONLINE);
+		
 
 		ChangeLineAction action = new ChangeLineAction(player, null, true);
 		action.getActionQueue().enqueue(action);
 
 		// TODO 返回角色数据
-		player.sendPbMessage(
-				MessageUtil.buildMessage(Protocol.U_G_PLAYERINFO, PlayerInfoSendCmd.getProperPacket(player)));
+		player.sendPbMessage(MessageUtil.buildMessage(Protocol.U_G_PLAYERINFO, PlayerInfoSendCmd.getProperPacket(player)));
 
 		// 通知sence服务器用户登入（同时传递用户数据）
-		PBMessage sencesReq = MessageUtil.buildMessage(Protocol.S_LOGIN_IN, -1,
-				PlayerInfoSendCmd.getArmyPacket(player));
+		PBMessage sencesReq = MessageUtil.buildMessage(Protocol.S_LOGIN_IN, -1, PlayerInfoSendCmd.getArmyPacket(player));
 		channel.writeAndFlush(sencesReq);
-
+		InverseBeadManager.syncSpawn(player);
 	}
 }

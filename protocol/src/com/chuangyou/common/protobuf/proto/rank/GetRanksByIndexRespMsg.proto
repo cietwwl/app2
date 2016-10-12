@@ -1,0 +1,12 @@
+//protocol=1615;
+option java_package = "com.chuangyou.common.protobuf.pb.rank";
+option java_outer_classname = "GetRanksByIndexRespProto";
+
+import "rank/RankInfoMsg.proto";
+
+ //根据位置查排行榜的数据
+message GetRanksByIndexRespMsg{
+	required int32 rankType = 1;//排行榜类型编号
+	required int32 rankRange = 2; //排行榜范围 1：日榜 2：周榜 3：月榜
+	repeated RankInfoMsg ranks = 3;
+}

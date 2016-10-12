@@ -2,7 +2,6 @@ package com.chuangyou.xianni.http.respone;
 
 import java.util.Map;
 
-import com.chuangyou.xianni.entity.task.TaskCfg;
 import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.http.BaseRespone;
@@ -11,6 +10,7 @@ import com.chuangyou.xianni.http.HttpResult;
 import com.chuangyou.xianni.http.HttpResult.Code;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerState;
+import com.chuangyou.xianni.task.constant.ConditionType;
 import com.chuangyou.xianni.word.WorldMgr;
 
 @HttpCmd(command="task",desc="调整任务GM命令")
@@ -28,25 +28,25 @@ public class TaskGMRespone implements BaseRespone {
 		if (player != null && player.getPlayerState() == PlayerState.ONLINE) {
 			
 			switch(type){
-			case TaskCfg.KILL_MONST:
+			case ConditionType.KILL_MONST:
 				player.notifyListeners(new ObjectEvent(this, id, EventNameType.TASK_KILL_MONSTER));
 			//	TaskManager.calcKillMonster(player, id, num);
 				break;
-			case TaskCfg.NPC_DIALOG:
+			case ConditionType.NPC_DIALOG:
 				break;
-			case TaskCfg.COMMIT_ITEM:
+			case ConditionType.COMMIT_ITEM:
 				break;
-			case TaskCfg.PASS_FB:
+			case ConditionType.PASS_FB:
 				player.notifyListeners(new ObjectEvent(this, id, EventNameType.TASK_PASS_FB));
 				//TaskManager.calcPassFb(player, id);
 				break;
-			case TaskCfg.PATCH:
+			case ConditionType.PATCH:
 				
 				//TaskManager.calcGather(player, id, num);
 				break;
-			case TaskCfg.GET_ITEM:
+			case ConditionType.GET_ITEM:
 				break;
-			case TaskCfg.T_SYSTEM:
+			case ConditionType.T_SYSTEM:
 				player.notifyListeners(new ObjectEvent(this, id, EventNameType.TASK_T_SYSTEM));
 				break;
 			default:

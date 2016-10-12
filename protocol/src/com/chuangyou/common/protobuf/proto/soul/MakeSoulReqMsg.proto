@@ -4,7 +4,7 @@ option java_outer_classname = "MakeSoulReqProto";
 
 //材料制作
 message MakeSoulReqMsg{
-	required int32 op = 1;//操作 1：QTE  2:接受任务(开始制作)    3：制作完成
+	required int32 op = 1;//操作 1：QTE  2:(开始制作) 3：接受任务    4：制作完成   5:重新制作
 	optional int32 index = 2; //材料位置(当op=1时使用)
 	optional int32 qte  = 3;// OTE：结果(当op=1时使用) 1:低  2：中 3：高
 }

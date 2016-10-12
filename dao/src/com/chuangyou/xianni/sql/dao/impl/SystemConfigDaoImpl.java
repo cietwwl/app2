@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.entity.common.SystemConfig;
@@ -18,28 +20,39 @@ public class SystemConfigDaoImpl extends BaseDao implements SystemConfigDao {
 		String sql = "select * from tb_z_system";
 		return this.read(sql);
 	}
-	
-	private Map<String, SystemConfig> read(String sqlText){
+
+	public boolean isNumeric(String str) {
+		Pattern pattern = Pattern.compile("[0-9]*");
+		Matcher isNum = pattern.matcher(str);
+		if (!isNum.matches()) {
+			return false;
+		}
+		return true;
+	}
+
+	private Map<String, SystemConfig> read(String sqlText) {
 		PreparedStatement pst = execQuery(sqlText);
 		ResultSet rs = null;
 		Map<String, SystemConfig> infos = null;
 		SystemConfig info = null;
-		if(pst != null){
+		if (pst != null) {
 			infos = new HashMap<String, SystemConfig>();
 			try {
 				rs = pst.executeQuery();
-				while(rs.next()){
+				while (rs.next()) {
 					info = new SystemConfig();
 					info.setKey(rs.getString("key"));
-					info.setValue(rs.getInt("value"));
 					info.setStrValue(rs.getString("value"));
+					if(isNumeric(info.getStrValue())){
+						info.setValue(rs.getInt("value"));						
+					}
 					info.set_desc(rs.getString("_desc"));
 					infos.put(info.getKey(), info);
 				}
 			} catch (Exception e) {
 				// TODO: handle exception
 				infos = null;
-				
+
 				Log.error("执行出错" + sqlText, e);
 			} finally {
 				closeConn(pst, rs);

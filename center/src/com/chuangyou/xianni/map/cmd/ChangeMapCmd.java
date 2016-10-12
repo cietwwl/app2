@@ -1,6 +1,8 @@
 package com.chuangyou.xianni.map.cmd;
 
+import com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg;
 import com.chuangyou.common.protobuf.pb.ReqChangeMapMsgProto.ReqChangeMapMsg;
+import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.entity.player.PlayerPositionInfo;
 import com.chuangyou.xianni.player.GamePlayer;
@@ -19,7 +21,22 @@ public class ChangeMapCmd extends AbstractCommand {
 
 		// 玩家目标位置信息
 		ReqChangeMapMsg msg = ReqChangeMapMsg.parseFrom(packet.getBytes());
-		
+
+		// 记录玩家在副本，但是玩家下线后副本已经结束
+		if (msg.getPostionMsg().getMapId() > 100000 && player.getCurCampaign() == 0) {
+			ReqChangeMapMsg.Builder builder = ReqChangeMapMsg.newBuilder();
+			PostionMsg.Builder pos = PostionMsg.newBuilder();
+			pos.setMapId(pinfo.getPreMapId());
+			pos.setMapKey(pinfo.getPreMapTempId());
+			PBVector3.Builder v3 = PBVector3.newBuilder();
+			v3.setX(pinfo.getPreX());
+			v3.setY(pinfo.getPreY());
+			v3.setZ(pinfo.getPreZ());
+			pos.setPostion(v3);
+			builder.setPostionMsg(pos);
+			msg = builder.build();
+		}
+
 		// TODO 判断，是否允许玩家切换场景
 
 		// TODO 向场景服务器申请场景进入

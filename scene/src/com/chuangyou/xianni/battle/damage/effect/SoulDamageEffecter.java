@@ -14,6 +14,10 @@ public class SoulDamageEffecter implements DamageEffecter {
 			Log.error("battle error , blood only damage type is not cur_blood,skillId:" + damage.getFromType() + " ---" + damage.getFromId());
 			damage.setDamageType(EnumAttr.CUR_SOUL.getValue());
 		}
+
+		if (target.otherDamageCalWay()) {
+			damage.setDamageType(EnumAttr.CUR_BLOOD.getValue());
+		}
 		// 初始气血
 		int oldValue = target.getProperty(damage.getDamageType());
 		// 当前气血

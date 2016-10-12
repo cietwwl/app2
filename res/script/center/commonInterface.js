@@ -17,6 +17,7 @@ function getInterfaceName() {
  * 发送NPC对话内容给客户端
  */
 function sendToClient(roleId,list,content){
+	
 	com.chuangyou.xianni.npcDialog.manager.NpcDialogManager.sendResultToClient(roleId,list,content);
 }
 

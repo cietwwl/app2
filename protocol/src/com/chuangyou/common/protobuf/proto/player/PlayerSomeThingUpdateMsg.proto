@@ -1,0 +1,7 @@
+option java_package = "com.chuangyou.common.protobuf.pb.player";
+option java_outer_classname = "PlayerSomeThingCostUpdateProto";
+
+message PlayerSomeThingCostUpdateMsg{
+	optional int32 type= 1; // 消费类型
+	optional int32 count= 2; // 消费数量
+}

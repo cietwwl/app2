@@ -1,0 +1,25 @@
+//protocol=163;
+option java_package = "com.chuangyou.common.protobuf.pb.guild";
+option java_outer_classname = "GuildMemberInfoProto";
+
+//成员信息
+message GuildMemberInfoMsg{
+	optional int64 playerId = 1; // 玩家ID
+	optional int32 guildId = 2; // 所在帮派ID
+	optional string playerName = 3; // 玩家名字
+	optional int32 job = 4; // 玩家在帮派的职位
+	optional int64 contributionTotal = 5; // 总贡献
+	optional int64 contribution = 6; // 可用贡献
+	optional int32 fortune = 7; // 运势
+
+	optional int32 fight = 8; // 战力
+	optional int32 onlineState = 9; // 在线状态
+	optional int64 offlineTime = 10; // 离线时间
+
+	optional int32 level = 11; // 等级
+	optional int32 iconId = 12; // 头像ID
+
+	optional int64 consumeSupply = 13; // 物资消耗
+
+	optional int64 lastSeizeTime = 14; // 上次夺权成功的时间
+}

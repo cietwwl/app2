@@ -1,0 +1,18 @@
+option java_package = "com.chuangyou.common.protobuf.pb";
+option java_outer_classname = "PlayerSimpleInfoMsgProto";
+
+
+message PlayerSimpleInfoMsg{
+	optional int64 playerId=1; //角色ID
+	optional string nick_name=2; //昵称
+	optional int32 level=3; //等级
+	optional int32 vip_level=4; //VIP等级
+	optional int32 fight=5; //战斗力
+	optional int32 skinId=6; //皮肤
+	optional int32 fashion_id=7; //时装ID
+	optional int32 weapon_id=8; //武器ID
+	optional int32 mount_id=9; //坐骑ID
+	optional int32 magic_weapon_id=10; //法宝ID
+	optional int32 wing_id=11; //翅膀ID
+	optional int32 job = 12; //职业
+}

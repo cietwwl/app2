@@ -1,0 +1,8 @@
+option java_package = "com.chuangyou.common.protobuf.pb.guild";
+option java_outer_classname = "GuildSkillInfoProto";
+
+//帮派技能信息，这里的技能ID不是人物技能ID，是帮派技能表中的id
+message GuildSkillInfoMsg{
+	optional int32 guildSkillId = 1;
+	optional int32 level = 2;
+}

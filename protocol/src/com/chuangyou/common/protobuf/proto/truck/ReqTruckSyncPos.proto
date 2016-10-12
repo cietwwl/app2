@@ -1,0 +1,11 @@
+//protocol=20705;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "ReqTruckSyncPosProto";
+
+import "common/PBVector3.proto";
+
+//同步镖车位置
+message ReqTruckSyncPos {
+	required int64 truckid = 1; //镖车id
+	optional PBVector3 cur = 2; //当前点
+}

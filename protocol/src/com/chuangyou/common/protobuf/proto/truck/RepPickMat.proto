@@ -1,0 +1,10 @@
+//protocol=20712;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "ReqPickMatProto";
+
+//采集镖车物资
+message ReqPickMat {
+	required int64 truckID = 1; //镖车ID
+	required int64 matID = 2; //物质ID
+
+}

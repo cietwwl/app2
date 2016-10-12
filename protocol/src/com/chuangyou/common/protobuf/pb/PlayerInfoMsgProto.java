@@ -436,6 +436,83 @@ public final class PlayerInfoMsgProto {
      * </pre>
      */
     int getWeaponAwaken();
+
+    /**
+     * <code>optional int32 stateLv = 25;</code>
+     *
+     * <pre>
+     *境界等级
+     * </pre>
+     */
+    boolean hasStateLv();
+    /**
+     * <code>optional int32 stateLv = 25;</code>
+     *
+     * <pre>
+     *境界等级
+     * </pre>
+     */
+    int getStateLv();
+
+    /**
+     * <code>optional int32 guildId = 26;</code>
+     *
+     * <pre>
+     * 所在帮派ID
+     * </pre>
+     */
+    boolean hasGuildId();
+    /**
+     * <code>optional int32 guildId = 26;</code>
+     *
+     * <pre>
+     * 所在帮派ID
+     * </pre>
+     */
+    int getGuildId();
+
+    /**
+     * <code>optional string guildName = 27;</code>
+     *
+     * <pre>
+     * 所在帮派名字
+     * </pre>
+     */
+    boolean hasGuildName();
+    /**
+     * <code>optional string guildName = 27;</code>
+     *
+     * <pre>
+     * 所在帮派名字
+     * </pre>
+     */
+    java.lang.String getGuildName();
+    /**
+     * <code>optional string guildName = 27;</code>
+     *
+     * <pre>
+     * 所在帮派名字
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getGuildNameBytes();
+
+    /**
+     * <code>optional int32 guildJob = 28;</code>
+     *
+     * <pre>
+     * 自己在帮派的职位
+     * </pre>
+     */
+    boolean hasGuildJob();
+    /**
+     * <code>optional int32 guildJob = 28;</code>
+     *
+     * <pre>
+     * 自己在帮派的职位
+     * </pre>
+     */
+    int getGuildJob();
   }
   /**
    * Protobuf type {@code PlayerInfoMsg}
@@ -616,6 +693,27 @@ public final class PlayerInfoMsgProto {
             case 192: {
               bitField0_ |= 0x00800000;
               weaponAwaken_ = input.readInt32();
+              break;
+            }
+            case 200: {
+              bitField0_ |= 0x01000000;
+              stateLv_ = input.readInt32();
+              break;
+            }
+            case 208: {
+              bitField0_ |= 0x02000000;
+              guildId_ = input.readInt32();
+              break;
+            }
+            case 218: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x04000000;
+              guildName_ = bs;
+              break;
+            }
+            case 224: {
+              bitField0_ |= 0x08000000;
+              guildJob_ = input.readInt32();
               break;
             }
           }
@@ -1251,6 +1349,129 @@ public final class PlayerInfoMsgProto {
       return weaponAwaken_;
     }
 
+    public static final int STATELV_FIELD_NUMBER = 25;
+    private int stateLv_;
+    /**
+     * <code>optional int32 stateLv = 25;</code>
+     *
+     * <pre>
+     *境界等级
+     * </pre>
+     */
+    public boolean hasStateLv() {
+      return ((bitField0_ & 0x01000000) == 0x01000000);
+    }
+    /**
+     * <code>optional int32 stateLv = 25;</code>
+     *
+     * <pre>
+     *境界等级
+     * </pre>
+     */
+    public int getStateLv() {
+      return stateLv_;
+    }
+
+    public static final int GUILDID_FIELD_NUMBER = 26;
+    private int guildId_;
+    /**
+     * <code>optional int32 guildId = 26;</code>
+     *
+     * <pre>
+     * 所在帮派ID
+     * </pre>
+     */
+    public boolean hasGuildId() {
+      return ((bitField0_ & 0x02000000) == 0x02000000);
+    }
+    /**
+     * <code>optional int32 guildId = 26;</code>
+     *
+     * <pre>
+     * 所在帮派ID
+     * </pre>
+     */
+    public int getGuildId() {
+      return guildId_;
+    }
+
+    public static final int GUILDNAME_FIELD_NUMBER = 27;
+    private java.lang.Object guildName_;
+    /**
+     * <code>optional string guildName = 27;</code>
+     *
+     * <pre>
+     * 所在帮派名字
+     * </pre>
+     */
+    public boolean hasGuildName() {
+      return ((bitField0_ & 0x04000000) == 0x04000000);
+    }
+    /**
+     * <code>optional string guildName = 27;</code>
+     *
+     * <pre>
+     * 所在帮派名字
+     * </pre>
+     */
+    public java.lang.String getGuildName() {
+      java.lang.Object ref = guildName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          guildName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string guildName = 27;</code>
+     *
+     * <pre>
+     * 所在帮派名字
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getGuildNameBytes() {
+      java.lang.Object ref = guildName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        guildName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int GUILDJOB_FIELD_NUMBER = 28;
+    private int guildJob_;
+    /**
+     * <code>optional int32 guildJob = 28;</code>
+     *
+     * <pre>
+     * 自己在帮派的职位
+     * </pre>
+     */
+    public boolean hasGuildJob() {
+      return ((bitField0_ & 0x08000000) == 0x08000000);
+    }
+    /**
+     * <code>optional int32 guildJob = 28;</code>
+     *
+     * <pre>
+     * 自己在帮派的职位
+     * </pre>
+     */
+    public int getGuildJob() {
+      return guildJob_;
+    }
+
     private void initFields() {
       playerId_ = 0L;
       userId_ = 0L;
@@ -1276,6 +1497,10 @@ public final class PlayerInfoMsgProto {
       job_ = 0;
       equipExp_ = 0L;
       weaponAwaken_ = 0;
+      stateLv_ = 0;
+      guildId_ = 0;
+      guildName_ = "";
+      guildJob_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1361,6 +1586,18 @@ public final class PlayerInfoMsgProto {
       }
       if (((bitField0_ & 0x00800000) == 0x00800000)) {
         output.writeInt32(24, weaponAwaken_);
+      }
+      if (((bitField0_ & 0x01000000) == 0x01000000)) {
+        output.writeInt32(25, stateLv_);
+      }
+      if (((bitField0_ & 0x02000000) == 0x02000000)) {
+        output.writeInt32(26, guildId_);
+      }
+      if (((bitField0_ & 0x04000000) == 0x04000000)) {
+        output.writeBytes(27, getGuildNameBytes());
+      }
+      if (((bitField0_ & 0x08000000) == 0x08000000)) {
+        output.writeInt32(28, guildJob_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -1466,6 +1703,22 @@ public final class PlayerInfoMsgProto {
       if (((bitField0_ & 0x00800000) == 0x00800000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(24, weaponAwaken_);
+      }
+      if (((bitField0_ & 0x01000000) == 0x01000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(25, stateLv_);
+      }
+      if (((bitField0_ & 0x02000000) == 0x02000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(26, guildId_);
+      }
+      if (((bitField0_ & 0x04000000) == 0x04000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(27, getGuildNameBytes());
+      }
+      if (((bitField0_ & 0x08000000) == 0x08000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(28, guildJob_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1637,6 +1890,14 @@ public final class PlayerInfoMsgProto {
         bitField0_ = (bitField0_ & ~0x00400000);
         weaponAwaken_ = 0;
         bitField0_ = (bitField0_ & ~0x00800000);
+        stateLv_ = 0;
+        bitField0_ = (bitField0_ & ~0x01000000);
+        guildId_ = 0;
+        bitField0_ = (bitField0_ & ~0x02000000);
+        guildName_ = "";
+        bitField0_ = (bitField0_ & ~0x04000000);
+        guildJob_ = 0;
+        bitField0_ = (bitField0_ & ~0x08000000);
         return this;
       }
 
@@ -1765,6 +2026,22 @@ public final class PlayerInfoMsgProto {
           to_bitField0_ |= 0x00800000;
         }
         result.weaponAwaken_ = weaponAwaken_;
+        if (((from_bitField0_ & 0x01000000) == 0x01000000)) {
+          to_bitField0_ |= 0x01000000;
+        }
+        result.stateLv_ = stateLv_;
+        if (((from_bitField0_ & 0x02000000) == 0x02000000)) {
+          to_bitField0_ |= 0x02000000;
+        }
+        result.guildId_ = guildId_;
+        if (((from_bitField0_ & 0x04000000) == 0x04000000)) {
+          to_bitField0_ |= 0x04000000;
+        }
+        result.guildName_ = guildName_;
+        if (((from_bitField0_ & 0x08000000) == 0x08000000)) {
+          to_bitField0_ |= 0x08000000;
+        }
+        result.guildJob_ = guildJob_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1854,6 +2131,20 @@ public final class PlayerInfoMsgProto {
         }
         if (other.hasWeaponAwaken()) {
           setWeaponAwaken(other.getWeaponAwaken());
+        }
+        if (other.hasStateLv()) {
+          setStateLv(other.getStateLv());
+        }
+        if (other.hasGuildId()) {
+          setGuildId(other.getGuildId());
+        }
+        if (other.hasGuildName()) {
+          bitField0_ |= 0x04000000;
+          guildName_ = other.guildName_;
+          onChanged();
+        }
+        if (other.hasGuildJob()) {
+          setGuildJob(other.getGuildJob());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -3190,6 +3481,250 @@ public final class PlayerInfoMsgProto {
         return this;
       }
 
+      private int stateLv_ ;
+      /**
+       * <code>optional int32 stateLv = 25;</code>
+       *
+       * <pre>
+       *境界等级
+       * </pre>
+       */
+      public boolean hasStateLv() {
+        return ((bitField0_ & 0x01000000) == 0x01000000);
+      }
+      /**
+       * <code>optional int32 stateLv = 25;</code>
+       *
+       * <pre>
+       *境界等级
+       * </pre>
+       */
+      public int getStateLv() {
+        return stateLv_;
+      }
+      /**
+       * <code>optional int32 stateLv = 25;</code>
+       *
+       * <pre>
+       *境界等级
+       * </pre>
+       */
+      public Builder setStateLv(int value) {
+        bitField0_ |= 0x01000000;
+        stateLv_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 stateLv = 25;</code>
+       *
+       * <pre>
+       *境界等级
+       * </pre>
+       */
+      public Builder clearStateLv() {
+        bitField0_ = (bitField0_ & ~0x01000000);
+        stateLv_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int guildId_ ;
+      /**
+       * <code>optional int32 guildId = 26;</code>
+       *
+       * <pre>
+       * 所在帮派ID
+       * </pre>
+       */
+      public boolean hasGuildId() {
+        return ((bitField0_ & 0x02000000) == 0x02000000);
+      }
+      /**
+       * <code>optional int32 guildId = 26;</code>
+       *
+       * <pre>
+       * 所在帮派ID
+       * </pre>
+       */
+      public int getGuildId() {
+        return guildId_;
+      }
+      /**
+       * <code>optional int32 guildId = 26;</code>
+       *
+       * <pre>
+       * 所在帮派ID
+       * </pre>
+       */
+      public Builder setGuildId(int value) {
+        bitField0_ |= 0x02000000;
+        guildId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 guildId = 26;</code>
+       *
+       * <pre>
+       * 所在帮派ID
+       * </pre>
+       */
+      public Builder clearGuildId() {
+        bitField0_ = (bitField0_ & ~0x02000000);
+        guildId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object guildName_ = "";
+      /**
+       * <code>optional string guildName = 27;</code>
+       *
+       * <pre>
+       * 所在帮派名字
+       * </pre>
+       */
+      public boolean hasGuildName() {
+        return ((bitField0_ & 0x04000000) == 0x04000000);
+      }
+      /**
+       * <code>optional string guildName = 27;</code>
+       *
+       * <pre>
+       * 所在帮派名字
+       * </pre>
+       */
+      public java.lang.String getGuildName() {
+        java.lang.Object ref = guildName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            guildName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string guildName = 27;</code>
+       *
+       * <pre>
+       * 所在帮派名字
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getGuildNameBytes() {
+        java.lang.Object ref = guildName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          guildName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string guildName = 27;</code>
+       *
+       * <pre>
+       * 所在帮派名字
+       * </pre>
+       */
+      public Builder setGuildName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x04000000;
+        guildName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string guildName = 27;</code>
+       *
+       * <pre>
+       * 所在帮派名字
+       * </pre>
+       */
+      public Builder clearGuildName() {
+        bitField0_ = (bitField0_ & ~0x04000000);
+        guildName_ = getDefaultInstance().getGuildName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string guildName = 27;</code>
+       *
+       * <pre>
+       * 所在帮派名字
+       * </pre>
+       */
+      public Builder setGuildNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x04000000;
+        guildName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int guildJob_ ;
+      /**
+       * <code>optional int32 guildJob = 28;</code>
+       *
+       * <pre>
+       * 自己在帮派的职位
+       * </pre>
+       */
+      public boolean hasGuildJob() {
+        return ((bitField0_ & 0x08000000) == 0x08000000);
+      }
+      /**
+       * <code>optional int32 guildJob = 28;</code>
+       *
+       * <pre>
+       * 自己在帮派的职位
+       * </pre>
+       */
+      public int getGuildJob() {
+        return guildJob_;
+      }
+      /**
+       * <code>optional int32 guildJob = 28;</code>
+       *
+       * <pre>
+       * 自己在帮派的职位
+       * </pre>
+       */
+      public Builder setGuildJob(int value) {
+        bitField0_ |= 0x08000000;
+        guildJob_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 guildJob = 28;</code>
+       *
+       * <pre>
+       * 自己在帮派的职位
+       * </pre>
+       */
+      public Builder clearGuildJob() {
+        bitField0_ = (bitField0_ & ~0x08000000);
+        guildJob_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:PlayerInfoMsg)
     }
 
@@ -3216,7 +3751,7 @@ public final class PlayerInfoMsgProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\032player/PlayerInfoMsg.proto\032\027player/Pos" +
-      "tionMsg.proto\"\302\003\n\rPlayerInfoMsg\022\021\n\tplaye" +
+      "tionMsg.proto\"\211\004\n\rPlayerInfoMsg\022\021\n\tplaye" +
       "r_id\030\001 \001(\003\022\017\n\007user_id\030\002 \001(\003\022\021\n\tnick_name" +
       "\030\003 \001(\t\022\r\n\005level\030\004 \001(\005\022\013\n\003exp\030\005 \001(\003\022\020\n\010to" +
       "al_exp\030\006 \001(\003\022\r\n\005money\030\007 \001(\003\022\021\n\tbind_cash" +
@@ -3227,9 +3762,10 @@ public final class PlayerInfoMsgProto {
       "BagCount\030\021 \001(\005\022\037\n\npostionMsg\030\022 \001(\0132\013.Pos",
       "tionMsg\022\014\n\004cash\030\023 \001(\005\022\016\n\006repair\030\024 \001(\005\022\016\n" +
       "\006points\030\025 \001(\005\022\013\n\003job\030\026 \001(\005\022\020\n\010equipExp\030\027" +
-      " \001(\003\022\024\n\014weaponAwaken\030\030 \001(\005B6\n com.chuang" +
-      "you.common.protobuf.pbB\022PlayerInfoMsgPro" +
-      "to"
+      " \001(\003\022\024\n\014weaponAwaken\030\030 \001(\005\022\017\n\007stateLv\030\031 " +
+      "\001(\005\022\017\n\007guildId\030\032 \001(\005\022\021\n\tguildName\030\033 \001(\t\022" +
+      "\020\n\010guildJob\030\034 \001(\005B6\n com.chuangyou.commo" +
+      "n.protobuf.pbB\022PlayerInfoMsgProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3249,7 +3785,7 @@ public final class PlayerInfoMsgProto {
     internal_static_PlayerInfoMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_PlayerInfoMsg_descriptor,
-        new java.lang.String[] { "PlayerId", "UserId", "NickName", "Level", "Exp", "ToalExp", "Money", "BindCash", "VipLevel", "Fight", "SkinId", "FashionId", "WeaponId", "MountId", "MagicWeaponId", "WingId", "PBagCount", "PostionMsg", "Cash", "Repair", "Points", "Job", "EquipExp", "WeaponAwaken", });
+        new java.lang.String[] { "PlayerId", "UserId", "NickName", "Level", "Exp", "ToalExp", "Money", "BindCash", "VipLevel", "Fight", "SkinId", "FashionId", "WeaponId", "MountId", "MagicWeaponId", "WingId", "PBagCount", "PostionMsg", "Cash", "Repair", "Points", "Job", "EquipExp", "WeaponAwaken", "StateLv", "GuildId", "GuildName", "GuildJob", });
     com.chuangyou.common.protobuf.pb.PostionMsgProto.getDescriptor();
   }
 

@@ -1,0 +1,8 @@
+//protocol=10725;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "ReqTruckDataProto";
+
+//请求镖车技能树
+message ReqTruckData {
+	required int32 trucktype = 1; //占位
+}

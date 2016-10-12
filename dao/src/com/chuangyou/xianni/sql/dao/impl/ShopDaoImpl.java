@@ -137,9 +137,7 @@ public class ShopDaoImpl extends BaseDao implements ShopDao {
 				}
 			} catch (SQLException e) {
 				infos = null;
-				//Log.error("执行出错" + sqlText, e);
-				System.out.println("执行出错" + sqlText);
-				System.out.println(e);
+				Log.error("执行出错" + sqlText, e);
 			} finally {
 				closeConn(pstmt, rs);
 			}

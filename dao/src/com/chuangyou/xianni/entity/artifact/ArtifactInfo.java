@@ -60,6 +60,15 @@ public class ArtifactInfo extends DataObject {
 		this.stoneTotalExp4 = 0;
 	}
 	
+	public int getStoneMaxLevel(){
+		int tempLevel = 0;
+		tempLevel = Math.max(stoneLevel1,tempLevel);
+		tempLevel = Math.max(stoneLevel2,tempLevel);
+		tempLevel = Math.max(stoneLevel3,tempLevel);
+		tempLevel = Math.max(stoneLevel4,tempLevel);
+		return tempLevel;
+	}
+	
 	public long getPlayerId() {
 		return playerId;
 	}

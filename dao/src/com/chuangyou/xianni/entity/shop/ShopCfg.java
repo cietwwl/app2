@@ -35,6 +35,11 @@ public class ShopCfg {
 	public static final int SHOP_VIP = 93;
 	/**  积分   */
 	public static final int SHOP_POINTS = 94;
+	
+	/** 门派商店 */
+	public static final int SHOP_GUILD_PLAYER = 95;
+	/** 系统门派商店 */
+	public static final int SHOP_GUILD_SYSTEM = 96;
 
 	//////////////////////////////////////////////////////
 	private int id;
@@ -44,6 +49,10 @@ public class ShopCfg {
 	private byte bind;
 	private int moneyType;
 	private long price;
+	
+	private int moneyType1;
+	private long price1;
+	
 	private byte discount;
 	private int serverLimitNum;
 	private int personLimitNum;
@@ -67,8 +76,10 @@ public class ShopCfg {
 	private byte isPreview;
 	/** 是否快速购买  */
 	private byte easyBuy;
-	/** 购买需要的VIP等级 */
+	/** 购买需要的VIP等级（帮派商店中表示帮派商店建筑等级要求） */
 	private int vipLv;
+	/** 额外等级要求(系统门派商店购买需要境界要求,玩家门派表示帮派等级要求) */
+	private int level;
 	/** 打折开始时间   0:或者空为永久打折*/
 	private String discountStart;
 	/**  打折结束时间  */
@@ -170,6 +181,22 @@ public class ShopCfg {
 
 
 
+
+	public int getMoneyType1() {
+		return moneyType1;
+	}
+
+	public void setMoneyType1(int moneyType1) {
+		this.moneyType1 = moneyType1;
+	}
+
+	public long getPrice1() {
+		return price1;
+	}
+
+	public void setPrice1(long price1) {
+		this.price1 = price1;
+	}
 
 	public String getStartTime() {
 		return startTime;
@@ -392,6 +419,14 @@ public class ShopCfg {
 		this.vipLv = vipLv;
 	}
 
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
 
 	public String getDiscountStart() {
 		return discountStart;

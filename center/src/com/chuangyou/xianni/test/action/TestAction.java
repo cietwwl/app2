@@ -13,7 +13,7 @@ public class TestAction extends Action {
 
 	@Override
 	public void execute() {
-		System.out.println("-----------" + name + "---------------");
+		//System.out.println("-----------" + name + "---------------");
 	}
 
 }

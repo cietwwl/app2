@@ -107,8 +107,7 @@ public class SpaceDaoImpl extends BaseDao implements SpaceDao {
 				}
 			} catch (SQLException e) {
 				infos = null;
-				System.out.println("执行出错" + sql);
-				System.out.println(e);
+				Log.error("执行出错" + sql);
 			} finally {
 				closeConn(pstmt, rs);
 			}
@@ -172,8 +171,7 @@ public class SpaceDaoImpl extends BaseDao implements SpaceDao {
 				}
 			} catch (SQLException e) {
 				infos = null;
-				System.out.println("执行出错" + sql);
-				System.out.println(e);
+				Log.error("执行出错" + sql);
 			} finally {
 				closeConn(pstmt, rs);
 			}
@@ -227,8 +225,7 @@ public class SpaceDaoImpl extends BaseDao implements SpaceDao {
 				}
 			} catch (SQLException e) {
 				infos = null;
-				System.out.println("执行出错" + sql);
-				System.out.println(e);
+				Log.error("执行出错" + sql);
 			} finally {
 				closeConn(pstmt, rs);
 			}

@@ -48,21 +48,23 @@ public class EquipConstant {
 	     * 脚
 	     */
 		public static final byte foot = 18;
-
-	    /**
+	}
+	
+	public interface FashionType{
+		/**
 	     * 时装武器
 	     */
-		public static final byte fashion_weapon = 19;
+		public static final byte WEAPON = 11;
 	    
 	    /**
 	     * 时装衣服
 	     */
-		public static final byte fashion_clothe = 20;
+		public static final byte CLOTHE = 12;
 	    
 	    /**
 	     * 时装背饰
 	     */
-		public static final byte fashion_cape = 21;
+		public static final byte CAPE = 13;
 	}
 	
 	/**

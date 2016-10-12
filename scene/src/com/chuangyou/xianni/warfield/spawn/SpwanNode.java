@@ -79,6 +79,17 @@ public class SpwanNode {
 		Campaign campaign = CampaignMgr.getCampagin(campaignId);
 		if (campaign != null) {
 			decorator.over(campaign, this);
+
+			boolean updataProgress = true;
+			for (SpwanNode node : campaign.getSpwanNodes().values()) {
+				if (node.getSpawnInfo().getProgress() == spwanInfo.getProgress() && node.getState().getCode() != NodeState.OVER) {
+					updataProgress = false;
+					break;
+				}
+			}
+			if (updataProgress) {
+				campaign.updataProgress(spwanInfo.getProgress());
+			}
 		}
 		if (spwanInfo.getWakeType() != WAKE_OVER) {
 			return;
@@ -144,7 +155,12 @@ public class SpwanNode {
 		state.work();
 		// 通知副本，该节点发送改变
 		Campaign campaign = CampaignMgr.getCampagin(campaignId);
-		if (spwanInfo.getEntityType() != SpwanInfoType.MONSTER && spwanInfo.getEntityType() != SpwanInfoType.NPC && campaign != null) {
+		// if (spwanInfo.getEntityType() != SpwanInfoType.MONSTER &&
+		// spwanInfo.getEntityType() != SpwanInfoType.NPC && campaign != null) {
+		// campaign.updateSpawnInfo(this);
+		// }
+		// @atuo 2016-09-05 副本进度指引
+		if (campaign != null) {
 			campaign.updateSpawnInfo(this);
 		}
 	}
@@ -166,7 +182,6 @@ public class SpwanNode {
 		int[] spwanIds = spwanInfo.getNextSpawanIdAttr();
 
 		if (spwanIds == null || spwanIds.length == 0) {
-			System.out.println("aaaaaaaac");
 			return;
 		}
 		// 呼唤下一个节点，并且检测下一个节点的前置节点，是否均结束
@@ -177,7 +192,6 @@ public class SpwanNode {
 			int nextNodeId = SpawnTemplateMgr.getSpwanId(nextTagId);
 			SpwanNode node = field.getSpawnNode(nextNodeId);
 			if (node == null) {
-				System.out.println("aaaaaaaa");
 				return;
 			}
 			int[] preSpwanIds = node.getSpawnInfo().getPreSpawanIdAttr();
@@ -192,7 +206,6 @@ public class SpwanNode {
 						continue;
 					}
 					if (pre.getSpawnInfo().getWakeType() == WAKE_OVER && pre.getState().getCode() != NodeState.OVER && pre.getState().getCode() != NodeState.DELETE) {
-						System.out.println("aaaaaaaab");
 						return;
 					}
 				}

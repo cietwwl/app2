@@ -20,7 +20,7 @@ public class CritEffectBuffer extends FormulaBuffer {
 	}
 
 	public int calculation(int curBlood, int maxBlood) {
-		if (curBlood <= maxBlood * bufferInfo.getParam1() / 10000) {
+		if (curBlood <= 1l * maxBlood * bufferInfo.getParam1() / 10000) {
 			return 1;
 		} else {
 			return 0;

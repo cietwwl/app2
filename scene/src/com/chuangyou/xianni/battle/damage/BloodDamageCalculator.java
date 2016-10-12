@@ -5,8 +5,6 @@ import java.util.List;
 import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.buffer.BufferType;
 import com.chuangyou.xianni.battle.buffer.FormulaBuffer;
-import com.chuangyou.xianni.battle.buffer.specialbuf.BeAttackDamageEffectBuffer;
-import com.chuangyou.xianni.battle.buffer.specialbuf.DefenceBreakBuffer;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.role.objects.Living;
 
@@ -29,7 +27,9 @@ public class BloodDamageCalculator implements DamageCalculator {
 		// 获得计算的护甲
 		defence -= dec;
 		int damageValue = (int) ((Math.max(attack - defence * 1.2, 0) + attack * 0.025) * random.next(80, 120) / 100);
-		damageValue = (int) (1l * damageValue * percent / 10000 + value);
+		// 计算破血跟血抗
+		damageValue = (int) (damageValue * Math.max(1 + (source.getAttackAddtion() - target.getAttackCut()) / 10000f, 0.1));
+		damageValue = (int) (1l * damageValue * percent / 10000f + value);
 
 		// 伤害实际值,受源与目标buffer状态修正
 		int changeValue = 0;
@@ -45,6 +45,10 @@ public class BloodDamageCalculator implements DamageCalculator {
 			FormulaBuffer fbuff = (FormulaBuffer) buff;
 			changeValue += fbuff.formulaExe(damageValue, EnumAttr.BLOOD.getValue());
 		}
+		if (changeValue < 0 && damageValue > 0) {
+			changeValue = Math.max(changeValue, -damageValue);
+		}
+
 		damageValue = damageValue - changeValue;
 		if (percent == 0 && value == 0) {
 			return damageValue;

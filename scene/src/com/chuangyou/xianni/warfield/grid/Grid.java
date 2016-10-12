@@ -1,5 +1,6 @@
 package com.chuangyou.xianni.warfield.grid;
 
+import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.Rect;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.role.objects.Living;
@@ -45,6 +46,7 @@ public class Grid {
 		GridItem goalGI = getGridItem(goal.x, goal.z);
 		// System.err.println("moveto = " + living.getPostion() + " goal = " +
 		// goal + " curGI = " + curGI + " goal = " + goalGI);
+		if(curGI == null || goalGI == null) return;
 		if (curGI.id == goalGI.id)
 			return;
 //		if(living.getId() < 200)
@@ -60,7 +62,7 @@ public class Grid {
 	 */
 	public void addLiving(Living living) {
 		GridItem gi = getGridItem(living);
-//		System.out.println("addLiving -- " + gi.id);
+		//System.out.println("addLiving -- " + gi.id);
 		if (gi == null)
 			return;
 		gi.addLiving(living);
@@ -110,7 +112,7 @@ public class Grid {
 		// System.out.println("index = " + index + " _items = " +
 		// _items.length);
 		if (index > _items.length) {
-			System.out.println("index = " + index + " is out of bound");
+			Log.error("index = " + index + " is out of bound");
 			return null;
 		}
 		GridItem gi = _items[index];

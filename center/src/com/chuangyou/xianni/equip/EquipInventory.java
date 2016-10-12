@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.chuangyou.common.protobuf.pb.equip.EquipBarInfoProto.EquipBarInfoMsg;
 import com.chuangyou.common.protobuf.pb.equip.EquipBarInfoRespProto.EquipBarInfoRespMsg;
+import com.chuangyou.common.protobuf.pb.player.OtherEquipmentInfoProto.OtherEquipmentInfoMsg;
+import com.chuangyou.common.protobuf.pb.player.OtherMagicwpMsgProto.OtherMagicwpMsg;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.equip.EquipBarGradeCfg;
 import com.chuangyou.xianni.entity.equip.EquipBarInfo;
@@ -18,20 +20,20 @@ import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.sql.dao.DBManager;
 
 public class EquipInventory extends AbstractEvent implements IInventory {
-	
-	private GamePlayer player;
-	
-	private Map<Short, EquipBarInfo> equipBarInfoMap = new HashMap<>();
-	
+
+	private GamePlayer					player;
+
+	private Map<Short, EquipBarInfo>	equipBarInfoMap	= new HashMap<>();
+
 	public EquipInventory(GamePlayer player) {
 		// TODO Auto-generated constructor stub
 		this.player = player;
 	}
-	
-	public EquipBarInfo getEquipBarByPos(short pos){
+
+	public EquipBarInfo getEquipBarByPos(short pos) {
 		return this.getEquipBarInfoMap().get(pos);
 	}
-	
+
 	@Override
 	public boolean loadFromDataBase() {
 		// TODO Auto-generated method stub
@@ -43,8 +45,8 @@ public class EquipInventory extends AbstractEvent implements IInventory {
 	public boolean unloadData() {
 		// TODO Auto-generated method stub
 		player = null;
-		
-		if(equipBarInfoMap != null){
+
+		if (equipBarInfoMap != null) {
 			equipBarInfoMap.clear();
 		}
 		equipBarInfoMap = null;
@@ -54,26 +56,27 @@ public class EquipInventory extends AbstractEvent implements IInventory {
 	@Override
 	public boolean saveToDatabase() {
 		// TODO Auto-generated method stub
-		if(equipBarInfoMap != null &&equipBarInfoMap.size() > 0){
-			for(EquipBarInfo info: equipBarInfoMap.values()){
+		if (equipBarInfoMap != null && equipBarInfoMap.size() > 0) {
+			for (EquipBarInfo info : equipBarInfoMap.values()) {
 				short option = info.getOp();
-				if(option == Option.Insert){
+				if (option == Option.Insert) {
 					DBManager.getEquipBarInfoDao().add(info);
-				}else if(option == Option.Update){
+				} else if (option == Option.Update) {
 					DBManager.getEquipBarInfoDao().update(info);
 				}
 			}
 		}
 		return false;
 	}
+
 	public Map<Short, EquipBarInfo> getEquipBarInfoMap() {
-		if(equipBarInfoMap == null){
+		if (equipBarInfoMap == null) {
 			equipBarInfoMap = new HashMap<>();
 		}
-		if(equipBarInfoMap.size() <= 0){
+		if (equipBarInfoMap.size() <= 0) {
 			Map<Short, Map<Integer, EquipBarGradeCfg>> equipBarGradeMap = EquipTemplateMgr.getBarGradeMap();
-			
-			for(short position:equipBarGradeMap.keySet()){
+
+			for (short position : equipBarGradeMap.keySet()) {
 				EquipBarInfo info = new EquipBarInfo(player.getPlayerId(), position);
 				info.setOp(Option.Insert);
 				equipBarInfoMap.put(position, info);
@@ -81,19 +84,29 @@ public class EquipInventory extends AbstractEvent implements IInventory {
 		}
 		return equipBarInfoMap;
 	}
-	
-	public void updateAllInfo(){
+
+	public void updateAllInfo() {
 		Map<Short, EquipBarInfo> equipBarInfoMap = getEquipBarInfoMap();
 		EquipBarInfoRespMsg.Builder msg = EquipBarInfoRespMsg.newBuilder();
 		msg.setAction(EquipOperateAction.EquipBar.ALL_INFOS);
-		
-		for(EquipBarInfo info: equipBarInfoMap.values()){
+
+		for (EquipBarInfo info : equipBarInfoMap.values()) {
 			EquipBarInfoMsg.Builder infoMsg = EquipBarInfoMsg.newBuilder();
 			info.writeProto(infoMsg);
 			msg.addEquipBar(infoMsg);
 		}
 		PBMessage p = MessageUtil.buildMessage(Protocol.U_EQUIPBAR_INFO, msg);
 		player.sendPbMessage(p);
+	}
+
+	public void writeInSimpOtherSnap(OtherEquipmentInfoMsg.Builder proto) {
+		Map<Short, EquipBarInfo> equipBarInfoMap = getEquipBarInfoMap();
+
+		for (EquipBarInfo info : equipBarInfoMap.values()) {
+			EquipBarInfoMsg.Builder infoMsg = EquipBarInfoMsg.newBuilder();
+			info.writeProto(infoMsg);
+			proto.addEquipBarInfoMsg(infoMsg);
+		}
 	}
 
 }

@@ -5,13 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
+import com.chuangyou.common.protobuf.pb.PlayerKillMonsterProto.PlayerKillMonsterMsg;
 import com.chuangyou.common.protobuf.pb.army.HeroInfoMsgProto.HeroInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLivingInfoMsg;
 import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLivingInfoMsg.Builder;
 import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
+import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
 import com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.MathUtils;
@@ -19,26 +22,33 @@ import com.chuangyou.xianni.battle.action.HeroPollingAction;
 import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.buffer.BufferFactory;
 import com.chuangyou.xianni.battle.damage.Damage;
+import com.chuangyou.xianni.battle.mgr.AvatarTempManager;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.skill.FuseSkillVo;
 import com.chuangyou.xianni.battle.skill.Skill;
+import com.chuangyou.xianni.campaign.ArenaBattleCampaign;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignMgr;
+import com.chuangyou.xianni.campaign.PvP1v1Campaign;
 import com.chuangyou.xianni.campaign.node.CampaignNodeDecorator;
 import com.chuangyou.xianni.campaign.task.CTBaseCondition;
 import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.BattleModeCode;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.entity.avatar.AvatarCorrespondTemplateInfo;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.equip.EquipAwakenCfg;
 import com.chuangyou.xianni.entity.mount.MountGradeCfg;
+import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
+import com.chuangyou.xianni.entity.soul.SoulFuseSkillConfig;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
 import com.chuangyou.xianni.equip.template.EquipTemplateMgr;
 import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.exec.ThreadManager;
 import com.chuangyou.xianni.mount.MountTempleteMgr;
+import com.chuangyou.xianni.netty.GatewayLinkedSet;
 import com.chuangyou.xianni.proto.BroadcastUtil;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -82,6 +92,23 @@ public class Player extends ActiveLiving {
 	 * 魂幡等级
 	 */
 	private int							soulLv					= 0;
+	/** 解除变身时间 */
+	private long						unTransfigurationTime	= 0;
+	// 变身状态 0 未合体 1 合体
+	protected int						correspondStatu			= 0;
+	// 变身ID
+	protected int						avatarTempId			= 0;
+	// 变身相关属性
+	private static EnumAttr[]			avatarAttrs;
+	// 变身技能ID
+	public static final int				TRANS_SKILL_ID			= 70001001;
+	// 变身后技能
+	protected Map<Integer, Skill>		avatarSkills			= new HashMap<>();
+	protected int						avatarEnergy;										// 仙力
+
+	static {
+		avatarAttrs = new EnumAttr[] { EnumAttr.BLOOD, EnumAttr.SOUL, EnumAttr.ATTACK, EnumAttr.DEFENCE, EnumAttr.ACCURATE, EnumAttr.DODGE, EnumAttr.CRIT, EnumAttr.CRIT_DEFENCE };
+	}
 
 	public Player(long playerId) {
 		super(playerId, playerId);
@@ -89,6 +116,7 @@ public class Player extends ActiveLiving {
 		setType(RoleType.player);
 		HeroPollingAction heroAction = new HeroPollingAction(this);
 		this.enDelayQueue(heroAction);
+		System.out.println(getClass().getName() + "@" + Integer.toHexString(hashCode()));
 	}
 
 	public void readHeroInfo(HeroInfoMsg hero) {
@@ -110,7 +138,7 @@ public class Player extends ActiveLiving {
 		if (simpleInfo.getWeaponId() == 0 || simpleInfo.getWeaponAwaken() == 0) {
 			this.setWeaponBuffId(0);
 		} else {
-			EquipAwakenCfg cfg = EquipTemplateMgr.getAwakenMap().get(simpleInfo.getWeaponId() * 10000 + simpleInfo.getWeaponAwaken() * 100 + 0);
+			EquipAwakenCfg cfg = EquipTemplateMgr.getAwakenMap().get(simpleInfo.getWeaponId() * 10000l + simpleInfo.getWeaponAwaken() * 100l + 0);
 			if (cfg != null) {
 				this.setWeaponBuffId(cfg.getSkillId());
 			} else {
@@ -126,11 +154,17 @@ public class Player extends ActiveLiving {
 		if (super.onDie(source)) {
 			DieAction die = new DieAction(this, source, 1000);
 			die.getActionQueue().enDelayQueue(die);
-
+			getTruckHelper().relationOnDie();
 			if (field != null && field.getCampaignId() > 0) {
 				Campaign campaign = CampaignMgr.getCampagin(field.getCampaignId());
 				if (campaign != null) {
 					campaign.notifyTaskEvent(CTBaseCondition.LESS_DEAD_COUNT, 1);
+					if (campaign instanceof ArenaBattleCampaign) {
+						((ArenaBattleCampaign) campaign).fail();
+					}
+					if (campaign instanceof PvP1v1Campaign) {
+						((PvP1v1Campaign) campaign).die(this.getArmyId());
+					}
 				}
 			}
 		}
@@ -185,16 +219,16 @@ public class Player extends ActiveLiving {
 			int changePkVal = 0;// 减少pk值
 			if (getColour(getPkVal()) == BattleModeCode.yellow) {
 				changePkVal = MathUtils.randomClamp(10, 20);
-				notifyCenter(2, (int) source.getArmyId(), (int) getArmyId());
+				notifyCenter(source.getArmyId(), getArmyId());
 			} else if (getColour(getPkVal()) == BattleModeCode.red) {
 				changePkVal = MathUtils.randomClamp(40, 80);
-				notifyCenter(2, (int) source.getArmyId(), (int) getArmyId());
+				notifyCenter(source.getArmyId(), getArmyId());
 			}
 			if (changePkVal > 0) {
 				changePkVal = getPkVal() - changePkVal < 0 ? 0 : getPkVal() - changePkVal;
 				setPkVal(changePkVal);
 				PropertyMsg.Builder p = PropertyMsg.newBuilder();
-				p.setBasePoint(changePkVal);
+				// p.setBasePoint(changePkVal);
 				p.setTotalPoint(changePkVal);
 				p.setType(EnumAttr.PK_VAL.getValue());
 				properties.add(p.build());
@@ -280,12 +314,6 @@ public class Player extends ActiveLiving {
 		if (weaponBuffer != null && weaponBuffer.getExeWay() == exeWay) {
 			buffers.add(weaponBuffer);
 		}
-		// for (int i = 0; i < fuseSkillBuffers.length; i++) {
-		// Buffer fuseBuff = fuseSkillBuffers[i];
-		// if (fuseBuff != null && fuseBuff.getExeWay() == exeWay) {
-		// buffers.add(fuseBuff);
-		// }
-		// }
 		return buffers;
 	}
 
@@ -294,12 +322,6 @@ public class Player extends ActiveLiving {
 		if (weaponBuffer != null && weaponBuffer.getType() == type) {
 			toal.add(weaponBuffer);
 		}
-		// for (int i = 0; i < fuseSkillBuffers.length; i++) {
-		// Buffer fuseBuff = fuseSkillBuffers[i];
-		// if (fuseBuff != null && fuseBuff.getType() == type) {
-		// toal.add(fuseBuff);
-		// }
-		// }
 		return toal;
 
 	}
@@ -308,29 +330,38 @@ public class Player extends ActiveLiving {
 	 * 初始化技能
 	 */
 	public void readSkillInfo(HeroInfoMsg hero) {
-		List<Integer> toalSkillInfos = hero.getSkillInfosList();
-
+		List<Integer> toalSkillInfos = new ArrayList<>();
+		toalSkillInfos.addAll(hero.getSkillInfosList());
+		// 清理旧技能
+		this.drivingSkills.clear();
+		this.permanentBuffer.clear();
 		if (toalSkillInfos != null && toalSkillInfos.size() != 0) {
+			// 添加变身技能
+			toalSkillInfos.add(TRANS_SKILL_ID);
 			for (Integer tempId : toalSkillInfos) {
 				SkillTempateInfo skillInfo = BattleTempMgr.getBSkillInfo(tempId);
-				if (skillInfo != null) {
-					// TODO 给英雄添加skillInfo自带的buffers，作为常驻buffer
+				if (skillInfo == null) {
+					continue;
 				}
-			}
-		}
-
-		List<Integer> battleSkilList = hero.getBattleSkillsList();
-
-		if (battleSkilList != null && battleSkilList.size() != 0) {
-			for (Integer tempId : toalSkillInfos) {
-				// System.out.println("tempId: "+tempId);
-				SkillTempateInfo skillInfo = BattleTempMgr.getBSkillInfo(tempId);
-				if (skillInfo != null) {
-					SkillActionTemplateInfo actionInfo = BattleTempMgr.getActionInfo(skillInfo.getActionId());
-					if (actionInfo != null) {
-						Skill skill = new Skill(actionInfo);
-						skill.setSkillTempateInfo(skillInfo);
-						addSkill(skill);
+				// 添加可执行技能
+				SkillActionTemplateInfo actionInfo = BattleTempMgr.getActionInfo(skillInfo.getActionId());
+				if (actionInfo != null) {
+					Skill skill = new Skill(actionInfo);
+					skill.setSkillTempateInfo(skillInfo);
+					addSkill(skill);
+				}
+				// 添加技能携带常驻buffer
+				if (skillInfo.getFightBufferIds() != null && !skillInfo.getFightBufferIds().equals("")) {
+					// 给英雄添加skillInfo自带的buffers，作为常驻buffer
+					String[] bufferIds = skillInfo.getFightBufferIds().split(",");
+					for (String bufferId : bufferIds) {
+						SkillBufferTemplateInfo sbinfo = BattleTempMgr.getBufferInfo(Integer.valueOf(bufferId));
+						if (sbinfo == null) {
+							continue;
+						}
+						Buffer buff = BufferFactory.createBuffer(this, this, sbinfo);
+						buff.setPermanent(true);
+						addPermanentBuffer(buff);
 					}
 				}
 			}
@@ -350,6 +381,8 @@ public class Player extends ActiveLiving {
 				this.setFuseSkill(new FuseSkillVo(fuseSkillMsg.getFuseSkillId(), fuseSkillMsg.getColor()), fuseSkillMsg.getIndex() - 1);
 			}
 		}
+		// 添加变身技能
+
 	}
 
 	/** 武器buffer */
@@ -375,12 +408,12 @@ public class Player extends ActiveLiving {
 		}
 	}
 
-	/** 获取武器buff */
+	/** 获取魂幡buff */
 	public Buffer getFuseBuffer(int index) {
 		return fuseSkillBuffers[index];
 	}
 
-	/** 魂幡buffer */
+	/** 武器buffer */
 	public void addWeaponBuffer(int weaponBufId) {
 		Buffer older = this.getWeaponBuffer();
 		if (weaponBufId == 0) {
@@ -406,33 +439,26 @@ public class Player extends ActiveLiving {
 
 	@Override
 	public Builder getBattlePlayerInfoMsg() {
-		// TODO Auto-generated method stub
-		this.cachBattleInfoPacket = BattleLivingInfoMsg.newBuilder();
-		cachBattleInfoPacket.setMountState(getMountState());
-		return super.getBattlePlayerInfoMsg();
+		BattleLivingInfoMsg.Builder temp = super.getBattlePlayerInfoMsg();
+		temp.setMountState(getMountState());
+		temp.setAvatarState(correspondStatu);
+		// 如果是变身状态，则清理以前技能,补进合体后技能
+		if (isCorrespondStatu()) {
+			temp.clearSkills();
+			for (Skill skill : avatarSkills.values()) {
+				temp.addSkills(skill.getSkillId());
+			}
+		}
+		return temp;
 	}
 
-	// public void clearWorkBuffer() {
-	// List<Buffer> allbuffer = new ArrayList<>();
-	// synchronized (workBuffers) {
-	// for (Entry<Integer, List<Buffer>> entry : workBuffers.entrySet()) {
-	// List<Buffer> wayBufs = entry.getValue();
-	// allbuffer.addAll(wayBufs);
-	// wayBufs.clear();
-	// }
-	// workBuffers.clear();
-	// }
-	//
-	// for (Buffer buff : allbuffer) {
-	// buff.stop();
-	// BufferMsg.Builder bmsg = BufferMsg.newBuilder();
-	// bmsg.setBufferId(buff.getBufferId());
-	// bmsg.setOption(4);// 4 删除
-	// bmsg.setSourceId(buff.getSource().getId());
-	// bmsg.setTargetId(buff.getTarget().getId());
-	// sendBufferChange(bmsg.build());
-	// }
-	// }
+	// 获取技能
+	public Skill getSkill(int skillId) {
+		if (isCorrespondStatu()) {
+			return avatarSkills.get(skillId);
+		}
+		return drivingSkills.get(skillId);
+	}
 
 	public void addCampaignBuff(Buffer buff) {
 		campaignBuffers.add(buff);
@@ -447,11 +473,6 @@ public class Player extends ActiveLiving {
 	}
 
 	private void calPKValue(Living source, Living deather) {
-
-		// System.out.println("source playerId: " + source.toString() + "
-		// source.getPkVal(): " + source.getPkVal()+"
-		// source.getBattleMode():"+source.getBattleMode()+"
-		// getBattleMode():"+getBattleMode());
 		// 攻击源处理
 		if (source.getBattleMode() == BattleModeCode.warBattleMode && getBattleMode() == BattleModeCode.peaceBattleMode) {// 增加pk值
 			source.setPkVal(source.getPkVal() + 1000);
@@ -469,9 +490,6 @@ public class Player extends ActiveLiving {
 			updateProperty(source, properties);
 		}
 
-		// System.out.println("source playerId: " + source.getArmyId() + "
-		// source.getPkVal(): " + source.getPkVal());
-
 		// 自己
 		List<PropertyMsg> properties = new ArrayList<>();
 		Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
@@ -479,14 +497,12 @@ public class Player extends ActiveLiving {
 		int changePkVal = 0;// 减少pk值
 		if (getColour(getPkVal()) == BattleModeCode.yellow) {
 			changePkVal = MathUtils.randomClamp(10, 20);
-			notifyCenter(2, (int) source.getArmyId(), (int) getArmyId());
+			notifyCenter(source.getArmyId(), getArmyId());
 		} else if (getColour(getPkVal()) == BattleModeCode.red) {
 			changePkVal = MathUtils.randomClamp(40, 80);
-			notifyCenter(2, (int) source.getArmyId(), (int) getArmyId());
+			notifyCenter(source.getArmyId(), getArmyId());
 		}
-		// System.out.println(" playerId: " + getArmyId() + " exp: " + "
-		// changePkVal: " + changePkVal + " this.getPkVal(): " +
-		// getPkVal());
+
 		if (changePkVal > 0) {
 			changePkVal = getPkVal() - changePkVal < 0 ? 0 : getPkVal() - changePkVal;
 			setPkVal(changePkVal);
@@ -499,9 +515,7 @@ public class Player extends ActiveLiving {
 			notifyCenter(changeMap, getArmyId());
 			updateProperty(deather, properties);
 		}
-		// System.out.println(" ---playerId: " + getArmyId() + "
-		// changePkVal: " + changePkVal + " this.getPkVal(): " +
-		// getPkVal());
+
 	}
 
 	public boolean isRevivaling() {
@@ -563,7 +577,6 @@ public class Player extends ActiveLiving {
 				if (tagId <= maxId)
 					continue;
 
-				// System.out.println("integerinteger: " + tagId);
 				int spwanId = SpawnTemplateMgr.getSpwanId(tagId);
 				SpawnInfo sf = spawnInfos.get(spwanId);
 				if (sf == null)
@@ -586,8 +599,6 @@ public class Player extends ActiveLiving {
 		}
 
 		this.monsterRefreshIdList.clear();
-		// System.out.println(" date: " + date + " monsterRefreshIdList: " +
-		// monsterRefreshIdList);
 		this.monsterRefreshIdList.addAll(monsterRefreshIdList);
 	}
 
@@ -605,7 +616,13 @@ public class Player extends ActiveLiving {
 
 	public void setFuseSkill(FuseSkillVo fuseSkill, int index) {
 		if (fuseSkill != null) {
-			addFuseBuffer(fuseSkill.getSkillId(), index);
+			SoulFuseSkillConfig config = BattleTempMgr.getFuseSkillTempById(fuseSkill.getSkillId());
+			if (config == null) {
+				Log.error("the skill can not find temp,the skillId : " + fuseSkill.getSkillId());
+				addFuseBuffer(0, index);
+				return;
+			}
+			addFuseBuffer(config.getBuff(), index);
 			this.fuseSkillVos.put(fuseSkill.getBufferId(), fuseSkill);
 		} else {
 			addFuseBuffer(0, index);
@@ -634,6 +651,196 @@ public class Player extends ActiveLiving {
 
 	public void setSoulLv(int soulLv) {
 		this.soulLv = soulLv;
+	}
+
+	/**
+	 * 通知
+	 * 
+	 * @param playerId
+	 * @param beKillerId
+	 *            被杀者
+	 */
+	public void notifyCenter(long playerId, long beKillerId) {
+		PlayerKillMonsterMsg.Builder msg = PlayerKillMonsterMsg.newBuilder();
+		msg.setPlayerId(playerId);
+		msg.setBeKillId(beKillerId);
+		msg.setType(RoleType.player);
+		PBMessage pkg = MessageUtil.buildMessage(Protocol.C_PLAYER_KILL_MONSTER, msg);
+		GatewayLinkedSet.send2Server(pkg);
+	}
+
+	/** 变身 */
+	public void transfiguration() {
+		// 第一步 ：查找出部队信息
+		ArmyProxy army = WorldMgr.getArmy(getArmyId());
+		if (army == null) {
+			return;
+		}
+
+		// 第二步 是否存在分身或已经是分身状态
+		List<Avatar> avatars = army.getAvatars();
+		if (avatars == null || avatars.size() == 0) {
+			return;
+		}
+		if (correspondStatu == 1) {
+			return;
+		}
+		// 第三步 判断合体时间是否CD(5分钟CD时间)
+		if (System.currentTimeMillis() - unTransfigurationTime < 0) { //
+			return;
+		}
+		// 第四步 判断灵气是否足够变身
+		/*-----------------------TODO 稍后做灵气------------------------*/
+		// 第五步 统计分身属性并从地图中移除所有分身
+		BaseProperty baseProperty = new BaseProperty();
+		for (Avatar avatar : avatars) {
+			avatar.writeBaseProperty(baseProperty);
+			avatar.disappear();
+		}
+
+		// 第六步 ： 人物添加分身属性
+		addAvatarProperty(baseProperty);
+		// 第七步：设置解除变身时间
+		int durationTime = 30;// 保底30秒
+		for (Avatar avatar : avatars) {
+			AvatarCorrespondTemplateInfo at = AvatarTempManager.getAvatarCorrespondTemplateInfo(avatar.getSkin(), avatar.getCorrespond());
+			durationTime += at.getFitTime();
+		}
+		unTransfigurationTime = System.currentTimeMillis() + durationTime * 1000;
+		// ---- 第八步：随机某个分身作为主体并补充其技能-----
+		Avatar chosened = avatars.get(new Random().nextInt(avatars.size()));
+		correspondStatu = 1;
+		avatarTempId = chosened.getSimpleInfo().getSkinId();
+
+		// 被选中者补入其所有技能
+		for (Skill skill : chosened.getDrivingSkills().values()) {
+			Skill newSkill = new Skill(skill.getTemplateInfo());
+			avatarSkills.put(newSkill.getSkillId(), newSkill);
+		}
+		// 其他补入非配普攻技能
+		for (Avatar avatar : avatars) {
+			if (avatar == chosened) {
+				continue;
+			}
+			if (avatar.getSimpleInfo().getSkinId() == chosened.getSimpleInfo().getSkinId()) {
+				continue;
+			}
+			for (Skill skill : chosened.getDrivingSkills().values()) {
+				// 分省技能 子类型为8
+				if (skill.getSkillTempateInfo().getSonType() != 8) {
+					continue;
+				}
+				Skill newSkill = new Skill(skill.getTemplateInfo());
+				avatarSkills.put(newSkill.getSkillId(), newSkill);
+			}
+		}
+		// ----- 第九步：人物变更状态------
+		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
+		nears.add(getArmyId());
+		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_G_BATTLEPLAYERINFO, getBattlePlayerInfoMsg().build());
+	}
+
+	/** 解除变身 */
+	public void unTransfiguration() {
+		// 第一步 ：查找出部队信息
+		ArmyProxy army = WorldMgr.getArmy(getArmyId());
+		if (army == null) {
+			return;
+		}
+		// 第二步 是否存在分身
+		List<Avatar> avatars = army.getAvatars();
+		if (avatars == null || avatars.size() == 0) {
+			return;
+		}
+		// 第三步 移除合体属性
+		clearAvatarProperty();
+		// 第四步：人物变更状态并且通知客户端
+		correspondStatu = 0;
+		avatarTempId = 0;
+		avatarSkills.clear();
+		// 第五步 返回出战的分身
+		for (Avatar avatar : avatars) {
+			avatar.reback();
+		}
+		// ----- 第六步：人物变更状态------
+		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
+		nears.add(getArmyId());
+		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_G_BATTLEPLAYERINFO, getBattlePlayerInfoMsg().build());
+	}
+
+	/** 添加合体属性 */
+	private void addAvatarProperty(BaseProperty baseProperty) {
+		PlayerAttUpdateMsg.Builder notifyMsg = PlayerAttUpdateMsg.newBuilder();
+		for (EnumAttr enumAttr : avatarAttrs) {
+			Property pro = properties.get(enumAttr);
+			pro.setAvatarData(baseProperty.getProperty(enumAttr));
+			PropertyMsg.Builder pmsg = PropertyMsg.newBuilder();
+			pmsg.setType(pro.getType());
+			pmsg.setTotalPoint(pro.getTotalJoin());
+			notifyMsg.addAtt(pmsg);
+		}
+		notifyMsg.setPlayerId(getId());
+		// 通知附近玩家
+		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
+		if (this.armyId > 0) {
+			nears.add(this.armyId);
+		}
+		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_RESP_PLAYER_ATT_UPDATE, notifyMsg.build());
+	}
+
+	/** 移除合体属性 */
+	private void clearAvatarProperty() {
+		PlayerAttUpdateMsg.Builder notifyMsg = PlayerAttUpdateMsg.newBuilder();
+		for (EnumAttr enumAttr : avatarAttrs) {
+			Property pro = properties.get(enumAttr);
+			pro.clearAvatarData();
+			PropertyMsg.Builder pmsg = PropertyMsg.newBuilder();
+			pmsg.setType(pro.getType());
+			pmsg.setTotalPoint(pro.getTotalJoin());
+			notifyMsg.addAtt(pmsg);
+		}
+		notifyMsg.setPlayerId(getId());
+		// 通知附近玩家
+		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
+		if (this.armyId > 0) {
+			nears.add(this.armyId);
+		}
+		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_RESP_PLAYER_ATT_UPDATE, notifyMsg.build());
+	}
+
+	public int getAvatarEnergy() {
+		return avatarEnergy;
+	}
+
+	public void setAvatarEnergy(int avatarEnergy) {
+		if (this.avatarEnergy != avatarEnergy) {
+			ArmyProxy army = WorldMgr.getArmy(this.getArmyId());
+			if (army != null) {
+				army.notifyAvatarEnergy(0);
+			}
+		}
+	}
+
+	public boolean costAvatarEnergy(int count) {
+		if (this.avatarEnergy >= count) {
+			this.avatarEnergy = this.avatarEnergy - count;
+
+			ArmyProxy army = WorldMgr.getArmy(this.getArmyId());
+			if (army != null) {
+				army.notifyMana();
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public long getUnTransfigurationTime() {
+		return unTransfigurationTime;
+	}
+
+	public boolean isCorrespondStatu() {
+		return correspondStatu == 1;
 	}
 
 }

@@ -45,21 +45,42 @@ public class TempDataReloadMgr {
 				return MountTemplateMgr.reloadMountEquipCfg();
 			case MOUNT_WEANPON:
 				return MountTemplateMgr.reloadMountWeaponCfg();
+			case MAGICWP:
+				return MagicwpTemplateMgr.reloadMagicwpCfg();
+			case MAGICWP_LEVEL:
+				return MagicwpTemplateMgr.reloadMagicwpLevelCfg();
+			case MAGICWP_GRADE:
+				return MagicwpTemplateMgr.reloadMagicwpGradeCfg();
+			case MAGICWP_REFINE:
+				return MagicwpTemplateMgr.reloadMagicwpRefineCfg();
+			case MAGICWP_BAN:
+				return MagicwpTemplateMgr.reloadMagicwpBanCfg();
+			case MAGICWP_BAN_LEVEL:
+				return MagicwpTemplateMgr.reloadMagicwpBanLevelCfg();
+			case PET_INFO:
+				return PetTemplateMgr.reloadPetInfoCfg();
+			case PET_GRADE:
+				return PetTemplateMgr.reloadPetGradeCfg();
+			case PET_LEVEL:
+				return PetTemplateMgr.reloadPetLevelCfg();
+			case PET_PHYSIQUE:
+				return PetTemplateMgr.reloadPetPhysiqueCfg();
+			case PET_QUALITY:
+				return PetTemplateMgr.reloadPetQualityCfg();
+			case PET_SOUL:
+				return PetTemplateMgr.reloadPetSoulCfg();
+			case PET_SKILL:
+				return PetTemplateMgr.reloadPetSkillInfoCfg();
+			case PET_SKILL_LEVEL:
+				return PetTemplateMgr.reloadSkillLevelCfg();
+			case PET_SKILL_SLOT:
+				return PetTemplateMgr.reloadPetSkillSlotCfg();
+			case SHOP:
+				return ShopTemplateMgr.reloadTemplateData();
+			case FIELD_INFO:
+				return MapProxyManager.reload();
 		}
 
-		if (!BaseServer.initComponent(MagicwpTemplateMgr.init(), "初始化法宝模板数据")) {
-			return false;
-		}
-		if (!BaseServer.initComponent(PetTemplateMgr.init(), "初始化宠物模板数据")) {
-			return false;
-		}
-
-		if (!BaseServer.initComponent(ShopTemplateMgr.init(), "初始化商店数据")) {
-			return false;
-		}
-		if (!BaseServer.initComponent(MapProxyManager.init(), "初始化地图")) {
-			return false;
-		}
 		if (!BaseServer.initComponent(NpcInfoTemplateMgr.init(), "初始化NPC模板数据")) {
 			return false;
 		}
@@ -112,14 +133,38 @@ public class TempDataReloadMgr {
 	}
 
 	public static enum TemplateDataArr {
-		ITEM_TEMPLATE(1001, "物品模板表"), SYSTEM_CONFIG(1002, "公共字典配置表"), LV_UP_TEMP(1003, "升级配置表"), MONT_LEVEL(1004, "坐骑等级"), MOUNT_GRADE(1005, "坐骑进阶"), MOUNT_EQUIP(1006, "坐骑装备"), MOUNT_WEANPON(1007,
-				"坐骑武器"),;
+		ITEM_TEMPLATE ( 1001 , "tb_z_item_template" , "物品模板表" ) ,
+		SYSTEM_CONFIG ( 1002 , "tb_z_system" , "公共字典配置表" ) ,
+		LV_UP_TEMP ( 1003 , "tb_z_level_up" , "升级配置表" ) ,
+		MONT_LEVEL ( 1004 , "tb_z_mount_level" , "坐骑等级" ) ,
+		MOUNT_GRADE ( 1005 , "tb_z_mount_grade" , "坐骑进阶" ) ,
+		MOUNT_EQUIP ( 1006 , "tb_z_mount_grade" , "坐骑装备" ) ,
+		MOUNT_WEANPON ( 1007 , "tb_z_mount_weapon" , "坐骑武器" ) ,
+		MAGICWP ( 1008 , "tb_z_magicwp" , "法宝" ) ,
+		MAGICWP_LEVEL ( 1009 , "tb_z_magicwp_level" , "法宝等级" ) ,
+		MAGICWP_GRADE ( 1010 , "tb_z_magicwp_grade" , "法宝进阶" ) ,
+		MAGICWP_REFINE ( 1011 , "tb_z_magicwp_refine" , "法宝洗练" ) ,
+		MAGICWP_BAN ( 1012 , "tb_z_magicwp_ban" , "法宝禁制" ) ,
+		MAGICWP_BAN_LEVEL ( 1013 , "tb_z_magicwp_ban_level" , "法宝禁制等级" ) ,
+		PET_INFO ( 1014 , "tb_z_pet_info" , "宠物信息" ) ,
+		PET_GRADE ( 1015 , "tb_z_pet_grade" , "宠物阶级" ) ,
+		PET_LEVEL ( 1016 , "tb_z_pet_level" , "宠物等级" ) ,
+		PET_PHYSIQUE ( 1017 , "tb_z_pet_physique" , "宠物炼体" ) ,
+		PET_QUALITY ( 1018 , "tb_z_pet_quality" , "宠物炼体等级" ) ,
+		PET_SOUL ( 1019 , "tb_z_pet_soul" , "宠物炼魂" ) ,
+		PET_SKILL ( 1020 , "tb_z_pet_skill" , "宠物技能" ) ,
+		PET_SKILL_LEVEL ( 1021 , "tb_z_pet_skill_level" , "宠物技能等级" ) ,
+		PET_SKILL_SLOT ( 1022 , "tb_z_pet_skill_slot" , "宠物技能格" ) ,
+		SHOP ( 1023 , "tb_z_shop_info" , "商店" ) ,
+		FIELD_INFO ( 1024 , "tb_z_map_info" , "地图表" ),;
 	private int		code;
+	private String	tableName;
 	private String	des;
 
-	private TemplateDataArr(int code, String des) {
+	private TemplateDataArr(int code, String tableName, String des) {
 		this.code = code;
 		this.des = des;
+		this.tableName = tableName;
 	}
 
 	public static TemplateDataArr get(int code) {

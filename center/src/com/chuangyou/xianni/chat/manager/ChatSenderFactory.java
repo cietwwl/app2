@@ -20,7 +20,7 @@ public class ChatSenderFactory {
 	
 	private static ChatSenderFactory ins = new ChatSenderFactory();
 	
-	public ChatSenderFactory() {
+	private ChatSenderFactory() {
 		// TODO Auto-generated constructor stub
 		this.init();
 	}

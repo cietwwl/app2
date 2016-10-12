@@ -16,8 +16,7 @@ public class CreateCampaignCmd extends AbstractCommand {
 		// 请求创建副本X
 		CreateCampaignMsg msg = CreateCampaignMsg.parseFrom(packet.getBytes());
 		// 向场景服务器申请创建副本
-		CreateCampaignAction action = new CreateCampaignAction(player, msg);
+		CreateCampaignAction action = new CreateCampaignAction(player, msg.getCampaign(), msg.getTaskId());
 		player.getActionQueue().enqueue(action);
 	}
-
 }

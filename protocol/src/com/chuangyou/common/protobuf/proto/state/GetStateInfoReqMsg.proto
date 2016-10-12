@@ -1,0 +1,8 @@
+//protocol=11613;
+option java_package = "com.chuangyou.common.protobuf.pb.state";
+option java_outer_classname = "GetStateInfoReqProto";
+
+//请求境界任务状态
+message GetStateInfoReqMsg{
+
+}

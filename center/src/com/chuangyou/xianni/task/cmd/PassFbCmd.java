@@ -25,7 +25,8 @@ public class PassFbCmd implements Command {
 		for (long playerId : msg.getPlayersList()) {
 			GamePlayer player = WorldMgr.getPlayer(playerId);
 			if (player != null && player.getPlayerState() == PlayerState.ONLINE) {
-				player.notifyListeners(new ObjectEvent(this, msg.getCampaignId(), EventNameType.TASK_PASS_FB));
+				player.notifyListeners(new ObjectEvent(this, msg.getCampaignId(), EventNameType.TASK_PASS_FB));	
+				player.getStateInventory().passFb(msg.getCampaignId());
 			}
 		}
 		if (msg.getTeamId() != 0) {

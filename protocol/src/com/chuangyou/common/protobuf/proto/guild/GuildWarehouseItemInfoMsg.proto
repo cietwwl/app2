@@ -1,0 +1,8 @@
+option java_package = "com.chuangyou.common.protobuf.pb.guild";
+option java_outer_classname = "GuildWarehouseItemInfoProto";
+
+//帮派仓库物品信息
+message GuildWarehouseItemInfoMsg{
+	optional int32 itemTempId = 1; // 物品模板ID
+	optional int32 amount = 2; // 物品数量
+}

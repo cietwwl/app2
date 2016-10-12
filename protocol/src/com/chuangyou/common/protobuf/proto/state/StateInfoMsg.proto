@@ -1,0 +1,10 @@
+//protocol=1618;
+option java_package = "com.chuangyou.common.protobuf.pb.state";
+option java_outer_classname = "StateInfoProto";
+
+//进度消息结构
+//进度更新消息
+message StateInfoMsg{
+	required int32 stateId = 1;  //任务ID
+	required int32 process = 2;  //任务进度
+}

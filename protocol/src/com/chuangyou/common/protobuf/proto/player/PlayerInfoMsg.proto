@@ -28,4 +28,8 @@ message PlayerInfoMsg{
 	optional int32 job = 22; //职业
 	optional int64 equipExp = 23; // 装备经验
 	optional int32 weaponAwaken = 24; // 当前武器觉醒等级
+	optional int32 stateLv = 25; //境界等级
+	optional int32 guildId = 26; // 所在帮派ID
+	optional string guildName = 27; // 所在帮派名字
+	optional int32 guildJob = 28; // 自己在帮派的职位
 }

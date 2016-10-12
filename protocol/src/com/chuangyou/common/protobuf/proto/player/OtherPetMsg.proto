@@ -1,0 +1,13 @@
+//protocol=610;
+option java_package = "com.chuangyou.common.protobuf.pb.player";
+option java_outer_classname = "OtherPetProto";
+import "army/PropertyListMsg.proto";
+message OtherPetMsg {
+	optional int64 playerId=1; //角色ID
+	optional int32 petId=2;    //宠物ID
+	optional int32 level=3;    //宠物等级
+	optional int32 physique=4;    //炼体等级
+	optional int32 quality=5;    //品质
+	optional int32 grade=6;     //宠物阶级
+	optional PropertyListMsg  propertitys=7;       //法宝属性列表
+}

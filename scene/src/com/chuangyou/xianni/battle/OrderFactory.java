@@ -44,9 +44,12 @@ public class OrderFactory {
 
 	public static boolean attackCheck(Field field, Player player, Player target) {
 		try {
+			if (field.getFieldInfo().getBattleType() == 2) {
+				return true; // 竞技地图，任意PK
+			}
 			String startTime = field.getFieldInfo().getStartBattleTime();
 			String endTime = field.getFieldInfo().getEndBattleTime();
-			if (field.getFieldInfo().isBattle()) {// pk 地图才能攻击
+			if (field.getFieldInfo().getBattleType() == 1) {// pk 地图才能攻击
 				int openLv = SystemConfigTemplateMgr.getIntValue("pk.openLv");
 				if (target.getSimpleInfo().getLevel() < openLv)
 					return false;

@@ -5,6 +5,8 @@ import java.util.List;
 import com.chuangyou.common.protobuf.pb.friend.GetRecommendFriendsReqProto.GetRecommendFriendsReqMsg;
 import com.chuangyou.common.protobuf.pb.friend.GetRecommendFriendsRespProto.GetRecommendFriendsRespMsg;
 import com.chuangyou.xianni.base.AbstractCommand;
+import com.chuangyou.xianni.common.ErrorCode;
+import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.constant.PlayerRelationConstant;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -30,6 +32,17 @@ public class GetRecommendFriendsCmd extends AbstractCommand {
 //		player.getRelationInventory().lastQueryTime = System.currentTimeMillis();
 
 		GetRecommendFriendsReqMsg req = GetRecommendFriendsReqMsg.parseFrom(packet.getBytes());
+		
+		if(req.getIsCity() > 0){
+			if(player.getSpaceInventory() == null || player.getSpaceInventory().getSpaceInfo() == null){
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.PLAYER_NO_CITY, packet.getCode(), "玩家未设置城市");
+				return;
+			}
+			if(player.getSpaceInventory().getSpaceInfo().getCity() == null || player.getSpaceInventory().getSpaceInfo().getCity().equals("")){
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.PLAYER_NO_CITY, packet.getCode(), "玩家未设置城市");
+				return;
+			}
+		}
 		
 		GetRecommendFriendsRespMsg.Builder resp = GetRecommendFriendsRespMsg.newBuilder();
 		List<GamePlayer> list = WorldMgr.getPlayerLevelRank();
@@ -93,9 +106,8 @@ public class GetRecommendFriendsCmd extends AbstractCommand {
 			if(selfPlayer.getSpaceInventory().getSpaceInfo() == null || targetPlayer.getSpaceInventory().getSpaceInfo() == null){
 				return false;
 			}
-			String selfCity = selfPlayer.getSpaceInventory().getSpaceInfo().getCity();
 			String targetCity = targetPlayer.getSpaceInventory().getSpaceInfo().getCity();
-			if(selfCity.equals(targetCity) == false) {
+			if(selfPlayer.getSpaceInventory().isSameCityToSelf(targetCity) == false) {
 				return false;
 			}
 		}

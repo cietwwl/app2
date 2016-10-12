@@ -1,5 +1,8 @@
 package com.chuangyou.xianni.campaign.action;
 
+import java.util.List;
+
+import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CreateCampaignMsgProto.CreateCampaignMsg;
 import com.chuangyou.xianni.exec.ActionQueue;
 import com.chuangyou.xianni.exec.DelayAction;
@@ -14,21 +17,32 @@ import com.chuangyou.xianni.word.WorldMgr;
 
 public class CreateCampaignDelayAction extends DelayAction {
 	Team				team;
-	CreateCampaignMsg	cmsg;
+	int					campaignId;
 	static final int	count	= 3;
 
-	public CreateCampaignDelayAction(ActionQueue queue, Team team, CreateCampaignMsg cmsg, int delay) {
+	public CreateCampaignDelayAction(ActionQueue queue, Team team, int campaignId, int delay) {
 		super(queue, delay);
 		this.team = team;
-		this.cmsg = cmsg;
+		this.campaignId = campaignId;
 	}
 
 	@Override
 	public void execute() {
+
+		CreateCampaignMsg.Builder ccmsg = CreateCampaignMsg.newBuilder();
+
+		ccmsg.setCampaign(campaignId);
+
 		GamePlayer teamLeader = WorldMgr.getPlayer(team.getLeader().getPlayerId());
 		if (teamLeader != null) {
+			// 人数不够，补分身
+			int size = 4 - team.getMemberSize();
+			if (size > 0) {
+				List<RobotInfoMsg> robots = teamLeader.getAvatarInventory().getRandomAvatarMsg(size);
+				ccmsg.addAllAvatars(robots);
+			}
 			// 通知scence服务器，用户请求创建副本
-			PBMessage c2s = MessageUtil.buildMessage(Protocol.S_CREATE_CAMPAIGN, cmsg);
+			PBMessage c2s = MessageUtil.buildMessage(Protocol.S_CREATE_CAMPAIGN, ccmsg);
 			teamLeader.sendPbMessage(c2s);
 		}
 		for (TeamMember member : team.getMembers()) {

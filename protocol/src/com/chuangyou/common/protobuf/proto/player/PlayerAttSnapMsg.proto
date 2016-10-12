@@ -13,6 +13,10 @@ message PlayerAttSnapMsg {
 	optional int64 ownerId = 6;			//主人ID，主角不填
 	optional int32 bornNodeId=7;//出生点ID
 
+	optional int32 guildId = 8; // 所在帮派ID
+	optional string guildName = 9; // 所在帮派名字
+	optional int32 guildJob = 10; // 在帮派里的职位
+
 }
 
 

@@ -12,6 +12,7 @@ import com.chuangyou.xianni.task.condition.PassFbTaskCondition;
 import com.chuangyou.xianni.task.condition.QTETaskCondition;
 import com.chuangyou.xianni.task.condition.TSystemTaskCondition;
 import com.chuangyou.xianni.task.condition.TriggerTaskCondition;
+import com.chuangyou.xianni.task.constant.ConditionType;
 import com.chuangyou.xianni.task.template.TaskTemplateMgr;
 
 public class TaskConditionFactory {
@@ -27,30 +28,30 @@ public class TaskConditionFactory {
 		if(cfg ==null)return null;
 		BaseTaskCondiction condition = null;
 		switch(cfg.getTaskTarget()){
-			case TaskCfg.KILL_MONST:
+			case ConditionType.KILL_MONST:
 				condition = new KillMonsterTaskCondition(info, cfg, player);
 				break;
-			case TaskCfg.COMMIT_ITEM:
-			case TaskCfg.GET_ITEM:
-			case TaskCfg.PATCH:	
+			case ConditionType.COMMIT_ITEM:
+			case ConditionType.GET_ITEM:
+			case ConditionType.PATCH:	
 				condition = new ItemTaskCondition(info, cfg, player);
 				break;
-			case TaskCfg.NPC_DIALOG:
+			case ConditionType.NPC_DIALOG:
 				condition = new NpcDialogTaskCondition(info, cfg, player);
 				break;
-			case TaskCfg.PASS_FB:
+			case ConditionType.PASS_FB:
 				condition = new PassFbTaskCondition(info, cfg, player);
 				break;
-			case TaskCfg.T_SYSTEM:
+			case ConditionType.T_SYSTEM:
 				condition = new TSystemTaskCondition(info, cfg, player);
 				break;
-			case TaskCfg.QTE:
+			case ConditionType.QTE:
 				condition = new QTETaskCondition(info, cfg, player);
 				break;
-			case TaskCfg.TRIGGER:
+			case ConditionType.TRIGGER:
 				condition = new TriggerTaskCondition(info, cfg, player);
 				break;
-			case TaskCfg.KILL_PRIVATE_MONSTER:
+			case ConditionType.KILL_PRIVATE_MONSTER:
 				condition = new KillPrivateMonsterCondition(info, cfg, player);
 				break;
 				default:

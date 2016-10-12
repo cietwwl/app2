@@ -1,5 +1,6 @@
 package com.chuangyou.common.util;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,19 @@ public class StringUtils {
 			return rawStr.substring(0, maxLen);
 		}
 		return rawStr;
+	}
+	
+	public static boolean verifyMaxByteLen(String str, int maxLen){
+		try {
+			if(str.getBytes("UTF-8").length > maxLen){
+				return false;
+			}
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	/**

@@ -88,6 +88,7 @@ public class InverseBeadLoopAction extends DelayAction {
 		}
 		if (isLoop && playerTimeInfo != null && player.getPlayerState() == PlayerState.ONLINE) {
 			this.execTime = System.currentTimeMillis() + intervalTime;
+			System.out.println("intervalTime :" +intervalTime);
 			getActionQueue().enDelayQueue(this);
 		}
 		System.err.println("exe loop : " + (System.currentTimeMillis() - now) + " playerId :" + player.getPlayerId());

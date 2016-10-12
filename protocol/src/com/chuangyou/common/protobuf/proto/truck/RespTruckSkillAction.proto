@@ -1,0 +1,10 @@
+//protocol=2621;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "RespTruckSkillActionProto";
+
+//回应使用镖车技能
+message RespTruckSkillAction {
+	required int32 skillId = 1;	//对应界面的几个按钮
+	required int32 result = 2;	//使用1.成功 2.失败
+	required int32 remain = 3;	//剩余次数
+}

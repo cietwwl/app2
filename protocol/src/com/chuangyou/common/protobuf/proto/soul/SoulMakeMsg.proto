@@ -3,7 +3,7 @@ option java_package = "com.chuangyou.common.protobuf.pb.soul";
 option java_outer_classname = "SoulMakeProto";
 
 message SoulMakeMsg{
-	required int32 state = 1;//状态：状态：0：未初始化 1:QTE提交 2：制作中 3：完成状态
+	required int32 state = 1;//状态：状态：0：未初始化 1:QTE提交 2：制作中（未接受任务） 3：制作中（已接任务）  4：完成状态
 	required int64 startTime = 2;//	开始时间
 	required int32 killNum = 3;//杀怪数量
 	required int32 totalTime = 4;//总时间（单位秒）

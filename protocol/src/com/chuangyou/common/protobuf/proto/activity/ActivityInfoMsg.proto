@@ -1,0 +1,11 @@
+//protocol=1613;
+option java_package = "com.chuangyou.common.protobuf.pb.activity";
+option java_outer_classname = "ActivityInfoProto";
+
+//活动详细信息
+message ActivityInfoMsg{
+	optional int32 id = 1;  //活动ID
+	optional int32 state = 2;  //状态    0:正常状态  1：活动提前结束
+	optional int32 remainTime = 3; //剩余次数
+	optional int32 param  = 4; //预留参数
+}

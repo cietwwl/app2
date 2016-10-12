@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
 import com.chuangyou.common.util.MathUtils;
-import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.battle.AttackOrder;
 import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.damage.BloodDamageCalculator;
@@ -19,7 +19,7 @@ import com.chuangyou.xianni.entity.soul.SoulFuseSkillConfig;
 import com.chuangyou.xianni.proto.BroadcastUtil;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.objects.Living;
-import com.chuangyou.xianni.warfield.helper.selectors.AllSelectorHelper;
+import com.chuangyou.xianni.warfield.helper.selectors.BeAttackerSelectorHelper;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 
 /** 攻击特点范围敌人buffer */
@@ -37,21 +37,23 @@ public class BombBuffer extends Buffer {
 			return;
 		}
 
-		Set<Long> nears = source.getNears(new AllSelectorHelper(source));
+		Set<Long> nears = source.getNears(new BeAttackerSelectorHelper(source));
 		Set<Living> beChoosers = new HashSet<>();
 		for (Long id : nears) {
 			Living target = source.getField().getLiving(id);
 			if (target == null) {
 				continue;
 			}
-			// 半径1M范围内
-			if (Vector3.distance(source.getPostion(), target.getPostion()) > 1) {
+			// 半径3M范围内
+			float i = MathUtils.getDistByXZ(source.getPostion(), target.getPostion());
+			if (i > 3) {
 				continue;
 			}
 			// 180°范围内
-			if (!MathUtils.detectedAngle(source.getPostion(), source.getDir(), target.getPostion(), 180f)) {
-				continue;
-			}
+			// if (!MathUtils.detectedAngle(source.getPostion(),
+			// source.getDir(), target.getPostion(), 180f)) {
+			// continue;
+			// }
 			beChoosers.add(target);
 		}
 

@@ -31,7 +31,7 @@ public class QTEMakeLogic extends BaseSoulMakeLogic implements ISoulMakeLogic {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_MAKE, "数据不合法");
 			return;
 		}
-		if (this.soulMake.getState() == SoulMake.STATE_ING) {
+		if (this.soulMake.getState() == SoulMake.STATE_MAKE_ING) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_MAKE, "状态不对:" + this.op);
 			return;
 		}

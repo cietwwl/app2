@@ -1,8 +1,16 @@
 package com.chuangyou.xianni.sql.dao;
 
+import com.chuangyou.xianni.entity.guild.GuildWarehouseItemInfo;
+import com.chuangyou.xianni.sql.dao.impl.ActivityDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.AiConfigDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.ArenaInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.ArtifactConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.ArtifactInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.AvatarCorrespondTemplateInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.AvatarInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.AvatarStarTemplateDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.AvatarTemplateInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.AvatarUpGradeTemplateDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.BaseBufferTemplateInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.CampaignRecordInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.CampaignTaskTemplateInfoDaoImpl;
@@ -16,12 +24,21 @@ import com.chuangyou.xianni.sql.dao.impl.FashionConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.FashionInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.FieldInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.FriendDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.GuildApplyDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.GuildConfigDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.GuildHistoryDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.GuildInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.GuildLogInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.GuildMemberDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.GuildSkillDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.GuildWarehouseItemDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.HeroSkillDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.InverseBeadMonsterDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.InverseBeadRefreshDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.InverseBeadTemDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.ItemInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.ItemTemplateInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.JobInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.LevelUpDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.LimitlessCampaignRecordInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.LivingStatusTemplateInfoDaoImpl;
@@ -43,7 +60,10 @@ import com.chuangyou.xianni.sql.dao.impl.PlayerInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PlayerInverseBeadDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PlayerPositionInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PropertyFightingTemplateDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.RankDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.RelationInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.RewardTemplateDaoImp;
+import com.chuangyou.xianni.sql.dao.impl.RobotTemplateDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.RoleConfigImplDao;
 import com.chuangyou.xianni.sql.dao.impl.ShopConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.ShopDaoImpl;
@@ -57,11 +77,13 @@ import com.chuangyou.xianni.sql.dao.impl.SnareTemplateInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SoulDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SpaceDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SpawnInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.StateDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.SystemConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.TaskDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.TaskTemplateImpl;
 import com.chuangyou.xianni.sql.dao.impl.TeamTargetTemplateDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.TemplateTestDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.TruckDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.UserDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.VipBagTemplateDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.VipLevelTemplateDaoImpl;
@@ -72,34 +94,33 @@ public class DBManager {
 	 * 测试DAO
 	 */
 
-	private static final TemplateTestDao templateTestDao = new TemplateTestDaoImpl();
+	private static final TemplateTestDao	templateTestDao	= new TemplateTestDaoImpl();
 
 	/**
 	 * 邮件DAO
 	 */
 
-	private static final EmailDao emailDao = new EmailDaoImpl();
+	private static final EmailDao			emailDao		= new EmailDaoImpl();
 
 	/**
 	 * 好友DAO
 	 */
-
-	private static final FriendDao friendDao = new FriendDaoImpl();
+	private static final FriendDao			friendDao		= new FriendDaoImpl();
 
 	/** shop */
-	private static final ShopDao shopDao = new ShopDaoImpl();
+	private static final ShopDao			shopDao			= new ShopDaoImpl();
 
 	/** 商店模板数据 */
 
-	private static final ShopConfigDao shopConfigDao = new ShopConfigDaoImpl();
+	private static final ShopConfigDao		shopConfigDao	= new ShopConfigDaoImpl();
 
 	/** 任务模板 */
 
-	private static final TaskTemplateDao taskTemplateDao = new TaskTemplateImpl();
+	private static final TaskTemplateDao	taskTemplateDao	= new TaskTemplateImpl();
 
 	/** 任务DB */
 
-	private static final TaskDao taskDao = new TaskDaoImpl();
+	private static final TaskDao			taskDao			= new TaskDaoImpl();
 
 	public static FriendDao getFrienddao() {
 		return friendDao;
@@ -534,31 +555,33 @@ public class DBManager {
 		return campaignTaskTemplateInfoDao;
 	}
 
-
 	/**
 	 * vip 模板数据
 	 */
-	private static final VipTemplateDao vipTemplateDao= new VipTemDaoImpl();
-	public static VipTemplateDao getVipTemplateDao(){
+	private static final VipTemplateDao vipTemplateDao = new VipTemDaoImpl();
+
+	public static VipTemplateDao getVipTemplateDao() {
 		return vipTemplateDao;
 	}
+
 	/**
 	 * vip 等级模板
 	 */
-	private static final VipLevelTemplateDao vipLevelTemplateDao= new VipLevelTemplateDaoImpl();
-	public static VipLevelTemplateDao getVipLevelTemplateDao(){
+	private static final VipLevelTemplateDao vipLevelTemplateDao = new VipLevelTemplateDaoImpl();
+
+	public static VipLevelTemplateDao getVipLevelTemplateDao() {
 		return vipLevelTemplateDao;
 	}
+
 	/**
 	 * vip 礼包模板
 	 */
-	private static final VipBagTemplateDao vipBagTemplateDao= new VipBagTemplateDaoImpl();
-	public static VipBagTemplateDao getVipBagTemplateDao(){
+	private static final VipBagTemplateDao vipBagTemplateDao = new VipBagTemplateDaoImpl();
+
+	public static VipBagTemplateDao getVipBagTemplateDao() {
 		return vipBagTemplateDao;
 	}
-	
 
-	
 	/**
 	 * 装备模板数据
 	 */
@@ -576,25 +599,24 @@ public class DBManager {
 	public static EquipBarInfoDao getEquipBarInfoDao() {
 		return equipBarInfoDao;
 	}
-	
+
 	/**
 	 * 玩家关系数据
 	 */
 	private static final RelationInfoDao relationInfoDao = new RelationInfoDaoImpl();
-	
-	public static RelationInfoDao getRelationInfoDao(){
+
+	public static RelationInfoDao getRelationInfoDao() {
 		return relationInfoDao;
 	}
-
 
 	/**
 	 * 魂幡
 	 */
 	private static final SoulDao soulDao = new SoulDaoImpl();
-	public static SoulDao getSoulDao(){
+
+	public static SoulDao getSoulDao() {
 		return soulDao;
 	}
-	
 
 	/**
 	 * 副本记录
@@ -613,22 +635,192 @@ public class DBManager {
 	public static SnareTemplateInfoDao getSnareTemplateInfoDao() {
 		return snareTemplateInfoDao;
 	}
-	
+
 	/**
 	 * 神器模板
 	 */
 	private static final ArtifactConfigDao artifactConfigDao = new ArtifactConfigDaoImpl();
-	
-	public static ArtifactConfigDao getArtifactConfigDao(){
+
+	public static ArtifactConfigDao getArtifactConfigDao() {
 		return artifactConfigDao;
 	}
-	
+
 	/**
 	 * 神器数据
 	 */
 	private static final ArtifactInfoDao artifactInfoDao = new ArtifactInfoDaoImpl();
-	
-	public static ArtifactInfoDao getArtifactInfoDao(){
+
+	public static ArtifactInfoDao getArtifactInfoDao() {
 		return artifactInfoDao;
+	}
+
+	/** 作业 */
+	private static final JobInfoDao jobInfoDao = new JobInfoDaoImpl();
+
+	public static JobInfoDao getJobInfoDao() {
+		return jobInfoDao;
+	}
+
+	/** 机器人 */
+	private static final RobotTemplateDao robotTemplateDao = new RobotTemplateDaoImpl();
+
+	public static RobotTemplateDao getRobotTemplateDao() {
+		return robotTemplateDao;
+	}
+
+	/** 分身默契模板表 */
+	private static final AvatarCorrespondTemplateInfoDao avatarCorrespondTemplateInfoDao = new AvatarCorrespondTemplateInfoDaoImpl();
+
+	public static AvatarCorrespondTemplateInfoDao getAvatarCorrespondTemplateInfoDao() {
+		return avatarCorrespondTemplateInfoDao;
+	}
+
+	/** 分身升星模板表 */
+	private static final AvatarStarTemplateDao avatarStarTemplateDao = new AvatarStarTemplateDaoImpl();
+
+	public static AvatarStarTemplateDao getAvatarStarTemplateDao() {
+		return avatarStarTemplateDao;
+	}
+
+	/** 分身模板表 */
+	private static final AvatarTemplateInfoDao avatarTemplateInfoDao = new AvatarTemplateInfoDaoImpl();
+
+	public static AvatarTemplateInfoDao getAvatarTemplateInfoDao() {
+		return avatarTemplateInfoDao;
+	}
+
+	/** 分身升级模板表 */
+	private static final AvatarUpGradeTemplateDao avatarUpGradeTemplateDao = new AvatarUpGradeTemplateDaoImpl();
+
+	public static AvatarUpGradeTemplateDao getAvatarUpGradeTemplateDao() {
+		return avatarUpGradeTemplateDao;
+	}
+
+	/** 分身信息表 */
+	private static final AvatarInfoDao avatarInfoDao = new AvatarInfoDaoImpl();
+
+	public static AvatarInfoDao getAvatarInfoDao() {
+		return avatarInfoDao;
+	}
+
+	/** 奖励模板 */
+	private static final RewardTemplateDao rewardTemplateDao = new RewardTemplateDaoImp();
+
+	public static RewardTemplateDao getRewardTemplateDao() {
+		return rewardTemplateDao;
+	}
+
+	/** 挑战信息 */
+	private static final ArenaInfoDao arenaInfoDao = new ArenaInfoDaoImpl();
+
+	public static ArenaInfoDao getArenaInfoDao() {
+		return arenaInfoDao;
+	}
+
+	/** 活动 */
+	private static final ActivityDao activityDao = new ActivityDaoImpl();
+
+	public static ActivityDao getActivityDao() {
+		return activityDao;
+	}
+
+	/**
+	 * 排行榜
+	 */
+	private static final RankDao rankDao = new RankDaoImpl();
+
+	public static RankDao getRankDao() {
+		return rankDao;
+	}
+
+	/**
+	 * 境界
+	 */
+	private static final StateDao stateDao = new StateDaoImpl();
+
+	public static StateDao getStateDao() {
+		return stateDao;
+	}
+
+	/**
+	 * 运镖
+	 */
+	private static final TruckDao truckDao = new TruckDaoImpl();
+
+	public static TruckDao getTruckDao() {
+		return truckDao;
+	}
+
+	
+	/**
+	 * 门派配置
+	 */
+	private static final GuildConfigDao guildConfigDao = new GuildConfigDaoImpl();
+	
+	public static GuildConfigDao getGuildConfigDao(){
+		return guildConfigDao;
+	}
+	
+	/**
+	 * 门派信息
+	 */
+	private static final GuildInfoDao guildInfoDao = new GuildInfoDaoImpl();
+	
+	public static GuildInfoDao getGuildInfoDao(){
+		return guildInfoDao;
+	}
+	
+	/**
+	 * 门派成员
+	 */
+	private static final GuildMemberDao guildMemberDao = new GuildMemberDaoImpl();
+	
+	public static GuildMemberDao getGuildMemberDao(){
+		return guildMemberDao;
+	}
+	
+	/**
+	 * 门派邀请表
+	 */
+	private static final GuildApplyDao guildApplyDao = new GuildApplyDaoImpl();
+	
+	public static GuildApplyDao getGuildApplyDao(){
+		return guildApplyDao;
+	}
+	
+	/**
+	 * 玩家上次所在帮派的信息
+	 */
+	private static final GuildHistoryDao guildHistoryDao = new GuildHistoryDaoImpl();
+	
+	public static GuildHistoryDao getGuildHistoryDao(){
+		return guildHistoryDao;
+	}
+	
+	/**
+	 * 门派技能表
+	 */
+	private static final GuildSkillDao guildSkillDao = new GuildSkillDaoImpl();
+	
+	public static GuildSkillDao getGuildSkillDao(){
+		return guildSkillDao;
+	}
+	
+	/**
+	 * 帮派仓库表
+	 */
+	private static final GuildWarehouseItemDao guildWarehouseDao = new GuildWarehouseItemDaoImpl();
+	
+	public static GuildWarehouseItemDao getGuildWarehouseDao(){
+		return guildWarehouseDao;
+	}
+	
+	/**
+	 * 帮派日志
+	 */
+	public static final GuildLogInfoDao guildLogDao = new GuildLogInfoDaoImpl();
+	
+	public static GuildLogInfoDao getGuildLogDao(){
+		return guildLogDao;
 	}
 }

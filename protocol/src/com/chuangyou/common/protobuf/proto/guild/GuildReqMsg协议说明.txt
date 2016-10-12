@@ -1,0 +1,184 @@
+﻿1、获取帮派列表
+
+	返回GuildListRespMsg.proto
+
+2、获取自己所在帮派信息
+	有门派时返回GuildInfoRespMsg.proto
+	
+	返回GuildRespMsg.proto
+	result 0请求成功 1未加入帮派
+
+3、获取帮派成员列表
+
+	返回GuildMemberListRespMsg.proto
+	
+
+4、玩家申请加入帮派
+	param1 帮派ID
+
+	返回给有加人权限的职位GuildApplyInfoMsg.proto
+	
+	返回给自己GuildRespMsg.proto
+	result 申请发送结果 0成功 1失败,未知原因 2帮派设置为禁止加人 3未达到帮派设置加入最低等级 4未达到帮派设置加入最低战力 5帮派人数已满
+
+5、获取申请列表
+	返回GuildApplyListMsg.proto
+
+6、回应申请
+	param1 玩家ID
+	param2 回应操作 1同意 2拒绝
+
+	帮派成员返回GuildMemberInfoMsg.proto
+
+	返回给申请人、广播给有权限回应的人 GuildRespMsg.proto
+	result 1自己被同意加入帮派 2自己被拒绝 3同意申请者加入帮派 4拒绝申请者 0同步给其他有权限审核申请的玩家删除该条申请
+	param1 玩家ID
+	param2 帮派ID
+
+7、申请条件设置
+	param1 加入类型
+	param2 最低等级限制
+	param3 最低战力限制
+
+	返回GuildRespMsg.proto
+	result 0设置成功 1设置失败
+	param1 加入类型
+	param2 最低等级限制
+	param3 最低战力限制
+
+8、退出帮派	
+
+	通知自己和帮派在线成员GuildRespMsg.proto
+	param1 退出玩家的ID,如果是自己，说明自己退出成功
+	paramStr 玩家名字
+
+9、帮派公告修改
+	paramStr 公告内容
+
+	返回GuildRespMsg.proto
+	paramStr 修改后的公告内容
+
+10、踢出门派
+	param1 要踢出的玩家ID
+
+	广播给帮派成员GuildRespMsg.proto
+	param1 被踢出帮派的玩家ID
+	paramStr 被踢出帮派的玩家名字
+
+11、任命职务
+	param1 玩家ID
+	param2 职位
+
+	广播给帮派成员GuildRespMsg.proto
+	param1 玩家ID
+	param2 职位
+	paramStr 玩家名字
+
+12、主殿升级
+	
+	返回GuildRespMsg.proto
+	param1 主殿等级
+	param2 帮派物资
+
+13、蒧经阁升级
+	返回GuildRespMsg.proto
+	param1 蒧经阁等级
+	param2 帮派物资
+
+14、门派商店升级
+	返回GuildRespMsg.proto
+	param1 商店等级
+	param2 帮派物资
+
+15、仓库升级
+	返回GuildRespMsg.proto
+	param1 仓库等级
+	param2 帮派物资
+
+16、捐献
+	param1 捐献类型 1道具 2仙玉
+	param2 捐献数量
+	
+	返回action 17、帮派等级信息更新
+	返回action 23、玩家的帮派贡献改变
+	
+17、玩家捐献改变帮派等级和资源(仅S -> C)
+	param1 门派等级
+	param2 当前建设值
+	param3 帮派物资
+	
+18、帮派解散(仅S -> C)
+
+19、请求帮派公告
+	param1 帮派ID
+	
+	返回GuildRespMsg.proto
+	param1 帮派ID
+	paramStr 帮派公告
+	
+20、帮派物资改变
+	param1 帮派物资
+	
+21、玩家上下线广播给成员
+	param1 玩家ID
+	param2 玩家状态
+	param3 玩家离线时间
+	paramStr 玩家名字
+	
+22、批量回应申请列表
+	param1 回应操作 1全部同意 2全部拒绝
+	
+	如果全部同意并成功 广播帮派成员GuildBatJoinMsg.proto
+	
+	同步给有权限审核申请的成员GuildRespMsg.proto,收到后直接清掉所有申请列表
+	param1 操作人ID
+	param2 操作 1全部同意 2全部拒绝
+	
+23、玩家的帮派贡献改变
+	param1 玩家的帮派总贡献
+	param2 可用贡献
+	param3 帮派物资消耗
+	
+24、获取帮派技能列表
+	返回GuildSkillListMsg.proto
+	
+25、技能升级
+	param1 帮派技能ID
+	
+	返回GuildSkillUpdateMsg.proto
+	返回结果GuildRespMsg.proto
+	result 0成功 1失败
+	param1 帮派技能ID
+	
+	返回action 23 玩家帮派贡献更新
+	返回action 20 帮派物资更新
+	
+26、群发邮件
+	paramStr 内容
+	
+	返回GuildRespMsg.proto
+	result 0成功 1失败
+	
+27、获取帮派日志
+	param1 当前最后一条
+	param2 需要多少条
+	
+	返回GuildLogListMsg.proto
+	
+28、夺权(玩家门派只能夺取掌门)
+	param1 要夺的成员ID
+	param2 要夺的成员的职位(如果客户端数据不是最新的，职业可能已经变动，这个字段可以验证，如果对不上，不能夺权)
+	
+	返回GuildRespMsg.proto 更新玩家职位
+	result 0成功 1挑战失败 2被夺权职位下降 3被夺权机器人自动退出门派
+	param1 职位变更的玩家ID
+	param2 玩家职位
+	param3 上次夺权成功的时间
+	paramStr 玩家名字
+	
+	
+29、系统门派中玩家3天未上线自动退出门派
+
+	广播给帮派成员GuildRespMsg.proto
+	param1 自动退出的玩家ID
+	paramStr 自动退出的玩家名字

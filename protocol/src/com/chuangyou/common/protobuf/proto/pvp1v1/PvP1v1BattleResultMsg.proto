@@ -1,0 +1,9 @@
+option java_package = "com.chuangyou.common.protobuf.pb.pvp1v1";
+option java_outer_classname = "PvP1v1BattleResultProto";
+message PvP1v1BattleResultMsg{
+	optional int64 	redId = 1; //红色的ID
+	optional int64 	blue = 2;  //蓝色方ID
+	optional int32  result = 3; //战斗结果 1 红色方胜  0 平局 -1 蓝色方胜
+	
+}
+

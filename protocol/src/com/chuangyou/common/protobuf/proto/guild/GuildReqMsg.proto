@@ -1,0 +1,13 @@
+//protocol=10157;
+option java_package = "com.chuangyou.common.protobuf.pb.guild";
+option java_outer_classname = "GuildReqProto";
+
+//门派操作请求
+message GuildReqMsg{
+	optional int32 action = 1; // 功能号
+	optional int64 param1 = 2;
+	optional int64 param2 = 3;
+	optional int64 param3 = 4;
+	optional int64 param4 = 5;
+	optional string paramStr = 6;
+}

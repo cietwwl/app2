@@ -11,6 +11,8 @@ import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.magicwp.MagicwpCfg;
 import com.chuangyou.xianni.entity.magicwp.MagicwpInfo;
 import com.chuangyou.xianni.entity.magicwp.MagicwpLevelCfg;
+import com.chuangyou.xianni.event.EventNameType;
+import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.magicwp.manager.MagicwpManager;
 import com.chuangyou.xianni.magicwp.template.MagicwpTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
@@ -84,7 +86,8 @@ public class MagicwpLevelUpCmd extends AbstractCommand {
 		// MagicwpManager.changeMagicwpAtt(roleId);
 
 		// 影响人物属性变更
-		player.getMagicwpInventory().updataProperty();
+		player.getMagicwpInventory().updataProperty();	
+		player.notifyListeners(new ObjectEvent(this, magicwpInfo, EventNameType.MAGICWP));
 	}
 
 }

@@ -15,7 +15,6 @@ import com.chuangyou.xianni.entity.inverseBead.PlayerInverseBead;
 import com.chuangyou.xianni.entity.item.BindType;
 import com.chuangyou.xianni.entity.item.ItemAddType;
 import com.chuangyou.xianni.inverseBead.InverseBeadInventory;
-import com.chuangyou.xianni.inverseBead.InverseBeadRefreshInventory;
 import com.chuangyou.xianni.inverseBead.template.InverseBeadTemMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -25,7 +24,9 @@ import com.chuangyou.xianni.protocol.Protocol;
 public class InverseBeadManager {
 
 	public static boolean up(GamePlayer player, int fiveElements, int marking, short code) {
-		PlayerInverseBead playerInverseBead = player.getInverseBeadInventory().get(fiveElements, marking);
+		PlayerInverseBead playerInverseBead = player.getInverseBeadInventory().get(fiveElements);
+		// marking = playerInverseBead.getMarking();
+
 		int stage = playerInverseBead.getStage();
 		int needGoodsId = 0;
 		int needGoodsNum = 0;
@@ -44,21 +45,23 @@ public class InverseBeadManager {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.INVERSEBEAD_ERROR, code);
 			return false;
 		}
-		if (fiveElements > 10) {
+		if (fiveElements > 10 || marking < playerInverseBead.getMarking()) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.INVERSEBEAD_ERROR, code);
 			return false;
 		}
-		if (stage >= 10) {// 已经至最高级
+		if (marking > 10) {// 已经至最高级
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.INVERSEBEAD_ERROR2, code);
 			return false;
 		}
-		if (marking - 1 > 0) {
-			PlayerInverseBead prePlayerInverseBead = player.getInverseBeadInventory().get(fiveElements, marking - 1);
-			if (prePlayerInverseBead == null || prePlayerInverseBead.getStage() < 10) {// 上一个印记没有升满
+		if (marking > 1) {
+			if (marking - playerInverseBead.getMarking() > 1 || (marking > playerInverseBead.getMarking() && playerInverseBead.getStage() < 10)) {
 				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.INVERSEBEAD_ERROR3, code);
 				return false;
 			}
 		}
+
+		if (stage >= 10)
+			stage = 0;
 
 		InverseBeadTem tem = InverseBeadTemMgr.getTemp(stage);
 		if (tem == null) {
@@ -82,21 +85,23 @@ public class InverseBeadManager {
 			int fiveElementsResist = SystemConfigTemplateMgr.getIntValue("fiveElements.resist");// 五行抗性增量
 			int attVal = playerInverseBead.getAttVal() + fiveElementsVal;
 			int attVal2 = playerInverseBead.getAttVal2() + fiveElementsResist;
-
+			// if (stage > 10)
+			// stage = 1;
 			playerInverseBead.setAttVal(attVal);
 			playerInverseBead.setAttVal2(attVal2);
 			playerInverseBead.setVal(0);
-			playerInverseBead.setStage(stage);
 			// 属性计算
 			player.getInverseBeadInventory().updataProperty();
 		}
+		playerInverseBead.setStage(stage);
+		playerInverseBead.setMarking(marking);
 		player.getInverseBeadInventory().addOrUpdate(playerInverseBead);
-
 		return true;
 	}
 
 	public static boolean moveMonster(GamePlayer player, List<Integer> list) {
-		// PlayerTimeInfo playerTimeInfo = player.getBasePlayer().getPlayerTimeInfo();
+		// PlayerTimeInfo playerTimeInfo =
+		// player.getBasePlayer().getPlayerTimeInfo();
 		PlayerBeadTimeInfo playerTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
 		synchronized (playerTimeInfo) {
 			String beadRefreshId = playerTimeInfo.getBeadRefreshId();
@@ -109,7 +114,8 @@ public class InverseBeadManager {
 	}
 
 	public static boolean reset(GamePlayer player, short code) {
-		// PlayerTimeInfo playerTimeInfo = player.getBasePlayer().getPlayerTimeInfo();
+		// PlayerTimeInfo playerTimeInfo =
+		// player.getBasePlayer().getPlayerTimeInfo();
 		PlayerBeadTimeInfo playerTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
 		int needGoods = SystemConfigTemplateMgr.getIntValue("fiveElements.reset.needGoods");
 		if (needGoods > 0) {
@@ -144,7 +150,8 @@ public class InverseBeadManager {
 	 * @return
 	 */
 	public static int receiveAura(GamePlayer player, short code) {
-		// PlayerTimeInfo playerTimeInfo = player.getBasePlayer().getPlayerTimeInfo();
+		// PlayerTimeInfo playerTimeInfo =
+		// player.getBasePlayer().getPlayerTimeInfo();
 		PlayerBeadTimeInfo playerTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
 		int num = 0;
 		synchronized (playerTimeInfo) {
@@ -182,6 +189,8 @@ public class InverseBeadManager {
 
 	public static void syncSpawn(GamePlayer player) {
 		// System.out.println("-----syncSpawn-----syncSpawn-----");
+		player.getInverseBeadInventory().load();
+
 		PlayerBeadTimeInfo playerBeadTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
 		List<Integer> list = InverseBeadManager.getBeadRefreshId(playerBeadTimeInfo.getBeadRefreshId());
 		SyncMonsterPoolMsg.Builder msg = SyncMonsterPoolMsg.newBuilder();
@@ -191,9 +200,9 @@ public class InverseBeadManager {
 		player.sendPbMessage(c2s);
 	}
 
-//	public static void main(String[] args) {
-//		List<Integer> list = getBeadRefreshId("");
-////		System.out.println(list.size());
-//	}
+	// public static void main(String[] args) {
+	// List<Integer> list = getBeadRefreshId("");
+	//// System.out.println(list.size());
+	// }
 
 }

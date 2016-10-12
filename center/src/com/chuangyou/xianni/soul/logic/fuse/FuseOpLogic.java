@@ -13,6 +13,7 @@ import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.common.template.LevelUpTempleteMgr;
 import com.chuangyou.xianni.entity.Option;
+import com.chuangyou.xianni.entity.item.BagType;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.soul.FuseItemConfig;
 import com.chuangyou.xianni.entity.soul.SoulFuseSkillConfig;
@@ -80,7 +81,7 @@ public class FuseOpLogic extends BaseFuseLogic implements IFuseLogic {
 		}
 
 		// 消耗材料
-		if (!player.getBagInventory().getPlayerBag().removeByPos((short) pos, ItemRemoveType.SOUL)) {
+		if (!player.getBagInventory().removeItemByPos(BagType.Play, pos, 1, ItemRemoveType.SOUL)) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_FUSE, "消耗物品失败");
 			return;
 		}

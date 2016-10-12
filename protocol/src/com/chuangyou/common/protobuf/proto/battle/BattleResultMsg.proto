@@ -1,0 +1,8 @@
+//protocol=623;
+option java_package = "com.chuangyou.common.protobuf.pb.battle";
+option java_outer_classname = "BattleResultMsgProto";
+
+message BattleResultMsg{
+	optional int64 winner=1;    //胜者
+	optional int64 loser=2;    //失败者
+}

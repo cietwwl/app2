@@ -34,6 +34,7 @@ public class StartMakeLogic extends BaseSoulMakeLogic implements ISoulMakeLogic 
 			return;
 		}
 
+		
 		String items = SystemConfigTemplateMgr.getMakeConfig()[this.soulMake.getQteIndex() - 1];
 		String strs[] = items.split(",");
 		Map<Integer, Integer> tempMap = new HashMap<>();
@@ -63,14 +64,15 @@ public class StartMakeLogic extends BaseSoulMakeLogic implements ISoulMakeLogic 
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_MAKE, "失败：");
 			return;
 		}
+		
 		this.soulMake.setItemId(itemId);
 		this.soulMake.setStartTime(new Date());
 		this.soulMake.setKillNum(0);
 		this.soulMake.setTotalTime(getTaskTotalTime());
-		this.soulMake.setState(SoulMake.STATE_ING);
+		this.soulMake.setState(SoulMake.STATE_MAKE_ING);
 		this.soulMake.setOp(Option.Update);
 
-		this.player.getSoulInventory().initListener();
+//		this.player.getSoulInventory().initListener();
 
 		sendResultMsg();
 	}

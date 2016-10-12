@@ -1,5 +1,8 @@
 package com.chuangyou.xianni.entity.property;
 
+import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
+import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
+import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.DataObject;
 
 /**
@@ -48,8 +51,8 @@ public class BaseProperty extends DataObject {
 	private int	critDefence;		// 抗暴
 	private int	critAddtion;		// 暴击伤害
 	private int	critCut;			// 抗暴减伤
-	private int	bloodAttackAddtion;	// 气血伤害增加
-	private int	bloodAttackCut;		// 气血伤害减免
+	private int	attackAddtion;		// 气血伤害增加
+	private int	attackCut;			// 气血伤害减免
 	private int	soulAttackAddtion;	// 元魂伤害增加
 	private int	soulAttackCut;		// 元魂伤害减免
 	private int	regainSoul;			// 每10秒回魂
@@ -65,6 +68,15 @@ public class BaseProperty extends DataObject {
 	private int	fireDefence;		// 火抗
 	private int	earthDefence;		// 土抗
 	private int	speed;				// 移动速度
+
+	public void writeProto(PropertyListMsg.Builder proto) {
+		for (int i = 1; i <= 29; i++) {
+			PropertyMsg.Builder proMsg = PropertyMsg.newBuilder();
+			proMsg.setType(i);
+			proMsg.setTotalPoint(getProperty(i));
+			proto.addPropertys(proMsg);
+		}
+	}
 
 	public int getSoul() {
 		return soul;
@@ -210,28 +222,28 @@ public class BaseProperty extends DataObject {
 		this.critCut += critCut;
 	}
 
-	public int getBloodAttackAddtion() {
-		return bloodAttackAddtion;
+	public int getAttackAddtion() {
+		return attackAddtion;
 	}
 
-	public void setBloodAttackAddtion(int bloodAttackAddtion) {
-		this.bloodAttackAddtion = bloodAttackAddtion;
+	public void setAttackAddtion(int attackAddtion) {
+		this.attackAddtion = attackAddtion;
 	}
 
-	public void addBloodAttackAddtion(int bloodAttackAddtion) {
-		this.bloodAttackAddtion += bloodAttackAddtion;
+	public void addAttackAddtion(int attackAddtion) {
+		this.attackAddtion += attackAddtion;
 	}
 
-	public int getBloodAttackCut() {
-		return bloodAttackCut;
+	public int getAttackCut() {
+		return attackCut;
 	}
 
-	public void setBloodAttackCut(int bloodAttackCut) {
-		this.bloodAttackCut = bloodAttackCut;
+	public void setAttackCut(int attackCut) {
+		this.attackCut = attackCut;
 	}
 
-	public void addBloodAttackCut(int bloodAttackCut) {
-		this.bloodAttackCut += bloodAttackCut;
+	public void addAttackCut(int attackCut) {
+		this.attackCut += attackCut;
 	}
 
 	public int getSoulAttackAddtion() {
@@ -412,5 +424,78 @@ public class BaseProperty extends DataObject {
 
 	public void addSpeed(int speed) {
 		this.speed += speed;
+	}
+
+	public int getProperty(int type) {
+		EnumAttr attr = EnumAttr.getEnumAttrByValue(type);
+		if (attr == null) {
+			return 0;
+		}
+		return getProperty(attr);
+	}
+
+	public int getProperty(EnumAttr attr) {
+		switch (attr) {
+			case SOUL:
+				return this.getSoul();
+			case BLOOD:
+				return this.getBlood();
+			case ATTACK:
+				return this.getAttack();
+			case DEFENCE:
+				return this.getDefence();
+			case SOUL_ATTACK:
+				return this.getSoulAttack();
+			case SOUL_DEFENCE:
+				return this.getSoulDefence();
+			case ACCURATE:
+				return this.getAccurate();
+			case DODGE:
+				return this.getDodge();
+			case CRIT:
+				return this.getCrit();
+			case CRIT_DEFENCE:
+				return this.getCritDefence();
+			case CRIT_ADDTION:
+				return this.getCritAddtion();
+			case CRIT_CUT:
+				return this.getCritCut();
+			case ATTACK_ADDTION:
+				return this.getAttackAddtion();
+			case ATTACK_CUT:
+				return this.getAttackCut();
+			case SOUL_ATTACK_ADDTION:
+				return this.getSoulAttackAddtion();
+			case SOUL_ATTACK_CUT:
+				return this.getSoulAttackCut();
+			case REGAIN_SOUL:
+				return this.getRegainSoul();
+			case REGAIN_BLOOD:
+				return this.getRegainBlood();
+			case METAL:
+				return this.getMetal();
+			case WOOD:
+				return this.getWood();
+			case WATER:
+				return this.getWater();
+			case FIRE:
+				return this.getFire();
+			case EARTH:
+				return this.getEarth();
+			case METAL_DEFENCE:
+				return this.getMetalDefence();
+			case WOOD_DEFENCE:
+				return this.getWoodDefence();
+			case WATER_DEFENCE:
+				return this.getWaterDefence();
+			case FIRE_DEFENCE:
+				return this.getFireDefence();
+			case EARTH_DEFENCE:
+				return this.getEarthDefence();
+			case SPEED:
+				return this.getSpeed();
+			default:
+				return 0;
+		}
 	}
 }

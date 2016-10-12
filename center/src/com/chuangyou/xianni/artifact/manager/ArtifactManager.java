@@ -22,10 +22,12 @@ import com.chuangyou.xianni.entity.artifact.ArtifactJewelSuitCfg;
 import com.chuangyou.xianni.entity.artifact.ArtifactLevelupCfg;
 import com.chuangyou.xianni.entity.artifact.ArtifactSuitCfg;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
+import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.state.event.ArtifactStateEvent;
 
 public class ArtifactManager {
 
@@ -94,6 +96,8 @@ public class ArtifactManager {
 		}
 		
 		info.setLevel(info.getLevel() + 1);
+		
+		player.notifyListeners(new ArtifactStateEvent(ArtifactManager.class, 1, info.getArtifactId(), info.getLevel(),EventNameType.ARTIFACT));
 		
 		ArtifactDataMsg.Builder dataMsg = ArtifactDataMsg.newBuilder();
 		ArtifactInfoCfg cfg = ArtifactTemplateMgr.getArtifactCfg(info.getArtifactId());
@@ -226,6 +230,7 @@ public class ArtifactManager {
 		//如果升星成功，更新人物属性
 		if(isSuccess == true){
 			player.getArtifactInventory().updateProperty();
+			player.notifyListeners(new ArtifactStateEvent(ArtifactManager.class,3, info.getArtifactId(), info.getStar(),EventNameType.ARTIFACT));
 		}
 	}
 	
@@ -425,6 +430,7 @@ public class ArtifactManager {
 		//升级后更新人物属性
 		if(hasLevelUp){
 			player.getArtifactInventory().updateProperty();
+			player.notifyListeners(new ArtifactStateEvent(ArtifactManager.class, 5, info.getArtifactId(), info.getStoneMaxLevel(),EventNameType.ARTIFACT));
 		}
 	}
 	

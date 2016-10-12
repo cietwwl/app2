@@ -27,6 +27,11 @@ public abstract class BaseTaskCondiction {
 
 	public abstract void removeTrigger(GamePlayer player);
 	
+	/** 初始化进度 */
+	public abstract void initProcess();
+	
+	/**  接收任务处理  */
+	public abstract void acceptProcess();
 	
 	public BaseTaskCondiction(TaskInfo info, TaskCfg cfg, GamePlayer player) {
 		super();
@@ -35,11 +40,6 @@ public abstract class BaseTaskCondiction {
 		this.player = player;
 	}
 	
-	/** 初始化进度 */
-	public abstract void initProcess();
-	
-	/**  接收任务处理  */
-	public abstract void acceptProcess();
 	/**
 	 * 任务完成后。 执行
 	 * 且不取消事件监听

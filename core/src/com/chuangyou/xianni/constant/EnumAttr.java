@@ -10,327 +10,88 @@ import java.util.Map;
  * 
  */
 public enum EnumAttr {
+	SOUL ( 1 , " 元魂上限" ) ,
+	BLOOD ( 2 , "气血上限" ) ,
+	ATTACK ( 3 , "攻击" ) ,
+	DEFENCE ( 4 , "防御" ) ,
+	SOUL_ATTACK ( 5 , " 魂攻" ) ,
+	SOUL_DEFENCE ( 6 , "魂防" ) ,
+	ACCURATE ( 7 , "命中" ) ,
+	DODGE ( 8 , "闪避" ) ,
+	CRIT ( 9 , "暴击" ) ,
+	CRIT_DEFENCE ( 10 , "抗暴" ) ,
+	CRIT_ADDTION ( 11 , "暴击伤害" ) ,
+	CRIT_CUT ( 12 , "抗暴减伤" ) ,
+	ATTACK_ADDTION ( 13 , "气血伤害增加" ) ,
+	ATTACK_CUT ( 14 , "气血伤害减免" ) ,
+	SOUL_ATTACK_ADDTION ( 15 , "元魂伤害增加" ) ,
+	SOUL_ATTACK_CUT ( 16 , "元魂伤害减免" ) ,
+	REGAIN_SOUL ( 17 , "每10秒回魂" ) ,
+	REGAIN_BLOOD ( 18 , "每10秒回血" ) ,
+	METAL ( 19 , "金" ) ,
+	WOOD ( 20 , "木" ) ,
+	WATER ( 21 , "水" ) ,
+	FIRE ( 22 , "火" ) ,
+	EARTH ( 23 , "土" ) ,
+	METAL_DEFENCE ( 24 , "金 抗" ) ,
+	WOOD_DEFENCE ( 25 , "木抗" ) ,
+	WATER_DEFENCE ( 26 , "水抗" ) ,
+	FIRE_DEFENCE ( 27 , "火抗" ) ,
+	EARTH_DEFENCE ( 28 , "土抗" ) ,
+	SPEED ( 29 , "速度" ) ,
+	CUR_SOUL ( 30 , "当前元魂(生命值)" ) ,
+	CUR_BLOOD ( 31 , "当前气血(蓝)" ) ,
+	PROTECTION ( 32 , "无敌 1无敌，2非无敌" ) ,
+	MAX_SOUL ( 33 , "最大元魂" ) ,
+	MAX_BLOOD ( 34 , "最大气血" ) ,
+	State ( 43 , "境界阶段" ) ,
+	SkillStage ( 44 , "修炼阶段" ) ,
+	Exp ( 45 , "经验" ) ,
+	FightValue ( 46 , "战斗力" ) ,
+	Level ( 47 , "等级" ) ,
+	Mount ( 48 , "坐骑" ) ,
+	Weapon ( 49 , "武器" ) ,
+	VipLevel ( 50 , "vip等级" ) ,
+	FaBao ( 51 , "法宝" ) ,
+	BeiShi ( 52 , "背鉓" ) ,
+	Clothes ( 53 , "时装" ) ,
+	PetSoul ( 54 , " 炼魂(宠物炼魂)" ) ,
+	PetPhysique ( 55 , "炼体(宠物炼体)" ) ,
+	PetQuality ( 56 , "品质(宠物品质)" ) ,
+	TOTALEXP ( 57 , "总经验" ) ,
+	MAP_ID ( 58 , " 地图ID" ) ,
+	MAP_KEY ( 59 , "地图KEY" ) ,
+	TEAM_ID ( 60 , "组队" ) ,
+	VIP_EXP ( 61 , "vip 经验" ) ,
+	MANA ( 62 , "灵力" ) ,
+	WEAPON_AWAKEN ( 63 , "武器觉醒" ) ,
+	SOUL_EXP ( 64 , "魂幡经验" ) ,
+	PK_VAL ( 65 , "PK 值" ) ,
+	BATTLE_MODE ( 66 , "攻击模式" ) ,
+	VIP_TEMPORARY ( 67 , "临时vip到期时间" ) ,
+	AVTAR_CORRESPOND ( 68 , "分身默契等级" ) ,
+	MONEY ( 711 , " 灵石" ) ,
+	CASH ( 712 , " 仙玉" ) ,
+	CASH_BIND ( 713 , "绑定仙玉" ) ,
+	EQUIPEXP ( 714 , "装备经验" ) ,
+	REPAIR ( 715 , "修为" ) ,
+	POINTS ( 716 , "积分 " ) ,
+	AVATAR_ENERGY ( 725 , "仙力 " );
 
-	/**
-	 * 元魂上限
-	 */
-	SOUL(1),
+	private int		value;
+	private String	description;
 
-	/**
-	 * 气血上限
-	 */
-	BLOOD(2),
-
-	/**
-	 * 攻击
-	 */
-	ATTACK(3),
-
-	/**
-	 * 防御
-	 */
-	DEFENCE(4),
-
-	/**
-	 * 魂攻
-	 */
-	SOUL_ATTACK(5),
-
-	/**
-	 * 魂防
-	 */
-	SOUL_DEFENCE(6),
-
-	/**
-	 * 命中
-	 */
-	ACCURATE(7),
-
-	/**
-	 * 闪避
-	 */
-	DODGE(8),
-
-	/**
-	 * 暴击
-	 */
-	CRIT(9),
-
-	/**
-	 * 抗暴
-	 */
-	CRIT_DEFENCE(10),
-
-	/**
-	 * 暴击伤害
-	 */
-	CRIT_ADDTION(11),
-
-	/**
-	 * 抗暴减伤
-	 */
-	CRIT_CUT(12),
-
-	/**
-	 * 气血伤害增加
-	 * 
-	 */
-	ATTACK_ADDTION(13),
-
-	/**
-	 * 气血伤害减免
-	 */
-	ATTACK_CUT(14),
-
-	/**
-	 * 元魂伤害增加
-	 * 
-	 */
-	SOUL_ATTACK_ADDTION(15),
-
-	/**
-	 * 元魂伤害减免
-	 */
-	SOUL_ATTACK_CUT(16),
-
-	/**
-	 * 每10秒回魂
-	 * 
-	 */
-	REGAIN_SOUL(17),
-
-	/**
-	 * 每10秒回血
-	 * 
-	 */
-	REGAIN_BLOOD(18),
-
-	/**
-	 * 金
-	 */
-	METAL(19),
-
-	/**
-	 * 木
-	 */
-	WOOD(20),
-
-	/**
-	 * 水
-	 */
-	WATER(21),
-
-	/**
-	 * 火
-	 */
-	FIRE(22),
-
-	/**
-	 * 土
-	 */
-	EARTH(23),
-
-	/**
-	 * 金 抗
-	 */
-	METAL_DEFENCE(24),
-
-	/**
-	 * 木抗
-	 */
-	WOOD_DEFENCE(25),
-
-	/**
-	 * 水抗
-	 */
-	WATER_DEFENCE(26),
-
-	/**
-	 * 火抗
-	 */
-	FIRE_DEFENCE(27),
-
-	/**
-	 * 土抗
-	 */
-	EARTH_DEFENCE(28),
-
-	/**
-	 * 速度
-	 */
-	SPEED(29),
-
-	/**
-	 * 当前元魂(生命值)
-	 */
-	CUR_SOUL(30),
-
-	/**
-	 * 当前气血(蓝)
-	 */
-	CUR_BLOOD(31),
-
-	/**
-	 * 无敌 1无敌，2非无敌
-	 */
-	PROTECTION(32),
-	/**
-	 * 最大元魂
-	 */
-	MAX_SOUL(33),
-	/**
-	 * 最大气血
-	 */
-	MAX_BLOOD(34),
-
-	/**
-	 * 经验
-	 */
-	Exp(45),
-
-	/**
-	 * 战斗力
-	 */
-	FightValue(46),
-
-	/**
-	 * 等级
-	 */
-	Level(47),
-
-	/**
-	 * 坐骑
-	 */
-	Mount(48),
-
-	/**
-	 * 武器
-	 */
-	Weapon(49),
-
-	/**
-	 * viplevel
-	 */
-	VipLevel(50),
-
-	/**
-	 * 法宝
-	 */
-	FaBao(51),
-
-	/**
-	 * 背鉓
-	 */
-	BeiShi(52),
-
-	/**
-	 * 
-	 * 时装
-	 */
-	Clothes(53),
-
-	/**
-	 * 炼魂(宠物炼魂)
-	 */
-	PetSoul(54),
-
-	/**
-	 * 炼体(宠物炼体)
-	 */
-	PetPhysique(55),
-
-	/**
-	 * 品质(宠物品质)
-	 */
-	PetQuality(56),
-
-	/**
-	 * 总经验
-	 */
-	TOTALEXP(57),
-
-	/**
-	 * 地图ID
-	 *
-	 **/
-	MAP_ID(58),
-
-	/**
-	 * 地图KEY
-	 */
-	MAP_KEY(59),
-	/**
-	 * 组队
-	 */
-	TEAM_ID(60),
-	/**
-	 * vip 经验
-	 */
-	VIP_EXP(61),
-
-	/**
-	 * 灵力
-	 */
-	MANA(62),
-
-	/**
-	 * 武器觉醒
-	 */
-	WEAPON_AWAKEN(63),
-
-	/**
-	 * 魂幡经验
-	 */
-	SOUL_EXP(64),
-
-	/**
-	 * 灵石
-	 */
-	MONEY(711),
-
-	/**
-	 * 仙玉
-	 */
-	CASH(712),
-
-	/**
-	 * 绑定仙玉
-	 */
-	CASH_BIND(713),
-	/**
-	 * 装备经验
-	 */
-	EQUIPEXP(714),
-	/**
-	 * 修为
-	 */
-
-	REPAIR(715),
-
-	/** 积分 */
-	POINTS(716),
-
-	/**
-	 * PK 值
-	 */
-	PK_VAL(65),
-	/**
-	 * 攻击模式
-	 */
-	BATTLE_MODE(66),
-	/**
-	 * 临时vip到期时间
-	 */
-	VIP_TEMPORARY(67);
-
-	private int value;
-
-	private EnumAttr(int v) {
+	private EnumAttr(int v, String desc) {
 		this.value = v;
+		this.description = desc;
 	}
 
 	public int getValue() {
 		return value;
+	}
+
+	public String toString() {
+		return description;
 	}
 
 	public boolean compare(EnumAttr attr) {

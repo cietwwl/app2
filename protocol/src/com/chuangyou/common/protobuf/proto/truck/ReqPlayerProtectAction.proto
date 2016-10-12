@@ -1,0 +1,11 @@
+//protocol=20711;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "ReqPlayerProtectActionProto";
+
+//镖车Action
+message ReqPlayerProtectAction {
+	required int64 truckId = 1; //护镖的镖车ID
+	required int64 protectorId = 2; //护镖人ID
+	required int64 beProtectorId = 3; //被保护者的ID
+	required int32 action = 4; //1.同意 2.拒绝
+}

@@ -1,0 +1,10 @@
+//protocol=10613;
+option java_package = "com.chuangyou.common.protobuf.pb.avatar";
+option java_outer_classname = "AvatarOptionMsgProto";
+
+//分身操作
+message AvatarOptionMsg {
+	optional int32 optionType = 1; //1 激活分身  2提升星级  3 提升默契  4,出战 5下阵
+	optional int32 avatarId = 2; // 分身ID
+	optional int32 param = 3; // 参数
+}

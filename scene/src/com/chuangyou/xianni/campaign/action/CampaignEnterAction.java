@@ -26,7 +26,6 @@ import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.warfield.FieldMgr;
 import com.chuangyou.xianni.warfield.field.Field;
-import com.chuangyou.xianni.warfield.spawn.SpwanNode;
 import com.chuangyou.xianni.warfield.template.FieldTemplateMgr;
 import com.chuangyou.xianni.world.ArmyProxy;
 
@@ -64,10 +63,11 @@ public class CampaignEnterAction extends Action {
 	@Override
 	public void execute() {
 		if (!campaign.agreedToEnter(army)) {
-			ErrorMsgUtil.sendErrorMsg(army, ErrorCode.CAMPAIGN_CAN_NOT_JOIN, Protocol.S_CAMPAIGN_OPTION, "不允许进入");
+			// ErrorMsgUtil.sendErrorMsg(army, ErrorCode.CAMPAIGN_CAN_NOT_JOIN,
+			// Protocol.S_CAMPAIGN_OPTION, "不允许进入");
 			// 地图变更信息
 			ChangeMapResultMsg.Builder cmbuilder = ChangeMapResultMsg.newBuilder();
-			cmbuilder.setResult(EnterMapResult.CAMPAIGN_ERROR);// 进入成功;
+			cmbuilder.setResult(EnterMapResult.CAMPAIGN_ERROR);// 副本错误;
 			army.sendPbMessage(MessageUtil.buildMessage(Protocol.C_ENTER_SENCE_MAP_RESULT, cmbuilder));
 			return;
 		}
@@ -76,16 +76,14 @@ public class CampaignEnterAction extends Action {
 		reloadPos(army);
 		// 进入地图
 		FieldInfo fieldTemp = FieldTemplateMgr.getFieldTemp(field.getMapKey());
-		int angle = 0;
 		// 若无初始位置,则设置进入时占无效位置
 		if (vector3 == null || (vector3.x <= 0 && vector3.y <= 0 && vector3.z <= 0)) {
 			// 当副本有出生点时候，进入地图，优先出现在出生点
-			SpwanNode born = campaign.getBornNode();
+			Vector3 born = campaign.getBornNode();
 			if (born == null) {
-				vector3 = new Vector3(fieldTemp.getPosition().x, fieldTemp.getPosition().y, fieldTemp.getPosition().z);
+				vector3 = new Vector3(fieldTemp.getPosition().x, fieldTemp.getPosition().y, fieldTemp.getPosition().z, fieldTemp.getPosition().angle);
 			} else {
-				vector3 = born.getSpawnInfo().getPosition();
-				angle = born.getSpawnInfo().getParam1();
+				vector3 = new Vector3(born.x, born.y, born.z, born.angle);
 			}
 		}
 
@@ -99,13 +97,10 @@ public class CampaignEnterAction extends Action {
 		postionMsg.setMapKey(field.getMapKey());
 
 		PBVector3.Builder builder = Vector3BuilderHelper.build(vector3);
-		builder.setAngle(angle);
 
 		postionMsg.setPostion(builder);
 		cmbuilder.setPostion(postionMsg);
 		army.sendPbMessage(MessageUtil.buildMessage(Protocol.C_ENTER_SENCE_MAP_RESULT, cmbuilder));
-
-		// 向客户端发送副本信息
 		campaign.addArmy(army);
 
 		// 告诉center服务器，更新副本状态
@@ -116,9 +111,10 @@ public class CampaignEnterAction extends Action {
 		PBMessage statuMsg = MessageUtil.buildMessage(Protocol.C_CAMPAIGN_STATU, cstatu);
 		army.sendPbMessage(statuMsg);
 
-		campaign.setExpiredTime(0);
+		//campaign.setExpiredTime(0);
+		// 发送副本信息
 		campaign.sendCampaignInfo(army);
-
+		// 如果有副本任务，则添加副本buff
 		if (campaign.getTask() != null && campaign.getTask().getConditionType() == CTBaseCondition.ADD_BUFF_PLAYER) {
 			String bufferIds = campaign.getTask().getTemp().getStrParam1();
 			if (bufferIds != null && !bufferIds.equals("")) {
@@ -136,7 +132,6 @@ public class CampaignEnterAction extends Action {
 	}
 
 	private void reloadPos(ArmyProxy army) {
-
 		ArmyInfoReloadMsg.Builder armyReload = ArmyInfoReloadMsg.newBuilder();
 		Player player = army.getPlayer();
 		Field field = FieldMgr.getIns().getField(army.getFieldId());

@@ -35,32 +35,31 @@ function finishTask(playerId,taskId){
 
 	switch (taskId) {
 	case 10003:
-		sendHintToClient(playerId,"完成：任务："+taskId);
-		changeMap(playerId,1007,2550,724,3788);
+		changeMap(playerId,1007,2724,721,4059);
 		break;
 	case 10006:
-		changeMap(playerId,1009,3379,346,5286);
+		changeMap(playerId,1009,3717,264,5809);
 		break;
-	case 10012:
-		changeMap(playerId,1009,3436,190,5681);
+	case 10009:
+		changeMap(playerId,1009,3795,168,6041);
 		break;	
-	case 10016:
-		changeMap(playerId,1009,3379,346,5286);
+	case 10013:
+		changeMap(playerId,1009,3892,258,5925);
 		break;	
-	case 10047:
+	case 10038:
 		changeMap(playerId,1008,5644,-2,4927);
 		break;
-	case 10052:
-		changeMap(playerId,1009,4934,-56,7247);
+	case 10042:
+		changeMap(playerId,1009,4698,17,6988);
 		break;
-	case 10054:
-		changeMap(playerId,1009,2883,-34,7669);
+	case 10045:
+		changeMap(playerId,1009,4086,30,7000);
 		break;
-	case 10090:
-		changeMap(playerId,1009,6869,-11,8204);
+	case 10080:
+		changeMap(playerId,1009,5655,-2,7344);
 		break;	
-	case 10106:
-		changeMap(playerId,1014,219,390,1674);
+	case 10096:
+		changeMap(playerId,1014,134,236,1003);
 		break;
 	}
 }

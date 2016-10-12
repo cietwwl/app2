@@ -1,0 +1,10 @@
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "TruckProtectorProto";
+
+/**
+ * 镖车状态
+ */
+message TruckProtector{
+  	required int64 id = 1; //玩家id
+	required int32 type = 2; //1.好友，2.帮派成员
+}

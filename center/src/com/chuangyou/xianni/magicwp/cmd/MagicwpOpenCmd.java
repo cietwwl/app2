@@ -8,6 +8,8 @@ import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.magicwp.MagicwpCfg;
 import com.chuangyou.xianni.entity.magicwp.MagicwpInfo;
+import com.chuangyou.xianni.event.EventNameType;
+import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.magicwp.template.MagicwpTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -29,7 +31,6 @@ public class MagicwpOpenCmd extends AbstractCommand {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Magicwp_UnExist, packet.getCode());
 			return;
 		}
-		
 		
 		MagicwpInfo magicwp = player.getMagicwpInventory().getMagicwpInfo(req.getMagicwpId());
 		
@@ -53,13 +54,11 @@ public class MagicwpOpenCmd extends AbstractCommand {
 			//激活条件
 			magicwpCfg.getNeedDay();
 			
-			
 			if(player.getBasePlayer().getPlayerInfo().getVipLevel() < magicwpCfg.getNeedVip()){
 				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Vip_UnEnough, packet.getCode());
 				return;
 			}
 		}
-		
 		
 		magicwp = new MagicwpInfo(player.getPlayerId(), req.getMagicwpId());
 		magicwp.setLevel(1);
@@ -75,6 +74,9 @@ public class MagicwpOpenCmd extends AbstractCommand {
 //		MagicwpManager.changeMagicwpAtt(roleId);
 		//影响人物属性变更
 		player.getMagicwpInventory().updataProperty();
+		
+		player.notifyListeners(new ObjectEvent(this, magicwp.getMagicwpId(), EventNameType.MAGICWP_ACTIVE));
+		
 	}
 
 }

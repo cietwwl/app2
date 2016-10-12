@@ -1,0 +1,10 @@
+//protocol=0;
+option java_package = "com.chuangyou.common.protobuf.pb.boss";
+option java_outer_classname = "BossListRespProto";
+
+import "boss/BossInfoMsg.proto";
+
+//返回BOSS状态信息列表
+message BossListRespMsg{
+	repeated BossInfoMsg boss = 1; // BOSS状态信息
+}

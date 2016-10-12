@@ -12,6 +12,8 @@ import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.mount.MountInfo;
 import com.chuangyou.xianni.entity.mount.MountLevelCfg;
+import com.chuangyou.xianni.event.EventNameType;
+import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.mount.manager.MountManager;
 import com.chuangyou.xianni.mount.template.MountTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
@@ -19,6 +21,7 @@ import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
+import com.chuangyou.xianni.state.event.MountStateEvent;
 
 @Cmd(code = Protocol.C_MOUNT_LEVEL_UP, desc = "坐骑升级")
 public class MountLevelUpCmd extends AbstractCommand {
@@ -57,6 +60,8 @@ public class MountLevelUpCmd extends AbstractCommand {
 		mount.setLevel(mount.getLevel() + 1);
 		mount.setUpLevCd((new Date()).getTime() + targetCfg.getUpLevCd() * 1000);
 		player.getMountInventory().updateMount(mount);
+		
+		player.notifyListeners(new MountStateEvent(this,1, mount.getLevel(),0,EventNameType.MOUNT));
 
 		// 返回消息
 		MountLevelUpRespMsg.Builder msg = MountLevelUpRespMsg.newBuilder();

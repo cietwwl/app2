@@ -21,7 +21,7 @@ public class TriggerPointSpwanNode extends TouchPointSpwanNode {
 	public TriggerPointSpwanNode(SpawnInfo spwanInfo, Field field) {
 		super(spwanInfo, field);
 		// TODO Auto-generated constructor stub
-		System.out.println("TriggerPointSpwanNode:"+spwanInfo.getId()+":::"+field.getMapKey());
+		//System.out.println("TriggerPointSpwanNode:"+spwanInfo.getId()+":::"+field.getMapKey());
 	}
 
 	/**

@@ -1,0 +1,9 @@
+//protocol=10722;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "InnerReqTruckInfoProto";
+
+//请求镖车数据
+message InnerReqTruckInfo {
+	required int64 playerId = 1;	//押镖人的Id
+	required int32 truckType = 2;	//镖车类型
+}

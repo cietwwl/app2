@@ -19,7 +19,7 @@ public class KillMonsterListener implements ObjectListener {
 	/**
 	 *杀怪的等级范围
 	 */
-	final int MONSTER_LV_RANGE = 5;
+	final int MONSTER_LV_RANGE = 10;
 	
 	public KillMonsterListener(GamePlayer player) {
 		this.player = player;

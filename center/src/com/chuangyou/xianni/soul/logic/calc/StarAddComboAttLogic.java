@@ -1,5 +1,6 @@
 package com.chuangyou.xianni.soul.logic.calc;
 
+import java.util.List;
 import java.util.Map;
 
 import com.chuangyou.xianni.entity.soul.CardComboConfig;
@@ -7,6 +8,7 @@ import com.chuangyou.xianni.entity.soul.SoulCardInfo;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.skill.SkillUtil;
 import com.chuangyou.xianni.skill.template.SimpleProperty;
+import com.chuangyou.xianni.soul.template.SoulTemplateMgr;
 
 /**
  * 星级给卡牌组合附加的属性加成计算
@@ -21,20 +23,26 @@ public class StarAddComboAttLogic extends GetComboAttLogic {
 	}
 
 	@Override
-	public void doProcess(GamePlayer player, Map<Integer, SimpleProperty> map, CardComboConfig config, Map<Integer, SoulCardInfo> cards) {
+	public void doProcess(GamePlayer player, Map<Integer, SimpleProperty> map, SoulCardInfo soulCard, Map<Integer, SoulCardInfo> cards) {
 		// TODO Auto-generated method stub
-		super.doProcess(player, map, config, cards);
-		if(!this.isValid(player, config))return;
-		//todo 计算星级对组合的加成
-		int star = 0;
-		for(int cardId:config.getMateList()){
-			SoulCardInfo card = player.getSoulInventory().getCards().get(cardId);
-			star+=card.getStar();
-		}
-		for(int att:config.getEffectList()){
-			addAttValue(map,att,star);
+		logic.doProcess(player, map, soulCard, cards);
+		
+		List<Integer> combos = SoulTemplateMgr.getCardConfig(soulCard.getCardId()).getComboList();
+		for (int combo : combos) {
+			CardComboConfig config = SoulTemplateMgr.getCardComboMap().get(combo);
+			if(!this.isValid(player, config))continue;
+			//todo 计算星级对组合的加成
+			int star = 0;
+			for(int cardId:config.getMateList()){
+				SoulCardInfo card = player.getSoulInventory().getCards().get(cardId);
+				star+=card.getStar();
+			}
+			for(int att:config.getEffectList()){
+				addAttValue(map,att,star,config.getMateList().size());
+			}
 		}
 		
+//		System.out.println("StarAddComboAttLogic:"+map);
 	}
 
 	
@@ -43,12 +51,13 @@ public class StarAddComboAttLogic extends GetComboAttLogic {
 		星级	组合内所有主魂的星级总和每提升1星，组合效果数值提升1%						
 	 * @param map
 	 * @param att
+	 * @param count:每张卡卡牌都加。
 	 */
-	private void addAttValue(Map<Integer, SimpleProperty> map,int att,int star){
+	private void addAttValue(Map<Integer, SimpleProperty> map,int att,int star,int count){
 		if (att > 0) {
 			SimpleProperty pro = SkillUtil.readPro(att);
 			int temp = (int) Math.floor(pro.getValue()*0.01*star);
-			pro.setValue(temp);
+			pro.setValue(temp*count);
 			if (map.containsKey(pro.getType())) {
 				SimpleProperty t = map.get(pro.getType());
 				t.setValue(t.getValue() +temp);

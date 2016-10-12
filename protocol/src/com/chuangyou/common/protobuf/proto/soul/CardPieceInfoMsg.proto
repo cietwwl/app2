@@ -1,8 +1,0 @@
-//protocol=1608;
-option java_package = "com.chuangyou.common.protobuf.pb.soul";
-option java_outer_classname = "CardPieceInfoProto";
-
-message CardPieceInfoMsg{
-	required int32 cardId=1; //碎片ID
-	required int32 count=2; //数量
-}

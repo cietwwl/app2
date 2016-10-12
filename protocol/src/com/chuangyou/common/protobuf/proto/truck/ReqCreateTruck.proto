@@ -1,0 +1,8 @@
+//protocol=20701;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "ReqCreateTruckProto";
+
+//请求创建镖车
+message ReqCreateTruck {
+	required int32 trucktype = 1; //1:普通镖车 2:帮派镖车
+}

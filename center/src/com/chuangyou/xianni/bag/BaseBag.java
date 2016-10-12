@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.chuangyou.common.protobuf.pb.item.ItemFullInfoMsgProto.ItemFullInfoMsg;
+import com.chuangyou.common.protobuf.pb.item.ItemListProto.ItemListMsg;
 import com.chuangyou.common.util.LockData;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.army.Living;
@@ -18,8 +20,13 @@ import com.chuangyou.xianni.entity.item.ItemInfo;
 import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.equip.template.EquipTemplateMgr;
+import com.chuangyou.xianni.event.EventNameType;
+import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerInfoSendCmd;
+import com.chuangyou.xianni.proto.MessageUtil;
+import com.chuangyou.xianni.proto.PBMessage;
+import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.skill.SkillUtil;
 import com.chuangyou.xianni.skill.template.SimpleProperty;
 
@@ -256,12 +263,20 @@ public class BaseBag extends AbstractBag {
 	 * @param templateId
 	 * @return
 	 */
-	public int getTemplateCount(int templateId) {
+	public int getTemplateCount(int templateId, short bindType) {
 		int count = 0;
 		try {
 			for (int i = beginPos; i < capability; i++) {
 				if ((baseItems[i] != null) && (baseItems[i].getItemTempInfo().getId() == templateId)) {
-					count += baseItems[i].getItemInfo().getCount();
+					if(bindType == BindType.ALL){
+						count += baseItems[i].getItemInfo().getCount();
+					}else{
+						if(bindType == BindType.BIND && baseItems[i].getItemInfo().isBinds() == true){
+							count += baseItems[i].getItemInfo().getCount();
+						}else if(bindType == BindType.NOBIND && baseItems[i].getItemInfo().isBinds() == false){
+							count += baseItems[i].getItemInfo().getCount();
+						}
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -424,77 +439,79 @@ public class BaseBag extends AbstractBag {
 			float grow = info.getGrow() / 10000f;// 成长系数
 
 			SimpleProperty property = SkillUtil.readPro(itemBase);
-			
-			//装备栏等级
+
+			// 装备栏等级
 			ItemTemplateInfo tempInfo = item.getItemTempInfo();
 			EquipBarInfo equipBar = player.getEquipInventory().getEquipBarByPos(info.getPos());
-			if(equipBar == null) continue;
+			if (equipBar == null)
+				continue;
 			int level = equipBar.getLevel();
-			if(tempInfo.getJiachilimit() < level){
-				level = tempInfo.getJiachilimit();
-			}
 
 			float proVal = (property.getValue() + level * grow) * (1 + level * qualityCoefficient); // 装备属性=（初始属性+装备等级*属性成长值）*（1+装备等级*品质系数）
-			
-			//装备栏加持等级
-			EquipBarGradeCfg equipBarCfg = EquipTemplateMgr.getBarGradeCfg(info.getPos(), equipBar.getGrade());
-			if(equipBarCfg != null){
-				proVal = proVal * (1 + equipBarCfg.getAddProperty()/10000f);
+
+			// 装备栏加持等级
+			int equipBarGrade = equipBar.getGrade();
+			if (tempInfo.getJiachilimit() < equipBarGrade) {
+				equipBarGrade = tempInfo.getJiachilimit();
 			}
-			
-			//基本属性结算
+			EquipBarGradeCfg equipBarCfg = EquipTemplateMgr.getBarGradeCfg(info.getPos(), equipBarGrade);
+			if (equipBarCfg != null) {
+				proVal = proVal * (1 + equipBarCfg.getAddProperty() / 10000f);
+			}
+
+			// 基本属性结算
 			if (property.isPre()) {
 				SkillUtil.joinPro(bagPer, property.getType(), (int) Math.ceil(proVal));
 			} else {
 				SkillUtil.joinPro(bagData, property.getType(), (int) Math.ceil(proVal));
 			}
-			
-			//加持激活额外属性
-			if(tempInfo.getJiachi1() > 0 && tempInfo.getStatistics1() > 0){
-				if(equipBar.getGrade() >= tempInfo.getJiachi1()){
+
+			// 加持激活额外属性
+			if (tempInfo.getJiachi1() > 0 && tempInfo.getStatistics1() > 0) { 
+				if (equipBar.getGrade() >= tempInfo.getJiachi1()) {
 					SimpleProperty jiachiPro1 = SkillUtil.readPro(tempInfo.getStatistics1());
-					if(jiachiPro1.isPre()){
+					if (jiachiPro1.isPre()) {
 						SkillUtil.joinPro(bagPer, jiachiPro1.getType(), jiachiPro1.getValue());
-					}else{
+					} else {
 						SkillUtil.joinPro(bagData, jiachiPro1.getType(), jiachiPro1.getValue());
 					}
 				}
 			}
-			if(tempInfo.getJiachi2() > 0 && tempInfo.getStatistics2() > 0){
-				if(equipBar.getGrade() >= tempInfo.getJiachi2()){
+			if (tempInfo.getJiachi2() > 0 && tempInfo.getStatistics2() > 0) {
+				if (equipBar.getGrade() >= tempInfo.getJiachi2()) {
 					SimpleProperty jiachiPro2 = SkillUtil.readPro(tempInfo.getStatistics2());
-					if(jiachiPro2.isPre()){
+					if (jiachiPro2.isPre()) {
 						SkillUtil.joinPro(bagPer, jiachiPro2.getType(), jiachiPro2.getValue());
-					}else{
+					} else {
 						SkillUtil.joinPro(bagData, jiachiPro2.getType(), jiachiPro2.getValue());
 					}
 				}
 			}
-			if(tempInfo.getJiachi3() > 0 && tempInfo.getStatistics3() > 0){
-				if(equipBar.getGrade() >= tempInfo.getJiachi3()){
+			if (tempInfo.getJiachi3() > 0 && tempInfo.getStatistics3() > 0) {
+				if (equipBar.getGrade() >= tempInfo.getJiachi3()) {
 					SimpleProperty jiachiPro3 = SkillUtil.readPro(tempInfo.getStatistics3());
-					if(jiachiPro3.isPre()){
+					if (jiachiPro3.isPre()) {
 						SkillUtil.joinPro(bagPer, jiachiPro3.getType(), jiachiPro3.getValue());
-					}else{
+					} else {
 						SkillUtil.joinPro(bagData, jiachiPro3.getType(), jiachiPro3.getValue());
 					}
 				}
 			}
-			if(tempInfo.getJiachi4() > 0 && tempInfo.getStatistics4() > 0){
-				if(equipBar.getGrade() >= tempInfo.getJiachi4()){
+			if (tempInfo.getJiachi4() > 0 && tempInfo.getStatistics4() > 0) {
+				if (equipBar.getGrade() >= tempInfo.getJiachi4()) {
 					SimpleProperty jiachiPro4 = SkillUtil.readPro(tempInfo.getStatistics4());
-					if(jiachiPro4.isPre()){
+					if (jiachiPro4.isPre()) {
 						SkillUtil.joinPro(bagPer, jiachiPro4.getType(), jiachiPro4.getValue());
-					}else{
+					} else {
 						SkillUtil.joinPro(bagData, jiachiPro4.getType(), jiachiPro4.getValue());
 					}
 				}
 			}
-			
-			//统计套装
-			if(info.getStone() > 0){
+
+			// 统计套装
+			if (info.getStone() > 0) {
 				ItemTemplateInfo stoneTemp = ItemManager.findItemTempInfo(info.getStone());
-				if(!suitMap.containsKey(stoneTemp.getSuit_id())){
+				if (!suitMap.containsKey(stoneTemp.getSuit_id())) {
 					suitMap.put(stoneTemp.getSuit_id(), 0);
 				}
 				int suitCount = suitMap.get(stoneTemp.getSuit_id());
@@ -512,19 +529,20 @@ public class BaseBag extends AbstractBag {
 
 			// 3.1统计随机技能
 		}
-		
-		//计算套装属性
-		for(int key: suitMap.keySet()){
+
+		// 计算套装属性
+		for (int key : suitMap.keySet()) {
 			int suitCount = suitMap.get(key);
 			EquipSuitCfg suitCfg = EquipTemplateMgr.getSuitMap().get(key);
-			if(suitCfg == null) continue;
+			if (suitCfg == null)
+				continue;
 			Map<Integer, Integer> attMap = suitCfg.getAttMap();
-			for(int count: attMap.keySet()){
-				if(suitCount >= count){
+			for (int count : attMap.keySet()) {
+				if (suitCount >= count) {
 					SimpleProperty property = SkillUtil.readPro(attMap.get(count));
-					if(property.isPre()){
+					if (property.isPre()) {
 						SkillUtil.joinPro(bagPer, property.getType(), property.getValue());
-					}else{
+					} else {
 						SkillUtil.joinPro(bagData, property.getType(), property.getValue());
 					}
 				}
@@ -554,6 +572,21 @@ public class BaseBag extends AbstractBag {
 
 	public void joinTempInfo(BaseProperty bagEffect, ItemTemplateInfo itemTempInfo) {
 
+	}
+
+	public void writeAllItems(ItemListMsg.Builder itemList) {
+		try {
+			for (BaseItem info : baseItems) {
+				if (info == null || info.getItemInfo() == null) {
+					continue;
+				}
+				ItemFullInfoMsg.Builder updated = ItemFullInfoMsg.newBuilder();
+				info.getItemInfo().writeProto(updated);
+				itemList.addItem(updated);
+			}
+		} catch (Exception e) {
+			Log.error("发送背包信息出错，playerId :" + player.getPlayerId(), e);
+		}
 	}
 
 	@Override

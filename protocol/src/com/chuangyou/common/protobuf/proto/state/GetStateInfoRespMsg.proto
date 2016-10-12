@@ -1,0 +1,9 @@
+//protocol=1617;
+option java_package = "com.chuangyou.common.protobuf.pb.state";
+option java_outer_classname = "GetStateInfoRespProto";
+
+import "state/StateInfoMsg.proto";
+//回复请求境界任务状态
+message GetStateInfoRespMsg{
+	repeated StateInfoMsg infos = 1;
+}

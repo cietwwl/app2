@@ -5,6 +5,7 @@ import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.shop.ShopCfg;
+import com.chuangyou.xianni.guild.action.GuildShopBuyAction;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -39,6 +40,14 @@ public class BuyGoodsAction extends BaseBuyGoodsAction implements IBuyGoods {
 			player.sendPbMessage(pkg);
 			return;
 		}
+		
+		//帮派商店走帮派商店的购买流程
+		if(cfg.getShopid() == ShopCfg.SHOP_GUILD_PLAYER || cfg.getShopid() == ShopCfg.SHOP_GUILD_SYSTEM){
+			GuildShopBuyAction guildAction = new GuildShopBuyAction(player, cfg.getId(), num);
+			guildAction.getActionQueue().enqueue(guildAction);
+			return;
+		}
+		
 		if (player.getBasePlayer().getPlayerInfo().getVipLevel() < cfg.getVipLv() && cfg.getShopid() == ShopCfg.SHOP_VIP) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIP_LEVEL_UNENOUGH, Protocol.C_REQ_BUYGOODS, "VIP等级不够");
 			return;

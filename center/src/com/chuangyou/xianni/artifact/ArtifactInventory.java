@@ -78,7 +78,7 @@ public class ArtifactInventory extends AbstractEvent implements IInventory {
 		return true;
 	}
 	
-	private void computeProperty(BaseProperty artifactData, BaseProperty artifactPer){
+	public void computeProperty(BaseProperty artifactData, BaseProperty artifactPer){
 		Map<Integer, Integer> attMap = ArtifactManager.computeArtifactAtt(player);
 		for(int attType:attMap.keySet()){
 			SimpleProperty property = SkillUtil.readPro(attType, attMap.get(attType));

@@ -81,6 +81,8 @@ public class ItemTemplateInfoDaoImpl extends BaseDao implements ItemTemplateInfo
 					
 					info.setResolveId(rs.getInt("resolveId"));
 					info.setResolveCount(rs.getInt("resolveCount"));
+					info.setIsVirtual(rs.getInt("isVirtual"));
+					info.setSaveGuild(rs.getByte("saveGuild"));
 
 					infos.add(info);
 				}

@@ -17,6 +17,7 @@ public class Vector3BuilderHelper {
 			builder.setX((int) (v3.x * Vector3.Accuracy));
 			builder.setY((int) (v3.y * Vector3.Accuracy));
 			builder.setZ((int) (v3.z * Vector3.Accuracy));
+			builder.setAngle(v3.angle);
 		}
 		return builder;
 	}
@@ -32,6 +33,7 @@ public class Vector3BuilderHelper {
 		builder.setX(v3.getX());
 		builder.setY(v3.getY());
 		builder.setZ(v3.getZ());
+		builder.setAngle(v3.getAngle());
 		return builder;
 	}
 

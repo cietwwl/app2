@@ -1,12 +1,15 @@
 package com.chuangyou.xianni.magicwp;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.chuangyou.common.util.AttributeUtil;
+import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
+import com.chuangyou.common.protobuf.pb.player.OtherMagicwpMsgProto.OtherMagicwpMsg;
+import com.chuangyou.xianni.army.Hero;
 import com.chuangyou.xianni.bag.ItemManager;
+import com.chuangyou.xianni.common.ErrorCode;
+import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
@@ -206,7 +209,6 @@ public class MagicwpInventory extends AbstractEvent implements IInventory {
 
 	public boolean unloadData() {
 		player = null;
-
 		magicwpAtt = null;
 
 		if (magicwpInfoMap != null) {
@@ -285,9 +287,12 @@ public class MagicwpInventory extends AbstractEvent implements IInventory {
 		// 法宝属性加成
 		Map<Integer, MagicwpInfo> roleMagicwpMap = player.getMagicwpInventory().getMagicwpInfoMap();
 		for (MagicwpInfo magicwp : roleMagicwpMap.values()) {
-
 			// 等级加成
 			MagicwpLevelCfg magicwpLevelCfg = MagicwpTemplateMgr.getLevelTemps().get(magicwp.getMagicwpId() * 1000 + magicwp.getLevel());
+			if(magicwpLevelCfg == null){
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, (short)0, "配置错误：" + (magicwp.getMagicwpId() * 1000 + magicwp.getLevel()));
+				return;
+			}
 			toalPro.addAll(magicwpLevelCfg.getAtts());
 			// 洗炼加成
 			toalPro.addAll(MagicwpRefineManager.getRefineAtts(magicwp.getRefineAtts()));
@@ -339,7 +344,7 @@ public class MagicwpInventory extends AbstractEvent implements IInventory {
 
 		}
 	}
-	
+
 	public void updataProperty() {
 		if (player.getArmyInventory() != null) {
 			BaseProperty skillData = new BaseProperty();
@@ -349,5 +354,30 @@ public class MagicwpInventory extends AbstractEvent implements IInventory {
 			player.getArmyInventory().getHero().addMagicwp(skillData, skillPer);
 			player.getArmyInventory().updateProperty();
 		}
+	}
+
+	/** 写入其他用户查看信息 */
+	public void writeInSimpOtherSnap(OtherMagicwpMsg.Builder proto) {
+		if (magicwpAtt == null || magicwpInfoMap == null) {
+			return;
+		}
+		proto.setPlayerId(magicwpAtt.getPlayerId());
+		MagicwpInfo magicwpInfo = getMagicwpInfo(magicwpAtt.getCurMagicwpId());
+		if (magicwpInfo == null) {
+			return;
+		}
+		proto.setLevel(magicwpInfo.getLevel());
+		proto.setMagicwpId(magicwpInfo.getMagicwpId());
+
+		BaseProperty skillData = new BaseProperty();
+		BaseProperty skillPer = new BaseProperty();
+		// 加入技能属性
+		computeMagicwpAtt(skillData, skillPer);
+		Hero tempHero = new Hero(this.player);
+		tempHero.addMagicwp(skillData, skillPer);
+		PropertyListMsg.Builder propertyMsgs = PropertyListMsg.newBuilder();
+		tempHero.writeProto(propertyMsgs);
+		proto.setPropertitys(propertyMsgs);
+		tempHero = null;
 	}
 }

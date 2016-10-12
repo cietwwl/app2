@@ -35,10 +35,12 @@ public class KillPrivateMonsterCondition extends KillMonsterTaskCondition {
 				Log.error("任务 ID:"+cfg.getTaskId()+"刷私有怪任务任务时间不能填0");
 				return;
 			}
-			ScriptInterfaceManager.createPrivateMonster(player.getPlayerId(),cfg.getTargetId(),posList.get(1),
-					posList.get(2),
-					posList.get(3),
-					cfg.getTaskTime()*1000, posList.get(0));
+			for(int i=0;i<cfg.getTargetNum();i++){				
+				ScriptInterfaceManager.createPrivateMonster(player.getPlayerId(),cfg.getTargetId(),posList.get(1),
+						posList.get(2),
+						posList.get(3),
+						cfg.getTaskTime()*1000, posList.get(0));
+			}
 		}
 	}
 

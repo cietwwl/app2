@@ -20,7 +20,7 @@ public class SoulTemplateMgr {
 	private static Map<Integer, SoulCardConfig> map;
 	
 	private static Map<Integer, CardLvConfig> lvMap; 
-	
+		
 	private static Map<Integer, CardStarConfig> starMap;
 	/**
 	 * 卡牌技能配置

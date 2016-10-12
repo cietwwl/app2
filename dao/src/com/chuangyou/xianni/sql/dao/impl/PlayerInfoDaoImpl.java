@@ -13,6 +13,7 @@ import java.util.Map;
 
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.entity.Option;
+import com.chuangyou.xianni.entity.arena.FightData;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.player.PlayerJoinInfo;
 import com.chuangyou.xianni.entity.player.PlayerTimeInfo;
@@ -23,13 +24,38 @@ import com.chuangyou.xianni.sql.db.DbParameter;
 public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 
 	@Override
+	public List<FightData> getArenaOpponent(int myFight, int maxFight, int minFight) {
+		String sql = "SELECT playerId,fight FROM tb_u_player_info WHERE fight <= " + myFight + " AND fight >= " + minFight
+				+ " LIMIT 10	UNION (SELECT playerId,fight FROM tb_u_player_info WHERE fight >" + myFight + " AND fight <= " + maxFight + " LIMIT 10);";
+		PreparedStatement pstmt = execQuery(sql, null);
+		ResultSet rs = null;
+		List<FightData> result = new ArrayList<>();
+		if (pstmt != null) {
+			try {
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					FightData data = new FightData();
+					data.setFight(rs.getInt("fight"));
+					data.setPlayerId(rs.getLong("playerId"));
+					result.add(data);
+				}
+			} catch (SQLException e) {
+				Log.error("执行出错" + sql, e);
+			} finally {
+				closeConn(pstmt, rs);
+			}
+		}
+		return result;
+	}
+
+	@Override
 	public boolean add(PlayerInfo playerInfo) {
 		boolean result = false;
 		playerInfo.beginAdd();
 		String sql = "INSERT INTO tb_u_player_info (playerId,userId,job,nickname,level,exp,totalExp,money,bindCash,cash,vipLevel"
 				+ ",fight,skinId,pBagCount,mountId,magicWeaponId,skillStage,repair,battleMode,pkVal,changeBattleModeTime,fashionId,"
 
-				+ "weaponId,wingId,points,vipTimeLimit,vipInterimTimeLimit,vipExp,equipExp) " + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+				+ "weaponId,wingId,points,vipTimeLimit,vipInterimTimeLimit,vipExp,equipExp,stateLv) " + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.BIGINT, playerInfo.getPlayerId()));
@@ -64,6 +90,7 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		para.put(28, new DbParameter(Types.INTEGER, playerInfo.getVipExp()));
 
 		para.put(29, new DbParameter(Types.BIGINT, playerInfo.getEquipExp()));
+		para.put(30, new DbParameter(Types.INTEGER, playerInfo.getStateLv()));
 
 		result = execNoneQuery(sql, para) > -1 ? true : false;
 		playerInfo.commitAdd(result);
@@ -75,7 +102,7 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		boolean result = false;
 		playerInfo.beginUpdate();
 		String sql = "update tb_u_player_info set nickname=?,level=?,exp=?,totalExp=?,money=?" + ",bindCash=?,cash=?,vipLevel=?,fight=?,skinId=?,pBagCount=?,mountId=?,magicWeaponId=?,skillStage=?,"
-				+ "repair=?,battleMode=?,pkVal=?,changeBattleModeTime=?,fashionId=?,weaponId=?,wingId=?,points=?,vipTimeLimit=?,vipInterimTimeLimit=?,vipExp=?,equipExp=? where playerId=?";
+				+ "repair=?,battleMode=?,pkVal=?,changeBattleModeTime=?,fashionId=?,weaponId=?,wingId=?,points=?,vipTimeLimit=?,vipInterimTimeLimit=?,vipExp=?,equipExp=?,stateLv=? where playerId=?";
 
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.VARCHAR, playerInfo.getNickName()));
@@ -108,8 +135,9 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		para.put(25, new DbParameter(Types.INTEGER, playerInfo.getVipExp()));
 
 		para.put(26, new DbParameter(Types.BIGINT, playerInfo.getEquipExp()));
+		para.put(27, new DbParameter(Types.INTEGER, playerInfo.getStateLv()));
 
-		para.put(27, new DbParameter(Types.BIGINT, playerInfo.getPlayerId()));
+		para.put(28, new DbParameter(Types.BIGINT, playerInfo.getPlayerId()));
 
 		result = execNoneQuery(sql, para) > -1 ? true : false;
 
@@ -179,6 +207,8 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 					info.setVipTimeLimit(rs.getDate("vipTimeLimit"));
 					info.setVipInterimTimeLimit(rs.getDate("vipInterimTimeLimit"));
 					info.setVipExp(rs.getInt("vipExp"));
+					
+					info.setStateLv(rs.getInt("stateLv"));
 
 					info.setOp(Option.None);
 					infos.add(info);
@@ -231,8 +261,8 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		params.put(13, new DbParameter(Types.INTEGER, playerJoinInfo.getCritDefence()));
 		params.put(14, new DbParameter(Types.INTEGER, playerJoinInfo.getCritAddtion()));
 		params.put(15, new DbParameter(Types.INTEGER, playerJoinInfo.getCritCut()));
-		params.put(16, new DbParameter(Types.INTEGER, playerJoinInfo.getBloodAttackAddtion()));
-		params.put(17, new DbParameter(Types.INTEGER, playerJoinInfo.getBloodAttackCut()));
+		params.put(16, new DbParameter(Types.INTEGER, playerJoinInfo.getAttackAddtion()));
+		params.put(17, new DbParameter(Types.INTEGER, playerJoinInfo.getAttackCut()));
 		params.put(18, new DbParameter(Types.INTEGER, playerJoinInfo.getSoulAttackAddtion()));
 		params.put(19, new DbParameter(Types.INTEGER, playerJoinInfo.getSoulAttackCut()));
 		params.put(20, new DbParameter(Types.INTEGER, playerJoinInfo.getRegainSoul()));
@@ -279,8 +309,8 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		params.put(12, new DbParameter(Types.INTEGER, playerJoinInfo.getCritDefence()));
 		params.put(13, new DbParameter(Types.INTEGER, playerJoinInfo.getCritAddtion()));
 		params.put(14, new DbParameter(Types.INTEGER, playerJoinInfo.getCritCut()));
-		params.put(15, new DbParameter(Types.INTEGER, playerJoinInfo.getBloodAttackAddtion()));
-		params.put(16, new DbParameter(Types.INTEGER, playerJoinInfo.getBloodAttackCut()));
+		params.put(15, new DbParameter(Types.INTEGER, playerJoinInfo.getAttackAddtion()));
+		params.put(16, new DbParameter(Types.INTEGER, playerJoinInfo.getAttackCut()));
 		params.put(17, new DbParameter(Types.INTEGER, playerJoinInfo.getSoulAttackAddtion()));
 		params.put(18, new DbParameter(Types.INTEGER, playerJoinInfo.getSoulAttackCut()));
 		params.put(19, new DbParameter(Types.INTEGER, playerJoinInfo.getRegainSoul()));
@@ -338,8 +368,8 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 					info.setCritDefence(rs.getInt("critDefence"));
 					info.setCritAddtion(rs.getInt("critAddtion"));
 					info.setCritCut(rs.getInt("critCut"));
-					info.setBloodAttackAddtion(rs.getInt("bloodAttackAddtion"));
-					info.setBloodAttackCut(rs.getInt("bloodAttackCut"));
+					info.setAttackAddtion(rs.getInt("bloodAttackAddtion"));
+					info.setAttackCut(rs.getInt("bloodAttackCut"));
 					info.setSoulAttackAddtion(rs.getInt("soulAttackAddtion"));
 					info.setSoulAttackCut(rs.getInt("soulAttackCut"));
 					info.setRegainSoul(rs.getInt("regainSoul"));
@@ -373,14 +403,18 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 	public boolean addTimeInfo(PlayerTimeInfo playerTimeInfo) {
 		// TODO Auto-generated method stub
 		boolean result = false;
-		playerTimeInfo.beginAdd();
-		String sql = "replace into tb_u_player_time_info(playerId,sigleCampCount,resetTime) values(?,?,?)";
+		String sql = "replace into tb_u_player_time_info(playerId,sigleCampCount,challengeCampCount,personalTruckerProtCount,presonalTruckerExtReward,presonalTruckerExtExp,addExpByTruckBroken,resetTime,offlineTime) values(?,?,?,?,?,?,?,?,?)";
 		Map<Integer, DbParameter> params = new HashMap<Integer, DbParameter>();
 		params.put(1, new DbParameter(Types.BIGINT, playerTimeInfo.getPlayerId()));
 		params.put(2, new DbParameter(Types.INTEGER, playerTimeInfo.getSigleCampCount()));
-		params.put(3, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getResetTime()));
+		params.put(3, new DbParameter(Types.INTEGER, playerTimeInfo.getChallengeCampCount()));
+		params.put(4, new DbParameter(Types.INTEGER, playerTimeInfo.getPersonalTruckerProtCount()));
+		params.put(5, new DbParameter(Types.INTEGER, playerTimeInfo.getPresonalTruckerExtReward()));
+		params.put(6, new DbParameter(Types.INTEGER, playerTimeInfo.getPresonalTruckerExtExp()));
+		params.put(7, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getResetTime()));
+		params.put(8, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getOfflineTime()));
 		result = execNoneQuery(sql, params) > -1 ? true : false;
-		playerTimeInfo.commitAdd(result);
+		playerTimeInfo.setOp(Option.None);
 		return result;
 	}
 
@@ -389,11 +423,16 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		// TODO Auto-generated method stub
 		boolean result = false;
 		playerTimeInfo.beginUpdate();
-		String sql = "update tb_u_player_time_info set testTime=? where playerId=?";
+		String sql = "update tb_u_player_time_info set sigleCampCount=?,challengeCampCount=?,personalTruckerProtCount=?,presonalTruckerExtReward=?,presonalTruckerExtExp=?,addExpByTruckBroken=?,resetTime=?,offlineTime=? where playerId=?";
 		Map<Integer, DbParameter> params = new HashMap<Integer, DbParameter>();
 		params.put(1, new DbParameter(Types.INTEGER, playerTimeInfo.getSigleCampCount()));
-		params.put(2, new DbParameter(Types.TIME, playerTimeInfo.getResetTime()));
-		params.put(3, new DbParameter(Types.BIGINT, playerTimeInfo.getPlayerId()));
+		params.put(2, new DbParameter(Types.INTEGER, playerTimeInfo.getChallengeCampCount()));
+		params.put(3, new DbParameter(Types.INTEGER, playerTimeInfo.getPersonalTruckerProtCount()));
+		params.put(3, new DbParameter(Types.INTEGER, playerTimeInfo.getPresonalTruckerExtReward()));
+		params.put(3, new DbParameter(Types.INTEGER, playerTimeInfo.getPresonalTruckerExtExp()));
+		params.put(4, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getResetTime()));
+		params.put(5, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getOfflineTime()));
+		params.put(6, new DbParameter(Types.BIGINT, playerTimeInfo.getPlayerId()));
 		result = execNoneQuery(sql, params) > -1 ? true : false;
 		playerTimeInfo.commitUpdate(result);
 		return result;
@@ -419,10 +458,18 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 					info = new PlayerTimeInfo();
 					info.setPlayerId(rs.getLong("playerId"));
 					info.setSigleCampCount(rs.getInt("sigleCampCount"));
-
+					info.setChallengeCampCount(rs.getInt("challengeCampCount"));
+					info.setPersonalTruckerProtCount(rs.getInt("personalTruckerProtCount"));
+					info.setPresonalTruckerExtExp(rs.getInt("presonalTruckerExtExp"));
+					info.setPresonalTruckerExtReward(rs.getInt("presonalTruckerExtReward"));
+					info.setAddExpByTruckBroken(rs.getInt("addExpByTruckBroken"));
 					Timestamp time = rs.getTimestamp("resetTime");
 					if (time != null) {
 						info.setResetTime(new Date(time.getTime()));
+					}
+					Timestamp offlineTime = rs.getTimestamp("offlineTime");
+					if(offlineTime != null){
+						info.setOfflineTime(new Date(offlineTime.getTime()));
 					}
 					info.setOp(Option.None);
 				}
@@ -457,4 +504,5 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		}
 		return maxId == 0 ? 1 : maxId + 1;
 	}
+
 }

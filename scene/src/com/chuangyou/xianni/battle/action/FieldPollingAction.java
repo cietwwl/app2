@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.chuangyou.common.util.JSONUtil;
+import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.drop.objects.DropPackage;
@@ -53,6 +55,10 @@ public class FieldPollingAction extends DelayAction {
 		clearTime = 0;
 		List<Living> deaths = field.getDeathLiving();
 		for (Living death : deaths) {
+			if (death == null) {
+				Log.error(JSONUtil.getJSONString(field.getFieldInfo()), new NullPointerException());
+				return;
+			}
 			if (death.isClear()) {
 				field.leaveField(death);
 				field.removeDeath(death);
@@ -80,7 +86,6 @@ public class FieldPollingAction extends DelayAction {
 				overTimeDrops.add(drop.getDropId());
 			}
 		}
-
 		for (int dropId : overTimeDrops) {
 			field.removeDrop(dropId);
 		}

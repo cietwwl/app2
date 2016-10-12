@@ -3,7 +3,11 @@ package com.chuangyou.xianni.soul.logic.card;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.Option;
+import com.chuangyou.xianni.entity.item.BagType;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.soul.SoulCardInfo;
+import com.chuangyou.xianni.event.EventNameType;
+import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.soul.template.SoulTemplateMgr;
 
@@ -25,16 +29,14 @@ public class CardStarLogic extends AbstractCardLogic {
 	@Override
 	public void doCardLogic() {
 		// TODO Auto-generated method stub
-		if(this.piece == null){
+		int pieceCount = player.getBagInventory().getItemCount(BagType.VirtualValue,this.cardId);
+		if(pieceCount == 0){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_PIECE_COMBO,"无碎片");		
 			return;
 		}
-//		if(this.cardInfo.getStar() == MAX_STAR){
-//			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_PIECE_COMBO,"星级已满");		
-//			return;
-//		}
+
 		int needClip = SoulTemplateMgr.getCardStarConfig(this.cardInfo.getStar()+1).getSpendNum();
-		if(this.piece.getCount() < needClip){
+		if(pieceCount < needClip){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_PIECE_COMBO,"碎片数量不够");		
 			return;
 		}
@@ -44,10 +46,16 @@ public class CardStarLogic extends AbstractCardLogic {
 		}
 		
 		//TODO 扣碎片  BUG????????? 
-		this.piece.setCardId(this.piece.getCount()-needClip);
-		this.piece.setOp(Option.Update);
+		if(!player.getBagInventory().removeItem(BagType.VirtualValue, this.cardId, needClip, ItemRemoveType.CARD_PIECE)){
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_PIECE_COMBO,"碎片数量不够");		
+			return;
+		}
+		
 		//加星
 		this.cardInfo.setStar(cardInfo.getStar()+1);
+		
+		player.notifyListeners(new ObjectEvent(this, cardInfo, EventNameType.SOUL_STAR));
+		
 		//加技能
 		addSkill(cardInfo);
 		this.cardInfo.setOp(Option.Update);

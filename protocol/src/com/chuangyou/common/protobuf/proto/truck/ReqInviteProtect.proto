@@ -1,0 +1,8 @@
+//protocol=10723;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "ReqInviteProtectProto";
+
+message ReqInviteProtect {
+	required int64 truckId = 1; //护镖的镖车ID
+	required int32 protectorId = 2; //护镖人ID
+}

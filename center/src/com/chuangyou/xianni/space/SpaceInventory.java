@@ -257,6 +257,39 @@ public class SpaceInventory extends AbstractEvent implements IInventory {
 		}
 	}
 	
+	/**
+	 * 判断是否和自己同城
+	 * @param city
+	 * @return
+	 */
+	public boolean isSameCityToSelf(String city){
+		String selfCity = this.getSpaceInfo().getCity().trim();
+		String targetCity = city.trim();
+		
+		String[] self = selfCity.split("-");
+		String[] target = targetCity.split("-");
+		
+		if(self.length > 1){
+			if(target.length <= 1){
+				return false;
+			}
+			if(!self[0].equals(target[0]) || !self[1].equals(target[1])){
+				return false;
+			}
+		}else if(self.length == 1){
+			if(target.length < 1){
+				return false;
+			}
+			if(!self[0].equals(target[0])){
+				return false;
+			}
+		}else{
+			return false;
+		}
+		
+		return true;
+	}
+	
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	@Override

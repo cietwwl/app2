@@ -40,7 +40,7 @@ public class ArmyInventory extends AbstractEvent implements UnlineInventory {
 			player.getSkillInventory().getTotalPro(skillData, skillPer);
 			hero.addSkillPro(skillData, skillPer);
 		}
-		if(player.getInverseBeadInventory()!=null){
+		if (player.getInverseBeadInventory() != null) {
 			BaseProperty proData = new BaseProperty();
 			BaseProperty proPer = new BaseProperty();
 			player.getInverseBeadInventory().getTotalPro(proData, proPer);
@@ -71,23 +71,46 @@ public class ArmyInventory extends AbstractEvent implements UnlineInventory {
 			player.getPetInventory().computePetAtt(petData, petPer);
 			hero.addPet(petData, petPer);
 		}
-		
-		if(player.getFashionInventory() != null){
+
+		if (player.getFashionInventory() != null) {
 			BaseProperty fashionData = new BaseProperty();
 			BaseProperty fashionPer = new BaseProperty();
 			// 加入时装属性
 			player.getFashionInventory().computeFashionAtt(fashionData, fashionPer);
 			hero.addFashion(fashionData, fashionPer);
 		}
-		
-		if(player.getSoulInventory() != null){
+
+		if (player.getArtifactInventory() != null) {
+			BaseProperty artifactData = new BaseProperty();
+			BaseProperty artifactPer = new BaseProperty();
+			// 加入神器属性
+			player.getArtifactInventory().computeProperty(artifactData, artifactPer);
+			hero.addArtifact(artifactData, artifactPer);
+		}
+
+		if (player.getSoulInventory() != null) {
 			BaseProperty soulData = new BaseProperty();
 			BaseProperty soulPer = new BaseProperty();
-			//加入魂幡属性
+			// 加入魂幡属性
 			player.getSoulInventory().computeSoulAtt(soulData, soulPer);
 			hero.addSoul(soulData, soulPer);
 		}
-		
+
+		if (player.getAvatarInventory() != null) {
+			BaseProperty avatarData = new BaseProperty();
+			BaseProperty avatarPer = new BaseProperty();
+			// 加入分身属性
+			player.getAvatarInventory().computeProperty(avatarData, avatarPer);
+			hero.addAvatar(avatarData, avatarPer);
+		}
+
+		if(player.getGuildInventory() != null){
+			BaseProperty guildSkillData = new BaseProperty();
+			BaseProperty guildSkillPer = new BaseProperty();
+			//加入帮派技能属性
+			player.getGuildInventory().getTotalSkillProperty(guildSkillData, guildSkillPer);
+			hero.addGuildSkill(guildSkillData, guildSkillPer);
+		}
 		updateHeroInfo();
 	}
 

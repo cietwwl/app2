@@ -1,0 +1,9 @@
+//protocol=20702;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "ReqArrialCheckPointProto";
+
+//请求到底检查点
+message ReqArrialCheckPoint {
+	required int64 truckID = 1; //镖车ID
+	required int32 curCheckPoint = 2; //当前检查点id
+}

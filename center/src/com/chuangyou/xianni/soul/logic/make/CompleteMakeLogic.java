@@ -1,11 +1,14 @@
 package com.chuangyou.xianni.soul.logic.make;
 
+
 import com.chuangyou.xianni.bag.BaseItem;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.item.ItemAddType;
 import com.chuangyou.xianni.entity.soul.SoulMake;
+import com.chuangyou.xianni.event.EventNameType;
+import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.protocol.Protocol;
 
@@ -19,7 +22,7 @@ public class CompleteMakeLogic extends BaseSoulMakeLogic implements ISoulMakeLog
 	@Override
 	public void doProcess() {
 		// TODO Auto-generated method stub
-		if (this.soulMake.getState() != SoulMake.STATE_ING) {
+		if (this.soulMake.getState() != SoulMake.STATE_MAKE_ING && this.soulMake.getState()!=SoulMake.STATE_TASK_ING) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_MAKE, "状态不对:" + this.op);
 			return;
 		}
@@ -31,8 +34,20 @@ public class CompleteMakeLogic extends BaseSoulMakeLogic implements ISoulMakeLog
 		// 完成任务。
 		// 1: 给物品
 		int profic = this.soulInfo.getProficiency(index);
-		int count = this.soulInfo.getProficiency(index) * 1000 + this.soulMake.getKillNum() * 5000;
-
+//		JEP jep = new JEP();
+//		jep.addVariable("value", 12);
+//		
+//		try {
+////			jep.parse(str);
+//			double result =  (double) jep.evaluate(jep.parse(str));
+//			System.out.println(result);
+//		} catch (ParseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+		int count = profic * 1000 +10000 + this.soulMake.getKillNum() * 5000;
+		System.out.println("count:"+count);
 		BaseItem item = player.getBagInventory().addDynItem(this.soulMake.getItemId(), 1, ItemAddType.SOUL, false, count);
 		if (item == null) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_MAKE, "添加物品失败" + this.op);
@@ -42,6 +57,8 @@ public class CompleteMakeLogic extends BaseSoulMakeLogic implements ISoulMakeLog
 		// 3：加熟练度
 		this.soulInfo.setProficiency(index, profic + 5);
 		this.soulInfo.setOp(Option.Update);
+		
+		player.notifyListeners(new ObjectEvent(this, index, EventNameType.SOUL_PRO));
 		// 2:改变状态
 		this.soulMake.setState(SoulMake.STATE_COMPLETE);
 		// this.soulMake.setKillNum(0);

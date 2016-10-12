@@ -426,7 +426,7 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 				info.setId(rs.getInt("id"));
 				info.setName(rs.getString("name"));
 				info.setWeight(rs.getInt("weight"));
-				info.setItemId(rs.getInt("itemId"));
+				info.setCostNum(rs.getInt("costNum"));
 				infos.put(info.getId(), info);
 			}
 		} catch (SQLException e) {

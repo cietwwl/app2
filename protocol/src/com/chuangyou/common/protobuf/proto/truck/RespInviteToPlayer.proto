@@ -1,0 +1,10 @@
+//protocol=2617;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "RespInviteToPlayerProto";
+
+message RespInviteToPlayer {
+	required int64 truckId = 1; //护镖的镖车ID
+	required int64 protectorId = 2; //护镖人ID
+	required string nick_name = 3;	//请求护镖人的名称
+	
+}

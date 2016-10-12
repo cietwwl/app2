@@ -8,6 +8,8 @@ import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.soul.CardLvConfig;
+import com.chuangyou.xianni.event.EventNameType;
+import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.soul.template.SoulTemplateMgr;
 
@@ -33,7 +35,7 @@ public class CardLvLogic extends AbstractCardLogic {
 			Log.error("cardLvConfig配置表有问题:"+this.cardInfo.getLv());
 			return;
 		}
-		if(this.cardInfo.getLv()>SoulTemplateMgr.MAX_CARD_LV){
+		if(this.cardInfo.getLv()>=SoulTemplateMgr.MAX_CARD_LV){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SOUL_PIECE_COMBO," 最大等级。不能再升：op"+this.op);		
 			return;	
 		}
@@ -58,13 +60,13 @@ public class CardLvLogic extends AbstractCardLogic {
 			
 			if(lv<this.cardInfo.getLv()){
 				player.getSoulInventory().updateProperty();
+				player.notifyListeners(new ObjectEvent(this, this.cardInfo, EventNameType.SOUL_LV));
 			}
 			
 			this.sendResultMsg();
 		}else{
 			Log.error("删除道具出错",new Exception());
 		}
-		
 	}
 	
 	
@@ -81,6 +83,9 @@ public class CardLvLogic extends AbstractCardLogic {
 			//升等级
 			this.cardInfo.setLv(this.cardInfo.getLv()+1);
 			lv = this.cardInfo.getLv();
+			if(lv>=SoulTemplateMgr.MAX_CARD_LV){
+				break;
+			}
 			nextExp = SoulTemplateMgr.getCardLvConfig(lv).getExp();
 		}
 	}

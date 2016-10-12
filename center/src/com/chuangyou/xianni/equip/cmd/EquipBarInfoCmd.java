@@ -15,6 +15,8 @@ import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.level.LevelUp;
 import com.chuangyou.xianni.equip.EquipOperateAction;
 import com.chuangyou.xianni.equip.template.EquipTemplateMgr;
+import com.chuangyou.xianni.event.EventNameType;
+import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -84,6 +86,8 @@ public class EquipBarInfoCmd extends AbstractCommand {
 		player.getBasePlayer().consumeEquipExp(levelUpCfg.getExp() - info.getExp());
 		info.setLevel(info.getLevel() + 1);
 		info.setExp(0);
+		player.notifyListeners(new ObjectEvent(this, info, EventNameType.EQUIP));
+		
 		
 		EquipBarInfoRespMsg.Builder msg = EquipBarInfoRespMsg.newBuilder();
 		msg.setAction(EquipOperateAction.EquipBar.LEVEL_UP);
@@ -191,13 +195,21 @@ public class EquipBarInfoCmd extends AbstractCommand {
 				isSuccess = random.isSuccessful(rate, 10000);
 			}
 		}
+		
 		if(isSuccess){
 			info.setGrade(info.getGrade() + 1);
 			info.setBless(0);
 		}else{
 			int addBless = random.next(cfg.getFailBlessMin(), cfg.getFailBlessMax());
 			info.setBless(info.getBless() + addBless);
+			if(info.getBless() >= cfg.getBlessMax()){
+				info.setGrade(info.getGrade() + 1);
+				info.setBless(0);
+				isSuccess = true;
+			}
 		}
+		
+		player.notifyListeners(new ObjectEvent(this, info, EventNameType.EQUIP));
 		
 		EquipBarInfoRespMsg.Builder msg = EquipBarInfoRespMsg.newBuilder();
 		msg.setAction(EquipOperateAction.EquipBar.GRADE_UP);
@@ -210,6 +222,7 @@ public class EquipBarInfoCmd extends AbstractCommand {
 		
 		if(isSuccess){
 			player.getBagInventory().updateHeroProperties(player.getPlayerId());
+			player.notifyListeners(new ObjectEvent(this, info, EventNameType.EQUIP));
 		}
 	}
 

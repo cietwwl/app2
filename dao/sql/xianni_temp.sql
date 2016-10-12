@@ -1,3 +1,104 @@
+CREATE TABLE `tb_z_avatar_correspond_template` (
+  `id` int(11) NOT NULL COMMENT '模板ID',
+  `lv` int(11) NOT NULL COMMENT '等级',
+  `needItem` int(11) NOT NULL COMMENT '升级需要物品',
+  `needNum` int(11) NOT NULL COMMENT '需要数量',
+  `proMax` int(11) NOT NULL COMMENT '进度上限',
+  `rate` int(11) NOT NULL COMMENT '成功率',
+  `time` int(11) NOT NULL COMMENT '合体时间',
+  `air` int(11) NOT NULL COMMENT '灵气上限',
+  `att1` int(11) DEFAULT '0' COMMENT '属性1',
+  `att2` int(11) DEFAULT '0' COMMENT '属性2',
+  `att3` int(11) DEFAULT '0' COMMENT '属性3',
+  `att4` int(11) DEFAULT '0' COMMENT '属性4',
+  `att5` int(11) DEFAULT '0' COMMENT '属性5',
+  `att6` int(11) DEFAULT '0' COMMENT '属性6',
+  `att7` int(11) DEFAULT '0' COMMENT '属性7',
+  `att8` int(11) DEFAULT '0' COMMENT '属性8',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='分身默契模板表';
+
+
+CREATE TABLE `tb_z_avatar_upgrade_template` (
+  `id` int(11) NOT NULL COMMENT '模板ID',
+  `lv` int(11) NOT NULL COMMENT '等级',
+  `att1` int(11) DEFAULT '0' COMMENT '属性1',
+  `att2` int(11) DEFAULT '0' COMMENT '属性2',
+  `att3` int(11) DEFAULT '0' COMMENT '属性3',
+  `att4` int(11) DEFAULT '0' COMMENT '属性4',
+  `att5` int(11) DEFAULT '0' COMMENT '属性5',
+  `att6` int(11) DEFAULT '0' COMMENT '属性6',
+  `att7` int(11) DEFAULT '0' COMMENT '属性7',
+  `att8` int(11) DEFAULT '0' COMMENT '属性8'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='分身升级模板表';
+
+
+
+CREATE TABLE `tb_z_avatar_star_template` (
+  `id` int(11) NOT NULL COMMENT '模板ID',
+  `lv` int(11) NOT NULL COMMENT '等级',
+	`needItem` int(11) NOT NULL COMMENT '升级需要物品',
+	`needNum` int(11) NOT NULL COMMENT '需要数量',
+	`skillId` int(11) NOT NULL COMMENT '等级',
+  `att1` int(11) DEFAULT '0' COMMENT '属性1',
+  `att2` int(11) DEFAULT '0' COMMENT '属性2',
+  `att3` int(11) DEFAULT '0' COMMENT '属性3',
+  `att4` int(11) DEFAULT '0' COMMENT '属性4',
+  `att5` int(11) DEFAULT '0' COMMENT '属性5',
+  `att6` int(11) DEFAULT '0' COMMENT '属性6',
+  `att7` int(11) DEFAULT '0' COMMENT '属性7',
+  `att8` int(11) DEFAULT '0' COMMENT '属性8',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '分身升星模板表';
+
+CREATE TABLE `tb_z_avatar_template_info` (
+  `id` int(11) NOT NULL COMMENT '模板ID',
+  `name` varchar(33) NOT NULL COMMENT '模板ID',
+  `needItem` int(11) NOT NULL COMMENT '需要物品ID',
+  `skillId` int(11) NOT NULL COMMENT '技能ID',
+  `commonSkillId` int(11) NOT NULL DEFAULT '0' COMMENT '普攻',
+  `addtionPercent` int(11) NOT NULL DEFAULT '0' COMMENT '属性加成百分比',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='分身模板表';
+
+CREATE TABLE `tb_z_robot` (
+  `id` int(11) NOT NULL DEFAULT '0' COMMENT 'id',
+  `nickName` varchar(60) DEFAULT NULL COMMENT '名称',
+  `job` int(11) DEFAULT NULL COMMENT '职业',
+  `level` int(11) DEFAULT NULL COMMENT '等级',
+  `magicWeaponId` int(11) DEFAULT NULL COMMENT '法宝',
+  `fashionId` int(11) DEFAULT NULL COMMENT '时装',
+  `weaponId` int(11) DEFAULT NULL COMMENT '武器',
+  `wingId` int(11) DEFAULT NULL COMMENT '翅膀',
+  `moveSpeed` int(11) DEFAULT NULL COMMENT '移动速度',
+  `attackSpeed` int(11) DEFAULT NULL COMMENT '攻击速度',
+  `soulHpValue` bigint(11) DEFAULT NULL COMMENT '魂血',
+  `hp` bigint(11) DEFAULT NULL COMMENT '生命',
+  `hurtValue` int(11) DEFAULT NULL COMMENT '伤害',
+  `armorValue` int(11) DEFAULT NULL COMMENT '护甲值',
+  `soulHurtValue` int(11) DEFAULT NULL COMMENT '魂攻击',
+  `soulArmorValue` int(11) DEFAULT NULL COMMENT '魂防御',
+  `hitRateValue` int(11) DEFAULT NULL COMMENT '命中',
+  `dodgeValue` int(11) DEFAULT NULL COMMENT '闪避',
+  `critValue` int(11) DEFAULT NULL COMMENT '暴击',
+  `toughnessValue` int(11) DEFAULT NULL COMMENT '抗暴',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='机器人配置表';
+
+
+
+DROP TABLE IF EXISTS tb_z_jobinfo;
+CREATE TABLE `tb_z_jobinfo` (
+  `jobName` varchar(255) NOT NULL DEFAULT '' COMMENT '作业名',
+  `intervalUnit` int(11) DEFAULT '0' COMMENT '时间单位',
+  `intervalData` int(11) DEFAULT '0' COMMENT '间隔时间',
+  `intervalBegin` int(11) DEFAULT '0' COMMENT '指定几点执行',
+  `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后一次执行时间',
+  `desc` varchar(255) DEFAULT NULL COMMENT '描述',
+  PRIMARY KEY (`jobName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务作业表';
+
+
 DROP TABLE IF EXISTS tb_z_skill_buffer;
 CREATE TABLE tb_z_skill_buffer(
 templateId INT NOT NULL COMMENT '模板ID',

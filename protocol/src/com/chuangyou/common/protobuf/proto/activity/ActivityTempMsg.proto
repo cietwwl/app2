@@ -1,0 +1,16 @@
+//protocol=1622;
+option java_package = "com.chuangyou.common.protobuf.pb.activity";
+option java_outer_classname = "ActivityTempMsgProto";
+
+//活动模板信息
+message ActivityTempMsg{
+	optional int32 id = 1;  //活动ID
+	optional int32 needLevel=2; //参加等级
+	//时间类型   1 永久开发 2 每天N点到N点10：00-11:00格式，3 每周 timeParam 为周几 start-end同2。 4 间隔时间 timeParam 间隔（分钟）startTime开始时间 endTime 无
+	optional int32 timeType=3;
+	optional string timeParam =4; //时间参数;
+	optional string startTime =5;//开始时间
+	optional string endTime=6;//结束时间
+	optional int32 numLimit=7;//最大限制次数
+	optional int32 statu=8;    //当前状态，0 关闭 1 打开 2从列表中移除该活动
+}

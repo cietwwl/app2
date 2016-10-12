@@ -1,0 +1,8 @@
+//10609
+option java_package = "com.chuangyou.common.protobuf.pb.arena";
+option java_outer_classname = "DekaronOptionProto";
+message DekaronOptionMsg{
+	optional int32  optionType = 1; //操作类型 0 获取信息  1 发起挑战 2 领取奖励，3 立即重置
+	optional int64  param1 = 2; //操作参数 type=1 表示被挑战目标
+ }
+

@@ -27,6 +27,10 @@ public class MapProxyManager {
 	private static Map<Integer, FieldInfo>	fieldInfoMaps	= new HashMap<Integer, FieldInfo>();
 
 	public static boolean init() {
+		return reload();
+	}
+
+	public static boolean reload() {
 		// 初始当前静态地图
 		FieldInfoDao dao = DBManager.getFieldInfoDao();
 		List<FieldInfo> info = dao.getAll();
@@ -78,23 +82,25 @@ public class MapProxyManager {
 		}
 		return proxy.isOpen();
 	}
-	
+
 	/**
-	 * 将主角传送到指定地图的指定位置 
+	 * 将主角传送到指定地图的指定位置
+	 * 
 	 * @param mapId
 	 * @param x
 	 * @param y
 	 * @param z
 	 */
-	public static void changeMap(long playerId,int mapId,int x,int y,int z){
+	public static void changeMap(long playerId, int mapId, int x, int y, int z) {
 		FieldInfo info = getFieldTempInfo(mapId);
-		if(info==null){
-			ErrorMsgUtil.sendErrorMsg(playerId, ErrorCode.UNKNOW_ERROR, (short)-100,"地图不存在:"+mapId);
+		if (info == null) {
+			ErrorMsgUtil.sendErrorMsg(playerId, ErrorCode.UNKNOW_ERROR, (short) -100, "地图不存在:" + mapId);
 			return;
 		}
 		GamePlayer player = WorldMgr.getPlayer(playerId);
-		if(player==null)return;
-		
+		if (player == null)
+			return;
+
 		ReqChangeMapMsg.Builder req = ReqChangeMapMsg.newBuilder();
 		PBVector3.Builder pos = PBVector3.newBuilder();
 		pos.setX(x);
@@ -103,19 +109,19 @@ public class MapProxyManager {
 		PostionMsg.Builder postion = PostionMsg.newBuilder();
 		postion.setPostion(pos);
 		PBMessage pkg;
-		
-		if(info.getType() == 1){ //公共地图
+
+		if (info.getType() == 1) { // 公共地图
 			postion.setMapId(mapId);
 			postion.setMapKey(mapId);
 			req.setPostionMsg(postion.build());
 			pkg = MessageUtil.buildMessage(Protocol.C_CHANGE_MAP, playerId, req);
 			pkg.setBytes(pkg.getMessage().toByteArray());
 			player.enqueue(new CmdTask(new ChangeMapCmd(), null, pkg, player.getCmdTaskQueue()));
-		}else if(info.getType() == 2){ //副本地图(单人。暂未处理多人副本情况)
+		} else if (info.getType() == 2) { // 副本地图(单人。暂未处理多人副本情况)
 			postion.setMapId(-1);
 			postion.setMapKey(mapId);
 			req.setPostionMsg(postion.build());
-			pkg = MessageUtil.buildMessage(Protocol.C_CHANGE_MAP,playerId, req);
+			pkg = MessageUtil.buildMessage(Protocol.C_CHANGE_MAP, playerId, req);
 			pkg.setBytes(pkg.getMessage().toByteArray());
 			player.enqueue(new CmdTask(new ChangeMapCmd(), null, pkg, player.getCmdTaskQueue()));
 		}

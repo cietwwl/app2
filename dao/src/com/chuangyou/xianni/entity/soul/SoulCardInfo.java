@@ -90,7 +90,9 @@ public class SoulCardInfo extends DataObject {
 		return lv;
 	}
 	public void setLv(int lv) {
-		this.lv = lv;
+		if(this.lv != lv){
+			this.lv = lv;
+		}
 	}
 	public int getStar() {
 		return star;

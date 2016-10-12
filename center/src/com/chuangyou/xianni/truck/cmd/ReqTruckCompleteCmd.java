@@ -1,0 +1,271 @@
+package com.chuangyou.xianni.truck.cmd;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.chuangyou.common.protobuf.pb.truck.InnerReqTruckCompleteProto.InnerReqTruckComplete;
+import com.chuangyou.common.protobuf.pb.truck.RespTruckRewardProto.RespTruckReward;
+import com.chuangyou.common.protobuf.pb.truck.TruckRewardProto.TruckReward;
+import com.chuangyou.xianni.base.AbstractCommand;
+import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
+import com.chuangyou.xianni.entity.email.Email;
+import com.chuangyou.xianni.entity.item.ItemAddType;
+import com.chuangyou.xianni.entity.reward.RewardTemplate;
+import com.chuangyou.xianni.entity.truck.TruckInfo;
+import com.chuangyou.xianni.entity.truck.TruckSkillConfig;
+import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.proto.MessageUtil;
+import com.chuangyou.xianni.proto.PBMessage;
+import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.reward.RewardManager;
+import com.chuangyou.xianni.socket.Cmd;
+import com.chuangyou.xianni.truck.TruckRewardType;
+import com.chuangyou.xianni.truck.helper.LevelUpHelper;
+import com.chuangyou.xianni.truck.helper.TruckBillHelper;
+import com.chuangyou.xianni.word.WorldMgr;
+
+@Cmd(code = Protocol.C_TRUCK_REQTRUCKCOMPLETE, desc = "运镖结束")
+public class ReqTruckCompleteCmd extends AbstractCommand {
+
+	/** 成功完成 */
+	private static final int STATE_SUC = 1;
+	/** 超时 */
+	private static final int STATE_TIMEOUT = 2;
+	
+	@Override
+	public void execute(GamePlayer player, PBMessage packet) throws Exception {
+		InnerReqTruckComplete truckCompleteMsg = InnerReqTruckComplete.parseFrom(packet.getBytes());
+		switch (truckCompleteMsg.getTrucktype()) {
+		case 1:	//个人镖车
+			personal(player, truckCompleteMsg);
+			break;
+		case 2: //帮派镖车	
+			guild(player, truckCompleteMsg);
+			break;
+		}
+	}
+
+	/**
+	 * 个人镖车结算
+	 */
+	private void personal(GamePlayer player, InnerReqTruckComplete truckCompleteMsg)
+	{
+		int addExp = SystemConfigTemplateMgr.getIntValue("EscortSupplies.Individual.GuardExp");	//运镖者获取的经验
+		int addExp2 = SystemConfigTemplateMgr.getIntValue("EscortSupplies.Individual.GuardExp2");	//护镖者获取的经验
+		int mat = truckCompleteMsg.getMat();
+		Map<Integer, List<TruckSkillConfig>> skills = player.getTruckInventory().getSkillInfos();
+		//个人额外的奖励表
+		List<Integer> myExReward = new ArrayList<Integer>();
+		if(truckCompleteMsg.getState() == STATE_SUC)
+		{
+			if(truckCompleteMsg.getRobbed() == 1)	//被劫镖
+			{
+				//被劫镖获得经验补偿
+				int offsetExp = TruckBillHelper.fixedAdd(skills.get(TruckBillHelper.TRUCK_BROKEN_OFFSET));
+				addExp += offsetExp;
+				addExp2 += offsetExp;
+			}
+			else
+			{
+				//未被成功劫镖，结算时获得外经验
+				int extExp = TruckBillHelper.fixedAdd(skills.get(TruckBillHelper.TRUCK_UNBROKEN_EXP));
+				addExp += extExp;
+				addExp2 += extExp;
+				//未被成功劫镖，结算时获得外奖励
+				myExReward = TruckBillHelper.getValueCollection(skills.get(TruckBillHelper.TRUCK_UNBROKEN_REWARD));
+			}
+			//完成后额外获得的经验奖励
+			addExp += TruckBillHelper.fixedAdd(skills.get(30801));
+		}
+		else if(truckCompleteMsg.getState() == STATE_TIMEOUT)
+		{
+			//超时折扣
+			float failRate = 1- (SystemConfigTemplateMgr.getIntValue("EscortSupplies.FailRatio") * 0.01f); 	//失败打折比例
+			addExp *= failRate;
+			mat *= failRate;
+		}
+		//发奖
+		rewardHandler(player,  truckCompleteMsg.getTrucktype(), truckCompleteMsg.getState(), mat, addExp, Arrays.asList(TruckRewardType.REWARD_P));
+		//发放额外的奖励
+		extRewardHandler(player,  truckCompleteMsg.getTrucktype(), truckCompleteMsg.getState(), mat, myExReward);
+		for(int i = 0; i<truckCompleteMsg.getProtectorsCount(); i++)
+		{
+			GamePlayer protect = WorldMgr.getPlayer(truckCompleteMsg.getProtectors(i));
+			if(protect == null) continue;
+			Map<Integer, List<TruckSkillConfig>> protectorSkills = protect.getTruckInventory().getSkillInfos();
+			addExp2 += TruckBillHelper.fixedAdd(skills.get(TruckBillHelper.TRUCK_PROTECTOR_EXT_REWARD));
+			//镖师奖励
+			rewardHandler(protect,  truckCompleteMsg.getTrucktype(), truckCompleteMsg.getState(), mat, addExp2, Arrays.asList(TruckRewardType.REWARD_PROTECED));
+			//发放额外的奖励
+			extRewardHandler(protect,  truckCompleteMsg.getTrucktype(), truckCompleteMsg.getState(), mat, TruckBillHelper.getValueCollection(protectorSkills.get(TruckBillHelper.TRUCK_PROTECTOR_EXT_REWARD)));
+		}
+		//TODO 更新活动掩码
+	}
+	
+	/**
+	 * 帮派镖车结算
+	 */
+	private void guild(GamePlayer player, InnerReqTruckComplete truckCompleteMsg)
+	{
+		int addExp = SystemConfigTemplateMgr.getIntValue("EscortSupplies.Faction.GuardExp");	//运镖者获取的经验
+		int mat = truckCompleteMsg.getMat();
+		if(truckCompleteMsg.getState() == STATE_TIMEOUT)
+		{
+			//超时折扣
+			float failRate = 1- (SystemConfigTemplateMgr.getIntValue("EscortSupplies.FailRatio") * 0.01f); 	//失败打折比例
+			addExp *= failRate;
+			mat *= failRate;
+		}
+		//发奖
+		rewardHandler(player,  truckCompleteMsg.getTrucktype(), truckCompleteMsg.getState(), mat, addExp, Arrays.asList(TruckRewardType.REWARD_G_P, TruckRewardType.REWARD_G_G));
+		for(int i = 0; i<truckCompleteMsg.getProtectorsCount(); i++)
+		{
+			GamePlayer protect = WorldMgr.getPlayer(truckCompleteMsg.getProtectors(i));
+			if(protect == null) continue;
+			int protectCount = protect.getBasePlayer().getPlayerTimeInfo().getPersonalTruckerProtCount();
+			if(protectCount >= SystemConfigTemplateMgr.getIntValue("EscortSupplies.Individual.GuardExp2Num")) continue;
+			protectCount++;
+			protect.getBasePlayer().getPlayerTimeInfo().setChallengeCampCount(protectCount);
+			rewardHandler(protect,  truckCompleteMsg.getTrucktype(), truckCompleteMsg.getState(), mat, addExp, Arrays.asList(TruckRewardType.REWARD_G_P, TruckRewardType.REWARD_G_G));
+		}
+	}
+	
+	/**
+	 * 发奖
+	 */
+	private void rewardHandler(GamePlayer player, int trucktype, int state, int mat, int addExp, List<Integer> rewardTypes)
+	{
+		RespTruckReward.Builder builder = RespTruckReward.newBuilder();
+		builder.setState(state);
+		builder.setTrucktype(trucktype);
+		Map<Integer, Reward> rewardMaps = new HashMap<Integer, ReqTruckCompleteCmd.Reward>();
+		for(int i = 0; i<rewardTypes.size(); i++)
+		{
+			List<Reward> rewards = getReward(rewardTypes.get(i), state);
+			for(int j = 0; j<rewards.size(); j++)
+			{
+				if(!rewardMaps.containsKey(rewards.get(j).itemtype))
+				{
+					rewardMaps.put(rewards.get(j).itemtype, new Reward(rewards.get(j).itemtype, rewards.get(j).count, state));
+				}
+				else
+				{
+					rewardMaps.get(rewards.get(j).itemtype).count += rewards.get(j).count;
+				}
+			}
+		}
+		//经验
+		if(trucktype == 1)
+		{
+			Reward truckExp = new Reward(SystemConfigTemplateMgr.getIntValue("EscortSupplies.Exp.EscortCar.Individual"), addExp, state);
+			builder.addRewards(truckExp.createReward(player));
+			Reward truckerExp = new Reward(SystemConfigTemplateMgr.getIntValue("EscortSupplies.Exp.BiaoShi"), addExp, state);
+			builder.addRewards(truckerExp.createReward(player));
+		}
+		else
+		{
+			Reward guildTruckExp = new Reward(SystemConfigTemplateMgr.getIntValue("EscortSupplies.Exp.EscortCar.Faction"), addExp, state);
+			builder.addRewards(guildTruckExp.createReward(player));
+		}
+		for(Reward reward : rewardMaps.values())
+		{
+			builder.addRewards(reward.createReward(player));
+		}
+		PBMessage pkg = MessageUtil.buildMessage(Protocol.U_RESP_TRUCK_REWARD, builder);
+		player.sendPbMessage(pkg);
+	}
+	
+	/**
+	 * 额外的奖励
+	 */
+	private void extRewardHandler(GamePlayer player, int trucktype, int state, int mat, List<Integer> rewardTypes)
+	{
+		Map<Integer, Reward> rewardMaps = new HashMap<Integer, ReqTruckCompleteCmd.Reward>();
+		for(int i = 0; i<rewardTypes.size(); i++)
+		{
+			List<Reward> rewards = getReward(rewardTypes.get(i), state);
+			for(int j = 0; j<rewards.size(); j++)
+			{
+				if(!rewardMaps.containsKey(rewards.get(j).itemtype))
+				{
+					rewardMaps.put(rewards.get(j).itemtype, new Reward(rewards.get(j).itemtype, rewards.get(j).count, state));
+				}
+				else
+				{
+					rewardMaps.get(rewards.get(j).itemtype).count += rewards.get(j).count;
+				}
+			}
+		}
+		for(Reward reward : rewardMaps.values())
+		{
+			//TODO 发邮件
+			//Email email = new Email();
+			//player.getEmailInventory().addEmail(email)
+		}
+	}
+	
+	private List<Reward> getReward(int rewardType, int state)
+	{
+		List<Reward> rewards = new ArrayList<Reward>();
+		RewardTemplate rewardTemp = RewardManager.rewardTemps.get(rewardType).get(0);
+		if(rewardTemp.getItemTempId1() != 0)
+			rewards.add(new Reward(rewardTemp.getItemTempId1(), rewardTemp.getCount1(), state));
+		if(rewardTemp.getItemTempId2() != 0)
+			rewards.add(new Reward(rewardTemp.getItemTempId2(), rewardTemp.getCount2(), state));
+		if(rewardTemp.getItemTempId3() != 0)
+			rewards.add(new Reward(rewardTemp.getItemTempId3(), rewardTemp.getCount3(), state));
+		if(rewardTemp.getItemTempId4() != 0)
+			rewards.add(new Reward(rewardTemp.getItemTempId4(), rewardTemp.getCount4(), state));
+		if(rewardTemp.getItemTempId5() != 0)
+			rewards.add(new Reward(rewardTemp.getItemTempId5(), rewardTemp.getCount5(), state));
+		return rewards;
+	}
+	
+	/**
+	 * 奖励
+	 *
+	 */
+	class Reward
+	{
+		public int itemtype = 0;
+		public int count = 0;
+		public int state = 0;
+		
+		public Reward(int itemtype, int count, int state)
+		{
+			this.itemtype = itemtype;
+			this.count = count;
+			this.state = state;
+		}
+		
+		public TruckReward.Builder createReward(GamePlayer player)
+		{
+			if(itemtype == SystemConfigTemplateMgr.getIntValue("EscortSupplies.Exp.BiaoShi"))
+			{
+				LevelUpHelper.levelUp(player, TruckInfo.TRUCKER, count, state);
+			}
+			else if(itemtype == SystemConfigTemplateMgr.getIntValue("EscortSupplies.Exp.EscortCar.Individual"))
+			{
+				LevelUpHelper.levelUp(player, TruckInfo.PERSONAL_TRUCK, count, state);
+			}
+			else if(itemtype == SystemConfigTemplateMgr.getIntValue("EscortSupplies.Exp.EscortCar.Faction"))
+			{
+				LevelUpHelper.levelUp(player, TruckInfo.GUILD_TRUCK, count, state);
+			}
+			else
+			{
+				player.getBagInventory().addItem(itemtype, count, ItemAddType.TRUCK_REWARD, true);
+			}
+			TruckReward.Builder builder = TruckReward.newBuilder();
+			builder.setItemtype(itemtype);
+			builder.setCount(count);
+			return builder;
+		}
+	}
+	
+	
+}

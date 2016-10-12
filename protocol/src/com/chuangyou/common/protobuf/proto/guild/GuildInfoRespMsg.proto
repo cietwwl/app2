@@ -1,0 +1,37 @@
+//protocol=158;
+option java_package = "com.chuangyou.common.protobuf.pb.guild";
+option java_outer_classname = "GuildInfoRespProto";
+
+//帮派信息
+message GuildInfoRespMsg{
+	optional int32 guildId = 1; // 门派ID
+	optional int32 guildType = 2;
+	optional string name = 3; // 门派名字
+	optional int64 gangId = 4; // 帮主ID
+	optional string gangName = 5; // 帮主名字
+	optional int32 level = 6; // 门派等级
+	optional int32 fight = 7; // 门派战力
+
+	optional int32 playerNum = 8; // 成员数量
+	optional int32 maxPlayerNum = 9; // 最大成员数量
+
+	optional int32 joinType = 10; // 加入条件类型(1需要批准 2禁止加入 3满足条件自动加入)
+	optional int32 levelLimit = 11; // 最低等级限制
+	optional int32 fightLimit = 12; // 最低战力限制
+
+	optional string notice = 13; // 帮派公告
+
+	optional int64 buildExp = 14; // 建设值
+	optional int64 supply = 15; // 物资
+	optional int32 mainBuildLevel = 16; // 主殿等级
+	optional int32 skillShopLevel = 17; // 蒧经阁等级
+	optional int32 shopLevel = 18; // 帮派商店等级
+	optional int32 warehouseLevel = 19; // 帮派仓库等级
+
+	//玩家自己在帮派的信息
+	optional int32 job = 20; // 玩家在帮派的职位
+	optional int64 contributionTotal = 21; // 总贡献
+	optional int64 contribution = 22; // 可用贡献
+	optional int32 fortune = 23; // 运势
+	optional int64 consumeSupply = 24; // 自己的物资消耗
+}

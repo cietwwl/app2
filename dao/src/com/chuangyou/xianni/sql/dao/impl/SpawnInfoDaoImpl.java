@@ -42,11 +42,13 @@ public class SpawnInfoDaoImpl extends BaseDao implements SpawnInfoDao {
 					info.setBound_x(rs.getInt("bound_x"));
 					info.setBound_y(rs.getInt("bound_y"));
 					info.setBound_z(rs.getInt("bound_z"));
+					info.setAngle(rs.getInt("angle"));
 					info.setInitStatu(rs.getInt("initStatu"));
 					info.setTagId(rs.getInt("tagId"));
 					info.setPreSpawanId(rs.getString("preSpawanId"));
 					info.setNextSpawanId(rs.getString("nextSpawanId"));
 					info.setWakeType(rs.getInt("wakeType"));
+					info.setProgress(rs.getInt("progress"));
 					info.setWakeDelay(rs.getInt("wakeDelay"));
 					info.setRestType(rs.getInt("rest_type"));
 					info.setRestSecs(rs.getInt("rest_secs"));
@@ -66,7 +68,7 @@ public class SpawnInfoDaoImpl extends BaseDao implements SpawnInfoDao {
 					info.setStrParam1(rs.getString("strParam1"));
 					info.setStrParam2(rs.getString("strParam2"));
 					info.setStrParam3(rs.getString("strParam3"));
-					info.setPosition(new Vector3(rs.getInt("bound_x") / Vector3.Accuracy, rs.getInt("bound_y") / Vector3.Accuracy, rs.getInt("bound_z") / Vector3.Accuracy));
+					info.setPosition(new Vector3(rs.getInt("bound_x") / Vector3.Accuracy, rs.getInt("bound_y") / Vector3.Accuracy, rs.getInt("bound_z") / Vector3.Accuracy, rs.getInt("angle")));
 					infos.put(info.getId(), info);
 				}
 			} catch (SQLException e) {

@@ -11,11 +11,14 @@ import com.chuangyou.xianni.entity.spawn.SpawnInfo;
 import com.chuangyou.xianni.sql.dao.DBManager;
 
 public class SpawnTemplateMgr {
+	/** 刷新节点  id--info */
+	private static Map<Integer, SpawnInfo> 					spawns					= new HashMap<Integer, SpawnInfo>();
 
-	// 刷新节点配置
+	// 刷新节点配置  mapkey--<id--info>
 	private static Map<Integer, Map<Integer, SpawnInfo>>	spwnInfo				= new HashMap<Integer, Map<Integer, SpawnInfo>>();
-	// ID标记与节点ID关系表
+	// ID标记与节点ID关系表  tagId--id
 	private static Map<Integer, Integer>					tagId_spanId_mapping	= new HashMap<>();
+	// 地图对应的节点列表  mapkey--list
 	private static Map<Integer, List<SpawnInfo>>			reLiveNodes				= new HashMap<>();
 
 	public static boolean init() {
@@ -37,9 +40,13 @@ public class SpawnTemplateMgr {
 			return 0;
 		}
 	}
+	
+	public static SpawnInfo getSpawnInfo(int id){
+		return spawns.get(id);
+	}
 
 	public static boolean reloadSpawnInfoTemp() {
-		Map<Integer, SpawnInfo> spawns = DBManager.getSpawnInfoDao().getAll();
+		spawns = DBManager.getSpawnInfoDao().getAll();
 		for (Integer key : spawns.keySet()) {
 			SpawnInfo spawn = spawns.get(key);
 

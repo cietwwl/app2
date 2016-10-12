@@ -25,7 +25,7 @@ import com.chuangyou.xianni.entity.role.RoleConfig;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.entity_id.EntityIdBuilder;
 import com.chuangyou.xianni.inverseBead.InverseBeadInventory;
-import com.chuangyou.xianni.login.template.roleConfigMgr;
+import com.chuangyou.xianni.login.template.RoleConfigMgr;
 import com.chuangyou.xianni.map.MapProxyManager;
 import com.chuangyou.xianni.mount.template.MountTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
@@ -75,7 +75,7 @@ public class PlayerCreateCmd implements Command {
 			return;
 		}
 
-		RoleConfig roleConfig = roleConfigMgr.getRoleConfig(req.getRoleConfigId());
+		RoleConfig roleConfig = RoleConfigMgr.getRoleConfig(req.getRoleConfigId());
 		if (roleConfig == null) {
 			Log.error("缺少角色配置!id：" + req.getRoleConfigId());
 			result = ErrorCode.UNKNOW_ERROR;
@@ -144,8 +144,8 @@ public class PlayerCreateCmd implements Command {
 			playerJoinInfo.setCritDefence(0);
 			playerJoinInfo.setCritAddtion(0);
 			playerJoinInfo.setCritCut(0);
-			playerJoinInfo.setBloodAttackAddtion(0);
-			playerJoinInfo.setBloodAttackCut(0);
+			playerJoinInfo.setAttackAddtion(0);
+			playerJoinInfo.setAttackCut(0);
 			playerJoinInfo.setSoulAttackAddtion(0);
 			playerJoinInfo.setSoulAttackCut(0);
 			playerJoinInfo.setRegainSoul(0);
@@ -164,8 +164,10 @@ public class PlayerCreateCmd implements Command {
 
 			PlayerTimeInfo playerTimeInfo = new PlayerTimeInfo();
 			playerTimeInfo.setPlayerId(playerInfo.getPlayerId());
-			playerTimeInfo.setResetTime(new Date());
 			playerTimeInfo.setSigleCampCount(0);
+			playerTimeInfo.setChallengeCampCount(0);
+			playerTimeInfo.setResetTime(new Date());
+			playerTimeInfo.setOfflineTime(new Date());
 			// playerTimeInfo.setBeadRefreshId(InverseBeadInventory.spawnId+"");
 			// playerTimeInfo.setCurrRefreshId(InverseBeadInventory.spawnId);
 
@@ -174,9 +176,9 @@ public class PlayerCreateCmd implements Command {
 			FieldInfo fieldTemp = MapProxyManager.getFieldTempInfo(SystemConfigTemplateMgr.getInitBorn());
 			playerPositionInfo.setMapId(fieldTemp.getMapKey());
 			playerPositionInfo.setMapTempId(fieldTemp.getMapKey());
-			playerPositionInfo.setX(Vector3BuilderHelper.build(fieldTemp.getPosition()).getX());
-			playerPositionInfo.setY(Vector3BuilderHelper.build(fieldTemp.getPosition()).getY());
-			playerPositionInfo.setZ(Vector3BuilderHelper.build(fieldTemp.getPosition()).getZ());
+			playerPositionInfo.setX(0);
+			playerPositionInfo.setY(0);
+			playerPositionInfo.setZ(0);
 
 			if (!DBManager.getPlayerInfoDao().add(playerInfo)) {
 				Log.error("创建角色tb_u_player_info未知错误");

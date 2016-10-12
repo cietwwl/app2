@@ -35,7 +35,9 @@ public class SoulDamageCalculator implements DamageCalculator {
 			soulDeffence -= soulDeffence * 0.3f;
 		}
 		int damageValue = (int) (Math.max(soulAttack - soulDeffence * 1.2, 0) * random.next(70, 130) / 100);
-		damageValue = (int) (1l * damageValue * percent / 10000 + value);
+		// 魂伤减免
+		damageValue = (int) (damageValue * Math.max(1 + (source.getSoulAttackAddtion() - target.getSoulAttackCut()) / 10000f, 0.1));
+		damageValue = (int) (1l * damageValue * percent / 10000f + value);
 
 		// 伤害实际值,受源与目标buffer状态修正
 		int changeValue = 0;
@@ -51,9 +53,15 @@ public class SoulDamageCalculator implements DamageCalculator {
 			FormulaBuffer fbuff = (FormulaBuffer) buff;
 			changeValue += fbuff.formulaExe(damageValue, EnumAttr.SOUL.getValue());
 		}
+
+		if (changeValue < 0 && damageValue > 0) {
+			changeValue = Math.max(changeValue, -damageValue);
+		}
+
 		if (percent == 0 && value == 0) {
 			return damageValue;
 		}
+
 		damageValue = damageValue - changeValue;
 		return damageValue == 0 ? 1 : damageValue;
 	}

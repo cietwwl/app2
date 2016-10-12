@@ -9,6 +9,7 @@ import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.pet.PetInfo;
 import com.chuangyou.xianni.entity.pet.PetInfoCfg;
 import com.chuangyou.xianni.entity.pet.PetPhysiqueCfg;
+import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.pet.template.PetTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerInfoSendCmd;
@@ -16,6 +17,7 @@ import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
+import com.chuangyou.xianni.state.event.PetStateEvent;
 
 @Cmd(code = Protocol.C_PET_PHYSIQUE_UP, desc = "宠物炼体")
 public class PetPhysiqueUpCmd extends AbstractCommand {
@@ -67,7 +69,7 @@ public class PetPhysiqueUpCmd extends AbstractCommand {
 //		PetManager.changePetAtt(roleId);
 		//影响人物属性改变
 		player.getPetInventory().updataProperty();
-		
+		player.notifyListeners(new PetStateEvent(this, 1, pet.getPetId(),pet.getPhysique(), EventNameType.PET));
 		//宠物外形广播
 		if(pet.getPetId() == player.getPetInventory().getPetAtt().getFightPetId()){
 			PBMessage petSnapMsg = MessageUtil.buildMessage(Protocol.S_PET_INFO_UPDATE, PlayerInfoSendCmd.getPetInfoPacket(player));

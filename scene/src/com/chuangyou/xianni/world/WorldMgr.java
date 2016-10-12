@@ -17,8 +17,9 @@ public class WorldMgr {
 	public static void unLine(long playerId) {
 		if (players.containsKey(playerId)) {
 			synchronized (players) {
-				ArmyProxy army = players.remove(playerId);
+				ArmyProxy army = players.get(playerId);
 				army.unload();
+				players.remove(playerId);
 			}
 		}
 	}

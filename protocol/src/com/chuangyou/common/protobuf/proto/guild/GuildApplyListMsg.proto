@@ -1,0 +1,10 @@
+//protocol=165;
+option java_package = "com.chuangyou.common.protobuf.pb.guild";
+option java_outer_classname = "GuildApplyListProto";
+
+import "guild/GuildApplyInfoMsg.proto";
+
+//入帮申请列表
+message GuildApplyListMsg{
+	repeated GuildApplyInfoMsg info = 1; // 申请人信息
+}

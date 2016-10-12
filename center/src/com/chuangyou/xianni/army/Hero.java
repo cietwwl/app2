@@ -2,9 +2,12 @@ package com.chuangyou.xianni.army;
 
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.chuangyou.common.protobuf.pb.PlayerInfoMsgProto.PlayerInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.HeroInfoMsgProto.HeroInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
+import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
 import com.chuangyou.xianni.common.template.LevelUpTempleteMgr;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.hero.HeroSkill;
@@ -16,8 +19,6 @@ public class Hero extends Living {
 	private GamePlayer	player;					// 当前用户ID
 	private int			curBlood	= 100000;
 	private int			curSoul		= 100000;
-
-	private int			mana		= 0;
 
 	public GamePlayer getPlayer() {
 		return player;
@@ -44,11 +45,10 @@ public class Hero extends Living {
 	}
 
 	public int getMana() {
-		return mana;
-	}
-
-	public void setMana(int mana) {
-		this.mana = mana;
+		if(player.getBasePlayer() == null || player.getBasePlayer().getPlayerJoinInfo() == null){
+			return 0;
+		}
+		return player.getBasePlayer().getPlayerJoinInfo().getMana();
 	}
 
 	public Hero(GamePlayer player) {
@@ -94,6 +94,12 @@ public class Hero extends Living {
 		mana.setTotalPoint(getMana());
 		propertis.addPropertys(mana);
 
+		// 仙力
+		PropertyMsg.Builder avatarEnergy = PropertyMsg.newBuilder();
+		avatarEnergy.setType(EnumAttr.AVATAR_ENERGY.getValue());
+		avatarEnergy.setTotalPoint(player.getBasePlayer().getPlayerInfo().getAvatarEnergy());
+		propertis.addPropertys(avatarEnergy);
+
 		// 添加pk值
 		PropertyMsg.Builder pkVal = PropertyMsg.newBuilder();
 		pkVal.setType(EnumAttr.PK_VAL.getValue());
@@ -111,23 +117,50 @@ public class Hero extends Living {
 		// System.out.println("-----------------------#");
 		for (Entry<String, HeroSkill> entry : heroSkills.entrySet()) {
 			HeroSkill heroSkill = entry.getValue();
-			if (heroSkill.getType() == SkillInventory.passiveSkillType) {// 被动技能
+			if (heroSkill.getType() == SkillInventory.passiveSkillType) {// 培养类技能
 				continue;
 			}
-			heroInfo.addBattleSkills(heroSkill.getSkillId());
+			// heroInfo.addBattleSkills(heroSkill.getSkillId());
 			heroInfo.addSkillInfos(heroSkill.getSkillId());
 		}
-		// // 添加武器BUFFER
-		// heroInfo.setWeaponsBufferId(40040001);
-		//添加融合技能
+		// 添加融合技能
 		heroInfo.addAllFuseSkills(player.getSoulInventory().getFuseSkillPacket(gamePlayer));
-		//添加魂幡等级
+		// 添加魂幡等级
 		int lv = LevelUpTempleteMgr.getSoulLevel(player.getSoulInventory().getSoulInfo().getExp());
 		heroInfo.setSoulLv(lv);
-		// // // 同步技能
-		// heroInfo.addSkillInfos(1001);
-		// // // 出战技能
-		// heroInfo.addBattleSkills(1001);
+
 	}
 
+	/** 写入机器人信息 */
+	public void writeRobotInfo(GamePlayer player, RobotInfoMsg.Builder robotInfo) {
+		PlayerInfoMsg.Builder simpleInfo = PlayerInfoMsg.newBuilder();
+		player.writePlayerInfoProto(simpleInfo);
+		robotInfo.setSimpInfo(simpleInfo);
+
+		PropertyListMsg.Builder propertyList = PropertyListMsg.newBuilder();
+		writeProto(propertyList);
+
+		int cSoul = getTotalProperty(Living.SOUL);
+		int cBloold = getTotalProperty(Living.BLOOD);
+
+		PropertyMsg.Builder cur_hp = PropertyMsg.newBuilder();
+		cur_hp.setType(EnumAttr.CUR_SOUL.getValue());
+		cur_hp.setTotalPoint(cSoul);
+		propertyList.addPropertys(cur_hp);
+
+		PropertyMsg.Builder cur_blood = PropertyMsg.newBuilder();
+		cur_blood.setType(EnumAttr.CUR_BLOOD.getValue());
+		cur_blood.setTotalPoint(cBloold);
+		propertyList.addPropertys(cur_blood);
+		robotInfo.setPropertis(propertyList);
+
+		Map<String, HeroSkill> heroSkills = player.getSkillInventory().getHeroSkill();
+		for (Entry<String, HeroSkill> entry : heroSkills.entrySet()) {
+			HeroSkill heroSkill = entry.getValue();
+			if (heroSkill.getType() == SkillInventory.passiveSkillType) {// 培养类技能
+				continue;
+			}
+			robotInfo.addBattleSkills(heroSkill.getSkillId());
+		}
+	}
 }

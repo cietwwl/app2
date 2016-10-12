@@ -47,7 +47,7 @@ public class Pet extends ActiveLiving {
 		cachBattleInfoPacket.setPlayerId(getArmyId());
 		cachBattleInfoPacket.setType(getType());
 		cachBattleInfoPacket.setSkinId(getSkin());
-
+		
 		if (getPostion() != null) {
 			cachBattleInfoPacket.setPostion(Vector3BuilderHelper.build(getPostion()));
 		} else {
@@ -69,7 +69,6 @@ public class Pet extends ActiveLiving {
 		}
 
 		for (Skill skill : drivingSkills.values()) {
-			System.out.println(skill.getSkillId() + "---------------------skillid");
 			cachBattleInfoPacket.addSkills(skill.getSkillId());
 		}
 

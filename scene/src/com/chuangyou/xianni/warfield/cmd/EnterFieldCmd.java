@@ -4,7 +4,6 @@ import com.chuangyou.common.protobuf.pb.ChangeMapResultMsgProto.ChangeMapResultM
 import com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg;
 import com.chuangyou.common.protobuf.pb.ReqChangeMapMsgProto.ReqChangeMapMsg;
 import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
-import com.chuangyou.common.util.AccessTextFile;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.campaign.Campaign;
@@ -63,23 +62,24 @@ public class EnterFieldCmd extends AbstractCommand {
 			return;
 		}
 
+		int angle = posMsg.getPostion().getAngle();
 		// 若无初始位置,则设置进入时占无效位置
 		Vector3 postion = Vector3BuilderHelper.get(posMsg.getPostion());
 		if (postion.x <= 0 && postion.y <= 0 && postion.z <= 0) {
-			postion = new Vector3(fieldTemp.getPosition().x, fieldTemp.getPosition().y, fieldTemp.getPosition().z);
+			postion = new Vector3(fieldTemp.getPosition().x, fieldTemp.getPosition().y, fieldTemp.getPosition().z, fieldTemp.getPosition().angle);
+			angle = fieldTemp.getPosition().angle;
 		}
 
 		if (isPubMap) {
 			army.changeField(field, postion);
-
 			ChangeMapResultMsg.Builder cmbuilder = ChangeMapResultMsg.newBuilder();
 			cmbuilder.setResult(EnterMapResult.SUCCESS);// 进入成功
 			PostionMsg.Builder postionMsg = PostionMsg.newBuilder();
 			postionMsg.setMapId(field.id);
 			postionMsg.setMapKey(field.getMapKey());
-			
-			PBVector3.Builder v3b = Vector3BuilderHelper.build(postion); 
-			v3b.setAngle(posMsg.getPostion().getAngle());
+
+			PBVector3.Builder v3b = Vector3BuilderHelper.build(postion);
+			v3b.setAngle(angle);
 			postionMsg.setPostion(v3b);
 			cmbuilder.setPostion(postionMsg);
 			army.sendPbMessage(MessageUtil.buildMessage(Protocol.C_ENTER_SENCE_MAP_RESULT, cmbuilder));

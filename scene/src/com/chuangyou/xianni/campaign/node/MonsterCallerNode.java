@@ -1,9 +1,7 @@
 package com.chuangyou.xianni.campaign.node;
 
 import java.util.List;
-
 import com.chuangyou.xianni.campaign.Campaign;
-import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
 import com.chuangyou.xianni.warfield.spawn.OverState;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
@@ -23,6 +21,7 @@ public class MonsterCallerNode extends CampaignNodeDecorator {
 				}
 			}
 			node.stateTransition(new OverState(node));
+
 		}
 	}
 
@@ -35,6 +34,7 @@ public class MonsterCallerNode extends CampaignNodeDecorator {
 				next.stateTransition(new WorkingState(next));
 			}
 		}
+		campaign.updataProgress(campaign.getProgress() + 1);
 	}
 
 	public void start(Campaign campaign, SpwanNode node) {

@@ -10,25 +10,31 @@ public class CommonType {
 	 */
 	public static interface CurrencyItemType {
 		/** 灵石 */
-		public final static int	MONEY_ITEM		= 7110000;
+		public final static int	MONEY_ITEM			= 7110000;
 		/** 仙玉 */
-		public final static int	CASH_ITEM		= 7120000;
+		public final static int	CASH_ITEM			= 7120000;
 		/** 绑定仙玉 */
-		public final static int	CASH_BIND_ITEM	= 7130000;
+		public final static int	CASH_BIND_ITEM		= 7130000;
 		/** 装备经验 */
-		public final static int	EQUIP_EXP		= 7140000;
+		public final static int	EQUIP_EXP			= 7140000;
 		/** 修为 */
-		public final static int	REPAIR_ITEM		= 7150000;
+		public final static int	REPAIR_ITEM			= 7150000;
 		/** 积分 */
-		public final static int	POINTS			= 7160000;
+		public final static int	POINTS				= 7160000;
 		/** vip 经验 **/
-		public final static int	VIP_EXP			= 7170000;
+		public final static int	VIP_EXP				= 7170000;
 
-		/** 经验(假的,测试刷经验用) */
-		public final static int	EXP				= 7190000;
 		/** 临时vip(假的,测试刷经验用) */
-		public final static int	VIP_TEMPORARY	= 7180000;
+		public final static int	VIP_TEMPORARY		= 7180000;
+		/** 经验(假的,测试刷经验用) */
+		public final static int	EXP					= 7190000;
 
+		/** 帮派物资 */
+		public final static int	GUILD_SUPPLY		= 7200000;
+		/** 帮派贡献 */
+		public final static int	GUILD_CONTRIBUTION	= 7210000;
+		/** 灵气(分身消耗) */
+		public final static int	AVATAR_ENERGY		= 7250000;
 	}
 
 	// /**

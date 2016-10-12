@@ -45,10 +45,10 @@ public class FieldInfoDaoImpl extends BaseDao implements FieldInfoDao {
 					info.setDesc(rs.getString("_desc"));
 					info.setCampaignId(rs.getInt("campaignId"));
 					info.setCampaignIndex(rs.getInt("campaignIndex"));
-					info.setPosition(new Vector3(rs.getInt("x") / Vector3.Accuracy, rs.getInt("y") / Vector3.Accuracy, rs.getInt("z") / Vector3.Accuracy));
+					info.setPosition(new Vector3(rs.getInt("x") / Vector3.Accuracy, rs.getInt("y") / Vector3.Accuracy, rs.getInt("z") / Vector3.Accuracy, rs.getInt("angle")));
 					info.setInitScriptId(rs.getInt("initScriptId"));
 					info.setResName(rs.getString("resName"));
-					info.setBattle(rs.getBoolean("isBattle"));
+					info.setBattleType(rs.getShort("isBattle"));
 					info.setStartBattleTime(rs.getString("startTime"));
 					info.setEndBattleTime(rs.getString("endTime"));
 					infos.add(info);

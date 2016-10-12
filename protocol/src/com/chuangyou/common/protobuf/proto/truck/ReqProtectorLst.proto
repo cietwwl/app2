@@ -1,0 +1,8 @@
+//protocol=10721;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "ReqProtectorLstProto";
+
+//请求护镖玩家列表(好友,帮派)在线和不在副本中的玩家
+message ReqProtectorLst {
+	required int64 truckID = 1; //镖车ID
+}

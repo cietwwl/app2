@@ -16,29 +16,29 @@ import com.chuangyou.xianni.sql.dao.DBManager;
 
 public class PetTemplateMgr {
 
-	private static Map<Integer, PetInfoCfg> petTemps = new HashMap<>();
-	
-	private static Map<Integer, PetGradeCfg> gradeTemps = new HashMap<>();
-	
-	private static Map<Integer, PetLevelCfg> levelTemps = new HashMap<>();
-	
-	private static Map<Integer, PetPhysiqueCfg> physiqueTemps = new HashMap<>();
-	
-	private static Map<Integer, PetQualityCfg> qualityTemps = new HashMap<>();
-	
-	private static Map<Integer, PetSoulCfg> soulTemps = new HashMap<>();
-	
-	private static Map<Integer, PetSkillInfoCfg> skillInfoTemps = new HashMap<>();
-	
-	private static Map<Integer, PetSkillLevelCfg> skillLevelTemps = new HashMap<>();
-	
-	private static Map<Integer, PetSkillSlotCfg> skillSlotTemps = new HashMap<>();
-	
-	public static boolean init(){
+	private static Map<Integer, PetInfoCfg>			petTemps		= new HashMap<>();
+
+	private static Map<Integer, PetGradeCfg>		gradeTemps		= new HashMap<>();
+
+	private static Map<Integer, PetLevelCfg>		levelTemps		= new HashMap<>();
+
+	private static Map<Integer, PetPhysiqueCfg>		physiqueTemps	= new HashMap<>();
+
+	private static Map<Integer, PetQualityCfg>		qualityTemps	= new HashMap<>();
+
+	private static Map<Integer, PetSoulCfg>			soulTemps		= new HashMap<>();
+
+	private static Map<Integer, PetSkillInfoCfg>	skillInfoTemps	= new HashMap<>();
+
+	private static Map<Integer, PetSkillLevelCfg>	skillLevelTemps	= new HashMap<>();
+
+	private static Map<Integer, PetSkillSlotCfg>	skillSlotTemps	= new HashMap<>();
+
+	public static boolean init() {
 		return reloadTemplate();
 	}
-	
-	public static boolean reloadTemplate(){
+
+	public static boolean reloadTemplate() {
 		petTemps = DBManager.getPetConfigDao().getPetInfo();
 		gradeTemps = DBManager.getPetConfigDao().getGrade();
 		levelTemps = DBManager.getPetConfigDao().getLevel();
@@ -47,6 +47,51 @@ public class PetTemplateMgr {
 		soulTemps = DBManager.getPetConfigDao().getSoul();
 		skillInfoTemps = DBManager.getPetConfigDao().getSkillInfo();
 		skillLevelTemps = DBManager.getPetConfigDao().getSkillLevel();
+		skillSlotTemps = DBManager.getPetConfigDao().getSkillSlot();
+		return true;
+	}
+
+	public static boolean reloadPetInfoCfg() {
+		petTemps = DBManager.getPetConfigDao().getPetInfo();
+		return true;
+	}
+
+	public static boolean reloadPetGradeCfg() {
+		gradeTemps = DBManager.getPetConfigDao().getGrade();
+		return true;
+	}
+
+	public static boolean reloadPetLevelCfg() {
+		levelTemps = DBManager.getPetConfigDao().getLevel();
+		return true;
+	}
+
+	public static boolean reloadPetPhysiqueCfg() {
+		physiqueTemps = DBManager.getPetConfigDao().getPhysique();
+		return true;
+	}
+
+	public static boolean reloadPetQualityCfg() {
+		qualityTemps = DBManager.getPetConfigDao().getQuality();
+		return true;
+	}
+
+	public static boolean reloadPetSoulCfg() {
+		soulTemps = DBManager.getPetConfigDao().getSoul();
+		return true;
+	}
+
+	public static boolean reloadPetSkillInfoCfg() {
+		skillInfoTemps = DBManager.getPetConfigDao().getSkillInfo();
+		return true;
+	}
+
+	public static boolean reloadSkillLevelCfg() {
+		skillLevelTemps = DBManager.getPetConfigDao().getSkillLevel();
+		return true;
+	}
+
+	public static boolean reloadPetSkillSlotCfg() {
 		skillSlotTemps = DBManager.getPetConfigDao().getSkillSlot();
 		return true;
 	}

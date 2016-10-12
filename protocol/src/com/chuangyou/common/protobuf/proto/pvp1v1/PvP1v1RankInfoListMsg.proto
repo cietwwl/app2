@@ -1,0 +1,8 @@
+//protocol=626;
+option java_package = "com.chuangyou.common.protobuf.pb.pvp1v1";
+option java_outer_classname = "PvP1v1RankInfoListProto";
+
+import "pvp1v1/PvP1v1RankinfoMsg.proto";
+message PvP1v1RankInfoListMsg{
+	repeated PvP1v1RankinfoMsg rankLists = 1; //排名
+}

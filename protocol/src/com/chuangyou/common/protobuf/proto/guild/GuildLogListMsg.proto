@@ -1,0 +1,12 @@
+//protocol=170;
+option java_package = "com.chuangyou.common.protobuf.pb.guild";
+option java_outer_classname = "GuildLogListProto";
+
+import "guild/GuildLogInfoMsg.proto";
+
+//日志列表
+message GuildLogListMsg{
+	optional int32 startIndex = 1; // 起始位置(从0开始)
+	optional int32 totalCount = 2; // 7天内日志总条数
+	repeated GuildLogInfoMsg log = 3; // 日志信息
+}

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.entity.shop.ShopCfg;
 import com.chuangyou.xianni.sql.dao.ShopConfigDao;
 import com.chuangyou.xianni.sql.db.BaseDao;
@@ -50,6 +51,10 @@ public class ShopConfigDaoImpl extends BaseDao implements ShopConfigDao {
 					info.setBind(rs.getByte("bind"));
 					info.setMoneyType(rs.getInt("moneyType"));
 					info.setPrice(rs.getLong("price"));
+					
+					info.setMoneyType1(rs.getInt("moneyType1"));
+					info.setPrice1(rs.getLong("price1"));
+					
 					info.setDiscount(rs.getByte("discount"));
 					info.setServerLimitNum(rs.getInt("serverLimitNum"));
 					info.setPersonLimitNum(rs.getInt("personLimitNum"));
@@ -64,15 +69,14 @@ public class ShopConfigDaoImpl extends BaseDao implements ShopConfigDao {
 					info.setIsPreview(rs.getByte("isPreview"));
 					info.setEasyBuy(rs.getByte("easyBuy"));
 					info.setVipLv(rs.getInt("vipLv"));
+					info.setLevel(rs.getInt("level"));
 					info.setDiscountStart(rs.getString("discountStart"));
 					info.setDiscountEnd(rs.getString("discountEnd"));
 					infos.put(info.getId(), info);
 				}
 			} catch (SQLException e) {
 				infos = null;
-				//Log.error("执行出错" + sqlText, e);
-				System.out.println("执行出错" + sqlText);
-				System.out.println(e);
+				Log.error("执行出错" + sqlText, e);
 			} finally {
 				closeConn(pstmt, rs);
 			}

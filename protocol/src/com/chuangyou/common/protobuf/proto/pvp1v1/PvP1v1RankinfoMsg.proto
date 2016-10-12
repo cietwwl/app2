@@ -1,0 +1,15 @@
+//protocol=625;
+option java_package = "com.chuangyou.common.protobuf.pb.pvp1v1";
+option java_outer_classname = "PvP1v1RankinfoProto";
+message PvP1v1RankinfoMsg {
+	optional int64 playerId = 1; //用户ID
+	optional int32 rank = 2; //排名
+	optional int32 score = 3; //积分
+	optional int32 fight = 4; //战斗力
+	optional int32 winCount = 5; //总胜场
+	optional int32 winningStreak = 6; //当前连胜场次
+	optional int32 maxWinningStreak = 7; //最大场次
+	optional int32 toalCount = 8; //参与场次
+	optional int32 statu = 9; //参与状态
+	optional string name = 10; //名称
+}

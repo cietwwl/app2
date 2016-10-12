@@ -22,6 +22,7 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
 import com.chuangyou.xianni.task.TaskTriggerInfo;
+import com.chuangyou.xianni.task.constant.ConditionType;
 import com.chuangyou.xianni.task.manager.TaskManager;
 import com.chuangyou.xianni.task.template.TaskTemplateMgr;
 
@@ -95,7 +96,7 @@ public class TaskOperateReqCmd extends AbstractCommand {
 				}
 			}
 
-			if (cfg.getTaskTarget() == TaskCfg.COMMIT_ITEM || cfg.getTaskTarget() == TaskCfg.PATCH) {
+			if (cfg.getTaskTarget() == ConditionType.COMMIT_ITEM || cfg.getTaskTarget() == ConditionType.PATCH) {
 				player.getBagInventory().removeItem(cfg.getTargetId(), cfg.getTargetNum(), ItemRemoveType.TASK_COMMIT);
 			}
 

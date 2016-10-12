@@ -21,7 +21,7 @@ public class ReqUpInverseBead extends AbstractCommand {
 		boolean res = InverseBeadManager.up(player, fiveElements, marking, packet.getCode());
 
 		if (res) {
-			PlayerInverseBead playerInverseBead = player.getInverseBeadInventory().get(fiveElements, marking);
+			PlayerInverseBead playerInverseBead = player.getInverseBeadInventory().get(fiveElements);
 			ResUpInverseBeadMsg.Builder resUpInverseBeadMsg = ResUpInverseBeadMsg.newBuilder();
 			resUpInverseBeadMsg.setFiveElements(playerInverseBead.getFiveElements());
 			resUpInverseBeadMsg.setMarking(playerInverseBead.getMarking());

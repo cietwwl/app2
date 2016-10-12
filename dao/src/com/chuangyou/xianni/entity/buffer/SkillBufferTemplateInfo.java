@@ -22,6 +22,7 @@ public class SkillBufferTemplateInfo {
 	 * 新buff的时间与次数增加到老buff上 5
 	 */
 	private int		overlayWay;		// 操作方式
+	private int		pressedNum;		// 叠加层数
 	private int		level;			// 定义等级
 	private int		isTips;			// 是否显示图标
 	private int		isSave;			// 是否离线保存
@@ -288,6 +289,14 @@ public class SkillBufferTemplateInfo {
 
 	public void setDelay(int delay) {
 		this.delay = delay;
+	}
+
+	public int getPressedNum() {
+		return pressedNum;
+	}
+
+	public void setPressedNum(int pressedNum) {
+		this.pressedNum = pressedNum;
 	}
 
 }

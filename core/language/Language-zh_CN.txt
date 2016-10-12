@@ -2,6 +2,9 @@
 
 #######################################CenterServer######################################
 CenterServer.test.testAlert=语言包测试
+CenterServer.guild.emailTitle=门派消息
+CenterServer.guild.emailSender=发件人：
+CenterServer.guild.warehouseEmailContent=你收到来自掌门分配的道具奖励，请查收
 #######################################SenceServer######################################
 
 #######################################COMMON######################################

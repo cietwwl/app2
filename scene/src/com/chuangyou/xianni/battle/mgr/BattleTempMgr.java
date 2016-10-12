@@ -14,21 +14,26 @@ import com.chuangyou.xianni.entity.soul.SoulFuseSkillConfig;
 import com.chuangyou.xianni.sql.dao.DBManager;
 
 public class BattleTempMgr {
-	private static Map<Integer, SkillActionTemplateInfo>		skillActionTemps	= new HashMap<Integer, SkillActionTemplateInfo>();
+	private static Map<Integer, SkillActionTemplateInfo>		skillActionTemps		= new HashMap<Integer, SkillActionTemplateInfo>();
 
 	private static Map<Integer, SkillActionMoveTempleteInfo>	skillActionMoveTemps;
 
-	private static Map<Integer, SkillBufferTemplateInfo>		skillBufferTemps	= new HashMap<Integer, SkillBufferTemplateInfo>();
+	private static Map<Integer, SkillBufferTemplateInfo>		skillBufferTemps		= new HashMap<Integer, SkillBufferTemplateInfo>();
 
-	private static Map<Integer, SkillTempateInfo>				skillTemps			= new HashMap<Integer, SkillTempateInfo>();
+	private static Map<Integer, SkillTempateInfo>				skillTemps				= new HashMap<Integer, SkillTempateInfo>();
 
-	private static Map<Integer, LivingStatusTemplateInfo>		livingStatusTemps	= new HashMap<Integer, LivingStatusTemplateInfo>();
+	private static Map<Integer, LivingStatusTemplateInfo>		livingStatusTemps		= new HashMap<Integer, LivingStatusTemplateInfo>();
 
-	private static Map<Integer, SnareTemplateInfo>				snareInfoTemps		= new HashMap<Integer, SnareTemplateInfo>();
+	private static Map<Integer, SnareTemplateInfo>				snareInfoTemps			= new HashMap<Integer, SnareTemplateInfo>();
 	/**
 	 * 融合技能模板
 	 */
-	private static Map<Integer, SoulFuseSkillConfig>			fuseSkillTemps		= new HashMap<>();
+	private static Map<Integer, SoulFuseSkillConfig>			fuseSkillTemps			= new HashMap<>();
+
+	/**
+	 * 融合技能模板
+	 */
+	private static Map<Integer, SoulFuseSkillConfig>			fuseSkillMappingSkillId	= new HashMap<>();
 
 	public static boolean init() {
 		reloadPb();
@@ -77,6 +82,7 @@ public class BattleTempMgr {
 		if (temp != null) {
 			for (SoulFuseSkillConfig sconfig : temp.values()) {
 				fuseSkillTemps.put(sconfig.getBuff(), sconfig);
+				fuseSkillMappingSkillId.put(sconfig.getId(), sconfig);
 			}
 		}
 		return true;
@@ -127,6 +133,13 @@ public class BattleTempMgr {
 	public static SoulFuseSkillConfig getFuseSkillTemp(int bufferId) {
 		if (fuseSkillTemps.containsKey(bufferId)) {
 			return fuseSkillTemps.get(bufferId);
+		}
+		return null;
+	}
+
+	public static SoulFuseSkillConfig getFuseSkillTempById(int skillId) {
+		if (fuseSkillMappingSkillId.containsKey(skillId)) {
+			return fuseSkillMappingSkillId.get(skillId);
 		}
 		return null;
 	}

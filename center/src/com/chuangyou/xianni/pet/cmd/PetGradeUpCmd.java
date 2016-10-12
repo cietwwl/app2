@@ -10,12 +10,15 @@ import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.pet.PetGradeCfg;
 import com.chuangyou.xianni.entity.pet.PetInfo;
 import com.chuangyou.xianni.entity.pet.PetInfoCfg;
+import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.pet.template.PetTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
+import com.chuangyou.xianni.state.condition.PetStateCondition;
+import com.chuangyou.xianni.state.event.PetStateEvent;
 
 @Cmd(code = Protocol.C_PET_GRADE_UP, desc = "宠物进阶")
 public class PetGradeUpCmd extends AbstractCommand {
@@ -71,6 +74,11 @@ public class PetGradeUpCmd extends AbstractCommand {
 		}else{
 			int addBless = random.next(gradeCfg.getFailBlessMin(), gradeCfg.getFailBlessMax());
 			pet.setGradeBless(pet.getGradeBless() + addBless);
+			if(pet.getGradeBless() >= gradeCfg.getBlessMax()){
+				pet.setGrade(pet.getGrade() + 1);
+				pet.setGradeBless(0);
+				isSuccess = true;
+			}
 		}
 		player.getPetInventory().updatePetInfo(pet);
 		
@@ -86,6 +94,7 @@ public class PetGradeUpCmd extends AbstractCommand {
 //			PetManager.changePetAtt(roleId);
 			//影响人物属性改变
 			player.getPetInventory().updataProperty();
+			player.notifyListeners(new PetStateEvent(this, 6, pet.getPetId(), pet.getGrade(), EventNameType.PET));
 		}
 	}
 

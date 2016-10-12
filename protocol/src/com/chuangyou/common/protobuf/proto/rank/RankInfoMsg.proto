@@ -1,0 +1,41 @@
+option java_package = "com.chuangyou.common.protobuf.pb.rank";
+option java_outer_classname = "RankInfoProto";
+
+
+ //排行榜信息
+message RankInfoMsg{
+	required int32 rank = 1; //名次
+	required int64 playerId = 2;  //玩家ID/帮派ID
+	required string playerName = 3; //玩家名字/帮派名字
+	optional string paramStr = 4;
+	required int64 param1 = 5;
+	required int64 param2 = 6;
+	required int64 param3 = 7;
+	/**
+	 * 101 - 1 (修为日榜)
+	 * playerName：玩家名字  playerId：玩家ID  param1：等级  param2：战力值（修为）
+	 * 102 - 1 (境界日榜)
+	 * playerName：玩家名字  playerId：玩家ID  param1： 境界值  param2：等级
+	 * 103 - 1 (装备日榜)
+	 * playerName：玩家名字  playerId：玩家ID  param1： 装备战力值
+	 * 104 - 1 (法宝日榜)
+	 * playerName：玩家名字  playerId：玩家ID  param1：法宝战力值
+	 * 105 - 1 (坐骑日榜)
+	 * playerName：玩家名字  playerId：玩家ID  param1：坐骑战力值
+	 * 106 - 1 (宠物日榜)
+	 * playerName：玩家名字  playerId：玩家ID  param1：宠物战力值
+	 * 104 - 1 (魂幡日榜)
+	 * playerName：玩家名字  playerId：玩家ID  param1：魂幡战力值
+	 * 108 - 1 (分身日榜)
+	 * playerName：玩家名字  playerId：玩家ID  param1：分身战力值
+	 * 300 - 1 ( 人气日榜)
+	 * playerName：玩家名字  playerId：玩家ID  param1：人气值    param2：鲜花  param3：鸡蛋
+	 *
+	 * 401 - 1 (境界1阶日榜)
+	 * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+	 * 402 - 1 (境界2阶日榜)
+	 * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+	 * .........
+	 * ........
+	 */
+}

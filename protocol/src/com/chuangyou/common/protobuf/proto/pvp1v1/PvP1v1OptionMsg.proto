@@ -1,0 +1,8 @@
+//protocol=10611;
+option java_package = "com.chuangyou.common.protobuf.pb.pvp1v1";
+option java_outer_classname = "PvP1v1OptionProto";
+
+message PvP1v1OptionMsg{
+    optional int32 type = 1;//操作类型    1 开始匹配，2 查看排行榜
+    optional int32 param1 = 2;//参数
+}

@@ -51,8 +51,8 @@ public class Chase extends MonsterBaseBehavior {
 	public AIState next() {
 		if (!needChase)
 			return AIState.IDLE;
-		if (getMonster().isCooldowning(CoolDownTypes.BE_ATTACK, null))
-			return AIState.BEATTACK;
+//		if (getMonster().isCooldowning(CoolDownTypes.BE_ATTACK, null))
+//			return AIState.BEATTACK;
 		if (checkAttackTarget())
 			return AIState.ATTACK;
 

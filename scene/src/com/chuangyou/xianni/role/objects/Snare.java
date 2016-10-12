@@ -71,7 +71,7 @@ public class Snare extends ActiveLiving {
 		curSoul = snareInfo.getHp();
 		this.creater = creater;
 		this.armyId = creater.getArmyId();
-		this.setSpeed(snareInfo.getMoveSpeed() * 100);
+		this.setProperty(EnumAttr.SPEED, snareInfo.getMoveSpeed() * 100);
 		setSoulState(true);
 
 		if (creater.getType() == RoleType.monster && snareInfo.getLockingType() == LockType.FIRST_TARGET) {
@@ -309,18 +309,59 @@ public class Snare extends ActiveLiving {
 
 		// 敌方
 		if (snareInfo.getTarget() == TargetType.ENEMY) {
-			// 人怪敌对
-			if (source.getType() == RoleType.player && target.getType() == RoleType.monster) {
+			// // 人怪敌对
+			// if (source.getType() == RoleType.player && target.getType() ==
+			// RoleType.monster) {
+			// return true;
+			// }
+			// // 怪人敌对
+			// if (source.getType() == RoleType.monster && target.getType() ==
+			// RoleType.player) {
+			// return true;
+			// }
+			// // 人机对战
+			// if (source.getType() == RoleType.player && target.getType() ==
+			// RoleType.robot) {
+			// return true;
+			// }
+			// // 机人对战
+			// if (source.getType() == RoleType.player && target.getType() ==
+			// RoleType.robot) {
+			// return true;
+			// }
+			if (source.getArmyId() == 0 && target.getArmyId() != 0) {
 				return true;
 			}
-			// 怪人敌对
-			if (source.getType() == RoleType.monster && target.getType() == RoleType.player) {
+
+			if (source.getArmyId() != 0 && target.getArmyId() == 0) {
 				return true;
 			}
 			// 人人敌对
-			if (source instanceof Player && target instanceof Player) {
-				return OrderFactory.attackCheck(source.getField(), (Player) source, (Player) target);
+			if (source.getArmyId() != 0 && target.getArmyId() != 0) {
+				Player sourcePlayer = null;
+				Player targetPlayer = null;
+				if (source.getType() == RoleType.player) {
+					sourcePlayer = (Player) source;
+				} else {
+					ArmyProxy army = WorldMgr.getArmy(source.getArmyId());
+					if (army == null) {
+						return true;
+					}
+					sourcePlayer = army.getPlayer();
+				}
+
+				if (target.getType() == RoleType.player) {
+					targetPlayer = (Player) target;
+				} else {
+					ArmyProxy army = WorldMgr.getArmy(target.getArmyId());
+					if (army == null) {
+						return true;
+					}
+					targetPlayer = army.getPlayer();
+				}
+				return OrderFactory.attackCheck(source.getField(), sourcePlayer, targetPlayer);
 			}
+
 			return false;
 
 		}
@@ -399,7 +440,11 @@ public class Snare extends ActiveLiving {
 		target.takeDamage(blood);
 
 		Damage soul = new Damage(target, getCreater());
-		soul.setDamageType(EnumAttr.CUR_SOUL.getValue());
+		if (target.otherDamageCalWay()) {
+			soul.setDamageType(EnumAttr.CUR_BLOOD.getValue());
+		} else {
+			soul.setDamageType(EnumAttr.CUR_SOUL.getValue());
+		}
 		soul.setDamageValue(soulDamageValue);
 		soul.setCalcType(type);
 		soul.setFromType(fromType);

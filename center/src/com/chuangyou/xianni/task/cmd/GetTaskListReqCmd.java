@@ -24,7 +24,6 @@ public class GetTaskListReqCmd extends AbstractCommand {
 		if (player.getTaskInventory() == null)
 			return;
 		new GetTaskLogic().process(player);
-
 	}
 
 	/**

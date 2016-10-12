@@ -10,7 +10,6 @@ import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.common.template.LevelUpTempleteMgr;
 import com.chuangyou.xianni.entity.property.BaseProperty;
-import com.chuangyou.xianni.entity.soul.CardComboConfig;
 import com.chuangyou.xianni.entity.soul.CardStarConfig;
 import com.chuangyou.xianni.entity.soul.SoulCardConfig;
 import com.chuangyou.xianni.entity.soul.SoulCardInfo;
@@ -29,10 +28,26 @@ public class SoulCalcLogic {
 	 */
 	public void calcBaseSoulAtts(GamePlayer player, BaseProperty pre, BaseProperty data) {
 		Map<Integer, SimpleProperty> map = new HashMap<>();
-		// 计算卡牌给魂幡功能加成的属性
-		calcCardsAtts(player, map);
-		// 计算卡牌组合给魂幡功能加成属性
-		calcCardComboAtts(player,map);
+		
+		List<Integer> putOnCards = player.getSoulInventory().getSoulInfo().getCardsList();
+		for (int cardId : putOnCards) {
+			SoulCardInfo soulCard = player.getSoulInventory().getCards().get(cardId);
+			ConcreteComponent component = new ConcreteComponent();
+			//基础属性 +卡牌星级加成+卡牌等级加成
+			ICalcAttLogic starAndLv = new StarAndLvAddAttLogic(component);
+			//上阵组合加成
+			ICalcAttLogic upComboAtt = new UpComboAttLogic(starAndLv);
+			//获得卡牌组合加成
+			ICalcAttLogic getComboAtt = new GetComboAttLogic(upComboAtt);
+			//组合中星级加成
+			ICalcAttLogic starAddCombo = new StarAddComboAttLogic(getComboAtt);
+			//组合中等级加成
+			ICalcAttLogic lvAddCombo = new LvAddComboAttLogic(starAddCombo);
+			
+			lvAddCombo.doProcess(player, map, soulCard, player.getSoulInventory().getCards());
+		}
+		
+		
 		// 计算魂幡等级给魂幡功能加成的属性
 		List<PropertyMsg> list = calcExpAdd(player, map);
 		player.getSoulInventory().setList(list);
@@ -52,18 +67,18 @@ public class SoulCalcLogic {
 	 * @param map
 	 */
 	private void calcCardComboAtts(GamePlayer player, Map<Integer, SimpleProperty> map) {
-		for (CardComboConfig info : SoulTemplateMgr.getCardComboMap().values()) {
-			ConcreteComponent component = new ConcreteComponent();
-			if(info.getType() == CardComboConfig.TYPE_UP){
-				ICalcAttLogic upAtt = new UpComboAttLogic(component);
-				upAtt.doProcess(player, map, info, player.getSoulInventory().getCards());
-			}else if(info.getType() == CardComboConfig.TYPE_GET){
-				ICalcAttLogic getAtt = new GetComboAttLogic(component);
-				ICalcAttLogic lvAtt  = new LvAddComboAttLogic(getAtt);
-				ICalcAttLogic starAtt = new StarAddComboAttLogic(lvAtt);
-				starAtt.doProcess(player, map,info, player.getSoulInventory().getCards());
-			}
-		}
+//		for (CardComboConfig info : SoulTemplateMgr.getCardComboMap().values()) {
+//			ConcreteComponent component = new ConcreteComponent();
+//			if(info.getType() == CardComboConfig.TYPE_UP){
+//				ICalcAttLogic upAtt = new UpComboAttLogic(component);
+//				upAtt.doProcess(player, map, info, player.getSoulInventory().getCards());
+//			}else if(info.getType() == CardComboConfig.TYPE_GET){
+//				ICalcAttLogic getAtt = new GetComboAttLogic(component);
+//				ICalcAttLogic lvAtt  = new LvAddComboAttLogic(getAtt);
+//				ICalcAttLogic starAtt = new StarAddComboAttLogic(lvAtt);
+//				starAtt.doProcess(player, map,info, player.getSoulInventory().getCards());
+//			}
+//		}
 	}
 
 	
@@ -84,7 +99,7 @@ public class SoulCalcLogic {
 	public List<PropertyMsg> calcExpAdd(GamePlayer player, Map<Integer, SimpleProperty> map) {
 		List<PropertyMsg> list = new ArrayList<>();
 		int lv = LevelUpTempleteMgr.getSoulLevel(player.getSoulInventory().getSoulInfo().getExp());
-		if (lv > 0) {
+		if (lv >= 0) {
 			float temp = 0.01f * lv;
 			Iterator<SimpleProperty> it = map.values().iterator();
 			while (it.hasNext()) {
@@ -156,7 +171,7 @@ public class SoulCalcLogic {
 	private void calcSimpleProperty(int attInit, int attAdd, Map<Integer, SimpleProperty> map, SoulCardInfo cardInfo) {
 		if (attInit > 0) {
 			SimpleProperty pro = SkillUtil.readPro(attInit);
-			int temp = (pro.getValue() + cardInfo.getLv() * attAdd);
+			int temp = (pro.getValue() + (cardInfo.getLv()-1) * attAdd);
 			temp = calcStarAdd(temp, cardInfo);
 			pro.setValue(temp);
 			if (map.containsKey(pro.getType())) {
@@ -172,10 +187,12 @@ public class SoulCalcLogic {
 	 *  叠加属性接口
 	 * @param map
 	 * @param att
+	 * @param count:卡牌数量。因为是每张都加
 	 */
 	public static void addAttValue(Map<Integer, SimpleProperty> map,int att){
 		if (att > 0) {
-			SimpleProperty pro = SkillUtil.readPro(att);	
+			SimpleProperty pro = SkillUtil.readPro(att);
+			pro.setValue(pro.getValue());
 			if (map.containsKey(pro.getType())) {
 				SimpleProperty t = map.get(pro.getType());
 				t.setValue(t.getValue() + pro.getValue());

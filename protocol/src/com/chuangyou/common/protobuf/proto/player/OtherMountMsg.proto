@@ -1,0 +1,12 @@
+//protocol=609;
+option java_package = "com.chuangyou.common.protobuf.pb.player";
+option java_outer_classname = "OtherMountProto";
+import "army/PropertyListMsg.proto";
+message OtherMountMsg{
+	optional int64 playerId=1; //角色ID
+	optional int32 mountId=2; //坐骑ID
+	optional int32 level=3; //坐骑等级
+	optional int32 grade=4; //坐骑阶位
+	optional PropertyListMsg  propertitys=5;       //坐骑属性
+	
+}

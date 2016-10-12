@@ -9,6 +9,7 @@ import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.pet.PetAtt;
 import com.chuangyou.xianni.entity.pet.PetSoulCfg;
+import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.pet.template.PetTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerInfoSendCmd;
@@ -16,6 +17,7 @@ import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
+import com.chuangyou.xianni.state.event.PetStateEvent;
 
 @Cmd(code = Protocol.C_PET_SOUL_UP, desc = "宠物炼魂")
 public class PetSoulUpCmd extends AbstractCommand {
@@ -98,7 +100,7 @@ public class PetSoulUpCmd extends AbstractCommand {
 			// PetManager.changePetAtt(roleId);
 			// 影响人物属性改变
 			player.getPetInventory().updataProperty();
-
+			player.notifyListeners(new PetStateEvent(this, 3, petAtt.getSoulLv(),0, EventNameType.PET));
 			// 宠物外形广播
 			PBMessage petSnapMsg = MessageUtil.buildMessage(Protocol.S_PET_INFO_UPDATE, PlayerInfoSendCmd.getPetInfoPacket(player));
 			player.sendPbMessage(petSnapMsg);

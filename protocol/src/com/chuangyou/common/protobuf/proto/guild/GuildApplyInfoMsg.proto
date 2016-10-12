@@ -1,0 +1,13 @@
+//protocol=164;
+option java_package = "com.chuangyou.common.protobuf.pb.guild";
+option java_outer_classname = "GuildApplyInfoProto";
+
+//玩家申请入帮
+message GuildApplyInfoMsg{
+	optional int64 playerId = 1; // 玩家ID
+	optional string playerName = 2; // 玩家名字
+	optional int32 level = 3; // 玩家等级
+	optional int32 fight = 4; // 玩家战力
+	optional int32 iconId = 5; // 玩家头像ID
+	optional int64 applyTime = 6; // 申请时间
+}

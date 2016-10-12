@@ -61,8 +61,8 @@ public class Patrol extends MonsterBaseBehavior {
 
 		// if (!needPatrol)
 		// return AIState.IDLE; // 距离太短，不处理
-		if (getMonster().isCooldowning(CoolDownTypes.BE_ATTACK, null))
-			return AIState.BEATTACK;
+//		if (getMonster().isCooldowning(CoolDownTypes.BE_ATTACK, null))
+//			return AIState.BEATTACK;
 		if (!getMonster().isArrial()) {
 			return AIState.INVALID;
 		}

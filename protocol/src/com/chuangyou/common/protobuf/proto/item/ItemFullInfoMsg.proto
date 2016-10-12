@@ -15,12 +15,11 @@ message ItemFullInfoMsg {
 	optional int32 validDate= 7;	// 有效时间
 	optional int64 beginDate= 8;	// 生效时间
 	optional bool isNew= 9;		  	// 新物品提示
-
 	optional int32 qualityCoefficient=10;//品质系数
 	optional int32 pro=11;	//属性
-	optional int32 grow=12;			//成长系数
-
-	optional EquipInfoMsg equip = 13; // 装备信息
-
+	optional int32 grow=12;	//成长系数
 	optional int64 id = 14; // 道具ID
+	optional int32 awakenLevel = 15; // 装备觉醒等级
+	optional int32 awakenPoint = 16; // 觉醒当前级突破点
+	optional int32 stoneTempId = 17; // 装备注入魂石模板ID
 }

@@ -39,6 +39,7 @@ public class SkillBufferTemplateInfoDaoImpl extends BaseDao implements SkillBuff
 																		// 100秒内免疫该类型BUUFF
 					skillBufferTmep.setOverlayType(rs.getInt("overlayType"));
 					skillBufferTmep.setOverlayWay(rs.getInt("overlayWay"));
+					skillBufferTmep.setPressedNum(rs.getInt("pressedNum"));
 					skillBufferTmep.setLevel(rs.getInt("level"));
 					skillBufferTmep.setIsTips(rs.getInt("isTips"));
 					skillBufferTmep.setIsSave(rs.getInt("isSave"));

@@ -4,7 +4,6 @@ import java.util.Iterator;
 
 import com.chuangyou.common.protobuf.pb.soul.GetSoulInfoRespProto.GetSoulInfoRespMsg;
 import com.chuangyou.xianni.entity.soul.SoulCardInfo;
-import com.chuangyou.xianni.entity.soul.SoulCardPiece;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -21,10 +20,6 @@ public class GetSoulInfoLogic {
 			resp.addCards(it.next().getMsg());
 		}
 		
-		Iterator<SoulCardPiece> pit =  player.getSoulInventory().getPieces().values().iterator();
-		while(pit.hasNext()){
-			resp.addCardPieces(pit.next().getMsg());
-		}
 		resp.addAllAtts(player.getSoulInventory().getList());
 		
 		PBMessage pkg = MessageUtil.buildMessage(Protocol.U_RESP_GET_SOUL_INFO, resp);

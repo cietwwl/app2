@@ -63,14 +63,14 @@ public class SystemConfigTemplateMgr {
 		return cfg.getValue();
 	}
 
-//	public static int getIdBuiderWay() {
-//		SystemConfig cfg = systemTemps.get("id.builder.way");
-//		if (cfg == null) {
-//			Log.error("getIntValue is null ,key : id.builder.way");
-//			return 0;
-//		}
-//		return cfg.getValue();
-//	}
+	// public static int getIdBuiderWay() {
+	// SystemConfig cfg = systemTemps.get("id.builder.way");
+	// if (cfg == null) {
+	// Log.error("getIntValue is null ,key : id.builder.way");
+	// return 0;
+	// }
+	// return cfg.getValue();
+	// }
 
 	public static int getSpaceGiftPrice() {
 		SystemConfig cfg = systemTemps.get("space.gift.perPrice");
@@ -141,6 +141,37 @@ public class SystemConfigTemplateMgr {
 			return map;
 		}
 		return null;
+	}
+
+	/**
+	 * 魂值收集公式
+	 * 
+	 * @return
+	 */
+	public static String getMakeCollectExpr() {
+		SystemConfig cfg1 = systemTemps.get("SoulBanner.MakeCollectExpr");
+
+		if (cfg1 == null) {
+			Log.error("getStringValue is null ,key : SoulBanner.MakeCollectExpr");
+			return null;
+		}
+		return cfg1.getStrValue();
+	}
+
+	
+	/**
+	 * {value}*1000+10000
+	 * 魂值制作公式
+	 * @return
+	 */
+	public static String getMakeSoulExpr() {
+		SystemConfig cfg1 = systemTemps.get("SoulBanner.MakeSoulExpr");
+
+		if (cfg1 == null) {
+			Log.error("getStringValue is null ,key : SoulBanner.MakeSoulExpr");
+			return null;
+		}
+		return cfg1.getStrValue();
 	}
 
 	public static String[] getMakeConfig() {

@@ -2,6 +2,7 @@ package com.chuangyou.xianni.relation;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -64,24 +65,38 @@ public class RelationInventory extends AbstractEvent implements IInventory {
 		relation.setRelation(player.getPlayerId(), relationType);
 		relation.setPlayerState(player.getPlayerId(), true);
 		
+		RelationManager.getIns().addRelation(relation);
+		
 		GamePlayer targetPlayer = WorldMgr.getPlayer(playerId);
 		if(targetPlayer.getRelationInventory() != null){
-			relation.setPlayerState(playerId, true);
+			targetPlayer.getRelationInventory().playerAddMe(player.getPlayerId());
 		}else{
 			relation.setPlayerState(playerId, false);
 		}
-		RelationManager.getIns().addRelation(relation);
 	}
 	
-//	/**
-//	 * 别人添加我
-//	 * @param playerId
-//	 */
-//	public void playerAddMe(long playerId){
-//		if(!this.relationList.contains(playerId)){
-//			this.relationList.add(playerId);
-//		}
-//	}
+	/**
+	 * 别人添加我
+	 * @param playerId
+	 */
+	public void playerAddMe(long playerId){
+		synchronized (relationList) {
+			if(!this.relationList.contains(playerId)){
+				this.relationList.add(playerId);
+			}
+		}
+	}
+	/**
+	 * 别人删除我
+	 * @param playerId
+	 */
+	public void playerRemoveMe(long playerId){
+		synchronized (relationList) {
+			if(this.relationList.contains(playerId)){
+				this.relationList.remove(playerId);
+			}
+		}
+	}
 	
 	/**
 	 * 更新关系
@@ -95,6 +110,11 @@ public class RelationInventory extends AbstractEvent implements IInventory {
 		if(info.getRelation1() == PlayerRelationConstant.NONE && info.getRelation2() == PlayerRelationConstant.NONE){
 			RelationManager.getIns().removeRelation(info.getMapKey());
 			relationList.remove(targetId);
+			
+			GamePlayer targetPlayer = WorldMgr.getPlayer(targetId);
+			if(targetPlayer.getRelationInventory() != null){
+				targetPlayer.getRelationInventory().playerRemoveMe(player.getPlayerId());
+			}
 		}
 	}
 	
@@ -105,13 +125,39 @@ public class RelationInventory extends AbstractEvent implements IInventory {
 	 */
 	public List<Long> getRelationIds(short relationType){
 		List<Long> idList = new ArrayList<>();
-		for(long playerId: relationList){
+		
+		Iterator<Long> iterator = relationList.iterator();
+		while(iterator.hasNext()){
+			long playerId = iterator.next();
 			RelationInfo relation = RelationManager.getIns().getRelation(player.getPlayerId(), playerId);
 			if(relation == null){
 				relationList.remove(playerId);
 				continue;
 			}
 			if(relation.getRelationType(player.getPlayerId()) == relationType){
+				idList.add(playerId);
+			}
+		}
+		return idList;
+	}
+	
+	/**
+	 * 获取反向关系列表
+	 * @param relationType
+	 * @return
+	 */
+	public List<Long> getReverseRelationIds(short relationType){
+		List<Long> idList = new ArrayList<>();
+		
+		Iterator<Long> iterator = relationList.iterator();
+		while(iterator.hasNext()){
+			long playerId = iterator.next();
+			RelationInfo relation = RelationManager.getIns().getRelation(player.getPlayerId(), playerId);
+			if(relation == null){
+				relationList.remove(playerId);
+				continue;
+			}
+			if(relation.getRelationType(playerId) == relationType){
 				idList.add(playerId);
 			}
 		}

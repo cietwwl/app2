@@ -1,0 +1,13 @@
+//protocol=2619;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "RespTruckDataProto";
+
+import "truck/TruckData.proto";
+
+//回应
+message RespTruckData {
+	required TruckData truckData = 1;	//镖车
+	required TruckData truckerData = 2;	//镖师
+	required int32 hasGuildTruck = 3;	//是否存在帮派镖车 1:有 0:无
+	optional TruckData guildTruckData = 4;	//帮派镖车
+}

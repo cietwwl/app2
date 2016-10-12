@@ -1,0 +1,9 @@
+//protocol=1619;
+option java_package = "com.chuangyou.common.protobuf.pb.state";
+option java_outer_classname = "StateOpRespProto";
+
+//境界操作请求
+message StateOpRespMsg{
+	required int32 op =1;//1：请求进入副本开始渡节  2：渡节中使用道具加BUFF
+	required int32 param1 = 2;//参数1  ：当op=2时。此值传按钮id
+}

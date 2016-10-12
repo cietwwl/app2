@@ -27,4 +27,8 @@ message GoodsInfo{
 	optional int32 vipLv = 21;   //购买需要的VIP等级
 	optional string discountStart = 22; //打折开始时间 0：不打折
 	optional string discountEnd = 23;//打折结束时间
+
+	optional int32 moneyType1 = 24; // 第二种消耗货币类型
+	optional int64 price1 = 25; // 第二种消耗价格
+	optional int32 level = 26; // 备用等级要求(玩家帮派商店表示商店等级要求， 系统帮派商店表示玩家境界要求)
 }

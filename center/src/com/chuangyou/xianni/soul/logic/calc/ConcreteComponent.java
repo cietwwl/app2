@@ -2,7 +2,6 @@ package com.chuangyou.xianni.soul.logic.calc;
 
 import java.util.Map;
 
-import com.chuangyou.xianni.entity.soul.CardComboConfig;
 import com.chuangyou.xianni.entity.soul.SoulCardInfo;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.skill.template.SimpleProperty;
@@ -16,9 +15,15 @@ import com.chuangyou.xianni.skill.template.SimpleProperty;
 public class ConcreteComponent implements ICalcAttLogic {	
 
 	@Override
-	public void doProcess(GamePlayer player, Map<Integer, SimpleProperty> map, CardComboConfig config, Map<Integer, SoulCardInfo> cards) {
+	public void doProcess(GamePlayer player, Map<Integer, SimpleProperty> map, SoulCardInfo soulCard, Map<Integer, SoulCardInfo> cards) {
 		// TODO Auto-generated method stub
 		
+		
+//		System.out.println("ConcreteComponent:"+map);
 	}
+
+	
+	
+	
 
 }

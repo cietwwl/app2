@@ -22,9 +22,6 @@ public class Army {
 			curBlood = 10000;
 		}
 		hero.setCurBlood(curBlood);
-		
-		int mana = player.getBasePlayer().getPlayerJoinInfo().getMana();
-		hero.setMana(mana);
 	}
 
 	public Hero getHero() {

@@ -39,12 +39,10 @@ public class TeamCommonOptionCmd extends AbstractCommand {
 				return;
 			}
 			TeamTargetTemplate target = TeamTargetTempMgr.get(team.getTargetId());
-			if (target != null && target.getGoType() == 1) {
+			if (target != null && target.getGoType() == 1) {//是否需要跳过准备阶段直接前往
 				if (target.getTargetType() == 2) {// 类型2 副本
-					CreateCampaignMsg.Builder ccmsg = CreateCampaignMsg.newBuilder();
-					ccmsg.setCampaign(target.getTarget());
-					CreateCampaignDelayAction action = new CreateCampaignDelayAction(TeamMgr.getActionQueue(), team, ccmsg.build(), 0);
-					TeamMgr.getActionQueue().getActionQueue().enqueue(action);
+					CreateCampaignDelayAction action = new CreateCampaignDelayAction(TeamMgr.getActionQueue(), team, target.getTarget(), 0);
+					TeamMgr.getActionQueue().getActionQueue().enDelayQueue(action);
 				}
 			} else {
 				team.changeTeamStatu(Team.PREPARE);

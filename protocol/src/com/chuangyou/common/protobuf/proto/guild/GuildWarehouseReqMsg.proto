@@ -1,0 +1,12 @@
+//protocol=10158;
+option java_package = "com.chuangyou.common.protobuf.pb.guild";
+option java_outer_classname = "GuildWarehouseReqProto";
+
+import "guild/GuildWarehouseItemInfoMsg.proto";
+
+//帮派仓库请求消息
+message GuildWarehouseReqMsg{
+	optional int32 action = 1; // 操作功能号(1获取库存信息 2存入物品 3分配物品)
+	repeated GuildWarehouseItemInfoMsg item = 2; // 物品
+	repeated int64 memberId = 3; // 成员ID，分配的时候用到
+}

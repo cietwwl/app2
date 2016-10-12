@@ -1,0 +1,16 @@
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "TruckDataProto";
+
+import "truck/TruckSkill.proto";
+
+/**
+ * 镖车状态
+ */
+message TruckData{
+
+  	required int32 truckLevel = 1;	//镖车等级
+	required int32 truckExp = 2;	//镖车经验
+	required int32 truckRemainPoint = 3;	//镖车可加点
+	repeated TruckSkill skills = 4; //技能
+	repeated TruckSkill gifts = 5; //天赋
+}

@@ -47,27 +47,26 @@ import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.WorldMgr;
 
 public class Monster extends ActiveLiving {
-	private MonsterInfo			monsterInfo;
-	private AiConfig			aiConfig;
+	private MonsterInfo		monsterInfo;
+	private AiConfig		aiConfig;
 
 	// 怪物攻击的初始技能，固定写死
-	private int					skillId;
+	private int				skillId;
 	// 初始位置
-	private Vector3				initPosition;
+	private Vector3			initPosition;
 	// 仇恨列表
-	private List<Hatred>		hatreds				= Collections.synchronizedList(new ArrayList<Hatred>());
+	private List<Hatred>	hatreds	= Collections.synchronizedList(new ArrayList<Hatred>());
 	// 攻击目标
-	private Long				target;
+	private Long			target;
 	// 当前使用的技能id
-	private int					curSkillID;
+	private int				curSkillID;
 
 	// 攻击者
-	private Long				attacker;
+	private Long			attacker;
 
 	public int getCurSkillID() {
 		return curSkillID;
 	}
-
 
 	public void setCurSkillID(int curSkillID) {
 		this.curSkillID = curSkillID;
@@ -172,7 +171,7 @@ public class Monster extends ActiveLiving {
 	 */
 	protected void notifyCenter(int tempId, long playerId) {
 		PlayerKillMonsterMsg.Builder msg = PlayerKillMonsterMsg.newBuilder();
-		msg.setMonsterTemplateId(tempId);
+		msg.setBeKillId(tempId);
 		msg.setPlayerId(playerId);
 		msg.setType(1);
 		PBMessage pkg = MessageUtil.buildMessage(Protocol.C_PLAYER_KILL_MONSTER, msg);
@@ -231,7 +230,7 @@ public class Monster extends ActiveLiving {
 				// }
 				// }
 
-				addCooldown(CoolDownTypes.BE_ATTACK, null, SceneGlobal.AI_BEATTACK_TIME);
+				//addCooldown(CoolDownTypes.BE_ATTACK, null, SceneGlobal.AI_BEATTACK_TIME);
 			}
 			if (getAiConfig() != null && getAiConfig().isRunAway()) {
 				return;

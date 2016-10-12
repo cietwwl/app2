@@ -16,7 +16,7 @@ public final class SoulMakeProto {
      * <code>required int32 state = 1;</code>
      *
      * <pre>
-     *状态：状态：0：未初始化 1:QTE提交 2：制作中 3：完成状态
+     *状态：状态：0：未初始化 1:QTE提交 2：制作中（未接受任务） 3：制作中（已接任务）  4：完成状态
      * </pre>
      */
     boolean hasState();
@@ -24,7 +24,7 @@ public final class SoulMakeProto {
      * <code>required int32 state = 1;</code>
      *
      * <pre>
-     *状态：状态：0：未初始化 1:QTE提交 2：制作中 3：完成状态
+     *状态：状态：0：未初始化 1:QTE提交 2：制作中（未接受任务） 3：制作中（已接任务）  4：完成状态
      * </pre>
      */
     int getState();
@@ -286,7 +286,7 @@ public final class SoulMakeProto {
      * <code>required int32 state = 1;</code>
      *
      * <pre>
-     *状态：状态：0：未初始化 1:QTE提交 2：制作中 3：完成状态
+     *状态：状态：0：未初始化 1:QTE提交 2：制作中（未接受任务） 3：制作中（已接任务）  4：完成状态
      * </pre>
      */
     public boolean hasState() {
@@ -296,7 +296,7 @@ public final class SoulMakeProto {
      * <code>required int32 state = 1;</code>
      *
      * <pre>
-     *状态：状态：0：未初始化 1:QTE提交 2：制作中 3：完成状态
+     *状态：状态：0：未初始化 1:QTE提交 2：制作中（未接受任务） 3：制作中（已接任务）  4：完成状态
      * </pre>
      */
     public int getState() {
@@ -881,7 +881,7 @@ public final class SoulMakeProto {
        * <code>required int32 state = 1;</code>
        *
        * <pre>
-       *状态：状态：0：未初始化 1:QTE提交 2：制作中 3：完成状态
+       *状态：状态：0：未初始化 1:QTE提交 2：制作中（未接受任务） 3：制作中（已接任务）  4：完成状态
        * </pre>
        */
       public boolean hasState() {
@@ -891,7 +891,7 @@ public final class SoulMakeProto {
        * <code>required int32 state = 1;</code>
        *
        * <pre>
-       *状态：状态：0：未初始化 1:QTE提交 2：制作中 3：完成状态
+       *状态：状态：0：未初始化 1:QTE提交 2：制作中（未接受任务） 3：制作中（已接任务）  4：完成状态
        * </pre>
        */
       public int getState() {
@@ -901,7 +901,7 @@ public final class SoulMakeProto {
        * <code>required int32 state = 1;</code>
        *
        * <pre>
-       *状态：状态：0：未初始化 1:QTE提交 2：制作中 3：完成状态
+       *状态：状态：0：未初始化 1:QTE提交 2：制作中（未接受任务） 3：制作中（已接任务）  4：完成状态
        * </pre>
        */
       public Builder setState(int value) {
@@ -914,7 +914,7 @@ public final class SoulMakeProto {
        * <code>required int32 state = 1;</code>
        *
        * <pre>
-       *状态：状态：0：未初始化 1:QTE提交 2：制作中 3：完成状态
+       *状态：状态：0：未初始化 1:QTE提交 2：制作中（未接受任务） 3：制作中（已接任务）  4：完成状态
        * </pre>
        */
       public Builder clearState() {

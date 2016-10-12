@@ -258,6 +258,27 @@ public class BasePlayer extends AbstractEvent {
 		return true;
 	}
 
+	/** 绑定仙玉与仙玉都能支付 */
+	public boolean consumeCommonCash(int count, int consumeType) {
+		if (count <= 0) {
+			return false;
+		}
+		int costCash = 0;
+		int costBind = 0;
+		if (playerInfo.getBindCash() < count) {
+			costCash = count - playerInfo.getBindCash();
+			costBind = playerInfo.getBindCash();
+		} else {
+			return consumeBindCash(count, consumeType);
+		}
+		if (playerInfo.getCash() < costCash) {
+			return false;
+		}
+		consumeBindCash(costBind, consumeType);
+		consumeCash(costCash, consumeType);
+		return true;
+	}
+
 	/**
 	 * 消耗仙玉
 	 * 
@@ -499,6 +520,58 @@ public class BasePlayer extends AbstractEvent {
 	}
 
 	/**
+	 * 更新修炼阶段
+	 * 
+	 * @param skillStage
+	 * @return
+	 */
+	public boolean updateSkillStage(int skillStage) {
+		beginChanges();
+		try {
+			if (commonLock.beginLock()) {
+				this.playerInfo.setSkillStage(skillStage);
+				this.playerInfo.setOp(Option.Update);
+			} else {
+				Log.error("playerId : " + getPlayerInfo().getPlayerId() + " skillStage Lock");
+				return false;
+			}
+		} catch (Exception e) {
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " skillStage:" + skillStage, e);
+			return false;
+		} finally {
+			commitChages(EnumAttr.SkillStage.getValue(), playerInfo.getSkillStage());
+			commonLock.commitLock();
+		}
+		return true;
+	}
+
+	/**
+	 * 更新境界阶段
+	 * 
+	 * @param state
+	 * @return
+	 */
+	public boolean updateStateLv(int stateLv) {
+		beginChanges();
+		try {
+			if (commonLock.beginLock()) {
+				this.playerInfo.setStateLv(stateLv);
+				this.playerInfo.setOp(Option.Update);
+			} else {
+				Log.error("playerId : " + getPlayerInfo().getPlayerId() + " stateLv Lock");
+				return false;
+			}
+		} catch (Exception e) {
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " stateLv:" + stateLv, e);
+			return false;
+		} finally {
+			commitChages(EnumAttr.State.getValue(), playerInfo.getSkillStage());
+			commonLock.commitLock();
+		}
+		return true;
+	}
+
+	/**
 	 * 更换当前出战法宝
 	 * 
 	 * @param magicwpId
@@ -584,7 +657,6 @@ public class BasePlayer extends AbstractEvent {
 			return false;
 		} finally {
 			commitChages(changeMap);
-
 			if (hasLevelUp) {
 				beginChanges();
 				commitSceneChange(EnumAttr.Level.getValue(), playerInfo.getLevel());
@@ -656,6 +728,45 @@ public class BasePlayer extends AbstractEvent {
 		} finally {
 			commitChages(EnumAttr.VIP_TEMPORARY.getValue(), this.playerInfo.getVipInterimTimeLimit().getTime() / 1000);
 		}
+		return true;
+	}
+
+	/**
+	 * 添加灵气
+	 */
+	public boolean addAvatarEnergy(int count, int addType) {
+		beginChanges();
+		try {
+			if (commonLock.beginLock()) {
+				this.playerInfo.setAvatarEnergy(playerInfo.getAvatarEnergy() + count);
+			} else {
+				Log.error("playerId : " + getPlayerInfo().getPlayerId() + " addAvatarEnergy Lock" + " count :" + count + "  addType:" + addType);
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
+		} finally {
+			commitChages(EnumAttr.AVATAR_ENERGY.getValue(), playerInfo.getAvatarEnergy());
+			commonLock.commitLock();
+		}
+		MonetaryLogHelper.addLog(playerInfo.getPlayerId(), playerInfo.getAvatarEnergy(), CurrencyItemType.AVATAR_ENERGY, addType, count);
+		return true;
+	}
+
+	/** 扣除灵气 */
+	public boolean consumeAvatarEnergy(int count) {
+		beginChanges();
+		try {
+			int left = playerInfo.getAvatarEnergy() - count;
+			this.playerInfo.setAvatarEnergy(left > 0 ? left : 0);
+		} catch (Exception e) {
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " consumeAvatarEnergy", e);
+			return false;
+		} finally {
+			commitChages(EnumAttr.AVATAR_ENERGY.getValue(), playerInfo.getBindCash());
+			commonLock.commitLock();
+		}
+		MonetaryLogHelper.addLog(playerInfo.getPlayerId(), playerInfo.getAvatarEnergy(), CurrencyItemType.AVATAR_ENERGY, -1, count);
 		return true;
 	}
 

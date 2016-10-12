@@ -87,7 +87,7 @@ public class GatewayLinkedSet {
 			LinkedClient linked = linkedEntry.getValue();
 			if (linked != null) {
 				linked.send(packet);
-				break;
+				return;
 			}
 		}
 	}

@@ -27,6 +27,7 @@ public interface BagType {
 	 */
 	public static final short	HeroEquipment	= 2;
 
+	
 	/** 数值背包 */
 	public static final short	VirtualValue	= 3;
 

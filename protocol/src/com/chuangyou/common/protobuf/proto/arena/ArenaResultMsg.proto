@@ -1,0 +1,6 @@
+option java_package = "com.chuangyou.common.protobuf.pb.arena";
+option java_outer_classname = "ArenaResultProto";
+message ArenaResultMsg{
+	optional int32 result = 1;//比赛结果
+	optional int64 opponent = 2;//对手
+ }

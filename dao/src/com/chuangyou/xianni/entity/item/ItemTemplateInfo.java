@@ -3,11 +3,21 @@ package com.chuangyou.xianni.entity.item;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 
 public class ItemTemplateInfo extends BaseProperty {
+	
+	/**
+	 * 虚拟物品
+	 */
+	public static final int TYPE_VIR = 1;
+	/**
+	 * 背包中实际的物品
+	 */
+	public static final int TYPE_BAG = 0;
+	
 	private int id;
 
 	private String name;
-	private int masterType; // 主类型
-	private int sonType; // 子类型
+	private int masterType; // 主类型   
+	private int sonType; // 子类型	
 
 	private int profession; // 1.成女2.成男 3.萝莉
 
@@ -99,6 +109,15 @@ public class ItemTemplateInfo extends BaseProperty {
 	 * 分解物品数量
 	 */
 	private int resolveCount;
+	
+	
+	/**
+	 * 是否是虚拟物品
+	 */
+	private int isVirtual;
+	
+	/** 是否能存入帮派仓库 0不能 1能 */
+	private byte saveGuild;
 
 	public int getId() {
 		return id;
@@ -474,6 +493,22 @@ public class ItemTemplateInfo extends BaseProperty {
 
 	public void setResolveCount(int resolveCount) {
 		this.resolveCount = resolveCount;
+	}
+
+	public int getIsVirtual() {
+		return isVirtual;
+	}
+
+	public void setIsVirtual(int isVirtual) {
+		this.isVirtual = isVirtual;
+	}
+
+	public byte getSaveGuild() {
+		return saveGuild;
+	}
+
+	public void setSaveGuild(byte saveGuild) {
+		this.saveGuild = saveGuild;
 	}
 
 }

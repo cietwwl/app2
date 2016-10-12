@@ -1,0 +1,12 @@
+//protocol=2616;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "RespProtectorLstProto";
+
+
+import "truck/TruckProtector.proto";
+
+//回应所有镖车的状态
+message RespProtectorLst {
+	required int64 truckLd = 1; //镖车ID
+	repeated TruckProtector protectors = 2; //护镖者列表
+}

@@ -12,9 +12,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import com.chuangyou.common.protobuf.pb.PlayerAttSnapProto.PlayerAttSnapMsg;
-import com.chuangyou.common.protobuf.pb.PlayerKillMonsterProto.PlayerKillMonsterMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLivingInfoMsg;
@@ -46,9 +44,7 @@ import com.chuangyou.xianni.cooldown.CoolDownTypes;
 import com.chuangyou.xianni.cooldown.obj.CoolDown;
 import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.entity.buffer.LivingStatusTemplateInfo;
-import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.entity.soul.SoulFuseSkillConfig;
-import com.chuangyou.xianni.exec.AbstractActionQueue;
 import com.chuangyou.xianni.exec.ThreadManager;
 import com.chuangyou.xianni.netty.GatewayLinkedSet;
 import com.chuangyou.xianni.proto.BroadcastUtil;
@@ -57,6 +53,7 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.RoleConstants;
 import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
+import com.chuangyou.xianni.role.helper.TruckerStateHelper;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.grid.Grid;
 import com.chuangyou.xianni.warfield.grid.GridCoord;
@@ -74,19 +71,21 @@ import com.chuangyou.xianni.world.WorldMgr;
  * @author Administrator
  *
  */
-public class Living extends AbstractActionQueue {
-	public static final int						ALIVE			= 0;				// 活着
-	public static final int						DIE				= 1;				// 死亡
-	public static final int						DISTORY			= 2;				// 移除
+public class Living extends LivingProperties {
+	public static final int						ALIVE					= 0;				// 活着
+	public static final int						DIE						= 1;				// 死亡
+	public static final int						DISTORY					= 2;				// 移除
 
 	/** 对象的生死 生/死 */
-	static final int							LIVING			= 1;
+	static final int							LIVING					= 1;
 	/** 对象作战状态 元魂/气血 */
-	static final int							FIGHT_STATU		= 2;
+	static final int							FIGHT_STATU				= 2;
 	/** 是否闪名 */
-	static final int							BATTLE_MODE		= 3;
+	static final int							BATTLE_MODE				= 3;
 	/** 陷阱行为 */
-	static final int							ACTION_STATU	= 4;
+	static final int							ACTION_STATU			= 4;
+	/** 合体状态 */
+	static final int							TRANSFIGURATION_STATU	= 5;
 
 	/// livingId
 	protected long								id;
@@ -101,61 +100,20 @@ public class Living extends AbstractActionQueue {
 
 	/// 简单用户信息
 	protected SimplePlayerInfo					simpleInfo;
-	protected int								job;								// 职业
-	protected int								initSoul;							// 初始血量
-	protected int								maxSoul;							// 最大血量
-	protected int								curSoul;							// 当前血量
-
-	protected int								initBlood;							// 初始气血(固定)
-	protected int								maxBlood;							// 最大气血(变动)
+	protected int								job;										// 职业
+	protected int								curSoul;									// 当前血量
 
 	/**
 	 * 气血效果 气血值=0 进入元魂状态，当脱离战斗状态或者气血恢复100%时脱离元魂状态
 	 * 受到所有的异常状态时间延长50%，造成的伤害提高10%，魂防-50% 回复的气血值暂时没有效果，直到脱离元魂状态
 	 * 离开战斗状态20秒后开始自动回复气血值 气血值>0 免疫硬直和浮空效果 战斗状态每10秒一次的自动回复气血
 	 **/
-	protected int								curBlood;							// 当前气血(变动)
+	protected int								curBlood;									// 当前气血(变动)
 
-	protected int								mana;								// 灵力
-
-	protected int								initAttack;							// 初始攻击
-	protected int								attack;								// 攻击
-	protected int								initDefence;						// 初始防御
-	protected int								defence;							// 防御
-	protected int								initSoulAttack;						// 初始魂攻
-	protected int								soulAttack;							// 魂攻
-	protected int								initSoulDefence;					// 初始魂防
-	protected int								soulDefence;						// 魂防
-	protected int								initAccurate;						// 初始命中
-	protected int								accurate;							// 命中
-	protected int								initDodge;							// 初始闪避
-	protected int								dodge;								// 闪避
-	protected int								initCrit;							// 初始暴击
-	protected int								crit;								// 暴击
-
-	protected int								critDefence;						// 抗暴
-	protected int								critAddtion;						// 暴击伤害
-	protected int								critCut;							// 抗暴减伤
-	protected int								attackAddtion;						// 气血伤害增加
-	protected int								attackCut;							// 气血伤害减免
-	protected int								soulAttackAddtion;					// 元魂伤害增加
-	protected int								soulAttackCut;						// 元魂伤害减免
-	protected int								regainSoul;							// 每10秒回魂
-	protected int								regainBlood;						// 每10秒回血
-	protected int								metal;								// 金
-	protected int								wood;								// 木
-	protected int								water;								// 水
-	protected int								fire;								// 火
-	protected int								earth;								// 土
-	protected int								metalDefence;						// 金抗
-	protected int								woodDefence;						// 木抗
-	protected int								waterDefence;						// 水抗
-	protected int								fireDefence;						// 火抗
-	protected int								earthDefence;						// 土抗
-	protected int								speed			= 600;				// 移动速度
-	protected int								pkVal;								// pk
-																					// 值
-	protected int								battleMode;							// 攻击模式
+	protected int								mana;										// 灵力
+	protected int								pkVal;										// pk
+																							// 值
+	protected int								battleMode;									// 攻击模式
 	// 进场保护,不可攻击
 	protected boolean							protection;
 
@@ -163,14 +121,14 @@ public class Living extends AbstractActionQueue {
 	protected int								livingState;
 
 	/** 战斗形态 :是否处于元魂状态 */
-	protected boolean							isSoulState		= false;
+	protected boolean							isSoulState				= false;
 
 	/** 是否处于战斗状态 */
-	protected boolean							fightState		= false;
+	protected boolean							fightState				= false;
 	/** 最后一次战斗时间 */
 	protected long								lastFightTm;
 	/** pk 值计算时间 */
-	private long								pkValCalTime	= 0;
+	private long								pkValCalTime			= 0;
 	/**
 	 * 位置
 	 */
@@ -178,12 +136,12 @@ public class Living extends AbstractActionQueue {
 	/**
 	 * 方向
 	 */
-	protected Vector3							dir				= Vector3.Zero();
+	protected Vector3							dir						= Vector3.Zero();
 
 	/**
 	 * 目标位置
 	 */
-	protected Vector3							targetPostion	= Vector3.Invalid;
+	protected Vector3							targetPostion			= Vector3.Invalid;
 
 	/**
 	 * 所在的场景
@@ -198,14 +156,11 @@ public class Living extends AbstractActionQueue {
 	protected PlayerAttSnapMsg.Builder			cacheAttSnapPacker;
 	/** 主动技能 */
 	protected Map<Integer, Skill>				drivingSkills;
-	/** 技能map type->skill */
-	protected Map<String, Skill>				mapSkill;
 
 	/** 被动技能带来的常驻buffer <execWay,<bufferId,buffer>> */
 	protected Map<Integer, List<Buffer>>		permanentBuffer;
 
 	/** 存活的临时buffer <execWay,<bufferId,buffer>> */
-
 	protected Map<Integer, List<Buffer>>		workBuffers;
 
 	/** 根据buffer类型存放工作buffer映射 */
@@ -216,6 +171,15 @@ public class Living extends AbstractActionQueue {
 
 	/** 状态管理器 */
 	protected Map<LivingState, AtomicInteger>	livingStatus;
+
+	/**
+	 * 运镖
+	 */
+	private TruckerStateHelper					truckHelper;
+
+	public TruckerStateHelper getTruckHelper() {
+		return truckHelper;
+	}
 
 	public HashMap<String, CoolDown> getCooldowns() {
 		return cooldowns;
@@ -240,6 +204,7 @@ public class Living extends AbstractActionQueue {
 	 * 魂幡值
 	 */
 	private long						soulExp;
+
 	/** cd对象 */
 	protected HashMap<String, CoolDown>	cooldowns	= new HashMap<String, CoolDown>();
 
@@ -258,7 +223,6 @@ public class Living extends AbstractActionQueue {
 	}
 
 	public void setPostion(Vector3 postion) {
-		// System.out.println("id = " + id + " setPosition --- " + postion);
 		this.postion = postion;
 	}
 
@@ -295,13 +259,14 @@ public class Living extends AbstractActionQueue {
 		this.armyId = armyId;
 		this.id = id;
 		this.drivingSkills = new HashMap<>();
-		this.mapSkill = new HashMap<>();
+		// this.mapSkill = new HashMap<>();
 		this.permanentBuffer = new ConcurrentHashMap<>();
 		this.workBuffers = new ConcurrentHashMap<>();
 		this.typeBuffers = new ConcurrentHashMap<>();
 		this.livingState = ALIVE;
 		this.postion = Vector3.Invalid;
 		this.allBuffers = new ConcurrentHashMap<>();
+		truckHelper = new TruckerStateHelper(this);
 		initState();
 	}
 
@@ -309,13 +274,14 @@ public class Living extends AbstractActionQueue {
 		super(ThreadManager.actionExecutor);
 		this.id = id;
 		this.drivingSkills = new HashMap<>();
-		this.mapSkill = new HashMap<>();
+		// this.mapSkill = new HashMap<>();
 		this.permanentBuffer = new ConcurrentHashMap<>();
 		this.workBuffers = new ConcurrentHashMap<>();
 		this.typeBuffers = new ConcurrentHashMap<>();
 		this.postion = Vector3.Invalid;
 		this.livingState = ALIVE;
 		this.allBuffers = new ConcurrentHashMap<>();
+		truckHelper = new TruckerStateHelper(this);
 		initState();
 
 	}
@@ -331,7 +297,21 @@ public class Living extends AbstractActionQueue {
 
 	/** 判断是否死亡 */
 	public boolean isDie() {
+		if (otherDamageCalWay()) {
+			return curBlood <= 0 || livingState == DIE || livingState == DISTORY;
+		}
 		return curSoul <= 0 || livingState == DIE || livingState == DISTORY;
+	}
+
+	/** 死亡规则：玩家元婴期以前，不计算魂血，魂伤扣气血 */
+	public boolean otherDamageCalWay() {
+		if (type != RoleType.player) {
+			return false;
+		}
+		if (simpleInfo == null) {
+			return false;
+		}
+		return simpleInfo.getStateLv() < 3;
 	}
 
 	/**
@@ -348,7 +328,6 @@ public class Living extends AbstractActionQueue {
 	 */
 	public void enterField(Field f) {
 		field = f;
-		// Log.error("enterField + livingId :"+ this.id +" "+ f);
 	}
 
 	/**
@@ -358,7 +337,6 @@ public class Living extends AbstractActionQueue {
 	 */
 	public void leaveField() {
 		field = null;
-
 	}
 
 	// living当前是否处于可行动状态
@@ -371,17 +349,8 @@ public class Living extends AbstractActionQueue {
 		return true;
 	}
 
-	// 是否具有该技能
-	public boolean hasSkillId(int skillId) {
-		return true;
-	}
-
 	// 获取技能
 	public Skill getSkill(int skillId) {
-		// SkillActionTemplateInfo tinfo = new SkillActionTemplateInfo();
-		// tinfo.setAttackType(1);
-		// tinfo.setTemplateId(100);
-		// tinfo.setAttackTimes(2);
 		return drivingSkills.get(skillId);
 	}
 
@@ -574,7 +543,7 @@ public class Living extends AbstractActionQueue {
 		this.readProperty(properties);
 
 		PlayerAttUpdateMsg.Builder msg = PlayerAttUpdateMsg.newBuilder();
-		msg.setPlayerId(this.getArmyId());
+		msg.setPlayerId(this.getId());
 		msg.addAtt(p);
 
 		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
@@ -617,7 +586,9 @@ public class Living extends AbstractActionQueue {
 						mbMsg.setType(EnumAttr.MAX_BLOOD.getValue());
 						mbMsg.setTotalPoint(newMaxB);
 						properties.add(mbMsg.build());
-						addCurBlood((int) add, DamageEffecterType.BLOOD, 0, 0);
+						if (maxBlood != 0) {
+							addCurBlood((int) add, DamageEffecterType.BLOOD, 0, 0);
+						}
 					}
 				}
 				// 设置最大元魂
@@ -631,12 +602,17 @@ public class Living extends AbstractActionQueue {
 						msMsg.setType(EnumAttr.MAX_SOUL.getValue());
 						msMsg.setTotalPoint(newMaxS);
 						properties.add(msMsg.build());
-						addCurSoul((int) add, DamageEffecterType.SOUL, 0, 0);
+						if (maxSoul != 0) {
+							addCurSoul((int) add, DamageEffecterType.SOUL, 0, 0);
+						}
 					}
 				}
 			}
 			for (PropertyMsg p : properties) {
 				EnumAttr attr = EnumAttr.getEnumAttrByValue(p.getType());
+				if (attr == null) {
+					continue;
+				}
 				setProperty(attr, p.getTotalPoint());
 			}
 		}
@@ -644,6 +620,7 @@ public class Living extends AbstractActionQueue {
 
 	/** 改变英雄属性值 */
 	public int takeDamage(Damage damage) {
+
 		DamageEffecter effecter = DamageEffecterFactory.effecterBuilder(damage);
 		effecter.exec(this, damage);
 		if (isDie()) {
@@ -671,18 +648,12 @@ public class Living extends AbstractActionQueue {
 			this.livingState = DIE;
 		}
 		clearWorkBuffer();
-		// sendChangeStatuMsg(LIVING, livingState);死亡状态不推，客户端自己判断
 		dieTime = System.currentTimeMillis();
 		return true;
 	}
 
 	public void addSkill(Skill skill) {
 		this.drivingSkills.put(skill.getSkillId(), skill);
-		SkillTempateInfo skillTempateInfo = skill.getSkillTempateInfo();
-		if (skillTempateInfo != null) {
-			String key = skillTempateInfo.getMasterType() + "_" + skillTempateInfo.getSonType() + "_" + skillTempateInfo.getGrandsonType();
-			this.mapSkill.put(key, skill);
-		}
 	}
 
 	/**
@@ -709,6 +680,7 @@ public class Living extends AbstractActionQueue {
 			cachBattleInfoPacket.setMagicWeaponId(simpleInfo.getMagicWeaponId());
 			cachBattleInfoPacket.setWingId(simpleInfo.getWingId());
 			cachBattleInfoPacket.setWeaponAwaken(simpleInfo.getWeaponAwaken());
+			cachBattleInfoPacket.setStateLv(simpleInfo.getStateLv());
 		} else {
 			cachBattleInfoPacket.setSkinId(getSkin());
 		}
@@ -740,7 +712,7 @@ public class Living extends AbstractActionQueue {
 		// cachBattleInfoPacket.addSkills(skill.getSkillId());
 		// }
 
-		for (Skill skill : mapSkill.values()) {
+		for (Skill skill : drivingSkills.values()) {
 			cachBattleInfoPacket.addSkills(skill.getSkillId());
 		}
 
@@ -771,6 +743,12 @@ public class Living extends AbstractActionQueue {
 		cacheAttSnapPacker.setSkinId(getSkin());
 		cacheAttSnapPacker.setPostion(Vector3BuilderHelper.build(getPostion()));
 		cacheAttSnapPacker.setTarget(Vector3BuilderHelper.build(getTargetPostion()));
+		cacheAttSnapPacker.setOwnerId(getArmyId());
+		if (this.getSimpleInfo() != null) {
+			cacheAttSnapPacker.setGuildId(this.getSimpleInfo().getGuildId());
+			cacheAttSnapPacker.setGuildName(this.getSimpleInfo().getGuildName());
+			cacheAttSnapPacker.setGuildJob(this.getSimpleInfo().getGuildJob());
+		}
 		if (node != null) {
 			cacheAttSnapPacker.setBornNodeId(node.getSpwanId());
 		}
@@ -862,26 +840,15 @@ public class Living extends AbstractActionQueue {
 		if (value < 0) {
 			value = 0;
 		}
+		if (attr.getValue() <= 29) {
+			setInitData(attr, (int) value);
+		}
 		switch (attr) {
 			case CUR_SOUL:
 				if (value > this.getMaxSoul()) {
 					value = this.getMaxSoul();
 				}
 				this.setCurSoul((int) value);
-				break;
-			case MAX_SOUL:
-				this.setMaxSoul((int) value);
-				break;
-			case SOUL:
-				this.setInitSoul((int) value);
-				refreshProperties(attr.getValue());
-				break;
-			case BLOOD:
-				this.setInitBlood((int) value);
-				refreshProperties(attr.getValue());
-				break;
-			case MAX_BLOOD:
-				this.setMaxBlood((int) value);
 				break;
 			case CUR_BLOOD:
 				if (value > this.getMaxBlood()) {
@@ -891,94 +858,6 @@ public class Living extends AbstractActionQueue {
 				break;
 			case MANA:
 				this.setMana((int) value);
-				break;
-			case ATTACK:
-				this.setInitAttack((int) value);
-				refreshProperties(attr.getValue());
-				break;
-			case DEFENCE:
-				this.setInitDefence((int) value);
-				refreshProperties(attr.getValue());
-				break;
-			case SOUL_ATTACK:
-				this.setInitSoulAttack((int) value);
-				refreshProperties(attr.getValue());
-				break;
-			case SOUL_DEFENCE:
-				this.setInitSoulDefence((int) value);
-				refreshProperties(attr.getValue());
-				break;
-			case ACCURATE:
-				this.setInitAccurate((int) value);
-				refreshProperties(attr.getValue());
-				break;
-			case DODGE:
-				this.setInitDodge((int) value);
-				refreshProperties(attr.getValue());
-				break;
-			case CRIT:
-				this.setInitCrit((int) value);
-				refreshProperties(attr.getValue());
-				break;
-			case CRIT_DEFENCE:
-				this.setCritDefence((int) value);
-				break;
-			case CRIT_ADDTION:
-				this.setCritAddtion((int) value);
-				break;
-			case CRIT_CUT:
-				this.setCritCut((int) value);
-				break;
-			case ATTACK_ADDTION:
-				this.setAttackAddtion((int) value);
-				break;
-			case ATTACK_CUT:
-				this.setAttackCut((int) value);
-				break;
-			case SOUL_ATTACK_ADDTION:
-				this.setSoulAttackAddtion((int) value);
-				break;
-			case SOUL_ATTACK_CUT:
-				this.setSoulAttackCut((int) value);
-				break;
-			case REGAIN_SOUL:
-				this.setRegainSoul((int) value);
-				break;
-			case REGAIN_BLOOD:
-				this.setRegainBlood((int) value);
-				break;
-			case METAL:
-				this.setMetal((int) value);
-				break;
-			case WOOD:
-				this.setWood((int) value);
-				break;
-			case WATER:
-				this.setWater((int) value);
-				break;
-			case FIRE:
-				this.setFire((int) value);
-				break;
-			case EARTH:
-				this.setEarth((int) value);
-				break;
-			case METAL_DEFENCE:
-				this.setMetalDefence((int) value);
-				break;
-			case WOOD_DEFENCE:
-				this.setWoodDefence((int) value);
-				break;
-			case WATER_DEFENCE:
-				this.setWaterDefence((int) value);
-				break;
-			case FIRE_DEFENCE:
-				this.setFireDefence((int) value);
-				break;
-			case EARTH_DEFENCE:
-				this.setEarthDefence((int) value);
-				break;
-			case SPEED:
-				this.setSpeed((int) value);
 				break;
 			case TEAM_ID:
 				this.setTeamId((int) value);
@@ -998,6 +877,10 @@ public class Living extends AbstractActionQueue {
 			default:
 				break;
 		}
+	}
+
+	public int getProperty(EnumAttr type) {
+		return getProperty(type.getValue());
 	}
 
 	public int getProperty(int type) {
@@ -1292,15 +1175,11 @@ public class Living extends AbstractActionQueue {
 				addValue += S2A.getResult(type);
 			}
 		}
-
-		// 更新终值
-		lastValue += addValue;
-		setBufferProperty(etype, lastValue);
-
+		setBufferProperty(etype, addValue);
 		PlayerAttUpdateMsg.Builder notifyMsg = PlayerAttUpdateMsg.newBuilder();
 		PropertyMsg.Builder speedMsg = PropertyMsg.newBuilder();
 		speedMsg.setType(etype.getValue());
-		speedMsg.setTotalPoint(lastValue);
+		speedMsg.setTotalPoint(getToalData(etype));
 		notifyMsg.addAtt(speedMsg);
 		notifyMsg.setPlayerId(getId());
 		// 通知附近玩家
@@ -1355,31 +1234,32 @@ public class Living extends AbstractActionQueue {
 			curBlood.setCalcType(DamageEffecterType.BLOOD);
 			damages.add(curBlood);
 			takeDamage(curBlood);
-			if (damages.size() > 0) {
-				DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
-				damagesPb.setAttackId(-1);
-				for (Damage d : damages) {
-					DamageMsg.Builder dmsg = DamageMsg.newBuilder();
-					d.writeProto(dmsg);
-					damagesPb.addDamages(dmsg);
-				}
-				Set<Long> players = getNears(new PlayerSelectorHelper(this));
-				// 添加自己
-				players.add(getArmyId());
-				for (Long armyId : players) {
-					ArmyProxy army = WorldMgr.getArmy(armyId);
-					if (army != null) {
-						PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
-						army.sendPbMessage(message);
-					}
+
+			if (damages.size() == 0) {
+				return;
+			}
+			DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
+			damagesPb.setAttackId(-1);
+			for (Damage d : damages) {
+				DamageMsg.Builder dmsg = DamageMsg.newBuilder();
+				d.writeProto(dmsg);
+				damagesPb.addDamages(dmsg);
+			}
+			Set<Long> players = getNears(new PlayerSelectorHelper(this));
+			// 添加自己
+			players.add(getArmyId());
+			for (Long armyId : players) {
+				ArmyProxy army = WorldMgr.getArmy(armyId);
+				if (army != null) {
+					PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
+					army.sendPbMessage(message);
 				}
 			}
 		}
-
 	}
 
 	public void calPkVal() {
-		if (this.getField().getFieldInfo().isBattle() && this.getPkVal() > 0) {
+		if (this.getField().getFieldInfo().getBattleType() == 1 && this.getPkVal() > 0) {
 			this.pkValCalTime = System.currentTimeMillis();
 			int changePkVal = MathUtils.randomClamp(1, 5);
 			changePkVal = this.getPkVal() - changePkVal < 0 ? 0 : this.getPkVal() - changePkVal;
@@ -1390,8 +1270,8 @@ public class Living extends AbstractActionQueue {
 
 			List<PropertyMsg> properties = new ArrayList<>();
 			PropertyMsg.Builder p = PropertyMsg.newBuilder();
-			p.setBasePoint((long) this.getPkVal());
-			p.setTotalPoint((long) this.getPkVal());
+			// p.setBasePoint(this.getPkVal());
+			p.setTotalPoint(this.getPkVal());
 			p.setType(EnumAttr.PK_VAL.getValue());
 			properties.add(p.build());
 			updateProperty(this, properties);
@@ -1431,7 +1311,7 @@ public class Living extends AbstractActionQueue {
 	}
 
 	public String toString() {
-		return "LivingId :" + this.getId() + "  armyId:" + armyId + " type:" + this.type;
+		return "LivingId :" + this.getId() + "  armyId:" + armyId + " type:" + this.type + this.simpleInfo;
 	}
 
 	public void sendChangeStatuMsg(int stateType, int stateValue) {
@@ -1449,8 +1329,6 @@ public class Living extends AbstractActionQueue {
 				army.sendPbMessage(message);
 			}
 		}
-		// BroadcastUtil.sendBroadcastPacket(nears,
-		// Protocol.U_LIVING_STATE_CHANGE, changeState.build());
 	}
 
 	public List<Buffer> imageBuffs() {
@@ -1466,27 +1344,29 @@ public class Living extends AbstractActionQueue {
 	 */
 	public Skill getAttackSkill() {
 		Skill skill = null;
-		if (this.drivingSkills.isEmpty())
+		if (this.drivingSkills.isEmpty()) {
 			return null;
-		// Integer[] keys = this.drivingSkills.keySet().toArray(new Integer[0]);
-		// Integer randomKey = MathUtils.randomClamp(0,
-		// this.drivingSkills.size() - 1);
-		// Integer key = keys[randomKey];
-		// skill = this.drivingSkills.get(key);
+		}
 		List<Map.Entry<Integer, Skill>> skills = new ArrayList<Map.Entry<Integer, Skill>>(this.drivingSkills.entrySet());
+
 		Collections.sort(skills, new Comparator<Map.Entry<Integer, Skill>>() {
 			public int compare(Map.Entry<Integer, Skill> o1, Map.Entry<Integer, Skill> o2) {
 				return (o2.getValue().getTemplateInfo().getCooldown() - o1.getValue().getTemplateInfo().getCooldown());
 			}
 		});
+
 		for (int i = 0; i < skills.size(); i++) {
-			if (isCooldowning(CoolDownTypes.SKILL, skills.get(i).getValue().getActionId() + "")) {
-				if (i == skills.size() - 1)
-					skill = skills.get(i).getValue();
-				continue;
+			if(!isCooldowning(CoolDownTypes.SKILL, skills.get(i).getValue().getActionId() + "")){
+				skill = skills.get(i).getValue();
+				break;
 			}
-			skill = skills.get(i).getValue();
-			break;
+			
+//			if (isCooldowning(CoolDownTypes.SKILL, skills.get(i).getValue().getActionId() + "") && (i == skills.size() - 1)) {
+//				skill = skills.get(i).getValue();
+//				continue;
+//			}
+//			skill = skills.get(i).getValue();
+//			break;
 		}
 		return skill;
 	}
@@ -1498,7 +1378,8 @@ public class Living extends AbstractActionQueue {
 			simpleAdd(newer);
 			return;
 		}
-		if (older.getOverlayWay() == BufferOverlayType.REPLACE && newer.getBufferInfo().getLevel() >= older.getBufferInfo().getLevel()) {
+		if ((older.getOverlayWay() == BufferOverlayType.REPLACE || older.getOverlayWay() == BufferOverlayType.SUPERIMPOSED_EFFECT)
+				&& newer.getBufferInfo().getLevel() > older.getBufferInfo().getLevel()) {
 			removeBuffer(older);
 			simpleAdd(newer);
 		}
@@ -1573,7 +1454,9 @@ public class Living extends AbstractActionQueue {
 		List<LivingState> affectedStates = temp.getAffected();
 		for (LivingState state : affectedStates) {
 			AtomicInteger value = livingStatus.get(state);
-			value.decrementAndGet();
+			if (value != null) {
+				value.decrementAndGet();
+			}
 		}
 	}
 
@@ -1637,17 +1520,7 @@ public class Living extends AbstractActionQueue {
 		// 查看冷却
 		if (cooldowns.containsKey(cooldownKey)) {
 			CoolDown cooldown = cooldowns.get(cooldownKey);
-			// if (this.getId() == 1000000000033L && type ==
-			// CoolDownTypes.SKILL)
-			// System.out.println("cooldownKey: "+cooldownKey +"
-			// cooldown.getDelay:"+cooldown.getDelay()+ "
-			// "+(System.currentTimeMillis() > cooldown.getStart() +
-			// cooldown.getDelay()));
-
 			if (System.currentTimeMillis() > cooldown.getStart() + cooldown.getDelay()) {
-				// 冷却时间已经结束
-				// obj.getCooldowns().remove(cooldownKey);
-				// cooldownPool.put(cooldown);
 				return false;
 			} else {
 				return true;
@@ -1693,6 +1566,12 @@ public class Living extends AbstractActionQueue {
 				army.sendPbMessage(message);
 			}
 		}
+	}
+
+	/** 满血 */
+	public void recovery() {
+		addCurBlood(lessBlood(), DamageEffecterType.BLOOD, 0, 0);
+		addCurSoul(lessSoul(), DamageEffecterType.SOUL, 0, 0);
 	}
 
 	public void addCurBlood(int addValue, int type, int fromType, long fromId) {
@@ -1760,46 +1639,11 @@ public class Living extends AbstractActionQueue {
 		}
 	}
 
-	/**
-	 * 通知
-	 * 
-	 * @param playerId
-	 * @param beKillerId
-	 *            被杀者
-	 */
-	public void notifyCenter(int type, int playerId, int beKillerId) {
-		PlayerKillMonsterMsg.Builder msg = PlayerKillMonsterMsg.newBuilder();
-		msg.setPlayerId(playerId);
-		msg.setMonsterTemplateId(beKillerId);
-		msg.setType(type);
-		PBMessage pkg = MessageUtil.buildMessage(Protocol.C_PLAYER_KILL_MONSTER, msg);
-		GatewayLinkedSet.send2Server(pkg);
-	}
-
 	public int getInitValue(EnumAttr type) {
-		switch (type) {
-			case BLOOD:
-				return initBlood;
-			case SOUL:
-				return initSoul;
-			case ATTACK:
-				return initAttack;
-			case DEFENCE:
-				return initDefence;
-			case SOUL_ATTACK:
-				return initSoulAttack;
-			case SOUL_DEFENCE:
-				return initSoulDefence;
-			case ACCURATE:
-				return initAccurate;
-			case DODGE:
-				return initDodge;
-			case CRIT:
-				return initCrit;
-			default:
-				Log.error("not suppot type :" + type.getValue());
-				return getProperty(type.getValue());
+		if (type.getValue() < 0 || type.getValue() > 29) {
+			return 0;
 		}
+		return getInitData(type);
 	}
 
 	public void setBufferProperty(EnumAttr attr, long value) {
@@ -1807,28 +1651,8 @@ public class Living extends AbstractActionQueue {
 		if (value < 0) {
 			value = 0;
 		}
-		switch (attr) {
-			case MAX_SOUL:
-				this.setMaxSoul((int) value);
-				break;
-			case MAX_BLOOD:
-				this.setMaxBlood((int) value);
-				break;
-			case ATTACK:
-				this.setAttack((int) value);
-				break;
-			case DEFENCE:
-				this.setDefence((int) value);
-				break;
-			case SOUL_ATTACK:
-				this.setSoulAttack((int) value);
-				break;
-			case SOUL_DEFENCE:
-				this.setSoulDefence((int) value);
-				break;
-			default:
-				break;
-		}
+
+		setBufferData(attr, (int) value);
 	}
 
 	public int getType() {
@@ -1840,219 +1664,111 @@ public class Living extends AbstractActionQueue {
 	}
 
 	public int getAttack() {
-		return attack;
-	}
-
-	public void setAttack(int attack) {
-		this.attack = attack;
+		return getToalData(EnumAttr.ATTACK);
 	}
 
 	public int getDefence() {
-		return defence;
-	}
-
-	public void setDefence(int defence) {
-		this.defence = defence;
+		return getToalData(EnumAttr.DEFENCE);
 	}
 
 	public int getSoulAttack() {
-		return soulAttack;
-	}
-
-	public void setSoulAttack(int soulAttack) {
-		this.soulAttack = soulAttack;
+		return getToalData(EnumAttr.SOUL_ATTACK);
 	}
 
 	public int getSoulDefence() {
-		return soulDefence;
-	}
-
-	public void setSoulDefence(int soulDefence) {
-		this.soulDefence = soulDefence;
+		return getToalData(EnumAttr.SOUL_DEFENCE);
 	}
 
 	public int getAccurate() {
-		return accurate;
-	}
-
-	public void setAccurate(int accurate) {
-		this.accurate = accurate;
+		return getToalData(EnumAttr.ACCURATE);
 	}
 
 	public int getDodge() {
-		return dodge;
-	}
-
-	public void setDodge(int dodge) {
-		this.dodge = dodge;
+		return getToalData(EnumAttr.DODGE);
 	}
 
 	public int getCrit() {
-		return crit;
-	}
-
-	public void setCrit(int crit) {
-		this.crit = crit;
+		return getToalData(EnumAttr.CRIT);
 	}
 
 	public int getCritDefence() {
-		return critDefence;
-	}
-
-	public void setCritDefence(int critDefence) {
-		this.critDefence = critDefence;
+		return getToalData(EnumAttr.CRIT_DEFENCE);
 	}
 
 	public int getCritAddtion() {
-		return critAddtion;
-	}
-
-	public void setCritAddtion(int critAddtion) {
-		this.critAddtion = critAddtion;
+		return getToalData(EnumAttr.CRIT_ADDTION);
 	}
 
 	public int getCritCut() {
-		return critCut;
-	}
-
-	public void setCritCut(int critCut) {
-		this.critCut = critCut;
+		return getToalData(EnumAttr.CRIT_CUT);
 	}
 
 	public int getAttackAddtion() {
-		return attackAddtion;
-	}
-
-	public void setAttackAddtion(int attackAddtion) {
-		this.attackAddtion = attackAddtion;
+		return getToalData(EnumAttr.ATTACK_ADDTION);
 	}
 
 	public int getAttackCut() {
-		return attackCut;
-	}
-
-	public void setAttackCut(int attackCut) {
-		this.attackCut = attackCut;
+		return getToalData(EnumAttr.ATTACK_CUT);
 	}
 
 	public int getSoulAttackAddtion() {
-		return soulAttackAddtion;
-	}
-
-	public void setSoulAttackAddtion(int soulAttackAddtion) {
-		this.soulAttackAddtion = soulAttackAddtion;
+		return getToalData(EnumAttr.SOUL_ATTACK_ADDTION);
 	}
 
 	public int getSoulAttackCut() {
-		return soulAttackCut;
-	}
-
-	public void setSoulAttackCut(int soulAttackCut) {
-		this.soulAttackCut = soulAttackCut;
+		return getToalData(EnumAttr.SOUL_ATTACK_CUT);
 	}
 
 	public int getRegainSoul() {
-		return regainSoul;
-	}
-
-	public void setRegainSoul(int regainSoul) {
-		this.regainSoul = regainSoul;
+		return getToalData(EnumAttr.REGAIN_SOUL);
 	}
 
 	public int getRegainBlood() {
-		return regainBlood;
-	}
-
-	public void setRegainBlood(int regainBlood) {
-		this.regainBlood = regainBlood;
+		return getToalData(EnumAttr.REGAIN_BLOOD);
 	}
 
 	public int getMetal() {
-		return metal;
-	}
-
-	public void setMetal(int metal) {
-		this.metal = metal;
+		return getToalData(EnumAttr.METAL);
 	}
 
 	public int getWood() {
-		return wood;
-	}
-
-	public void setWood(int wood) {
-		this.wood = wood;
+		return getToalData(EnumAttr.WOOD);
 	}
 
 	public int getWater() {
-		return water;
-	}
-
-	public void setWater(int water) {
-		this.water = water;
+		return getToalData(EnumAttr.WATER);
 	}
 
 	public int getFire() {
-		return fire;
-	}
-
-	public void setFire(int fire) {
-		this.fire = fire;
+		return getToalData(EnumAttr.FIRE);
 	}
 
 	public int getEarth() {
-		return earth;
-	}
-
-	public void setEarth(int earth) {
-		this.earth = earth;
+		return getToalData(EnumAttr.EARTH);
 	}
 
 	public int getMetalDefence() {
-		return metalDefence;
-	}
-
-	public void setMetalDefence(int metalDefence) {
-		this.metalDefence = metalDefence;
+		return getToalData(EnumAttr.METAL_DEFENCE);
 	}
 
 	public int getWoodDefence() {
-		return woodDefence;
-	}
-
-	public void setWoodDefence(int woodDefence) {
-		this.woodDefence = woodDefence;
+		return getToalData(EnumAttr.WOOD_DEFENCE);
 	}
 
 	public int getWaterDefence() {
-		return waterDefence;
-	}
-
-	public void setWaterDefence(int waterDefence) {
-		this.waterDefence = waterDefence;
+		return getToalData(EnumAttr.WATER_DEFENCE);
 	}
 
 	public int getFireDefence() {
-		return fireDefence;
-	}
-
-	public void setFireDefence(int fireDefence) {
-		this.fireDefence = fireDefence;
+		return getToalData(EnumAttr.FIRE_DEFENCE);
 	}
 
 	public int getEarthDefence() {
-		return earthDefence;
-	}
-
-	public void setEarthDefence(int earthDefence) {
-		this.earthDefence = earthDefence;
+		return getToalData(EnumAttr.EARTH_DEFENCE);
 	}
 
 	public int getSpeed() {
-		return this.speed;
-	}
-
-	public void setSpeed(int speed) {
-		this.speed = speed;
+		return getToalData(EnumAttr.SPEED);
 	}
 
 	public void setField(Field field) {
@@ -2060,15 +1776,11 @@ public class Living extends AbstractActionQueue {
 	}
 
 	public int getInitSoul() {
-		return initSoul;
+		return getInitData(EnumAttr.SOUL);
 	}
 
 	public int getMaxSoul() {
-		return maxSoul;
-	}
-
-	public void setMaxSoul(int maxSoul) {
-		this.maxSoul = maxSoul;
+		return getToalData(EnumAttr.SOUL);
 	}
 
 	public int getCurSoul() {
@@ -2080,19 +1792,11 @@ public class Living extends AbstractActionQueue {
 	}
 
 	public int getInitBlood() {
-		return initBlood;
-	}
-
-	public void setInitBlood(int initBlood) {
-		this.initBlood = initBlood;
+		return getInitData(EnumAttr.BLOOD);
 	}
 
 	public int getMaxBlood() {
-		return maxBlood;
-	}
-
-	public void setMaxBlood(int maxBlood) {
-		this.maxBlood = maxBlood;
+		return getToalData(EnumAttr.BLOOD);
 	}
 
 	public int getCurBlood() {
@@ -2116,10 +1820,6 @@ public class Living extends AbstractActionQueue {
 
 	public void setDrivingSkills(Map<Integer, Skill> drivingSkills) {
 		this.drivingSkills = drivingSkills;
-	}
-
-	public void setInitSoul(int initSoul) {
-		this.initSoul = initSoul;
 	}
 
 	public boolean isPlayer() {
@@ -2166,22 +1866,6 @@ public class Living extends AbstractActionQueue {
 		this.restoreTime = restoreTime;
 	}
 
-	public void setInitAttack(int initAttack) {
-		this.initAttack = initAttack;
-	}
-
-	public void setInitDefence(int initDefence) {
-		this.initDefence = initDefence;
-	}
-
-	public void setInitSoulAttack(int initSoulAttack) {
-		this.initSoulAttack = initSoulAttack;
-	}
-
-	public void setInitSoulDefence(int initSoulDefence) {
-		this.initSoulDefence = initSoulDefence;
-	}
-
 	public int getMana() {
 		return mana;
 	}
@@ -2194,24 +1878,14 @@ public class Living extends AbstractActionQueue {
 		return false;
 	}
 
-	public void setInitAccurate(int initAccurate) {
-		this.initAccurate = initAccurate;
-	}
-
-	public void setInitDodge(int initDodge) {
-		this.initDodge = initDodge;
-	}
-
-	public void setInitCrit(int initCrit) {
-		this.initCrit = initCrit;
-	}
-
 	public boolean costMana(int count) {
 		if (this.mana >= count) {
 			this.mana = this.mana - count;
 
 			ArmyProxy army = WorldMgr.getArmy(this.getArmyId());
-			army.notifyMana();
+			if (army != null) {
+				army.notifyMana();
+			}
 			return true;
 		} else {
 			return false;
@@ -2224,7 +1898,7 @@ public class Living extends AbstractActionQueue {
 		cachBattleInfoPacket = null;
 		cacheAttSnapPacker = null;
 		drivingSkills.clear();
-		mapSkill.clear();
+		// mapSkill.clear();
 		permanentBuffer.clear();
 		workBuffers.clear();
 		allBuffers.clear();
@@ -2244,4 +1918,5 @@ public class Living extends AbstractActionQueue {
 	protected void notityState(LivingState state) {
 
 	}
+
 }

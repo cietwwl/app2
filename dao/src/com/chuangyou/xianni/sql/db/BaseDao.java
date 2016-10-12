@@ -158,6 +158,39 @@ public abstract class BaseDao {
 		return result;
 	}
 
+	/**
+	 * 执行带参数存储过程
+	 * @param procName
+	 * @param params
+	 * @return
+	 */
+	protected boolean runProcePrepared(String procName, Map<Integer, DbParameter> params) {
+		DbWatch watch = new DbWatch();
+		boolean result = false;
+		Connection conn = openConn();
+		watch.getPool();
+		if (conn == null) {
+			watch.commit(procName);
+			return result;
+		}
+		String sql = ProcedureName(procName, params.size());
+		PreparedStatement statement = null;
+		try {
+			statement = conn.prepareStatement(sql);
+			prepareCommand(statement, params);
+			statement.execute();
+			result = true;
+		} catch (SQLException e) {
+			String msg = String.format("批处理执行存储过程%s出错", procName);
+			Log.error(msg, e);
+			result = false;
+		} finally {
+			closeConn(conn, statement);
+			watch.commit(procName);
+		}
+		return result;
+	}
+	
 	protected int execCountQuery(String sql, Map<Integer, DbParameter> params) {
 		DbWatch watch = new DbWatch();
 		int result = -1;
@@ -303,7 +336,7 @@ public abstract class BaseDao {
 				+ orderString + limitString + ";";
 		return sqlString;
 	}
-
+	
 	private String ProcedureName(String procName, int paraCount) {
 		int paramCount = paraCount; // 参数个数
 		String questionMark = ""; // 存放问号的字符串. 如?或?,?...

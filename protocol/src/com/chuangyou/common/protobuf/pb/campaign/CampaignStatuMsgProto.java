@@ -96,6 +96,40 @@ public final class CampaignStatuMsgProto {
      * </pre>
      */
     int getTaskId();
+
+    /**
+     * <code>optional int64 playerId = 6;</code>
+     *
+     * <pre>
+     *成员ID
+     * </pre>
+     */
+    boolean hasPlayerId();
+    /**
+     * <code>optional int64 playerId = 6;</code>
+     *
+     * <pre>
+     *成员ID
+     * </pre>
+     */
+    long getPlayerId();
+
+    /**
+     * <code>optional int32 isIn = 7;</code>
+     *
+     * <pre>
+     *在副本内还是在副本外
+     * </pre>
+     */
+    boolean hasIsIn();
+    /**
+     * <code>optional int32 isIn = 7;</code>
+     *
+     * <pre>
+     *在副本内还是在副本外
+     * </pre>
+     */
+    int getIsIn();
   }
   /**
    * Protobuf type {@code CampaignStatuMsg}
@@ -172,6 +206,16 @@ public final class CampaignStatuMsgProto {
             case 40: {
               bitField0_ |= 0x00000010;
               taskId_ = input.readInt32();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              playerId_ = input.readInt64();
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000040;
+              isIn_ = input.readInt32();
               break;
             }
           }
@@ -329,12 +373,60 @@ public final class CampaignStatuMsgProto {
       return taskId_;
     }
 
+    public static final int PLAYERID_FIELD_NUMBER = 6;
+    private long playerId_;
+    /**
+     * <code>optional int64 playerId = 6;</code>
+     *
+     * <pre>
+     *成员ID
+     * </pre>
+     */
+    public boolean hasPlayerId() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional int64 playerId = 6;</code>
+     *
+     * <pre>
+     *成员ID
+     * </pre>
+     */
+    public long getPlayerId() {
+      return playerId_;
+    }
+
+    public static final int ISIN_FIELD_NUMBER = 7;
+    private int isIn_;
+    /**
+     * <code>optional int32 isIn = 7;</code>
+     *
+     * <pre>
+     *在副本内还是在副本外
+     * </pre>
+     */
+    public boolean hasIsIn() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional int32 isIn = 7;</code>
+     *
+     * <pre>
+     *在副本内还是在副本外
+     * </pre>
+     */
+    public int getIsIn() {
+      return isIn_;
+    }
+
     private void initFields() {
       indexId_ = 0;
       tempId_ = 0;
       statu_ = 0;
       teamId_ = 0;
       taskId_ = 0;
+      playerId_ = 0L;
+      isIn_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -364,6 +456,12 @@ public final class CampaignStatuMsgProto {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeInt32(5, taskId_);
       }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeInt64(6, playerId_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeInt32(7, isIn_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -392,6 +490,14 @@ public final class CampaignStatuMsgProto {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(5, taskId_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(6, playerId_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(7, isIn_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -520,6 +626,10 @@ public final class CampaignStatuMsgProto {
         bitField0_ = (bitField0_ & ~0x00000008);
         taskId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
+        playerId_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        isIn_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -568,6 +678,14 @@ public final class CampaignStatuMsgProto {
           to_bitField0_ |= 0x00000010;
         }
         result.taskId_ = taskId_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.playerId_ = playerId_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.isIn_ = isIn_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -598,6 +716,12 @@ public final class CampaignStatuMsgProto {
         }
         if (other.hasTaskId()) {
           setTaskId(other.getTaskId());
+        }
+        if (other.hasPlayerId()) {
+          setPlayerId(other.getPlayerId());
+        }
+        if (other.hasIsIn()) {
+          setIsIn(other.getIsIn());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -866,6 +990,102 @@ public final class CampaignStatuMsgProto {
         return this;
       }
 
+      private long playerId_ ;
+      /**
+       * <code>optional int64 playerId = 6;</code>
+       *
+       * <pre>
+       *成员ID
+       * </pre>
+       */
+      public boolean hasPlayerId() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional int64 playerId = 6;</code>
+       *
+       * <pre>
+       *成员ID
+       * </pre>
+       */
+      public long getPlayerId() {
+        return playerId_;
+      }
+      /**
+       * <code>optional int64 playerId = 6;</code>
+       *
+       * <pre>
+       *成员ID
+       * </pre>
+       */
+      public Builder setPlayerId(long value) {
+        bitField0_ |= 0x00000020;
+        playerId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 playerId = 6;</code>
+       *
+       * <pre>
+       *成员ID
+       * </pre>
+       */
+      public Builder clearPlayerId() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        playerId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int isIn_ ;
+      /**
+       * <code>optional int32 isIn = 7;</code>
+       *
+       * <pre>
+       *在副本内还是在副本外
+       * </pre>
+       */
+      public boolean hasIsIn() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional int32 isIn = 7;</code>
+       *
+       * <pre>
+       *在副本内还是在副本外
+       * </pre>
+       */
+      public int getIsIn() {
+        return isIn_;
+      }
+      /**
+       * <code>optional int32 isIn = 7;</code>
+       *
+       * <pre>
+       *在副本内还是在副本外
+       * </pre>
+       */
+      public Builder setIsIn(int value) {
+        bitField0_ |= 0x00000040;
+        isIn_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 isIn = 7;</code>
+       *
+       * <pre>
+       *在副本内还是在副本外
+       * </pre>
+       */
+      public Builder clearIsIn() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        isIn_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:CampaignStatuMsg)
     }
 
@@ -891,11 +1111,12 @@ public final class CampaignStatuMsgProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\026CampaignStatuMsg.proto\"b\n\020CampaignStat" +
-      "uMsg\022\017\n\007indexId\030\001 \001(\005\022\016\n\006tempId\030\002 \001(\005\022\r\n" +
-      "\005statu\030\003 \001(\005\022\016\n\006teamId\030\004 \001(\005\022\016\n\006taskId\030\005" +
-      " \001(\005BB\n)com.chuangyou.common.protobuf.pb" +
-      ".campaignB\025CampaignStatuMsgProto"
+      "\n\026CampaignStatuMsg.proto\"\202\001\n\020CampaignSta" +
+      "tuMsg\022\017\n\007indexId\030\001 \001(\005\022\016\n\006tempId\030\002 \001(\005\022\r" +
+      "\n\005statu\030\003 \001(\005\022\016\n\006teamId\030\004 \001(\005\022\016\n\006taskId\030" +
+      "\005 \001(\005\022\020\n\010playerId\030\006 \001(\003\022\014\n\004isIn\030\007 \001(\005BB\n" +
+      ")com.chuangyou.common.protobuf.pb.campai" +
+      "gnB\025CampaignStatuMsgProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -914,7 +1135,7 @@ public final class CampaignStatuMsgProto {
     internal_static_CampaignStatuMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_CampaignStatuMsg_descriptor,
-        new java.lang.String[] { "IndexId", "TempId", "Statu", "TeamId", "TaskId", });
+        new java.lang.String[] { "IndexId", "TempId", "Statu", "TeamId", "TaskId", "PlayerId", "IsIn", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

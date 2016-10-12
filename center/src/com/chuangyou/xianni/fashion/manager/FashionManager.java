@@ -8,6 +8,7 @@ import com.chuangyou.common.protobuf.pb.fashion.FashionBeanProto.FashionBeanMsg;
 import com.chuangyou.common.protobuf.pb.fashion.FashionUpdateRespProto.FashionUpdateRespMsg;
 import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.bag.BaseItem;
+import com.chuangyou.xianni.bag.ItemManager;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
@@ -18,6 +19,7 @@ import com.chuangyou.xianni.entity.fashion.FashionInfo;
 import com.chuangyou.xianni.entity.fashion.FashionLevelCfg;
 import com.chuangyou.xianni.entity.fashion.FashionQualityCfg;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
+import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
 import com.chuangyou.xianni.fashion.template.FashionTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -37,15 +39,19 @@ public class FashionManager {
 	}
 	/** 返回时装类型 */
 	public static int getFashionType(FashionInfo fashion) {
-		return fashion.getFashionId() / 10000;
+		ItemTemplateInfo tempInfo = ItemManager.findItemTempInfo(fashion.getFashionId());
+		if(tempInfo == null){
+			return 0;
+		}
+		return tempInfo.getSonType();
 	}
 	private static int getFashionAtt(FashionInfo fashion) {
 		switch (getFashionType(fashion)) {
-		case EquipConstant.EquipType.fashion_weapon:
+		case EquipConstant.FashionType.WEAPON:
 			return EnumAttr.Weapon.getValue();
-		case EquipConstant.EquipType.fashion_clothe:
+		case EquipConstant.FashionType.CLOTHE:
 			return EnumAttr.Clothes.getValue();
-		case EquipConstant.EquipType.fashion_cape:
+		case EquipConstant.FashionType.CAPE:
 			return EnumAttr.BeiShi.getValue();
 		}
 		return 0;
@@ -71,13 +77,13 @@ public class FashionManager {
 			player.getBasePlayer().commitChages(getFashionAtt(fashion), fashion.getFashionId());
 		}else{
 			int fashionType = getFashionType(fashion);
-			if(fashionType == EquipConstant.EquipType.fashion_cape){
+			if(fashionType == EquipConstant.FashionType.CAPE){
 				player.getBasePlayer().commitChages(EnumAttr.BeiShi.getValue(), 0);
-			}else if(fashionType == EquipConstant.EquipType.fashion_clothe){
+			}else if(fashionType == EquipConstant.FashionType.CLOTHE){
 				BaseItem item = player.getBagInventory().getHeroEquipmentBag().getItemByPos(EquipConstant.EquipPosition.bodyPosition);
 	    		int equipId = item != null?item.getTemplateId():0;
 	    		player.getBasePlayer().commitChages(EnumAttr.Clothes.getValue(), equipId);
-			}else if(fashionType == EquipConstant.EquipType.fashion_weapon){
+			}else if(fashionType == EquipConstant.FashionType.WEAPON){
 				BaseItem item = player.getBagInventory().getHeroEquipmentBag().getItemByPos(EquipConstant.EquipPosition.weaponPosition);
 	    		int equipId = item != null? item.getTemplateId():0;
 	    		player.getBasePlayer().commitChages(EnumAttr.Weapon.getValue(), equipId);

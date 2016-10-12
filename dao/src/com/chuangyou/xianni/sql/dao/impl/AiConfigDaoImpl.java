@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.entity.spawn.AiConfig;
 import com.chuangyou.xianni.sql.dao.AiConfigDao;
 import com.chuangyou.xianni.sql.db.BaseDao;
@@ -51,8 +52,7 @@ public class AiConfigDaoImpl extends BaseDao implements AiConfigDao {
 				}
 			} catch (SQLException e) {
 				list.clear();
-				System.out.println("执行出错" + sqlText);
-				System.out.println(e);
+				Log.error("执行出错" + sqlText);
 			} finally {
 				closeConn(pstmt, rs);
 			}

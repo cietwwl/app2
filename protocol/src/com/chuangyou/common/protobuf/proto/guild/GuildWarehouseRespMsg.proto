@@ -1,0 +1,13 @@
+//protocol=169;
+option java_package = "com.chuangyou.common.protobuf.pb.guild";
+option java_outer_classname = "GuildWarehouseRespProto";
+
+import "guild/GuildWarehouseItemInfoMsg.proto";
+
+//帮派仓库操作回复
+message GuildWarehouseRespMsg{
+	optional int32 action = 1; // 操作功能号(1获取库存信息 2存入物品 3分配物品)
+	optional int32 result = 2; // 操作结果(暂时没用)
+	optional int32 flag = 3; // 分包标记 0第一个包 1中间包 2最后一个包
+	repeated GuildWarehouseItemInfoMsg item = 4; // 操作影响到的物品信息
+}

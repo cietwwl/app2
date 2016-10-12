@@ -13,6 +13,8 @@ public class SpawnInfo {
 
 	private int		bound_z;						// z轴
 
+	private int		angle;							// 面向
+
 	private Vector3	position	= new Vector3();	// 出生点
 
 	private int		initStatu;						// 初始节点状态
@@ -22,6 +24,7 @@ public class SpawnInfo {
 
 	private int[]	nextSpawanIdAttr;				// 后置节点集
 
+	private int		progress;						// 进度
 	private int		wakeType;						// 激活下一个节点类型 0 默认为
 													// 节点结束激活下一个，1 节点开始即调用
 
@@ -341,6 +344,22 @@ public class SpawnInfo {
 
 	public void setWakeType(int wakeType) {
 		this.wakeType = wakeType;
+	}
+
+	public int getProgress() {
+		return progress;
+	}
+
+	public void setProgress(int progress) {
+		this.progress = progress;
+	}
+
+	public int getAngle() {
+		return angle;
+	}
+
+	public void setAngle(int angle) {
+		this.angle = angle;
 	}
 
 }

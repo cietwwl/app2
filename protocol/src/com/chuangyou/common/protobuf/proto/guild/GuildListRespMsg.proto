@@ -1,0 +1,11 @@
+//protocol=161;
+option java_package = "com.chuangyou.common.protobuf.pb.guild";
+option java_outer_classname = "GuildListRespProto";
+
+import "guild/GuildSnapMsg.proto";
+
+//全服帮派列表
+message GuildListRespMsg{
+	optional int32 flag = 1; // 分包标记(0第一个包 1中间包 2最后一个包)
+	repeated GuildSnapMsg guild = 2; // 帮派信息
+}

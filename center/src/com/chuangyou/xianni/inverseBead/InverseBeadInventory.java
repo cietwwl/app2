@@ -33,12 +33,14 @@ public class InverseBeadInventory extends AbstractEvent implements IInventory {
 	public static final int					auraId					= 6130011;					// 灵气液id
 
 	private GamePlayer						player;
-	private Map<String, PlayerInverseBead>	playerInverseBeadList	= null;
+	private Map<Integer, PlayerInverseBead>	playerInverseBeadList	= null;
 	private static List<Integer>			beadRefreshIdList		= new ArrayList<Integer>();	// 怪物池
 
 	public InverseBeadInventory(GamePlayer player) {
 		this.player = player;
 
+	}
+	public void load(){
 		InverseBeadLoopAction action = new InverseBeadLoopAction(player, player.getActionQueue(), beadRefreshIdList, true);
 		player.getActionQueue().enqueue(action);
 	}
@@ -58,7 +60,7 @@ public class InverseBeadInventory extends AbstractEvent implements IInventory {
 	@Override
 	public boolean saveToDatabase() {
 		if (playerInverseBeadList != null && playerInverseBeadList.size() > 0) {
-			for (Entry<String, PlayerInverseBead> iterable : playerInverseBeadList.entrySet()) {
+			for (Entry<Integer, PlayerInverseBead> iterable : playerInverseBeadList.entrySet()) {
 				PlayerInverseBead info = iterable.getValue();
 				short option = info.getOp();
 				if (option == Option.Insert) {
@@ -71,7 +73,7 @@ public class InverseBeadInventory extends AbstractEvent implements IInventory {
 		return true;
 	}
 
-	public Map<String, PlayerInverseBead> getInverseBead() {
+	public Map<Integer, PlayerInverseBead> getInverseBead() {
 		return playerInverseBeadList;
 	}
 
@@ -97,7 +99,7 @@ public class InverseBeadInventory extends AbstractEvent implements IInventory {
 	public boolean addOrUpdate(PlayerInverseBead playerInverseBead) {
 		if (playerInverseBead.getPlayerId() != player.getPlayerId())
 			return false;
-		String key = playerInverseBead.getFiveElements() + "_" + playerInverseBead.getMarking();
+		Integer key = playerInverseBead.getFiveElements();
 		if (playerInverseBeadList.containsKey(key)) {
 			playerInverseBead.setOp(Option.Update);
 		} else {
@@ -107,15 +109,15 @@ public class InverseBeadInventory extends AbstractEvent implements IInventory {
 		return true;
 	}
 
-	public PlayerInverseBead get(int fiveElements, int marking) {
-		String key = fiveElements + "_" + marking;
+	public PlayerInverseBead get(int fiveElements) {
+		Integer key = fiveElements;
 		PlayerInverseBead playerInverseBead = null;
 		playerInverseBead = this.playerInverseBeadList.get(key);
 		if (playerInverseBead == null) {
 			playerInverseBead = new PlayerInverseBead();
 			playerInverseBead.setPlayerId(player.getPlayerId());
 			playerInverseBead.setFiveElements(fiveElements);
-			playerInverseBead.setMarking(marking);
+			playerInverseBead.setMarking(1);
 			playerInverseBead.setStage(0);
 			playerInverseBead.setVal(0);
 			playerInverseBead.setAttVal(0);
@@ -137,7 +139,7 @@ public class InverseBeadInventory extends AbstractEvent implements IInventory {
 
 	// 获取天逆珠总属性
 	public void getTotalPro(BaseProperty proData, BaseProperty proPer) {
-		for (Entry<String, PlayerInverseBead> entry : playerInverseBeadList.entrySet()) {
+		for (Entry<Integer, PlayerInverseBead> entry : playerInverseBeadList.entrySet()) {
 			PlayerInverseBead inverseBead = entry.getValue();
 			int fiveElements = inverseBead.getFiveElements();
 			int attVal = inverseBead.getAttVal();

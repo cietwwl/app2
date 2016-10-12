@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.chuangyou.common.protobuf.pb.PlayerLeaveGridProto.PlayerLeaveGridMsg;
+import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.manager.SceneManagers;
@@ -45,9 +46,7 @@ public class UpdatePositionAction {// extends DelayAction {
 
 	// @Override
 	public void exe() {
-
 		if (!activeLiving.isArrial()) {
-			// System.out.println("---------------------------------------------------------------------------");
 			long moveTime = System.currentTimeMillis() - this.activeLiving.getMoveCounter();
 			Vector3 target = MathUtils.GetVector3InDistance(activeLiving.getPostion(), activeLiving.getGoal(), getStep(activeLiving.getSpeed() / 100, (int) moveTime));
 			// System.out.println(activeLiving.getPostion() + " - " +
@@ -60,7 +59,6 @@ public class UpdatePositionAction {// extends DelayAction {
 				// setUpdate();
 				return;
 			}
-
 			// if (activeLiving.getId() == 1000000000001l) {
 			// System.out.println(System.currentTimeMillis() + "---- moveTime:"
 			// + moveTime);
@@ -74,6 +72,10 @@ public class UpdatePositionAction {// extends DelayAction {
 				setPostion(target, playerSelector);
 			}
 			autoAddHatred();
+		} else if (activeLiving instanceof Monster) {
+			if (((Monster) activeLiving).getMonsterInfo().getSeekEnemyRange() == 0) {
+				autoAddHatred();
+			}
 		}
 		this.activeLiving.setMoveCounter(System.currentTimeMillis());
 		// setUpdate();
@@ -92,6 +94,10 @@ public class UpdatePositionAction {// extends DelayAction {
 	 */
 	protected void setPostion(Vector3 cur, Selector selector) {
 		Field f = this.activeLiving.getField();
+		if (f == null) {
+			Log.error("setPostion but f is null");
+			return;
+		}
 		GridItem curGI = f.getGrid().getGridItem(this.activeLiving.getPostion());
 		GridItem tarGI = f.getGrid().getGridItem(cur);
 		if (curGI == null || tarGI == null) {

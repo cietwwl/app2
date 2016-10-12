@@ -33,13 +33,13 @@ public class PlayerManager {
 		if (basePlayer.getPlayerJoinInfo().getOp() == Option.Update) {
 			playerDao.updateJoinInfo(basePlayer.getPlayerJoinInfo());
 		}
-		//
-		// if(basePlayer.getPlayerTimeInfo().getOp() == Option.Insert){
-		// playerDao.addTimeInfo(basePlayer.getPlayerTimeInfo());
-		// }
-		// if(basePlayer.getPlayerTimeInfo().getOp() == Option.Update){
-		// playerDao.updateTimeInfo(basePlayer.getPlayerTimeInfo());
-		// }
+
+		if (basePlayer.getPlayerTimeInfo().getOp() == Option.Insert) {
+			playerDao.addTimeInfo(basePlayer.getPlayerTimeInfo());
+		}
+		if (basePlayer.getPlayerTimeInfo().getOp() == Option.Update) {
+			playerDao.updateTimeInfo(basePlayer.getPlayerTimeInfo());
+		}
 		return true;
 	}
 
@@ -54,15 +54,17 @@ public class PlayerManager {
 	 */
 	public static BaseProperty getTempProperty(GamePlayer player) {
 		BasePlayer basePlayer = player.getBasePlayer();
-		
+
 		return getPlayerBaseProperty(basePlayer.getPlayerInfo().getLevel());
 	}
+
 	/**
 	 * 根据等级获取基本属性
+	 * 
 	 * @param level
 	 * @return
 	 */
-	public static BaseProperty getPlayerBaseProperty(int level){
+	public static BaseProperty getPlayerBaseProperty(int level) {
 		BaseProperty baseProperty = new BaseProperty();
 		baseProperty.setSoul(20 + level * 50);
 		baseProperty.setBlood(125 + level * 100);
@@ -73,17 +75,17 @@ public class PlayerManager {
 		baseProperty.setSpeed(600);
 		return baseProperty;
 	}
-	
+
 	/**
 	 * 
 	 * @param nickName
 	 * @return
 	 */
-	public static short nickNameCheck(String nickName){
-		//长度判断
+	public static short nickNameCheck(String nickName) {
+		// 长度判断
 		try {
 			int len = nickName.getBytes("utf-8").length;
-			if(len>21 || len == 0){
+			if (len > 21 || len == 0) {
 				return NickNameCheckResult.LENGTH_LIMIT;
 			}
 		} catch (UnsupportedEncodingException e) {
@@ -91,14 +93,14 @@ public class PlayerManager {
 			e.printStackTrace();
 			Log.error(e);
 		}
-		
-		//非法字符判断
+
+		// 非法字符判断
 		String checkName = SensitivewordFilterUtil.getIntence().replaceSensitiveWord(nickName);
-		if(!checkName.equals(nickName)){
+		if (!checkName.equals(nickName)) {
 			return NickNameCheckResult.ILLEGAL_CHARACTER;
 		}
-		
-		//是否存在
+
+		// 是否存在
 		List<PlayerInfo> playerInfos = DBManager.getPlayerInfoDao().getByNickName(nickName);
 		if (playerInfos != null && playerInfos.size() > 0) {
 			return NickNameCheckResult.NAME_EXIST;

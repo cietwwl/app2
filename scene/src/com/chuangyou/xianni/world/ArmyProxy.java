@@ -1,5 +1,8 @@
 package com.chuangyou.xianni.world;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg;
@@ -7,8 +10,10 @@ import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
 import com.chuangyou.common.protobuf.pb.army.ArmyInfoReloadMsgProto.ArmyInfoReloadMsg;
 import com.chuangyou.common.protobuf.pb.army.PetInfoProto.PetInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
+import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerManaUpdateProto.PlayerManaUpdateMsg;
+import com.chuangyou.common.protobuf.pb.player.PlayerSomeThingUpdateProto.PlayerSomeThingUpdateMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.campaign.Campaign;
@@ -25,6 +30,7 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.CenterProtocol;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
+import com.chuangyou.xianni.role.objects.Avatar;
 import com.chuangyou.xianni.role.objects.Pet;
 import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.team.NotifyHelper;
@@ -39,23 +45,24 @@ import io.netty.channel.Channel;
  * 部队代理
  */
 public class ArmyProxy extends AbstractActionQueue {
-	private CmdTaskQueue	cmdTaskQueue;
-	private long			playerId;		// 用户ID
-	private String			site;			// 站点（跨服用）
-	private Channel			channel;		// 连接器
-	private int				fieldId;		// 地图ID，用户退出，回写到center
+	private CmdTaskQueue				cmdTaskQueue;
+	private long						playerId;						// 用户ID
+	private String						site;							// 站点（跨服用）
+	private Channel						channel;						// 连接器
+	private int							fieldId;						// 地图ID，用户退出，回写到center
 	// private Vector3 position; // 主角位置，用户退出，回写到center
 
-	private Player			player;			// 英雄
-	private Pet				pet;			// 宠物
+	private Player						player;							// 英雄
+	private Pet							pet;							// 宠物
+	private Map<Integer, RobotInfoMsg>	avatarDatas;					// 分身数据
 
-	public ArmyProxy(long playerId, String site, Channel channel, SimplePlayerInfo simplePlayerInfo, Player hero, Pet pet) {
+	private List<Avatar>				avatars	= new ArrayList<>();	// 分身
+
+	public ArmyProxy(long playerId, String site, Channel channel, SimplePlayerInfo simplePlayerInfo) {
 		super(ThreadManager.actionExecutor);
 		this.playerId = playerId;
 		this.site = site;
 		this.channel = channel;
-		this.player = hero;
-		this.pet = pet;
 		this.cmdTaskQueue = new AbstractCmdTaskQueue(ThreadManager.cmdExecutor);
 	}
 
@@ -75,6 +82,9 @@ public class ArmyProxy extends AbstractActionQueue {
 		try {
 			channel.write(packet);
 			channel.flush();
+			if (packet.getCode() == Protocol.U_BATTLE_RESULT) {
+				System.out.println("packet.getPlayerId() = " + packet.getPlayerId());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -111,6 +121,16 @@ public class ArmyProxy extends AbstractActionQueue {
 			pet.setProtection(true);
 			field.enterField(pet);
 		}
+	}
+
+	// 添加分身
+	public void addAvatar(Avatar avatar) {
+		avatars.add(avatar);
+	}
+
+	// 获取玩家分身
+	public List<Avatar> getAvatars() {
+		return avatars;
 	}
 
 	/**
@@ -181,30 +201,51 @@ public class ArmyProxy extends AbstractActionQueue {
 				}
 			}
 		}
-
 	}
-	
-	public void notifyMana(){
-		//总值回写给center
+
+	public void notifyMana() {
+		// 总值回写给center
 		PlayerManaUpdateMsg.Builder msg = PlayerManaUpdateMsg.newBuilder();
 		msg.setMana(this.getPlayer().getMana());
 		PBMessage p = MessageUtil.buildMessage(Protocol.C_PLAYER_MANA_WRITEBACK, msg);
 		this.sendPbMessage(p);
-		
+
 		PlayerAttUpdateMsg.Builder resp = PlayerAttUpdateMsg.newBuilder();
 		resp.setPlayerId(this.getPlayerId());
 		PropertyMsg.Builder propertyMsg = PropertyMsg.newBuilder();
 		propertyMsg.setType(EnumAttr.MANA.getValue());
 		propertyMsg.setTotalPoint(this.getPlayer().getMana());
 		resp.addAtt(propertyMsg);
-		
-		//通知自己
+
+		// 通知自己
 		PBMessage selfPkg = MessageUtil.buildMessage(Protocol.U_RESP_PLAYER_ATT_UPDATE, resp);
 		this.sendPbMessage(selfPkg);
-		
+
 		// 通知附近玩家
 		Set<Long> nears = this.getPlayer().getNears(new PlayerSelectorHelper(this.getPlayer()));
 		NotifyNearHelper.notifyAttrChange(this, nears, resp.build());
+	}
+
+	// 仙气改变
+	public void notifyAvatarEnergy(int cost) {
+
+		PlayerAttUpdateMsg.Builder resp = PlayerAttUpdateMsg.newBuilder();
+		resp.setPlayerId(this.getPlayerId());
+		PropertyMsg.Builder propertyMsg = PropertyMsg.newBuilder();
+		propertyMsg.setType(EnumAttr.AVATAR_ENERGY.getValue());
+		propertyMsg.setTotalPoint(this.getPlayer().getAvatarEnergy());
+		resp.addAtt(propertyMsg);
+		// 通知自己
+		PBMessage selfPkg = MessageUtil.buildMessage(Protocol.U_RESP_PLAYER_ATT_UPDATE, resp);
+		this.sendPbMessage(selfPkg);
+
+		if (cost != 0) {
+			// 消费值回写给center
+			PlayerSomeThingUpdateMsg.Builder msg = PlayerSomeThingUpdateMsg.newBuilder();
+			msg.setCount(cost);
+			PBMessage p = MessageUtil.buildMessage(Protocol.C_AVATAR_ENERGY_COST, msg);
+			this.sendPbMessage(p);
+		}
 	}
 
 	private static final EnumAttr[] reloadAttrs = { EnumAttr.CUR_SOUL, EnumAttr.CUR_BLOOD, EnumAttr.MANA };
@@ -252,6 +293,14 @@ public class ArmyProxy extends AbstractActionQueue {
 			if (pet != null) {
 				pet.destory();
 			}
+		}
+	}
+
+	/** 加载分身数据 */
+	public void loadAvatarData(List<RobotInfoMsg> datas) {
+		avatarDatas.clear();
+		for (RobotInfoMsg data : datas) {
+			avatarDatas.put(data.getSimpInfo().getSkinId(), data);
 		}
 	}
 

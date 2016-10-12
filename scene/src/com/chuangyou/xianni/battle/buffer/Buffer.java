@@ -354,7 +354,13 @@ public abstract class Buffer {
 	}
 
 	public void addPressedNum(int count) {
+		if (bufferInfo.getPressedNum() == 0) {
+			return;
+		}
 		this.pressedNum += count;
+		if (pressedNum > bufferInfo.getPressedNum()) {
+			pressedNum = bufferInfo.getPressedNum();
+		}
 	}
 
 	/** 获取伤害计算类型 */

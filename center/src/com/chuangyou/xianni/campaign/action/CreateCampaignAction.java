@@ -1,5 +1,8 @@
 package com.chuangyou.xianni.campaign.action;
 
+import java.util.List;
+
+import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CampaignResponeMsgProto.CampaignResponeMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CreateCampaignMsgProto.CreateCampaignMsg;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
@@ -14,18 +17,20 @@ import com.chuangyou.xianni.protocol.Protocol;
 
 public class CreateCampaignAction extends Action {
 	GamePlayer			player;
-	CreateCampaignMsg	cmsg;
+	int					campaignId;
+	int					taskId;
 	static final int	count	= 3;
 
-	public CreateCampaignAction(GamePlayer player, CreateCampaignMsg cmsg) {
+	public CreateCampaignAction(GamePlayer player, int campaignId, int taskId) {
 		super(player.getActionQueue());
 		this.player = player;
-		this.cmsg = cmsg;
+		this.campaignId = campaignId;
+		this.taskId = taskId;
 	}
 
 	@Override
 	public void execute() {
-		CampaignTemplateInfo temp = CampaignTempMgr.getTempInfo(cmsg.getCampaign());
+		CampaignTemplateInfo temp = CampaignTempMgr.getTempInfo(campaignId);
 		int rspCode = CampaignRspCode.SUCCESS;
 		if (temp == null) {
 			rspCode = CampaignRspCode.TEMP_NOT_EXISTS;
@@ -40,7 +45,10 @@ public class CreateCampaignAction extends Action {
 		if (costItem(temp) == false) {
 			rspCode = CampaignRspCode.ITEM_NOT_ENOUGHT;
 		}
-
+		// 如果在副本内，不允许创建副本
+		if (player.getCurCampaign() != 0) {
+		//	rspCode = CampaignRspCode.ALREAD_IN_CAMPAIGN;
+		}
 		if (rspCode != CampaignRspCode.SUCCESS) {
 			CampaignResponeMsg.Builder rsp = CampaignResponeMsg.newBuilder();
 			rsp.setRspCode(rspCode);
@@ -48,9 +56,16 @@ public class CreateCampaignAction extends Action {
 			player.sendPbMessage(pbMessage);
 			return;
 		}
-
+		CreateCampaignMsg.Builder builder = CreateCampaignMsg.newBuilder();
+		builder.setCampaign(campaignId);
+		builder.setTaskId(taskId);
+		// 添加分身信息,取三个
+		List<RobotInfoMsg> robots = player.getAvatarInventory().getRandomAvatarMsg(3);
+		if (robots != null) {
+			builder.addAllAvatars(robots);
+		}
 		// 通知scence服务器，用户请求创建副本
-		PBMessage c2s = MessageUtil.buildMessage(Protocol.S_CREATE_CAMPAIGN, cmsg);
+		PBMessage c2s = MessageUtil.buildMessage(Protocol.S_CREATE_CAMPAIGN, builder);
 		player.sendPbMessage(c2s);
 	}
 

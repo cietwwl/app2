@@ -2,9 +2,32 @@ package com.chuangyou.xianni.skill;
 
 import com.chuangyou.xianni.army.Living;
 import com.chuangyou.xianni.entity.property.BaseProperty;
+import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.skill.template.SimpleProperty;
+import com.chuangyou.xianni.skill.template.SkillTempMgr;
 
 public class SkillUtil {
+	
+	public static void getSkillProperty(BaseProperty skillData, BaseProperty skillPer, int skillId){
+		SkillTempateInfo skillInfo = SkillTempMgr.getSkillTemp(skillId);// 技能配置
+		if (skillInfo != null) {
+			String propertyIds = skillInfo.getPropertyIds();
+			if (propertyIds != null) {
+				for (String str : propertyIds.split(",")) {
+					if (str.trim().equals("")) {
+						continue;
+					}
+					SimpleProperty property = SkillUtil.readPro(Integer.valueOf(str));
+					if (property.isPre()) {
+						SkillUtil.joinPro(skillPer, property.getType(), property.getValue());
+					} else {
+						SkillUtil.joinPro(skillData, property.getType(), property.getValue());
+					}
+
+				}
+			}
+		}
+	}
 
 	/** 解析属性 */
 	public static SimpleProperty readPro(int pro) {
@@ -81,10 +104,10 @@ public class SkillUtil {
 				temp.addCritCut(val);
 				break;
 			case Living.BLOOD_ATTACK_ADDTION:
-				temp.addBloodAttackAddtion(val);
+				temp.addAttackAddtion(val);
 				break;
 			case Living.BLOOD_ATTACK_CUT:
-				temp.addBloodAttackCut(val);
+				temp.addAttackCut(val);
 				break;
 			case Living.SOUL_ATTACK_ADDTION:
 				temp.addSoulAttackAddtion(val);
@@ -176,10 +199,10 @@ public class SkillUtil {
 				temp.setCritCut(val);
 				break;
 			case Living.BLOOD_ATTACK_ADDTION:
-				temp.setBloodAttackAddtion(val);
+				temp.setAttackAddtion(val);
 				break;
 			case Living.BLOOD_ATTACK_CUT:
-				temp.setBloodAttackCut(val);
+				temp.setAttackCut(val);
 				break;
 			case Living.SOUL_ATTACK_ADDTION:
 				temp.setSoulAttackAddtion(val);

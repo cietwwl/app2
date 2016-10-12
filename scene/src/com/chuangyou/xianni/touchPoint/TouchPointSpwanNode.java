@@ -67,7 +67,6 @@ public class TouchPointSpwanNode extends SpwanNode {
 		} else {
 			Log.error("-------------npcInfo.getScriptId()-------------" + npcInfo.getScriptId());
 		}
-
 	}
 
 	//

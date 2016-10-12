@@ -15,13 +15,17 @@ public class SoulMake extends DataObject {
 	 */
 	public static final int STATE_QTE = 1;
 	/**
+	 * 制作进行中
+	 */
+	public static final int STATE_MAKE_ING = 2;
+	/**
 	 * 任务进行中
 	 */
-	public static final int STATE_ING = 2;
+	public static final int STATE_TASK_ING = 3;
 	/**
 	 * 任务已经完成
 	 */
-	public static final int STATE_COMPLETE = 3;
+	public static final int STATE_COMPLETE = 4;
 	
 	private long playerId;
 	private int state;

@@ -304,11 +304,9 @@ public class Team extends AbstractEvent implements Comparable<Team> {
 		if (ready) {
 			this.teamStatu = GOING;
 			TeamTargetTemplate target = TeamTargetTempMgr.get(targetId);
-
+			
 			if (target.getTargetType() == 2 && leader != null) {// 类型2 副本
-				CreateCampaignMsg.Builder ccmsg = CreateCampaignMsg.newBuilder();
-				ccmsg.setCampaign(target.getTarget());
-				CreateCampaignDelayAction action = new CreateCampaignDelayAction(TeamMgr.getActionQueue(), this, ccmsg.build(), 3000);
+				CreateCampaignDelayAction action = new CreateCampaignDelayAction(TeamMgr.getActionQueue(), this, target.getTarget(), 3000);
 				TeamMgr.getActionQueue().getActionQueue().enDelayQueue(action);
 			}
 		}

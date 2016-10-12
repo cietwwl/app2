@@ -1,0 +1,8 @@
+option java_package = "com.chuangyou.common.protobuf.pb.campaign";
+option java_outer_classname = "Create1V1PvPCampaignProto";
+message Create1V1PvPCampaignMsg{
+	optional int64 	redId = 1;  //红方ID
+	optional int64 	blueId = 2; //蓝色方ID
+	
+}
+

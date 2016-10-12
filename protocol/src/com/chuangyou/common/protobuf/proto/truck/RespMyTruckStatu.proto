@@ -1,0 +1,13 @@
+//protocol=2614;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "RespMyTruckStatuProto";
+
+import "player/PostionMsg.proto";
+
+//回应所有镖车的状态
+message RespMyTruckStatu {
+	optional int32 statu = 1; //运镖状态 0.无状态 1.运镖中 2.护镖中 3.劫镖中
+	optional int64 id = 2; //镖车ID	
+	optional int32 nextCheckPoint = 3; //下一个路点位置
+	optional PostionMsg postionMsg = 4; //当前位置
+}

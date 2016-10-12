@@ -13,7 +13,7 @@ public class PlayerJoinInfo extends BaseProperty {
 
 	/** 当前魔法 */
 	private int		curBlood;
-	
+
 	/** 灵力 */
 	private int		mana;
 
@@ -51,5 +51,4 @@ public class PlayerJoinInfo extends BaseProperty {
 		setOp(Option.Update);
 		this.mana = mana;
 	}
-
 }

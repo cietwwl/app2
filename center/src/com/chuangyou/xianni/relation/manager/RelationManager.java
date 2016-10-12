@@ -12,6 +12,10 @@ public class RelationManager {
 	
 	private ConcurrentHashMap<String, RelationInfo> relationMap = new ConcurrentHashMap<>();
 	
+	private RelationManager(){
+		
+	}
+	
 	public static RelationManager getIns(){
 		return _ins;
 	}

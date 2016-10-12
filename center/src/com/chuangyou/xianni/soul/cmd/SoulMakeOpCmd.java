@@ -7,6 +7,7 @@ import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
+import com.chuangyou.xianni.soul.logic.make.AcceptMakeTaskLogic;
 import com.chuangyou.xianni.soul.logic.make.CompleteMakeLogic;
 import com.chuangyou.xianni.soul.logic.make.ISoulMakeLogic;
 import com.chuangyou.xianni.soul.logic.make.QTEMakeLogic;
@@ -21,7 +22,7 @@ public class SoulMakeOpCmd extends AbstractCommand {
 		// TODO Auto-generated method stub
 		MakeSoulReqMsg req = MakeSoulReqMsg.parseFrom(packet.getBytes());
 		int op = req.getOp();
-		int index = 0;
+		int index = player.getSoulInventory().getSoulMake().getMakeIndex();
 		int qte = 0;
 		if (req.hasIndex()) {
 			index = req.getIndex();
@@ -39,9 +40,12 @@ public class SoulMakeOpCmd extends AbstractCommand {
 				logic = new StartMakeLogic(op, index, player);
 				break;
 			case 3:
-				logic = new CompleteMakeLogic(op, index, player);
+				logic = new AcceptMakeTaskLogic(op, index, player);
 				break;
 			case 4:
+				logic = new CompleteMakeLogic(op, index, player);
+				break;
+			case 5:
 				logic = new ReMakeLogic(op, index, player);
 				break;
 		}

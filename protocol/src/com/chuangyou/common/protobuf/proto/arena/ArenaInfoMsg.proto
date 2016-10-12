@@ -1,0 +1,15 @@
+//622;
+option java_package = "com.chuangyou.common.protobuf.pb.arena";
+option java_outer_classname = "ArenaInfoMsgProto";
+import "arena/ArenaOpponentMsg.proto";
+message ArenaInfoMsg{
+	optional int64  playerId= 1; //挑战者
+	optional int32  challengeCount = 2; //已经挑战的次数
+	optional int32  winCount= 3; //胜场
+	optional int64  freshTime=4; //刷新时间
+	optional int32  reward1= 5; //胜场1奖励  1为领取 0 未领取
+	optional int32  reward4= 6; //胜场4奖励
+	optional int32  reward6= 7; //胜场7奖励
+	repeated ArenaOpponentMsg opponenterInfos=9;//对手信息
+ }
+

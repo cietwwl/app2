@@ -21,21 +21,6 @@ public class UpdatePlayerCmd extends AbstractCommand {
 			Player player = pArmy.getPlayer();
 			player.updateHeroInfo(msg);
 		}
-
-		// PlayerAttUpdateMsg req = PlayerAttUpdateMsg.parseFrom(packet.getBytes());
-		// // 改变属性的玩家
-		// ArmyProxy pArmy = WorldMgr.getArmy(req.getPlayerId());
-		// if (pArmy != null) {
-		// // 修改玩家属性
-		// List<PropertyMsg> attList = req.getAttList();
-		// pArmy.getPlayer().updataProperty(attList);
-		// // 通知自己
-		// PBMessage selfPkg = MessageUtil.buildMessage(Protocol.U_RESP_PLAYER_ATT_UPDATE, req);
-		// army.sendPbMessage(selfPkg);
-		// } else {
-		//
-		// }
-
 	}
 
 }

@@ -12,9 +12,12 @@ public class CommonDamageEffecter implements DamageEffecter {
 	public Damage exec(Living target, Damage damage) {
 		int value = damage.getDamageValue();
 		// 当对象为元魂态时，直接扣元魂
-		if (target.isSoulState()) {
+		if (target.isSoulState() && !target.otherDamageCalWay()) {
 			// 转换伤害类型
 			damage.setDamageType(DamageType.CUR_SOUL);
+		}
+		if (target.otherDamageCalWay()) {
+			damage.setDamageType(DamageType.CUR_BLOOD);
 		}
 		// 初始元魂
 		int oldValue = target.getProperty(damage.getDamageType());

@@ -1,0 +1,9 @@
+option java_package = "com.chuangyou.common.protobuf.pb.arena";
+option java_outer_classname = "ArenaOpponentProto";
+import "player/PlayerSimpleInfoMsg.proto";
+message ArenaOpponentMsg {
+	optional int32 index = 1;
+	optional int32 result = 2; //0 未挑战  1 战胜
+	optional PlayerSimpleInfoMsg playerSimpInfo = 3; //用户信息
+}
+

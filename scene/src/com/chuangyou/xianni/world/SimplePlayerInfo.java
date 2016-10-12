@@ -4,31 +4,37 @@ import java.util.List;
 
 import com.chuangyou.common.protobuf.pb.PlayerInfoMsgProto.PlayerInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
+import com.chuangyou.common.protobuf.pb.player.PlayerGuildInfoProto.PlayerGuildInfoMsg;
 import com.chuangyou.xianni.constant.EnumAttr;
 
 /**
  * 玩家信息
  */
 public class SimplePlayerInfo {
-	private long playerId;		// 角色ID
-	private long userId;			// 用户ID
-	private String nickName;		// 用户昵称
-	private int level;			// 等级
-	private long exp;			// 当前经验
-	private long toalExp;		// 总经验g
-	private long money;			// 金币
-	private int bindCash;		// 绑定仙玉
-	private int vipLevel;		// VIP等级
-	private int fight;			// 战斗力
-	private int skinId;			// 皮肤
-	private int fashionId;		// 时装ID
-	private int weaponId;		// 武器ID
-	private int mountId;		// 坐骑ID
-	private int magicWeaponId;	// 法宝ID
-	private int wingId;			// 翅膀ID
+	private long	playerId;		// 角色ID
+	private long	userId;			// 用户ID
+	private String	nickName;		// 用户昵称
+	private int		level;			// 等级
+	private long	exp;			// 当前经验
+	private long	toalExp;		// 总经验g
+	private long	money;			// 金币
+	private int		bindCash;		// 绑定仙玉
+	private int		vipLevel;		// VIP等级
+	private int		fight;			// 战斗力
+	private int		skinId;			// 皮肤
+	private int		fashionId;		// 时装ID
+	private int		weaponId;		// 武器ID
+	private int		mountId;		// 坐骑ID
+	private int		magicWeaponId;	// 法宝ID
+	private int		wingId;			// 翅膀ID
 	// private int battleMode; // 战斗模式
 	// private int pkVal; // pk值
-	private int weaponAwaken;	//武器觉醒等级
+	private int		weaponAwaken;	// 武器觉醒等级
+	private int		stateLv;		// 境界值
+
+	private int		guildId;		// 所在帮派ID
+	private String	guildName;		// 所在帮派名字
+	private int		guildJob;		// 在帮派里的职位
 
 	public void writeProto(PlayerInfoMsg.Builder proto) {
 		proto.setPlayerId(this.getPlayerId());
@@ -48,6 +54,11 @@ public class SimplePlayerInfo {
 		proto.setMagicWeaponId(this.getMagicWeaponId());
 		proto.setWingId(this.getWingId());
 		proto.setWeaponAwaken(this.getWeaponAwaken());
+		proto.setGuildId(this.getGuildId());
+		proto.setGuildName(this.getGuildName());
+		proto.setGuildJob(this.getGuildJob());
+		proto.setStateLv(this.getStateLv());
+
 	}
 
 	public void readProto(PlayerInfoMsg proto) {
@@ -68,6 +79,23 @@ public class SimplePlayerInfo {
 		this.setMagicWeaponId(proto.getMagicWeaponId());
 		this.setWingId(proto.getWingId());
 		this.setWeaponAwaken(proto.getWeaponAwaken());
+		this.setGuildId(proto.getGuildId());
+		this.setGuildName(proto.getGuildName());
+		this.setGuildJob(proto.getGuildJob());
+		this.setStateLv(proto.getStateLv());
+	}
+
+	public void writeGuildProto(PlayerGuildInfoMsg.Builder proto) {
+		proto.setPlayerId(this.getPlayerId());
+		proto.setGuildId(this.getGuildId());
+		proto.setGuildName(this.getGuildName());
+		proto.setGuildJob(this.getGuildJob());
+	}
+
+	public void readGuildProto(PlayerGuildInfoMsg proto) {
+		this.setGuildId(proto.getGuildId());
+		this.setGuildName(proto.getGuildName());
+		this.setGuildJob(proto.getGuildJob());
 	}
 
 	public long getPlayerId() {
@@ -198,13 +226,36 @@ public class SimplePlayerInfo {
 		this.wingId = wingId;
 	}
 
-
 	public int getWeaponAwaken() {
 		return weaponAwaken;
 	}
 
 	public void setWeaponAwaken(int weaponAwaken) {
 		this.weaponAwaken = weaponAwaken;
+	}
+
+	public int getGuildId() {
+		return guildId;
+	}
+
+	public void setGuildId(int guildId) {
+		this.guildId = guildId;
+	}
+
+	public String getGuildName() {
+		return guildName;
+	}
+
+	public void setGuildName(String guildName) {
+		this.guildName = guildName;
+	}
+
+	public int getGuildJob() {
+		return guildJob;
+	}
+
+	public void setGuildJob(int guildJob) {
+		this.guildJob = guildJob;
 	}
 
 	public void readProperty(List<PropertyMsg> properties) {
@@ -244,11 +295,22 @@ public class SimplePlayerInfo {
 				this.setWingId((int) value);
 				break;
 			case WEAPON_AWAKEN:
-				this.setWeaponAwaken((int)value);
+				this.setWeaponAwaken((int) value);
+				break;
+			case State:
+				this.setStateLv((int) value);
 				break;
 			default:
 				break;
 		}
+	}
+
+	public int getStateLv() {
+		return stateLv;
+	}
+
+	public void setStateLv(int stateLv) {
+		this.stateLv = stateLv;
 	}
 
 }

@@ -56,13 +56,9 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 	@Override
 	public void start() {
 		super.start();
-		System.err.println("spwanInfo :" + spwanInfo.getTagId());
-		if(!(curCount < spwanInfo.getMaxCount() && (toalCount < spwanInfo.getToalCount() || spwanInfo.getToalCount() <= 0))){
-			System.out.println("--------------------------------curCount: "+curCount+" spwanInfo :" + spwanInfo.getTagId());
-		}
-		
+		// System.err.println("spwanInfo :" + spwanInfo.getTagId());
+
 		while (curCount < spwanInfo.getMaxCount() && (toalCount < spwanInfo.getToalCount() || spwanInfo.getToalCount() <= 0)) {
-			System.out.println("---------curCount: "+curCount+" spwanInfo :" + spwanInfo.getTagId());
 			curCount++;
 			createChildren();
 		}
@@ -79,7 +75,6 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 				if (((spwanInfo.getToalCount() == 0 || toalCount < spwanInfo.getToalCount()) && curCount < spwanInfo.getMaxCount())) {
 					field.enDelayQueue(new CreateChildAction());
 					curCount++;
-					System.out.println("---------&&&curCount: "+curCount+" spwanInfo :" + spwanInfo.getTagId());
 				}
 			}
 		}
@@ -116,6 +111,7 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 		} else {
 			Log.error(spwanInfo.getId() + "----" + spwanInfo.getEntityId() + " 在MonsterInfo里面未找到配置");
 		}
+		System.out.println("monster:" + monster + "  skinId :" + monster.getSkin());
 
 		// 添加副本挑战任务buff
 		Campaign campaign = CampaignMgr.getCampagin(campaignId);
@@ -139,7 +135,8 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 	/** 浸染 */
 	public static void instill(Monster monster, MonsterInfo monsterInfo) {
 		monster.setMonsterInfo(monsterInfo);
-		monster.setSpeed(monsterInfo.getMoveSpeed() * 100);
+		monster.setProperty(EnumAttr.SPEED, monsterInfo.getMoveSpeed() * 100);
+		// monster.setSpeed(monsterInfo.getMoveSpeed() * 100);
 		monster.setSkin(monsterInfo.getMonsterId());
 
 		monster.setProperty(EnumAttr.MAX_BLOOD, monsterInfo.getHp());
@@ -151,13 +148,13 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 		monster.setProperty(EnumAttr.CUR_SOUL, monsterInfo.getSoulHpValue());
 
 		monster.setProperty(EnumAttr.ATTACK, monsterInfo.getHurtValue());
-		monster.setInitAttack(monsterInfo.getHurtValue());
+		//monster.setInitAttack(monsterInfo.getHurtValue());
 		monster.setProperty(EnumAttr.DEFENCE, monsterInfo.getArmorValue());
-		monster.setInitDefence(monsterInfo.getArmorValue());
+		//monster.setInitDefence(monsterInfo.getArmorValue());
 		monster.setProperty(EnumAttr.SOUL_ATTACK, monsterInfo.getSoulHurtValue());
-		monster.setInitSoulAttack(monsterInfo.getSoulHurtValue());
+		//monster.setInitSoulAttack(monsterInfo.getSoulHurtValue());
 		monster.setProperty(EnumAttr.SOUL_DEFENCE, monsterInfo.getSoulArmorValue());
-		monster.setInitSoulDefence(monsterInfo.getSoulArmorValue());
+		//monster.setInitSoulDefence(monsterInfo.getSoulArmorValue());
 
 		monster.setProperty(EnumAttr.ACCURATE, monsterInfo.getHitRateValue());
 		monster.setProperty(EnumAttr.DODGE, monsterInfo.getDodgeValue());
@@ -168,7 +165,7 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 			monster.setSoulState(true);
 		}
 		String skillIds = monsterInfo.getSkillIds();
-		if (skillIds != null && StringUtils.isNullOrEmpty(skillIds)) {
+		if (skillIds != null && !StringUtils.isNullOrEmpty(skillIds)) {
 			for (String str : skillIds.split(",")) {
 				if (StringUtils.isNullOrEmpty(str)) {
 					continue;
@@ -205,7 +202,6 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 		}
 		toalCount = spwanInfo.getToalCount();
 		curCount = spwanInfo.getMaxCount();
-		System.out.println("==---------curCount: "+curCount+" spwanInfo :" + spwanInfo.getTagId());
 		this.state = new OverState(this);
 		return result;
 	}

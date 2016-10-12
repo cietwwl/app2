@@ -146,6 +146,66 @@ public final class PlayerAttSnapProto {
      * </pre>
      */
     int getBornNodeId();
+
+    /**
+     * <code>optional int32 guildId = 8;</code>
+     *
+     * <pre>
+     * 所在帮派ID
+     * </pre>
+     */
+    boolean hasGuildId();
+    /**
+     * <code>optional int32 guildId = 8;</code>
+     *
+     * <pre>
+     * 所在帮派ID
+     * </pre>
+     */
+    int getGuildId();
+
+    /**
+     * <code>optional string guildName = 9;</code>
+     *
+     * <pre>
+     * 所在帮派名字
+     * </pre>
+     */
+    boolean hasGuildName();
+    /**
+     * <code>optional string guildName = 9;</code>
+     *
+     * <pre>
+     * 所在帮派名字
+     * </pre>
+     */
+    java.lang.String getGuildName();
+    /**
+     * <code>optional string guildName = 9;</code>
+     *
+     * <pre>
+     * 所在帮派名字
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getGuildNameBytes();
+
+    /**
+     * <code>optional int32 guildJob = 10;</code>
+     *
+     * <pre>
+     * 在帮派里的职位
+     * </pre>
+     */
+    boolean hasGuildJob();
+    /**
+     * <code>optional int32 guildJob = 10;</code>
+     *
+     * <pre>
+     * 在帮派里的职位
+     * </pre>
+     */
+    int getGuildJob();
   }
   /**
    * Protobuf type {@code PlayerAttSnapMsg}
@@ -248,6 +308,22 @@ public final class PlayerAttSnapProto {
             case 56: {
               bitField0_ |= 0x00000040;
               bornNodeId_ = input.readInt32();
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000080;
+              guildId_ = input.readInt32();
+              break;
+            }
+            case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000100;
+              guildName_ = bs;
+              break;
+            }
+            case 80: {
+              bitField0_ |= 0x00000200;
+              guildJob_ = input.readInt32();
               break;
             }
           }
@@ -471,6 +547,106 @@ public final class PlayerAttSnapProto {
       return bornNodeId_;
     }
 
+    public static final int GUILDID_FIELD_NUMBER = 8;
+    private int guildId_;
+    /**
+     * <code>optional int32 guildId = 8;</code>
+     *
+     * <pre>
+     * 所在帮派ID
+     * </pre>
+     */
+    public boolean hasGuildId() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional int32 guildId = 8;</code>
+     *
+     * <pre>
+     * 所在帮派ID
+     * </pre>
+     */
+    public int getGuildId() {
+      return guildId_;
+    }
+
+    public static final int GUILDNAME_FIELD_NUMBER = 9;
+    private java.lang.Object guildName_;
+    /**
+     * <code>optional string guildName = 9;</code>
+     *
+     * <pre>
+     * 所在帮派名字
+     * </pre>
+     */
+    public boolean hasGuildName() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional string guildName = 9;</code>
+     *
+     * <pre>
+     * 所在帮派名字
+     * </pre>
+     */
+    public java.lang.String getGuildName() {
+      java.lang.Object ref = guildName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          guildName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string guildName = 9;</code>
+     *
+     * <pre>
+     * 所在帮派名字
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getGuildNameBytes() {
+      java.lang.Object ref = guildName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        guildName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int GUILDJOB_FIELD_NUMBER = 10;
+    private int guildJob_;
+    /**
+     * <code>optional int32 guildJob = 10;</code>
+     *
+     * <pre>
+     * 在帮派里的职位
+     * </pre>
+     */
+    public boolean hasGuildJob() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional int32 guildJob = 10;</code>
+     *
+     * <pre>
+     * 在帮派里的职位
+     * </pre>
+     */
+    public int getGuildJob() {
+      return guildJob_;
+    }
+
     private void initFields() {
       playerId_ = 0L;
       type_ = 0;
@@ -479,6 +655,9 @@ public final class PlayerAttSnapProto {
       target_ = com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3.getDefaultInstance();
       ownerId_ = 0L;
       bornNodeId_ = 0;
+      guildId_ = 0;
+      guildName_ = "";
+      guildJob_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -513,6 +692,15 @@ public final class PlayerAttSnapProto {
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeInt32(7, bornNodeId_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeInt32(8, guildId_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeBytes(9, getGuildNameBytes());
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeInt32(10, guildJob_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -550,6 +738,18 @@ public final class PlayerAttSnapProto {
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(7, bornNodeId_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(8, guildId_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(9, getGuildNameBytes());
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(10, guildJob_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -692,6 +892,12 @@ public final class PlayerAttSnapProto {
         bitField0_ = (bitField0_ & ~0x00000020);
         bornNodeId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000040);
+        guildId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        guildName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000100);
+        guildJob_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
 
@@ -756,6 +962,18 @@ public final class PlayerAttSnapProto {
           to_bitField0_ |= 0x00000040;
         }
         result.bornNodeId_ = bornNodeId_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.guildId_ = guildId_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.guildName_ = guildName_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        result.guildJob_ = guildJob_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -792,6 +1010,17 @@ public final class PlayerAttSnapProto {
         }
         if (other.hasBornNodeId()) {
           setBornNodeId(other.getBornNodeId());
+        }
+        if (other.hasGuildId()) {
+          setGuildId(other.getGuildId());
+        }
+        if (other.hasGuildName()) {
+          bitField0_ |= 0x00000100;
+          guildName_ = other.guildName_;
+          onChanged();
+        }
+        if (other.hasGuildJob()) {
+          setGuildJob(other.getGuildJob());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1364,6 +1593,202 @@ public final class PlayerAttSnapProto {
         return this;
       }
 
+      private int guildId_ ;
+      /**
+       * <code>optional int32 guildId = 8;</code>
+       *
+       * <pre>
+       * 所在帮派ID
+       * </pre>
+       */
+      public boolean hasGuildId() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional int32 guildId = 8;</code>
+       *
+       * <pre>
+       * 所在帮派ID
+       * </pre>
+       */
+      public int getGuildId() {
+        return guildId_;
+      }
+      /**
+       * <code>optional int32 guildId = 8;</code>
+       *
+       * <pre>
+       * 所在帮派ID
+       * </pre>
+       */
+      public Builder setGuildId(int value) {
+        bitField0_ |= 0x00000080;
+        guildId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 guildId = 8;</code>
+       *
+       * <pre>
+       * 所在帮派ID
+       * </pre>
+       */
+      public Builder clearGuildId() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        guildId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object guildName_ = "";
+      /**
+       * <code>optional string guildName = 9;</code>
+       *
+       * <pre>
+       * 所在帮派名字
+       * </pre>
+       */
+      public boolean hasGuildName() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional string guildName = 9;</code>
+       *
+       * <pre>
+       * 所在帮派名字
+       * </pre>
+       */
+      public java.lang.String getGuildName() {
+        java.lang.Object ref = guildName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            guildName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string guildName = 9;</code>
+       *
+       * <pre>
+       * 所在帮派名字
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getGuildNameBytes() {
+        java.lang.Object ref = guildName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          guildName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string guildName = 9;</code>
+       *
+       * <pre>
+       * 所在帮派名字
+       * </pre>
+       */
+      public Builder setGuildName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        guildName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string guildName = 9;</code>
+       *
+       * <pre>
+       * 所在帮派名字
+       * </pre>
+       */
+      public Builder clearGuildName() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        guildName_ = getDefaultInstance().getGuildName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string guildName = 9;</code>
+       *
+       * <pre>
+       * 所在帮派名字
+       * </pre>
+       */
+      public Builder setGuildNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        guildName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int guildJob_ ;
+      /**
+       * <code>optional int32 guildJob = 10;</code>
+       *
+       * <pre>
+       * 在帮派里的职位
+       * </pre>
+       */
+      public boolean hasGuildJob() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional int32 guildJob = 10;</code>
+       *
+       * <pre>
+       * 在帮派里的职位
+       * </pre>
+       */
+      public int getGuildJob() {
+        return guildJob_;
+      }
+      /**
+       * <code>optional int32 guildJob = 10;</code>
+       *
+       * <pre>
+       * 在帮派里的职位
+       * </pre>
+       */
+      public Builder setGuildJob(int value) {
+        bitField0_ |= 0x00000200;
+        guildJob_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 guildJob = 10;</code>
+       *
+       * <pre>
+       * 在帮派里的职位
+       * </pre>
+       */
+      public Builder clearGuildJob() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        guildJob_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:PlayerAttSnapMsg)
     }
 
@@ -1390,12 +1815,14 @@ public final class PlayerAttSnapProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\035player/PlayerAttSnapMsg.proto\032\026common/" +
-      "PBVector3.proto\"\240\001\n\020PlayerAttSnapMsg\022\020\n\010" +
+      "PBVector3.proto\"\326\001\n\020PlayerAttSnapMsg\022\020\n\010" +
       "playerId\030\001 \001(\003\022\014\n\004type\030\002 \001(\005\022\016\n\006skinId\030\003" +
       " \001(\005\022\033\n\007postion\030\004 \001(\0132\n.PBVector3\022\032\n\006tar" +
       "get\030\005 \001(\0132\n.PBVector3\022\017\n\007ownerId\030\006 \001(\003\022\022" +
-      "\n\nbornNodeId\030\007 \001(\005B6\n com.chuangyou.comm" +
-      "on.protobuf.pbB\022PlayerAttSnapProto"
+      "\n\nbornNodeId\030\007 \001(\005\022\017\n\007guildId\030\010 \001(\005\022\021\n\tg" +
+      "uildName\030\t \001(\t\022\020\n\010guildJob\030\n \001(\005B6\n com." +
+      "chuangyou.common.protobuf.pbB\022PlayerAttS" +
+      "napProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1415,7 +1842,7 @@ public final class PlayerAttSnapProto {
     internal_static_PlayerAttSnapMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_PlayerAttSnapMsg_descriptor,
-        new java.lang.String[] { "PlayerId", "Type", "SkinId", "Postion", "Target", "OwnerId", "BornNodeId", });
+        new java.lang.String[] { "PlayerId", "Type", "SkinId", "Postion", "Target", "OwnerId", "BornNodeId", "GuildId", "GuildName", "GuildJob", });
     com.chuangyou.common.protobuf.pb.Vector3Proto.getDescriptor();
   }
 

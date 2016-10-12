@@ -1,8 +1,8 @@
 package com.chuangyou.xianni.protocol;
 
 /**
- * 发往center_server，范围 10001 - 20000 10500---10600  11000-12000: 由范加伟使用 10100---10300：由郭小帆使用
- * 10300---10500 由hw使用 10701---10800z
+ * 发往center_server，范围 10001 - 20000 10500---10600 11000-12000: 由范加伟使用
+ * 10100---10300：由郭小帆使用 10300---10500 由hw使用 10701---10800
  * 
  */
 public interface CenterProtocol {
@@ -88,6 +88,33 @@ public interface CenterProtocol {
 
 	// ========================><=========================================
 
+	// ========================>玩家详细信息<=================================
+	/** 获取其他玩家详细信息 */
+	public static final short	C_GET_OTHER_INFO				= 10608;
+	// ========================><=========================================
+
+	// ========================>竞技场<=====================================
+	/** 竞技场操作 */
+	public static final short	C_DEKARON_OPTION				= 10609;
+	/** 比赛结果 */
+	public static final short	C_ARENA_RESULT					= 10610;
+
+	// ========================><=========================================
+	// ========================>PvP1v1<=====================================
+	/** 1v1操作 */
+	public static final short	C_PVP_1V1_OPTION				= 10611;
+	/** 战斗结果 */
+	public static final short	C_PVP_1V1_BATTLE_RESULT			= 10612;
+
+	// ========================><=========================================
+	// ========================>分身操作<====================================
+	/** 分身操作 */
+	public static final short	C_AVATAR_OPTION					= 10613;
+
+	/** 玩家部分花费回写----仙力 */
+	public static short			C_AVATAR_ENERGY_COST			= 10614;
+	// ========================><=========================================
+
 	// =========================>NPC商店<===================================
 	/** 获取NPC商店信息 */
 	public static final short	C_REQ_GETNPCSHOPINFO			= 10521;
@@ -113,21 +140,21 @@ public interface CenterProtocol {
 	 */
 	public static final short	C_REQ_TASKOPERATE				= 10530;
 
-	/** 设置任务失败回复 */
+	/** 设置任务失败回复 -------------------------------------------此处存在BUG，客户端不停请求 */
 	public static final short	C_REQ_SETTASKFAIL				= 10531;
 	/**
 	 * 设置NPC对话任务完成
 	 */
 	public static final short	C_REQ_SETNPCDIALOG				= 10532;
-	
+
 	/** 通关副本 */
 	public static final short	C_REQ_PASS_FB					= 10533;
 
 	/** 回应查找怪物结果 */
 	public static final short	C_INNER_SEARCH_MONSTER			= 10549;
-	
+
 	/** 任务小飞鞋 */
-	public static final short   C_REQ_TASK_CHANGEMAP              = 10552;
+	public static final short	C_REQ_TASK_CHANGEMAP			= 10552;
 
 	// ==================================================================
 	// ==========================>采集+触发点<=====================================
@@ -171,48 +198,73 @@ public interface CenterProtocol {
 	public static final short	C_MEMBER_COMMON_OPTION			= 10550;
 	// =================================================================
 	/** 商城信息请求 */
-	public static final short C_REQ_MALL_INFO                   = 10551; 
-	
+	public static final short	C_REQ_MALL_INFO					= 10551;
+
 	/** 请求简单快照信息 */
-	public static final short C_REQ_PLAYER_SIMPLE               = 10553;
+	public static final short	C_REQ_PLAYER_SIMPLE				= 10553;
 	// ==================================================================
-	//============================空间====================================
-	/** 获取空间信息  */
-	public static final short C_REQ_GET_SPACE_INFO             = 10556;
+	// ============================空间====================================
+	/** 获取空间信息 */
+	public static final short	C_REQ_GET_SPACE_INFO			= 10556;
 	/** 请求空间留言信息 */
-	public static final short C_REQ_GET_SPACE_MESSAGE          = 10557;
-	/** 操作日志  */
-	public static final short C_REQ_GET_SPACE_ACTION_LOG       = 10558;
-	/** 修改自己空间信息   */
-	public static final short C_REQ_ENDIT_INFO                 = 10559;
+	public static final short	C_REQ_GET_SPACE_MESSAGE			= 10557;
+	/** 操作日志 */
+	public static final short	C_REQ_GET_SPACE_ACTION_LOG		= 10558;
+	/** 修改自己空间信息 */
+	public static final short	C_REQ_ENDIT_INFO				= 10559;
 	/** 空间操作 */
-	public static final short C_REQ_SPACE_ACTION               = 11600;
-	/**  添加留言 */
-	public static final short C_REQ_SPACE_ADD_MSG              = 11601;
-	/**  删除留言 */
-	public static final short C_REQ_SPACE_DEL_MSG              = 11602;
-	/** 收藏相关  */
-	public static final short C_REQ_SPACE_SET_COLLECTION       = 11603;
-	/** 设置礼物   */
-	public static final short C_REQ_SPACE_SET_GIFT             = 11604;
-	//==========================>魂幡<=========================================
+	public static final short	C_REQ_SPACE_ACTION				= 11600;
+	/** 添加留言 */
+	public static final short	C_REQ_SPACE_ADD_MSG				= 11601;
+	/** 删除留言 */
+	public static final short	C_REQ_SPACE_DEL_MSG				= 11602;
+	/** 收藏相关 */
+	public static final short	C_REQ_SPACE_SET_COLLECTION		= 11603;
+	/** 设置礼物 */
+	public static final short	C_REQ_SPACE_SET_GIFT			= 11604;
+	// ==========================>魂幡<=========================================
 	/**
 	 * 请求信息
 	 */
-	public static final short C_REQ_GET_SOUL_INFO              = 11605;
-	/** 操作  */
-	public static final short C_REQ_SOUL_PIECE_COMBO           = 11606;
+	public static final short	C_REQ_GET_SOUL_INFO				= 11605;
+	/** 操作 */
+	public static final short	C_REQ_SOUL_PIECE_COMBO			= 11606;
 	/** 增加经验值 */
-	public static final short C_REQ_SOUL_ADD_EXP               = 11607;
+	public static final short	C_REQ_SOUL_ADD_EXP				= 11607;
 	/**
 	 * 材料制作
 	 */
-	public static final short C_REQ_SOUL_MAKE                  = 11608;
+	public static final short	C_REQ_SOUL_MAKE					= 11608;
 	/**
 	 * 融合
 	 */
-	public static final short C_REQ_SOUL_FUSE                  = 11609;
-	
+	public static final short	C_REQ_SOUL_FUSE					= 11609;
+
+	// ==========================>排行榜<======================================
+	/**
+	 * 排行榜
+	 */
+	public static final short	C_REQ_RANK_GET_TOTAL			= 11610;
+	/**
+	 * 排行榜
+	 */
+	public static final short	C_REQ_RANK_GET_INDEX			= 11611;
+	/**
+	 * 请求个人数据
+	 */
+	public static final short	C_REQ_RANK_MYRANK				= 11612;
+
+	// ==========================>境界<======================================
+	/**
+	 * 获取信息
+	 */
+	public static final short	C_REQ_STATE_GET_INFO			= 11613;
+
+	/**
+	 * 操作
+	 */
+	public static final short	C_REQ_STATE_OP					= 11614;
+
 	// =========================>坐骑<===================================
 	/** 获取坐骑信息 */
 	public static short			C_MOUNT_GETINFO					= 10101;
@@ -323,30 +375,41 @@ public interface CenterProtocol {
 	public static short			C_CHAT_SEND						= 10147;
 	/** 获取聊天记录 */
 	public static short			C_CHAT_HISTORY_REQ				= 10148;
-	
-	
+
 	/** 背包格子解锁 */
 	public static short			C_BAG_GRID_UNLOCK				= 10149;
-	
+
 	// =========================>装备成长================================
 	/** 装备栏信息 */
 	public static short			C_EQUIPBAR_INFO					= 10150;
-	
+
 	/** 装备信息 */
 	public static short			C_EQUIP_INFO					= 10151;
-	
+
 	/** 装备一键分解 */
 	public static short			C_EQUIP_RESOLVE_ONEKEY			= 10152;
-	
+
 	/** 属性购买 */
 	public static short			C_PROPERTY_BUY					= 10153;
-	
+
 	/** 玩家灵力回写 */
 	public static short			C_PLAYER_MANA_WRITEBACK			= 10154;
-	
+
 	// =========================>神器成长<==============================
-	
+	/** 神器操作请求 */
 	public static short			C_ARTIFACT_REQ					= 10155;
+
+	// =========================>帮派<==============================
+	/** 门派创建 */
+	public static short			C_GUILD_CREATE					= 10156;
+	/** 门派操作请求 */
+	public static short			C_GUILD_ACTION_REQ				= 10157;
+
+	/** 帮派仓库操作请求 */
+	public static short			C_GUILD_WAREHOUSE_REQ			= 10158;
+
+	/** 帮派夺权挑战结果 */
+	public static short			C_GUILD_SEIZE_RESULT			= 10159;
 
 	// =========================>时装<===================================
 	/** 获取时装信息 */
@@ -376,30 +439,56 @@ public interface CenterProtocol {
 	public static final short	C_PLAYER_REVIVAL				= 10401;
 	// =========================>战斗模式<===============================
 	/** 变更战斗模式 */
-	public static final short	C_BATTLE_MODE   				= 10501;
-	
+	public static final short	C_BATTLE_MODE					= 10501;
+
 	// =========================>天逆珠<===============================InverseBead
-	/** 天逆珠五行升级***/
-	public static final short	C_INVERSE_BEAD_UP  				= 10701;
-	/** 获取天逆珠五行***/
-	public static final short	C_INVERSE_BEAD_GET  			= 10702;
+	/** 天逆珠五行升级 ***/
+	public static final short	C_INVERSE_BEAD_UP				= 10701;
+	/** 获取天逆珠五行 ***/
+	public static final short	C_INVERSE_BEAD_GET				= 10702;
 	/** 请求创建天逆珠逆境 **/
-	public static final short	C_CREATE_INVERSE_BEAD_CAMPAIGN  = 10703;
-	/** 同步过关节点**/
-	public static final short	C_CREATE_INVERSE_SYNC_MONSTER 	= 10704;
+	public static final short	C_CREATE_INVERSE_BEAD_CAMPAIGN	= 10703;
+	/** 同步过关节点 **/
+	public static final short	C_CREATE_INVERSE_SYNC_MONSTER	= 10704;
 	/** 重置天逆珠逆境 **/
-	public static final short	C_RESET_INVERSE_MONSTER 	    = 10705;
-	/** 天逆珠逆境通过怪**/
-	public static final short	C_INVERSE_MONSTER_SPAWN			=10706;
-	/** 请求领取灵气液**/
-	public static final short	C_INVERSE_RECEIVE_AURA			=10707;
+	public static final short	C_RESET_INVERSE_MONSTER			= 10705;
+	/** 天逆珠逆境通过怪 **/
+	public static final short	C_INVERSE_MONSTER_SPAWN			= 10706;
+	/** 请求领取灵气液 **/
+	public static final short	C_INVERSE_RECEIVE_AURA			= 10707;
 	// =========================>vip<===============================
 	/** 购买 **/
-	public static final short	C_VIP_BUY						=10708;
+	public static final short	C_VIP_BUY						= 10708;
 	/** 领取 **/
-	public static final short	C_VIP_RECEIVE					=10709;
+	public static final short	C_VIP_RECEIVE					= 10709;
 	/** 获取vip信息 **/
-	public static final short	C_GET_VIP_INFO					=10710;
+	public static final short	C_GET_VIP_INFO					= 10710;
 	// =========================><===============================
-	
+	// =========================>运镖<===============================
+	/** 查询运镖物资状态 **/
+	public static final short	C_TRUCK_CHANGEMAT				= 10720;
+	/** 查询护镖玩家列表 **/
+	public static final short	C_TRUCK_PROTECTOR				= 10721;
+	/** 查询镖车数据 **/
+	public static final short	C_TRUCK_REQINFO					= 10722;
+	/** 向请求某人护镖 **/
+	public static final short	C_TRUCK_INVITEPROTECT			= 10723;
+	/**  **/
+	public static final short	C_TRUCK_ADD_MAT_BAG				= 10724;
+	/** 请求镖车信息 **/
+	public static final short	C_TRUCK_REQTRUCKDATA			= 10725;
+	/** 请求镖车技能加点 **/
+	public static final short	C_TRUCK_REQTRUCKSKILLADDPOINT	= 10726;
+	/** 请求镖车运镖结束 **/
+	public static final short	C_TRUCK_REQTRUCKCOMPLETE		= 10727;
+	/** 请求镖车的创建价格 **/
+	public static final short	C_TRUCK_CREATEPRICE				= 10728;
+	/** 请求镖车技能使用物品消耗 **/
+	public static final short	C_TRUCK_FUNCCONSUM				= 10729;
+	/** 请求帮派成员护镖 **/
+	public static final short	C_TRUCK_GUILD_PROT_INVITE	= 10730;
+	/** 更新玩家的运镖状态 **/
+	public static final short	C_TRUCK_UPDATE_TRUCK_STATE	= 10731;
+	/** 镖车被劫 **/
+	public static final short	C_TRUCK_ROBBED	= 10732;
 }

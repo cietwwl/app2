@@ -1,0 +1,12 @@
+//protocol=608;
+option java_package = "com.chuangyou.common.protobuf.pb.player";
+option java_outer_classname = "OtherMagicwpProto";
+import "army/PropertyListMsg.proto";
+//其他用户法宝信息
+message OtherMagicwpMsg{
+	optional int64 playerId=1; //角色ID
+	optional int32 magicwpId=2; //法宝ID
+	optional int32 level=3; //法宝等级
+	optional PropertyListMsg  propertitys=4;       //法宝属性列表
+
+}

@@ -2,7 +2,6 @@ package com.chuangyou.xianni.entity.item;
 
 import java.util.Date;
 
-import com.chuangyou.common.protobuf.pb.equip.EquipInfoProto.EquipInfoMsg;
 import com.chuangyou.common.protobuf.pb.item.ItemFullInfoMsgProto.ItemFullInfoMsg;
 import com.chuangyou.common.protobuf.pb.item.ItemPosProto.ItemPosMsg;
 import com.chuangyou.xianni.entity.DataObject;
@@ -279,19 +278,13 @@ public class ItemInfo extends DataObject implements Cloneable {
 		builder.setPro(this.getPro());
 		builder.setQualityCoefficient(this.getQualityCoefficient());
 		builder.setGrow(this.grow);
-
-		EquipInfoMsg.Builder equip = EquipInfoMsg.newBuilder();
-		equip.setPos(this.getPosMsg());
-		equip.setAwakenLevel(this.getAwaken());
-		equip.setAwakenPoint(this.getAwakenPoint());
-		equip.setStoneTempId(this.getStone());
-		builder.setEquip(equip);
-
+		builder.setAwakenLevel(this.getAwaken());
+		builder.setAwakenPoint(this.getAwakenPoint());
+		builder.setStoneTempId(this.getStone());
 		if (this.beginDate != null) {
 			builder.setBeginDate(this.beginDate.getTime());
 		}
 		builder.setIsNew(this.isNew);
-		
 		this.setNew(false);
 	}
 

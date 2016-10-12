@@ -3,13 +3,11 @@ option java_package = "com.chuangyou.common.protobuf.pb.soul";
 option java_outer_classname = "SoulCardOpRespProto";
 
 import "soul/CardInfoMsg.proto";
-import "soul/CardPieceInfoMsg.proto";
 import "army/PropertyMsg.proto";
 
 //碎片合成
 message SoulCardOpRespMsg{
 	required int32 op = 1; //操作 1：合成  2：穿上  3：脱下  4:升星  5:升级  6:洗技能
 	required CardInfoMsg card = 2; //影响的卡牌数据更新
-	optional CardPieceInfoMsg cardPiece = 3; //影响的碎片信息更新
-	repeated PropertyMsg atts = 4;//加成属性同步
+	repeated PropertyMsg atts = 3;//加成属性同步
 }

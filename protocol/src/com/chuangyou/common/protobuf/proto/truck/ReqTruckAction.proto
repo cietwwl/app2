@@ -1,0 +1,9 @@
+//protocol=20703;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "ReqRobActionProto";
+
+//镖车Action
+message ReqTruckAction {
+	required int64 targetTruckID = 1; //镖车ID
+	required int32 action = 2; //1.开始劫镖 2.劫镖成功 3.退出劫镖 4.请求所有镖车的状态 5.查询自己的镖车状态 6.起运
+}

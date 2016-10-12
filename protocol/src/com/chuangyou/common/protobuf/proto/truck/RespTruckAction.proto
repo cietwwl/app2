@@ -1,0 +1,10 @@
+//protocol=2612;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "RespTruckActionProto";
+
+//回应
+message RespTruckAction {
+	required int64 truckID = 1; //镖车ID
+	required int32 action = 2;//1.开始劫镖 2.劫镖成功 3.退出劫镖 4.请求所有镖车的状态 5.查询自己的镖车状态 6.起运 7.完成运镖 8.添加物质成功
+	required int32 nextCheckPoint = 3;	//下一个路点Id
+}

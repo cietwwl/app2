@@ -2,6 +2,7 @@ package com.chuangyou.xianni.campaign.action;
 
 import java.util.List;
 
+import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignFactory;
@@ -19,15 +20,18 @@ import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.WorldMgr;
 
 public class CampaignCreateAction extends Action {
-	private ArmyProxy	army;
-	private int			campaignId;
-	private int			taskId;
 
-	public CampaignCreateAction(ArmyProxy army, int campaignId, int taskId) {
+	private ArmyProxy			army;
+	private int					campaignId;
+	private int					taskId;
+	private List<RobotInfoMsg>	avatars;
+
+	public CampaignCreateAction(ArmyProxy army, int campaignId, int taskId, List<RobotInfoMsg> avatars) {
 		super(army);
 		this.army = army;
 		this.campaignId = campaignId;
 		this.taskId = taskId;
+		this.avatars = avatars;
 	}
 
 	@Override
@@ -46,10 +50,16 @@ public class CampaignCreateAction extends Action {
 		}
 
 		Campaign campaign = CampaignFactory.createCampaign(temp, army, taskId);
+		if (campaign == null) {
+			Log.error("创建副本失败---------------------------------------------campaignId :" + campaignId);
+			return;
+		}
 		CampaignMgr.add(campaign);
-
 		campaign.start();
 		campaign.onPlayerEnter(army);
+		if (avatars != null) {
+			campaign.addAvatars(avatars);
+		}
 		if (campaign.getTemp().getType() == CampaignType.TEAM) {
 			Team team = TeamMgr.getTeam(army.getPlayerId());
 			if (team == null) {

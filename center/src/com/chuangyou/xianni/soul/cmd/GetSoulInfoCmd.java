@@ -13,6 +13,7 @@ public class GetSoulInfoCmd extends AbstractCommand {
 	@Override
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
 		// TODO Auto-generated method stub
+		
 		new GetSoulInfoLogic().process(player);
 	}
 

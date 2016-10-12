@@ -2,6 +2,7 @@ package com.chuangyou.xianni.world.login;
 
 import com.chuangyou.common.protobuf.pb.LoginResultMsgProto.LoginResultMsg;
 import com.chuangyou.common.protobuf.pb.army.ArmyInfoMsgProto.ArmyInfoMsg;
+import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.common.LoginResult;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -28,6 +29,15 @@ public class LoginIn implements Command {
 		long playerId = msg.getHeorAppearance().getPlayerId();
 		SimplePlayerInfo simPlayer = new SimplePlayerInfo();
 		simPlayer.readProto(msg.getHeorAppearance());
+		// 清理数据
+		ArmyProxy existed = WorldMgr.getArmy(playerId);
+		if (existed != null) {
+			Log.error("------------------调试为啥有部队没有清理的问题-----------------" + playerId);
+			existed.unload();
+		}
+
+		ArmyProxy army = new ArmyProxy(playerId, "center", channel, simPlayer);
+		WorldMgr.addOnline(army);
 
 		// 初始化英雄数据
 		Player player = new Player(playerId);
@@ -41,17 +51,17 @@ public class LoginIn implements Command {
 		// 初始化觉醒技能buff
 		player.updateWeaponBuff();
 		player.readHeroInfo(msg.getHeoBattleInfo());
+		army.setPlayer(player);
 
+		// 设置宠物
 		Pet pet = null;
 		if (msg.getPetBattleInfo().getPetTempId() > 0) {
 			// 初始化宠物数据
 			pet = new Pet(playerId, IDMakerHelper.nextID());
 			pet.readPetInfo(msg.getPetBattleInfo());
 		}
-
-		ArmyProxy army = new ArmyProxy(playerId, "center", channel, simPlayer, player, pet);
-		WorldMgr.addOnline(army);
-
+		army.setPet(pet);
+		
 		PBMessage message = MessageUtil.buildMessage(Protocol.U_ARMY_HERO_INFO, msg.getHeoBattleInfo());
 		army.sendPbMessage(message);
 

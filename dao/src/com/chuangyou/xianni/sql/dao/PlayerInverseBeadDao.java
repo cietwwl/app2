@@ -27,5 +27,5 @@ public interface PlayerInverseBeadDao {
 	 * @param playerId
 	 * @return
 	 */
-	public Map<String, PlayerInverseBead> getAll(long playerId);
+	public Map<Integer, PlayerInverseBead> getAll(long playerId);
 }

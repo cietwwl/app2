@@ -14,6 +14,7 @@ import com.chuangyou.xianni.sql.db.DbParameter;
 
 /**
  * 任务模板
+ * 
  * @author laofan
  *
  */
@@ -22,11 +23,10 @@ public class TaskTemplateImpl extends BaseDao implements TaskTemplateDao {
 	@Override
 	public Map<Integer, TaskCfg> getAll() {
 		// TODO Auto-generated method stub
-		String sql= "select * from tb_z_task_info;";
-		return read(sql,null);
+		String sql = "select * from tb_z_task_info;";
+		return read(sql, null);
 	}
-	
-	
+
 	private Map<Integer, TaskCfg> read(String sqlText, Map<Integer, DbParameter> para) {
 		PreparedStatement pstmt = execQuery(sqlText, para);
 		ResultSet rs = null;
@@ -45,7 +45,7 @@ public class TaskTemplateImpl extends BaseDao implements TaskTemplateDao {
 					info.setTaskLv(rs.getShort("taskLv"));
 					info.setTaskPre(rs.getInt("taskPre"));
 					info.setTaskNext(rs.getInt("taskNext"));
-					info.setAcceptTaskNpcId(rs.getShort("acceptTaskNpcId"));
+					info.setAcceptTaskNpcId(rs.getInt("acceptTaskNpcId"));
 					info.setAcceptScriptId(rs.getString("acceptScriptId"));
 					info.setTaskTarget(rs.getByte("taskTarget"));
 					info.setTargetId(rs.getInt("targetId"));
@@ -56,7 +56,7 @@ public class TaskTemplateImpl extends BaseDao implements TaskTemplateDao {
 					info.setXiu(rs.getInt("xiu"));
 					info.setMoney(rs.getLong("money"));
 					info.setBindCash(rs.getInt("bindCash"));
-					info.setCommitNpcId(rs.getShort("commitNpcId"));
+					info.setCommitNpcId(rs.getInt("commitNpcId"));
 					info.setCommitScriptId(rs.getString("commitScriptId"));
 					info.setTaskTime(rs.getInt("taskTime"));
 					info.setTagPar(rs.getString("tagPar"));

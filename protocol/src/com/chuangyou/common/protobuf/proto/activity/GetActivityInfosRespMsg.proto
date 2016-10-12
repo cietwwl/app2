@@ -1,0 +1,10 @@
+//protocol=1612;
+option java_package = "com.chuangyou.common.protobuf.pb.activity";
+option java_outer_classname = "GetActivityInfosRespProto";
+
+import "activity/ActivityInfoMsg.proto";
+
+//获得所有活动数据
+message GetActivityInfosRespMsg{
+	repeated ActivityInfoMsg infos = 1;  //所有活动详细信息
+}

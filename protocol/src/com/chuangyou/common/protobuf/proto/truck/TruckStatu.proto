@@ -1,0 +1,17 @@
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "TruckStatuProto";
+
+import "player/PostionMsg.proto";
+
+/**
+ * 镖车状态
+ */
+message TruckStatu{
+
+  	optional int64 id = 1; //镖车ID
+	optional int32 weight = 2; //速度
+	optional int32 progres = 3; //进度
+	optional int32 level = 4;	//等级
+	optional PostionMsg postionMsg = 5; //当前位置
+	optional string ownerName = 6;	//主人名称
+}

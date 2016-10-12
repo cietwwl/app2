@@ -1,0 +1,7 @@
+//protocol=10608;
+option java_package = "com.chuangyou.common.protobuf.pb.player";
+option java_outer_classname = "GetOtherInfosMsgProto";
+message GetOtherInfosMsg {
+	optional int64 playerId = 1; //需要获取信息的用户ID
+	optional int32 reqType = 2; //请求类型 1 人物信息及装 2 法宝 3 坐骑 4 宠物 5魂幡
+}

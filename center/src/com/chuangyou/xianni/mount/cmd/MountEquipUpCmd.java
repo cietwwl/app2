@@ -13,6 +13,7 @@ import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.mount.MountEquipCfg;
 import com.chuangyou.xianni.entity.mount.MountEquipInfo;
+import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.mount.manager.MountManager;
 import com.chuangyou.xianni.mount.template.MountTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
@@ -20,6 +21,7 @@ import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
+import com.chuangyou.xianni.state.event.MountStateEvent;
 
 @Cmd(code = Protocol.C_MOUNT_EQUIP_UP, desc = "坐骑装备升级")
 public class MountEquipUpCmd extends AbstractCommand {
@@ -62,6 +64,7 @@ public class MountEquipUpCmd extends AbstractCommand {
 			//升级成功
 			equip.setEquipLevel(equip.getEquipLevel() + 1);
 			player.getMountInventory().updateMountEquip(equip);
+			player.notifyListeners(new MountStateEvent(this,4, equip.getEquipId(),equip.getEquipLevel(),EventNameType.MOUNT));
 		}
 		
 		//返回消息

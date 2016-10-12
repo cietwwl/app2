@@ -32,7 +32,7 @@ public class ErrorMsgUtil {
 	 * @param desc
 	 */
 	public static void sendErrorMsg(GamePlayer player,int errorCode,short protocolNum,String desc){
-		Log.error("playerId:"+player.getPlayerId()+"errorCode:"+errorCode+"protocolNum:"+protocolNum+"DESC:"+desc);
+		Log.error("playerId:"+player.getPlayerId()+"  errorCode:"+errorCode+"  protocolNum:"+protocolNum+"  DESC:"+desc);
 		sendErrorMsg(player,errorCode,protocolNum);
 	}
 	

@@ -6,11 +6,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.TimeUtil;
+import com.chuangyou.xianni.activity.template.ActivityTemplateMgr;
 import com.chuangyou.xianni.chat.manager.ChatManager;
+import com.chuangyou.xianni.guild.action.GuildCheckOfflineAction;
+import com.chuangyou.xianni.guild.manager.GuildManager;
 import com.chuangyou.xianni.log.LogManager;
+import com.chuangyou.xianni.rank.logic.UpdateRankLogic;
 import com.chuangyou.xianni.task.manager.TaskManager;
 import com.chuangyou.xianni.word.WorldMgr;
 
@@ -21,12 +24,18 @@ public class TimerTaskMgr {
 
 	/** 保存用户数据定时器 */
 	private static Timer		saveUserDataTimer;
+	/** 定时执行器 */
+	private static Timer		commonTimer;
 
 	/** 定时器 */
 	private static Timer		taskDayClearTimer;
 
 	/** 5点重置玩家参数 */
 	private static Timer		day_reset_clearTimer;
+	/**
+	 * 排行榜刷新定时器
+	 */
+	private static Timer		rankTimer;
 
 	/** 保存用户数据定时任务 */
 	private static TimerTask	saveUserData;
@@ -37,9 +46,18 @@ public class TimerTaskMgr {
 	private static TimerTask	savalogData;
 	/** 保存聊天离线消息 */
 	private static TimerTask	saveChatOfflineData;
+	/** 保存帮派数据 */
+	private static TimerTask	saveGuildData;
+
+	/** 活动以及所有定时开闭状态检查 */
+	private static TimerTask	checkEverySwitch;
 
 	/** 5点重置 */
 	private static TimerTask	day_reset_Data;
+	/**
+	 * 排行榜每两小时更新
+	 */
+	private static TimerTask	rankUpdateData;
 
 	public static boolean init() {
 		// 设置启动时间(在当前时间基础上向后推2分10秒)
@@ -54,7 +72,15 @@ public class TimerTaskMgr {
 		saveUserDataTimer.schedule(savalogData, beginDate, MINTIME * 5);
 
 		saveChatOfflineData = new SaveChatOfflineData();
-		saveUserDataTimer.schedule(saveChatOfflineData, beginDate, MINTIME * 5);
+		saveUserDataTimer.schedule(saveChatOfflineData, beginDate, MINTIME * 6);
+		
+		saveGuildData = new SaveGuildData();
+		saveUserDataTimer.schedule(saveGuildData, beginDate, MINTIME * 7);
+
+		// 数据检查
+		commonTimer = new Timer("commonTimer");
+		checkEverySwitch = new CheckEverySwitch();
+		commonTimer.schedule(checkEverySwitch, beginDate, MINTIME * 2);
 
 		// 每天5点执行以下定时器
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd '5:00:00'");
@@ -65,6 +91,10 @@ public class TimerTaskMgr {
 		day_reset_Data = new Day_5ClearData();
 		try {
 			Date startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(new Date()));
+			// 如果是5点后启动服务器，执行时间加一天
+			if (System.currentTimeMillis() > startTime.getTime()) {
+				startTime = TimeUtil.addTime(startTime, Calendar.DATE, 1);
+			}
 			taskDayClearTimer.scheduleAtFixedRate(taskDayClearData, startTime, MINTIME * 60 * 24);
 			day_reset_clearTimer.scheduleAtFixedRate(day_reset_Data, startTime, MINTIME * 60 * 24);
 		} catch (ParseException e) {
@@ -72,7 +102,12 @@ public class TimerTaskMgr {
 			Log.error("定时器 taskDayClearTimer,taskDayClearTimer 异常", e);
 			e.printStackTrace();
 		}
-		
+
+		// 排行榜
+		rankTimer = new Timer("RankTimer");
+		rankUpdateData = new RankUpdateData();
+		rankTimer.schedule(rankUpdateData, beginDate, MINTIME * 120);
+
 		return true;
 	}
 }
@@ -155,6 +190,19 @@ class SaveChatOfflineData extends Task {
 	}
 }
 
+class SaveGuildData extends Task{
+	public SaveGuildData() {
+		// TODO Auto-generated constructor stub
+		super("保存帮派信息");
+	}
+	
+	@Override
+	public void exec() {
+		// TODO Auto-generated method stub
+		GuildManager.getIns().saveToDatabase();
+	}
+}
+
 // =================>每天5点重置玩家数据<======================================
 class Day_5ClearData extends Task {
 	public Day_5ClearData() {
@@ -164,5 +212,36 @@ class Day_5ClearData extends Task {
 	@Override
 	public void exec() {
 		WorldMgr.resetTimeInfo();
+		//检查需要解散的玩家帮派，检查需要退出帮派的系统帮派成员
+		GuildCheckOfflineAction guildAction = new GuildCheckOfflineAction();
+		guildAction.getActionQueue().enqueue(guildAction);
+	}
+}
+
+// ==================>定时检测所有开闭状态信息<==========================
+class CheckEverySwitch extends Task {
+	public CheckEverySwitch() {
+		super("检查所有开关类型重置状态");
+	}
+
+	@Override
+	public void exec() {
+		ActivityTemplateMgr.activityCheck();
+	}
+
+}
+
+// ==================>每2小时候，刷新排行榜数据<=====================================================
+class RankUpdateData extends Task {
+
+	public RankUpdateData() {
+		super("每隔两个小时。刷新一下排行榜数据");
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void exec() {
+		// TODO Auto-generated method stub
+		new UpdateRankLogic().updateRank();
 	}
 }

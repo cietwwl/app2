@@ -1,0 +1,10 @@
+//protocol=2618;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "RespTruckProtectProto";
+
+//回应护镖
+message RespTruckProtect {
+	required int64 protectorId = 1; //护镖人的Id
+	required int64 truckID = 2; //镖车ID
+	required int32 action = 3; //1.同意护镖 2.拒绝护镖 3.镖车不存在
+}

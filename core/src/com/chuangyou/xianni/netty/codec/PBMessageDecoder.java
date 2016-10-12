@@ -10,8 +10,8 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 /**
  * 数据包解码器
  */
-public class PBMessageDecoder extends ByteToMessageDecoder {
 
+public class PBMessageDecoder extends ByteToMessageDecoder {
 	public PBMessageDecoder() {
 
 	}
@@ -39,6 +39,7 @@ public class PBMessageDecoder extends ByteToMessageDecoder {
 				headerFlag = in.readShortLE();
 				if (PBMessage.HEADER != headerFlag) {
 					Log.error("Illegal client request,can not match header flag. drop a packet,close connection.");
+					ctx.channel().close();
 					return;
 				} else {
 					currentState = State.READ_LENGTH;
@@ -49,6 +50,7 @@ public class PBMessageDecoder extends ByteToMessageDecoder {
 				if (lenght <= 0 || lenght >= Short.MAX_VALUE) {
 					// 非法的数据长度
 					Log.error("Message Length Invalid Length = " + lenght + ", drop this Message.close connection");
+					ctx.channel().close();
 					return;
 				}
 				message.setLen((short) lenght);

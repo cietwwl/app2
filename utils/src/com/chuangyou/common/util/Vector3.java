@@ -13,8 +13,16 @@ public class Vector3 {
 	public float				x;
 	public float				y;
 	public float				z;
+	public int					angle;
 
 	public Vector3() {
+	}
+
+	public Vector3(float x, float y, float z, int angle) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.angle = angle;
 	}
 
 	public Vector3(float x, float y, float z) {
@@ -56,10 +64,7 @@ public class Vector3 {
 	 * @return
 	 */
 	public static boolean Equal(Vector3 a, Vector3 b) {
-		if(Math.abs(a.x - b.x) < 0.01f &&
-				Math.abs(a.y - b.y) < 0.01f &&
-				Math.abs(a.z - b.z) < 0.01f
-				)
+		if (Math.abs(a.x - b.x) < 0.01f && Math.abs(a.y - b.y) < 0.01f && Math.abs(a.z - b.z) < 0.01f)
 			return true;
 		return false;
 	}

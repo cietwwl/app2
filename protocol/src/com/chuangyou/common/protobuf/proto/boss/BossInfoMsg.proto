@@ -1,0 +1,7 @@
+option java_package = "com.chuangyou.common.protobuf.pb.boss";
+option java_outer_classname = "BossInfoProto";
+
+message BossInfoMsg{
+	optional int32 tempId = 1; // BOSS模板ID
+	optional int32 state = 2; // BOSS状态(1未击杀 2已击杀)
+}

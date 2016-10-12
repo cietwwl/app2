@@ -72,9 +72,14 @@ public class SkillInventory extends AbstractEvent implements IInventory {
 		for (Entry<String, HeroSkill> entry : heroSkill.entrySet()) {
 			HeroSkill skill = entry.getValue();
 			int skillId = skill.getSkillId();
-			SkillTempateInfo skillInfo = SkillTempMgr.getSkillTemp(skillId);// 技能配置
-			if (skillInfo.getMasterType() == type || skillInfo.getMasterType() == type2)
-				heroSkillmap.put(entry.getKey(), entry.getValue());
+			try {
+				SkillTempateInfo skillInfo = SkillTempMgr.getSkillTemp(skillId);// 技能配置
+				if (skillInfo.getMasterType() == type || skillInfo.getMasterType() == type2) {
+					heroSkillmap.put(entry.getKey(), entry.getValue());
+				}
+			} catch (Exception e) {
+				System.out.println("======");
+			}
 		}
 		return heroSkillmap;
 	}
@@ -141,24 +146,7 @@ public class SkillInventory extends AbstractEvent implements IInventory {
 		for (Entry<String, HeroSkill> entry : skillMap.entrySet()) {
 			HeroSkill skill = entry.getValue();
 			int skillId = skill.getSkillId();
-			SkillTempateInfo skillInfo = SkillTempMgr.getSkillTemp(skillId);// 技能配置
-			if (skillInfo != null) {
-				String propertyIds = skillInfo.getPropertyIds();
-				if (propertyIds != null) {
-					for (String str : propertyIds.split(",")) {
-						if (str.trim().equals("")) {
-							continue;
-						}
-						SimpleProperty property = SkillUtil.readPro(Integer.valueOf(str));
-						if (property.isPre()) {
-							SkillUtil.joinPro(bagPer, property.getType(), property.getValue());
-						} else {
-							SkillUtil.joinPro(bagData, property.getType(), property.getValue());
-						}
-
-					}
-				}
-			}
+			SkillUtil.getSkillProperty(bagData, bagPer, skillId);
 		}
 		// 技能阶段
 		int skillStage = player.getBasePlayer().getPlayerInfo().getSkillStage();// 当前技能阶段

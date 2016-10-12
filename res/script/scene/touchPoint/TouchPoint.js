@@ -17,7 +17,7 @@ function action(playerId, npcType) {
 
 		//月星->赵国传送点
 		case 1005301:
-			changeMap(playerId,1009,2928,353,5039,1);
+			changeMap(playerId,1009,3717,264,5809,1);
 			break;
 		//赵国->月星传送点
 		case 1009301:
@@ -25,15 +25,15 @@ function action(playerId, npcType) {
 			break;
 		//藤家城->赵国野外
 		case 1008302:
-			changeMap(playerId,1009,3379,346,5286,1);
+			changeMap(playerId,1009,5111,60,6081,1);
 			break;
 		//恒岳派后山->山间泉眼
 		case 1009305:
-			changeMap(playerId,1009,3122,189,5681,1);
+			changeMap(playerId,1009,3795,168,6041,1);
 			break;
 		//山间泉眼->恒岳派后山
 		case 1009306:
-			changeMap(playerId,1009,3382,345,5293,1);
+			changeMap(playerId,1009,3717,264,5809,1);
 			break;	
 		//赵国野外->藤家城
 		case 1009307:
@@ -41,11 +41,11 @@ function action(playerId, npcType) {
 			break;	
 		//域外战场->决明谷
 		case 1014301:
-			changeMap(playerId,1009,6835,-117,8186);
+			changeMap(playerId,1009,5753,-13,7476);
 			break;		
 		//决明谷->域外战场
 		case 1009303:
-			changeMap(playerId,1014,219,390,1674);
+			changeMap(playerId,1014,134,236,1003);
 			break;	
 		/*case 91001:
 			//createCampaign(playerId, 1);

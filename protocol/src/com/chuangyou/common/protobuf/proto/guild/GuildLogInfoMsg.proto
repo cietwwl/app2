@@ -1,0 +1,13 @@
+option java_package = "com.chuangyou.common.protobuf.pb.guild";
+option java_outer_classname = "GuildLogInfoProto";
+
+//帮派日志信息
+message GuildLogInfoMsg{
+	optional int32 guildId = 1; // 帮派ID
+	optional int64 operateTime = 2; // 操作时间
+	optional int32 operateType = 3; // 操作类型
+	optional int64 playerId = 4; // 玩家ID
+	optional string playerName = 5; // 玩家名字
+	optional int64 value1 = 6; // 操作值1
+	optional int64 value2 = 7; // 操作值2
+}

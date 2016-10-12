@@ -34,18 +34,22 @@ public class GetMaillInfoLogic {
 	 * 做正常的数据返回处理
 	 */
 	public void doNormalResult(GamePlayer player){
-		if(player.getShopInventory()==null)return;
+		if(player.getShopInventory()==null)return;	
+		doOneNormalResult(player,ShopCfg.SHOP_NORMAL);
+		doOneNormalResult(player,ShopCfg.SHOP_FASION);
+		doOneNormalResult(player,ShopCfg.SHOP_LIMIT_BUY);
+		doOneNormalResult(player,ShopCfg.SHOP_POINTS);
+		doOneNormalResult(player,ShopCfg.SHOP_VIP);
+		player.getShopInventory().setRefreshData(false);
+	}
+	
+	
+	private void doOneNormalResult(GamePlayer player,int shopType){
 		GetMallInfoRespMsg.Builder resp = GetMallInfoRespMsg.newBuilder();
 		resp.setResultType(1);
-		resp.addInfos(getInfosMsg(ShopCfg.SHOP_NORMAL,player));
-		resp.addInfos(getInfosMsg(ShopCfg.SHOP_FASION,player));
-		resp.addInfos(getInfosMsg(ShopCfg.SHOP_LIMIT_BUY,player));
-		resp.addInfos(getInfosMsg(ShopCfg.SHOP_POINTS,player));
-		resp.addInfos(getInfosMsg(ShopCfg.SHOP_VIP,player));
-		
+		resp.addInfos(getInfosMsg(shopType,player));
 		PBMessage pkg = MessageUtil.buildMessage(Protocol.U_RESP_MALL_INFO,resp);
 		player.sendPbMessage(pkg);
-		player.getShopInventory().setRefreshData(false);
 	}
 	
 	/**

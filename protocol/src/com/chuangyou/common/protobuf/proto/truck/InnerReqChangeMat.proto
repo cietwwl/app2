@@ -1,0 +1,12 @@
+//protocol=10720;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "InnerReqChangeMatProto";
+
+//请求兑换物资
+message InnerReqChangeMat {
+	required int64 truckId = 1;	//镖车ID	
+	required int32 addtype = 2;	//添加类型 1.元宝添加 2.物品添加	
+	required int32 itemTypeId = 3;	//使用物品的ID
+	required int32 count = 4;	//添加物质的数量
+	required int32 mapId = 5;	//镖车所在的地图Id
+}

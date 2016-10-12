@@ -57,15 +57,6 @@ public class BattleUtil {
 		if (stemp.getBornType() == BornType.RELATIVELY) {
 			if (target != null && target.getPostion() != null && source.getPostion() != null) {
 				return MathUtils.GetVector3InDistance(source.getPostion(), target.getPostion(), stemp.getBornlength());
-				// float distance = Vector3.distance(source.getPostion(),
-				// target.getPostion());
-				// float born_x = source.getPostion().x + (target.getPostion().x
-				// - source.getPostion().x) * stemp.getBornlength() / distance;
-				// float born_y = source.getPostion().y + (target.getPostion().y
-				// - source.getPostion().y) * stemp.getBornlength() / distance;
-				// float born_z = source.getPostion().z + (target.getPostion().z
-				// - source.getPostion().z) * stemp.getBornlength() / distance;
-				// return new Vector3(born_x, born_y, born_z);
 			}
 		}
 		if (target != null) {

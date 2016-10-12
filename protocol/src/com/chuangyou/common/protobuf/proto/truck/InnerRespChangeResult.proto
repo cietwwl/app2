@@ -1,0 +1,11 @@
+//protocol=20709;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "InnerRespChangeResultProto";
+
+
+//物资完成
+message InnerRespChangeResult {
+	required int64 truckId = 1;	//镖车ID	
+	required int32 mapId = 2;	//镖车所在地图的ID
+	required int32 count = 3;	//兑换物资的总数
+}

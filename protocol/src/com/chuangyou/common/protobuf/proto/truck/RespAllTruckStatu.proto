@@ -1,0 +1,10 @@
+//protocol=2613;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "RespAllTruckStatuProto";
+
+import "truck/TruckStatu.proto";
+
+//回应所有镖车的状态
+message RespAllTruckStatu {
+	repeated TruckStatu trucks = 1;//属性
+}

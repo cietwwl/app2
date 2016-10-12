@@ -11,6 +11,7 @@ import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.interfaces.IInventory;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.sql.dao.DBManager;
+import com.chuangyou.xianni.task.template.TaskTemplateMgr;
 
 public class TaskInventory extends AbstractEvent implements IInventory {
 
@@ -59,6 +60,7 @@ public class TaskInventory extends AbstractEvent implements IInventory {
 			return false;
 		taskInfos = new HashMap<>();
 		for (TaskInfo info : infos.values()) {
+			if(TaskTemplateMgr.getTaskCfg(info.getTaskId())==null)continue;
 			TaskTriggerInfo triggerInfo = new TaskTriggerInfo(player, info);
 			taskInfos.put(info.getTaskId(), triggerInfo);
 			triggerInfo.addTrigger();

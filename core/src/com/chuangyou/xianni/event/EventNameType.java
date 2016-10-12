@@ -3,6 +3,7 @@ package com.chuangyou.xianni.event;
 public interface EventNameType {
 	/**金币改变*
 	public static final int	MONEY_CHANGE			= 1;
+	
 	/**所有属性变更*/ 
 	public static final int	UPDATE_PLAYER_PROPERTY_ALL	= 2;
 	
@@ -47,5 +48,44 @@ public interface EventNameType {
 	public static final int TEAM_IS_ALLOFFLINE = 19;
 	/** 队员在线与离线状态发生改变   */
 	public static final int TEAM_CHNAGE_ONLINE = 20;
-	
+	/**
+	 *  主魂等级变更
+	 */
+	public static final int SOUL_LV  = 21;
+	/**
+	 *  装备
+	 */
+	public static final int EQUIP  = 22;
+	/**
+	 *  主魂星级
+	 */
+	public static final int SOUL_STAR = 23;
+	/**
+	 * 制作魂幡熟练度
+	 */
+	public static final int SOUL_PRO  = 24;
+	/**
+	 *  坐骑
+	 */
+	public static final int MOUNT  = 25;
+	/**
+	 * 神器
+	 */
+	public static final int ARTIFACT = 26;
+	/**
+	 * 法宝激活
+	 */
+	public static final int MAGICWP_ACTIVE = 27;
+	/**
+	 * 法宝
+	 */
+	public static final int MAGICWP = 28;
+	/**
+	 * 宠物
+	 */
+	public static final int PET_ACTIVE = 29;
+	/**
+	 * 宠物
+	 */
+	public static final int PET = 30;
 }

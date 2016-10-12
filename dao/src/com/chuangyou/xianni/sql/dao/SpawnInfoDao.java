@@ -1,6 +1,5 @@
 package com.chuangyou.xianni.sql.dao;
 
-import java.util.List;
 import java.util.Map;
 
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;

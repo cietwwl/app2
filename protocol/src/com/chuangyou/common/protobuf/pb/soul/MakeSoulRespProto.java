@@ -16,7 +16,7 @@ public final class MakeSoulRespProto {
      * <code>required int32 op = 1;</code>
      *
      * <pre>
-     *操作 1：QTE  2:接受任务(开始制作)  3：制作完成  4:重新制作
+     *操作 1：QTE  2:(开始制作) 3：接受任务    4：制作完成   5:重新制作
      * </pre>
      */
     boolean hasOp();
@@ -24,7 +24,7 @@ public final class MakeSoulRespProto {
      * <code>required int32 op = 1;</code>
      *
      * <pre>
-     *操作 1：QTE  2:接受任务(开始制作)  3：制作完成  4:重新制作
+     *操作 1：QTE  2:(开始制作) 3：接受任务    4：制作完成   5:重新制作
      * </pre>
      */
     int getOp();
@@ -184,7 +184,7 @@ public final class MakeSoulRespProto {
      * <code>required int32 op = 1;</code>
      *
      * <pre>
-     *操作 1：QTE  2:接受任务(开始制作)  3：制作完成  4:重新制作
+     *操作 1：QTE  2:(开始制作) 3：接受任务    4：制作完成   5:重新制作
      * </pre>
      */
     public boolean hasOp() {
@@ -194,7 +194,7 @@ public final class MakeSoulRespProto {
      * <code>required int32 op = 1;</code>
      *
      * <pre>
-     *操作 1：QTE  2:接受任务(开始制作)  3：制作完成  4:重新制作
+     *操作 1：QTE  2:(开始制作) 3：接受任务    4：制作完成   5:重新制作
      * </pre>
      */
     public int getOp() {
@@ -546,7 +546,7 @@ public final class MakeSoulRespProto {
        * <code>required int32 op = 1;</code>
        *
        * <pre>
-       *操作 1：QTE  2:接受任务(开始制作)  3：制作完成  4:重新制作
+       *操作 1：QTE  2:(开始制作) 3：接受任务    4：制作完成   5:重新制作
        * </pre>
        */
       public boolean hasOp() {
@@ -556,7 +556,7 @@ public final class MakeSoulRespProto {
        * <code>required int32 op = 1;</code>
        *
        * <pre>
-       *操作 1：QTE  2:接受任务(开始制作)  3：制作完成  4:重新制作
+       *操作 1：QTE  2:(开始制作) 3：接受任务    4：制作完成   5:重新制作
        * </pre>
        */
       public int getOp() {
@@ -566,7 +566,7 @@ public final class MakeSoulRespProto {
        * <code>required int32 op = 1;</code>
        *
        * <pre>
-       *操作 1：QTE  2:接受任务(开始制作)  3：制作完成  4:重新制作
+       *操作 1：QTE  2:(开始制作) 3：接受任务    4：制作完成   5:重新制作
        * </pre>
        */
       public Builder setOp(int value) {
@@ -579,7 +579,7 @@ public final class MakeSoulRespProto {
        * <code>required int32 op = 1;</code>
        *
        * <pre>
-       *操作 1：QTE  2:接受任务(开始制作)  3：制作完成  4:重新制作
+       *操作 1：QTE  2:(开始制作) 3：接受任务    4：制作完成   5:重新制作
        * </pre>
        */
       public Builder clearOp() {

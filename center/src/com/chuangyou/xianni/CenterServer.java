@@ -6,8 +6,10 @@ import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.NetConfigSet;
 import com.chuangyou.common.util.NetConfigXml;
 import com.chuangyou.common.util.ServerType;
+import com.chuangyou.xianni.activity.template.ActivityTemplateMgr;
 import com.chuangyou.xianni.army.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.artifact.template.ArtifactTemplateMgr;
+import com.chuangyou.xianni.avatar.temlate.AvatarTempManager;
 import com.chuangyou.xianni.bag.ItemManager;
 import com.chuangyou.xianni.campaign.CampaignTaskTempMgr;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
@@ -18,8 +20,10 @@ import com.chuangyou.xianni.common.timer.TimerTaskMgr;
 import com.chuangyou.xianni.entity_id.EntityIdBuilder;
 import com.chuangyou.xianni.equip.template.EquipTemplateMgr;
 import com.chuangyou.xianni.fashion.template.FashionTemplateMgr;
+import com.chuangyou.xianni.guild.manager.GuildManager;
+import com.chuangyou.xianni.guild.template.GuildTemplateMgr;
 import com.chuangyou.xianni.inverseBead.template.InverseBeadTemMgr;
-import com.chuangyou.xianni.login.template.roleConfigMgr;
+import com.chuangyou.xianni.login.template.RoleConfigMgr;
 import com.chuangyou.xianni.magicwp.template.MagicwpTemplateMgr;
 import com.chuangyou.xianni.map.MapProxyManager;
 import com.chuangyou.xianni.mount.template.MountTemplateMgr;
@@ -31,15 +35,18 @@ import com.chuangyou.xianni.netty.server.HttpServerInboundHandler;
 import com.chuangyou.xianni.npcDialog.NpcInfoTemplateMgr;
 import com.chuangyou.xianni.pet.template.PetTemplateMgr;
 import com.chuangyou.xianni.proto.PBMessage;
+import com.chuangyou.xianni.rank.RankServerManager;
+import com.chuangyou.xianni.reward.RewardManager;
+import com.chuangyou.xianni.robot.RobotManager;
 import com.chuangyou.xianni.script.manager.ScriptManager;
 import com.chuangyou.xianni.shop.template.ShopTemplateMgr;
 import com.chuangyou.xianni.skill.template.SkillTempMgr;
 import com.chuangyou.xianni.soul.template.SoulTemplateMgr;
-import com.chuangyou.xianni.sql.dao.CampaignTaskTemplateInfoDao;
-import com.chuangyou.xianni.sql.dao.impl.VipTemDaoImpl;
 import com.chuangyou.xianni.sql.db.pool.DBPoolMgr;
+import com.chuangyou.xianni.state.template.StateTemplateMgr;
 import com.chuangyou.xianni.task.template.TaskTemplateMgr;
 import com.chuangyou.xianni.team.TeamTargetTempMgr;
+import com.chuangyou.xianni.truck.TruckTempMgr;
 import com.chuangyou.xianni.vip.templete.VipTemplateMgr;
 import com.chuangyou.xianni.word.WorldMgr;
 
@@ -88,7 +95,7 @@ public class CenterServer extends BaseServer {
 		if (!initComponent(EntityIdBuilder.init(), "初始化服务器ID工厂")) {
 			return false;
 		}
-		if (!initComponent(roleConfigMgr.init(), "初始化角色模板数据")) {
+		if (!initComponent(RoleConfigMgr.init(), "初始化角色模板数据")) {
 			return false;
 		}
 
@@ -163,23 +170,57 @@ public class CenterServer extends BaseServer {
 			return false;
 		}
 
-		if(!initComponent(EquipTemplateMgr.init(), "寝化装备模板数据")){
+		if (!initComponent(EquipTemplateMgr.init(), "寝化装备模板数据")) {
 			return false;
 		}
-		if(!initComponent(ArtifactTemplateMgr.init(), "神器模板数据")){
+		if (!initComponent(ArtifactTemplateMgr.init(), "神器模板数据")) {
 			return false;
 		}
-		
-		if(!initComponent(FilterWordSet.loadFilterWord(Config.getValue("filter_word")), "初始化敏感字")){
 
+		if (!initComponent(StateTemplateMgr.init(), "境界模板数据")) {
 			return false;
 		}
-		
+
+		if (!initComponent(FilterWordSet.loadFilterWord(Config.getValue("filter_word")), "初始化敏感字")) {
+			return false;
+		}
+
 		if (!initComponent(SoulTemplateMgr.init(), "初始化魂幡模板数据")) {
 			return false;
 		}
-		
+
 		if (!initComponent(VipTemplateMgr.init(), "初始化vip模板数据")) {
+			return false;
+		}
+
+		if (!initComponent(ActivityTemplateMgr.init(), "初始化日常活动模板数据")) {
+			return false;
+		}
+
+		if(!initComponent(GuildTemplateMgr.init(), "帮派模板数据")){
+			return false;
+		}
+		
+		
+		//管理器可能会用到模板数据，所以放在所有模板数据之后初始化
+		if(!initComponent(RankServerManager.getInstance().init(),"初始化排行榜数据")){
+			return false;
+		}
+		if (!initComponent(RobotManager.init(), "初始化机器模块")) {
+			return false;
+		}
+
+		if (!initComponent(RewardManager.init(), "奖励模块")) {
+			return false;
+		}
+		if (!initComponent(AvatarTempManager.init(), "加载分身模板数据")) {
+			return false;
+		}
+		
+		if (!initComponent(TruckTempMgr.init(), "初始化镖车模块")) {
+			return false;
+		}
+		if(!initComponent(GuildManager.getIns().init(), "初始化帮派模块")){
 			return false;
 		}
 		return true;
@@ -205,11 +246,6 @@ public class CenterServer extends BaseServer {
 		http.start();
 		System.err.println("启动耗时: " + (System.currentTimeMillis() - time));
 		Log.error("center启动成功!");
-		// EmailLoopAction e =new
-		// EmailLoopAction(ThreadManager.actionExecutor.getDefaultQueue(), 1000,
-		// 200);
-		// ThreadManager.actionExecutor.enDelayQueue(e);
-
 	}
 
 	public boolean initDB() {

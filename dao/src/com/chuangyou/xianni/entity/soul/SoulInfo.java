@@ -71,6 +71,17 @@ public class SoulInfo extends DataObject {
 	private int		proficiency3;							// 材料制作熟练度
 	private int		proficiency4;							// 材料制作熟练度
 
+	
+	public List<Integer> getSoulProList() {
+		List<Integer> list = new ArrayList<>();
+		list.add(proficiency1);
+		list.add(proficiency2);
+		list.add(proficiency3);
+		list.add(proficiency4);
+		return list;
+	}
+	
+	
 	/**
 	 * 获取卡牌列表
 	 * 
@@ -128,21 +139,21 @@ public class SoulInfo extends DataObject {
 		subMsg1.setFuseSkillId(fuseSkillId2);
 		subMsg1.setFuseCreateTime(fuseSkillCreateTime2.getTime());
 		subMsg1.setColor(fuseSkillColor2);
-		subMsg.setProficiency(proficiency2);
+		subMsg1.setProficiency(proficiency2);
 		msg.setFuseSkill2(subMsg1);
 
 		FuseSkillMsg.Builder subMsg2 = FuseSkillMsg.newBuilder();
 		subMsg2.setFuseSkillId(fuseSkillId3);
 		subMsg2.setFuseCreateTime(fuseSkillCreateTime3.getTime());
 		subMsg2.setColor(fuseSkillColor3);
-		subMsg.setProficiency(proficiency3);
+		subMsg2.setProficiency(proficiency3);
 		msg.setFuseSkill3(subMsg2);
 
 		FuseSkillMsg.Builder subMsg3 = FuseSkillMsg.newBuilder();
 		subMsg3.setFuseSkillId(fuseSkillId4);
 		subMsg3.setFuseCreateTime(fuseSkillCreateTime4.getTime());
 		subMsg3.setColor(fuseSkillColor4);
-		subMsg.setProficiency(proficiency4);
+		subMsg3.setProficiency(proficiency4);
 		msg.setFuseSkill4(subMsg3);
 
 		return msg;
@@ -377,18 +388,18 @@ public class SoulInfo extends DataObject {
 
 	public void setProficiency(int index, int i) {
 		if (index == 1) {
-			this.proficiency1 = this.proficiency1 + i;
+			this.proficiency1 = i;
 		}
 		if (index == 2) {
-			this.proficiency2 = this.proficiency2 + i;
+			this.proficiency2 = i;
 		}
 
 		if (index == 3) {
-			this.proficiency3 = this.proficiency3 + i;
+			this.proficiency3 = i;
 		}
 
 		if (index == 4) {
-			this.proficiency4 = this.proficiency4 + i;
+			this.proficiency4 = i;
 		}
 		Log.error("----getProficiency-------" + index);
 	}

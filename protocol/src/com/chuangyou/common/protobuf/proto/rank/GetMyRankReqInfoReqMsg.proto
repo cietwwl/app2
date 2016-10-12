@@ -1,0 +1,9 @@
+//protocol=11612;
+option java_package = "com.chuangyou.common.protobuf.pb.rank";
+option java_outer_classname = "GetMyRankReqInfoReqProto";
+
+ //查询自己榜中的战力
+message GetMyRankReqInfoReqMsg{
+	required int32 rankType = 1;//排行榜类型编号
+
+}

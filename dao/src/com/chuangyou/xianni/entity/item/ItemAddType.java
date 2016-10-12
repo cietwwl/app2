@@ -2,10 +2,21 @@ package com.chuangyou.xianni.entity.item;
 
 /**
  * <pre>
- * 物品添加类型 [2999,+N]
+ * 物品添加类型 [2999,11001]  不要超过 21001(奖励类型)
  * </pre>
  */
 public interface ItemAddType {
+
+	/** 奖励均应>12001 */
+	public static class RewardType {
+		/** 竞技场奖励 */
+		public static final int	ARENA			= 10101;
+		/** 竞技场排名奖励 */
+		public static final int	PVP_1V1_RANK	= 10102;
+		/** 竞技场连胜奖励 */
+		public static final int	PVP_1V1_WIN		= 10103;
+	}
+
 	/** 测试添加 */
 	public static final short	TEST_ADD		= 2999;
 
@@ -53,5 +64,24 @@ public interface ItemAddType {
 	 * VIP领取
 	 */
 	public static final short	VIP_GET			= 3011;
+	/**
+	 * 境界
+	 */
+	public static final short 	STATE           = 3012;
+	
+	/**
+	 * 帮派商店购买
+	 */
+	public static final short	GUILD_SHOP_BUY	= 3013;
+	
+	/**
+	 * 镖车物资掉落添加
+	 */
+	public static final short 	TRUCK_DROP_MAT		= 3014;
+	
+	/**
+	 * 镖车领奖
+	 */
+	public static final short 	TRUCK_REWARD		= 3015;
 
 }

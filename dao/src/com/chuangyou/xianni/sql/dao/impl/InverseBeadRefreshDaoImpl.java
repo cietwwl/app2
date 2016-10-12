@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.chuangyou.common.util.Log;
+import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.inverseBead.PlayerBeadTimeInfo;
 import com.chuangyou.xianni.sql.dao.PlayerBeadRefreshTimeDao;
 import com.chuangyou.xianni.sql.db.BaseDao;
@@ -25,7 +26,6 @@ public class InverseBeadRefreshDaoImpl extends BaseDao implements PlayerBeadRefr
 	public boolean add(PlayerBeadTimeInfo playerInverseBead) {
 		// TODO Auto-generated method stub
 		boolean result = false;
-		playerInverseBead.beginAdd();
 		String sql = "replace into tb_u_player_bead_time_info(playerId,currRefreshId,beadRefreshId,beadRefreshDateTime,auraNum,auraRefreshDateTime) values(?,?,?,?,?,?)";
 		Map<Integer, DbParameter> params = new HashMap<Integer, DbParameter>();
 		params.put(1, new DbParameter(Types.BIGINT, playerInverseBead.getPlayerId()));
@@ -36,7 +36,7 @@ public class InverseBeadRefreshDaoImpl extends BaseDao implements PlayerBeadRefr
 		params.put(6, new DbParameter(Types.TIMESTAMP, playerInverseBead.getAuraRefreshDateTime()));
 
 		result = execNoneQuery(sql, params) > -1 ? true : false;
-		playerInverseBead.commitAdd(result);
+		playerInverseBead.setOp(Option.None);
 		return result;
 	}
 

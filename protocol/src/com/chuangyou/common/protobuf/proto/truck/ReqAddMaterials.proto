@@ -1,0 +1,11 @@
+//protocol=20708;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "ReqAddMaterialsProto";
+
+//请求添加物质
+message ReqAddMaterials {
+	required int64 truckid = 1; //镖车id
+	required int32 addtype = 2; //添加类型 1.灵石添加 2.物品添加	
+	required int32 itemTypeId = 3; //使用物品的ID
+	required int32 count = 4; //添加物质的数量
+}

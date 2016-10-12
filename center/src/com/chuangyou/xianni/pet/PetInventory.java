@@ -1,7 +1,9 @@
 package com.chuangyou.xianni.pet;
 
 import java.util.Map;
-
+import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
+import com.chuangyou.common.protobuf.pb.player.OtherPetProto.OtherPetMsg;
+import com.chuangyou.xianni.army.Hero;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.pet.PetAtt;
 import com.chuangyou.xianni.entity.pet.PetInfo;
@@ -184,7 +186,7 @@ public class PetInventory extends AbstractEvent implements IInventory {
 		if (petAtt != null) {
 			option = petAtt.getOp();
 			if (option == Option.Insert) {
-				// DBManager.getPetAttDao().add(petAtt);
+				DBManager.getPetAttDao().add(petAtt);
 			} else if (option == Option.Update) {
 				DBManager.getPetAttDao().update(petAtt);
 			}
@@ -229,43 +231,54 @@ public class PetInventory extends AbstractEvent implements IInventory {
 	 * @throws MXY2Exception
 	 */
 	public void computePetAtt(BaseProperty petData, BaseProperty petPer) {
-//		List<Integer> toalPro = new ArrayList<>();
-//
-//		Map<Integer, PetInfo> rolePetInfo = player.getPetInventory().getPetInfoMap();
-//		for (PetInfo pet : rolePetInfo.values()) {
-//			// 等级加成
-//			PetLevelCfg petLevelCfg = PetTemplateMgr.getLevelTemps().get(pet.getPetId() * 1000 + pet.getLevel());
-//			toalPro.addAll(petLevelCfg.getAttList());
-//
-//			PetInfoCfg petInfoCfg = PetTemplateMgr.getPetTemps().get(pet.getPetId());
-//			if (petInfoCfg.getIsSpecial() == 0) {
-//				// 炼体加成
-//				if (pet.getPhysique() > 0) {
-//					PetPhysiqueCfg petPhyCfg = PetTemplateMgr.getPhysiqueTemps().get(pet.getPetId() * 1000 + pet.getPhysique());
-//					toalPro.addAll(petPhyCfg.getAttList());
-//				}
-//
-//				// 品质加成
-//				if (pet.getQuality() > 0) {
-//					PetQualityCfg petQualityCfg = PetTemplateMgr.getQualityTemps().get(pet.getPetId() * 1000 + pet.getQuality());
-//					toalPro.addAll(petQualityCfg.getAttList());
-//				}
-//
-//				// 进阶加成
-//				if (pet.getGrade() > 0) {
-//					PetGradeCfg petGradeCfg = PetTemplateMgr.getGradeTemps().get(pet.getPetId() * 1000 + pet.getGrade());
-//					toalPro.addAll(petGradeCfg.getAttList());
-//				}
-//			}
-//		}
-//
-//		// 炼魂加成
-//		PetAtt petAtt = player.getPetInventory().getPetAtt();
-//		PetSoulCfg petSoulCfg = PetTemplateMgr.getSoulTemps().get(petAtt.getSoulLv());
-//		toalPro.addAll(petSoulCfg.getAttList());
-		
+		// List<Integer> toalPro = new ArrayList<>();
+		//
+		// Map<Integer, PetInfo> rolePetInfo =
+		// player.getPetInventory().getPetInfoMap();
+		// for (PetInfo pet : rolePetInfo.values()) {
+		// // 等级加成
+		// PetLevelCfg petLevelCfg =
+		// PetTemplateMgr.getLevelTemps().get(pet.getPetId() * 1000 +
+		// pet.getLevel());
+		// toalPro.addAll(petLevelCfg.getAttList());
+		//
+		// PetInfoCfg petInfoCfg =
+		// PetTemplateMgr.getPetTemps().get(pet.getPetId());
+		// if (petInfoCfg.getIsSpecial() == 0) {
+		// // 炼体加成
+		// if (pet.getPhysique() > 0) {
+		// PetPhysiqueCfg petPhyCfg =
+		// PetTemplateMgr.getPhysiqueTemps().get(pet.getPetId() * 1000 +
+		// pet.getPhysique());
+		// toalPro.addAll(petPhyCfg.getAttList());
+		// }
+		//
+		// // 品质加成
+		// if (pet.getQuality() > 0) {
+		// PetQualityCfg petQualityCfg =
+		// PetTemplateMgr.getQualityTemps().get(pet.getPetId() * 1000 +
+		// pet.getQuality());
+		// toalPro.addAll(petQualityCfg.getAttList());
+		// }
+		//
+		// // 进阶加成
+		// if (pet.getGrade() > 0) {
+		// PetGradeCfg petGradeCfg =
+		// PetTemplateMgr.getGradeTemps().get(pet.getPetId() * 1000 +
+		// pet.getGrade());
+		// toalPro.addAll(petGradeCfg.getAttList());
+		// }
+		// }
+		// }
+		//
+		// // 炼魂加成
+		// PetAtt petAtt = player.getPetInventory().getPetAtt();
+		// PetSoulCfg petSoulCfg =
+		// PetTemplateMgr.getSoulTemps().get(petAtt.getSoulLv());
+		// toalPro.addAll(petSoulCfg.getAttList());
+
 		Map<Integer, Integer> attMap = PetManager.computePetAtt(player);
-		for(int attType:attMap.keySet()){
+		for (int attType : attMap.keySet()) {
 			SimpleProperty property = SkillUtil.readPro(attType, attMap.get(attType));
 			if (property.isPre()) {
 				SkillUtil.joinPro(petPer, property.getType(), property.getValue());
@@ -274,14 +287,14 @@ public class PetInventory extends AbstractEvent implements IInventory {
 			}
 		}
 
-//		for (Integer pro : toalPro) {
-//			SimpleProperty property = SkillUtil.readPro(pro);
-//			if (property.isPre()) {
-//				SkillUtil.joinPro(petPer, property.getType(), property.getValue());
-//			} else {
-//				SkillUtil.joinPro(petData, property.getType(), property.getValue());
-//			}
-//		}
+		// for (Integer pro : toalPro) {
+		// SimpleProperty property = SkillUtil.readPro(pro);
+		// if (property.isPre()) {
+		// SkillUtil.joinPro(petPer, property.getType(), property.getValue());
+		// } else {
+		// SkillUtil.joinPro(petData, property.getType(), property.getValue());
+		// }
+		// }
 	}
 
 	public void updataProperty() {
@@ -293,6 +306,34 @@ public class PetInventory extends AbstractEvent implements IInventory {
 			player.getArmyInventory().getHero().addPet(skillData, skillPer);
 			player.getArmyInventory().updateProperty();
 		}
+	}
+
+	/** 写入其他用户查看信息 */
+	public void writeInSimpOtherSnap(OtherPetMsg.Builder proto) {
+		if (petAtt == null || petInfoMap == null || petInfoMap.size() == 0) {
+			return;
+		}
+		proto.setPlayerId(petAtt.getPlayerId());
+		PetInfo petInfo = petInfoMap.get(petAtt.getFightPetId());
+		if (petInfo == null) {
+			return;
+		}
+		proto.setPetId(petAtt.getFightPetId());
+		proto.setLevel(petInfo.getLevel());
+		proto.setGrade(petInfo.getGrade());
+		proto.setPhysique(petInfo.getPhysique());
+		proto.setQuality(petInfo.getQuality());
+		
+		BaseProperty skillData = new BaseProperty();
+		BaseProperty skillPer = new BaseProperty();
+		// 加入技能属性
+		computePetAtt(skillData, skillPer);
+		Hero tempHero = new Hero(this.player);
+		tempHero.addMagicwp(skillData, skillPer);
+		PropertyListMsg.Builder propertyMsgs = PropertyListMsg.newBuilder();
+		tempHero.writeProto(propertyMsgs);
+		proto.setPropertitys(propertyMsgs);
+		tempHero = null;
 	}
 
 }

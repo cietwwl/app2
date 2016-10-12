@@ -131,6 +131,19 @@ public class MathUtils {
 	}
 	
 	/**
+	 * 在XZ水平上的距离计算
+	 * @param src
+	 * @param tar
+	 * @return
+	 */
+	public static float getDistByXZ(Vector3 src, Vector3 tar)
+	{
+		float dx = src.x - tar.x;
+		float dz = src.z - tar.z;
+		return (float) Math.sqrt(dx * dx + 0 + dz * dz);
+	}
+	
+	/**
 	 * 在一个中心随机一个点
 	 * 
 	 * @param center

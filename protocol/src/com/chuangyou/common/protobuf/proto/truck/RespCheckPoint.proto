@@ -1,0 +1,10 @@
+//protocol=2615;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "RespCheckPointProto";
+
+
+//回应所有镖车的状态
+message RespCheckPoint {
+	optional int32 statu = 1;	//1.创建镖车 2.购买物资 3.不能创建镖车 4.不能添加物质 5.未创建镖车
+	optional int32 remain = 2;	//剩余购买的物资
+}

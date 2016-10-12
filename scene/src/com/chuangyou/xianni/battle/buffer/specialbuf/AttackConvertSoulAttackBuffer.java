@@ -29,8 +29,6 @@ public class AttackConvertSoulAttackBuffer extends Buffer {
 		changeValue = 0;
 		source.refreshProperties(EnumAttr.ATTACK.getValue());
 		source.refreshProperties(EnumAttr.SOUL_ATTACK.getValue());
-
-		System.out.println("--------------buffer 失效-------------------");
 	}
 
 	public int getResult(int type) {

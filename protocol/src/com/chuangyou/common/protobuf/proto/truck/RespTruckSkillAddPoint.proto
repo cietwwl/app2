@@ -1,0 +1,14 @@
+//protocol=2620;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "RespTruckSkillAddPointProto";
+
+
+//回应
+message RespTruckSkillAddPoint {
+	required int32 addPointState = 1; //加点状态 1.成功 2.失败
+	required int32 skilltype = 2; //技能类型 1.镖车技能 2.帮派镖车技能 3.镖师技能 4.镖师天赋
+	required int32 remainPoint = 3;	//可加点
+	required int32 oldskillId = 4;	//技能Id
+	required int32 newskillId = 5;	//新的技能Id
+	required int32 type = 6;	//
+}

@@ -8,7 +8,9 @@ import com.chuangyou.common.protobuf.pb.PlayerLeaveGridProto.PlayerLeaveGridMsg;
 import com.chuangyou.common.protobuf.pb.PlayerMoveBoardcastProto.PlayerMoveBoardcastMsg;
 import com.chuangyou.common.protobuf.pb.PlayerMoveReqProto.PlayerMoveReqMsg;
 import com.chuangyou.common.protobuf.pb.PlayerStopBoardcastProto.PlayerStopBoardcastMsg;
+import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
+import com.chuangyou.common.protobuf.pb.player.PlayerGuildInfoProto.PlayerGuildInfoMsg;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.proto.BroadcastUtil;
@@ -33,7 +35,7 @@ public class NotifyNearHelper {
 	 * @param cur
 	 */
 	public static void notifyHelper(Field f, ActiveLiving living, Vector3 cur, Selector selector) {
-		//ActiveLiving living = (ActiveLiving) f.getLiving(army.getPlayerId());
+		// ActiveLiving living = (ActiveLiving) f.getLiving(army.getPlayerId());
 		GridItem curGI = f.getGrid().getGridItem(living.getPostion());
 		GridItem tarGI = f.getGrid().getGridItem(cur);
 		if (curGI == null || tarGI == null)
@@ -96,14 +98,28 @@ public class NotifyNearHelper {
 	 * 通知附近玩家移动
 	 */
 	public static void notifyMove(ArmyProxy army, List<Long> nears, PlayerMoveReqMsg movemsg) {
+		notifyMove(army, nears, movemsg.getCur(), movemsg.getTar());
+	}
+
+	/**
+	 * 通知附近玩家移动
+	 */
+	public static void notifyMove(ArmyProxy army, List<Long> nears, PBVector3 cur, PBVector3 tar) {
+		notifyMove(army.getPlayer(), nears, cur, tar);
+	}
+
+	/**
+	 * 通知附近玩家移动
+	 */
+	public static void notifyMove(Living l, List<Long> nears, PBVector3 cur, PBVector3 tar) {
 		for (Long id : nears) {
 			ArmyProxy neararmy = WorldMgr.getArmy(id);
 			if (neararmy == null)
 				continue;
 			PlayerMoveBoardcastMsg.Builder msg = PlayerMoveBoardcastMsg.newBuilder();
-			msg.setId(army.getPlayerId());
-			msg.setCur(Vector3BuilderHelper.build(movemsg.getCur()));
-			msg.setTar(Vector3BuilderHelper.build(movemsg.getTar()));
+			msg.setId(l.getId());
+			msg.setCur(Vector3BuilderHelper.build(cur));
+			msg.setTar(Vector3BuilderHelper.build(tar));
 			msg.setPreArriveTargetServerTime(System.currentTimeMillis());
 			PBMessage pkg = MessageUtil.buildMessage(Protocol.U_BC_MOVE, msg);
 			pkg.setPlayerId(id);
@@ -141,18 +157,18 @@ public class NotifyNearHelper {
 				if (near == null) {
 					continue;
 				}
-				// System.out.println("告诉 id = " + l.getId() + " ::: " + id + "
-				// 进入了视野" + " skinId :" + l.getSkin());
+				// System.out.println("告诉 id = " + l.getId() + " ::: " + id +
+				// "进入了视野" + " skinId :" + l.getSkin());
 				if (WorldMgr.getArmy(l.getId()) != null)
 					WorldMgr.getArmy(l.getId()).sendPbMessage(MessageUtil.buildMessage(Protocol.U_RESP_ATT_SNAP, near.getAttSnapMsg()));
 			} else {
 				newNearArmy.sendPbMessage(MessageUtil.buildMessage(Protocol.U_RESP_ATT_SNAP, l.getAttSnapMsg()));
-				// System.out.println("告诉 id = " + id + " ::: " + l.getId() + "
-				// 进入了视野");
+				// System.out.println("告诉 id = " + id + " ::: " + l.getId() +
+				// "进入了视野");
 				if (WorldMgr.getArmy(l.getId()) != null)
 					WorldMgr.getArmy(l.getId()).sendPbMessage(MessageUtil.buildMessage(Protocol.U_RESP_ATT_SNAP, newNearArmy.getPlayer().getAttSnapMsg()));
-				// System.out.println("告诉 id = " + l.getId() + " ::: " + id + "
-				// 进入了视野");
+				// System.out.println("告诉 id = " + l.getId() + " ::: " + id +
+				// "进入了视野");
 			}
 		}
 	}
@@ -167,8 +183,8 @@ public class NotifyNearHelper {
 			}
 			PlayerLeaveGridMsg.Builder leaveMsg = PlayerLeaveGridMsg.newBuilder();
 			leaveMsg.setId(id);
-			// System.out.println("告诉 id = " + l.getId() + " ::: " + id + "
-			// 离开视野");
+			// System.out.println("告诉 id = " + l.getId() + " ::: " + id +
+			// "离开视野");
 			ArmyProxy me = WorldMgr.getArmy(l.getId());
 			if (me != null) {
 				PBMessage leavepkg = MessageUtil.buildMessage(Protocol.U_LEAVE_GRID, leaveMsg);
@@ -181,8 +197,8 @@ public class NotifyNearHelper {
 			leaveMsg.setId(l.getId());
 			PBMessage leavepkgToOther = MessageUtil.buildMessage(Protocol.U_LEAVE_GRID, leaveMsg);
 			oldNearArmy.sendPbMessage(leavepkgToOther);
-			// System.out.println("告诉 id = " + oldNearArmy.getPlayerId() + " :::
-			// " + l.getId() + " 离开视野");
+			// System.out.println("-----------------------------------告诉 id = "
+			// + oldNearArmy.getPlayerId() + " ::: " + l.getId() + " 离开视野");
 		}
 	}
 
@@ -195,5 +211,19 @@ public class NotifyNearHelper {
 	 */
 	public static void notifyAttrChange(ArmyProxy army, Set<Long> nears, PlayerAttUpdateMsg attMsg) {
 		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_RESP_PLAYER_ATT_UPDATE, attMsg);
+	}
+
+	/**
+	 * 通知玩家帮派变更
+	 * 
+	 * @param army
+	 * @param nears
+	 */
+	public static void notifyGuildChange(ArmyProxy army, Set<Long> nears) {
+		nears.add(army.getPlayerId());
+
+		PlayerGuildInfoMsg.Builder guildMsg = PlayerGuildInfoMsg.newBuilder();
+		army.getPlayer().getSimpleInfo().writeGuildProto(guildMsg);
+		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_PLAYER_GUILD_NOTIFY, guildMsg.build());
 	}
 }

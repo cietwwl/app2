@@ -16,9 +16,7 @@ public class MonsterPollingAction extends PollingAction {
 
 	@Override
 	public void exec() {
-	
 		ai.exe();
-
 		upPos.exe();
 	}
 

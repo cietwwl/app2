@@ -1,0 +1,9 @@
+//protocol=20713;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "ReqTruckSkillActionProto";
+
+//使用技能，主界面点按钮
+message ReqTruckSkillAction {
+	required int64 truckId = 1;	//镖车Id
+	required int32 skillId = 2;	//对应界面的几个按钮
+}

@@ -1,0 +1,8 @@
+//protocol=0;
+option java_package = "com.chuangyou.common.protobuf.pb.boss";
+option java_outer_classname = "BossListReqProto";
+
+//请求BOSS状态信息列表
+message BossListReqMsg{
+
+}

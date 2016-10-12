@@ -55,32 +55,7 @@ public final class SoulCardOpRespProto {
     com.chuangyou.common.protobuf.pb.soul.CardInfoProto.CardInfoMsgOrBuilder getCardOrBuilder();
 
     /**
-     * <code>optional .CardPieceInfoMsg cardPiece = 3;</code>
-     *
-     * <pre>
-     *影响的碎片信息更新
-     * </pre>
-     */
-    boolean hasCardPiece();
-    /**
-     * <code>optional .CardPieceInfoMsg cardPiece = 3;</code>
-     *
-     * <pre>
-     *影响的碎片信息更新
-     * </pre>
-     */
-    com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg getCardPiece();
-    /**
-     * <code>optional .CardPieceInfoMsg cardPiece = 3;</code>
-     *
-     * <pre>
-     *影响的碎片信息更新
-     * </pre>
-     */
-    com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsgOrBuilder getCardPieceOrBuilder();
-
-    /**
-     * <code>repeated .PropertyMsg atts = 4;</code>
+     * <code>repeated .PropertyMsg atts = 3;</code>
      *
      * <pre>
      *加成属性同步
@@ -89,7 +64,7 @@ public final class SoulCardOpRespProto {
     java.util.List<com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg> 
         getAttsList();
     /**
-     * <code>repeated .PropertyMsg atts = 4;</code>
+     * <code>repeated .PropertyMsg atts = 3;</code>
      *
      * <pre>
      *加成属性同步
@@ -97,7 +72,7 @@ public final class SoulCardOpRespProto {
      */
     com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg getAtts(int index);
     /**
-     * <code>repeated .PropertyMsg atts = 4;</code>
+     * <code>repeated .PropertyMsg atts = 3;</code>
      *
      * <pre>
      *加成属性同步
@@ -105,7 +80,7 @@ public final class SoulCardOpRespProto {
      */
     int getAttsCount();
     /**
-     * <code>repeated .PropertyMsg atts = 4;</code>
+     * <code>repeated .PropertyMsg atts = 3;</code>
      *
      * <pre>
      *加成属性同步
@@ -114,7 +89,7 @@ public final class SoulCardOpRespProto {
     java.util.List<? extends com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsgOrBuilder> 
         getAttsOrBuilderList();
     /**
-     * <code>repeated .PropertyMsg atts = 4;</code>
+     * <code>repeated .PropertyMsg atts = 3;</code>
      *
      * <pre>
      *加成属性同步
@@ -198,22 +173,9 @@ public final class SoulCardOpRespProto {
               break;
             }
             case 26: {
-              com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                subBuilder = cardPiece_.toBuilder();
-              }
-              cardPiece_ = input.readMessage(com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(cardPiece_);
-                cardPiece_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000004;
-              break;
-            }
-            case 34: {
-              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
                 atts_ = new java.util.ArrayList<com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg>();
-                mutable_bitField0_ |= 0x00000008;
+                mutable_bitField0_ |= 0x00000004;
               }
               atts_.add(input.readMessage(com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg.PARSER, extensionRegistry));
               break;
@@ -226,7 +188,7 @@ public final class SoulCardOpRespProto {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
           atts_ = java.util.Collections.unmodifiableList(atts_);
         }
         this.unknownFields = unknownFields.build();
@@ -317,43 +279,10 @@ public final class SoulCardOpRespProto {
       return card_;
     }
 
-    public static final int CARDPIECE_FIELD_NUMBER = 3;
-    private com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg cardPiece_;
-    /**
-     * <code>optional .CardPieceInfoMsg cardPiece = 3;</code>
-     *
-     * <pre>
-     *影响的碎片信息更新
-     * </pre>
-     */
-    public boolean hasCardPiece() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>optional .CardPieceInfoMsg cardPiece = 3;</code>
-     *
-     * <pre>
-     *影响的碎片信息更新
-     * </pre>
-     */
-    public com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg getCardPiece() {
-      return cardPiece_;
-    }
-    /**
-     * <code>optional .CardPieceInfoMsg cardPiece = 3;</code>
-     *
-     * <pre>
-     *影响的碎片信息更新
-     * </pre>
-     */
-    public com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsgOrBuilder getCardPieceOrBuilder() {
-      return cardPiece_;
-    }
-
-    public static final int ATTS_FIELD_NUMBER = 4;
+    public static final int ATTS_FIELD_NUMBER = 3;
     private java.util.List<com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg> atts_;
     /**
-     * <code>repeated .PropertyMsg atts = 4;</code>
+     * <code>repeated .PropertyMsg atts = 3;</code>
      *
      * <pre>
      *加成属性同步
@@ -363,7 +292,7 @@ public final class SoulCardOpRespProto {
       return atts_;
     }
     /**
-     * <code>repeated .PropertyMsg atts = 4;</code>
+     * <code>repeated .PropertyMsg atts = 3;</code>
      *
      * <pre>
      *加成属性同步
@@ -374,7 +303,7 @@ public final class SoulCardOpRespProto {
       return atts_;
     }
     /**
-     * <code>repeated .PropertyMsg atts = 4;</code>
+     * <code>repeated .PropertyMsg atts = 3;</code>
      *
      * <pre>
      *加成属性同步
@@ -384,7 +313,7 @@ public final class SoulCardOpRespProto {
       return atts_.size();
     }
     /**
-     * <code>repeated .PropertyMsg atts = 4;</code>
+     * <code>repeated .PropertyMsg atts = 3;</code>
      *
      * <pre>
      *加成属性同步
@@ -394,7 +323,7 @@ public final class SoulCardOpRespProto {
       return atts_.get(index);
     }
     /**
-     * <code>repeated .PropertyMsg atts = 4;</code>
+     * <code>repeated .PropertyMsg atts = 3;</code>
      *
      * <pre>
      *加成属性同步
@@ -408,7 +337,6 @@ public final class SoulCardOpRespProto {
     private void initFields() {
       op_ = 0;
       card_ = com.chuangyou.common.protobuf.pb.soul.CardInfoProto.CardInfoMsg.getDefaultInstance();
-      cardPiece_ = com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg.getDefaultInstance();
       atts_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
@@ -429,12 +357,6 @@ public final class SoulCardOpRespProto {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (hasCardPiece()) {
-        if (!getCardPiece().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -448,11 +370,8 @@ public final class SoulCardOpRespProto {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeMessage(2, card_);
       }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeMessage(3, cardPiece_);
-      }
       for (int i = 0; i < atts_.size(); i++) {
-        output.writeMessage(4, atts_.get(i));
+        output.writeMessage(3, atts_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -471,13 +390,9 @@ public final class SoulCardOpRespProto {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, card_);
       }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, cardPiece_);
-      }
       for (int i = 0; i < atts_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, atts_.get(i));
+          .computeMessageSize(3, atts_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -593,7 +508,6 @@ public final class SoulCardOpRespProto {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getCardFieldBuilder();
-          getCardPieceFieldBuilder();
           getAttsFieldBuilder();
         }
       }
@@ -611,15 +525,9 @@ public final class SoulCardOpRespProto {
           cardBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000002);
-        if (cardPieceBuilder_ == null) {
-          cardPiece_ = com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg.getDefaultInstance();
-        } else {
-          cardPieceBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000004);
         if (attsBuilder_ == null) {
           atts_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000004);
         } else {
           attsBuilder_.clear();
         }
@@ -663,18 +571,10 @@ public final class SoulCardOpRespProto {
         } else {
           result.card_ = cardBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        if (cardPieceBuilder_ == null) {
-          result.cardPiece_ = cardPiece_;
-        } else {
-          result.cardPiece_ = cardPieceBuilder_.build();
-        }
         if (attsBuilder_ == null) {
-          if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          if (((bitField0_ & 0x00000004) == 0x00000004)) {
             atts_ = java.util.Collections.unmodifiableList(atts_);
-            bitField0_ = (bitField0_ & ~0x00000008);
+            bitField0_ = (bitField0_ & ~0x00000004);
           }
           result.atts_ = atts_;
         } else {
@@ -702,14 +602,11 @@ public final class SoulCardOpRespProto {
         if (other.hasCard()) {
           mergeCard(other.getCard());
         }
-        if (other.hasCardPiece()) {
-          mergeCardPiece(other.getCardPiece());
-        }
         if (attsBuilder_ == null) {
           if (!other.atts_.isEmpty()) {
             if (atts_.isEmpty()) {
               atts_ = other.atts_;
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000004);
             } else {
               ensureAttsIsMutable();
               atts_.addAll(other.atts_);
@@ -722,7 +619,7 @@ public final class SoulCardOpRespProto {
               attsBuilder_.dispose();
               attsBuilder_ = null;
               atts_ = other.atts_;
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000004);
               attsBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getAttsFieldBuilder() : null;
@@ -747,12 +644,6 @@ public final class SoulCardOpRespProto {
         if (!getCard().isInitialized()) {
           
           return false;
-        }
-        if (hasCardPiece()) {
-          if (!getCardPiece().isInitialized()) {
-            
-            return false;
-          }
         }
         return true;
       }
@@ -976,164 +867,12 @@ public final class SoulCardOpRespProto {
         return cardBuilder_;
       }
 
-      private com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg cardPiece_ = com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg, com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg.Builder, com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsgOrBuilder> cardPieceBuilder_;
-      /**
-       * <code>optional .CardPieceInfoMsg cardPiece = 3;</code>
-       *
-       * <pre>
-       *影响的碎片信息更新
-       * </pre>
-       */
-      public boolean hasCardPiece() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional .CardPieceInfoMsg cardPiece = 3;</code>
-       *
-       * <pre>
-       *影响的碎片信息更新
-       * </pre>
-       */
-      public com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg getCardPiece() {
-        if (cardPieceBuilder_ == null) {
-          return cardPiece_;
-        } else {
-          return cardPieceBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .CardPieceInfoMsg cardPiece = 3;</code>
-       *
-       * <pre>
-       *影响的碎片信息更新
-       * </pre>
-       */
-      public Builder setCardPiece(com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg value) {
-        if (cardPieceBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          cardPiece_ = value;
-          onChanged();
-        } else {
-          cardPieceBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>optional .CardPieceInfoMsg cardPiece = 3;</code>
-       *
-       * <pre>
-       *影响的碎片信息更新
-       * </pre>
-       */
-      public Builder setCardPiece(
-          com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg.Builder builderForValue) {
-        if (cardPieceBuilder_ == null) {
-          cardPiece_ = builderForValue.build();
-          onChanged();
-        } else {
-          cardPieceBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>optional .CardPieceInfoMsg cardPiece = 3;</code>
-       *
-       * <pre>
-       *影响的碎片信息更新
-       * </pre>
-       */
-      public Builder mergeCardPiece(com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg value) {
-        if (cardPieceBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) == 0x00000004) &&
-              cardPiece_ != com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg.getDefaultInstance()) {
-            cardPiece_ =
-              com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg.newBuilder(cardPiece_).mergeFrom(value).buildPartial();
-          } else {
-            cardPiece_ = value;
-          }
-          onChanged();
-        } else {
-          cardPieceBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>optional .CardPieceInfoMsg cardPiece = 3;</code>
-       *
-       * <pre>
-       *影响的碎片信息更新
-       * </pre>
-       */
-      public Builder clearCardPiece() {
-        if (cardPieceBuilder_ == null) {
-          cardPiece_ = com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg.getDefaultInstance();
-          onChanged();
-        } else {
-          cardPieceBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000004);
-        return this;
-      }
-      /**
-       * <code>optional .CardPieceInfoMsg cardPiece = 3;</code>
-       *
-       * <pre>
-       *影响的碎片信息更新
-       * </pre>
-       */
-      public com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg.Builder getCardPieceBuilder() {
-        bitField0_ |= 0x00000004;
-        onChanged();
-        return getCardPieceFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .CardPieceInfoMsg cardPiece = 3;</code>
-       *
-       * <pre>
-       *影响的碎片信息更新
-       * </pre>
-       */
-      public com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsgOrBuilder getCardPieceOrBuilder() {
-        if (cardPieceBuilder_ != null) {
-          return cardPieceBuilder_.getMessageOrBuilder();
-        } else {
-          return cardPiece_;
-        }
-      }
-      /**
-       * <code>optional .CardPieceInfoMsg cardPiece = 3;</code>
-       *
-       * <pre>
-       *影响的碎片信息更新
-       * </pre>
-       */
-      private com.google.protobuf.SingleFieldBuilder<
-          com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg, com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg.Builder, com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsgOrBuilder> 
-          getCardPieceFieldBuilder() {
-        if (cardPieceBuilder_ == null) {
-          cardPieceBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg, com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsg.Builder, com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.CardPieceInfoMsgOrBuilder>(
-                  getCardPiece(),
-                  getParentForChildren(),
-                  isClean());
-          cardPiece_ = null;
-        }
-        return cardPieceBuilder_;
-      }
-
       private java.util.List<com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg> atts_ =
         java.util.Collections.emptyList();
       private void ensureAttsIsMutable() {
-        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
+        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
           atts_ = new java.util.ArrayList<com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg>(atts_);
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000004;
          }
       }
 
@@ -1141,7 +880,7 @@ public final class SoulCardOpRespProto {
           com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg, com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg.Builder, com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsgOrBuilder> attsBuilder_;
 
       /**
-       * <code>repeated .PropertyMsg atts = 4;</code>
+       * <code>repeated .PropertyMsg atts = 3;</code>
        *
        * <pre>
        *加成属性同步
@@ -1155,7 +894,7 @@ public final class SoulCardOpRespProto {
         }
       }
       /**
-       * <code>repeated .PropertyMsg atts = 4;</code>
+       * <code>repeated .PropertyMsg atts = 3;</code>
        *
        * <pre>
        *加成属性同步
@@ -1169,7 +908,7 @@ public final class SoulCardOpRespProto {
         }
       }
       /**
-       * <code>repeated .PropertyMsg atts = 4;</code>
+       * <code>repeated .PropertyMsg atts = 3;</code>
        *
        * <pre>
        *加成属性同步
@@ -1183,7 +922,7 @@ public final class SoulCardOpRespProto {
         }
       }
       /**
-       * <code>repeated .PropertyMsg atts = 4;</code>
+       * <code>repeated .PropertyMsg atts = 3;</code>
        *
        * <pre>
        *加成属性同步
@@ -1204,7 +943,7 @@ public final class SoulCardOpRespProto {
         return this;
       }
       /**
-       * <code>repeated .PropertyMsg atts = 4;</code>
+       * <code>repeated .PropertyMsg atts = 3;</code>
        *
        * <pre>
        *加成属性同步
@@ -1222,7 +961,7 @@ public final class SoulCardOpRespProto {
         return this;
       }
       /**
-       * <code>repeated .PropertyMsg atts = 4;</code>
+       * <code>repeated .PropertyMsg atts = 3;</code>
        *
        * <pre>
        *加成属性同步
@@ -1242,7 +981,7 @@ public final class SoulCardOpRespProto {
         return this;
       }
       /**
-       * <code>repeated .PropertyMsg atts = 4;</code>
+       * <code>repeated .PropertyMsg atts = 3;</code>
        *
        * <pre>
        *加成属性同步
@@ -1263,7 +1002,7 @@ public final class SoulCardOpRespProto {
         return this;
       }
       /**
-       * <code>repeated .PropertyMsg atts = 4;</code>
+       * <code>repeated .PropertyMsg atts = 3;</code>
        *
        * <pre>
        *加成属性同步
@@ -1281,7 +1020,7 @@ public final class SoulCardOpRespProto {
         return this;
       }
       /**
-       * <code>repeated .PropertyMsg atts = 4;</code>
+       * <code>repeated .PropertyMsg atts = 3;</code>
        *
        * <pre>
        *加成属性同步
@@ -1299,7 +1038,7 @@ public final class SoulCardOpRespProto {
         return this;
       }
       /**
-       * <code>repeated .PropertyMsg atts = 4;</code>
+       * <code>repeated .PropertyMsg atts = 3;</code>
        *
        * <pre>
        *加成属性同步
@@ -1318,7 +1057,7 @@ public final class SoulCardOpRespProto {
         return this;
       }
       /**
-       * <code>repeated .PropertyMsg atts = 4;</code>
+       * <code>repeated .PropertyMsg atts = 3;</code>
        *
        * <pre>
        *加成属性同步
@@ -1327,7 +1066,7 @@ public final class SoulCardOpRespProto {
       public Builder clearAtts() {
         if (attsBuilder_ == null) {
           atts_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000004);
           onChanged();
         } else {
           attsBuilder_.clear();
@@ -1335,7 +1074,7 @@ public final class SoulCardOpRespProto {
         return this;
       }
       /**
-       * <code>repeated .PropertyMsg atts = 4;</code>
+       * <code>repeated .PropertyMsg atts = 3;</code>
        *
        * <pre>
        *加成属性同步
@@ -1352,7 +1091,7 @@ public final class SoulCardOpRespProto {
         return this;
       }
       /**
-       * <code>repeated .PropertyMsg atts = 4;</code>
+       * <code>repeated .PropertyMsg atts = 3;</code>
        *
        * <pre>
        *加成属性同步
@@ -1363,7 +1102,7 @@ public final class SoulCardOpRespProto {
         return getAttsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .PropertyMsg atts = 4;</code>
+       * <code>repeated .PropertyMsg atts = 3;</code>
        *
        * <pre>
        *加成属性同步
@@ -1377,7 +1116,7 @@ public final class SoulCardOpRespProto {
         }
       }
       /**
-       * <code>repeated .PropertyMsg atts = 4;</code>
+       * <code>repeated .PropertyMsg atts = 3;</code>
        *
        * <pre>
        *加成属性同步
@@ -1392,7 +1131,7 @@ public final class SoulCardOpRespProto {
         }
       }
       /**
-       * <code>repeated .PropertyMsg atts = 4;</code>
+       * <code>repeated .PropertyMsg atts = 3;</code>
        *
        * <pre>
        *加成属性同步
@@ -1403,7 +1142,7 @@ public final class SoulCardOpRespProto {
             com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg.getDefaultInstance());
       }
       /**
-       * <code>repeated .PropertyMsg atts = 4;</code>
+       * <code>repeated .PropertyMsg atts = 3;</code>
        *
        * <pre>
        *加成属性同步
@@ -1415,7 +1154,7 @@ public final class SoulCardOpRespProto {
             index, com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg.getDefaultInstance());
       }
       /**
-       * <code>repeated .PropertyMsg atts = 4;</code>
+       * <code>repeated .PropertyMsg atts = 3;</code>
        *
        * <pre>
        *加成属性同步
@@ -1432,7 +1171,7 @@ public final class SoulCardOpRespProto {
           attsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg, com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg.Builder, com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsgOrBuilder>(
                   atts_,
-                  ((bitField0_ & 0x00000008) == 0x00000008),
+                  ((bitField0_ & 0x00000004) == 0x00000004),
                   getParentForChildren(),
                   isClean());
           atts_ = null;
@@ -1466,13 +1205,11 @@ public final class SoulCardOpRespProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\034soul/SoulCardOpRespMsg.proto\032\026soul/Car" +
-      "dInfoMsg.proto\032\033soul/CardPieceInfoMsg.pr" +
-      "oto\032\026army/PropertyMsg.proto\"}\n\021SoulCardO" +
-      "pRespMsg\022\n\n\002op\030\001 \002(\005\022\032\n\004card\030\002 \002(\0132\014.Car" +
-      "dInfoMsg\022$\n\tcardPiece\030\003 \001(\0132\021.CardPieceI" +
-      "nfoMsg\022\032\n\004atts\030\004 \003(\0132\014.PropertyMsgB<\n%co" +
-      "m.chuangyou.common.protobuf.pb.soulB\023Sou" +
-      "lCardOpRespProto"
+      "dInfoMsg.proto\032\026army/PropertyMsg.proto\"W" +
+      "\n\021SoulCardOpRespMsg\022\n\n\002op\030\001 \002(\005\022\032\n\004card\030" +
+      "\002 \002(\0132\014.CardInfoMsg\022\032\n\004atts\030\003 \003(\0132\014.Prop" +
+      "ertyMsgB<\n%com.chuangyou.common.protobuf" +
+      ".pb.soulB\023SoulCardOpRespProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1486,7 +1223,6 @@ public final class SoulCardOpRespProto {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.chuangyou.common.protobuf.pb.soul.CardInfoProto.getDescriptor(),
-          com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.getDescriptor(),
           com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.getDescriptor(),
         }, assigner);
     internal_static_SoulCardOpRespMsg_descriptor =
@@ -1494,9 +1230,8 @@ public final class SoulCardOpRespProto {
     internal_static_SoulCardOpRespMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_SoulCardOpRespMsg_descriptor,
-        new java.lang.String[] { "Op", "Card", "CardPiece", "Atts", });
+        new java.lang.String[] { "Op", "Card", "Atts", });
     com.chuangyou.common.protobuf.pb.soul.CardInfoProto.getDescriptor();
-    com.chuangyou.common.protobuf.pb.soul.CardPieceInfoProto.getDescriptor();
     com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.getDescriptor();
   }
 

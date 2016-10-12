@@ -1,5 +1,8 @@
 package com.chuangyou.xianni.entity.soul;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SoulCardConfig {
 	private int id;//` int(11) NOT NULL AUTO_INCREMENT,
 	private String name;//` varchar(30) NOT NULL DEFAULT '',
@@ -19,6 +22,25 @@ public class SoulCardConfig {
 	private int combo4;//` int(11) NOT NULL DEFAULT '0' COMMENT '组合',
 	private int needClip;//` int(11) NOT NULL DEFAULT '0' COMMENT '需求碎片数量',
 	private int skill;//` int(11) NOT NULL DEFAULT '0' COMMENT '技能',
+	
+	
+	public List<Integer> getComboList(){
+		List<Integer> list = new ArrayList<>();
+		if(combo1>0){
+			list.add(this.combo1);
+		}
+		if(combo2>0){
+			list.add(this.combo2);
+		}
+		if(combo3>0){
+			list.add(this.combo3);
+		}
+		if(combo4>0){
+			list.add(this.combo4);
+		}
+		return list;
+	}
+	
 	public int getId() {
 		return id;
 	}

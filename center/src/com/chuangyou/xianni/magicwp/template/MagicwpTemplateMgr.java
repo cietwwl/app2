@@ -13,23 +13,23 @@ import com.chuangyou.xianni.sql.dao.DBManager;
 
 public class MagicwpTemplateMgr {
 
-	private static Map<Integer, MagicwpCfg> magicwpTemps = new HashMap<>();
-	
-	private static Map<Integer, MagicwpLevelCfg> levelTemps = new HashMap<>();
-	
-	private static Map<Integer, MagicwpGradeCfg> gradeTemps = new HashMap<>();
-	
-	private static Map<Integer, MagicwpRefineCfg> refineTemps = new HashMap<>();
-	
-	private static Map<Integer, MagicwpBanCfg> banTemps = new HashMap<>();
-	
-	private static Map<Integer, MagicwpBanLevelCfg> banLevelTemps = new HashMap<>();
-	
-	public static boolean init(){
+	private static Map<Integer, MagicwpCfg>			magicwpTemps	= new HashMap<>();
+
+	private static Map<Integer, MagicwpLevelCfg>	levelTemps		= new HashMap<>();
+
+	private static Map<Integer, MagicwpGradeCfg>	gradeTemps		= new HashMap<>();
+
+	private static Map<Integer, MagicwpRefineCfg>	refineTemps		= new HashMap<>();
+
+	private static Map<Integer, MagicwpBanCfg>		banTemps		= new HashMap<>();
+
+	private static Map<Integer, MagicwpBanLevelCfg>	banLevelTemps	= new HashMap<>();
+
+	public static boolean init() {
 		return reloadTemplate();
 	}
-	
-	public static boolean reloadTemplate(){
+
+	public static boolean reloadTemplate() {
 		magicwpTemps = DBManager.getMagicwpConfigDao().getMagic();
 		levelTemps = DBManager.getMagicwpConfigDao().getLevel();
 		gradeTemps = DBManager.getMagicwpConfigDao().getGrade();
@@ -38,26 +38,36 @@ public class MagicwpTemplateMgr {
 		banLevelTemps = DBManager.getMagicwpConfigDao().getBanLevel();
 		return true;
 	}
-	
-//	public static boolean reloadMagicwpCfg(){
-//		return true;
-//	}
-//	public static boolean reloadMagicwpCfg(){
-//		return true;
-//	}
-//	public static boolean reloadMagicwpCfg(){
-//		return true;
-//	}
-//	public static boolean reloadMagicwpCfg(){
-//		return true;
-//	}
-//	public static boolean reloadMagicwpCfg(){
-//		return true;
-//	}
-//	public static boolean reloadMagicwpCfg(){
-//		return true;
-//	}
-	
+
+	public static boolean reloadMagicwpCfg() {
+		magicwpTemps = DBManager.getMagicwpConfigDao().getMagic();
+		return true;
+	}
+
+	public static boolean reloadMagicwpLevelCfg() {
+		levelTemps = DBManager.getMagicwpConfigDao().getLevel();
+		return true;
+	}
+
+	public static boolean reloadMagicwpGradeCfg() {
+		gradeTemps = DBManager.getMagicwpConfigDao().getGrade();
+		return true;
+	}
+
+	public static boolean reloadMagicwpRefineCfg() {
+		refineTemps = DBManager.getMagicwpConfigDao().getRefine();
+		return true;
+	}
+
+	public static boolean reloadMagicwpBanCfg() {
+		banTemps = DBManager.getMagicwpConfigDao().getBan();
+		return true;
+	}
+
+	public static boolean reloadMagicwpBanLevelCfg() {
+		banLevelTemps = DBManager.getMagicwpConfigDao().getBanLevel();
+		return true;
+	}
 
 	public static Map<Integer, MagicwpCfg> getMagicwpTemps() {
 		return magicwpTemps;

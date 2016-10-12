@@ -1,0 +1,9 @@
+//protocol=10726;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "ReqTruckSkillAddPointProto";
+
+//请求镖车技能树
+message ReqTruckSkillAddPoint {
+	required int32 skilltype = 1;	//技能类型 1.镖车技能 2.帮派镖车技能 3.镖师技能 4.镖师天赋
+	required int32 skillId = 2;	//
+}

@@ -14,6 +14,7 @@ import com.chuangyou.xianni.proto.BroadcastUtil;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.objects.Living;
+import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 
 public abstract class PollingAction extends DelayAction {
@@ -112,7 +113,7 @@ public abstract class PollingAction extends DelayAction {
 	/* pk值计算 **/
 	private void calPkVal() {
 		if (living.getType() == RoleType.player && living.getField() != null) {
-			if (living.getPkVal() > 0 && System.currentTimeMillis() - living.getPkValCalTime() >= 10 * 1000 && living.getField().getFieldInfo().isBattle()) {
+			if (living.getPkVal() > 0 && System.currentTimeMillis() - living.getPkValCalTime() >= 10 * 1000 && living.getField().getFieldInfo().getBattleType() == 1) {
 				living.calPkVal();
 			}
 		}

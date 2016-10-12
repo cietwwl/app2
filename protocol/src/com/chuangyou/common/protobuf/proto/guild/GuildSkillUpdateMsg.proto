@@ -1,0 +1,10 @@
+//protocol=167;
+option java_package = "com.chuangyou.common.protobuf.pb.guild";
+option java_outer_classname = "GuildSkillUpdateProto";
+
+import "guild/GuildSkillInfoMsg.proto";
+
+//技能信息更新
+message GuildSkillUpdateMsg{
+	repeated GuildSkillInfoMsg skillInfo = 1; // 技能信息
+}

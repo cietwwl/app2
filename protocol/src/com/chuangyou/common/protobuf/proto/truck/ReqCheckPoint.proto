@@ -1,0 +1,8 @@
+//protocol=20707;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "ReqCheckPointProto";
+
+//请求当前检查点
+message ReqCheckPoint {
+	required int32 checkpointId = 1; //当前检查id
+}

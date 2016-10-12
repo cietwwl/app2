@@ -35,7 +35,7 @@ public class ReqPlayerCallMoveCmd extends AbstractCommand {
 		PlayerCallExcludeMasterSelector selector = new PlayerCallExcludeMasterSelector(army.getPlayer());
 		PlayerCallMoveReqMsg movemsg = PlayerCallMoveReqMsg.parseFrom(packet.getBytes());
 		ActiveLiving living = (ActiveLiving) f.getLiving(movemsg.getLivingId());
-
+		if(living == null) return;
 		Vector3 current = Vector3BuilderHelper.get(movemsg.getCur());
 		living.setTargetPostion(Vector3BuilderHelper.get(movemsg.getTar()));
 		living.setDir(MathUtils.getDirByXZ(living.getTargetPostion(), living.getPostion()));

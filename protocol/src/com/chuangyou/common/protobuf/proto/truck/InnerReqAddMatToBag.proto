@@ -1,0 +1,9 @@
+//protocol=10724;
+option java_package = "com.chuangyou.common.protobuf.pb.truck";
+option java_outer_classname = "InnerReqAddMatToBagProto";
+
+//请求镖车数据
+message InnerReqAddMatToBag {
+	required int32 itemType = 1;	//物品类型
+	required int32 itemCount = 2;	//物品数量
+}

@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.chuangyou.common.protobuf.pb.chat.ChatReceiveProto.ChatReceiveMsg;
 import com.chuangyou.common.protobuf.pb.chat.ChatSendProto.ChatSendMsg;
 import com.chuangyou.common.util.SensitivewordFilterUtil;
+import com.chuangyou.common.util.StringUtils;
 import com.chuangyou.xianni.chat.manager.action.ChatBaseAction;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
@@ -49,10 +50,10 @@ public class ChatManager {
 	 */
 	public static Map<Integer, Integer> offlineCountLimit = new HashMap<>();
 	static {
-//		offlineCountLimit.put(ChatConstant.Channel.PRIVATE, 200);
-//		offlineCountLimit.put(ChatConstant.Channel.PROMPT, 100);
-		offlineCountLimit.put(ChatConstant.Channel.PRIVATE, 3);
-		offlineCountLimit.put(ChatConstant.Channel.PROMPT, 3);
+		offlineCountLimit.put(ChatConstant.Channel.PRIVATE, 200);
+		offlineCountLimit.put(ChatConstant.Channel.PROMPT, 100);
+//		offlineCountLimit.put(ChatConstant.Channel.PRIVATE, 3);
+//		offlineCountLimit.put(ChatConstant.Channel.PROMPT, 3);
 	}
 	
 	/**
@@ -70,7 +71,12 @@ public class ChatManager {
 		ChatMsgInfo msg = new ChatMsgInfo();
 		msg.setChannel(sendMsg.getChannel());
 		msg.setReceiverId(sendMsg.getReceiverId());
-		String resultContent = SensitivewordFilterUtil.getIntence().replaceSensitiveWord(sendMsg.getChatContent());
+		String resultContent = sendMsg.getChatContent();
+		if(!StringUtils.verifyMaxByteLen(resultContent, 150)){
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.CHAT_CONTENT_MAXLENGTH, Protocol.C_CHAT_SEND, "频道不存在");
+			return;
+		}
+		resultContent = SensitivewordFilterUtil.getIntence().replaceSensitiveWord(resultContent);
 		msg.setChatContent(resultContent);
 		
 		action.sendChatMsg(player, msg);
@@ -83,10 +89,19 @@ public class ChatManager {
 	 * @param content
 	 */
 	public static void sendSystemChatMsg(int channel, String content) {
-		ChatSendMsg.Builder chatSendMsg = ChatSendMsg.newBuilder();
-		chatSendMsg.setChannel(channel);
-		chatSendMsg.setChatContent(content);
-		sendChatMsg(null, chatSendMsg.build());
+//		ChatSendMsg.Builder chatSendMsg = ChatSendMsg.newBuilder();
+//		chatSendMsg.setChannel(channel);
+//		chatSendMsg.setChatContent(content);
+//		sendChatMsg(null, chatSendMsg.build());
+		
+		ChatBaseAction action = ChatSenderFactory.getIns().getAction(channel);
+		if(action == null) return;
+		
+		ChatMsgInfo msgInfo = new ChatMsgInfo();
+		msgInfo.setChannel(channel);
+		msgInfo.setChatContent(content);
+		action.sendChatMsg(null, msgInfo);
+		
 	}
 	
 	/**
@@ -99,7 +114,7 @@ public class ChatManager {
 	public static void sendPromptMsg(GamePlayer player, long receiverId, short promptType, String content){
 		ChatBaseAction action = ChatSenderFactory.getIns().getAction(ChatConstant.Channel.PROMPT);
 		if(action == null){
-			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.CHAT_CHANNEL_NOT_EXIST, Protocol.C_CHAT_SEND, "频道不存在");
+//			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.CHAT_CHANNEL_NOT_EXIST, Protocol.C_CHAT_SEND, "频道不存在");
 			return;
 		}
 		

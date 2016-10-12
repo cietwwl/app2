@@ -192,7 +192,7 @@ public class BaseItem {
 	 * @param type
 	 * @return
 	 */
-	public static BaseItem createBaseItem(ItemTemplateInfo template, int count, short addType) {
+	public static BaseItem createBaseItem(ItemTemplateInfo template, int count, short addType, boolean isBind) {
 		if (template == null) {
 			Log.error("create item of itemTemp is Null");
 			return null;
@@ -207,7 +207,7 @@ public class BaseItem {
 		info.setBeginDate(TimeUtil.getSysteCurTime());
 		info.setValidDate(0);
 		info.setCount(count);
-		info.setBinds(true);
+		info.setBinds(isBind);
 		info.setTips(false);
 		info.setUsed(false);
 		info.setNew(true);

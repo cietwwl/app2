@@ -1,11 +1,16 @@
 package com.chuangyou.xianni.sql.dao;
 
 import java.util.List;
+
+import com.chuangyou.xianni.entity.arena.FightData;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.player.PlayerJoinInfo;
 import com.chuangyou.xianni.entity.player.PlayerTimeInfo;
 
 public interface PlayerInfoDao {
+
+	public List<FightData> getArenaOpponent(int myFight, int maxFight, int minFight);
+
 	public boolean add(PlayerInfo playerInfo);
 
 	public boolean update(PlayerInfo playerInfo);

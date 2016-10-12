@@ -24,8 +24,8 @@ import com.chuangyou.xianni.entity.skill.SnareTemplateInfo;
 import com.chuangyou.xianni.proto.BroadcastUtil;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
+import com.chuangyou.xianni.role.objects.ActiveLiving;
 import com.chuangyou.xianni.role.objects.Living;
-import com.chuangyou.xianni.role.objects.Monster;
 import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.role.objects.Snare;
 import com.chuangyou.xianni.warfield.field.Field;
@@ -74,6 +74,11 @@ public class AttackOrder {
 		if (!canAction()) {
 			return true;
 		}
+		// 如果是变身技能,执行变身
+		if (skill.getSkillId() == Player.TRANS_SKILL_ID && source instanceof Player) {
+			Player ps = (Player) source;
+			ps.transfiguration();
+		}
 		if (targets == null || targets.size() == 0) {
 			// 没有目标，只广播动作
 			// Log.error("attackId :" + this.attackId);
@@ -89,6 +94,8 @@ public class AttackOrder {
 
 		// 添加/执行技能Buffer
 		addSkillBuffers();
+		// 触发魂幡buff
+		targetFuseBuffer();
 		// 技能创建陷阱
 		createSnare();
 		// 计算技能攻击伤害值
@@ -99,7 +106,6 @@ public class AttackOrder {
 		coolDown();
 		// 执行结束，广播伤害
 		sendDamages();
-
 		return true;
 	}
 
@@ -136,6 +142,9 @@ public class AttackOrder {
 			return;
 		}
 		for (Damage damage : damages) {
+			if (damage.getDamageValue() == 0) {
+				continue;
+			}
 			DamageMsg.Builder dmsg = DamageMsg.newBuilder();
 			damage.writeProto(dmsg);
 			attackBroMsg.addDamages(dmsg);
@@ -212,17 +221,37 @@ public class AttackOrder {
 		}
 	}
 
+	/** 触发魂幡buff */
+	public void targetFuseBuffer() {
+		// 魂幡技能buffer
+		if (source.getType() != RoleType.player) {
+			return;
+		}
+		// 是否属于普攻技能（普攻技能主类型3）
+		if (skill.getTemplateInfo() == null || skill.getTemplateInfo().getMasterType() != 3) {
+			return;
+		}
+		Player player = (Player) source;
+		int index = skill.getTemplateInfo().getSonType() - 1;
+		Buffer bufCreater = player.getFuseBuffer(index);
+		if (bufCreater != null) {
+			if (bufCreater.checkValid()) {
+				bufCreater.execute(null, Damage.DEFAULT, Damage.DEFAULT, ExecWayType.FUSE);
+			}
+		}
+	}
+
 	/**
 	 * 添加技能buffer
 	 */
 	public void addSkillBuffers() {
 		SkillActionTemplateInfo skillAction = skill.getTemplateInfo();
-		int random = skillAction.getRandom();
-		if (rand.next(10000) >= random) {
-			return;
-		}
 		int[] bufferIds = skillAction.getBufferIdArr();
 		if (bufferIds == null || bufferIds.length == 0) {
+			return;
+		}
+		int random = skillAction.getRandom();
+		if (rand.next(10000) >= random) {
 			return;
 		}
 
@@ -250,34 +279,17 @@ public class AttackOrder {
 				source.enDelayQueue(delayAction);
 			}
 		}
-
-		// 魂幡技能buffer
-		if (source.getType() != RoleType.player) {
-			return;
-		}
-		// 是否属于普攻技能（普攻技能主类型3）
-		if (skill.getTemplateInfo() == null || skill.getTemplateInfo().getMasterType() != 3) {
-			return;
-		}
-		Player player = (Player) source;
-		int index = skill.getTemplateInfo().getSonType() - 1;
-		Buffer bufCreater = player.getFuseBuffer(index);
-		if (bufCreater != null) {
-			if (bufCreater.checkValid()) {
-				bufCreater.execute(null, Damage.DEFAULT, Damage.DEFAULT, ExecWayType.FUSE);
-			}
-		}
 	}
 
 	/**
 	 * 技能创建陷阱
 	 */
 	private void createSnare() {
-		if (source.getType() != RoleType.monster) {
+		if (source.getType() != RoleType.monster && source.getType() != RoleType.robot && source.getType() != RoleType.avatar) {
 			return;
 		}
 		SkillActionTemplateInfo skillAction = skill.getTemplateInfo();
-		Monster monster = (Monster) source;
+		ActiveLiving aliving = (ActiveLiving) source;
 		int[] snareArr = skillAction.getSnareIdArr();
 		if (snareArr == null || snareArr.length == 0) {
 			return;
@@ -292,12 +304,12 @@ public class AttackOrder {
 			if (targets != null && targets.size() > 0) {
 				target = targets.get(0);
 			}
-			Snare snare = new Snare(stemp, monster, target);
-			monster.addSnare(snare);
-			snare.setArmyId(monster.getArmyId());
+			Snare snare = new Snare(stemp, aliving, target);
+			aliving.addSnare(snare);
+			snare.setArmyId(aliving.getArmyId());
 
-			snare.setPostion(BattleUtil.getBornPos(monster, target, stemp));
-			Field field = monster.getField();
+			snare.setPostion(BattleUtil.getBornPos(aliving, target, stemp));
+			Field field = aliving.getField();
 			if (field != null) {
 				field.enterField(snare);
 			}

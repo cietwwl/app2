@@ -9,6 +9,8 @@ import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.pet.PetInfo;
 import com.chuangyou.xianni.entity.pet.PetInfoCfg;
+import com.chuangyou.xianni.event.EventNameType;
+import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.pet.template.PetTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -70,6 +72,8 @@ public class PetActivateCmd extends AbstractCommand {
 //		PetManager.changePetAtt(roleId);
 		//影响人物属性改变
 		player.getPetInventory().updataProperty();
+		
+		player.notifyListeners(new ObjectEvent(this, pet.getPetId(), EventNameType.PET_ACTIVE));
 	}
 
 }

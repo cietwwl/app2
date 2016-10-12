@@ -7,6 +7,7 @@ import com.chuangyou.xianni.entity.soul.CardComboConfig;
 import com.chuangyou.xianni.entity.soul.SoulCardInfo;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.skill.template.SimpleProperty;
+import com.chuangyou.xianni.soul.template.SoulTemplateMgr;
 
 /**
  * 基础组合属性计算
@@ -34,15 +35,19 @@ public class BaseComboAttLogic extends ConcreteComponent {
 
 
 	@Override
-	public void doProcess(GamePlayer player, Map<Integer, SimpleProperty> map, CardComboConfig config, Map<Integer, SoulCardInfo> cards) {
+	public void doProcess(GamePlayer player, Map<Integer, SimpleProperty> map, SoulCardInfo soulCard, Map<Integer, SoulCardInfo> cards) {
 		// TODO Auto-generated method stub
-		logic.doProcess(player, map, config, cards);
-		if(!this.isValid(player,config))return;
-		//计算组合基本属性
-		List<Integer> list = config.getEffectList();
-		if(list==null)return;
-		for (int att : list) {
-			SoulCalcLogic.addAttValue(map, att);
+		logic.doProcess(player, map, soulCard, cards);
+		List<Integer> combos = SoulTemplateMgr.getCardConfig(soulCard.getCardId()).getComboList();
+		for (int combo : combos) {
+			CardComboConfig config = SoulTemplateMgr.getCardComboMap().get(combo);
+			if(!this.isValid(player,config))continue;
+			//计算组合基本属性
+			List<Integer> list = config.getEffectList();
+			if(list==null)continue;
+			for (int att : list) {
+				SoulCalcLogic.addAttValue(map, att);
+			}
 		}
 	}
 	

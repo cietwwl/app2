@@ -42,11 +42,6 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 		// System.out.println(orderMsg);
 		// 该玩家是否具有此技能
 		Player player = army.getPlayer();
-		if (!player.hasSkillId(skillActionId)) {
-			Log.error("army has not skill,skillId :" + skillActionId + " armyId:" + army.getPlayerId());
-			return;
-		}
-
 		Skill skill = player.getSkill(skillActionId);
 		if (skill == null) {
 			Log.error("skill is null,playerId : " + player.getArmyId() + "  skillActionId:" + skillActionId);
@@ -102,11 +97,13 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 		OrderExecAction oaction = new OrderExecAction(player, order);
 		player.enqueue(oaction);
 		// System.err.println("触发攻击包 - skillActionId - " + skillActionId);
-		Vector3 current = Vector3BuilderHelper.get(orderMsg.getCurrent());
-		Vector3 target = Vector3BuilderHelper.get(orderMsg.getPosition());
-
-		if (!Vector3.Equal(current, target) && player.checkStatus(LivingState.ATTACK_MOVE))
-			NotifyNearHelper.notifyHelper(field, player, target, new AllSelectorHelper(army.getPlayer()));
+		// Vector3 current = Vector3BuilderHelper.get(orderMsg.getCurrent());
+		// Vector3 target = Vector3BuilderHelper.get(orderMsg.getPosition());
+		//
+		// if (!Vector3.Equal(current, target) &&
+		// player.checkStatus(LivingState.ATTACK_MOVE))
+		// NotifyNearHelper.notifyHelper(field, player, target, new
+		// AllSelectorHelper(army.getPlayer()));
 
 	}
 

@@ -42,7 +42,7 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	// 英雄ID+英雄装备列表
 	private BagHeroEquipment			heroEquipment;
 	// 虚拟数值背包背包（注意 ：添加一些物品，但是物品不需要显示在背包中）
-	private BaseBag						virtualValue;
+	private BaseBag						virtualBag;
 	// 背包过期物品
 	private HashMap<Short, List<Short>>	validItemsPos;
 	// 位置异常物品
@@ -58,7 +58,7 @@ public class BagInventory extends AbstractEvent implements IInventory {
 
 		playerBag = new BaseBag((short) (SystemConfigTemplateMgr.getIntValue("bag.initGridNum") + (short) player.getBasePlayer().getPlayerInfo().getpBagCount()), BagType.Play, (short) 0, true, player,
 				0);
-		virtualValue = new BaseBag((short) 256, BagType.VirtualValue, (short) 0, true, player, 0);
+		virtualBag = new BaseBag((short) 512, BagType.VirtualValue, (short) 0, true, player, 0);
 		validItemsPos = new HashMap<Short, List<Short>>();
 		unusualItemsPos = new HashMap<Short, List<Short>>();
 	}
@@ -71,6 +71,7 @@ public class BagInventory extends AbstractEvent implements IInventory {
 		}
 		heroEquipment.beginChanges();
 		playerBag.beginChanges();
+		virtualBag.beginChanges();
 
 		StringBuilder sb = new StringBuilder();
 		List<ItemInfo> items = ItemManager.list(player.getPlayerId());
@@ -130,6 +131,14 @@ public class BagInventory extends AbstractEvent implements IInventory {
 							continue;
 						}
 					}
+					if (baseItem.getItemInfo().getBagType() == BagType.VirtualValue) {// 虚拟背包
+						if (virtualBag.addEmptyByPos(baseItem, baseItem.getItemInfo().getPos()) == false) {
+							Log.error("添加虚拟物品出错：" + baseItem.getTemplateId());
+							unLoadItem.add(baseItem);
+						} else {
+							continue;
+						}
+					}
 				} else {
 					Log.warn(String.format("用户%s,%s加载物品模板%s不存在", player.getPlayerId(), player.getNickName(), info.getTemplateId()));
 				}
@@ -150,6 +159,7 @@ public class BagInventory extends AbstractEvent implements IInventory {
 		}
 		playerBag.commitChanges();
 		heroEquipment.commitChanges();
+		virtualBag.commitChanges();
 
 		return true;
 	}
@@ -174,6 +184,8 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	public void updateAll() {
 		playerBag.updateAll();
 		heroEquipment.updateAll();
+		virtualBag.updateAll();
+		
 	}
 
 	/**
@@ -183,11 +195,34 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	 * @return
 	 */
 	public int getItemCount(int templateId) {
-		return playerBag.getTemplateCount(templateId);
+		return getItemCount(BagType.Play, templateId);
+	}
+
+	/**
+	 * 获取指定背包物品数量
+	 * @param bagType
+	 * @param templateId
+	 * @return
+	 */
+	public int getItemCount(short bagType, int templateId) {
+		return getItemCount(bagType, templateId, BindType.ALL);
+	}
+	/**
+	 * 获取指定背包，指定绑定类型的物品数量
+	 * @param bagType
+	 * @param templateId
+	 * @param bindType
+	 * @return
+	 */
+	public int getItemCount(short bagType, int templateId, short bindType){
+		BaseBag bag = getBag(bagType);
+		if (bag == null)
+			return 0;
+		return bag.getTemplateCount(templateId, bindType);
 	}
 
 	public int getPlayerBagItemCount(int templateId) {
-		return playerBag.getTemplateCount(templateId);
+		return getItemCount(BagType.Play, templateId);
 	}
 
 	public int getTemplateCountByBind(int templateId, short bindType) {
@@ -242,10 +277,19 @@ public class BagInventory extends AbstractEvent implements IInventory {
 			Log.error("add item bu template is  not exists,tempId :" + templateId + "  playerId :" + player.getPlayerId());
 			return false;
 		}
-		BaseItem item = BaseItem.createBaseItem(tempInfo, count, addType);
-		playerBag.beginChanges();
-		boolean result = playerBag.addTemplate(item, item.getItemInfo().getCount());
-		playerBag.commitChanges();
+		boolean result = false;
+		if (tempInfo.getIsVirtual() == ItemTemplateInfo.TYPE_VIR) {
+			BaseItem item = BaseItem.createBaseItem(tempInfo, count, addType, isBind);
+			virtualBag.beginChanges();
+			result = virtualBag.addTemplate(item, item.getItemInfo().getCount());
+			virtualBag.commitChanges();
+		} else {
+			BaseItem item = BaseItem.createBaseItem(tempInfo, count, addType, isBind);
+			playerBag.beginChanges();
+			result = playerBag.addTemplate(item, item.getItemInfo().getCount());
+			playerBag.commitChanges();
+		}
+
 		if (result) {
 			this.notifyListeners(new ObjectEvent(this, templateId, EventNameType.TASK_ITEM_CHANGE_ADD));
 		}
@@ -267,7 +311,7 @@ public class BagInventory extends AbstractEvent implements IInventory {
 			Log.error("add item bu template is  not exists,tempId :" + templateId + "  playerId :" + player.getPlayerId());
 			return null;
 		}
-		BaseItem item = BaseItem.createBaseItem(tempInfo, count, addType);
+		BaseItem item = BaseItem.createBaseItem(tempInfo, count, addType, isBind);
 		item.getItemInfo().setPro(attCount);
 		playerBag.beginChanges();
 		boolean result = playerBag.addTemplate(item, item.getItemInfo().getCount());
@@ -304,11 +348,40 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	 * @return 成功:true 失败:false
 	 */
 	public boolean removeItem(int templateId, int count, short itemRemoveType) {
-		int playerItemCount = playerBag.getTemplateCount(templateId);
+		return removeItem(BagType.Play, templateId, count, BindType.ALL, itemRemoveType);
+	}
+	
+	/**
+	 * 删除指定背包中的物品，不指定绑定类型
+	 * @param bagType
+	 * @param templateId
+	 * @param count
+	 * @param itemRemoveType
+	 * @return
+	 */
+	public boolean removeItem(short bagType, int templateId, int count, short itemRemoveType){
+		return removeItem(bagType, templateId, count, BindType.ALL, itemRemoveType);
+	}
+
+	/**
+	 * 删除指定背包中的物品,指定绑定类型
+	 * 
+	 * @param bagType
+	 * @param templateId
+	 * @param count
+	 * @param itemRemoveType
+	 * @return
+	 */
+	public boolean removeItem(short bagType, int templateId, int count, short bindType, short itemRemoveType) {
+		BaseBag bag = getBag(bagType);
+		if (bag == null)
+			return false;
+
+		int playerItemCount = bag.getTemplateCount(templateId, bindType);
 		ItemTemplateInfo tempInfo = ItemManager.findItemTempInfo(templateId);
 		if ((tempInfo != null) && (count <= playerItemCount)) {
 			if ((playerItemCount > 0) && (count > 0)) {
-				if (playerBag.removeTemplate(templateId, playerItemCount > count ? count : playerItemCount, itemRemoveType, BindType.ALL)) {
+				if (bag.removeTemplate(templateId, playerItemCount > count ? count : playerItemCount, itemRemoveType, bindType)) {
 					count = count < playerItemCount ? 0 : count - playerItemCount;
 				}
 			}
@@ -331,22 +404,26 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	 * @return 成功:true 失败:false
 	 */
 	public boolean removeItemFromPlayerBag(int templateId, int count, short itemRemoveType) {
-		int playerItemCount = playerBag.getTemplateCount(templateId);
-		ItemTemplateInfo tempInfo = ItemManager.findItemTempInfo(templateId);
-		if ((tempInfo != null) && (count <= playerItemCount)) {
-			if ((playerItemCount > 0) && (count > 0)) {
-				if (playerBag.removeTemplate(templateId, playerItemCount > count ? count : playerItemCount, itemRemoveType, BindType.ALL)) {
-					count = count < playerItemCount ? 0 : count - playerItemCount;
-				}
-			}
-			if (count != 0) {
-				Log.error(String.format("Item Remover Error：PlayerId%s,TemplateId:%s,Count:%s PlayerBag:%s", player.getPlayerId(), templateId, count, playerItemCount));
-				return false;
-			}
-			this.notifyListeners(new ObjectEvent(this, templateId, EventNameType.TASK_ITEM_CHANGE_REDUCE));
-			return true;
-		}
-		return false;
+		return removeItem(BagType.Play, templateId, count, itemRemoveType);
+	}
+
+	/* 指定物品移除数量 */
+	public boolean removeItemByBaseItem(short bagType, BaseItem removedItem, int count, short removeType) {
+		BaseBag bag = getBag(bagType);
+		if (bag == null)
+			return false;
+		return bag.removeCountFromStack(removedItem, count, removeType);
+	}
+
+	/* 指定物品移除数量 */
+	public boolean removeItemByPos(short bagType, int removedPos, int count, short removeType) {
+		BaseBag bag = getBag(bagType);
+		if (bag == null)
+			return false;
+		BaseItem removedItem = bag.getItemByPos(removedPos);
+		if (removedItem == null)
+			return false;
+		return bag.removeCountFromStack(removedItem, count, removeType);
 	}
 
 	/**
@@ -360,6 +437,8 @@ public class BagInventory extends AbstractEvent implements IInventory {
 				return playerBag;
 			case BagType.HeroEquipment:
 				return heroEquipment;
+			case BagType.VirtualValue:
+				return virtualBag;
 			default:
 				return null;
 		}
@@ -388,6 +467,9 @@ public class BagInventory extends AbstractEvent implements IInventory {
 		playerBag.saveDataBase();
 		if (heroEquipment != null) {
 			heroEquipment.saveDataBase();
+		}
+		if (this.virtualBag != null) {
+			this.virtualBag.saveDataBase();
 		}
 		return true;
 	}
@@ -420,6 +502,9 @@ public class BagInventory extends AbstractEvent implements IInventory {
 			}
 			if (heroEquipment != null) {
 				heroEquipment.clear();
+			}
+			if (virtualBag != null) {
+				virtualBag.clear();
 			}
 			this.clearListener();
 			return true;

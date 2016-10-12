@@ -3,6 +3,7 @@ package com.chuangyou.xianni.entity.player;
 import java.util.Date;
 
 import com.chuangyou.common.protobuf.pb.PlayerInfoMsgProto.PlayerInfoMsg;
+import com.chuangyou.common.protobuf.pb.player.PlayerSimpleInfoMsgProto.PlayerSimpleInfoMsg;
 import com.chuangyou.xianni.entity.DataObject;
 import com.chuangyou.xianni.entity.Option;
 
@@ -103,6 +104,14 @@ public class PlayerInfo extends DataObject {
 	 * 装备经验
 	 */
 	private long	equipExp	= 0;
+
+	/**
+	 * 境界等级
+	 */
+	private int		stateLv		= 0;
+
+	/** 灵气（分身合体消耗品 */
+	private int		avatarEnergy;
 
 	public long getPlayerId() {
 		return playerId;
@@ -414,6 +423,17 @@ public class PlayerInfo extends DataObject {
 		}
 	}
 
+	public int getAvatarEnergy() {
+		return avatarEnergy;
+	}
+
+	public void setAvatarEnergy(int avatarEnergy) {
+		if (this.avatarEnergy != avatarEnergy) {
+			setOp(Option.Update);
+			this.avatarEnergy = avatarEnergy;
+		}
+	}
+
 	/**
 	 * 写玩家属性消息包
 	 * 
@@ -444,6 +464,36 @@ public class PlayerInfo extends DataObject {
 		proto.setPoints(this.getPoints());
 		proto.setEquipExp(this.getEquipExp());
 		proto.setPBagCount(bagInitCount + this.getpBagCount());
+		proto.setStateLv(this.getStateLv());
+
+	}
+
+	/** 简单信息 */
+	public void writeSimpInfo(PlayerSimpleInfoMsg.Builder proto) {
+		proto.setPlayerId(this.getPlayerId());
+		proto.setJob(this.getJob());
+		proto.setNickName(this.getNickName());
+		proto.setLevel(this.getLevel());
+		proto.setVipLevel(this.getVipLevel());
+		proto.setFight(this.getFight());
+		proto.setSkinId(this.getSkinId());
+		proto.setMountId(this.getMountId());
+		proto.setMagicWeaponId(this.getMagicWeaponId());
+		proto.setFashionId(this.getFashionId());
+		proto.setWeaponId(this.getWeaponId());
+		proto.setWingId(this.getWingId());
+	}
+
+	public int getStateLv() {
+
+		return stateLv;
+	}
+
+	public void setStateLv(int stateLv) {
+		if (this.stateLv != stateLv) {
+			this.stateLv = stateLv;
+			this.setOp(Option.Update);
+		}
 	}
 
 }

@@ -1,19 +1,9 @@
 package com.chuangyou.xianni.army.cmd;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.chuangyou.common.protobuf.pb.PlayerKillMonsterProto.PlayerKillMonsterMsg;
-import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
-import com.chuangyou.common.util.Log;
-import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.xianni.army.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.battleMode.manager.BattleModeManager;
 import com.chuangyou.xianni.constant.BattleModeCode;
-import com.chuangyou.xianni.constant.EnumAttr;
-import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 import com.chuangyou.xianni.event.EventNameType;
@@ -35,13 +25,13 @@ public class PlayerKillMonsterCmd implements Command {
 		// TODO Auto-generated method stub
 		PlayerKillMonsterMsg msg = PlayerKillMonsterMsg.parseFrom(packet.getBytes());
 		GamePlayer player = WorldMgr.getPlayer(msg.getPlayerId());
-		int monsterId = msg.getMonsterTemplateId();
+		long monsterId = msg.getBeKillId();
 		int type = msg.getType();
 
 		if (type == 1) {// 怪物
-			MonsterInfo monsterInfo = MonsterInfoTemplateMgr.get(monsterId);
+			MonsterInfo monsterInfo = MonsterInfoTemplateMgr.get((int) monsterId);
 			if (player != null) {
-				player.notifyListeners(new ObjectEvent(this, monsterId, EventNameType.TASK_KILL_MONSTER));
+				player.notifyListeners(new ObjectEvent(this, monsterInfo.getMonsterId(), EventNameType.TASK_KILL_MONSTER));
 				if (monsterInfo != null) {
 					int addExp = monsterInfo.getBeKilledExp();
 					int colour = BattleModeManager.getColour(player.getBasePlayer().getPlayerInfo().getPkVal());

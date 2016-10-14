@@ -1,0 +1,12 @@
+//protocol=20737;
+option java_package = "com.chuangyou.common.protobuf.pb.avatar";
+option java_outer_classname = "AvatarCampaignOptionMsgProto";
+
+//分身副本操作
+message AvatarCampaignOptionMsg{
+	optional int32 indexId=1;
+	optional int32 type=2;			//类型1001表示提请关闭副本
+	optional int32 param=3;
+}
+
+

@@ -1,0 +1,9 @@
+//protocol=629;
+option java_package = "com.chuangyou.common.protobuf.pb.avatar";
+option java_outer_classname = "AvatarCampaignRewardListProto";
+import "avatar/AvatarCampaignRewardMsg.proto";
+message AvatarCampaignRewardListMsg {
+	optional int32 campaignId = 1; //副本ID
+	repeated AvatarCampaignRewardMsg avatarRewards = 2;
+}
+

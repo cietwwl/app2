@@ -1,0 +1,6 @@
+option java_package = "com.chuangyou.common.protobuf.pb.army";
+option java_outer_classname = "RobotInfoListProto";
+import "army/RobotInfoMsg.proto";
+message RobotInfoListMsg {
+	repeated RobotInfoMsg robotDatas = 1; //机器人数据
+}

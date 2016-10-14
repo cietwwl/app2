@@ -1,0 +1,9 @@
+option java_package = "com.chuangyou.common.protobuf.pb.avatar";
+option java_outer_classname = "AvatarCampaignRewardProto";
+import "avatar/SingleReardInfoMsg.proto";
+message AvatarCampaignRewardMsg {
+	optional int32  avatarId = 1;//分身ID
+	repeated SingleReardInfoMsg rewards =2;//奖励信息
+	
+}
+

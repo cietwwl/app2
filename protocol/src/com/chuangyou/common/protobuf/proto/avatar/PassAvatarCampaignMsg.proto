@@ -1,0 +1,8 @@
+option java_package = "com.chuangyou.common.protobuf.pb.avatar";
+option java_outer_classname = "PassAvatarCampaignProto";
+message PassAvatarCampaignMsg{
+	optional int64 playerId = 1; //用户ID
+	optional int32 tempId = 2; //模板ID
+	optional int32 rewardCount= 3; //重数
+}
+

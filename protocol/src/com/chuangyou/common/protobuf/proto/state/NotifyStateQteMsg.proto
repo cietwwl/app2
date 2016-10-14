@@ -1,0 +1,10 @@
+//protocol=1620;
+option java_package = "com.chuangyou.common.protobuf.pb.state";
+option java_outer_classname = "NotifyStateQteProto";
+
+//通知执行QTE
+message NotifyStateQteMsg{
+	required int32 qteId = 1; //qteID
+	required int32 qteLimitTime = 2;//QTE限时（单位：秒）
+	required int32 eventId = 3;//事件相关
+}

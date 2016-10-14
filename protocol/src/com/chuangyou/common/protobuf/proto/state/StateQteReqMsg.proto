@@ -1,0 +1,10 @@
+//protocol=20747;
+option java_package = "com.chuangyou.common.protobuf.pb.state";
+option java_outer_classname = "StateQteReqProto";
+
+//返回境界QTE结果
+message StateQteReqMsg{
+	required int32 eventId = 1;//事件ID
+	required int32 qteId = 2;//qteId
+	required int32 code  = 3;//返回的结果  1：成功  2：失败
+}

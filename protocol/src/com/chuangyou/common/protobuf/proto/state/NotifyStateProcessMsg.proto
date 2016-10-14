@@ -1,0 +1,8 @@
+//protocol=1623;
+option java_package = "com.chuangyou.common.protobuf.pb.state";
+option java_outer_classname = "NotifyStateProcessProto";
+
+//通知境界进度
+message NotifyStateProcessMsg{
+	required int32 process = 1;
+}

@@ -1,0 +1,9 @@
+option java_package = "com.chuangyou.common.protobuf.pb.avatar";
+option java_outer_classname = "SingleReardInfoMsgProto";
+message SingleReardInfoMsg{
+	optional int32  index = 1;//奖励序号
+	optional int32  type = 2;//奖励类型 1 等级提升，2 技能提升 3 秘籍提升 4 失败 5 不能提升，给予奖励
+	optional int32 	param=3;//额外参数  2,3 提升时，附带技能ID
+	
+}
+

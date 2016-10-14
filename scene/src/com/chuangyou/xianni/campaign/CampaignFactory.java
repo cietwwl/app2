@@ -5,6 +5,7 @@ import com.chuangyou.common.util.JSONUtil;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.constant.CampaignConstant.CampaignType;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
+import com.chuangyou.xianni.entity.state.StateConfig;
 import com.chuangyou.xianni.inverseBead.InverseBeadCampaign;
 import com.chuangyou.xianni.world.ArmyProxy;
 
@@ -19,16 +20,14 @@ public class CampaignFactory {
 				return new SingleCampaign(tempInfo, creater, taskId);
 			case CampaignType.TEAM:
 				return new TeamCampaign(tempInfo, creater, taskId);
-			case CampaignType.CHALLENG:
-				return new ChallengeCampaign(tempInfo, creater, taskId);
+			case CampaignType.AVATAR:
+				return new AvatarCampaign(tempInfo, creater);
 			case CampaignType.BEAD:
 				return new InverseBeadCampaign(tempInfo, creater, taskId);
-			case CampaignType.STATE:
-				return new SingleCampaign(tempInfo, creater, taskId);
 			default:
 				break;
 		}
-		Log.error("the campaignType not exists ," + JSONUtil.getJSONString(tempInfo));
+		Log.error("the campaignType not exists ," + tempInfo.getTemplateId());
 		return null;
 	}
 
@@ -55,6 +54,14 @@ public class CampaignFactory {
 	 */
 	public static Campaign createGuildSeizeCampaign(CampaignTemplateInfo tempInfo, ArmyProxy creater, RobotInfoMsg robotDATA){
 		return new ArenaGuildSeizeCampaign(tempInfo, creater, robotDATA);
+	}
+	
+	/**
+	 * 创建境界副本
+	 * @return
+	 */
+	public static Campaign createStateConfig(CampaignTemplateInfo tempInfo, ArmyProxy creater,StateConfig config){
+		return new StateCampaign(tempInfo, creater, config);
 	}
 
 }

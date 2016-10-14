@@ -55,7 +55,7 @@ public class ItemTaskCondition extends KillMonsterTaskCondition {
 	@Override
 	public void removeTrigger(GamePlayer player) {
 		// TODO Auto-generated method stub
-		super.removeTrigger(player);
+		this.player.getBagInventory().removeListener(listener, eventType);
 		this.player.getBagInventory().removeListener(reduceListener,EventNameType.TASK_ITEM_CHANGE_REDUCE);
 	}
 	

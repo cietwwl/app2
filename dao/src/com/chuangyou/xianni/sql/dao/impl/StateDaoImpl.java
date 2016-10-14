@@ -12,6 +12,7 @@ import com.chuangyou.xianni.entity.state.ConsumSystemConfig;
 import com.chuangyou.xianni.entity.state.StateConditionConfig;
 import com.chuangyou.xianni.entity.state.StateConditionInfo;
 import com.chuangyou.xianni.entity.state.StateConfig;
+import com.chuangyou.xianni.entity.state.StateEventConfig;
 import com.chuangyou.xianni.sql.dao.StateDao;
 import com.chuangyou.xianni.sql.db.BaseDao;
 import com.chuangyou.xianni.sql.db.DbParameter;
@@ -70,6 +71,9 @@ public class StateDaoImpl extends BaseDao implements StateDao {
 				info.setMaxLevel(rs.getInt("maxLevel"));
 				info.setProperty(rs.getString("property"));
 				info.setAwardItem(rs.getInt("awardItem"));
+				info.setEvents(rs.getString("events"));
+				info.setEndEvents(rs.getString("endEvents"));
+				info.setMaxProcess(rs.getInt("maxProcess"));
 				infos.put(info.getId(), info);
 			}
 		} catch (SQLException e) {
@@ -185,6 +189,48 @@ public class StateDaoImpl extends BaseDao implements StateDao {
 			closeConn(pst, rs);
 		}
 		return infos;		
+	}
+
+	@Override
+	public Map<Integer, StateEventConfig> getStateEventConfig() {
+		// TODO Auto-generated method stub
+		String sql = "select * from tb_z_state_event";
+		PreparedStatement pst = execQuery(sql);
+		ResultSet rs = null;
+		StateEventConfig info = null;
+		Map<Integer, StateEventConfig> infos = null;
+		try {
+			rs = pst.executeQuery();
+			infos = new HashMap<>();
+			while (rs.next()) {
+				info = new StateEventConfig();
+				info.setId(rs.getInt("id"));
+				info.setType(rs.getInt("type"));
+				info.setCoolDown(rs.getInt("coolDown"));
+				info.setComboCd(rs.getInt("comboCd"));
+				info.setComboChance(rs.getInt("comboChance"));
+				info.setComboEventID(rs.getInt("comboEventID"));
+				info.setProcess(rs.getInt("process"));
+				info.setQteId(rs.getInt("qteId"));
+				info.setQteLimitTime(rs.getInt("qteLimitTime"));
+				info.setQteChance(rs.getInt("qteChance"));
+				info.setQteSucessEventID(rs.getInt("qteSucessEventID"));
+				info.setParam1(rs.getInt("param1"));
+				info.setParam2(rs.getInt("param2"));
+				info.setParam3(rs.getInt("param3"));
+				info.setParam4(rs.getInt("param4"));
+				info.setParamStr(rs.getString("paramStr"));
+				infos.put(info.getId(), info);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			infos = null;
+			Log.error("执行出错" + sql, e);
+		} finally {
+			closeConn(pst, rs);
+		}
+		return infos;	
 	}
 
 }

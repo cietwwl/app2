@@ -60,4 +60,9 @@ public interface RankType {
 	 */
 	public static final int POPULARITY = 300;
 	
+	/**
+	 * 境界等级榜
+	 */
+	public static final int STATE_LV = 400;
+	
 }

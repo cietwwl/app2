@@ -95,7 +95,7 @@ public class MountWeaponUpCmd extends AbstractCommand {
 			//影响人物属性变更
 			player.getMountInventory().updataProperty();
 			
-			player.notifyListeners(new MountStateEvent(this,3, mount.getWeaponGrade(),0,EventNameType.MOUNT));
+			player.notifyListeners(new MountStateEvent(this,3,0,mount.getWeaponGrade(),EventNameType.MOUNT));
 			
 		}
 		

@@ -30,6 +30,7 @@ import com.chuangyou.xianni.campaign.ArenaBattleCampaign;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.campaign.PvP1v1Campaign;
+import com.chuangyou.xianni.campaign.StateCampaign;
 import com.chuangyou.xianni.campaign.node.CampaignNodeDecorator;
 import com.chuangyou.xianni.campaign.task.CTBaseCondition;
 import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
@@ -164,6 +165,9 @@ public class Player extends ActiveLiving {
 					}
 					if (campaign instanceof PvP1v1Campaign) {
 						((PvP1v1Campaign) campaign).die(this.getArmyId());
+					}
+					if(campaign instanceof StateCampaign){
+						((StateCampaign)campaign).failOver();
 					}
 				}
 			}
@@ -442,6 +446,7 @@ public class Player extends ActiveLiving {
 		BattleLivingInfoMsg.Builder temp = super.getBattlePlayerInfoMsg();
 		temp.setMountState(getMountState());
 		temp.setAvatarState(correspondStatu);
+		temp.setAvatarTempId(avatarTempId);
 		// 如果是变身状态，则清理以前技能,补进合体后技能
 		if (isCorrespondStatu()) {
 			temp.clearSkills();

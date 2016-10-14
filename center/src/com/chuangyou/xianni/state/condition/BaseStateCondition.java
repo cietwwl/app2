@@ -16,7 +16,7 @@ public abstract class BaseStateCondition {
 	protected GamePlayer player;
 	
 	protected ObjectListener listener;
-
+	
 
 	public BaseStateCondition(StateConditionInfo info, StateConditionConfig config,GamePlayer player) {
 		super();

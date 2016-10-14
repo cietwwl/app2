@@ -81,29 +81,21 @@ public final class InnerReqTruckCompleteProto {
     int getRobbed();
 
     /**
-     * <code>repeated int64 protectors = 5;</code>
+     * <code>required int32 truckertype = 5;</code>
      *
      * <pre>
-     *护镖者
+     *镖师头衔
      * </pre>
      */
-    java.util.List<java.lang.Long> getProtectorsList();
+    boolean hasTruckertype();
     /**
-     * <code>repeated int64 protectors = 5;</code>
+     * <code>required int32 truckertype = 5;</code>
      *
      * <pre>
-     *护镖者
+     *镖师头衔
      * </pre>
      */
-    int getProtectorsCount();
-    /**
-     * <code>repeated int64 protectors = 5;</code>
-     *
-     * <pre>
-     *护镖者
-     * </pre>
-     */
-    long getProtectors(int index);
+    int getTruckertype();
   }
   /**
    * Protobuf type {@code InnerReqTruckComplete}
@@ -182,24 +174,8 @@ public final class InnerReqTruckCompleteProto {
               break;
             }
             case 40: {
-              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
-                protectors_ = new java.util.ArrayList<java.lang.Long>();
-                mutable_bitField0_ |= 0x00000010;
-              }
-              protectors_.add(input.readInt64());
-              break;
-            }
-            case 42: {
-              int length = input.readRawVarint32();
-              int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010) && input.getBytesUntilLimit() > 0) {
-                protectors_ = new java.util.ArrayList<java.lang.Long>();
-                mutable_bitField0_ |= 0x00000010;
-              }
-              while (input.getBytesUntilLimit() > 0) {
-                protectors_.add(input.readInt64());
-              }
-              input.popLimit(limit);
+              bitField0_ |= 0x00000010;
+              truckertype_ = input.readInt32();
               break;
             }
           }
@@ -210,9 +186,6 @@ public final class InnerReqTruckCompleteProto {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
-          protectors_ = java.util.Collections.unmodifiableList(protectors_);
-        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -337,38 +310,27 @@ public final class InnerReqTruckCompleteProto {
       return robbed_;
     }
 
-    public static final int PROTECTORS_FIELD_NUMBER = 5;
-    private java.util.List<java.lang.Long> protectors_;
+    public static final int TRUCKERTYPE_FIELD_NUMBER = 5;
+    private int truckertype_;
     /**
-     * <code>repeated int64 protectors = 5;</code>
+     * <code>required int32 truckertype = 5;</code>
      *
      * <pre>
-     *护镖者
+     *镖师头衔
      * </pre>
      */
-    public java.util.List<java.lang.Long>
-        getProtectorsList() {
-      return protectors_;
+    public boolean hasTruckertype() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
-     * <code>repeated int64 protectors = 5;</code>
+     * <code>required int32 truckertype = 5;</code>
      *
      * <pre>
-     *护镖者
+     *镖师头衔
      * </pre>
      */
-    public int getProtectorsCount() {
-      return protectors_.size();
-    }
-    /**
-     * <code>repeated int64 protectors = 5;</code>
-     *
-     * <pre>
-     *护镖者
-     * </pre>
-     */
-    public long getProtectors(int index) {
-      return protectors_.get(index);
+    public int getTruckertype() {
+      return truckertype_;
     }
 
     private void initFields() {
@@ -376,7 +338,7 @@ public final class InnerReqTruckCompleteProto {
       state_ = 0;
       mat_ = 0;
       robbed_ = 0;
-      protectors_ = java.util.Collections.emptyList();
+      truckertype_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -400,6 +362,10 @@ public final class InnerReqTruckCompleteProto {
         memoizedIsInitialized = 0;
         return false;
       }
+      if (!hasTruckertype()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -419,8 +385,8 @@ public final class InnerReqTruckCompleteProto {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeInt32(4, robbed_);
       }
-      for (int i = 0; i < protectors_.size(); i++) {
-        output.writeInt64(5, protectors_.get(i));
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeInt32(5, truckertype_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -447,14 +413,9 @@ public final class InnerReqTruckCompleteProto {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(4, robbed_);
       }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < protectors_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeInt64SizeNoTag(protectors_.get(i));
-        }
-        size += dataSize;
-        size += 1 * getProtectorsList().size();
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(5, truckertype_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -585,7 +546,7 @@ public final class InnerReqTruckCompleteProto {
         bitField0_ = (bitField0_ & ~0x00000004);
         robbed_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
-        protectors_ = java.util.Collections.emptyList();
+        truckertype_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
@@ -631,11 +592,10 @@ public final class InnerReqTruckCompleteProto {
           to_bitField0_ |= 0x00000008;
         }
         result.robbed_ = robbed_;
-        if (((bitField0_ & 0x00000010) == 0x00000010)) {
-          protectors_ = java.util.Collections.unmodifiableList(protectors_);
-          bitField0_ = (bitField0_ & ~0x00000010);
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
         }
-        result.protectors_ = protectors_;
+        result.truckertype_ = truckertype_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -664,15 +624,8 @@ public final class InnerReqTruckCompleteProto {
         if (other.hasRobbed()) {
           setRobbed(other.getRobbed());
         }
-        if (!other.protectors_.isEmpty()) {
-          if (protectors_.isEmpty()) {
-            protectors_ = other.protectors_;
-            bitField0_ = (bitField0_ & ~0x00000010);
-          } else {
-            ensureProtectorsIsMutable();
-            protectors_.addAll(other.protectors_);
-          }
-          onChanged();
+        if (other.hasTruckertype()) {
+          setTruckertype(other.getTruckertype());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -692,6 +645,10 @@ public final class InnerReqTruckCompleteProto {
           return false;
         }
         if (!hasRobbed()) {
+          
+          return false;
+        }
+        if (!hasTruckertype()) {
           
           return false;
         }
@@ -909,96 +866,50 @@ public final class InnerReqTruckCompleteProto {
         return this;
       }
 
-      private java.util.List<java.lang.Long> protectors_ = java.util.Collections.emptyList();
-      private void ensureProtectorsIsMutable() {
-        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
-          protectors_ = new java.util.ArrayList<java.lang.Long>(protectors_);
-          bitField0_ |= 0x00000010;
-         }
-      }
+      private int truckertype_ ;
       /**
-       * <code>repeated int64 protectors = 5;</code>
+       * <code>required int32 truckertype = 5;</code>
        *
        * <pre>
-       *护镖者
+       *镖师头衔
        * </pre>
        */
-      public java.util.List<java.lang.Long>
-          getProtectorsList() {
-        return java.util.Collections.unmodifiableList(protectors_);
+      public boolean hasTruckertype() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>repeated int64 protectors = 5;</code>
+       * <code>required int32 truckertype = 5;</code>
        *
        * <pre>
-       *护镖者
+       *镖师头衔
        * </pre>
        */
-      public int getProtectorsCount() {
-        return protectors_.size();
+      public int getTruckertype() {
+        return truckertype_;
       }
       /**
-       * <code>repeated int64 protectors = 5;</code>
+       * <code>required int32 truckertype = 5;</code>
        *
        * <pre>
-       *护镖者
+       *镖师头衔
        * </pre>
        */
-      public long getProtectors(int index) {
-        return protectors_.get(index);
-      }
-      /**
-       * <code>repeated int64 protectors = 5;</code>
-       *
-       * <pre>
-       *护镖者
-       * </pre>
-       */
-      public Builder setProtectors(
-          int index, long value) {
-        ensureProtectorsIsMutable();
-        protectors_.set(index, value);
+      public Builder setTruckertype(int value) {
+        bitField0_ |= 0x00000010;
+        truckertype_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>repeated int64 protectors = 5;</code>
+       * <code>required int32 truckertype = 5;</code>
        *
        * <pre>
-       *护镖者
+       *镖师头衔
        * </pre>
        */
-      public Builder addProtectors(long value) {
-        ensureProtectorsIsMutable();
-        protectors_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 protectors = 5;</code>
-       *
-       * <pre>
-       *护镖者
-       * </pre>
-       */
-      public Builder addAllProtectors(
-          java.lang.Iterable<? extends java.lang.Long> values) {
-        ensureProtectorsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, protectors_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 protectors = 5;</code>
-       *
-       * <pre>
-       *护镖者
-       * </pre>
-       */
-      public Builder clearProtectors() {
-        protectors_ = java.util.Collections.emptyList();
+      public Builder clearTruckertype() {
         bitField0_ = (bitField0_ & ~0x00000010);
+        truckertype_ = 0;
         onChanged();
         return this;
       }
@@ -1028,12 +939,12 @@ public final class InnerReqTruckCompleteProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\033InnerReqTruckComplete.proto\"j\n\025InnerRe" +
+      "\n\033InnerReqTruckComplete.proto\"k\n\025InnerRe" +
       "qTruckComplete\022\021\n\ttrucktype\030\001 \002(\005\022\r\n\005sta" +
-      "te\030\002 \002(\005\022\013\n\003mat\030\003 \002(\005\022\016\n\006robbed\030\004 \002(\005\022\022\n" +
-      "\nprotectors\030\005 \003(\003BD\n&com.chuangyou.commo" +
-      "n.protobuf.pb.truckB\032InnerReqTruckComple" +
-      "teProto"
+      "te\030\002 \002(\005\022\013\n\003mat\030\003 \002(\005\022\016\n\006robbed\030\004 \002(\005\022\023\n" +
+      "\013truckertype\030\005 \002(\005BD\n&com.chuangyou.comm" +
+      "on.protobuf.pb.truckB\032InnerReqTruckCompl" +
+      "eteProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1052,7 +963,7 @@ public final class InnerReqTruckCompleteProto {
     internal_static_InnerReqTruckComplete_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_InnerReqTruckComplete_descriptor,
-        new java.lang.String[] { "Trucktype", "State", "Mat", "Robbed", "Protectors", });
+        new java.lang.String[] { "Trucktype", "State", "Mat", "Robbed", "Truckertype", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

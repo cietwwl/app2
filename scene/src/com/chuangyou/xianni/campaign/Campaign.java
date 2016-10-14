@@ -62,7 +62,7 @@ public class Campaign extends AbstractActionQueue {
 
 	protected ThreadSafeRandom								random;						// 副本随机
 	protected int											id;							// 唯一ID
-	protected int											campaignId;					// 模板ID
+	protected int											tempId;						// 模板ID
 	protected int											teamId;
 	protected String										name;						// 副本名称
 	protected CampaignTemplateInfo							campaignTemplateInfo;		// 副本信息
@@ -91,7 +91,7 @@ public class Campaign extends AbstractActionQueue {
 	public Campaign(CampaignTemplateInfo tempInfo, ArmyProxy creater, int taskId) {
 		super(ThreadManager.actionExecutor);
 		this.id = IDMakerHelper.campaignId();
-		this.campaignId = tempInfo.getTemplateId();
+		this.tempId = tempInfo.getTemplateId();
 		this.campaignTemplateInfo = tempInfo;
 		this.armys = new HashMap<>();
 		this.JoinArmys = new HashSet<>();
@@ -111,7 +111,7 @@ public class Campaign extends AbstractActionQueue {
 	public void start() {
 		state = new OpeningState(this);
 		// 获取副本所有地图
-		Map<Integer, FieldInfo> finfos = FieldTemplateMgr.getCFieldInfos(campaignId);
+		Map<Integer, FieldInfo> finfos = FieldTemplateMgr.getCFieldInfos(tempId);
 		// 创建当前地图
 		for (Entry<Integer, FieldInfo> entry : finfos.entrySet()) {
 			int index = entry.getKey();
@@ -212,16 +212,6 @@ public class Campaign extends AbstractActionQueue {
 		}
 		state = new SuccessState(this);
 
-		// CampaignStatuMsg.Builder cstatu = CampaignStatuMsg.newBuilder();
-		// cstatu.setIndexId(getIndexId());
-		// cstatu.setTempId(campaignId);
-		// cstatu.setTeamId(teamId);// 组队副本向上穿透兼容
-		// cstatu.setStatu(CampaignStatu.NOTITY2C_SUCCESS);
-		// if (task != null) {
-		// cstatu.setTaskId(task.getTemp().getTaskId());
-		// }
-		// PBMessage statuMsg =
-		// MessageUtil.buildMessage(Protocol.C_CAMPAIGN_STATU, cstatu);
 		for (ArmyProxy army : getAllArmys()) {
 			sendCampaignInfo(army);
 			sendCampaignStatu(army);
@@ -307,7 +297,7 @@ public class Campaign extends AbstractActionQueue {
 		infoMsg.setCreaterId(creater);
 		infoMsg.setCreateTime(beginTime);
 		infoMsg.setState(state.getCode());
-		infoMsg.setTempId(campaignId);
+		infoMsg.setTempId(tempId);
 		infoMsg.setProgress(progress);
 		int overTm = (int) (endTime - System.currentTimeMillis());
 		infoMsg.setOpenTime(overTm);
@@ -324,7 +314,7 @@ public class Campaign extends AbstractActionQueue {
 	public void sendCampaignStatu(ArmyProxy army) {
 		CampaignStatuMsg.Builder cstatu = CampaignStatuMsg.newBuilder();
 		cstatu.setIndexId(getIndexId());
-		cstatu.setTempId(campaignId);
+		cstatu.setTempId(tempId);
 		cstatu.setTeamId(teamId);// 组队副本向上穿透兼容
 		cstatu.setPlayerId(army.getPlayerId());
 		if (armys.containsValue(army)) {
@@ -581,7 +571,13 @@ public class Campaign extends AbstractActionQueue {
 	}
 
 	private void createAvatar(RobotInfoMsg msg) {
-		Avatar robot = new Avatar();
+		Avatar robot = null;
+		ArmyProxy army = WorldMgr.getArmy(msg.getSimpInfo().getPlayerId());
+		if (army == null || army.getAvatars(msg.getSimpInfo().getSkinId()) == null) {
+			robot = new Avatar();
+		} else {
+			robot = army.getAvatars(msg.getSimpInfo().getSkinId());
+		}
 		robot.instill(msg);
 		FieldInfo fieldInfo = starField.getFieldInfo();
 		Vector3 vector3 = null;
@@ -594,7 +590,7 @@ public class Campaign extends AbstractActionQueue {
 		}
 		robot.setPostion(vector3);
 		starField.enterField(robot);
-		ArmyProxy army = WorldMgr.getArmy(robot.getArmyId());
+
 		if (army != null) {
 			army.addAvatar(robot);
 		}

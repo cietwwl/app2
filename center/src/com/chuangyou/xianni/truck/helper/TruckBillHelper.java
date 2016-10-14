@@ -16,12 +16,18 @@ public class TruckBillHelper {
 	/** 未被成功劫镖，结算时获得外奖励 */
 	public static final int TRUCK_UNBROKEN_REWARD = 31101;
 	
-	/** 为他人护镖获得额外经验 */
+	/** 为他人护镖获得额外经验 - 每天只限制一次 */
 	public static final int TRUCK_PROTECTOR_EXT_EXP = 31201;
 	
-	/** 为他人护镖获得额外奖励 */
+	/** 为他人护镖获得额外奖励 - 每天只限制一次 */
 	public static final int TRUCK_PROTECTOR_EXT_REWARD = 31301;
-
+	
+	/** 为他人护镖获得额外经验  */
+	public static final int TRUCK_EXT_EXP = 31201111;
+	
+	/** 被劫镖时可直接获得镖师经验，1天最多获得一次 */
+	public static final int TRUCK_ROBBED_EXP = 31201112;
+	
 	/**
 	 * 获取值集合
 	 * @param skills

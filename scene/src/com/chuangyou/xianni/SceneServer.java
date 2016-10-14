@@ -24,7 +24,7 @@ import com.chuangyou.xianni.role.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.role.template.NpcInfoTemplateMgr;
 import com.chuangyou.xianni.script.manager.ScriptManager;
 import com.chuangyou.xianni.sql.db.pool.DBPoolMgr;
-import com.chuangyou.xianni.state.StateTemplateMgr;
+import com.chuangyou.xianni.state.template.StateTemplateMgr;
 import com.chuangyou.xianni.truck.TruckTempMgr;
 import com.chuangyou.xianni.warfield.FieldMgr;
 import com.chuangyou.xianni.warfield.navi.NavigationManager;

@@ -64,48 +64,21 @@ public final class CreateCampaignMsgProto {
     int getTaskId();
 
     /**
-     * <code>repeated .RobotInfoMsg avatars = 4;</code>
+     * <code>optional int32 param1 = 4;</code>
      *
      * <pre>
-     *分身信息
+     *挑战参数
      * </pre>
      */
-    java.util.List<com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg> 
-        getAvatarsList();
+    boolean hasParam1();
     /**
-     * <code>repeated .RobotInfoMsg avatars = 4;</code>
+     * <code>optional int32 param1 = 4;</code>
      *
      * <pre>
-     *分身信息
+     *挑战参数
      * </pre>
      */
-    com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg getAvatars(int index);
-    /**
-     * <code>repeated .RobotInfoMsg avatars = 4;</code>
-     *
-     * <pre>
-     *分身信息
-     * </pre>
-     */
-    int getAvatarsCount();
-    /**
-     * <code>repeated .RobotInfoMsg avatars = 4;</code>
-     *
-     * <pre>
-     *分身信息
-     * </pre>
-     */
-    java.util.List<? extends com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsgOrBuilder> 
-        getAvatarsOrBuilderList();
-    /**
-     * <code>repeated .RobotInfoMsg avatars = 4;</code>
-     *
-     * <pre>
-     *分身信息
-     * </pre>
-     */
-    com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsgOrBuilder getAvatarsOrBuilder(
-        int index);
+    int getParam1();
   }
   /**
    * Protobuf type {@code CreateCampaignMsg}
@@ -174,12 +147,9 @@ public final class CreateCampaignMsgProto {
               taskId_ = input.readInt32();
               break;
             }
-            case 34: {
-              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-                avatars_ = new java.util.ArrayList<com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg>();
-                mutable_bitField0_ |= 0x00000008;
-              }
-              avatars_.add(input.readMessage(com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg.PARSER, extensionRegistry));
+            case 32: {
+              bitField0_ |= 0x00000008;
+              param1_ = input.readInt32();
               break;
             }
           }
@@ -190,9 +160,6 @@ public final class CreateCampaignMsgProto {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-          avatars_ = java.util.Collections.unmodifiableList(avatars_);
-        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -294,66 +261,34 @@ public final class CreateCampaignMsgProto {
       return taskId_;
     }
 
-    public static final int AVATARS_FIELD_NUMBER = 4;
-    private java.util.List<com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg> avatars_;
+    public static final int PARAM1_FIELD_NUMBER = 4;
+    private int param1_;
     /**
-     * <code>repeated .RobotInfoMsg avatars = 4;</code>
+     * <code>optional int32 param1 = 4;</code>
      *
      * <pre>
-     *分身信息
+     *挑战参数
      * </pre>
      */
-    public java.util.List<com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg> getAvatarsList() {
-      return avatars_;
+    public boolean hasParam1() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>repeated .RobotInfoMsg avatars = 4;</code>
+     * <code>optional int32 param1 = 4;</code>
      *
      * <pre>
-     *分身信息
+     *挑战参数
      * </pre>
      */
-    public java.util.List<? extends com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsgOrBuilder> 
-        getAvatarsOrBuilderList() {
-      return avatars_;
-    }
-    /**
-     * <code>repeated .RobotInfoMsg avatars = 4;</code>
-     *
-     * <pre>
-     *分身信息
-     * </pre>
-     */
-    public int getAvatarsCount() {
-      return avatars_.size();
-    }
-    /**
-     * <code>repeated .RobotInfoMsg avatars = 4;</code>
-     *
-     * <pre>
-     *分身信息
-     * </pre>
-     */
-    public com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg getAvatars(int index) {
-      return avatars_.get(index);
-    }
-    /**
-     * <code>repeated .RobotInfoMsg avatars = 4;</code>
-     *
-     * <pre>
-     *分身信息
-     * </pre>
-     */
-    public com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsgOrBuilder getAvatarsOrBuilder(
-        int index) {
-      return avatars_.get(index);
+    public int getParam1() {
+      return param1_;
     }
 
     private void initFields() {
       campaign_ = 0;
       useItem_ = false;
       taskId_ = 0;
-      avatars_ = java.util.Collections.emptyList();
+      param1_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -377,8 +312,8 @@ public final class CreateCampaignMsgProto {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeInt32(3, taskId_);
       }
-      for (int i = 0; i < avatars_.size(); i++) {
-        output.writeMessage(4, avatars_.get(i));
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt32(4, param1_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -401,9 +336,9 @@ public final class CreateCampaignMsgProto {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(3, taskId_);
       }
-      for (int i = 0; i < avatars_.size(); i++) {
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, avatars_.get(i));
+          .computeInt32Size(4, param1_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -514,7 +449,6 @@ public final class CreateCampaignMsgProto {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getAvatarsFieldBuilder();
         }
       }
       private static Builder create() {
@@ -529,12 +463,8 @@ public final class CreateCampaignMsgProto {
         bitField0_ = (bitField0_ & ~0x00000002);
         taskId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
-        if (avatarsBuilder_ == null) {
-          avatars_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
-        } else {
-          avatarsBuilder_.clear();
-        }
+        param1_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -575,15 +505,10 @@ public final class CreateCampaignMsgProto {
           to_bitField0_ |= 0x00000004;
         }
         result.taskId_ = taskId_;
-        if (avatarsBuilder_ == null) {
-          if (((bitField0_ & 0x00000008) == 0x00000008)) {
-            avatars_ = java.util.Collections.unmodifiableList(avatars_);
-            bitField0_ = (bitField0_ & ~0x00000008);
-          }
-          result.avatars_ = avatars_;
-        } else {
-          result.avatars_ = avatarsBuilder_.build();
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
         }
+        result.param1_ = param1_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -609,31 +534,8 @@ public final class CreateCampaignMsgProto {
         if (other.hasTaskId()) {
           setTaskId(other.getTaskId());
         }
-        if (avatarsBuilder_ == null) {
-          if (!other.avatars_.isEmpty()) {
-            if (avatars_.isEmpty()) {
-              avatars_ = other.avatars_;
-              bitField0_ = (bitField0_ & ~0x00000008);
-            } else {
-              ensureAvatarsIsMutable();
-              avatars_.addAll(other.avatars_);
-            }
-            onChanged();
-          }
-        } else {
-          if (!other.avatars_.isEmpty()) {
-            if (avatarsBuilder_.isEmpty()) {
-              avatarsBuilder_.dispose();
-              avatarsBuilder_ = null;
-              avatars_ = other.avatars_;
-              bitField0_ = (bitField0_ & ~0x00000008);
-              avatarsBuilder_ = 
-                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getAvatarsFieldBuilder() : null;
-            } else {
-              avatarsBuilder_.addAllMessages(other.avatars_);
-            }
-          }
+        if (other.hasParam1()) {
+          setParam1(other.getParam1());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -806,316 +708,52 @@ public final class CreateCampaignMsgProto {
         return this;
       }
 
-      private java.util.List<com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg> avatars_ =
-        java.util.Collections.emptyList();
-      private void ensureAvatarsIsMutable() {
-        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
-          avatars_ = new java.util.ArrayList<com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg>(avatars_);
-          bitField0_ |= 0x00000008;
-         }
-      }
-
-      private com.google.protobuf.RepeatedFieldBuilder<
-          com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg, com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg.Builder, com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsgOrBuilder> avatarsBuilder_;
-
+      private int param1_ ;
       /**
-       * <code>repeated .RobotInfoMsg avatars = 4;</code>
+       * <code>optional int32 param1 = 4;</code>
        *
        * <pre>
-       *分身信息
+       *挑战参数
        * </pre>
        */
-      public java.util.List<com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg> getAvatarsList() {
-        if (avatarsBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(avatars_);
-        } else {
-          return avatarsBuilder_.getMessageList();
-        }
+      public boolean hasParam1() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>repeated .RobotInfoMsg avatars = 4;</code>
+       * <code>optional int32 param1 = 4;</code>
        *
        * <pre>
-       *分身信息
+       *挑战参数
        * </pre>
        */
-      public int getAvatarsCount() {
-        if (avatarsBuilder_ == null) {
-          return avatars_.size();
-        } else {
-          return avatarsBuilder_.getCount();
-        }
+      public int getParam1() {
+        return param1_;
       }
       /**
-       * <code>repeated .RobotInfoMsg avatars = 4;</code>
+       * <code>optional int32 param1 = 4;</code>
        *
        * <pre>
-       *分身信息
+       *挑战参数
        * </pre>
        */
-      public com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg getAvatars(int index) {
-        if (avatarsBuilder_ == null) {
-          return avatars_.get(index);
-        } else {
-          return avatarsBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <code>repeated .RobotInfoMsg avatars = 4;</code>
-       *
-       * <pre>
-       *分身信息
-       * </pre>
-       */
-      public Builder setAvatars(
-          int index, com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg value) {
-        if (avatarsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureAvatarsIsMutable();
-          avatars_.set(index, value);
-          onChanged();
-        } else {
-          avatarsBuilder_.setMessage(index, value);
-        }
+      public Builder setParam1(int value) {
+        bitField0_ |= 0x00000008;
+        param1_ = value;
+        onChanged();
         return this;
       }
       /**
-       * <code>repeated .RobotInfoMsg avatars = 4;</code>
+       * <code>optional int32 param1 = 4;</code>
        *
        * <pre>
-       *分身信息
+       *挑战参数
        * </pre>
        */
-      public Builder setAvatars(
-          int index, com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg.Builder builderForValue) {
-        if (avatarsBuilder_ == null) {
-          ensureAvatarsIsMutable();
-          avatars_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          avatarsBuilder_.setMessage(index, builderForValue.build());
-        }
+      public Builder clearParam1() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        param1_ = 0;
+        onChanged();
         return this;
-      }
-      /**
-       * <code>repeated .RobotInfoMsg avatars = 4;</code>
-       *
-       * <pre>
-       *分身信息
-       * </pre>
-       */
-      public Builder addAvatars(com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg value) {
-        if (avatarsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureAvatarsIsMutable();
-          avatars_.add(value);
-          onChanged();
-        } else {
-          avatarsBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .RobotInfoMsg avatars = 4;</code>
-       *
-       * <pre>
-       *分身信息
-       * </pre>
-       */
-      public Builder addAvatars(
-          int index, com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg value) {
-        if (avatarsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureAvatarsIsMutable();
-          avatars_.add(index, value);
-          onChanged();
-        } else {
-          avatarsBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .RobotInfoMsg avatars = 4;</code>
-       *
-       * <pre>
-       *分身信息
-       * </pre>
-       */
-      public Builder addAvatars(
-          com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg.Builder builderForValue) {
-        if (avatarsBuilder_ == null) {
-          ensureAvatarsIsMutable();
-          avatars_.add(builderForValue.build());
-          onChanged();
-        } else {
-          avatarsBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .RobotInfoMsg avatars = 4;</code>
-       *
-       * <pre>
-       *分身信息
-       * </pre>
-       */
-      public Builder addAvatars(
-          int index, com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg.Builder builderForValue) {
-        if (avatarsBuilder_ == null) {
-          ensureAvatarsIsMutable();
-          avatars_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          avatarsBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .RobotInfoMsg avatars = 4;</code>
-       *
-       * <pre>
-       *分身信息
-       * </pre>
-       */
-      public Builder addAllAvatars(
-          java.lang.Iterable<? extends com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg> values) {
-        if (avatarsBuilder_ == null) {
-          ensureAvatarsIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, avatars_);
-          onChanged();
-        } else {
-          avatarsBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .RobotInfoMsg avatars = 4;</code>
-       *
-       * <pre>
-       *分身信息
-       * </pre>
-       */
-      public Builder clearAvatars() {
-        if (avatarsBuilder_ == null) {
-          avatars_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
-          onChanged();
-        } else {
-          avatarsBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .RobotInfoMsg avatars = 4;</code>
-       *
-       * <pre>
-       *分身信息
-       * </pre>
-       */
-      public Builder removeAvatars(int index) {
-        if (avatarsBuilder_ == null) {
-          ensureAvatarsIsMutable();
-          avatars_.remove(index);
-          onChanged();
-        } else {
-          avatarsBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .RobotInfoMsg avatars = 4;</code>
-       *
-       * <pre>
-       *分身信息
-       * </pre>
-       */
-      public com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg.Builder getAvatarsBuilder(
-          int index) {
-        return getAvatarsFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .RobotInfoMsg avatars = 4;</code>
-       *
-       * <pre>
-       *分身信息
-       * </pre>
-       */
-      public com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsgOrBuilder getAvatarsOrBuilder(
-          int index) {
-        if (avatarsBuilder_ == null) {
-          return avatars_.get(index);  } else {
-          return avatarsBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .RobotInfoMsg avatars = 4;</code>
-       *
-       * <pre>
-       *分身信息
-       * </pre>
-       */
-      public java.util.List<? extends com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsgOrBuilder> 
-           getAvatarsOrBuilderList() {
-        if (avatarsBuilder_ != null) {
-          return avatarsBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(avatars_);
-        }
-      }
-      /**
-       * <code>repeated .RobotInfoMsg avatars = 4;</code>
-       *
-       * <pre>
-       *分身信息
-       * </pre>
-       */
-      public com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg.Builder addAvatarsBuilder() {
-        return getAvatarsFieldBuilder().addBuilder(
-            com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .RobotInfoMsg avatars = 4;</code>
-       *
-       * <pre>
-       *分身信息
-       * </pre>
-       */
-      public com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg.Builder addAvatarsBuilder(
-          int index) {
-        return getAvatarsFieldBuilder().addBuilder(
-            index, com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .RobotInfoMsg avatars = 4;</code>
-       *
-       * <pre>
-       *分身信息
-       * </pre>
-       */
-      public java.util.List<com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg.Builder> 
-           getAvatarsBuilderList() {
-        return getAvatarsFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilder<
-          com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg, com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg.Builder, com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsgOrBuilder> 
-          getAvatarsFieldBuilder() {
-        if (avatarsBuilder_ == null) {
-          avatarsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg, com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg.Builder, com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsgOrBuilder>(
-                  avatars_,
-                  ((bitField0_ & 0x00000008) == 0x00000008),
-                  getParentForChildren(),
-                  isClean());
-          avatars_ = null;
-        }
-        return avatarsBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:CreateCampaignMsg)
@@ -1143,12 +781,11 @@ public final class CreateCampaignMsgProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\027CreateCampaignMsg.proto\032\022RobotInfoMsg." +
-      "proto\"f\n\021CreateCampaignMsg\022\020\n\010campaign\030\001" +
-      " \001(\005\022\017\n\007useItem\030\002 \001(\010\022\016\n\006taskId\030\003 \001(\005\022\036\n" +
-      "\007avatars\030\004 \003(\0132\r.RobotInfoMsgBC\n)com.chu" +
-      "angyou.common.protobuf.pb.campaignB\026Crea" +
-      "teCampaignMsgProto"
+      "\n\027CreateCampaignMsg.proto\"V\n\021CreateCampa" +
+      "ignMsg\022\020\n\010campaign\030\001 \001(\005\022\017\n\007useItem\030\002 \001(" +
+      "\010\022\016\n\006taskId\030\003 \001(\005\022\016\n\006param1\030\004 \001(\005BC\n)com" +
+      ".chuangyou.common.protobuf.pb.campaignB\026" +
+      "CreateCampaignMsgProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1161,15 +798,13 @@ public final class CreateCampaignMsgProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.chuangyou.common.protobuf.pb.army.RobotInfoProto.getDescriptor(),
         }, assigner);
     internal_static_CreateCampaignMsg_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_CreateCampaignMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_CreateCampaignMsg_descriptor,
-        new java.lang.String[] { "Campaign", "UseItem", "TaskId", "Avatars", });
-    com.chuangyou.common.protobuf.pb.army.RobotInfoProto.getDescriptor();
+        new java.lang.String[] { "Campaign", "UseItem", "TaskId", "Param1", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

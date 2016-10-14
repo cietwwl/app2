@@ -61,7 +61,7 @@ public class MountLevelUpCmd extends AbstractCommand {
 		mount.setUpLevCd((new Date()).getTime() + targetCfg.getUpLevCd() * 1000);
 		player.getMountInventory().updateMount(mount);
 		
-		player.notifyListeners(new MountStateEvent(this,1, mount.getLevel(),0,EventNameType.MOUNT));
+		player.notifyListeners(new MountStateEvent(this,1,0,mount.getLevel(),EventNameType.MOUNT));
 
 		// 返回消息
 		MountLevelUpRespMsg.Builder msg = MountLevelUpRespMsg.newBuilder();

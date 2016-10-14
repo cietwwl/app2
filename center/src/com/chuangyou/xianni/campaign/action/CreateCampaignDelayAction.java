@@ -35,12 +35,6 @@ public class CreateCampaignDelayAction extends DelayAction {
 
 		GamePlayer teamLeader = WorldMgr.getPlayer(team.getLeader().getPlayerId());
 		if (teamLeader != null) {
-			// 人数不够，补分身
-			int size = 4 - team.getMemberSize();
-			if (size > 0) {
-				List<RobotInfoMsg> robots = teamLeader.getAvatarInventory().getRandomAvatarMsg(size);
-				ccmsg.addAllAvatars(robots);
-			}
 			// 通知scence服务器，用户请求创建副本
 			PBMessage c2s = MessageUtil.buildMessage(Protocol.S_CREATE_CAMPAIGN, ccmsg);
 			teamLeader.sendPbMessage(c2s);

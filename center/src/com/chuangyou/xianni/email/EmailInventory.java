@@ -22,6 +22,7 @@ public class EmailInventory extends AbstractEvent implements IInventory {
 
 	/** 过期时间 */
 	public static final long	EXPIRATION_TIME	= 10 * 24 * 60 * 60 * 1000;
+	
 	/** 邮件的上限是200 */
 	private static final int	MAX_EMAIL_NUM	= 200;
 

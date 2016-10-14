@@ -6,6 +6,7 @@ import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
+import com.chuangyou.xianni.state.logic.AddStateBuffLogic;
 import com.chuangyou.xianni.state.logic.EnterCampaignLogic;
 
 @Cmd(code=Protocol.C_REQ_STATE_OP,desc="操作")
@@ -19,7 +20,7 @@ public class StateOpCmd extends AbstractCommand {
 		if(op==1){ //进入副本
 			new EnterCampaignLogic().enter(player);
 		}else if(op == 2){  //加Buff
-			
+			new AddStateBuffLogic().addBuff(player, msg.getParam1());
 		}
 		
 	}

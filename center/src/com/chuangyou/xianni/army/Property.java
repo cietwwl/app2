@@ -129,6 +129,14 @@ public class Property {
 	public int getStateTotal() {
 		return stateData + (baseTotal * statePer / 10000);
 	}
+	
+	/**
+	 * 神器
+	 * @return
+	 */
+	public int getArtifaceTotal(){
+		return artifactData + (baseTotal * artifactPer / 10000);
+	}
 
 	public int getTempData() {
 		return tempData;

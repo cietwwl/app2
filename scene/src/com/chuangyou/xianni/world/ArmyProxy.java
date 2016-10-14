@@ -1,6 +1,7 @@
 package com.chuangyou.xianni.world;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,18 +46,18 @@ import io.netty.channel.Channel;
  * 部队代理
  */
 public class ArmyProxy extends AbstractActionQueue {
-	private CmdTaskQueue				cmdTaskQueue;
-	private long						playerId;						// 用户ID
-	private String						site;							// 站点（跨服用）
-	private Channel						channel;						// 连接器
-	private int							fieldId;						// 地图ID，用户退出，回写到center
+	private CmdTaskQueue			cmdTaskQueue;
+	private long					playerId;							// 用户ID
+	private String					site;								// 站点（跨服用）
+	private Channel					channel;							// 连接器
+	private int						fieldId;							// 地图ID，用户退出，回写到center
 	// private Vector3 position; // 主角位置，用户退出，回写到center
 
-	private Player						player;							// 英雄
-	private Pet							pet;							// 宠物
-	private Map<Integer, RobotInfoMsg>	avatarDatas;					// 分身数据
+	private Player					player;								// 英雄
+	private Pet						pet;								// 宠物
+	private List<RobotInfoMsg>		avatarDatas	= new ArrayList<>();	// 分身数据
 
-	private List<Avatar>				avatars	= new ArrayList<>();	// 分身
+	private Map<Integer, Avatar>	avatars		= new HashMap<>();		// 分身
 
 	public ArmyProxy(long playerId, String site, Channel channel, SimplePlayerInfo simplePlayerInfo) {
 		super(ThreadManager.actionExecutor);
@@ -125,12 +126,23 @@ public class ArmyProxy extends AbstractActionQueue {
 
 	// 添加分身
 	public void addAvatar(Avatar avatar) {
-		avatars.add(avatar);
+		Avatar older = avatars.get(avatar.getSkin());
+		if (older != null && older != avatar) {
+			older.clearData();
+		}
+		avatars.put(avatar.getSkin(), avatar);
 	}
 
 	// 获取玩家分身
 	public List<Avatar> getAvatars() {
-		return avatars;
+		List<Avatar> finds = new ArrayList<>();
+		finds.addAll(avatars.values());
+		return finds;
+	}
+
+	// 获取玩家分身
+	public Avatar getAvatars(int tempId) {
+		return avatars.get(tempId);
 	}
 
 	/**
@@ -293,6 +305,7 @@ public class ArmyProxy extends AbstractActionQueue {
 			if (pet != null) {
 				pet.destory();
 			}
+			unlodAvatar();
 		}
 	}
 
@@ -300,8 +313,27 @@ public class ArmyProxy extends AbstractActionQueue {
 	public void loadAvatarData(List<RobotInfoMsg> datas) {
 		avatarDatas.clear();
 		for (RobotInfoMsg data : datas) {
-			avatarDatas.put(data.getSimpInfo().getSkinId(), data);
+			avatarDatas.add(data);
 		}
+	}
+
+	/** 获取分身数据 */
+	public List<RobotInfoMsg> getAvatarData(int size) {
+		int count = size > avatarDatas.size() ? avatarDatas.size() : size;
+		List<RobotInfoMsg> datas = new ArrayList<>();
+		for (int i = 0; i < count; i++) {
+			datas.add(avatarDatas.get(i));
+		}
+		return datas;
+	}
+
+	/** 卸载分身数据 */
+	public void unlodAvatar() {
+		for (Avatar avatar : avatars.values()) {
+			avatar.clearData();
+		}
+		avatars.clear();
+		avatarDatas.clear();
 	}
 
 	public long getPlayerId() {

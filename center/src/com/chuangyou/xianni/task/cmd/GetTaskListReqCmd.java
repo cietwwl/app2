@@ -1,11 +1,6 @@
 package com.chuangyou.xianni.task.cmd;
 
-import java.util.Date;
-
 import com.chuangyou.xianni.base.AbstractCommand;
-import com.chuangyou.xianni.entity.Option;
-import com.chuangyou.xianni.entity.task.TaskCfg;
-import com.chuangyou.xianni.entity.task.TaskInfo;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -26,20 +21,5 @@ public class GetTaskListReqCmd extends AbstractCommand {
 		new GetTaskLogic().process(player);
 	}
 
-	/**
-	 * 检测限时任务
-	 */
-	private void checkLimitTimeTask(TaskInfo info, TaskCfg cfg) {
-		Date current = new Date();
-		if (cfg.getTaskTime() > 0) {
-			if (current.getTime() - info.getCreateTime().getTime() >= cfg.getTaskTime() * 1000) {
-				info.setCreateTime(current);
-				info.setUpdateTime(current);
-				info.setProcess(0);
-				info.setState(TaskInfo.UN_ACCEPT);
-				info.setOp(Option.Update);
-			}
-		}
-	}
 
 }

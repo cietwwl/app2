@@ -3,16 +3,14 @@ package com.chuangyou.xianni.vip.manager;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import com.chuangyou.common.protobuf.pb.vip.ResGetVipInfoMsgProto.ResGetVipInfoMsg;
-import com.chuangyou.common.util.DateTimeUtil;
-import com.chuangyou.common.util.StringUtils;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.item.ItemAddType;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
+import com.chuangyou.xianni.entity.vip.PlayerVipReceive;
 import com.chuangyou.xianni.entity.vip.VipBagTemplate;
 import com.chuangyou.xianni.entity.vip.VipTemplate;
 import com.chuangyou.xianni.player.GamePlayer;
@@ -20,6 +18,7 @@ import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.sql.dao.DBManager;
+import com.chuangyou.xianni.vip.PlayerVipInventory;
 import com.chuangyou.xianni.vip.templete.VipTemplateMgr;
 import com.chuangyou.xianni.word.WorldMgr;
 
@@ -73,43 +72,49 @@ public class VipManager {
 		playerInfo.setVipTimeLimit(new Date(System.currentTimeMillis() + vipDuration * 24 * 60 * 60 * 1000 + time));
 		playerInfo.setVipInterimTimeLimit(new Date());
 
-		String rec = playerInfo.getVipReceiveRecording();
-		Map<String, List<Object>> map = StringUtils.strToMap(rec);// 领取记录
-		if (!map.containsKey(2 + "")) {
-			List<Object> obj = new ArrayList<>();
-			map.put(2 + "", obj);
-			// 记录领取
-			map.get(2 + "").add(System.currentTimeMillis());
-			playerInfo.setVipReceiveRecording(StringUtils.mapToStr(map));
-		}
+		// String rec = playerInfo.getVipReceiveRecording();
+		// Map<String, List<Object>> map = StringUtils.strToMap(rec);// 领取记录
+		// if (!map.containsKey(2 + "")) {
+		// List<Object> obj = new ArrayList<>();
+		// map.put(2 + "", obj);
+		// // 记录领取
+		// map.get(2 + "").add(System.currentTimeMillis());
+		// playerInfo.setVipReceiveRecording(StringUtils.mapToStr(map));
+		// }
+		PlayerVipReceive pvr = new PlayerVipReceive();
+		pvr.setPlayerId(player.getPlayerId());
+		pvr.setVipType(PlayerVipInventory.type_buy);
+		pvr.setReceiveTime(new Date());
+		pvr.setVipId(vipId);
+		player.getPlayerVipInventory().add(pvr);
 
-		// System.out.println(System.currentTimeMillis() + vipDuration * 24 * 60
-		// * 60 * 1000 + time);
-		// System.out.println(DateTimeUtil.format(playerInfo.getVipTimeLimit()));
-		// System.out.println(DateTimeUtil.format(playerInfo.getVipInterimTimeLimit()));
 		player.getBasePlayer().addCash(cash, ItemAddType.VIP_GET);
 		return true;
 	}
 
 	public static boolean buyPackage(GamePlayer player, int type, int id, short code) {
 
-		String rec = player.getBasePlayer().getPlayerInfo().getVipReceiveRecording();
-		Map<String, List<Object>> map = StringUtils.strToMap(rec);// 领取记录
 		VipBagTemplate bag = VipTemplateMgr.getvipBagTemplate(type, id);
 		if (bag == null) {
-			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR, code);// vip
-																			// 礼包不存在
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR, code);// vip礼包不存在
 			return false;
 		}
+
+		// String rec =
+		// player.getBasePlayer().getPlayerInfo().getVipReceiveRecording();
+		// Map<String, List<Object>> map = StringUtils.strToMap(rec);
+
+		// 领取记录
+		List<PlayerVipReceive> playerVipReceiveList = player.getPlayerVipInventory().getPlayerVipReceive(type);
+
 		PlayerInfo playerInfo = player.getBasePlayer().getPlayerInfo();
 		if (bag.getType() == 1) {// vip购买礼包
-			if (map.containsKey(type + "") && map.get(type + "").contains(id + "")) {
+			if (player.getPlayerVipInventory().isAlreadyBuy(type, id)) {
 				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR4, code);// 已经购买过了
 				return false;
 			}
 			if (!isInterimVip(player) && !isVip(player)) {
-				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR3, code);// 您不是
-																					// vip
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR3, code);// 您不是vip
 				return false;
 			}
 			int buyNeedStone = bag.getBuyNeedStone();
@@ -127,27 +132,41 @@ public class VipManager {
 				player.getBasePlayer().consumeCash(buyNeedStone, ItemRemoveType.BUY_VIP_GIFT);
 
 			// 记录购买
-			if (!map.containsKey(type + "")) {
-				List<Object> obj = new ArrayList<>();
-				map.put(type + "", obj);
-			}
-			map.get(type + "").add(id);
-			player.getBasePlayer().getPlayerInfo().setVipReceiveRecording(StringUtils.mapToStr(map));
+			// if (!map.containsKey(type + "")) {
+			// List<Object> obj = new ArrayList<>();
+			// map.put(type + "", obj);
+			// }
+			// map.get(type + "").add(id);
+			// player.getBasePlayer().getPlayerInfo().setVipReceiveRecording(StringUtils.mapToStr(map));
+
+			PlayerVipReceive pvr = new PlayerVipReceive();
+			pvr.setPlayerId(player.getPlayerId());
+			pvr.setVipType(type);
+			pvr.setReceiveTime(new Date());
+			pvr.setVipId(id);
+			player.getPlayerVipInventory().add(pvr);
 
 		} else if (bag.getType() == 2) {// vip周奖励
 			if (!isVip(player)) {
 				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR3, code);// 您不是vip
 				return false;
 			}
-			if (map.containsKey(type + "")) {
-				if (map.get(type + "") != null && !map.get(type + "").isEmpty()) {
-					Date date = new Date(Long.valueOf(map.get(type + "").get(0).toString()));
-					if (DateTimeUtil.isSameWeek(new Date(), date)) {
-						ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR6, code);// 这周已经领取了
-						return false;
-					}
-				}
+			if (player.getPlayerVipInventory().isAlreadyBuyWeek(type, id)) {
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR6, code);// 这周已经领取了
+				return false;
 			}
+			// if (map.containsKey(type + "")) {
+			// if (map.get(type + "") != null && !map.get(type + "").isEmpty())
+			// {
+			// Date date = new Date(Long.valueOf(map.get(type +
+			// "").get(0).toString()));
+			// if (DateTimeUtil.isSameWeek(new Date(), date)) {
+			// ErrorMsgUtil.sendErrorMsg(player, ErrorCode.VIPBAG_ERROR6,
+			// code);// 这周已经领取了
+			// return false;
+			// }
+			// }
+			// }
 
 			int vipLv = playerInfo.getVipLevel();
 			int condition = bag.getCondition();
@@ -157,13 +176,20 @@ public class VipManager {
 			}
 
 			// 记录领取
-			if (!map.containsKey(type + "")) {
-				List<Object> obj = new ArrayList<>();
-				map.put(type + "", obj);
-			}
-			map.get(type + "").clear();
-			map.get(type + "").add(System.currentTimeMillis());
-			player.getBasePlayer().getPlayerInfo().setVipReceiveRecording(StringUtils.mapToStr(map));
+			// if (!map.containsKey(type + "")) {
+			// List<Object> obj = new ArrayList<>();
+			// map.put(type + "", obj);
+			// }
+			// map.get(type + "").clear();
+			// map.get(type + "").add(System.currentTimeMillis());
+			// player.getBasePlayer().getPlayerInfo().setVipReceiveRecording(StringUtils.mapToStr(map));
+
+			PlayerVipReceive pvr = new PlayerVipReceive();
+			pvr.setPlayerId(player.getPlayerId());
+			pvr.setVipType(type);
+			pvr.setReceiveTime(new Date());
+			pvr.setVipId(id);
+			player.getPlayerVipInventory().add(pvr);
 		}
 
 		// 发物品
@@ -192,16 +218,21 @@ public class VipManager {
 		int exp = playerInfo.getVipExp();
 		Date vipTimeLimit = playerInfo.getVipTimeLimit();
 		Date interimTimeLimit = playerInfo.getVipInterimTimeLimit();
-		String str = playerInfo.getVipReceiveRecording();
-		Map<String, List<Object>> map = StringUtils.strToMap(str);// 领取记录
-		if (!map.containsKey(1 + "")) {
-			List<Object> obj = new ArrayList<>();
-			map.put(1 + "", obj);
-		}
-		if (!map.containsKey(2 + "")) {
-			List<Object> obj = new ArrayList<>();
-			map.put(2 + "", obj);
-		}
+		//String str = playerInfo.getVipReceiveRecording();
+
+		// 领取记录
+		// List<PlayerVipReceive> playerVipReceiveList1 =
+		// player.getPlayerVipInventory().getPlayerVipReceiveData();
+
+//		Map<String, List<Object>> map = StringUtils.strToMap(str);// 领取记录
+//		if (!map.containsKey(1 + "")) {
+//			List<Object> obj = new ArrayList<>();
+//			map.put(1 + "", obj);
+//		}
+//		if (!map.containsKey(2 + "")) {
+//			List<Object> obj = new ArrayList<>();
+//			map.put(2 + "", obj);
+//		}
 
 		ResGetVipInfoMsg.Builder resMsg = ResGetVipInfoMsg.newBuilder();
 		resMsg.setVipLv(vipLv);
@@ -216,20 +247,41 @@ public class VipManager {
 		} else {
 			resMsg.setVipTimeLimit(0);
 		}
-		for (Object obj : map.get(1 + "")) {
-			resMsg.addBuy(Integer.valueOf(obj.toString()));
-		}
-		resMsg.setIsReceive(1);
-		if (map.containsKey("2")) {
-			if (!map.get("2").isEmpty()) {
-				Date date = new Date(Long.valueOf((map.get("2").get(0).toString())));
-				if (DateTimeUtil.isSameWeek(new Date(), date)) {
-					resMsg.setIsReceive(1);
-				} else {
-					resMsg.setIsReceive(0);
+		List<PlayerVipReceive> playerVipReceiveList1 = player.getPlayerVipInventory().getPlayerVipReceive(PlayerVipInventory.type_buy);
+		if (playerVipReceiveList1 != null) {
+			List<Integer> in = new ArrayList<>();
+			for (PlayerVipReceive playerVipReceive : playerVipReceiveList1) {
+				if(!in.contains(playerVipReceive.getVipId())){
+					in.add(playerVipReceive.getVipId());
+					resMsg.addBuy(playerVipReceive.getVipId());
 				}
 			}
 		}
+		// for (Object obj : map.get(1 + "")) {
+		// resMsg.addBuy(Integer.valueOf(obj.toString()));
+		// }
+		if (isVip(player)) {
+			if (player.getPlayerVipInventory().isAlreadyReceiveWeek()) {
+				resMsg.setIsReceive(1);
+			} else {
+				resMsg.setIsReceive(0);
+			}
+		} else {
+			resMsg.setIsReceive(1);
+		}
+
+		// resMsg.setIsReceive(1);
+		// if (map.containsKey("2")) {
+		// if (!map.get("2").isEmpty()) {
+		// Date date = new Date(Long.valueOf((map.get("2").get(0).toString())));
+		// if (DateTimeUtil.isSameWeek(new Date(), date)) {
+		// resMsg.setIsReceive(1);
+		// } else {
+		// resMsg.setIsReceive(0);
+		// }
+		// }
+		// }
+
 		PBMessage p = MessageUtil.buildMessage(Protocol.U_GET_VIP_INFO, resMsg);
 		player.sendPbMessage(p);
 	}

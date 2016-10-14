@@ -15,6 +15,7 @@ import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.constant.CampaignConstant.CampaignStatu;
+import com.chuangyou.xianni.constant.CampaignConstant.CampaignType;
 import com.chuangyou.xianni.constant.EnterMapResult;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.field.FieldInfo;
@@ -24,6 +25,8 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.CenterProtocol;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.objects.Player;
+import com.chuangyou.xianni.team.Team;
+import com.chuangyou.xianni.team.TeamMgr;
 import com.chuangyou.xianni.warfield.FieldMgr;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.template.FieldTemplateMgr;
@@ -111,7 +114,16 @@ public class CampaignEnterAction extends Action {
 		PBMessage statuMsg = MessageUtil.buildMessage(Protocol.C_CAMPAIGN_STATU, cstatu);
 		army.sendPbMessage(statuMsg);
 
-		//campaign.setExpiredTime(0);
+		// 补充分身
+		if (campaign.getTemp().getType() == CampaignType.TEAM) {
+			Team team = TeamMgr.getTeam(army.getPlayerId());
+			if (team != null && team.getMembers().size() < 4) {
+				campaign.addAvatars(army.getAvatarData(4 - team.getMembers().size()));
+			}
+		} else {
+			campaign.addAvatars(army.getAvatarData(3));
+		}
+
 		// 发送副本信息
 		campaign.sendCampaignInfo(army);
 		// 如果有副本任务，则添加副本buff

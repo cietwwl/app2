@@ -10,16 +10,18 @@ public class MountStateEvent extends ObjectEvent {
 	private static final long serialVersionUID = 1L;
 
 	private int targetId;
+	private int targetId1;
 	private int targetNum;
-	private int targetNum1;
 	
 	
 	
-	public MountStateEvent(Object obj, int targetId, int targetNum, int targetNum1,int eventType) {
+	public MountStateEvent(Object obj, int targetId, int targetId1, int targetNum,int eventType) {
 		super(obj, null, eventType);
 		this.targetId = targetId;
+		this.targetId1 = targetId1;
 		this.targetNum = targetNum;
-		this.targetNum1 = targetNum1;
+		
+	
 	}
 
 
@@ -39,12 +41,15 @@ public class MountStateEvent extends ObjectEvent {
 		this.targetNum = targetNum;
 	}
 
-	public int getTargetNum1() {
-		return targetNum1;
+
+	public int getTargetId1() {
+		return targetId1;
 	}
 
-	public void setTargetNum1(int targetNum1) {
-		this.targetNum1 = targetNum1;
+
+	public void setTargetId1(int targetId1) {
+		this.targetId1 = targetId1;
 	}
+
 
 }

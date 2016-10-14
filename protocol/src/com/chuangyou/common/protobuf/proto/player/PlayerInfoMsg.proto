@@ -3,7 +3,7 @@ option java_package = "com.chuangyou.common.protobuf.pb";
 option java_outer_classname = "PlayerInfoMsgProto";
 
 import "player/PostionMsg.proto";
-message PlayerInfoMsg{
+message PlayerInfoMsg {
 	optional int64 player_id=1; //角色ID
 	optional int64 user_id=2; //用户ID
 	optional string nick_name=3; //昵称

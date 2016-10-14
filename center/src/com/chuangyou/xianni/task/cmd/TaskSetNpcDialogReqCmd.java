@@ -21,7 +21,6 @@ public class TaskSetNpcDialogReqCmd extends AbstractCommand {
 		int taskId = req.getTaskId();
 		player.notifyListeners(new ObjectEvent(this, taskId, EventNameType.TASK_NPC_DIALOG));
 		player.notifyListeners(new ObjectEvent(this, taskId, EventNameType.TASK_QTE));
-		//System.out.println("ffffffffffff");	
 		TaskSetNpcDialogRespMsg.Builder resp = TaskSetNpcDialogRespMsg.newBuilder();
 		PBMessage pkg = MessageUtil.buildMessage(Protocol.U_RESP_SETNPCDIALOG,resp);
 		player.sendPbMessage(pkg);

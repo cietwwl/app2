@@ -302,6 +302,22 @@ public class Field extends AbstractActionQueue {
 		return ret;
 	}
 
+	/**
+	 * 获取所有怪物
+	 * @return
+	 */
+	public List<Living> getMonsters(){
+		List<Living> ret = new ArrayList<>();
+		Iterator<Entry<Long, Living>> it = this.livings.entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<Long, Living> entry = it.next();
+			if (entry.getValue().getType() == RoleType.monster) {
+				ret.add(entry.getValue());
+			}
+		}
+		return ret;
+	}
+	
 	public int getCampaignId() {
 		return campaignId;
 	}

@@ -1,9 +1,14 @@
 package com.chuangyou.xianni.truck.helper;
 
+import com.chuangyou.common.protobuf.pb.truck.InnerReqTruckRobbedProto.InnerReqTruckRobbed;
 import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.proto.MessageUtil;
+import com.chuangyou.xianni.proto.PBMessage;
+import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.objects.Truck;
 import com.chuangyou.xianni.world.ArmyProxy;
+import com.chuangyou.xianni.world.WorldMgr;
 
 /**
  * 劫镖
@@ -61,6 +66,15 @@ public class RobHelper {
 			//劫镖进度清0
 			truck.updateProperty(EnumAttr.PK_VAL, 0);
 			TruckAttChgHelper.updateAtt(truck, EnumAttr.PK_VAL, 0);
+			//向Center服提交被劫镖
+			InnerReqTruckRobbed.Builder robbedBuilder = InnerReqTruckRobbed.newBuilder();
+			PBMessage pkg = MessageUtil.buildMessage(Protocol.C_TRUCK_ROBBED, robbedBuilder);
+			//army.sendPbMessage(pkg);
+			ArmyProxy proxy = WorldMgr.getArmy(truck.getId());
+			if(proxy != null)
+			{
+				proxy.sendPbMessage(pkg);	
+			}
 		}
 	}
 	

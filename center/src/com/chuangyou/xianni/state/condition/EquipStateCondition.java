@@ -3,37 +3,18 @@ package com.chuangyou.xianni.state.condition;
 import java.util.Map;
 
 import com.chuangyou.xianni.entity.equip.EquipBarInfo;
+import com.chuangyou.xianni.entity.rank.RankTempInfo;
 import com.chuangyou.xianni.entity.state.StateConditionConfig;
 import com.chuangyou.xianni.entity.state.StateConditionInfo;
 import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.event.ObjectListener;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.rank.RankServerManager;
 
 /**
  * 装备相关任务
  * @author laofan
- *	111	武器等级
-112	头盔等级
-113	项链等级
-114	上衣等级
-115	戒子等级
-116	护手等级
-117	玉佩等级
-118	鞋子等级
-1	任意一个等级
-2	全部达到等级
-211	武器加持
-212	头盔加持
-213	项链加持
-214	上衣加持
-215	戒子加持
-216	护手加持
-217	玉佩加持
-218	鞋子加持
-3	任意一个加持
-4	全部达到加持
-
  *
  */
 public class EquipStateCondition extends BaseStateCondition {
@@ -54,18 +35,25 @@ public class EquipStateCondition extends BaseStateCondition {
 				int targetId =  config.getTargetId();
 				EquipBarInfo equipInfo = (EquipBarInfo) event.getObject();
 				int old = info.getProcess();
-				if(targetId == 1){ 
-					if(config.getTargetNum() == equipInfo.getPosition()){
-						info.setProcess(equipInfo.getLevel());
+				if(equipInfo!=null){
+					if(targetId == 1){ 
+						if(config.getTargetId1() == equipInfo.getPosition()){
+							info.setProcess(equipInfo.getLevel());
+						}
+					}else if(targetId == 2){
+						info.setProcess(getCountLv(player.getEquipInventory().getEquipBarInfoMap(), config.getTargetId1()));
+					}else if(targetId == 3){  
+						if(config.getTargetId1() == equipInfo.getPosition()){
+							info.setProcess(equipInfo.getGrade());
+						}
+					}else if(targetId == 4){
+						info.setProcess(getCountGrade(player.getEquipInventory().getEquipBarInfoMap(), config.getTargetId1()));
 					}
-				}else if(targetId == 2){
-					info.setProcess(getCountLv(player.getEquipInventory().getEquipBarInfoMap(), config.getTargetId1()));
-				}else if(targetId == 3){  
-					if(config.getTargetNum() == equipInfo.getPosition()){
-						info.setProcess(equipInfo.getGrade());
+				}else if(targetId == 5){
+					RankTempInfo rankInfo = RankServerManager.getInstance().getRankTempInfo(player.getPlayerId());
+					if(rankInfo!=null){
+						info.setProcess((int)rankInfo.getEquip());
 					}
-				}else if(targetId == 4){
-					info.setProcess(getCountGrade(player.getEquipInventory().getEquipBarInfoMap(), config.getTargetId1()));
 				}
 				
 				if(old!=info.getProcess()){
@@ -87,22 +75,26 @@ public class EquipStateCondition extends BaseStateCondition {
 		// TODO Auto-generated method stub
 		int targetId =  config.getTargetId();
 		if(targetId == 1){ 
-			EquipBarInfo equipInfo = player.getEquipInventory().getEquipBarByPos((short) config.getTargetNum());
+			EquipBarInfo equipInfo = player.getEquipInventory().getEquipBarByPos((short) config.getTargetId1());
 			if(equipInfo!=null){
 				this.info.setProcess(equipInfo.getLevel());
 			}
 		}else if(targetId == 2){ 
 			this.info.setProcess(getCountLv(player.getEquipInventory().getEquipBarInfoMap(), this.config.getTargetId1()));
 		}else if(targetId == 3){ 
-			EquipBarInfo equipInfo = player.getEquipInventory().getEquipBarByPos((short) config.getTargetNum());
+			EquipBarInfo equipInfo = player.getEquipInventory().getEquipBarByPos((short) config.getTargetId1());
 			if(equipInfo!=null){
 				this.info.setProcess(equipInfo.getGrade());
 			}
 		}else if(targetId == 4){
 			this.info.setProcess(getCountGrade(player.getEquipInventory().getEquipBarInfoMap(), this.config.getTargetId1()));
+		}else if(targetId == 5){
+			RankTempInfo rankInfo = RankServerManager.getInstance().getRankTempInfo(player.getPlayerId());
+			if(rankInfo!=null){
+				info.setProcess((int)rankInfo.getEquip());
+			}
 		}
 	}
-	
 	
 	protected int getCountLv(Map<Short, EquipBarInfo> map,int num){
 		int count=0;
@@ -124,10 +116,6 @@ public class EquipStateCondition extends BaseStateCondition {
 		return count;
 	}
 	
-	
-		
-
-
 	@Override
 	public boolean commitProcess() {
 		// TODO Auto-generated method stub

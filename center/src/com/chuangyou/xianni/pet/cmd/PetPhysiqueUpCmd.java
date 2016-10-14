@@ -69,7 +69,7 @@ public class PetPhysiqueUpCmd extends AbstractCommand {
 //		PetManager.changePetAtt(roleId);
 		//影响人物属性改变
 		player.getPetInventory().updataProperty();
-		player.notifyListeners(new PetStateEvent(this, 1, pet.getPetId(),pet.getPhysique(), EventNameType.PET));
+		player.notifyListeners(new PetStateEvent(this, 3, pet.getPetId(),pet.getPhysique(), EventNameType.PET));
 		//宠物外形广播
 		if(pet.getPetId() == player.getPetInventory().getPetAtt().getFightPetId()){
 			PBMessage petSnapMsg = MessageUtil.buildMessage(Protocol.S_PET_INFO_UPDATE, PlayerInfoSendCmd.getPetInfoPacket(player));

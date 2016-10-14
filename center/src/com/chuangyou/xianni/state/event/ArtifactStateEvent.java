@@ -7,10 +7,8 @@ public class ArtifactStateEvent extends MountStateEvent {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ArtifactStateEvent(Object obj, int targetId, int targetNum, int targetNum1,int eventType) {
-		super(obj, targetId, targetNum, targetNum1,eventType);
-		
+	public ArtifactStateEvent(Object obj, int targetId, int targetId1, int targetNum, int eventType) {
+		super(obj, targetId, targetId1, targetNum, eventType);
 		// TODO Auto-generated constructor stub
 	}
-
 }

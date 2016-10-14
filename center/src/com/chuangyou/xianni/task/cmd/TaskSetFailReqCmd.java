@@ -47,7 +47,6 @@ public class TaskSetFailReqCmd extends AbstractCommand {
 				notify.setInfo(TaskManager.getTaskMsg(info));
 				pkg = MessageUtil.buildMessage(Protocol.U_RESP_TASKUPDATE, notify);
 				player.sendPbMessage(pkg);
-
 			} else {
 				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SETTASKFAIL, "时间未到：" + taskId);
 			}

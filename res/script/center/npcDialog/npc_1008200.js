@@ -22,7 +22,7 @@ function showDialog(roleId,npcId){
 	 var commandStructClass = Java.type('com.chuangyou.xianni.npcDialog.NpcCommand'); 
 	 var list = new listClass();
 
-	 var dialogText = '我王林一定会仙术有成，光宗耀祖的！'; 
+	 var dialogText = '这藤家城内禁止飞行与争斗，我可以在此处稍作停留。'; 
 
 	 sendToClient(roleId,list,dialogText);
 	 

@@ -33,14 +33,15 @@ public class InverseBeadCampaign extends Campaign {
 	public void start() {
 		state = new OpeningState(this);
 		// 获取副本所有地图
-		Map<Integer, FieldInfo> finfos = FieldTemplateMgr.getCFieldInfos(campaignId);
+		Map<Integer, FieldInfo> finfos = FieldTemplateMgr.getCFieldInfos(tempId);
 		// 创建当前地图
 		int i = 1;
 		for (Entry<Integer, FieldInfo> entry : finfos.entrySet()) {
 			FieldInfo temp = entry.getValue();
 			// 创建地图
 			Field f = new BeadFieldManager(this.army).createCampaignField(temp.getMapKey(), temp.getType(), id);
-			// Field f = FieldMgr.getIns().createCampaignField(temp.getMapKey(), temp.getType(), id);
+			// Field f = FieldMgr.getIns().createCampaignField(temp.getMapKey(),
+			// temp.getType(), id);
 			Map<Integer, SpwanNode> sonNodes = f.getSpawnNodes();
 			// 管理节点
 			spwanNodes.putAll(sonNodes);

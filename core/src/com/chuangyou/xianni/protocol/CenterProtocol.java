@@ -16,6 +16,7 @@ public interface CenterProtocol {
 	public static final short	C_PLAYER_RELOAD_SCENCE_DATA		= 10007;	// 回写scene服务器数据
 	public static final short	C_PLAYER_KILL_MONSTER			= 10008;	// 收到scene服杀怪通知
 	public static final short	C_PLAYER_UPDATA_PRO				= 10009;	// 收到scene服属性修改
+	public static final short	C_SCENE_LOGIN_SUCCESS			= 10010;	// 场景服务器登录成功
 	// ===========================>邮件<==============================
 	/** 获取邮件数量 */
 	public static final short	C_REQ_GETEMAILS_NUM				= 10505;
@@ -113,6 +114,8 @@ public interface CenterProtocol {
 
 	/** 玩家部分花费回写----仙力 */
 	public static short			C_AVATAR_ENERGY_COST			= 10614;
+	/** 通关分身副本通知center */
+	public static final short	C_PASS_CAMPAIGN_N2CENTER		= 10615;
 	// ========================><=========================================
 
 	// =========================>NPC商店<===================================

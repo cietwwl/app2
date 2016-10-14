@@ -3,12 +3,14 @@ package com.chuangyou.xianni.state.condition;
 import java.util.Map;
 
 import com.chuangyou.xianni.entity.mount.MountEquipInfo;
+import com.chuangyou.xianni.entity.rank.RankTempInfo;
 import com.chuangyou.xianni.entity.state.StateConditionConfig;
 import com.chuangyou.xianni.entity.state.StateConditionInfo;
 import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.event.ObjectListener;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.rank.RankServerManager;
 import com.chuangyou.xianni.state.event.MountStateEvent;
 
 /**
@@ -39,10 +41,15 @@ public class MountStateCondition extends BaseStateCondition {
 							info.setProcess(e.getTargetNum());
 						}
 					}else if(e.getTargetId() == 4){
-						if(e.getTargetNum() == config.getTargetNum()){
-							info.setProcess(e.getTargetNum1());
+						if(e.getTargetId1() == config.getTargetId1()){
+							info.setProcess(e.getTargetNum());
 						}
 						info.setProcess(getCount(player.getMountInventory().getMountEquip(),config.getTargetId1()));
+					}else if(e.getTargetId() == 6){ //战力
+						RankTempInfo rankInfo = RankServerManager.getInstance().getRankTempInfo(player.getPlayerId());
+						if(rankInfo!=null){
+							info.setProcess((int)rankInfo.getMount());
+						}
 					}
 				}
 				if(old!=info.getProcess()){
@@ -73,6 +80,11 @@ public class MountStateCondition extends BaseStateCondition {
 			info.setProcess(player.getMountInventory().getMountEquip().get(config.getTargetNum()).getEquipLevel());
 		}else if(targetId == 5){
 			info.setProcess(getCount(player.getMountInventory().getMountEquip(),config.getTargetId1()));
+		}else if(targetId == 6){
+			RankTempInfo rankInfo = RankServerManager.getInstance().getRankTempInfo(player.getPlayerId());
+			if(rankInfo!=null){
+				info.setProcess((int)rankInfo.getMount());
+			}
 		}
 	}
 	

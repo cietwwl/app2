@@ -19,9 +19,11 @@ public class CampaignStatuChangeCmd implements Command {
 	public void execute(io.netty.channel.Channel channel, PBMessage packet) throws Exception {
 		CampaignStatuMsg smsg = CampaignStatuMsg.parseFrom(packet.getBytes());
 		GamePlayer player = WorldMgr.getPlayer(packet.getPlayerId());
+		
 		if (player == null) {
 			return;
 		}
+		
 		// 进入
 		if (smsg.getStatu() == CampaignStatu.NOTITY2C_IN) {
 			player.setCurCampaign(smsg.getIndexId());
@@ -47,6 +49,7 @@ public class CampaignStatuChangeCmd implements Command {
 	/** 通关副本事件 */
 	private void passCampaign(GamePlayer player, int campaignId) {
 		player.notifyListeners(new ObjectEvent(this, campaignId, EventNameType.TASK_PASS_FB));
+		player.getStateInventory().passFb(campaignId);
 	}
 
 	/** 组队副本结束 */

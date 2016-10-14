@@ -99,7 +99,7 @@ public class RankDaoImpl extends BaseDao implements RankDao {
 		// TODO Auto-generated method stub
 		boolean result = false;
 		if(!info.beginAdd())return false;
-		String sql = "insert into tb_u_rank_tempInfo (playerId,equip,magicwp,mount,pet,soul,avatar,state) values (?,?,?,?,?,?,?,?)";
+		String sql = "insert into tb_u_rank_tempInfo (playerId,equip,magicwp,mount,pet,soul,avatar,state,artifact) values (?,?,?,?,?,?,?,?,?)";
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.BIGINT, info.getPlayerId()));
 		para.put(2, new DbParameter(Types.BIGINT, info.getEquip()));
@@ -109,6 +109,7 @@ public class RankDaoImpl extends BaseDao implements RankDao {
 		para.put(6, new DbParameter(Types.BIGINT, info.getSoul()));
 		para.put(7, new DbParameter(Types.BIGINT, info.getAvatar()));
 		para.put(8, new DbParameter(Types.BIGINT, info.getState()));
+		para.put(9, new DbParameter(Types.BIGINT, info.getArtifact()));
 		result = execNoneQuery(sql, para) > -1 ? true : false;
 		info.commitAdd(result);
 		return result;	
@@ -119,7 +120,7 @@ public class RankDaoImpl extends BaseDao implements RankDao {
 		// TODO Auto-generated method stub
 		boolean result = false;
 		if(!info.beginUpdate())return false;
-		String sql = "update tb_u_rank_tempInfo set equip=?,magicwp=?,mount=?,pet=?,soul=?,avatar=?,state=? where playerId=?";
+		String sql = "update tb_u_rank_tempInfo set equip=?,magicwp=?,mount=?,pet=?,soul=?,avatar=?,state=?,artifact=? where playerId=?";
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();	
 		para.put(1, new DbParameter(Types.BIGINT, info.getEquip()));
 		para.put(2, new DbParameter(Types.BIGINT, info.getMagicwp()));
@@ -128,7 +129,8 @@ public class RankDaoImpl extends BaseDao implements RankDao {
 		para.put(5, new DbParameter(Types.BIGINT, info.getSoul()));
 		para.put(6, new DbParameter(Types.BIGINT, info.getAvatar()));
 		para.put(7, new DbParameter(Types.BIGINT, info.getState()));
-		para.put(8, new DbParameter(Types.BIGINT, info.getPlayerId()));	
+		para.put(8, new DbParameter(Types.BIGINT, info.getArtifact()));
+		para.put(9, new DbParameter(Types.BIGINT, info.getPlayerId()));	
 		result = execNoneQuery(sql, para) > -1 ? true : false;
 		info.commitUpdate(result);
 		return result;
@@ -155,6 +157,7 @@ public class RankDaoImpl extends BaseDao implements RankDao {
 				info.setSoul(rs.getLong("soul"));
 				info.setAvatar(rs.getLong("avatar"));
 				info.setState(rs.getLong("state"));
+				info.setArtifact(rs.getLong("artifact"));
 				infos.put(info.getPlayerId(), info);
 			}
 		} catch (SQLException e) {

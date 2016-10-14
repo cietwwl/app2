@@ -1,8 +1,11 @@
 package com.chuangyou.xianni.truck.helper;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import com.chuangyou.common.protobuf.pb.truck.InnerReqTruckCompleteProto.InnerReqTruckComplete;
+import com.chuangyou.common.protobuf.pb.truck.InnerReqUpdateMaskProto.InnerReqUpdateMask;
 import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -12,20 +15,13 @@ import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.role.objects.Truck;
 import com.chuangyou.xianni.truck.TruckMgr;
 import com.chuangyou.xianni.truck.TruckRelationshipMgr;
+import com.chuangyou.xianni.truck.objects.TruckResultData;
 import com.chuangyou.xianni.warfield.helper.NotifyNearHelper;
 import com.chuangyou.xianni.warfield.helper.selectors.ExcludePetSelector;
 import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.WorldMgr;
 
 public class TruckCompleteHelper {
-
-	/** 成功完成 */
-	public static final int STATE_SUC = 1;
-	/** 超时 */
-	public static final int STATE_TIMEOUT = 2;
-	/** 打爆 */
-	public static final int STATE_BREAK = 3;
-	
 	/** 取消劫镖 */
 	private static final int OP_CANCEL_ROB = 2;
 	/** 取消护镖 */
@@ -33,49 +29,133 @@ public class TruckCompleteHelper {
 	
 	public static void onComplete(ArmyProxy army, Truck truck, int state)
 	{
-		System.out.println("TruckCompleteHelper -- ");
 		truck.arrialGoal();
-		//移除自己的运镖状态
-		army.getPlayer().getTruckHelper().setTruckTimer(false);
-		army.getPlayer().getTruckHelper().setRelatedTruck(0);
-		TruckRelationshipMgr.removeRelation(army.getPlayerId());
-		TruckRelationshipMgr.removeOwnership(army.getPlayerId());
-		notifyNearsAttSnap(army.getPlayer(), truck);
-		TruckActionRespHelper.truckAction(army, TruckActionRespHelper.ACTION_FIANL_COMPLETE, truck);	//完成运镖回应
-		InnerReqTruckComplete.Builder truckCompleteMsg = InnerReqTruckComplete.newBuilder();  
-		truckCompleteMsg.setTrucktype(truck.getTrucktype());
-		truckCompleteMsg.setRobbed(truck.isRobbed()?1:0);	//被劫镖过
-		truckCompleteMsg.setState(state);	//正常完成
-		truckCompleteMsg.setMat(truck.getProperty(EnumAttr.METAL.getValue()));
-		TruckMgr.removeTruck(truck.getId());	//在管理器中移除镖车
-		truck.getTruckHelper().setTruckTimer(false);
-		for (Long id : truck.getProtectors()) {  
-			if(truck.getTrucktype() == Truck.TRUCK_G)
-			{
-				//帮派运镖检查护镖时长
-				if(truck.getProtectorTimer().containsKey(id) && truck.getProtectorTimer().get(id) > SystemConfigTemplateMgr.getIntValue("EscortSupplies.Faction.AwardNeedTime"))
-					truckCompleteMsg.addProtectors(id);
-			}
-			else
-			{
-				truckCompleteMsg.addProtectors(id);
-			}
-			//truck.removeProtector(id);
-			removeTruckStatu(id, OP_CANCEL_PROT, truck);
+		//生成镖车结算数据
+		if(truck.getTrucktype() == Truck.TRUCK_P)
+		{
+			personalResult(army, truck, state);
 		}
+		else if(truck.getTrucktype() == Truck.TRUCK_G)
+		{
+			guildResult(army, truck, state);
+		}
+		
 		truck.clearProtector();
 		for (Long id : truck.getRobbers()) {  
-			//truck.removeRobber(id);
 			removeTruckStatu(id, OP_CANCEL_ROB, truck);
 		}
-		truck.clearProtector();
+		truck.clearRobber();
+		TruckMgr.removeTruck(truck.getId());	//在管理器中移除镖车
+		truck.getTruckHelper().setTruckTimer(false);
 		truck.getTruckHelper().setRelatedTruck(0);
-		TruckRelationshipMgr.removeRelation(army.getPlayerId());
-		TruckRelationshipMgr.removeOwnership(army.getPlayerId());
-		army.getPlayer().getField().leaveField(truck, true);
+		truck.getField().leaveField(truck, true);
 		truck.destory();
-		PBMessage pkg = MessageUtil.buildMessage(Protocol.C_TRUCK_REQTRUCKCOMPLETE, truckCompleteMsg);
-		army.sendPbMessage(pkg);
+	}
+	
+	/**
+	 * 个人运镖结算
+	 * @param army
+	 * @param truck
+	 * @param state
+	 */
+	private static void personalResult(ArmyProxy army, Truck truck, int state)
+	{
+		TruckResultData leaderResultData = createResultData(truck, state, TruckResultData.LEADER);
+		if(army != null)
+		{
+			//移除自己的运镖状态
+			army.getPlayer().getTruckHelper().setTruckTimer(false);
+			army.getPlayer().getTruckHelper().setRelatedTruck(0);
+			TruckRelationshipMgr.removeRelation(army.getPlayerId());
+			TruckRelationshipMgr.removeOwnership(army.getPlayerId());
+			//运镖结束同步附近玩家快照
+			notifyNearsAttSnap(army.getPlayer(), truck);
+			TruckActionRespHelper.truckAction(army, TruckActionRespHelper.ACTION_FIANL_COMPLETE, truck);
+			PBMessage pkg = MessageUtil.buildMessage(Protocol.C_TRUCK_REQTRUCKCOMPLETE, leaderResultData.getResultBuilder());
+			army.sendPbMessage(pkg);
+		}
+		else
+		{
+			TruckMgr.addResultData(leaderResultData);
+		}
+		//个人镖车 - 镖师结算
+		for (Long id : truck.getProtectors()) {  
+			removeTruckStatu(id, OP_CANCEL_PROT, truck);
+			TruckResultData memberResultData = createResultData(truck, state, TruckResultData.MEMBER);
+			sendResultData(memberResultData);
+		}
+	}
+	
+	/**
+	 * 帮派运镖结算
+	 * @param army
+	 * @param truck
+	 * @param state
+	 */
+	private static void guildResult(ArmyProxy army, Truck truck, int state)
+	{
+		TruckResultData guildMemberResultData = createResultData(truck, state, TruckResultData.GUILDMEMBER);
+		if(army != null)
+		{
+			//移除自己的运镖状态
+			army.getPlayer().getTruckHelper().setTruckTimer(false);
+			army.getPlayer().getTruckHelper().setRelatedTruck(0);
+			TruckRelationshipMgr.removeRelation(army.getPlayerId());
+			TruckRelationshipMgr.removeOwnership(army.getPlayerId());
+			//运镖结束同步附近玩家快照
+			notifyNearsAttSnap(army.getPlayer(), truck);
+			TruckActionRespHelper.truckAction(army, TruckActionRespHelper.ACTION_FIANL_COMPLETE, truck);
+			PBMessage pkg = MessageUtil.buildMessage(Protocol.C_TRUCK_REQTRUCKCOMPLETE, guildMemberResultData.getResultBuilder());
+			army.sendPbMessage(pkg);
+		}
+		else
+		{
+			TruckMgr.addResultData(guildMemberResultData);
+		}
+		//帮派镖车 - 镖师结算
+		for (Long id : truck.getProtectors()) {  
+			removeTruckStatu(id, OP_CANCEL_PROT, truck);
+			if(truck.getProtectorTimer().containsKey(id) && 
+					   truck.getProtectorTimer().get(id) > SystemConfigTemplateMgr.getIntValue("EscortSupplies.Faction.AwardNeedTime"))
+			{
+				TruckResultData memberResultData = createResultData(truck, state, TruckResultData.GUILDMEMBER);
+				sendResultData(memberResultData);
+			}
+		}
+	}
+	
+	/**
+	 * 创建镖头结算数据
+	 * @return
+	 */
+	private static TruckResultData createResultData(Truck truck, int state, int truckerType)
+	{
+		TruckResultData resultData = new TruckResultData();
+		resultData.setId(truck.getArmyId());
+		resultData.setTrucktype(truck.getTrucktype());
+		resultData.setRobbed(truck.isRobbed());
+		resultData.setState(state);
+		resultData.setLeaveMat(truck.getProperty(EnumAttr.METAL.getValue()));
+		resultData.setTruckerType(truckerType);
+		return resultData;
+	}
+	
+	/**
+	 * 发送结算数据
+	 * @param data
+	 */
+	private static void sendResultData(TruckResultData data)
+	{
+		ArmyProxy proxy = WorldMgr.getArmy(data.getId());
+		if(proxy == null || proxy.getPlayer() == null)
+		{
+			TruckMgr.addResultData(data);
+		}
+		else
+		{
+			PBMessage pkg = MessageUtil.buildMessage(Protocol.C_TRUCK_REQTRUCKCOMPLETE, data.getResultBuilder());
+			proxy.sendPbMessage(pkg);
+		}
 	}
 	
 	/**
@@ -95,7 +175,7 @@ public class TruckCompleteHelper {
 		{
 			TruckActionRespHelper.truckAction(proxy, TruckActionRespHelper.ACTION_CANCEL_PROT, null);
 		}
-		else			//取消劫镖
+		else if(type == OP_CANCEL_ROB)			//取消劫镖
 		{
 			TruckActionRespHelper.truckAction(proxy, TruckActionRespHelper.ACTION_CANCEL_ROB, null);
 		}

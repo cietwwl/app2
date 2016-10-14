@@ -18,8 +18,7 @@ import com.chuangyou.xianni.state.trigger.StateTrigger;
  *
  */
 public class EnterCampaignLogic extends BaseStateLogic{
-	
-	
+		
 	public void enter(GamePlayer player){
 		if(!check(player)){
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR,Protocol.C_REQ_STATE_OP,"渡节有未完成的任务："+player.getPlayerId());		
@@ -39,6 +38,7 @@ public class EnterCampaignLogic extends BaseStateLogic{
 				return;
 			}
 		}
+		
 		//消耗物品
 		for (Entry<Integer, Integer> entry : stateConfig.getTicketsMap().entrySet()) {
 			int tempId = entry.getKey();
@@ -52,6 +52,8 @@ public class EnterCampaignLogic extends BaseStateLogic{
 		//发送消息。进入副本
 		CreateStateCampaignMsg.Builder msg = CreateStateCampaignMsg.newBuilder();
 		msg.setCampaignId(stateConfig.getCampaignID());
+		msg.setStateId(stateConfig.getId());
+		
 		player.sendPbMessage(MessageUtil.buildMessage(Protocol.S_CREATE_STATE_CAMPAIGN,msg));
 		
 		this.sendResult(player, 1, 0);

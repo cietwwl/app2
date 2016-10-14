@@ -10,8 +10,11 @@ import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.player.PlayerJoinInfo;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.entity.rank.RankTempInfo;
+import com.chuangyou.xianni.event.EventNameType;
+import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.rank.RankServerManager;
+import com.chuangyou.xianni.state.event.ArtifactStateEvent;
 
 /**
  * 所有属性集合,出站技能等汇聚的载体
@@ -941,6 +944,7 @@ public abstract class Living {
 		long petFighting = 0;
 		long soulFighting = 0;
 		long stateFighting = 0;
+		long artifactFighting = 0;
 		for (Property p : properties) {
 			fighting += p.getTotalJoin() * PropertyFightingTemplateMgr.getFighting(p.getType()) / 100;
 			equipFighting += p.getBagTotal() * PropertyFightingTemplateMgr.getFighting(p.getType()) / 100;
@@ -949,14 +953,32 @@ public abstract class Living {
 			petFighting += p.getPetTotal() * PropertyFightingTemplateMgr.getFighting(p.getType()) / 100;
 			soulFighting += p.getSoulTotal() * PropertyFightingTemplateMgr.getFighting(p.getType()) / 100;
 			stateFighting += p.getStateTotal() * PropertyFightingTemplateMgr.getFighting(p.getType()) / 100;
+			artifactFighting += p.getArtifaceTotal() * PropertyFightingTemplateMgr.getFighting(p.getType()) / 100;
 		}
 		RankTempInfo info = RankServerManager.getInstance().getRankTempInfo(player.getPlayerId());
 		if (info != null) {
-			info.setPet(petFighting);
-			info.setEquip(equipFighting);
-			info.setMagicwp(magicwpFighting);
+			if(info.getPet()!=petFighting){
+				info.setPet(petFighting);
+				player.notifyListeners(new ObjectEvent(this, null, EventNameType.PET_FIGHT));
+			}
+			if(info.getEquip()!=equipFighting){				
+				info.setEquip(equipFighting);	
+				player.notifyListeners(new ObjectEvent(this, null, EventNameType.EQUIP));
+			}
+			if(info.getMagicwp()!=magicwpFighting){				
+				info.setMagicwp(magicwpFighting);
+				player.notifyListeners(new ObjectEvent(this, null, EventNameType.MAGICWP_FIGHT));
+			}
 			info.setMount(mountFighting);
-			info.setSoul(soulFighting);
+			
+			if(info.getSoul()!=soulFighting){				
+				info.setSoul(soulFighting);
+				player.notifyListeners(new ObjectEvent(this, null, EventNameType.SOUL_FIGHT));
+			}
+			if(info.getArtifact()!=artifactFighting){
+				info.setArtifact(artifactFighting);
+				player.notifyListeners(new ArtifactStateEvent(this,7,0,0,EventNameType.ARTIFACT));
+			}
 			info.setState(stateFighting);
 			info.setOp(Option.Update);
 		}

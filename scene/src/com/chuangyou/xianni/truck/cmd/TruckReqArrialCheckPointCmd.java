@@ -12,6 +12,7 @@ import com.chuangyou.xianni.truck.TruckTempMgr;
 import com.chuangyou.xianni.truck.helper.CheckPointRespHelper;
 import com.chuangyou.xianni.truck.helper.TrcukCheckHelper;
 import com.chuangyou.xianni.truck.helper.TruckCompleteHelper;
+import com.chuangyou.xianni.truck.objects.TruckResultData;
 import com.chuangyou.xianni.warfield.helper.TransportHelper;
 import com.chuangyou.xianni.world.AbstractCommand;
 import com.chuangyou.xianni.world.ArmyProxy;
@@ -33,7 +34,7 @@ public class TruckReqArrialCheckPointCmd extends AbstractCommand {
 		}
 		if(truck.getTargetCheckPoint() == TruckTempMgr.getLastCheckPoint().getId())
 		{
-			TruckCompleteHelper.onComplete(army, truck, TruckCompleteHelper.STATE_SUC);
+			TruckCompleteHelper.onComplete(army, truck, TruckResultData.STATE_SUC);
 		}
 		else
 		{

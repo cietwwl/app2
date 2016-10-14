@@ -96,6 +96,23 @@ public final class RespTruckResultProto {
      * </pre>
      */
     int getSkillPoint();
+
+    /**
+     * <code>required int32 op = 6;</code>
+     *
+     * <pre>
+     *当前操作 1.更新技能经验 2.结算
+     * </pre>
+     */
+    boolean hasOp();
+    /**
+     * <code>required int32 op = 6;</code>
+     *
+     * <pre>
+     *当前操作 1.更新技能经验 2.结算
+     * </pre>
+     */
+    int getOp();
   }
   /**
    * Protobuf type {@code RespTruckResult}
@@ -176,6 +193,11 @@ public final class RespTruckResultProto {
             case 40: {
               bitField0_ |= 0x00000010;
               skillPoint_ = input.readInt32();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              op_ = input.readInt32();
               break;
             }
           }
@@ -333,12 +355,36 @@ public final class RespTruckResultProto {
       return skillPoint_;
     }
 
+    public static final int OP_FIELD_NUMBER = 6;
+    private int op_;
+    /**
+     * <code>required int32 op = 6;</code>
+     *
+     * <pre>
+     *当前操作 1.更新技能经验 2.结算
+     * </pre>
+     */
+    public boolean hasOp() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>required int32 op = 6;</code>
+     *
+     * <pre>
+     *当前操作 1.更新技能经验 2.结算
+     * </pre>
+     */
+    public int getOp() {
+      return op_;
+    }
+
     private void initFields() {
       type_ = 0;
       state_ = 0;
       exp_ = 0;
       level_ = 0;
       skillPoint_ = 0;
+      op_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -366,6 +412,10 @@ public final class RespTruckResultProto {
         memoizedIsInitialized = 0;
         return false;
       }
+      if (!hasOp()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -387,6 +437,9 @@ public final class RespTruckResultProto {
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeInt32(5, skillPoint_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeInt32(6, op_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -416,6 +469,10 @@ public final class RespTruckResultProto {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(5, skillPoint_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(6, op_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -548,6 +605,8 @@ public final class RespTruckResultProto {
         bitField0_ = (bitField0_ & ~0x00000008);
         skillPoint_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
+        op_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -596,6 +655,10 @@ public final class RespTruckResultProto {
           to_bitField0_ |= 0x00000010;
         }
         result.skillPoint_ = skillPoint_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.op_ = op_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -627,6 +690,9 @@ public final class RespTruckResultProto {
         if (other.hasSkillPoint()) {
           setSkillPoint(other.getSkillPoint());
         }
+        if (other.hasOp()) {
+          setOp(other.getOp());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -649,6 +715,10 @@ public final class RespTruckResultProto {
           return false;
         }
         if (!hasSkillPoint()) {
+          
+          return false;
+        }
+        if (!hasOp()) {
           
           return false;
         }
@@ -914,6 +984,54 @@ public final class RespTruckResultProto {
         return this;
       }
 
+      private int op_ ;
+      /**
+       * <code>required int32 op = 6;</code>
+       *
+       * <pre>
+       *当前操作 1.更新技能经验 2.结算
+       * </pre>
+       */
+      public boolean hasOp() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>required int32 op = 6;</code>
+       *
+       * <pre>
+       *当前操作 1.更新技能经验 2.结算
+       * </pre>
+       */
+      public int getOp() {
+        return op_;
+      }
+      /**
+       * <code>required int32 op = 6;</code>
+       *
+       * <pre>
+       *当前操作 1.更新技能经验 2.结算
+       * </pre>
+       */
+      public Builder setOp(int value) {
+        bitField0_ |= 0x00000020;
+        op_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 op = 6;</code>
+       *
+       * <pre>
+       *当前操作 1.更新技能经验 2.结算
+       * </pre>
+       */
+      public Builder clearOp() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        op_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:RespTruckResult)
     }
 
@@ -939,11 +1057,11 @@ public final class RespTruckResultProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\025RespTruckResult.proto\"^\n\017RespTruckResu" +
+      "\n\025RespTruckResult.proto\"j\n\017RespTruckResu" +
       "lt\022\014\n\004type\030\001 \002(\005\022\r\n\005state\030\002 \002(\005\022\013\n\003exp\030\003" +
-      " \002(\005\022\r\n\005level\030\004 \002(\005\022\022\n\nskillPoint\030\005 \002(\005B" +
-      ">\n&com.chuangyou.common.protobuf.pb.truc" +
-      "kB\024RespTruckResultProto"
+      " \002(\005\022\r\n\005level\030\004 \002(\005\022\022\n\nskillPoint\030\005 \002(\005\022" +
+      "\n\n\002op\030\006 \002(\005B>\n&com.chuangyou.common.prot" +
+      "obuf.pb.truckB\024RespTruckResultProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -962,7 +1080,7 @@ public final class RespTruckResultProto {
     internal_static_RespTruckResult_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_RespTruckResult_descriptor,
-        new java.lang.String[] { "Type", "State", "Exp", "Level", "SkillPoint", });
+        new java.lang.String[] { "Type", "State", "Exp", "Level", "SkillPoint", "Op", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

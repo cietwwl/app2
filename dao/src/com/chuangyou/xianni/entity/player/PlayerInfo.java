@@ -95,10 +95,10 @@ public class PlayerInfo extends DataObject {
 	 * vip 经验
 	 */
 	private int		vipExp;
-	/**
-	 * vip 领取记录
-	 */
-	private String	vipReceiveRecording;
+//	/**
+//	 * vip 领取记录
+//	 */
+//	private String	vipReceiveRecording;
 
 	/**
 	 * 装备经验
@@ -403,14 +403,14 @@ public class PlayerInfo extends DataObject {
 		this.vipExp = vipExp;
 	}
 
-	public String getVipReceiveRecording() {
-		return vipReceiveRecording;
-	}
-
-	public void setVipReceiveRecording(String vipReceiveRecording) {
-		setOp(Option.Update);
-		this.vipReceiveRecording = vipReceiveRecording;
-	}
+//	public String getVipReceiveRecording() {
+//		return vipReceiveRecording;
+//	}
+//
+//	public void setVipReceiveRecording(String vipReceiveRecording) {
+//		setOp(Option.Update);
+//		this.vipReceiveRecording = vipReceiveRecording;
+//	}
 
 	public long getEquipExp() {
 		return equipExp;

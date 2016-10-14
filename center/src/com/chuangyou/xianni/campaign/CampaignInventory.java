@@ -141,7 +141,7 @@ public class CampaignInventory implements IInventory {
 			return;
 		}
 		// 挑战副本计算
-		if (campaignTemp.getType() == CampaignType.CHALLENG) {
+		if (campaignTemp.getType() == CampaignType.AVATAR) {
 			if (limitlessRecordInfo == null) {
 				limitlessRecordInfo = new LimitlessCampaignRecordInfo();
 				limitlessRecordInfo.setPlayerId(player.getPlayerId());

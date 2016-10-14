@@ -88,7 +88,7 @@ public class PetQualityUpCmd extends AbstractCommand {
 			//影响人物属性改变
 			player.getPetInventory().updataProperty();
 			
-			player.notifyListeners(new PetStateEvent(this, 4, pet.getPetId(), pet.getQuality(), EventNameType.PET));
+			player.notifyListeners(new PetStateEvent(this, 6, pet.getPetId(), pet.getQuality(), EventNameType.PET));
 			
 			//宠物外形广播
 			if(pet.getPetId() == player.getPetInventory().getPetAtt().getFightPetId()){

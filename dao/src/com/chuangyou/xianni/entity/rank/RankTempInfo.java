@@ -12,6 +12,7 @@ public class RankTempInfo extends DataObject {
 	private long soul;
 	private long avatar;
 	private long state;
+	private long artifact;
 	
 	
 	public long getPlayerId() {
@@ -61,6 +62,12 @@ public class RankTempInfo extends DataObject {
 	}
 	public void setState(long state) {
 		this.state = state;
+	}
+	public long getArtifact() {
+		return artifact;
+	}
+	public void setArtifact(long artifact) {
+		this.artifact = artifact;
 	}
 	
 	

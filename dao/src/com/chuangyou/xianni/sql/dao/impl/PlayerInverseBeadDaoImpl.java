@@ -60,7 +60,7 @@ public class PlayerInverseBeadDaoImpl extends BaseDao implements PlayerInverseBe
 
 		String sql = "select * from tb_u_inverse_bead where playerId=?";
 		Map<Integer, DbParameter> params = new HashMap<Integer, DbParameter>();
-		params.put(1, new DbParameter(Types.INTEGER, playerId));
+		params.put(1, new DbParameter(Types.BIGINT, playerId));
 
 		PreparedStatement pst = execQuery(sql, params);
 		ResultSet rs = null;

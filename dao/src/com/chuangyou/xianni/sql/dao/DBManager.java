@@ -59,6 +59,7 @@ import com.chuangyou.xianni.sql.dao.impl.PetTotalAttDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PlayerInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PlayerInverseBeadDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PlayerPositionInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.PlayerVipReceiveImplDao;
 import com.chuangyou.xianni.sql.dao.impl.PropertyFightingTemplateDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.RankDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.RelationInfoDaoImpl;
@@ -506,7 +507,13 @@ public class DBManager {
 	public static PlayerBeadRefreshTimeDao getPlayerBeadRefreshTimeDao() {
 		return playerBeadRefreshTime;
 	}
-
+	/** 个人vip 领取数据***/
+	private static final PlayerVipReceiveImplDao PLAYER_VIP_RECEIVE_IMPL_DAO = new PlayerVipReceiveImplDao();
+	
+	public static PlayerVipReceiveImplDao getPlayerVipReceiveImplDao() {
+		return PLAYER_VIP_RECEIVE_IMPL_DAO;
+	}
+	
 	/** living状态表 */
 	private static final LivingStatusTemplateInfoDao livingStatusTemplateInfoDao = new LivingStatusTemplateInfoDaoImpl();
 

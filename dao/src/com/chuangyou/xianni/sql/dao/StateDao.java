@@ -6,6 +6,7 @@ import com.chuangyou.xianni.entity.state.ConsumSystemConfig;
 import com.chuangyou.xianni.entity.state.StateConditionConfig;
 import com.chuangyou.xianni.entity.state.StateConditionInfo;
 import com.chuangyou.xianni.entity.state.StateConfig;
+import com.chuangyou.xianni.entity.state.StateEventConfig;
 
 public interface StateDao {	
 	
@@ -16,6 +17,8 @@ public interface StateDao {
 	public boolean addInfo(StateConditionInfo info);
 	public boolean updateInfo(StateConditionInfo info);
 	public Map<Integer, StateConditionInfo> getStateConditions(long playerId);
+	
+	public Map<Integer, StateEventConfig> getStateEventConfig();
 	
 	
 	

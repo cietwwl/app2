@@ -556,7 +556,7 @@ public class ErrorCode {
 	public static final int	CHAT_PRIVATE_TARGET_NOT_EXIST			= 5009;
 
 	/** 聊天内容过长 */
-	public static final int CHAT_CONTENT_MAXLENGTH						= 5010;
+	public static final int CHAT_CONTENT_MAXLENGTH					= 5010;
 	
 	/** 不可跳级 **/
 	public static final int	SKILL_UP_ERROR							= 6001;

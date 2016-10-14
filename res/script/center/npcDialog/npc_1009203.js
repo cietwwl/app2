@@ -22,7 +22,7 @@ function showDialog(roleId,npcId){
 	 var commandStructClass = Java.type('com.chuangyou.xianni.npcDialog.NpcCommand'); 
 	 var list = new listClass();
 
-	 var dialogText = '这藤家城内禁止飞行与争斗，我可以在此处稍作停留。'; 
+	 var dialogText = '今日夺灵丹尚未出炉，你们先候着吧！'; 
 
 	 sendToClient(roleId,list,dialogText);
 	 

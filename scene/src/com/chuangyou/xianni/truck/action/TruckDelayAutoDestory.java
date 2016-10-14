@@ -5,6 +5,7 @@ import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Truck;
 import com.chuangyou.xianni.truck.helper.TruckCompleteHelper;
+import com.chuangyou.xianni.truck.objects.TruckResultData;
 import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.WorldMgr;
 
@@ -31,7 +32,7 @@ public class TruckDelayAutoDestory extends DelayAction {
 			return;
 		}
 		ArmyProxy army = WorldMgr.getArmy(truck.getArmyId());
-		TruckCompleteHelper.onComplete(army, truck, TruckCompleteHelper.STATE_TIMEOUT);
+		TruckCompleteHelper.onComplete(army, truck, TruckResultData.STATE_TIMEOUT);
 	}
 
 }

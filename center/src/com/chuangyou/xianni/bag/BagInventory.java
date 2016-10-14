@@ -15,6 +15,7 @@ import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.CommonType.CurrencyItemType;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.email.manager.EmailManager;
+import com.chuangyou.xianni.email.vo.EmailItemVo;
 import com.chuangyou.xianni.entity.item.BagType;
 import com.chuangyou.xianni.entity.item.BindType;
 import com.chuangyou.xianni.entity.item.ItemInfo;
@@ -335,7 +336,9 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	 */
 	public void addItemInBagOrEmail(int templateId, int count, short addType, boolean isBind) {
 		if (addItem(templateId, count, addType, isBind) == false) {
-			EmailManager.insertEmail(player.getPlayerId(), "背包已满", "背包已经满。请整理背包在附件中收取物品", templateId + "," + count + ";");
+			List<EmailItemVo> items = new ArrayList<>();
+			items.add(new EmailItemVo(templateId, count, isBind==true?BindType.BIND:BindType.NOBIND));
+			EmailManager.insertEmail(player.getPlayerId(), "背包已满", "背包已经满。请整理背包在附件中收取物品", items);
 		}
 	}
 

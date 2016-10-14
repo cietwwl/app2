@@ -15,5 +15,9 @@ public class UpdateRankLogic {
 		RankServerManager.getInstance().callProcedure("soulRank", RankType.SOUL, RankType.DAY);
 		RankServerManager.getInstance().callProcedure("avatarRank", RankType.AVATAR, RankType.DAY);
 		RankServerManager.getInstance().callProcedure("stateRank", RankType.STATE, RankType.DAY);
+		
+		for(int i=1;i<20;i++){
+			RankServerManager.getInstance().callProcedure("playerStateRank", RankType.STATE_LV+i, RankType.DAY);
+		}
 	}
 }

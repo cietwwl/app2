@@ -19,7 +19,6 @@ public class TaskInfo extends DataObject {
 	public static final byte COMMIT = 3;
 	
 	
-	
 	private int taskId;
 	private long playerId;
 	private int process;

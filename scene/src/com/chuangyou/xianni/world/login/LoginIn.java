@@ -61,7 +61,7 @@ public class LoginIn implements Command {
 			pet.readPetInfo(msg.getPetBattleInfo());
 		}
 		army.setPet(pet);
-		
+
 		PBMessage message = MessageUtil.buildMessage(Protocol.U_ARMY_HERO_INFO, msg.getHeoBattleInfo());
 		army.sendPbMessage(message);
 
@@ -71,6 +71,11 @@ public class LoginIn implements Command {
 		lr.setTime(System.currentTimeMillis());
 		PBMessage loginResult = MessageUtil.buildMessage(Protocol.U_G_LOGIN_RESULT, playerId, lr);
 		army.sendPbMessage(loginResult);
+
+		// 通知center服务,部队创建成功
+		PBMessage armyResult = MessageUtil.buildMessage(Protocol.C_SCENE_LOGIN_SUCCESS, playerId);
+		army.sendPbMessage(armyResult);
+
 	}
 
 }

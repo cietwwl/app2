@@ -23,7 +23,15 @@ public class StateConfig {
 	private String property;
 	
 	private int awardItem;
+	
+	private int maxProcess;
+	
+	private String events;
+	
+	private String endEvents;
 
+	
+	
 	
 	/**
 	 * 获取消耗物品
@@ -31,20 +39,18 @@ public class StateConfig {
 	 */
 	public Map<Integer, Integer> getTicketsMap(){
 		Map<Integer, Integer> map = new HashMap<>();
-		
-//		if(!StringUtil.isNullOrEmpty(tickets)){			
-//			String strs[] = tickets.split(",");
-//			Map<Integer, Integer> tempMap = new HashMap<>();
-//			for (String str : strs) {
-//				String it[] = str.split("\\*");
-//				if (it.length == 2) {
-//					int templateId = Integer.parseInt(it[0]);
-//					int count = Integer.parseInt(it[1]);
-//					tempMap.put(templateId, count);
-//				}
-//			}
-//		}
-		
+				
+		if(tickets!=null && !tickets.equals("")){
+			String strs[] = tickets.split(",");
+			for (String str : strs) {
+				String it[] = str.split("\\*");
+				if (it.length == 2) {
+					int templateId = Integer.parseInt(it[0]);
+					int count = Integer.parseInt(it[1]);
+					map.put(templateId, count);
+				}
+			}
+		}	
 		return map;
 	}
 	
@@ -57,6 +63,34 @@ public class StateConfig {
 		}
 		return cons;
  	}
+	
+	/**
+	 * 事件池
+	 * @return
+	 */
+	public int[] getEventPools(){
+		String[] str = events.split(",");
+		int[] cons = new int[str.length];
+		for (int i = 0; i < str.length; i++) {
+			String string = str[i];
+			cons[i] = Integer.parseInt(string);
+		}
+		return cons;
+	}
+	
+	/**
+	 * 获取结束事件池
+	 * @return
+	 */
+	public int[] getEndEventPools(){
+		String[] str = endEvents.split(",");
+		int[] cons = new int[str.length];
+		for (int i = 0; i < str.length; i++) {
+			String string = str[i];
+			cons[i] = Integer.parseInt(string);
+		}
+		return cons;
+	}
 	
 	public int[] getPropertyList(){
 		String[] str = property.split(",");
@@ -131,6 +165,30 @@ public class StateConfig {
 
 	public void setAwardItem(int awardItem) {
 		this.awardItem = awardItem;
+	}
+
+	public int getMaxProcess() {
+		return maxProcess;
+	}
+
+	public void setMaxProcess(int maxProcess) {
+		this.maxProcess = maxProcess;
+	}
+
+	public String getEvents() {
+		return events;
+	}
+
+	public void setEvents(String events) {
+		this.events = events;
+	}
+
+	public String getEndEvents() {
+		return endEvents;
+	}
+
+	public void setEndEvents(String endEvents) {
+		this.endEvents = endEvents;
 	}
 	
 	

@@ -135,10 +135,13 @@ public interface SceneProtocol {
 	/** 回应镖车技能使用消耗 */
 	public static final short	S_RESP_TRUCK_FUNCCONSUM			= 20715;
 	// =============================>分身<=========================
-	/** 同步修改灵气 */
-	public static final short	S_RE_WRITE_AVATAR_ENERGY		= 20739;
+	/** 副本操作 */
+	public static final short	S_AVATAR_CAMPAIGN_OP			= 20737;
 	/** 同步分身数据 */
 	public static final short	S_SYNC_AVATAR_DATA				= 20738;
+	/** 同步修改灵气 */
+	public static final short	S_RE_WRITE_AVATAR_ENERGY		= 20739;
+
 	// =============================>竞技场<=========================
 	/** 战场挑战 */
 	public static final short	S_CREATE_ARENA_BATTLE			= 20740;

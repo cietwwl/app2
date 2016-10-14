@@ -73,6 +73,8 @@ public class UpdatePositionAction {// extends DelayAction {
 			}
 			autoAddHatred();
 		} else if (activeLiving instanceof Monster) {
+			if(((Monster) activeLiving).getMonsterInfo() == null)
+				return;
 			if (((Monster) activeLiving).getMonsterInfo().getSeekEnemyRange() == 0) {
 				autoAddHatred();
 			}

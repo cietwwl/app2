@@ -58,6 +58,7 @@ public interface ClientProtocol {
 	// ===========================>Avartar分身<===================
 	public static final short	U_SINGLE_AVARTAR_INFO				= 627;	// 单个分身信息
 	public static final short	U_TOAL_AVARTAR_INFOS				= 628;	// 所有分身信息
+	public static final short	U_CAMPAIGN_AVARTAR_REWARDS			= 629;	// 分身副本奖励
 	// ===========================><===================
 
 	/** 错误码 */
@@ -325,12 +326,17 @@ public interface ClientProtocol {
 	 * 操作
 	 */
 	public static final short	U_RESP_STATE_OP						= 1619;
-	
+
 	/**
 	 * 境界QTE结果
 	 * 
 	 */
-	public static final short U_RESP_STATE_QTE  					= 1620;
+	public static final short	U_RESP_STATE_QTE					= 1620;
+	
+	/**
+	 * 境界副本进度通知
+	 */
+	public static final short U_RESP_STATE_FB_PROCESS				= 1623;
 
 	// =========================>坐骑<===================================
 	/** 返回坐骑信息 */
@@ -467,49 +473,48 @@ public interface ClientProtocol {
 
 	/** 神器请求返回 */
 	public static final short	U_ARTIFACT_RESP						= 157;
-	
+
 	/** 帮派信息 */
-	public static final short U_GUILD_INFO = 158;
-	
+	public static final short	U_GUILD_INFO						= 158;
+
 	/** 帮派成员列表 */
-	public static final short U_GUILD_MEMBER_LIST = 159;
-	
+	public static final short	U_GUILD_MEMBER_LIST					= 159;
+
 	/** 创建帮派 */
-	public static final short U_GUILD_CREATE = 160;
-	
+	public static final short	U_GUILD_CREATE						= 160;
+
 	/** 全服帮派列表 */
-	public static final short U_GUILD_LIST = 161;
-	
+	public static final short	U_GUILD_LIST						= 161;
+
 	/** 帮派操作返回 */
-	public static final short U_GUILD_ACTION_RESP = 162;
-	
+	public static final short	U_GUILD_ACTION_RESP					= 162;
+
 	/** 成员信息 */
-	public static final short U_GUILD_MEMBER_INFO = 163;
-	
+	public static final short	U_GUILD_MEMBER_INFO					= 163;
+
 	/** 有玩家申请入帮 */
-	public static final short U_GUILD_APPLY_INFO = 164;
-	
+	public static final short	U_GUILD_APPLY_INFO					= 164;
+
 	/** 申请列表 */
-	public static final short U_GUILD_APPLY_LIST = 165;
-	
+	public static final short	U_GUILD_APPLY_LIST					= 165;
+
 	/** 批量玩家加入 */
-	public static final short U_GUILD_BAT_JOIN = 166;
-	
+	public static final short	U_GUILD_BAT_JOIN					= 166;
+
 	/** 更新技能信息 */
-	public static final short U_GUILD_SKILL_UPDATE = 167;
-	
+	public static final short	U_GUILD_SKILL_UPDATE				= 167;
+
 	/** 初始化全部帮派技能信息 */
-	public static final short U_GUILD_SKILL_ALL = 168;
-	
+	public static final short	U_GUILD_SKILL_ALL					= 168;
+
 	/** 帮派仓库信息回复 */
-	public static final short U_GUILD_WAREHOUSE_RESP = 169;
-	
+	public static final short	U_GUILD_WAREHOUSE_RESP				= 169;
+
 	/** 帮派信息列表 */
-	public static final short U_GUILD_LOG_LIST = 170;
-	
+	public static final short	U_GUILD_LOG_LIST					= 170;
+
 	/** 玩家帮派信息同步更新 */
-	public static final short U_PLAYER_GUILD_NOTIFY = 171;
-	
+	public static final short	U_PLAYER_GUILD_NOTIFY				= 171;
 
 	/** 获取时装信息 */
 	public static short			U_FASHION_GET						= 201;
@@ -590,10 +595,10 @@ public interface ClientProtocol {
 	/** 镖车升级 */
 	public static final short	U_RESP_TRUCK_LVLUP					= 2622;
 	/** 镖车属性变更 */
-	public static final short 	U_RESP_TRUCK_ATTCHG			= 2623;
+	public static final short	U_RESP_TRUCK_ATTCHG					= 2623;
 	/** 镖车领奖 */
-	public static final short 	U_RESP_TRUCK_REWARD			= 2624;
-	/** 帮派成员护镖运镖时间  */
-	public static final short 	U_RESP_TRUCK_PROT_TIMER			= 2625;
+	public static final short	U_RESP_TRUCK_REWARD					= 2624;
+	/** 帮派成员护镖运镖时间 */
+	public static final short	U_RESP_TRUCK_PROT_TIMER				= 2625;
 
 }

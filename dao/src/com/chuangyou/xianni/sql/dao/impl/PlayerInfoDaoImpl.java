@@ -207,7 +207,7 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 					info.setVipTimeLimit(rs.getDate("vipTimeLimit"));
 					info.setVipInterimTimeLimit(rs.getDate("vipInterimTimeLimit"));
 					info.setVipExp(rs.getInt("vipExp"));
-					
+
 					info.setStateLv(rs.getInt("stateLv"));
 
 					info.setOp(Option.None);
@@ -411,8 +411,9 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		params.put(4, new DbParameter(Types.INTEGER, playerTimeInfo.getPersonalTruckerProtCount()));
 		params.put(5, new DbParameter(Types.INTEGER, playerTimeInfo.getPresonalTruckerExtReward()));
 		params.put(6, new DbParameter(Types.INTEGER, playerTimeInfo.getPresonalTruckerExtExp()));
-		params.put(7, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getResetTime()));
-		params.put(8, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getOfflineTime()));
+		params.put(7, new DbParameter(Types.INTEGER, playerTimeInfo.getAddExpByTruckBroken()));
+		params.put(8, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getResetTime()));
+		params.put(9, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getOfflineTime()));
 		result = execNoneQuery(sql, params) > -1 ? true : false;
 		playerTimeInfo.setOp(Option.None);
 		return result;
@@ -428,11 +429,12 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		params.put(1, new DbParameter(Types.INTEGER, playerTimeInfo.getSigleCampCount()));
 		params.put(2, new DbParameter(Types.INTEGER, playerTimeInfo.getChallengeCampCount()));
 		params.put(3, new DbParameter(Types.INTEGER, playerTimeInfo.getPersonalTruckerProtCount()));
-		params.put(3, new DbParameter(Types.INTEGER, playerTimeInfo.getPresonalTruckerExtReward()));
-		params.put(3, new DbParameter(Types.INTEGER, playerTimeInfo.getPresonalTruckerExtExp()));
-		params.put(4, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getResetTime()));
-		params.put(5, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getOfflineTime()));
-		params.put(6, new DbParameter(Types.BIGINT, playerTimeInfo.getPlayerId()));
+		params.put(4, new DbParameter(Types.INTEGER, playerTimeInfo.getPresonalTruckerExtReward()));
+		params.put(5, new DbParameter(Types.INTEGER, playerTimeInfo.getPresonalTruckerExtExp()));
+		params.put(6, new DbParameter(Types.INTEGER, playerTimeInfo.getAddExpByTruckBroken()));
+		params.put(7, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getResetTime()));
+		params.put(8, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getOfflineTime()));
+		params.put(9, new DbParameter(Types.BIGINT, playerTimeInfo.getPlayerId()));
 		result = execNoneQuery(sql, params) > -1 ? true : false;
 		playerTimeInfo.commitUpdate(result);
 		return result;
@@ -468,7 +470,7 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 						info.setResetTime(new Date(time.getTime()));
 					}
 					Timestamp offlineTime = rs.getTimestamp("offlineTime");
-					if(offlineTime != null){
+					if (offlineTime != null) {
 						info.setOfflineTime(new Date(offlineTime.getTime()));
 					}
 					info.setOp(Option.None);

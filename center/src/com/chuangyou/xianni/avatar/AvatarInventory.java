@@ -1,6 +1,5 @@
 package com.chuangyou.xianni.avatar;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,13 +7,19 @@ import java.util.Random;
 import com.chuangyou.common.protobuf.pb.PlayerInfoMsgProto.PlayerInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
+import com.chuangyou.common.protobuf.pb.army.RobotInfoListProto.RobotInfoListMsg;
 import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
 import com.chuangyou.common.protobuf.pb.avatar.AvatarBeanListMsgProto.AvatarBeanListMsg;
 import com.chuangyou.common.protobuf.pb.avatar.AvatarBeanProto.AvatarBeanMsg;
+import com.chuangyou.common.protobuf.pb.avatar.AvatarCampaignRewardListProto.AvatarCampaignRewardListMsg;
+import com.chuangyou.common.protobuf.pb.avatar.AvatarCampaignRewardProto.AvatarCampaignRewardMsg;
+import com.chuangyou.common.protobuf.pb.avatar.SingleReardInfoMsgProto.SingleReardInfoMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerSomeThingUpdateProto.PlayerSomeThingUpdateMsg;
-import com.chuangyou.common.util.JSONUtil;
 import com.chuangyou.common.util.Log;
+import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.avatar.temlate.AvatarTempManager;
+import com.chuangyou.xianni.campaign.CampaignTempMgr;
+import com.chuangyou.xianni.constant.CampaignConstant;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.avatar.AvatarCorrespondTemplateInfo;
@@ -22,6 +27,7 @@ import com.chuangyou.xianni.entity.avatar.AvatarInfo;
 import com.chuangyou.xianni.entity.avatar.AvatarStarTemplate;
 import com.chuangyou.xianni.entity.avatar.AvatarTemplateInfo;
 import com.chuangyou.xianni.entity.avatar.AvatarUpGradeTemplate;
+import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
@@ -34,17 +40,29 @@ import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.skill.template.SkillTempMgr;
 import com.chuangyou.xianni.sql.dao.AvatarInfoDao;
 import com.chuangyou.xianni.sql.dao.DBManager;
+import com.chuangyou.xianni.word.WorldMgr;
 
 public class AvatarInventory implements IInventory {
 	private GamePlayer					player;
 	// 所有被激活的分身
-	private Map<Integer, AvatarInfo>	avatarInfos			= new HashMap<>();
+	private Map<Integer, AvatarInfo>	avatarInfos					= new HashMap<>();
 	// 出战的分身
-	private Map<Integer, AvatarInfo>	finghtingInfos		= new HashMap<>();
+	private Map<Integer, AvatarInfo>	finghtingInfos				= new HashMap<>();
 
-	public static final int				FIGHTING			= 1;
+	public static final int				FIGHTING					= 1;
 	// 初始仙力上限为1000
-	public static final int				INIT_AVATAR_ENERGY	= 1000;
+	public static final int				INIT_AVATAR_ENERGY			= 1000;
+
+	// 失败
+	static final int					REWARD_NOTHING				= 0;
+	// 等级提升
+	static final int					REWARD_GREAD_UP				= 1;
+	// 技能
+	static final int					REWARD_SKILL_UP				= 2;
+	// 秘籍提升
+	static final int					REWARD_SKILLSTRENTHEN_UP	= 3;
+	// 物品奖励
+	static final int					REWARD_ITEM					= 4;
 
 	public AvatarInventory(GamePlayer player) {
 		this.player = player;
@@ -122,7 +140,7 @@ public class AvatarInventory implements IInventory {
 				dao.saveOrUpdata(ainfo);
 			}
 			if (ainfo.getOp() == Option.Delete) {
-				Log.error(JSONUtil.getJSONString(ainfo), new Exception());
+				Log.error(ainfo.getId(), new Exception());
 			}
 		}
 		return true;
@@ -204,6 +222,9 @@ public class AvatarInventory implements IInventory {
 
 	// 出战
 	public void fight(int tempId, int size) {
+		if (inAvatarCampaign()) {
+			return;
+		}
 		AvatarInfo info = avatarInfos.get(tempId);
 		// 玩家是否拥有此分身
 		if (info == null) {
@@ -219,6 +240,9 @@ public class AvatarInventory implements IInventory {
 
 	// 休息
 	public void sleep(int tempId) {
+		if (inAvatarCampaign()) {
+			return;
+		}
 		AvatarInfo info = avatarInfos.get(tempId);
 		// 玩家是否拥有此分身
 		if (info == null) {
@@ -309,6 +333,7 @@ public class AvatarInventory implements IInventory {
 		}
 		PBMessage message = MessageUtil.buildMessage(Protocol.U_TOAL_AVARTAR_INFOS, builder);
 		player.sendPbMessage(message);
+		writeAvatarMsg2Scene();
 	}
 
 	// 发送某个分身的信息
@@ -317,6 +342,7 @@ public class AvatarInventory implements IInventory {
 		ainfo.writeProto(msg);
 		PBMessage message = MessageUtil.buildMessage(Protocol.U_SINGLE_AVARTAR_INFO, msg);
 		player.sendPbMessage(message);
+		writeAvatarMsg2Scene();
 	}
 
 	// 分身系统添加属性
@@ -378,19 +404,16 @@ public class AvatarInventory implements IInventory {
 	}
 
 	// 获取几个分身信息
-	public List<RobotInfoMsg> getRandomAvatarMsg(int size) {
+	public void writeAvatarMsg2Scene() {
 		if (finghtingInfos == null || finghtingInfos.size() == 0) {
-			return null;
+			return;
 		}
-		List<RobotInfoMsg> result = new ArrayList<>();
-		for (int i = 1; i <= size; i++) {
-			AvatarInfo ainfo = finghtingInfos.get(i);
-			if (ainfo == null) {
-				continue;
-			}
-			result.add(writeProto(ainfo));
+		RobotInfoListMsg.Builder builder = RobotInfoListMsg.newBuilder();
+		for (AvatarInfo ainfo : finghtingInfos.values()) {
+			builder.addRobotDatas(writeProto(ainfo));
 		}
-		return result;
+		PBMessage message = MessageUtil.buildMessage(Protocol.S_SYNC_AVATAR_DATA, builder);
+		player.sendPbMessage(message);
 	}
 
 	// 写入PB
@@ -442,5 +465,72 @@ public class AvatarInventory implements IInventory {
 		}
 
 		return builder.build();
+	}
+
+	/** 是否处于分身副本 */
+	public boolean inAvatarCampaign() {
+		int campaignId = player.getCurCampaign();
+		if (campaignId == 0) {
+			return false;
+		}
+		CampaignTemplateInfo temp = CampaignTempMgr.getTempInfo(campaignId);
+		if (temp == null || temp.getType() != CampaignConstant.CampaignType.AVATAR) {
+			return false;
+		}
+		return true;
+	}
+
+	// 分身副本挑战奖励
+	public boolean challageReward(int campaignId, int rewardCount) {
+		AvatarCampaignRewardListMsg.Builder listBuilder = AvatarCampaignRewardListMsg.newBuilder();
+		listBuilder.setCampaignId(campaignId);
+		for (AvatarInfo avatar : finghtingInfos.values()) {
+			AvatarCampaignRewardMsg.Builder rewards = AvatarCampaignRewardMsg.newBuilder();
+			rewards.setAvatarId(avatar.getTempId());
+			for (int i = 1; i <= rewardCount; i++) {
+				SingleReardInfoMsg.Builder reward = SingleReardInfoMsg.newBuilder();
+				reward.setIndex(i);
+				// 1 随机是否能获得奖励
+				if (!canGet(campaignId, avatar)) {
+					reward.setType(REWARD_NOTHING);
+					rewards.addRewards(reward);
+					continue;
+				}
+				// 2随机获奖类型
+				int type = getRewardType(campaignId, avatar);
+				// 3奖励生效
+				if (type == REWARD_GREAD_UP) {
+					int newGreade = avatar.getGrade() + 1;
+					if (AvatarTempManager.getAvatarUpGradeTemplate(avatar.getTempId(), newGreade) != null) {
+						avatar.setGrade(newGreade);
+					}
+					type = REWARD_ITEM;
+				}
+				if (type == REWARD_SKILL_UP) {
+					
+				}
+				if (type == REWARD_SKILLSTRENTHEN_UP) {
+
+				}
+				if (type == REWARD_ITEM) {
+
+				}
+
+			}
+		}
+
+		return false;
+	}
+
+	private boolean canGet(int campaignId, AvatarInfo avatar) {
+		return true;
+	}
+
+	private int getRewardType(int campaignId, AvatarInfo avatar) {
+		return ThreadSafeRandom.instance.next(4) + 1;
+	}
+
+	private int findNextGreadSkill(int skillIds) {
+		return 0;
 	}
 }

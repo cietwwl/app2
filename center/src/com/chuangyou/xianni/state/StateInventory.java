@@ -143,7 +143,6 @@ public class StateInventory extends AbstractEvent implements IInventory {
 	}
 
 	
-	
 	@Override
 	public boolean saveToDatabase() {
 		// TODO Auto-generated method stub

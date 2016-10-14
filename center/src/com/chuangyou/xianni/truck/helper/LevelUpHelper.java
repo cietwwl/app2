@@ -12,13 +12,17 @@ import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.truck.TruckTempMgr;
  
 public class LevelUpHelper {
+	/** 更新经验 */
+	public static final int UPDATE = 1;
+	/** 结算 */
+	public static final int RESULT = 2;
 	
 	/**
 	 * 升级
 	 * @param type
 	 * @param addExp
 	 */
-	public static void levelUp(GamePlayer player, int type, int addExp, int state)
+	public static void levelUp(GamePlayer player, int type, int addExp, int state, int op)
 	{
 		TruckInfo truckInfo = null;
 		switch (type) {
@@ -40,8 +44,9 @@ public class LevelUpHelper {
 		resultBuilder.setExp(truckInfo.getExp());
 		resultBuilder.setLevel(truckInfo.getLevel());
 		resultBuilder.setSkillPoint(truckInfo.getSkillPoint());
-		PBMessage pkg = MessageUtil.buildMessage(Protocol.U_RESP_TRUCK_LVLUP, resultBuilder);
-		player.sendPbMessage(pkg);
+		resultBuilder.setOp(op);
+//		PBMessage pkg = MessageUtil.buildMessage(Protocol.U_RESP_TRUCK_RESULT, resultBuilder);
+//		player.sendPbMessage(pkg);
 	}
 	
 	/**

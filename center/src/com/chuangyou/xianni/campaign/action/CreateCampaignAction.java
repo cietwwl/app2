@@ -1,8 +1,5 @@
 package com.chuangyou.xianni.campaign.action;
 
-import java.util.List;
-
-import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CampaignResponeMsgProto.CampaignResponeMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CreateCampaignMsgProto.CreateCampaignMsg;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
@@ -47,7 +44,7 @@ public class CreateCampaignAction extends Action {
 		}
 		// 如果在副本内，不允许创建副本
 		if (player.getCurCampaign() != 0) {
-		//	rspCode = CampaignRspCode.ALREAD_IN_CAMPAIGN;
+			// rspCode = CampaignRspCode.ALREAD_IN_CAMPAIGN;
 		}
 		if (rspCode != CampaignRspCode.SUCCESS) {
 			CampaignResponeMsg.Builder rsp = CampaignResponeMsg.newBuilder();
@@ -59,11 +56,6 @@ public class CreateCampaignAction extends Action {
 		CreateCampaignMsg.Builder builder = CreateCampaignMsg.newBuilder();
 		builder.setCampaign(campaignId);
 		builder.setTaskId(taskId);
-		// 添加分身信息,取三个
-		List<RobotInfoMsg> robots = player.getAvatarInventory().getRandomAvatarMsg(3);
-		if (robots != null) {
-			builder.addAllAvatars(robots);
-		}
 		// 通知scence服务器，用户请求创建副本
 		PBMessage c2s = MessageUtil.buildMessage(Protocol.S_CREATE_CAMPAIGN, builder);
 		player.sendPbMessage(c2s);

@@ -45,6 +45,14 @@ public class Avatar extends Robot {
 		}
 	}
 
+	// 离开副本
+	public void leaveCampaign() {
+		Field field = getField();
+		if (field != null) {
+			field.leaveField(this);
+		}
+	}
+
 	// 回归
 	public void reback() {
 		correspondStatu = false;

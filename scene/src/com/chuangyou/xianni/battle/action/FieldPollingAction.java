@@ -56,7 +56,7 @@ public class FieldPollingAction extends DelayAction {
 		List<Living> deaths = field.getDeathLiving();
 		for (Living death : deaths) {
 			if (death == null) {
-				Log.error(JSONUtil.getJSONString(field.getFieldInfo()), new NullPointerException());
+				Log.error(field.getFieldInfo().getMapKey(), new NullPointerException());
 				return;
 			}
 			if (death.isClear()) {

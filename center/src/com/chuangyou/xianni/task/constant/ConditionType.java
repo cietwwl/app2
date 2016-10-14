@@ -48,9 +48,9 @@ public interface ConditionType {
 	 */
 	public static final byte    PLAYER_LV               = 11;
 	/**
-	 * 技能等级
+	 * 玩家战斗力
 	 */
-	public static final byte 	SKILL_LV                = 12;
+	public static final byte 	PLAYER_FIGHT                = 12;
 	/**
 	 * 修炼系统阶段等级
 	 */
@@ -61,49 +61,34 @@ public interface ConditionType {
 	public static final byte    EQUIP                   = 14;
 	
 	/**
-	 * 主魂等级
+	 * 魂幡
 	 */
-	public static final byte    SOUL_LV                 = 15;
-	/**
-	 * 主魂星级
-	 */
-	public static final byte    SOUL_STAR  				= 16;
-	/**
-	 * 熟炼度
-	 */
-	public static final byte 	SOUL_PROFICIENCY		= 17;
+	public static final byte    SOUL                 = 15;
 	
 	/**
 	 * 坐骑相关
 	 */
-	public static final byte 	MOUNT 					= 18;
+	public static final byte 	MOUNT 					= 16;
 	
 	/**
 	 * 神器
 	 */
-	public static final byte 	ARTIFACTDATA            = 19;
-	
-	/**
-	 * 法宝激活
-	 */
-	public static final byte   MAGICWP_ACTIVE    		= 20;	
+	public static final byte 	ARTIFACTDATA            = 17;
 	
 	/**
 	 * 法宝等级
 	 */
-	public static final byte   MAGICWP  		= 21;
-	/**
-	 * 宠物激活
-	 */
-	public static final byte  PET_ACTIVE  = 22;
+	public static final byte   MAGICWP  		= 18;
+	
 	/**
 	 * 宠物
 	 */
-	public static final byte PET = 23;
+	public static final byte PET = 19;
+	
 	/**
 	 * 运镖
 	 */
-	public static final byte Dart = 24;
+	public static final byte Dart = 20;
 	
 
 	

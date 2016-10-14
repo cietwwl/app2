@@ -3,6 +3,7 @@ package com.chuangyou.xianni.truck.cmd;
 import java.util.Set;
 
 import com.chuangyou.common.protobuf.pb.truck.ReqRobActionProto.ReqTruckAction;
+import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.objects.Player;
@@ -53,6 +54,12 @@ public class TruckReqActionCmd extends AbstractCommand {
 			case TruckActionRespHelper.ACTION_REQ_MYTRUCK:
 				//查询自己镖车的状态
 				TruckActionRespHelper.syncTruckStatu(army);
+				if(TruckMgr.getResultData(army.getPlayerId()) != null)
+				{
+					PBMessage pkg = MessageUtil.buildMessage(Protocol.C_TRUCK_REQTRUCKCOMPLETE, TruckMgr.getResultData(army.getPlayerId()).getResultBuilder());
+					army.sendPbMessage(pkg);
+					TruckMgr.removeResultData(army.getPlayerId());
+				}
 				break;
 			case TruckActionRespHelper.ACTION_REQ_ALLTRUCK:
 				TruckActionRespHelper.sendAllTruck(army);

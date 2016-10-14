@@ -95,7 +95,7 @@ public class MountGradeUpCmd extends AbstractCommand {
 			//影响人物属性变更
 			player.getMountInventory().updataProperty();
 			
-			player.notifyListeners(new MountStateEvent(this,2, mount.getGrade(),0,EventNameType.MOUNT));
+			player.notifyListeners(new MountStateEvent(this,2,0,mount.getGrade(),EventNameType.MOUNT));
 		}
 	}
 

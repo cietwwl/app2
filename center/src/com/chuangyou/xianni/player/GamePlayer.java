@@ -63,6 +63,7 @@ import com.chuangyou.xianni.space.SpaceInventory;
 import com.chuangyou.xianni.state.StateInventory;
 import com.chuangyou.xianni.task.TaskInventory;
 import com.chuangyou.xianni.truck.TruckInventory;
+import com.chuangyou.xianni.vip.PlayerVipInventory;
 import com.chuangyou.xianni.word.WorldMgr;
 
 import io.netty.channel.Channel;
@@ -82,7 +83,7 @@ public class GamePlayer extends AbstractEvent {
 
 	/** 空间数据 */
 	private SpaceInventory				spaceInventory;
-	
+
 	/** 帮派数据 */
 	private GuildInventory				guildInventory;
 
@@ -115,6 +116,9 @@ public class GamePlayer extends AbstractEvent {
 	private SkillInventory				skillInventory;
 	/** 天逆珠 **/
 	private InverseBeadInventory		inverseBeadInventory;
+	/** vip **/
+	private PlayerVipInventory			playerVipInventory;
+
 	/** 天逆珠刷新数据 **/
 	private InverseBeadRefreshInventory	inverseBeadRefreshInventory;
 
@@ -147,7 +151,6 @@ public class GamePlayer extends AbstractEvent {
 	/** 镖车信息 */
 	private TruckInventory				truckInventory;
 
-	
 	private Channel						channel;					// 服务器持有连接
 
 	private int							curMapId	= -1;			// 玩家当前地图ID
@@ -208,6 +211,9 @@ public class GamePlayer extends AbstractEvent {
 		if (inverseBeadRefreshInventory != null) {
 			inverseBeadRefreshInventory.saveToDatabase();
 		}
+		if (playerVipInventory != null) {
+			playerVipInventory.saveToDatabase();
+		}
 
 		if (equipInventory != null) {
 			equipInventory.saveToDatabase();
@@ -224,8 +230,8 @@ public class GamePlayer extends AbstractEvent {
 		if (artifactInventory != null) {
 			artifactInventory.saveToDatabase();
 		}
-		
-		if(guildInventory != null){
+
+		if (guildInventory != null) {
 			soulInventory.saveToDatabase();
 		}
 
@@ -241,7 +247,7 @@ public class GamePlayer extends AbstractEvent {
 		if (stateInventory != null) {
 			stateInventory.saveToDatabase();
 		}
-		if(guildInventory != null){
+		if (guildInventory != null) {
 			guildInventory.saveToDatabase();
 		}
 		if (avatarInventory != null) {
@@ -303,14 +309,14 @@ public class GamePlayer extends AbstractEvent {
 		if (!initData(stateInventory.loadFromDataBase(), "境界数据加载")) {
 			return false;
 		}
-		
+
 		artifactInventory = new ArtifactInventory(this);
 		if (!initData(artifactInventory.loadFromDataBase(), "神器数据")) {
 			return false;
 		}
-		
+
 		guildInventory = new GuildInventory(this);
-		if(!initData(guildInventory.loadFromDataBase(), "帮派数据")){
+		if (!initData(guildInventory.loadFromDataBase(), "帮派数据")) {
 			return false;
 		}
 
@@ -318,7 +324,7 @@ public class GamePlayer extends AbstractEvent {
 		if (!initData(avatarInventory.loadFromDataBase(), "分身系统")) {
 			return false;
 		}
-		
+
 		// 创建时会计算所有属性，所以要在最后面加载
 		armyInventory = new ArmyInventory(this);
 		if (!initData(armyInventory.loadFromDataBase(), "用户部队")) {
@@ -361,10 +367,6 @@ public class GamePlayer extends AbstractEvent {
 			skillInventory.unloadData();
 			skillInventory = null;
 		}
-		if (inverseBeadInventory != null) {
-			inverseBeadInventory.unloadData();
-			inverseBeadInventory = null;
-		}
 
 		if (equipInventory != null) {
 			equipInventory.unloadData();
@@ -392,8 +394,8 @@ public class GamePlayer extends AbstractEvent {
 			stateInventory.unloadData();
 			stateInventory = null;
 		}
-		
-		if(guildInventory != null){
+
+		if (guildInventory != null) {
 			guildInventory.unloadData();
 			guildInventory = null;
 		}
@@ -422,6 +424,10 @@ public class GamePlayer extends AbstractEvent {
 		}
 		inverseBeadInventory = new InverseBeadInventory(this);
 		if (!initData(inverseBeadInventory.loadFromDataBase(), "英雄天逆珠数据")) {
+			return false;
+		}
+		playerVipInventory = new PlayerVipInventory(this);
+		if (!initData(playerVipInventory.loadFromDataBase(), "玩家vip领取记录")) {
 			return false;
 		}
 
@@ -493,6 +499,14 @@ public class GamePlayer extends AbstractEvent {
 		if (activityInventory != null) {
 			activityInventory.unloadData();
 			activityInventory = null;
+		}
+		if (inverseBeadInventory != null) {
+			inverseBeadInventory.unloadData();
+			inverseBeadInventory = null;
+		}
+		if (playerVipInventory != null) {
+			playerVipInventory.unloadData();
+			playerVipInventory = null;
 		}
 		if (inverseBeadRefreshInventory != null) {
 			inverseBeadRefreshInventory.unloadData();
@@ -601,26 +615,26 @@ public class GamePlayer extends AbstractEvent {
 	}
 
 	public void setPlayerState(short online) {
-		if(online == PlayerState.OFFLINE){
+		if (online == PlayerState.OFFLINE) {
 			this.setPlayerOfflineTime(new Date());
 		}
 		boolean isChange = false;
-		if(online != this.basePlayer.getOnLineStatus()){
+		if (online != this.basePlayer.getOnLineStatus()) {
 			isChange = true;
 		}
 		this.basePlayer.setOnLineStatus(online);
-		
-		//更新帮派玩家在线信息
-		if(isChange){
+
+		// 更新帮派玩家在线信息
+		if (isChange) {
 			GuildManager.getIns().playerStateUpdate(this);
 		}
 	}
-	
-	public void setPlayerOfflineTime(Date offlineTime){
+
+	public void setPlayerOfflineTime(Date offlineTime) {
 		this.basePlayer.getPlayerTimeInfo().setOfflineTime(offlineTime);
 	}
-	
-	public Date getPlayerOfflineTime(){
+
+	public Date getPlayerOfflineTime() {
 		return this.basePlayer.getPlayerTimeInfo().getOfflineTime();
 	}
 
@@ -768,6 +782,10 @@ public class GamePlayer extends AbstractEvent {
 		return inverseBeadRefreshInventory;
 	}
 
+	public PlayerVipInventory getPlayerVipInventory() {
+		return playerVipInventory;
+	}
+
 	/** 回到出生点 */
 	public void backBornPoint() {
 		int born_map = SystemConfigTemplateMgr.getReBorn();
@@ -829,23 +847,23 @@ public class GamePlayer extends AbstractEvent {
 	public StateInventory getStateInventory() {
 		return stateInventory;
 	}
-	
-	public void writePlayerInfoProto(PlayerInfoMsg.Builder proto){
+
+	public void writePlayerInfoProto(PlayerInfoMsg.Builder proto) {
 		this.getBasePlayer().getPlayerInfo().writeProto(proto, SystemConfigTemplateMgr.getIntValue("bag.initGridNum"));
-		//武器觉醒等级
+		// 武器觉醒等级
 		BaseItem weapon = this.getBagInventory().getBag(BagType.HeroEquipment).getItemByPos(EquipConstant.EquipPosition.weaponPosition);
 		if (weapon != null) {
 			proto.setWeaponAwaken(weapon.getItemInfo().getAwaken());
 		}
-		
-		//帮派信息
+
+		// 帮派信息
 		proto.setGuildId(0);
 		proto.setGuildName("");
 		proto.setGuildJob(0);
 		Guild guild = GuildManager.getIns().getPlayerGuild(this.getPlayerId());
-		if(guild != null){
+		if (guild != null) {
 			GuildMemberInfo member = guild.getMember(this.getPlayerId());
-			if(member != null){
+			if (member != null) {
 				proto.setGuildId(guild.getGuildInfo().getGuildId());
 				proto.setGuildName(guild.getGuildInfo().getName());
 				proto.setGuildJob(member.getJob());

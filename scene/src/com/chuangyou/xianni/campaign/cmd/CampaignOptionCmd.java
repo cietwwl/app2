@@ -32,6 +32,7 @@ public class CampaignOptionCmd extends AbstractCommand {
 				ErrorMsgUtil.sendErrorMsg(army, ErrorCode.CAMPAIGN_NOT_EXIST, Protocol.S_CAMPAIGN_OPTION, "");
 			}
 		}
+		
 		// 返回副本
 		if (op == CampaignConstant.JOIN) {
 			Campaign campaign = CampaignMgr.getCampagin(parm1);

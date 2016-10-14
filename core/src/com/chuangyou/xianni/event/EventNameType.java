@@ -88,4 +88,17 @@ public interface EventNameType {
 	 * 宠物
 	 */
 	public static final int PET = 30;
+	/**
+	 * 魂幡战斗力
+	 */
+	public static final int SOUL_FIGHT = 31;
+	/**
+	 * 法宝战力
+	 */
+	public static final int MAGICWP_FIGHT = 32;
+	
+	/**
+	 * 宠物战力
+	 */
+	public static final int PET_FIGHT     = 33;
 }

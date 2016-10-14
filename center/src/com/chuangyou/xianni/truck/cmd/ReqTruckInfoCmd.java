@@ -87,9 +87,11 @@ public class ReqTruckInfoCmd extends AbstractCommand {
 			isCan = false;
 		}
 		info.setCanDo(isCan?1:0);
-		if(isCan)	//扣除灵石
+		//扣除灵石
+		if(isCan)	
 		{
 			player.getBasePlayer().consumeMoney(req.getPrice(),  ItemRemoveType.TRUCK_MAT);
+			//TODO 更新掩码
 		}
 		PBMessage pkg = MessageUtil.buildMessage(Protocol.S_RESP_TRUCK_INFO, info);
 		player.sendPbMessage(pkg);

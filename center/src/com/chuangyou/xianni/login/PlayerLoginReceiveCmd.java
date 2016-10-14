@@ -33,10 +33,8 @@ public class PlayerLoginReceiveCmd implements Command {
 		player.setChannel(channel);
 		player.loadPersonData();
 		player.setPlayerState(PlayerState.ONLINE);
-		
 
-		ChangeLineAction action = new ChangeLineAction(player, null, true);
-		action.getActionQueue().enqueue(action);
+
 
 		// TODO 返回角色数据
 		player.sendPbMessage(MessageUtil.buildMessage(Protocol.U_G_PLAYERINFO, PlayerInfoSendCmd.getProperPacket(player)));
@@ -44,6 +42,5 @@ public class PlayerLoginReceiveCmd implements Command {
 		// 通知sence服务器用户登入（同时传递用户数据）
 		PBMessage sencesReq = MessageUtil.buildMessage(Protocol.S_LOGIN_IN, -1, PlayerInfoSendCmd.getArmyPacket(player));
 		channel.writeAndFlush(sencesReq);
-		InverseBeadManager.syncSpawn(player);
 	}
 }

@@ -21,17 +21,15 @@ import com.chuangyou.xianni.world.WorldMgr;
 
 public class CampaignCreateAction extends Action {
 
-	private ArmyProxy			army;
-	private int					campaignId;
-	private int					taskId;
-	private List<RobotInfoMsg>	avatars;
+	private ArmyProxy	army;
+	private int			campaignId;
+	private int			taskId;
 
-	public CampaignCreateAction(ArmyProxy army, int campaignId, int taskId, List<RobotInfoMsg> avatars) {
+	public CampaignCreateAction(ArmyProxy army, int campaignId, int taskId) {
 		super(army);
 		this.army = army;
 		this.campaignId = campaignId;
 		this.taskId = taskId;
-		this.avatars = avatars;
 	}
 
 	@Override
@@ -57,9 +55,6 @@ public class CampaignCreateAction extends Action {
 		CampaignMgr.add(campaign);
 		campaign.start();
 		campaign.onPlayerEnter(army);
-		if (avatars != null) {
-			campaign.addAvatars(avatars);
-		}
 		if (campaign.getTemp().getType() == CampaignType.TEAM) {
 			Team team = TeamMgr.getTeam(army.getPlayerId());
 			if (team == null) {

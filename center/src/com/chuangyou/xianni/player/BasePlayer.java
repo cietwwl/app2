@@ -15,11 +15,14 @@ import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.player.PlayerJoinInfo;
 import com.chuangyou.xianni.entity.player.PlayerPositionInfo;
 import com.chuangyou.xianni.entity.player.PlayerTimeInfo;
+import com.chuangyou.xianni.entity.state.StateConfig;
 import com.chuangyou.xianni.entity.vip.VipLevelTemplate;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.player.event.PlayerProperEvent;
 import com.chuangyou.xianni.player.event.PlayerPropertyUpdateEvent;
 import com.chuangyou.xianni.player.event.PlayerSceneAttEvent;
+import com.chuangyou.xianni.player.logic.PlayerAddExpLogic;
+import com.chuangyou.xianni.state.template.StateTemplateMgr;
 import com.chuangyou.xianni.vip.templete.VipTemplateMgr;
 
 /**
@@ -44,6 +47,10 @@ public class BasePlayer extends AbstractEvent {
 
 	/** 玩家移动位置信息 */
 	private PlayerPositionInfo	playerPositionInfo;
+	/**
+	 * 添加经验逻辑
+	 */
+	private PlayerAddExpLogic addExpLogic;
 
 	private LockData			moneyLock		= new LockData();
 	private LockData			cashLock		= new LockData();
@@ -57,6 +64,7 @@ public class BasePlayer extends AbstractEvent {
 		this.playerJoinInfo = playerJoinInfo;
 		this.playerTimeInfo = playerTimeInfo;
 		this.playerPositionInfo = playerPositionInfo;
+		addExpLogic = new PlayerAddExpLogic();
 	}
 
 	/**
@@ -565,7 +573,7 @@ public class BasePlayer extends AbstractEvent {
 			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " stateLv:" + stateLv, e);
 			return false;
 		} finally {
-			commitChages(EnumAttr.State.getValue(), playerInfo.getSkillStage());
+			commitChages(EnumAttr.State.getValue(), playerInfo.getStateLv());
 			commonLock.commitLock();
 		}
 		return true;
@@ -627,6 +635,7 @@ public class BasePlayer extends AbstractEvent {
 		boolean hasLevelUp = false;
 		try {
 			if (addValue > 0) {
+				addValue = addExpLogic.getAddExp(addValue, this);
 				this.playerInfo.setTotalExp(playerInfo.getTotalExp() + addValue);
 				this.playerInfo.setExp(this.playerInfo.getExp() + addValue);
 			} else {
@@ -636,18 +645,25 @@ public class BasePlayer extends AbstractEvent {
 				this.playerInfo.setTotalExp(totalExp);
 			}
 
-			LevelUp curLevelTemp = LevelUpTempleteMgr.getPlayerLevelUp(playerInfo.getLevel());
-
-			if (this.playerInfo.getExp() >= curLevelTemp.getExp()) {
-				int level = LevelUpTempleteMgr.getPlayerLevel(playerInfo.getTotalExp());
+			if (addExpLogic.isCanUpLevel(this)) {
 				hasLevelUp = true;
-
-				playerInfo.setLevel(level);
-
-				long needTotalExp = LevelUpTempleteMgr.getPlayerLevelNeedExp(playerInfo.getLevel());
-				playerInfo.setExp(playerInfo.getTotalExp() - needTotalExp);
+				int level = LevelUpTempleteMgr.getPlayerLevel(playerInfo.getTotalExp());
+				StateConfig config = StateTemplateMgr.getStates().get(playerInfo.getStateLv());
+				if(level>config.getMaxLevel()){  //超过境界上限
+					int canLevel = config.getMaxLevel();
+					long needTotalExp =  LevelUpTempleteMgr.getPlayerLevelNeedExp(canLevel);
+					long tempExp = playerInfo.getTotalExp() - needTotalExp;
+					LevelUp up = LevelUpTempleteMgr.getPlayerLevelUp(canLevel);
+					tempExp = Math.min(tempExp, up.getExp()*4);
+					playerInfo.setLevel(canLevel);
+					playerInfo.setExp(tempExp);
+					playerInfo.setTotalExp(needTotalExp+tempExp);
+				}else{     //未超过境界上限。正常升级
+					playerInfo.setLevel(level);
+					long needTotalExp = LevelUpTempleteMgr.getPlayerLevelNeedExp(playerInfo.getLevel());
+					playerInfo.setExp(playerInfo.getTotalExp() - needTotalExp);					
+				}
 			}
-
 			changeMap.put(EnumAttr.Exp.getValue(), playerInfo.getExp());
 			changeMap.put(EnumAttr.TOTALEXP.getValue(), playerInfo.getTotalExp());
 

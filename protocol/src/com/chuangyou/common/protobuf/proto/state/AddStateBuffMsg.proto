@@ -1,6 +1,6 @@
+
 option java_package = "com.chuangyou.common.protobuf.pb.state";
 option java_outer_classname = "AddStateBuffProto";
-
 
 message AddStateBuffMsg{
 	required int32 buffId = 1; //要添加的buffID

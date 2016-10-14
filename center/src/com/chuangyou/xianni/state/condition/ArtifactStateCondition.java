@@ -3,12 +3,14 @@ package com.chuangyou.xianni.state.condition;
 import java.util.Map;
 
 import com.chuangyou.xianni.entity.artifact.ArtifactInfo;
+import com.chuangyou.xianni.entity.rank.RankTempInfo;
 import com.chuangyou.xianni.entity.state.StateConditionConfig;
 import com.chuangyou.xianni.entity.state.StateConditionInfo;
 import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.event.ObjectListener;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.rank.RankServerManager;
 import com.chuangyou.xianni.state.event.ArtifactStateEvent;
 
 /**
@@ -34,8 +36,8 @@ public class ArtifactStateCondition extends BaseStateCondition {
 				ArtifactStateEvent e = (ArtifactStateEvent) event;
 				int old = info.getProcess();
 				if(e.getTargetId() == 1 || e.getTargetId() == 3 || e.getTargetId() == 5){
-					if(config.getTargetNum() == e.getTargetNum()){
-						info.setProcess(e.getTargetNum1());
+					if(config.getTargetNum() == e.getTargetId1()){
+						info.setProcess(e.getTargetNum());
 					}
 					if(e.getTargetId() == 1){						
 						info.setProcess(getCountLv(player.getArtifactInventory().getArtifactMap(),config.getTargetId1()));
@@ -43,6 +45,11 @@ public class ArtifactStateCondition extends BaseStateCondition {
 						info.setProcess(getCountStar(player.getArtifactInventory().getArtifactMap(),config.getTargetId1()));
 					}else if(e.getTargetId() == 5){
 						info.setProcess(getCountStoneLv(player.getArtifactInventory().getArtifactMap(),config.getTargetId1()));
+					}
+				}else if(e.getTargetId() == 7){
+					RankTempInfo rankInfo = RankServerManager.getInstance().getRankTempInfo(player.getPlayerId());
+					if(rankInfo!=null){
+						info.setProcess((int)rankInfo.getArtifact());
 					}
 				}
 				
@@ -76,6 +83,11 @@ public class ArtifactStateCondition extends BaseStateCondition {
 			info.setProcess(player.getArtifactInventory().getArtifactMap().get(config.getTargetNum()).getStoneMaxLevel());
 		}else if(targetId == 6){
 			info.setProcess(getCountStoneLv(player.getArtifactInventory().getArtifactMap(),config.getTargetId1()));
+		}else if(targetId == 7){
+			RankTempInfo rankInfo = RankServerManager.getInstance().getRankTempInfo(player.getPlayerId());
+			if(rankInfo!=null){
+				info.setProcess((int)rankInfo.getArtifact());
+			}
 		}
 	}
 

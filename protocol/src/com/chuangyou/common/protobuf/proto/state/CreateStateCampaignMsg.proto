@@ -3,4 +3,5 @@ option java_outer_classname = "CreateStateCampaignProto";
 
 message CreateStateCampaignMsg{
 	required int32 campaignId = 1;  //副本ID
+	required int32 stateId = 2;  //境界ID
 }

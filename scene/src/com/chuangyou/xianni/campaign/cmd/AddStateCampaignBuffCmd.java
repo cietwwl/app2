@@ -32,14 +32,14 @@ public class AddStateCampaignBuffCmd extends AbstractCommand {
 			return;
 		}
 		
-		CampaignTemplateInfo temp = CampaignTempMgr.get(curField.getCampaignId());
+		CampaignTemplateInfo temp = CampaignTempMgr.get(curField.getMapKey());
 		if (temp == null) {
-			Log.error("获取不到副本模板playerId: " + army.getPlayerId() + "campaignId:" + curField.getCampaignId());
+			Log.error("获取不到副本模板playerId: " + army.getPlayerId() + "campaignMapKey:" + curField.getMapKey());
 			return;
 		}
 		
 		if(temp.getType()!=CampaignType.STATE){
-			Log.error("非进界副本playerId: " + army.getPlayerId() + "campaignId:" + curField.getCampaignId());
+			Log.error("非进界副本playerId: " + army.getPlayerId() + "campaignMapKey:" + curField.getMapKey());
 			return;
 		}
 		SkillBufferTemplateInfo bufferTemp = BattleTempMgr.getBufferInfo(msg.getBuffId());

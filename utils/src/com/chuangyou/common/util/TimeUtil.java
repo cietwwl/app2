@@ -541,12 +541,25 @@ public class TimeUtil {
 		calendar.setTime(date);
 		return calendar;
 	}
-
-	public static Timestamp getCalendarToDate(java.util.Calendar calendar) {
-		if (calendar != null)
-			return new Timestamp(getCalendar().getTimeInMillis());
-		return null;
+	
+	/**
+	 * 获取指定的时间
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public static java.util.Calendar getCalendar(long time) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTimeInMillis(time);
+		return calendar;
 	}
+
+	//这个方法好像有问题，先注释掉
+//	public static Timestamp getCalendarToDate(java.util.Calendar calendar) {
+//		if (calendar != null)
+//			return new Timestamp(getCalendar().getTimeInMillis());
+//		return null;
+//	}
 
 	public static Date addDate(Date date, long value) {
 		long time = date.getTime() + value;
@@ -799,10 +812,88 @@ public class TimeUtil {
 		currentDate.set(Calendar.SECOND, 0);
 		return currentDate;
 	}
+	
+	/**
+	 * 判断指定时间是否在时间范围内
+	 * @param curTime 指定时间
+	 * @param timeType 时间限制类型 0无限制 1 每日  2固定时间
+	 * @param startTime 开始时间，格式如下：
+	 * 时间限制timeType为1时格式：HHmmss;
+	 * 时间限制timeType为2时格式：yyyyMMddHHmmss
+	 * @param endTime 结束时间，格式同开始时间
+	 * @return
+	 */
+	public static boolean isInTime(long curTime, int timeType, String startTime, String endTime){
+		return isInTime(getCalendar(curTime), timeType, startTime, endTime);
+	}
+	
+	/**
+	 * 判断指定时间是否在时间范围内
+	 * @param curTime 指定时间
+	 * @param timeType 时间限制类型 0无限制 1 每日  2固定时间
+	 * @param startTime 开始时间，格式如下：
+	 * 时间限制timeType为1时格式：HHmmss;
+	 * 时间限制timeType为2时格式：yyyyMMddHHmmss
+	 * @param endTime 结束时间，格式同开始时间
+	 * @return
+	 */
+	public static boolean isInTime(Calendar curTime, int timeType, String startTime, String endTime){
+		if(timeType == 0){
+			return true;
+		}
+		DateFormat dfDate = new SimpleDateFormat("yyyyMMddHHmmss");
+		
+		String startStr;
+		String endStr;
+		
+		switch(timeType){
+			case 1:
+				while(startTime.length() < 6){
+					startTime = "0" + startTime;
+				}
+				while(endTime.length() < 6){
+					endTime = "0" + endTime;
+				}
+				
+				DateFormat yyyyMMddDf = new SimpleDateFormat("yyyyMMdd");
+				String yyyyMMddStr = yyyyMMddDf.format(curTime.getTime());
+				
+				startStr = yyyyMMddStr + startTime;
+				endStr = yyyyMMddStr + endTime;
+				break;
+			case 2:
+				while(startTime.length() < 14){
+					startTime = "0" + startTime;
+				}
+				while(endTime.length() < 14){
+					endTime = "0" + endTime;
+				}
+				startStr = startTime;
+				endStr = endTime;
+				break;
+			default:
+				return false;
+		}
+		Date startDate;
+		Date endDate;
+		try {
+			startDate = dfDate.parse(startStr);
+			endDate = dfDate.parse(endStr);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+		if(curTime.getTimeInMillis() >= startDate.getTime() && curTime.getTimeInMillis() <= endDate.getTime()){
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * 字符串转DATE
-	 * 
+	 * 1:hhmmss
+	 * 3:yyyyMMddHHmmss
 	 * @param dateStr
 	 * @return
 	 */
@@ -811,10 +902,10 @@ public class TimeUtil {
 		if (StringUtils.isNullOrEmpty(dateStr)) {
 			return null;
 		}
-		String format = "yyMMddHHmmss";
+		String format = "yyyyMMddHHmmss";
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		if (timeType == 1) {
-			dateStr = getNowYYMMDD() + dateStr;
+			dateStr = getNowYYYYMMDD() + dateStr;
 		}else if(timeType == 3){
 			 format = "yyyyMMddHHmmss";
 			 sdf =  new SimpleDateFormat(format);
@@ -841,11 +932,11 @@ public class TimeUtil {
 			return null;
 		}
 
-		String format = "yyMMddHHmmss";
+		String format = "yyyyMMddHHmmss";
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 
 		try {
-			date = sdf.parse(getNowYYMMDD() + dateStr);
+			date = sdf.parse(getNowYYYYMMDD() + dateStr);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -859,8 +950,8 @@ public class TimeUtil {
 	 * 
 	 * @return
 	 */
-	public static final int getNowYYMMDD() {
-		DateFormat ymdFormat = new SimpleDateFormat("yyMMdd");
-		return Integer.parseInt(ymdFormat.format(new Date()));
+	public static final String getNowYYYYMMDD() {
+		DateFormat ymdFormat = new SimpleDateFormat("yyyyMMdd");
+		return ymdFormat.format(getCalendar().getTime());
 	}
 }

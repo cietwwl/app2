@@ -34,31 +34,25 @@ function acceptTask(playerId,taskId){
 function finishTask(playerId,taskId){
 
 	switch (taskId) {
-	case 10003:
+	case 10002:
 		changeMap(playerId,1007,2724,721,4059);
 		break;
-	case 10006:
-		changeMap(playerId,1009,3717,264,5809);
-		break;
-	case 10009:
-		changeMap(playerId,1009,3795,168,6041);
+	case 10005:
+		changeMap(playerId,1009,4054,247,5936);
 		break;	
-	case 10013:
-		changeMap(playerId,1009,3892,258,5925);
-		break;	
-	case 10038:
+	case 10026:
 		changeMap(playerId,1008,5644,-2,4927);
 		break;
-	case 10042:
+	case 10030:
 		changeMap(playerId,1009,4698,17,6988);
 		break;
-	case 10045:
+	case 10033:
 		changeMap(playerId,1009,4086,30,7000);
 		break;
-	case 10080:
+	case 10060:
 		changeMap(playerId,1009,5655,-2,7344);
 		break;	
-	case 10096:
+	case 10076:
 		changeMap(playerId,1014,134,236,1003);
 		break;
 	}

@@ -17,7 +17,6 @@ import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.RoleConstants;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Truck;
-import com.chuangyou.xianni.state.StateTemplateMgr;
 import com.chuangyou.xianni.truck.TruckTempMgr;
 import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.WorldMgr;

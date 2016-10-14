@@ -15,6 +15,8 @@ public interface ItemAddType {
 		public static final int	PVP_1V1_RANK	= 10102;
 		/** 竞技场连胜奖励 */
 		public static final int	PVP_1V1_WIN		= 10103;
+		/** 分身副本奖励 */
+		public static final int	AVATAR_CAMPAIGN	= 10104;
 	}
 
 	/** 测试添加 */
@@ -67,21 +69,21 @@ public interface ItemAddType {
 	/**
 	 * 境界
 	 */
-	public static final short 	STATE           = 3012;
-	
+	public static final short	STATE			= 3012;
+
 	/**
 	 * 帮派商店购买
 	 */
 	public static final short	GUILD_SHOP_BUY	= 3013;
-	
+
 	/**
 	 * 镖车物资掉落添加
 	 */
-	public static final short 	TRUCK_DROP_MAT		= 3014;
-	
+	public static final short	TRUCK_DROP_MAT	= 3014;
+
 	/**
 	 * 镖车领奖
 	 */
-	public static final short 	TRUCK_REWARD		= 3015;
+	public static final short	TRUCK_REWARD	= 3015;
 
 }

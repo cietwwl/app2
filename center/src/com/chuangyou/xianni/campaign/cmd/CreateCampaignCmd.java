@@ -8,7 +8,7 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
 
-@Cmd(code = Protocol.C_CREATE_CAMPAIGN, desc = "请求创建副本/前往组队目标")
+@Cmd(code = Protocol.C_CREATE_CAMPAIGN, desc = "请求创建副本")
 public class CreateCampaignCmd extends AbstractCommand {
 
 	@Override

@@ -12,7 +12,7 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.objects.Truck;
 import com.chuangyou.xianni.socket.Cmd;
-import com.chuangyou.xianni.state.StateTemplateMgr;
+import com.chuangyou.xianni.state.template.StateTemplateMgr;
 import com.chuangyou.xianni.truck.TruckMgr;
 import com.chuangyou.xianni.truck.TruckTempMgr;
 import com.chuangyou.xianni.truck.helper.FunctionHelper;

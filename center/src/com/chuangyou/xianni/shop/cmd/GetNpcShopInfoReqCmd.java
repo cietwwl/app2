@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.chuangyou.common.protobuf.pb.shop.GetNpcShopInfoReqProto.GetNpcShopInfoReqMsg;
 import com.chuangyou.common.protobuf.pb.shop.GetNpcShopInfoRespProto.GetNpcShopInfoRespMsg;
+import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.entity.shop.ShopCfg;
 import com.chuangyou.xianni.player.GamePlayer;
@@ -33,14 +34,17 @@ public class GetNpcShopInfoReqCmd extends AbstractCommand {
 		
 		GetNpcShopInfoRespMsg.Builder resp = GetNpcShopInfoRespMsg.newBuilder();
 		resp.setNpcShopId(shopId);
-		for (ShopCfg shopCfg : list) {
-			if(shopCfg.isExpired())continue;  //过期开未开售去掉
-			ResetLogicFactory.getResetLogic(player, shopCfg).reset(player, shopCfg);
-			resp.addNpcGoodInfos(ShopMsgHelper.getGoodsInfoMsg(player, shopCfg));
+		if(list!=null && list.size()>0){			
+			for (ShopCfg shopCfg : list) {
+				if(shopCfg.isExpired())continue;  //过期开未开售去掉
+				ResetLogicFactory.getResetLogic(player, shopCfg).reset(player, shopCfg);
+				resp.addNpcGoodInfos(ShopMsgHelper.getGoodsInfoMsg(player, shopCfg));
+			}
+			PBMessage pkg = MessageUtil.buildMessage(Protocol.U_RESP_GETNPCSHOPINFO, resp);
+			player.sendPbMessage(pkg);
+		}else{
+			Log.error("查不到商店数据："+shopId);
 		}
-		
-		PBMessage pkg = MessageUtil.buildMessage(Protocol.U_RESP_GETNPCSHOPINFO, resp);
-		player.sendPbMessage(pkg);
 	}
 
 }

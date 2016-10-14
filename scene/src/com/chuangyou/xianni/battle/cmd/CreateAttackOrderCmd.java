@@ -4,19 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.chuangyou.common.protobuf.pb.battle.AttackOrderProto.AttackOrderMsg;
 import com.chuangyou.common.util.Log;
-import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.battle.AttackOrder;
 import com.chuangyou.xianni.battle.OrderFactory;
 import com.chuangyou.xianni.battle.action.OrderExecAction;
 import com.chuangyou.xianni.battle.skill.Skill;
-import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.constant.BattleModeCode;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.drop.manager.DropManager;
-import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
@@ -27,8 +23,6 @@ import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.socket.Cmd;
 import com.chuangyou.xianni.warfield.FieldMgr;
 import com.chuangyou.xianni.warfield.field.Field;
-import com.chuangyou.xianni.warfield.helper.NotifyNearHelper;
-import com.chuangyou.xianni.warfield.helper.selectors.AllSelectorHelper;
 import com.chuangyou.xianni.world.AbstractCommand;
 import com.chuangyou.xianni.world.ArmyProxy;
 

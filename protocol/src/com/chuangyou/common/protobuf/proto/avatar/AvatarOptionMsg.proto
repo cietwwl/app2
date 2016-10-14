@@ -2,9 +2,9 @@
 option java_package = "com.chuangyou.common.protobuf.pb.avatar";
 option java_outer_classname = "AvatarOptionMsgProto";
 
-//åˆ†èº«æ“ä½œ
-message AvatarOptionMsg {
-	optional int32 optionType = 1; //1 æ¿€æ´»åˆ†èº«  2æå‡æ˜Ÿçº§  3 æå‡é»˜å¥‘  4,å‡ºæˆ˜ 5ä¸‹é˜µ
-	optional int32 avatarId = 2; // åˆ†èº«ID
-	optional int32 param = 3; // å‚æ•°
+//·ÖÉí²Ù×÷
+message AvatarOptionMsg{	
+	optional int32 optionType=1;//1 ¼¤»î·ÖÉí  2ÌáÉıĞÇ¼¶  3 ÌáÉıÄ¬Æõ 
+	optional int32 avatarId=2;// ·ÖÉíID
+	optional int32 param=3;// ²ÎÊı
 }

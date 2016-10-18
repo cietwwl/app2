@@ -69,7 +69,14 @@ public class InnerTruckRespTruckInfo extends AbstractCommand {
 		SimplePlayerInfo simplePlayerInfo = new SimplePlayerInfo();
 		simplePlayerInfo.setLevel(truckInfo.getLevel());		//等级
 		simplePlayerInfo.setPlayerId(army.getPlayerId());
-		simplePlayerInfo.setNickName(owner.getSimpleInfo().getNickName());
+		if(truckInfo.getTruckType() == Truck.TRUCK_P)
+		{
+			simplePlayerInfo.setNickName(owner.getSimpleInfo().getNickName());
+		}
+		else if(truckInfo.getTruckType() == Truck.TRUCK_G)
+		{
+			simplePlayerInfo.setNickName(owner.getSimpleInfo().getGuildName());
+		}
 		simplePlayerInfo.setGuildId(owner.getSimpleInfo().getGuildId());
 		truck.setSimpleInfo(simplePlayerInfo);
 		

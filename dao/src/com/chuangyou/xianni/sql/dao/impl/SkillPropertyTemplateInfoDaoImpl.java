@@ -1,13 +1,6 @@
 package com.chuangyou.xianni.sql.dao.impl;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-import com.chuangyou.common.util.Log;
-import com.chuangyou.xianni.entity.property.SkillPropertyTemplateInfo;
 import com.chuangyou.xianni.sql.dao.SkillPropertyTemplateInfoDao;
 import com.chuangyou.xianni.sql.db.BaseDao;
 

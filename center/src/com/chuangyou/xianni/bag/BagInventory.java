@@ -172,13 +172,9 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	 */
 	public List<BaseItem> getAllItems() {
 		List<BaseItem> infos = new ArrayList<BaseItem>();
-		for (BaseItem info : playerBag.getItems()) {
-			infos.add(info);
-		}
-
-		for (BaseItem info : heroEquipment.getItems()) {
-			infos.add(info);
-		}
+		infos.addAll(playerBag.getItems());
+		infos.addAll(heroEquipment.getItems());
+		infos.addAll(virtualBag.getItems());
 		return infos;
 	}
 
@@ -186,7 +182,6 @@ public class BagInventory extends AbstractEvent implements IInventory {
 		playerBag.updateAll();
 		heroEquipment.updateAll();
 		virtualBag.updateAll();
-		
 	}
 
 	/**
@@ -201,6 +196,7 @@ public class BagInventory extends AbstractEvent implements IInventory {
 
 	/**
 	 * 获取指定背包物品数量
+	 * 
 	 * @param bagType
 	 * @param templateId
 	 * @return
@@ -208,17 +204,20 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	public int getItemCount(short bagType, int templateId) {
 		return getItemCount(bagType, templateId, BindType.ALL);
 	}
+
 	/**
 	 * 获取指定背包，指定绑定类型的物品数量
+	 * 
 	 * @param bagType
 	 * @param templateId
 	 * @param bindType
 	 * @return
 	 */
-	public int getItemCount(short bagType, int templateId, short bindType){
+	public int getItemCount(short bagType, int templateId, short bindType) {
 		BaseBag bag = getBag(bagType);
-		if (bag == null)
+		if (bag == null) {
 			return 0;
+		}
 		return bag.getTemplateCount(templateId, bindType);
 	}
 
@@ -337,7 +336,7 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	public void addItemInBagOrEmail(int templateId, int count, short addType, boolean isBind) {
 		if (addItem(templateId, count, addType, isBind) == false) {
 			List<EmailItemVo> items = new ArrayList<>();
-			items.add(new EmailItemVo(templateId, count, isBind==true?BindType.BIND:BindType.NOBIND));
+			items.add(new EmailItemVo(templateId, count, isBind == true ? BindType.BIND : BindType.NOBIND));
 			EmailManager.insertEmail(player.getPlayerId(), "背包已满", "背包已经满。请整理背包在附件中收取物品", items);
 		}
 	}
@@ -353,16 +352,17 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	public boolean removeItem(int templateId, int count, short itemRemoveType) {
 		return removeItem(BagType.Play, templateId, count, BindType.ALL, itemRemoveType);
 	}
-	
+
 	/**
 	 * 删除指定背包中的物品，不指定绑定类型
+	 * 
 	 * @param bagType
 	 * @param templateId
 	 * @param count
 	 * @param itemRemoveType
 	 * @return
 	 */
-	public boolean removeItem(short bagType, int templateId, int count, short itemRemoveType){
+	public boolean removeItem(short bagType, int templateId, int count, short itemRemoveType) {
 		return removeItem(bagType, templateId, count, BindType.ALL, itemRemoveType);
 	}
 
@@ -421,11 +421,13 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	/* 指定物品移除数量 */
 	public boolean removeItemByPos(short bagType, int removedPos, int count, short removeType) {
 		BaseBag bag = getBag(bagType);
-		if (bag == null)
+		if (bag == null) {
 			return false;
+		}
 		BaseItem removedItem = bag.getItemByPos(removedPos);
-		if (removedItem == null)
+		if (removedItem == null) {
 			return false;
+		}
 		return bag.removeCountFromStack(removedItem, count, removeType);
 	}
 

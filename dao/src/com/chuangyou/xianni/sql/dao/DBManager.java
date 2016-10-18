@@ -1,6 +1,5 @@
 package com.chuangyou.xianni.sql.dao;
 
-import com.chuangyou.xianni.entity.guild.GuildWarehouseItemInfo;
 import com.chuangyou.xianni.sql.dao.impl.ActivityDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.AiConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.ArenaInfoDaoImpl;

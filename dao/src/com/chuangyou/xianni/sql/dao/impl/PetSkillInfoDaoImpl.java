@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.chuangyou.common.util.Log;
-import com.chuangyou.xianni.entity.magicwp.MagicwpInfo;
 import com.chuangyou.xianni.entity.pet.PetSkill;
 import com.chuangyou.xianni.sql.dao.PetSkillInfoDao;
 import com.chuangyou.xianni.sql.db.BaseDao;

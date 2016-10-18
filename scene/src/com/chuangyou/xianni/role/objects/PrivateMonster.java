@@ -66,7 +66,7 @@ public class PrivateMonster extends Monster {
 				MonsterSpawnNode mnode = (MonsterSpawnNode) node;
 				mnode.lvingDie(this);
 			}
-			notifyCenter(this.getSkin(), killer.getArmyId());
+			calculationProfit(this.getSkin(), killer);
 			this.clear();
 			PrivateMonsterMgr.remove(this);
 		}

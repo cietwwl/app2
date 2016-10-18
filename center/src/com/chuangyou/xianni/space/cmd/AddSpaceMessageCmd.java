@@ -34,13 +34,13 @@ public class AddSpaceMessageCmd extends AbstractCommand {
 		SpaceInfo reqSpace = reqPlayer.getSpaceInventory().getSpaceInfo();
 		if(req.getPlayerId()!=player.getPlayerId()){			
 			if(reqSpace.getIsNoMsg() == SpaceInfo.NO_MSG){
-				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SPACE_ADD_MSG,"空间主人禁止留言");		
+				ErrorMsgUtil.sendErrorMsg(player, 7002, Protocol.C_REQ_SPACE_ADD_MSG,"空间主人禁止留言");		
 				return;
 			}
 			if(reqSpace.getIsNoMsg() == SpaceInfo.FRIEND_MSG){
 				//自己是否是对方的好友
 				if(!player.getRelationInventory().isRelationTypeSelfToTarget(player.getPlayerId(), PlayerRelationConstant.FRIEND)){
-					ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, Protocol.C_REQ_SPACE_ADD_MSG,"非好友禁止留言");		
+					ErrorMsgUtil.sendErrorMsg(player, 7002, Protocol.C_REQ_SPACE_ADD_MSG,"非好友禁止留言");		
 					return;
 				}
 			}

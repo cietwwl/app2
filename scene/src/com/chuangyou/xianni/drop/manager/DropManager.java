@@ -34,7 +34,7 @@ public class DropManager {
 	 * @param id
 	 * @return
 	 */
-	private static List<DropItemInfo> getDropList(int id) {
+	public static List<DropItemInfo> getDropList(int id) {
 
 		DropInfo pool = DropTempleteMgr.getDropPool().get(id);
 
@@ -100,7 +100,7 @@ public class DropManager {
 		}
 		if (pool.getLimitType() > 0) {
 			long curTime = TimeUtil.getSysCurTimeMillis();
-			if (curTime < TimeUtil.getDateByString(pool.getStartTime(), pool.getLimitType()).getTime() || curTime > TimeUtil.getDateByString(pool.getEndTime(), pool.getLimitType()).getTime()) {
+			if(!TimeUtil.isInTime(curTime, pool.getLimitType(), pool.getStartTime(), pool.getEndTime())){
 				return;
 			}
 		}

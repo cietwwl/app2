@@ -1,7 +1,5 @@
 package com.chuangyou.xianni.entity.skill;
 
-import com.chuangyou.xianni.entity.property.SkillPropertyTemplateInfo;
-
 /** 基础技能模板 */
 public class SkillTempateInfo {
 	private int templateId; // 技能ID
@@ -25,6 +23,7 @@ public class SkillTempateInfo {
 	private String sysBufferIds; // 添加的系统BUFF
 	private String fightBufferIds; // 添加的战斗buff
 	private String description; // 描述
+	private int attackDistance;//攻击距离
 	//private SkillPropertyTemplateInfo proTemp;// 属性模板
 
 	public int getTemplateId() {
@@ -185,6 +184,14 @@ public class SkillTempateInfo {
 
 	public void setPropertyIds(String propertyIds) {
 		this.propertyIds = propertyIds;
+	}
+
+	public int getAttackDistance() {
+		return attackDistance;
+	}
+
+	public void setAttackDistance(int attackDistance) {
+		this.attackDistance = attackDistance;
 	}
 
 //	public SkillPropertyTemplateInfo getProTemp() {

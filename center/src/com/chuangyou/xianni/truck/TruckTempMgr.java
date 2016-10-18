@@ -85,6 +85,52 @@ public class TruckTempMgr {
 		}
 		return true;
 	}
+	
+	
+	public static boolean reloadLevelConfig(){//tb_z_truck_level
+		personalTruckLevelConfig = new HashMap<Integer, TruckLevelConfig>();
+		guildTruckLevelConfig = new HashMap<Integer, TruckLevelConfig>();
+		truckerLevelConfig = new HashMap<Integer, TruckLevelConfig>();
+		
+		List<TruckLevelConfig> levelConfig = DBManager.getTruckDao().getLevelConfig();
+		for(TruckLevelConfig config : levelConfig)
+		{
+			if(config.getType() == TruckLevelConfig.PERSONAL)
+			{
+				personalTruckLevelConfig.put(config.getLevel(), config);
+			}
+			else if(config.getType() == TruckLevelConfig.TRUCKER)
+			{
+				truckerLevelConfig.put(config.getLevel(), config);
+			}
+			else if(config.getType() == TruckLevelConfig.GUILD)
+			{
+				guildTruckLevelConfig.put(config.getLevel(), config);
+			}
+		}
+		return true;
+	}
+	
+	public static boolean reloadSkillConfig(){//tb_z_truck_skill
+		allSkillConfig = new HashMap<Integer, TruckSkillConfig>();
+		List<TruckSkillConfig> skillConfig = DBManager.getTruckDao().getSkillConfig();
+		for(TruckSkillConfig config : skillConfig)
+		{
+			allSkillConfig.put(config.getId(), config);
+		}
+		return true;
+	}
+	
+	public static boolean reloadSkillFunc(){//tb_z_truck_func
+		truckFuncs = new HashMap<Integer, TruckFun>();
+		List<TruckFun> funcs = DBManager.getTruckDao().getSkillFunc();
+		for(TruckFun fun : funcs)
+		{
+			truckFuncs.put(fun.getId(), fun);
+		}
+		return true;
+	}
+	
 
 	public static Map<Integer, TruckLevelConfig> getPersonalTruckLevelConfig() {
 		return personalTruckLevelConfig;

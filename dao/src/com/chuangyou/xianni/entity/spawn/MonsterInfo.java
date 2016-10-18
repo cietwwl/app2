@@ -1,67 +1,74 @@
 package com.chuangyou.xianni.entity.spawn;
 
 public class MonsterInfo {
-	private int monsterId;
+	private int		monsterId;
 
-	private String name;				// 怪物名
+	private String	name;				// 怪物名
 
-	private int level;				// 怪物等级
+	private int		level;				// 怪物等级
 
-	private int skin;				// skinID
+	private int		skin;				// skinID
 
-	private int monsterType;		// 怪物种类
+	private int		monsterType;		// 怪物种类
 
-	private int alertRange; // 警戒范围
+	private int		alertRange;			// 警戒范围
 
-	private int seekEnemyRange; // 索敌范围
+	private int		seekEnemyRange;		// 索敌范围
 
-	private int attackRange; // 攻击范围
+	private int		attackRange;		// 攻击范围
 
-	private int followUpDistance; // 追击距离
+	private int		followUpDistance;	// 追击距离
 
-	private int moveSpeed; // 移动速度
+	private int		moveSpeed;			// 移动速度
 
-	private int attackSpeed; // 攻击速度
+	private int		attackSpeed;		// 攻击速度
 
-	private long soulHpValue;		// 魂血
+	private long	soulHpValue;		// 魂血
 
-	private long hp;				// 生命
+	private long	hp;					// 生命
 
-	private int hurtValue;			// 伤害
+	private int		hurtValue;			// 伤害
 
-	private int armorValue;			// 护甲值
+	private int		armorValue;			// 护甲值
 
-	private int soulHurtValue;		// 魂攻击
+	private int		soulHurtValue;		// 魂攻击
 
-	private int soulArmorValue;		// 魂防御
+	private int		soulArmorValue;		// 魂防御
 
-	private int hitRateValue;		// 命中
+	private int		hitRateValue;		// 命中
 
-	private int dodgeValue;			// 闪避
+	private int		dodgeValue;			// 闪避
 
-	private int critValue;			// 暴击
+	private int		critValue;			// 暴击
 
-	private int toughnessValue;		// 抗暴
+	private int		toughnessValue;		// 抗暴
 
-	private int hurtType;			// 伤害类型
+	private int		hurtType;			// 伤害类型
 
-	private int beKilledExp;		// 击杀经验
+	private int		beKilledExp;		// 击杀经验
 
-	/** 死亡掉落 */
-	private int drop1;
-
-	/** 死亡掉落 */
-	private int drop2;
-
-	/** 死亡掉落 */
-	private int drop3;
+	/*
+	 * 1 击杀归属 经验 队伍成员杀死怪物后，本地图所有成员均单独获得经验和怪物掉落 击杀脚本 掉落 参与奖励 任务进度
+	 * 任何人杀死怪物后，本地图参与战斗并造成伤害的玩家均可获得此怪物的任务进度 2 参与奖励 经验
+	 * 任何人杀死怪物后，本地图参与战斗并造成伤害的玩家均可获得此怪物的击杀经验、掉落、任务进度 掉落 任务进度
+	 */
+	private int		dropType;			// 怪物掉落类型
 
 	/** 死亡掉落 */
-	private int drop4;
+	private int		drop1;
+
+	/** 死亡掉落 */
+	private int		drop2;
+
+	/** 死亡掉落 */
+	private int		drop3;
+
+	/** 死亡掉落 */
+	private int		drop4;
 	/** 技能 */
-	private String skillIds;
+	private String	skillIds;
 	/** ai **/
-	private int aiId;
+	private int		aiId;
 
 	public MonsterInfo() {
 		super();
@@ -299,4 +306,11 @@ public class MonsterInfo {
 		this.aiId = aiId;
 	}
 
+	public int getDropType() {
+		return dropType;
+	}
+
+	public void setDropType(int dropType) {
+		this.dropType = dropType;
+	}
 }

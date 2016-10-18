@@ -42,6 +42,11 @@ public abstract class BaseStateCondition {
 	public abstract void initProcess();
 	
 	/**
+	 * 初始化监听回调	
+	 */
+	public abstract void initListener();
+	
+	/**
 	 *  是否完成
 	 * @return
 	 */

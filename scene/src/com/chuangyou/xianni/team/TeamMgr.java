@@ -9,12 +9,12 @@ public class TeamMgr {
 	/**
 	 * 所有队伍池
 	 */
-	private static ConcurrentHashMap<Integer, Team> allTeams = new ConcurrentHashMap<Integer, Team>(64);
+	private static ConcurrentHashMap<Integer, Team>	allTeams		= new ConcurrentHashMap<Integer, Team>(64);
 
 	/**
 	 * 队员信息<队员ID，队伍ID>
 	 */
-	private static ConcurrentMap<Long, Integer> playerTeamMap = new ConcurrentHashMap<Long, Integer>(256);
+	private static ConcurrentMap<Long, Integer>		playerTeamMap	= new ConcurrentHashMap<Long, Integer>(256);
 
 	/**
 	 * 获取队伍
@@ -28,20 +28,21 @@ public class TeamMgr {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 获取队伍成员列表，如果没有队伍就只返回自己
+	 * 
 	 * @param playerId
 	 * @return
 	 */
-	public static List<Long> getTeamMembers(long playerId){
+	public static List<Long> getTeamMembers(long playerId) {
 		Team team = getTeam(playerId);
-		
+
 		List<Long> members;
-		if(team == null){
+		if (team == null) {
 			members = new ArrayList<>();
 			members.add(playerId);
-		}else{
+		} else {
 			members = team.getMembers();
 		}
 		return members;
@@ -77,8 +78,8 @@ public class TeamMgr {
 		return allTeams;
 	}
 
-
-	
-	
+	public static Team getTeam(int teamId) {
+		return allTeams.get(teamId);
+	}
 
 }

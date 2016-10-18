@@ -41,6 +41,18 @@ public class StateTemplateMgr {
 		}
 		return true;
 	}
+	public static boolean reloadConditions(){
+		conditions = DBManager.getStateDao().getStateConditionConfig();
+		return true;
+	}
+	public static boolean reloadStates(){
+		states	   = DBManager.getStateDao().getStateConfig();
+		return true;
+	}
+	public static boolean reloadConsums(){
+		consums    = DBManager.getStateDao().getConsumConfig();
+		return true;
+	}
 
 
 	public static Map<Integer, StateConditionConfig> getConditions() {

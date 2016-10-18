@@ -5,7 +5,6 @@ import com.chuangyou.common.protobuf.pb.magicwp.MagicwpBanLevelUpRespProto.Magic
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.entity.magicwp.MagicwpBanInfo;
 import com.chuangyou.xianni.magicwp.manager.MagicwpBanLevelManager;
-import com.chuangyou.xianni.magicwp.manager.MagicwpManager;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;

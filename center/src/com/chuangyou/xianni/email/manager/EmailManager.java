@@ -20,12 +20,12 @@ import com.chuangyou.xianni.sql.dao.DBManager;
 import com.chuangyou.xianni.word.WorldMgr;
 
 public class EmailManager {
-	
+
 	/**
 	 * 最大附件物品数量
 	 */
 	private static final int MAX_EMAIL_ITEM_COUNT = 5;
-	
+
 	/**
 	 * 封装转换为PB所用的类
 	 * 
@@ -46,26 +46,24 @@ public class EmailManager {
 
 	/**
 	 * 获取附件物品列表
+	 * 
 	 * @param attachment
 	 * @return
 	 */
-	public static List<EmailItemVo> getEmailItems(String attachment){
-		if(StringUtils.isNullOrEmpty(attachment))return null;
+	public static List<EmailItemVo> getEmailItems(String attachment) {
+		if (StringUtils.isNullOrEmpty(attachment))
+			return null;
 		List<EmailItemVo> items = new ArrayList<>();
 		String[] list = attachment.split(";");
 		for (int i = 0; i < list.length; i++) {
 			String[] subList = list[i].split(",");
-			if(subList.length == 3){				
-				items.add(new EmailItemVo(
-						Integer.parseInt(subList[0]),
-						Integer.parseInt(subList[1]), 
-						Integer.parseInt(subList[2])));
+			if (subList.length == 3) {
+				items.add(new EmailItemVo(Integer.parseInt(subList[0]), Integer.parseInt(subList[1]), Integer.parseInt(subList[2])));
 			}
 		}
 		return items;
 	}
-	
-	
+
 	/**
 	 * 插入邮件
 	 * 
@@ -113,36 +111,35 @@ public class EmailManager {
 		}
 	}
 
-	
 	/**
 	 * 插入带附件的邮件接品
+	 * 
 	 * @param playerId
 	 * @param title
 	 * @param content
 	 * @param emailItems
 	 */
-	public static void insertEmail(long playerId, String title, String content, List<EmailItemVo> emailItems){
-		 StringBuffer attachment = new StringBuffer("");
-		 
-		if(emailItems==null || emailItems.size()==0){
+	public static void insertEmail(long playerId, String title, String content, List<EmailItemVo> emailItems) {
+		StringBuffer attachment = new StringBuffer("");
+
+		if (emailItems == null || emailItems.size() == 0) {
 			insertEmail(playerId, title, content, attachment.toString());
-		}else{
+		} else {
 			int len = emailItems.size();
 			for (int i = 0; i < len; i++) {
-				if(i%MAX_EMAIL_ITEM_COUNT==(MAX_EMAIL_ITEM_COUNT-1)){
+				if (i % MAX_EMAIL_ITEM_COUNT == (MAX_EMAIL_ITEM_COUNT - 1)) {
 					insertEmail(playerId, title, content, attachment.toString());
 					attachment = new StringBuffer("");
-				}else{
+				} else {
 					attachment.append(emailItems.get(i).attachmentStr());
 				}
 			}
-			if(!attachment.toString().equals("")){
+			if (!attachment.toString().equals("")) {
 				insertEmail(playerId, title, content, attachment.toString());
 			}
 		}
 	}
-	
-	
+
 	/**
 	 * 插入邮件
 	 * 
@@ -160,6 +157,6 @@ public class EmailManager {
 
 	/** 发送邮件 */
 	public static void sendItem4Mail() {
-		
+
 	}
 }

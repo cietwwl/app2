@@ -136,7 +136,6 @@ public class PlayerInfo extends DataObject {
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 		setOp(Option.Update);
-
 	}
 
 	public long getExp() {
@@ -148,7 +147,6 @@ public class PlayerInfo extends DataObject {
 			setOp(Option.Update);
 		}
 		this.exp = exp;
-
 	}
 
 	public long getTotalExp() {

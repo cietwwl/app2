@@ -1,9 +1,13 @@
 package com.chuangyou.xianni.map.cmd;
 
 
+import java.util.Date;
+
 import com.chuangyou.common.protobuf.pb.ChangeMapResultMsgProto.ChangeMapResultMsg;
 import com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg;
 import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
+import com.chuangyou.common.util.Log;
+import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.constant.EnterMapResult;
 import com.chuangyou.xianni.entity.field.FieldInfo;
@@ -47,7 +51,7 @@ public class EnterSceneMapResultCmd extends AbstractCommand {
 
 			PBMessage message = MessageUtil.buildMessage(Protocol.U_CHANGE_MAP, msg);
 			player.sendPbMessage(message);
-			//Log.error((TimeUtil.getDateFormat(new Date()) + "---------通知客户端修改地图-------playerId:-----"+ player.getPlayerId() +" msg:" +msg.toString()));
+			Log.error((TimeUtil.getDateFormat(new Date()) + "---------通知客户端修改地图-------playerId:-----"+ player.getPlayerId() +" msg:" +msg.toString()));
 			player.setCurMapId(postionMsg.getMapId());
 		} else {
 			// 当用户登录请求地图失败，则直接回到出生点

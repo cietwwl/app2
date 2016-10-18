@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.chuangyou.common.util.JSONUtil;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.battle.action.FieldPollingAction;
 import com.chuangyou.xianni.drop.helper.NotifyDropHalper;
@@ -19,7 +17,6 @@ import com.chuangyou.xianni.exec.AbstractActionQueue;
 import com.chuangyou.xianni.exec.ThreadManager;
 import com.chuangyou.xianni.proto.BroadcastUtil;
 import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.role.helper.RoleConstants;
 import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.warfield.FieldMgr;
@@ -29,8 +26,6 @@ import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.navi.seeker.NavmeshSeeker;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
 import com.chuangyou.xianni.warfield.template.FieldTemplateMgr;
-import com.chuangyou.xianni.world.ArmyProxy;
-import com.chuangyou.xianni.world.WorldMgr;
 
 /**
  * 地图基类

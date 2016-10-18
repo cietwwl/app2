@@ -51,4 +51,17 @@ public class EquipTemplateMgr {
 	public static Map<Integer, EquipSuitCfg> getSuitMap() {
 		return suitMap;
 	}
+	
+	public static boolean reloadGrade(){
+		barGradeMap = DBManager.getEquipConfigDao().getGrade();
+		return true;
+	}
+	public static boolean reloadAwaken(){
+		awakenMap = DBManager.getEquipConfigDao().getAwaken();
+		return true;
+	}
+	public static boolean reloadSuit(){
+		suitMap = DBManager.getEquipConfigDao().getSuit();
+		return true;
+	}
 }

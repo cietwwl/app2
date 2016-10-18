@@ -11,7 +11,7 @@ import com.chuangyou.xianni.entity.inverseBead.PlayerBeadTimeInfo;
 import com.chuangyou.xianni.entity.inverseBead.PlayerInverseBead;
 import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
-import com.chuangyou.xianni.inverseBead.action.InverseBeadLoopAction;
+import com.chuangyou.xianni.inverseBead.help.InverseBeadLoopManager;
 import com.chuangyou.xianni.inverseBead.manager.InverseBeadManager;
 import com.chuangyou.xianni.inverseBead.template.InverseBeadTemMgr;
 import com.chuangyou.xianni.player.GamePlayer;
@@ -24,6 +24,7 @@ import com.chuangyou.xianni.socket.Cmd;
 public class ReqGetInverseBead extends AbstractCommand {
 	@Override
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
+		player.getInverseBeadInventory().load();
 		Map<Integer, PlayerInverseBead> playerInverseBeadList = player.getInverseBeadInventory().getInverseBead();
 		// InverseBeadLoopAction action = new InverseBeadLoopAction(player,
 		// player.getActionQueue(), InverseBeadInventory.getBeadRefreshIdList(),
@@ -62,10 +63,10 @@ public class ReqGetInverseBead extends AbstractCommand {
 		if (playerTimeInfo.getBeadRefreshDateTime() != null)
 			beadRefreshDateTime = playerTimeInfo.getBeadRefreshDateTime().getTime();
 
-		long lastTime = InverseBeadLoopAction.intervalTime - (System.currentTimeMillis() - beadRefreshDateTime);
-		if (lastTime < 0)
+		long lastTime = InverseBeadLoopManager.intervalTime - (System.currentTimeMillis() - beadRefreshDateTime);
+		if (lastTime < 0) {
 			lastTime = 0;
-
+		}
 		SpawnInfo tem = InverseBeadTemMgr.getSpwanId(playerTimeInfo.getCurrRefreshId());
 		if (tem == null)
 			return;

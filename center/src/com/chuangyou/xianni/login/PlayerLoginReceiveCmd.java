@@ -2,7 +2,6 @@ package com.chuangyou.xianni.login;
 
 import com.chuangyou.common.protobuf.pb.PlayerLoginMsgProto.PlayerLoginMsg;
 import com.chuangyou.common.util.Log;
-import com.chuangyou.xianni.inverseBead.manager.InverseBeadManager;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerInfoSendCmd;
 import com.chuangyou.xianni.player.PlayerState;
@@ -11,7 +10,6 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
 import com.chuangyou.xianni.socket.Command;
-import com.chuangyou.xianni.team.reaction.ChangeLineAction;
 import com.chuangyou.xianni.word.WorldMgr;
 
 import io.netty.channel.Channel;

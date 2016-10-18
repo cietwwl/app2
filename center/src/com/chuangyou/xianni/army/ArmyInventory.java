@@ -2,7 +2,9 @@ package com.chuangyou.xianni.army;
 
 import java.util.Random;
 import com.chuangyou.common.protobuf.pb.army.HeroInfoMsgProto.HeroInfoMsg;
+import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
+import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.interfaces.UnlineInventory;
@@ -21,7 +23,7 @@ public class ArmyInventory extends AbstractEvent implements UnlineInventory {
 		this.player = player;
 		army = new Army(player);
 
-		// TODO 模拟英雄属性
+		// 英雄属性
 		BaseProperty tempData = PlayerManager.getTempProperty(player);
 		Hero hero = army.getHero();
 		hero.addTemp(tempData);
@@ -104,10 +106,10 @@ public class ArmyInventory extends AbstractEvent implements UnlineInventory {
 			hero.addAvatar(avatarData, avatarPer);
 		}
 
-		if(player.getGuildInventory() != null){
+		if (player.getGuildInventory() != null) {
 			BaseProperty guildSkillData = new BaseProperty();
 			BaseProperty guildSkillPer = new BaseProperty();
-			//加入帮派技能属性
+			// 加入帮派技能属性
 			player.getGuildInventory().getTotalSkillProperty(guildSkillData, guildSkillPer);
 			hero.addGuildSkill(guildSkillData, guildSkillPer);
 		}
@@ -146,6 +148,26 @@ public class ArmyInventory extends AbstractEvent implements UnlineInventory {
 	public void updateProperty() {
 		PlayerAttUpdateMsg.Builder attMsg = PlayerAttUpdateMsg.newBuilder();
 		this.army.getHero().writeUpdateProto(player, attMsg);
+		PBMessage message = MessageUtil.buildMessage(Protocol.S_PROPERTY_UPDATE, attMsg);
+		player.sendPbMessage(message);
+	}
+
+	/**
+	 * 更新玩家改变的属性
+	 */
+	public void updatePropertyOnlevelUp() {
+		PlayerAttUpdateMsg.Builder attMsg = PlayerAttUpdateMsg.newBuilder();
+		this.army.getHero().writeUpdateProto(player, attMsg);
+
+		PropertyMsg.Builder cur_hp = PropertyMsg.newBuilder();
+		cur_hp.setType(EnumAttr.CUR_SOUL.getValue());
+		cur_hp.setTotalPoint(army.getHero().getTotalProperty(Living.SOUL));
+		attMsg.addAtt(cur_hp);
+
+		PropertyMsg.Builder cur_blood = PropertyMsg.newBuilder();
+		cur_blood.setType(EnumAttr.CUR_BLOOD.getValue());
+		cur_blood.setTotalPoint(army.getHero().getTotalProperty(Living.BLOOD));
+		attMsg.addAtt(cur_blood);
 		PBMessage message = MessageUtil.buildMessage(Protocol.S_PROPERTY_UPDATE, attMsg);
 		player.sendPbMessage(message);
 	}

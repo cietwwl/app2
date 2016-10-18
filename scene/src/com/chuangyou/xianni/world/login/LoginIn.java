@@ -32,8 +32,8 @@ public class LoginIn implements Command {
 		// 清理数据
 		ArmyProxy existed = WorldMgr.getArmy(playerId);
 		if (existed != null) {
-			Log.error("------------------调试为啥有部队没有清理的问题-----------------" + playerId);
-			existed.unload();
+			Log.error("------------------调试为啥有部队没有清理的问题,看到输出日志请告知-----------------" + playerId);
+			WorldMgr.unLine(playerId);
 		}
 
 		ArmyProxy army = new ArmyProxy(playerId, "center", channel, simPlayer);

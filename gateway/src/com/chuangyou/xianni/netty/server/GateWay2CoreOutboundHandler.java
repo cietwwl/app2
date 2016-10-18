@@ -1,8 +1,6 @@
 package com.chuangyou.xianni.netty.server;
 
-import com.chuangyou.xianni.netty.AttributeKeySet;
 import com.chuangyou.xianni.netty.handler.server.ServerOutboundHandler;
-import com.chuangyou.xianni.user.UserMgr;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 

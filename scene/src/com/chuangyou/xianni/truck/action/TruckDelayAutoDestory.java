@@ -1,6 +1,5 @@
 package com.chuangyou.xianni.truck.action;
 
-import com.chuangyou.xianni.exec.ActionQueue;
 import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Truck;

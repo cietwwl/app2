@@ -2,9 +2,12 @@ package com.chuangyou.xianni.task.condition;
 
 import java.util.Date;
 
+import com.chuangyou.xianni.drop.manager.DropManager;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.task.TaskCfg;
 import com.chuangyou.xianni.entity.task.TaskInfo;
+import com.chuangyou.xianni.event.EventNameType;
+import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.event.ObjectListener;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.task.TaskTriggerInfo;
@@ -21,11 +24,40 @@ public abstract class BaseTaskCondiction {
 	protected TaskCfg cfg;
 	protected GamePlayer player;
 	protected ObjectListener listener;
+	protected ObjectListener dropListener;
 	protected TaskTriggerInfo parent;
 	
 	public abstract void addTrigger(GamePlayer player);
 
 	public abstract void removeTrigger(GamePlayer player);
+	
+	
+	/**
+	 * 添加掉落触发器
+	 * @param player
+	 */
+	protected void dropAddTrigger(GamePlayer player){
+		if(this.info.getState()!=TaskInfo.ACCEPT)return;
+		dropRemoveTrigger(player);
+		if(cfg.getDropId()>0){
+			this.dropListener = new ObjectListener() {	
+				@Override
+				public void onEvent(ObjectEvent event) {
+					// TODO Auto-generated method stub
+					DropManager.dropTaskItems(player, cfg.getDropId());
+				}
+			};
+			this.player.addListener(dropListener, EventNameType.TASK_KILL_MONSTER);
+		}
+	}
+	
+	/**
+	 * 删除掉落触发器
+	 * @param player
+	 */
+	protected void dropRemoveTrigger(GamePlayer player){
+		this.player.removeListener(dropListener, EventNameType.TASK_KILL_MONSTER);
+	}
 	
 	/** 初始化进度 */
 	public abstract void initProcess();
@@ -121,7 +153,4 @@ public abstract class BaseTaskCondiction {
 		return cfg;
 	}
 
-	
-	
-	
 }

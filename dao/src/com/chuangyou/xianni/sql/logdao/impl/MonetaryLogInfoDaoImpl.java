@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.TimeUtil;
-import com.chuangyou.xianni.entity.log.ItemLogInfo;
 import com.chuangyou.xianni.entity.log.MonetaryLogInfo;
 import com.chuangyou.xianni.sql.db.LogBaseDao;
 import com.chuangyou.xianni.sql.logdao.MonetaryLogInfoDao;

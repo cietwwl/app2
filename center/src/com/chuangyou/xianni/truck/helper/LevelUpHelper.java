@@ -1,14 +1,10 @@
 package com.chuangyou.xianni.truck.helper;
 
 import com.chuangyou.common.protobuf.pb.truck.RespTruckResultProto.RespTruckResult;
-import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.truck.TruckInfo;
 import com.chuangyou.xianni.entity.truck.TruckLevelConfig;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.proto.MessageUtil;
-import com.chuangyou.xianni.proto.PBMessage;
-import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.truck.TruckTempMgr;
  
 public class LevelUpHelper {

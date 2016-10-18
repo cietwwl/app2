@@ -60,6 +60,7 @@ public class TaskTemplateImpl extends BaseDao implements TaskTemplateDao {
 					info.setCommitScriptId(rs.getString("commitScriptId"));
 					info.setTaskTime(rs.getInt("taskTime"));
 					info.setTagPar(rs.getString("tagPar"));
+					info.setDropId(rs.getInt("dropId"));
 					infos.put(info.getTaskId(), info);
 				}
 			} catch (SQLException e) {

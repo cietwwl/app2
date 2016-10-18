@@ -8,8 +8,11 @@ import com.chuangyou.xianni.battle.buffer.specialbuf.BufferCreaterBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.CasterDamageEffectBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.CritEffectBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.DefenceBreakBuffer;
+import com.chuangyou.xianni.battle.buffer.specialbuf.PurifyBuffer;
+import com.chuangyou.xianni.battle.buffer.specialbuf.RealRestoreOrDamageBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.SoulAttackConvertAttackBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.SoulDefenceBreakBuffer;
+import com.chuangyou.xianni.battle.buffer.specialbuf.TruckAttributesBuffer;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.role.objects.Living;
 
@@ -32,8 +35,14 @@ public class BufferFactory {
 			case BufferType.ONLY_RESTORE_SOUL:
 				buffer = new LivingDamageBuffer(source, target, bufferInfo);
 				break;
+			case BufferType.REAL_RESTORE_OR_DAMARGE:
+				buffer = new RealRestoreOrDamageBuffer(source, target, bufferInfo);
+				break;
 			case BufferType.ATTR_BODY:
 				buffer = new AttributesBuffer(source, target, bufferInfo);
+				break;
+			case BufferType.TRUCK_ATTR_BODY:
+				buffer = new TruckAttributesBuffer(source, target, bufferInfo);
 				break;
 			case BufferType.CRIT_4_BLOOD:
 				buffer = new CritEffectBuffer(source, target, bufferInfo);
@@ -43,6 +52,9 @@ public class BufferFactory {
 				break;
 			case BufferType.ATTACK_COVENT_SOULATTACK:
 				buffer = new AttackConvertSoulAttackBuffer(source, target, bufferInfo);
+				break;
+			case BufferType.PURIFY:
+				buffer = new PurifyBuffer(source, target, bufferInfo);
 				break;
 			case BufferType.SOULATTACK_COVENT_ATTACK:
 				buffer = new SoulAttackConvertAttackBuffer(source, target, bufferInfo);
@@ -59,7 +71,6 @@ public class BufferFactory {
 			case BufferType.CASTER_DAMAGE_EFFECT:
 				buffer = new CasterDamageEffectBuffer(source, target, bufferInfo);
 				break;
-
 			case BufferType.BE_ATTACK_DAMAGE_EFFECT:
 				buffer = new BeAttackDamageEffectBuffer(source, target, bufferInfo);
 				break;

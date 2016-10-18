@@ -34,6 +34,7 @@ public class SkillTempMgr {
 
 	public static boolean init() {
 		reloadPb();
+		reloadSkillStage();
 		return true;
 	}
 
@@ -56,6 +57,17 @@ public class SkillTempMgr {
 		// }
 		// }
 		// 技能阶段
+		// List<SkillStage> skillStageList =
+		// DBManager.getSkillStageDao().load();
+		// if (skillStageList != null && !skillStageList.isEmpty()) {
+		// for (SkillStage stage : skillStageList) {
+		// skillStage.put(stage.getGradeLevel(), stage);
+		// }
+		// }
+		return true;
+	}
+	
+	public static boolean reloadSkillStage(){
 		List<SkillStage> skillStageList = DBManager.getSkillStageDao().load();
 		if (skillStageList != null && !skillStageList.isEmpty()) {
 			for (SkillStage stage : skillStageList) {

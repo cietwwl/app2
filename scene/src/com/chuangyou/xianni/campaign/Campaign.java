@@ -28,6 +28,7 @@ import com.chuangyou.xianni.campaign.state.SuccessState;
 import com.chuangyou.xianni.campaign.task.CTBaseCondition;
 import com.chuangyou.xianni.campaign.task.CampaignTask;
 import com.chuangyou.xianni.constant.CampaignConstant.CampaignStatu;
+import com.chuangyou.xianni.constant.CampaignConstant.CampaignType;
 import com.chuangyou.xianni.entity.campaign.CampaignTaskTemplateInfo;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.entity.field.FieldInfo;
@@ -41,6 +42,8 @@ import com.chuangyou.xianni.protocol.ClientProtocol;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.role.objects.Avatar;
+import com.chuangyou.xianni.team.Team;
+import com.chuangyou.xianni.team.TeamMgr;
 import com.chuangyou.xianni.warfield.FieldMgr;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
@@ -105,6 +108,7 @@ public class Campaign extends AbstractActionQueue {
 		this.creater = creater.getPlayerId();
 		this.random = new ThreadSafeRandom();
 		this.taskId = taskId;
+		// this.avatarIds = new HashSet<>();
 	}
 
 	/** 地图开始 */
@@ -139,6 +143,17 @@ public class Campaign extends AbstractActionQueue {
 		CampaignTaskTemplateInfo ttemp = CampaignTaskTempMgr.get(taskId);
 		if (ttemp != null) {
 			task = new CampaignTask(this, ttemp);
+		}
+
+		// 补充分身
+		ArmyProxy army = WorldMgr.getArmy(creater);
+		if (getTemp().getType() == CampaignType.TEAM) {
+			Team team = TeamMgr.getTeam(creater);
+			if (team != null && team.getMembers().size() < 4) {
+				addAvatars(army.getAvatarData(4 - team.getMembers().size()));
+			}
+		} else {
+			addAvatars(army.getAvatarData(3));
 		}
 		// expiredTime = endTime;
 		CampaignCheckAction action = new CampaignCheckAction(this);
@@ -211,13 +226,12 @@ public class Campaign extends AbstractActionQueue {
 			return;
 		}
 		state = new SuccessState(this);
-
+		endTime = System.currentTimeMillis() + 60 * 1000;// 60秒后结束副本
 		for (ArmyProxy army : getAllArmys()) {
 			sendCampaignInfo(army);
 			sendCampaignStatu(army);
 		}
 
-		endTime = System.currentTimeMillis() + 60 * 1000;// 60秒后结束副本
 	}
 
 	// 副本是否已经结束
@@ -245,7 +259,6 @@ public class Campaign extends AbstractActionQueue {
 			// 通知center服务器,玩家副本销毁了
 			sendCampaignStatu(army);
 		}
-		// setExpiredTime(System.currentTimeMillis() + 1 * 60 * 1000);
 	}
 
 	/** 清理副本信息 */
@@ -266,6 +279,7 @@ public class Campaign extends AbstractActionQueue {
 		indexMapping.clear();
 		changeNodes.clear();
 		teamNodes.clear();
+		// avatarIds.clear();
 		CampaignMgr.remove(id);
 
 	}
@@ -317,13 +331,12 @@ public class Campaign extends AbstractActionQueue {
 		cstatu.setTempId(tempId);
 		cstatu.setTeamId(teamId);// 组队副本向上穿透兼容
 		cstatu.setPlayerId(army.getPlayerId());
-		if (armys.containsValue(army)) {
-			cstatu.setIsIn(1);
-		}
+
 		if (state instanceof SuccessState) {
-			cstatu.setStatu(CampaignStatu.NOTITY2C_OUT_SUCCESS);
-		} else {
-			cstatu.setStatu(CampaignStatu.NOTITY2C_OUT_FAIL);
+			cstatu.setStatu(CampaignStatu.NOTITY2C_SUCCESS);
+		}
+		if (state instanceof StopState) {
+			cstatu.setStatu(CampaignStatu.NOTITY2C_OVER);
 		}
 		if (task != null) {
 			cstatu.setTaskId(task.getTemp().getTaskId());
@@ -430,7 +443,7 @@ public class Campaign extends AbstractActionQueue {
 		this.bornNode = bornNode;
 	}
 
-	public Vector3 getBornNode() {
+	public Vector3 getBornNode(ArmyProxy player) {
 		if (bornNode != null) {
 			return bornNode.getSpawnInfo().getPosition();
 		}
@@ -573,26 +586,16 @@ public class Campaign extends AbstractActionQueue {
 	private void createAvatar(RobotInfoMsg msg) {
 		Avatar robot = null;
 		ArmyProxy army = WorldMgr.getArmy(msg.getSimpInfo().getPlayerId());
-		if (army == null || army.getAvatars(msg.getSimpInfo().getSkinId()) == null) {
+		if (army == null) {
+			return;
+		}
+		if (army.getAvatars(msg.getSimpInfo().getSkinId()) == null) {
 			robot = new Avatar();
+			robot.instill(msg);
+			army.addAvatar(robot);
 		} else {
 			robot = army.getAvatars(msg.getSimpInfo().getSkinId());
 		}
-		robot.instill(msg);
-		FieldInfo fieldInfo = starField.getFieldInfo();
-		Vector3 vector3 = null;
-		// 当副本有出生点时候，进入地图，优先出现在出生点
-		Vector3 born = getBornNode();
-		if (born == null) {
-			vector3 = new Vector3(fieldInfo.getPosition().x, fieldInfo.getPosition().y, fieldInfo.getPosition().z, fieldInfo.getPosition().angle);
-		} else {
-			vector3 = new Vector3(born.x, born.y, born.z, born.angle);
-		}
-		robot.setPostion(vector3);
-		starField.enterField(robot);
-
-		if (army != null) {
-			army.addAvatar(robot);
-		}
+		robot.setCampaignId(getIndexId());
 	}
 }

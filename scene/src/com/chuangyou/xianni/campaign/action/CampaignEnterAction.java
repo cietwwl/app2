@@ -82,7 +82,7 @@ public class CampaignEnterAction extends Action {
 		// 若无初始位置,则设置进入时占无效位置
 		if (vector3 == null || (vector3.x <= 0 && vector3.y <= 0 && vector3.z <= 0)) {
 			// 当副本有出生点时候，进入地图，优先出现在出生点
-			Vector3 born = campaign.getBornNode();
+			Vector3 born = campaign.getBornNode(army);
 			if (born == null) {
 				vector3 = new Vector3(fieldTemp.getPosition().x, fieldTemp.getPosition().y, fieldTemp.getPosition().z, fieldTemp.getPosition().angle);
 			} else {
@@ -113,17 +113,6 @@ public class CampaignEnterAction extends Action {
 		cstatu.setStatu(CampaignStatu.NOTITY2C_IN);// 进入
 		PBMessage statuMsg = MessageUtil.buildMessage(Protocol.C_CAMPAIGN_STATU, cstatu);
 		army.sendPbMessage(statuMsg);
-
-		// 补充分身
-		if (campaign.getTemp().getType() == CampaignType.TEAM) {
-			Team team = TeamMgr.getTeam(army.getPlayerId());
-			if (team != null && team.getMembers().size() < 4) {
-				campaign.addAvatars(army.getAvatarData(4 - team.getMembers().size()));
-			}
-		} else {
-			campaign.addAvatars(army.getAvatarData(3));
-		}
-
 		// 发送副本信息
 		campaign.sendCampaignInfo(army);
 		// 如果有副本任务，则添加副本buff

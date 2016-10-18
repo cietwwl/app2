@@ -3,15 +3,10 @@ package com.chuangyou.xianni.sql.dao.impl;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.entity.skill.SkillActionMoveTempleteInfo;
-import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
-import com.chuangyou.xianni.entity.spawn.SpawnInfo;
 import com.chuangyou.xianni.sql.dao.SkillActionMoveTemplateInfoDao;
 import com.chuangyou.xianni.sql.db.BaseDao;
 

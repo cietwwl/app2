@@ -177,7 +177,7 @@ public class LoginLoadCmd extends AbstractCommand {
 		} catch (Exception e) {
 			Log.error("发送用户数据 失败,nickname " + player.getNickName() + ", userId " + player.getPlayerId(), e);
 		} finally {
-			Log.error("Protocol.U_G_DATA_LOAD_STATU = " + Protocol.U_G_DATA_LOAD_STATU + " type = " + dataType.getDataType());
+			//Log.error("Protocol.U_G_DATA_LOAD_STATU = " + Protocol.U_G_DATA_LOAD_STATU + " type = " + dataType.getDataType());
 			PlayerLoadDataMsg.Builder builder = PlayerLoadDataMsg.newBuilder();
 			builder.setLoadDataType(dataType.getDataType());
 			PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DATA_LOAD_STATU, builder);

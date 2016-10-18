@@ -24,16 +24,7 @@ public class KillMonsterStateCondition extends BaseStateCondition {
 	@Override
 	public void addTrigger(GamePlayer player) {
 		// TODO Auto-generated method stub
-		this.listener = new ObjectListener() {
-			
-			@Override
-			public void onEvent(ObjectEvent event) {
-				// TODO Auto-generated method stub
-				if((int)event.getObject() == config.getTargetId()){
-					incOneProcess();
-				}
-			}
-		};
+		this.initListener();		
 		this.player.addListener(listener, eventType);
 	}
 	
@@ -60,6 +51,21 @@ public class KillMonsterStateCondition extends BaseStateCondition {
 	public boolean commitProcess() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void initListener() {
+		// TODO Auto-generated method stub
+		if(this.listener != null)return;
+		this.listener = new ObjectListener() {		
+			@Override
+			public void onEvent(ObjectEvent event) {
+				// TODO Auto-generated method stub
+				if((int)event.getObject() == config.getTargetId()){
+					incOneProcess();
+				}
+			}
+		};
 	}
 
 }

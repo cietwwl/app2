@@ -2,22 +2,14 @@ package com.chuangyou.xianni.truck.cmd;
 
 import com.chuangyou.common.protobuf.pb.truck.InnerReqTruckInfoProto.InnerReqTruckInfo;
 import com.chuangyou.common.protobuf.pb.truck.ReqCreateTruckProto.ReqCreateTruck;
-import com.chuangyou.common.protobuf.pb.truck.RespCheckPointProto.RespCheckPoint;
-import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
-import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.role.helper.IDMakerHelper;
-import com.chuangyou.xianni.role.objects.Player;
-import com.chuangyou.xianni.role.objects.Truck;
 import com.chuangyou.xianni.socket.Cmd;
 import com.chuangyou.xianni.truck.TruckRelationshipMgr;
-import com.chuangyou.xianni.truck.TruckTempMgr;
 import com.chuangyou.xianni.truck.helper.CheckPointRespHelper;
 import com.chuangyou.xianni.world.AbstractCommand;
 import com.chuangyou.xianni.world.ArmyProxy;
-import com.chuangyou.xianni.world.SimplePlayerInfo;
 
 @Cmd(code = Protocol.S_REQ_TRUCK_CREATE, desc = "创建镖车")
 public class TruckReqCreateCmd extends AbstractCommand {

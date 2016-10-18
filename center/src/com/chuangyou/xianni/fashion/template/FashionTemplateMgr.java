@@ -38,4 +38,16 @@ public class FashionTemplateMgr {
 	public static Map<Integer, FashionQualityCfg> getQualityTemps() {
 		return qualityTemps;
 	}
+	public static boolean reloadFashionTemps(){
+		fashionTemps = DBManager.getFashionConfigDao().getFashion();
+		return true;
+	}
+	public static boolean reloadLevel(){
+		levelTemps = DBManager.getFashionConfigDao().getLevel();
+		return true;
+	}
+	public static boolean reloadQualityTemps(){
+		qualityTemps = DBManager.getFashionConfigDao().getQuality();
+		return true;
+	}
 }

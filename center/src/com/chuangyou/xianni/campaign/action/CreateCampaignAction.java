@@ -39,9 +39,9 @@ public class CreateCampaignAction extends Action {
 		}
 
 		// 扣除进入副本消耗物品
-		if (costItem(temp) == false) {
-			rspCode = CampaignRspCode.ITEM_NOT_ENOUGHT;
-		}
+		// if (costItem(temp) == false) {
+		// rspCode = CampaignRspCode.ITEM_NOT_ENOUGHT;
+		// }
 		// 如果在副本内，不允许创建副本
 		if (player.getCurCampaign() != 0) {
 			// rspCode = CampaignRspCode.ALREAD_IN_CAMPAIGN;

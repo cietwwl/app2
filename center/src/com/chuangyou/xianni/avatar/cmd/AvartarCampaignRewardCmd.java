@@ -18,7 +18,7 @@ public class AvartarCampaignRewardCmd implements Command {
 		PassAvatarCampaignMsg msg = PassAvatarCampaignMsg.parseFrom(packet.getBytes());
 		GamePlayer player = WorldMgr.getPlayer(msg.getPlayerId());
 		if (player != null && player.getAvatarInventory() != null) {
-			
+			player.getAvatarInventory().challageReward(msg.getTempId(), msg.getRewardCount());
 		}
 	}
 

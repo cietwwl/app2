@@ -25,8 +25,9 @@ public class KillMonsterTaskCondition extends BaseTaskCondiction {
 	public void addTrigger(GamePlayer player) {
 		// TODO Auto-generated method stub
 		if(this.info.getState()!=TaskInfo.ACCEPT)return;
-		this.listener = new ObjectListener() {
-			
+		removeTrigger(player);
+		dropAddTrigger(player);
+		this.listener = new ObjectListener() {	
 			@Override
 			public void onEvent(ObjectEvent event) {
 				// TODO Auto-generated method stub
@@ -41,6 +42,7 @@ public class KillMonsterTaskCondition extends BaseTaskCondiction {
 	@Override
 	public void removeTrigger(GamePlayer player) {
 		// TODO Auto-generated method stub
+		this.dropRemoveTrigger(player);
 		this.player.removeListener(listener, eventType);
 	}
 	
@@ -65,6 +67,6 @@ public class KillMonsterTaskCondition extends BaseTaskCondiction {
 		
 	}
 
-	
+		
 	
 }

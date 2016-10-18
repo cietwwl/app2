@@ -50,7 +50,7 @@ public class BasePlayer extends AbstractEvent {
 	/**
 	 * 添加经验逻辑
 	 */
-	private PlayerAddExpLogic addExpLogic;
+	private PlayerAddExpLogic	addExpLogic;
 
 	private LockData			moneyLock		= new LockData();
 	private LockData			cashLock		= new LockData();
@@ -649,19 +649,20 @@ public class BasePlayer extends AbstractEvent {
 				hasLevelUp = true;
 				int level = LevelUpTempleteMgr.getPlayerLevel(playerInfo.getTotalExp());
 				StateConfig config = StateTemplateMgr.getStates().get(playerInfo.getStateLv());
-				if(level>config.getMaxLevel()){  //超过境界上限
+				if (level > config.getMaxLevel()) { // 超过境界上限
 					int canLevel = config.getMaxLevel();
-					long needTotalExp =  LevelUpTempleteMgr.getPlayerLevelNeedExp(canLevel);
+					long needTotalExp = LevelUpTempleteMgr.getPlayerLevelNeedExp(canLevel);
 					long tempExp = playerInfo.getTotalExp() - needTotalExp;
 					LevelUp up = LevelUpTempleteMgr.getPlayerLevelUp(canLevel);
-					tempExp = Math.min(tempExp, up.getExp()*4);
+					//境界未到，最多累计四倍经验
+					tempExp = Math.min(tempExp, up.getExp() * 4);
 					playerInfo.setLevel(canLevel);
 					playerInfo.setExp(tempExp);
-					playerInfo.setTotalExp(needTotalExp+tempExp);
-				}else{     //未超过境界上限。正常升级
+					playerInfo.setTotalExp(needTotalExp + tempExp);
+				} else { // 未超过境界上限。正常升级
 					playerInfo.setLevel(level);
 					long needTotalExp = LevelUpTempleteMgr.getPlayerLevelNeedExp(playerInfo.getLevel());
-					playerInfo.setExp(playerInfo.getTotalExp() - needTotalExp);					
+					playerInfo.setExp(playerInfo.getTotalExp() - needTotalExp);
 				}
 			}
 			changeMap.put(EnumAttr.Exp.getValue(), playerInfo.getExp());

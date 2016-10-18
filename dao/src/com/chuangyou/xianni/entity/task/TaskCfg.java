@@ -36,6 +36,10 @@ public class TaskCfg {
 	private int taskTime;
 	/** 任务刷怪坐标点   */
 	private String tagPar;
+	/**
+	 * 任务物品掉落池ID
+	 */
+	private int dropId;
 	
 
 	public Map<Integer, String[]> toItems() {
@@ -246,6 +250,14 @@ public class TaskCfg {
 
 	public void setCommitNpcId(int commitNpcId) {
 		this.commitNpcId = commitNpcId;
+	}
+
+	public int getDropId() {
+		return dropId;
+	}
+
+	public void setDropId(int dropId) {
+		this.dropId = dropId;
 	}
 
 }

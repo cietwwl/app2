@@ -2,12 +2,10 @@ package com.chuangyou.xianni.truck.cmd;
 
 import com.chuangyou.common.protobuf.pb.truck.InnerRespChangeResultProto.InnerRespChangeResult;
 import com.chuangyou.xianni.constant.EnumAttr;
-import com.chuangyou.xianni.entity.truck.TruckCheckPointConfig;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.objects.Truck;
 import com.chuangyou.xianni.socket.Cmd;
-import com.chuangyou.xianni.truck.helper.TrcukCheckHelper;
 import com.chuangyou.xianni.truck.helper.TruckActionRespHelper;
 import com.chuangyou.xianni.truck.helper.TruckAttChgHelper;
 import com.chuangyou.xianni.warfield.FieldMgr;

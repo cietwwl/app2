@@ -143,4 +143,11 @@ public class RewardTemplate {
 		this.extendParam = extendParam;
 	}
 
+	@Override
+	public String toString() {
+		return "RewardTemplate [type=" + type + ", name=" + name + ", param1=" + param1 + ", param2=" + param2 + ", itemTempId1=" + itemTempId1 + ", count1=" + count1 + ", itemTempId2=" + itemTempId2
+				+ ", count2=" + count2 + ", itemTempId3=" + itemTempId3 + ", count3=" + count3 + ", itemTempId4=" + itemTempId4 + ", count4=" + count4 + ", itemTempId5=" + itemTempId5 + ", count5="
+				+ count5 + ", extendParam=" + extendParam + "]";
+	}
+
 }

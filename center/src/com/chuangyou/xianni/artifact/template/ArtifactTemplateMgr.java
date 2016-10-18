@@ -35,6 +35,30 @@ public class ArtifactTemplateMgr {
 		jewelSuitList = DBManager.getArtifactConfigDao().getArtifactJewelSuit();
 		return true;
 	}
+	public static boolean reloadArtifactMap(){
+		artifactMap = DBManager.getArtifactConfigDao().getArtifactInfo();
+		return true;
+	}
+	public static boolean reloadLevelUpMap(){
+		levelUpMap = DBManager.getArtifactConfigDao().getArtifactLevel();
+		return true;
+	}
+	public static boolean reloadGradeUpMap(){
+		gradeUpMap = DBManager.getArtifactConfigDao().getArtifactGrade();
+		return true;
+	}
+	public static boolean reloadSuitList(){
+		suitList = DBManager.getArtifactConfigDao().getArtifactSuit();
+		return true;
+	}
+	public static boolean reloadJewelLevelupListMap(){
+		jewelLevelupListMap = DBManager.getArtifactConfigDao().getArtifactJewelLevel();
+		return true;
+	}
+	public static boolean reloadJewelSuitList(){
+		jewelSuitList = DBManager.getArtifactConfigDao().getArtifactJewelSuit();
+		return true;
+	}
 	
 	public static ArtifactInfoCfg getArtifactCfg(int artifactId){
 		return getArtifactMap().get(artifactId);

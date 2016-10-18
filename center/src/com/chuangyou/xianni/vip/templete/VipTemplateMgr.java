@@ -23,20 +23,56 @@ public class VipTemplateMgr {
 	}
 
 	public static boolean reloadPb() {
+		reloadVipTemplate();
+		reloadVipLevelTemp();
+		reloadVipBagTemp();
+		
+//		List<VipTemplate> vipTemp = DBManager.getVipTemplateDao().load();
+//		if (vipTemp != null && vipTemp.size() > 0) {
+//			for (VipTemplate tem : vipTemp) {
+//				vipTemplate.put(tem.getId(), tem);
+//			}
+//		}
+//
+//		List<VipLevelTemplate> vipLevelTemp = DBManager.getVipLevelTemplateDao().load();
+//		if (vipLevelTemp != null && vipLevelTemp.size() > 0) {
+//			for (VipLevelTemplate tem : vipLevelTemp) {
+//				vipLevelTemplate.put(tem.getLv(), tem);
+//			}
+//		}
+//
+//		List<VipBagTemplate> vipBagTemp = DBManager.getVipBagTemplateDao().load();
+//		if (vipBagTemp != null && vipBagTemp.size() > 0) {
+//			for (VipBagTemplate tem : vipBagTemp) {
+//				int type = tem.getType();
+//				if (!vipBagTemplate.containsKey(type)) {
+//					vipBagTemplate.put(type, new HashMap<Integer, VipBagTemplate>());
+//				}
+//				vipBagTemplate.get(type).put(tem.getId(), tem);
+//			}
+//		}
+
+		return true;
+	}
+	public static boolean reloadVipTemplate(){//tb_z_vip
 		List<VipTemplate> vipTemp = DBManager.getVipTemplateDao().load();
 		if (vipTemp != null && vipTemp.size() > 0) {
 			for (VipTemplate tem : vipTemp) {
 				vipTemplate.put(tem.getId(), tem);
 			}
 		}
-
+		return true;
+	}
+	public static boolean reloadVipLevelTemp(){//tb_z_vip_level
 		List<VipLevelTemplate> vipLevelTemp = DBManager.getVipLevelTemplateDao().load();
 		if (vipLevelTemp != null && vipLevelTemp.size() > 0) {
 			for (VipLevelTemplate tem : vipLevelTemp) {
 				vipLevelTemplate.put(tem.getLv(), tem);
 			}
 		}
-
+		return true;
+	}
+	public static boolean reloadVipBagTemp(){//tb_z_vip_bag
 		List<VipBagTemplate> vipBagTemp = DBManager.getVipBagTemplateDao().load();
 		if (vipBagTemp != null && vipBagTemp.size() > 0) {
 			for (VipBagTemplate tem : vipBagTemp) {
@@ -47,9 +83,9 @@ public class VipTemplateMgr {
 				vipBagTemplate.get(type).put(tem.getId(), tem);
 			}
 		}
-
 		return true;
 	}
+	
 
 	public static VipTemplate getVipTemplate(int id) {
 		return vipTemplate.get(id);

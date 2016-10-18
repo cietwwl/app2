@@ -24,7 +24,7 @@ public class HeroPollingAction extends PollingAction {
 		// 调试代码
 		if (living.getLivingState() != Living.DISTORY && !WorldMgr.isExist(player.getArmyId())) {
 			Log.error(player.getId() + "***********************出现下线未销毁的player*******************************" + getClass().getName() + "@" + Integer.toHexString(hashCode()));
-			// player.clearData();
+			//player.clearData();
 		}
 	}
 }

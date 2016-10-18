@@ -62,6 +62,10 @@ public class SkillManager {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.SKILL_UP_ERROR, packet.getCode());
 			return false;
 		}
+		if(upLv>player.getBasePlayer().getPlayerInfo().getLevel()){
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.SKILL_UP_ERROR5, packet.getCode());
+			return false;
+		}
 		// 计算需要的资源
 		HeroSkill alreadyStudySkill = getSkillTypeSkill(player, skillInfo.getMasterType(), skillInfo.getSonType(), skillInfo.getGrandsonType());
 		int needStone = 0; // 技能升级需要灵石
@@ -292,6 +296,9 @@ public class SkillManager {
 		int upLv = skillInfo.getLevel();
 		int nowSkillLV = getSkillTypeLv(player, skillInfo.getMasterType(), skillInfo.getSonType(), skillInfo.getGrandsonType());
 		if (upLv - nowSkillLV != 1) { // 已经学习了
+			return false;
+		}
+		if(upLv>player.getBasePlayer().getPlayerInfo().getLevel()){
 			return false;
 		}
 

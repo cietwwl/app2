@@ -22,7 +22,7 @@ public class EmailItemVo {
 	/**
 	 * 是否绑定
 	 */
-	private int bind = BindType.ALL;
+	private int bind = BindType.BIND;
 
 	
 	
@@ -32,6 +32,16 @@ public class EmailItemVo {
 		this.count = count;
 		this.bind = bind;
 	}
+
+	
+	
+	public EmailItemVo(int itemTemplateId, int count) {
+		super();
+		this.itemTemplateId = itemTemplateId;
+		this.count = count;
+	}
+
+
 
 	/**
 	 *  获取附件字符串

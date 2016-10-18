@@ -5,9 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
 import java.util.Set;
-import com.chuangyou.common.protobuf.pb.PlayerKillMonsterProto.PlayerKillMonsterMsg;
 import com.chuangyou.common.protobuf.pb.army.HeroInfoMsgProto.HeroInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLivingInfoMsg;
@@ -15,9 +13,12 @@ import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLi
 import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
+import com.chuangyou.common.protobuf.pb.scene.PlayerKillMonsterListProto.PlayerKillMonsterListMsg;
+import com.chuangyou.common.protobuf.pb.scene.PlayerKillMonsterProto.PlayerKillMonsterMsg;
 import com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.MathUtils;
+import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.battle.action.HeroPollingAction;
 import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.buffer.BufferFactory;
@@ -35,6 +36,7 @@ import com.chuangyou.xianni.campaign.node.CampaignNodeDecorator;
 import com.chuangyou.xianni.campaign.task.CTBaseCondition;
 import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.BattleModeCode;
+import com.chuangyou.xianni.constant.BattleSettlementConstant;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.avatar.AvatarCorrespondTemplateInfo;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
@@ -117,7 +119,6 @@ public class Player extends ActiveLiving {
 		setType(RoleType.player);
 		HeroPollingAction heroAction = new HeroPollingAction(this);
 		this.enDelayQueue(heroAction);
-		System.out.println(getClass().getName() + "@" + Integer.toHexString(hashCode()));
 	}
 
 	public void readHeroInfo(HeroInfoMsg hero) {
@@ -166,10 +167,13 @@ public class Player extends ActiveLiving {
 					if (campaign instanceof PvP1v1Campaign) {
 						((PvP1v1Campaign) campaign).die(this.getArmyId());
 					}
-					if(campaign instanceof StateCampaign){
-						((StateCampaign)campaign).failOver();
+					if (campaign instanceof StateCampaign) {
+						((StateCampaign) campaign).failOver();
 					}
 				}
+			}
+			if (isCorrespondStatu()) {
+				unTransfiguration();
 			}
 		}
 
@@ -241,7 +245,6 @@ public class Player extends ActiveLiving {
 				updateProperty(deather, properties);
 			}
 			calPKValue(source, deather);
-
 		}
 
 	}
@@ -266,12 +269,11 @@ public class Player extends ActiveLiving {
 
 	/* 满血复活 */
 	public boolean renascence() {
-		if (this.livingState == ALIVE) {
+		if (getLivingState() == ALIVE) {
 			return false;
 		}
-
-		this.livingState = ALIVE;
-		sendChangeStatuMsg(LIVING, livingState);
+		setLivingState(ALIVE);
+		sendChangeStatuMsg(LIVING, getLivingState());
 		List<Damage> damages = new ArrayList<>();
 		Damage curSoul = new Damage(this, this);
 		curSoul.setDamageType(EnumAttr.CUR_SOUL.getValue());
@@ -327,7 +329,6 @@ public class Player extends ActiveLiving {
 			toal.add(weaponBuffer);
 		}
 		return toal;
-
 	}
 
 	/**
@@ -666,10 +667,14 @@ public class Player extends ActiveLiving {
 	 *            被杀者
 	 */
 	public void notifyCenter(long playerId, long beKillerId) {
+		PlayerKillMonsterListMsg.Builder builder = PlayerKillMonsterListMsg.newBuilder();
+
 		PlayerKillMonsterMsg.Builder msg = PlayerKillMonsterMsg.newBuilder();
 		msg.setPlayerId(playerId);
 		msg.setBeKillId(beKillerId);
 		msg.setType(RoleType.player);
+		msg.setJoinType(BattleSettlementConstant.KILLER);
+		builder.addKillInfos(msg);
 		PBMessage pkg = MessageUtil.buildMessage(Protocol.C_PLAYER_KILL_MONSTER, msg);
 		GatewayLinkedSet.send2Server(pkg);
 	}
@@ -713,8 +718,9 @@ public class Player extends ActiveLiving {
 		}
 		unTransfigurationTime = System.currentTimeMillis() + durationTime * 1000;
 		// ---- 第八步：随机某个分身作为主体并补充其技能-----
-		Avatar chosened = avatars.get(new Random().nextInt(avatars.size()));
+		Avatar chosened = avatars.get(ThreadSafeRandom.getInstance().next(avatars.size()));
 		correspondStatu = 1;
+		mountState = 0;
 		avatarTempId = chosened.getSimpleInfo().getSkinId();
 
 		// 被选中者补入其所有技能
@@ -765,7 +771,9 @@ public class Player extends ActiveLiving {
 		avatarSkills.clear();
 		// 第五步 返回出战的分身
 		for (Avatar avatar : avatars) {
-			avatar.reback();
+			if (getField() != null && avatar.getCampaignId() != 0 && avatar.getCampaignId() == getField().getCampaignId()) {
+				avatar.reback();
+			}
 		}
 		// ----- 第六步：人物变更状态------
 		Set<Long> nears = getNears(new PlayerSelectorHelper(this));

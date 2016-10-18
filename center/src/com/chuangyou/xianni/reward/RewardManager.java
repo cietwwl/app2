@@ -7,7 +7,10 @@ import java.util.Map;
 
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.bag.BagInventory;
+import com.chuangyou.xianni.email.manager.EmailManager;
+import com.chuangyou.xianni.email.vo.EmailItemVo;
 import com.chuangyou.xianni.entity.item.ItemAddType.RewardType;
+import com.chuangyou.xianni.entity.rank.RankCfg;
 import com.chuangyou.xianni.entity.reward.RewardTemplate;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.sql.dao.DBManager;
@@ -105,7 +108,71 @@ public class RewardManager {
 		return true;
 	}
 
-	private static boolean sendReward(RewardTemplate template, GamePlayer player) {
+	/**
+	 * 
+	 * @param playerId ：中奖人ID
+	 * @param rank ：名次
+	 * @param type :榜单代号
+	 * @return
+	 */
+	public static boolean sendRankReward(long playerId,int rank,int type,RankCfg cfg){
+		List<RewardTemplate> rewards = rewardTemps.get(type);
+		if (rewards == null) {
+			return false;
+		}
+		RewardTemplate get = null;
+		for (RewardTemplate reard : rewards) {
+			if(reard.getParam1()>reard.getParam2()){
+				Log.error("RewardTemplate配置表数据错误:"+reard.toString());
+			}
+			if (rank >= reard.getParam1() && rank <= reard.getParam2()) {
+				get = reard;
+				break;
+			}
+		}
+		if (get != null) {
+			String title = cfg.getMailTitle();
+			String content = cfg.getMailText();
+			content = content.replaceAll("@rank@", rank+"");
+			sendEmailReward(get,playerId,title,content);
+		}
+		return true;
+	}
+	
+	public static List<RewardTemplate> getRewardTemps(int type) {
+		return rewardTemps.get(type);
+	}
+
+	/**
+	 * 发送邮件奖励
+	 * @param template
+	 * @param playerId
+	 * @param title
+	 * @param content
+	 * @return
+	 */
+	public static void sendEmailReward(RewardTemplate template,long playerId,String title,String content){
+		List<EmailItemVo> emailItems = new ArrayList<>();
+		
+		if (template.getItemTempId1() != 0 && template.getCount1() != 0) {
+			emailItems.add(new EmailItemVo(template.getItemTempId1(), template.getCount1()));
+		}
+		if (template.getItemTempId2() != 0 && template.getCount2() != 0) {
+			emailItems.add(new EmailItemVo(template.getItemTempId2(), template.getCount2()));
+		}
+		if (template.getItemTempId3() != 0 && template.getCount3() != 0) {
+			emailItems.add(new EmailItemVo(template.getItemTempId3(), template.getCount3()));
+		}
+		if (template.getItemTempId4() != 0 && template.getCount4() != 0) {
+			emailItems.add(new EmailItemVo(template.getItemTempId4(), template.getCount4()));
+		}
+		if (template.getItemTempId5() != 0 && template.getCount5() != 0) {
+			emailItems.add(new EmailItemVo(template.getItemTempId5(), template.getCount5()));
+		}
+		EmailManager.insertEmail(playerId, title, content, emailItems);
+	}
+	
+	public static boolean sendReward(RewardTemplate template, GamePlayer player) {
 		BagInventory bag = player.getBagInventory();
 		if (bag == null) {
 			Log.error("sendReward error, template:" + template.getType() + " player:" + player.getPlayerId());

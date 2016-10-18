@@ -40,7 +40,31 @@ public class GuildTemplateMgr {
 		guildList = DBManager.getGuildConfigDao().getGuildCfg();
 		return true;
 	}
-
+	public static boolean reloadJobMap(){//tb_z_guild_job
+		jobMap = DBManager.getGuildConfigDao().getJob();
+		return true;
+	}
+	public static boolean reloadPowerMap(){//tb_z_guild_job_power
+		powerMap = DBManager.getGuildConfigDao().getJobPower();
+		return true;
+	}
+	public static boolean reloadDonateMap(){//tb_z_guild_donate
+		donateMap = DBManager.getGuildConfigDao().getDonate();
+		return true;
+	}
+	public static boolean reloadWarehouseMap(){//tb_z_guild_warehouse
+		warehouseMap = DBManager.getGuildConfigDao().getWarehouse();
+		return true;
+	}
+	public static boolean reloadSkillMap(){//tb_z_guild_skill_level
+		skillMap = DBManager.getGuildConfigDao().getSkill();
+		return true;
+	}
+	public static boolean reloadGuildList(){//tb_z_guild_system
+		guildList = DBManager.getGuildConfigDao().getGuildCfg();
+		return true;
+	}
+	
 	public static Map<Integer, GuildJobCfg> getJobMap() {
 		return jobMap;
 	}

@@ -8,7 +8,7 @@ import java.util.Random;
  * </pre>
  */
 public class ThreadSafeRandom {
-	public static ThreadSafeRandom instance;
+	private static ThreadSafeRandom instance;
 
 	public static ThreadSafeRandom getInstance() {
 		if (instance == null) {

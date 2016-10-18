@@ -24,6 +24,10 @@ public class TSystemTaskCondition extends KillMonsterTaskCondition {
 	public void addTrigger(GamePlayer player) {
 		// TODO Auto-generated method stub
 		if(this.info.getState()!=TaskInfo.ACCEPT)return;
+		
+		removeTrigger(player);
+		dropAddTrigger(player);
+		
 		this.listener = new ObjectListener() {
 			
 			@Override

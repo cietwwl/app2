@@ -11,7 +11,7 @@ import com.chuangyou.xianni.world.ArmyProxy;
 
 public class AvatarCampaign extends Campaign {
 
-	private int rewardCount = 1;// 副本使用奖励层数物品
+	private int rewardCount = 10;// 副本使用奖励层数物品
 
 	public AvatarCampaign(CampaignTemplateInfo tempInfo, ArmyProxy creater) {
 		super(tempInfo, creater, 0);

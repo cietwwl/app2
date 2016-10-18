@@ -15,8 +15,10 @@ public class SceneArmyCreateSuccessCmd extends AbstractCommand {
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
 		ChangeLineAction action = new ChangeLineAction(player, null, true);
 		action.getActionQueue().enqueue(action);
-		
+
 		InverseBeadManager.syncSpawn(player);
+
+		// 发送分身数据
 		if (player.getAvatarInventory() != null) {
 			player.getAvatarInventory().writeAvatarMsg2Scene();
 		}

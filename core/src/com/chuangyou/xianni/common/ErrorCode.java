@@ -606,9 +606,13 @@ public class ErrorCode {
 	public static final int	VIPBAG_ERROR6							= 6025;
 	/** 点赞每天只能一次 */
 	public static final int	LIKE_ONLY_ONE							= 6026;
-
+	
 	/** 巅峰之战尚未开启 */
 	public static final int	PVP_1V1_NOT_OPTEN						= 7001;
+	/**
+	 * 空间主人禁止你留言
+	 */
+	public static final int SPACE_NO_MSG_ERROR                      = 7002;
 
 	// public static final int CHANGE_BATTLE3 = 6009;
 	// public static final int CHANGE_BATTLE4 = 6009;

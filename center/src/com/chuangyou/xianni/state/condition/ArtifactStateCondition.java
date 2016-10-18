@@ -25,39 +25,11 @@ public class ArtifactStateCondition extends BaseStateCondition {
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	@Override
 	public void addTrigger(GamePlayer player) {
 		// TODO Auto-generated method stub
-		this.listener = new ObjectListener() {
-			
-			@Override
-			public void onEvent(ObjectEvent event) {
-				// TODO Auto-generated method stub
-				ArtifactStateEvent e = (ArtifactStateEvent) event;
-				int old = info.getProcess();
-				if(e.getTargetId() == 1 || e.getTargetId() == 3 || e.getTargetId() == 5){
-					if(config.getTargetNum() == e.getTargetId1()){
-						info.setProcess(e.getTargetNum());
-					}
-					if(e.getTargetId() == 1){						
-						info.setProcess(getCountLv(player.getArtifactInventory().getArtifactMap(),config.getTargetId1()));
-					}else if(e.getTargetId() == 3){
-						info.setProcess(getCountStar(player.getArtifactInventory().getArtifactMap(),config.getTargetId1()));
-					}else if(e.getTargetId() == 5){
-						info.setProcess(getCountStoneLv(player.getArtifactInventory().getArtifactMap(),config.getTargetId1()));
-					}
-				}else if(e.getTargetId() == 7){
-					RankTempInfo rankInfo = RankServerManager.getInstance().getRankTempInfo(player.getPlayerId());
-					if(rankInfo!=null){
-						info.setProcess((int)rankInfo.getArtifact());
-					}
-				}
-				
-				if(old!=info.getProcess()){
-					doNotifyUpdate();
-				}
-			}
-		};
+		this.initListener();
 		player.addListener(listener, EventNameType.ARTIFACT);
 	}
 
@@ -128,6 +100,45 @@ public class ArtifactStateCondition extends BaseStateCondition {
 	public boolean commitProcess() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+
+
+
+	@Override
+	public void initListener() {
+		// TODO Auto-generated method stub
+		if(this.listener!=null)return;
+		this.listener = new ObjectListener() {
+			
+			@Override
+			public void onEvent(ObjectEvent event) {
+				// TODO Auto-generated method stub
+				ArtifactStateEvent e = (ArtifactStateEvent) event;
+				int old = info.getProcess();
+				if(e.getTargetId() == 1 || e.getTargetId() == 3 || e.getTargetId() == 5){
+					if(config.getTargetNum() == e.getTargetId1()){
+						info.setProcess(e.getTargetNum());
+					}
+					if(e.getTargetId() == 1){						
+						info.setProcess(getCountLv(player.getArtifactInventory().getArtifactMap(),config.getTargetId1()));
+					}else if(e.getTargetId() == 3){
+						info.setProcess(getCountStar(player.getArtifactInventory().getArtifactMap(),config.getTargetId1()));
+					}else if(e.getTargetId() == 5){
+						info.setProcess(getCountStoneLv(player.getArtifactInventory().getArtifactMap(),config.getTargetId1()));
+					}
+				}else if(e.getTargetId() == 7){
+					RankTempInfo rankInfo = RankServerManager.getInstance().getRankTempInfo(player.getPlayerId());
+					if(rankInfo!=null){
+						info.setProcess((int)rankInfo.getArtifact());
+					}
+				}
+				
+				if(old!=info.getProcess()){
+					doNotifyUpdate();
+				}
+			}
+		};
 	}
 
 }

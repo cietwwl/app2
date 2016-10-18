@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.chuangyou.common.util.Log;
+import com.chuangyou.xianni.entity.rank.RankCfg;
 import com.chuangyou.xianni.entity.rank.RankInfo;
 import com.chuangyou.xianni.entity.rank.RankTempInfo;
 import com.chuangyou.xianni.sql.dao.RankDao;
@@ -32,7 +33,7 @@ public class RankDaoImpl extends BaseDao implements RankDao {
 	@Override
 	public List<RankInfo> getRankListByType(int type, int range) {
 		// TODO Auto-generated method stub
-		String sql = "select * from tb_u_rank_info where rankType="+type+" and rankRange="+range+" order by rank";
+		String sql = "select * from tb_u_rank_info where rankType="+type+" and rankRange="+range+" order by rank limit 120";
 		PreparedStatement pst = execQuery(sql);
 		ResultSet rs = null;
 		RankInfo info = null;
@@ -170,6 +171,37 @@ public class RankDaoImpl extends BaseDao implements RankDao {
 		}
 		return infos;
 		
+	}
+
+
+	@Override
+	public Map<Integer, RankCfg> getRankRewardTypes() {
+		// TODO Auto-generated method stub
+		String sql = "select * from tb_z_rank_config";
+		PreparedStatement pst = execQuery(sql);
+		ResultSet rs = null;
+		RankCfg info = null;
+		Map<Integer, RankCfg> infos = null;
+		try {
+			rs = pst.executeQuery();
+			infos = new HashMap<>();
+			while (rs.next()) {
+				info = new RankCfg();
+				info.setId(rs.getInt("id"));
+				info.setRewardType(rs.getInt("rewardType"));
+				info.setMailTitle(rs.getString("mailTitle"));
+				info.setMailText(rs.getString("mailText"));
+				infos.put(info.getId(), info);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			infos = null;
+			Log.error("执行出错" + sql, e);
+		} finally {
+			closeConn(pst, rs);
+		}
+		return infos;
 	}
 
 

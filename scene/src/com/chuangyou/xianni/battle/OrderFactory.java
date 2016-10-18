@@ -44,6 +44,10 @@ public class OrderFactory {
 
 	public static boolean attackCheck(Field field, Player player, Player target) {
 		try {
+			if (player.getArmyId() != 0 && player.getArmyId() == target.getArmyId()) {
+				return false;
+			}
+
 			if (field.getFieldInfo().getBattleType() == 2) {
 				return true; // 竞技地图，任意PK
 			}
@@ -51,15 +55,16 @@ public class OrderFactory {
 			String endTime = field.getFieldInfo().getEndBattleTime();
 			if (field.getFieldInfo().getBattleType() == 1) {// pk 地图才能攻击
 				int openLv = SystemConfigTemplateMgr.getIntValue("pk.openLv");
-				if (target.getSimpleInfo().getLevel() < openLv)
+				if (target.getSimpleInfo().getLevel() < openLv) {
 					return false;
+				}
 				if (player.getArmyId() == target.getArmyId()) {
 					return false;
 				}
-
 				if (player.getBattleMode() == BattleModeCode.sectsBattleMode) {
-					if (player.getTeamId() != 0 && player.getTeamId() == (target).getTeamId())// 队友
+					if (player.getTeamId() != 0 && player.getTeamId() == (target).getTeamId()) {// 队友
 						return false;
+					}
 				}
 
 				if (startTime != null && endTime != null && TimeUtil.checkPeriod(startTime, endTime)) {// 受保护时间
@@ -74,13 +79,6 @@ public class OrderFactory {
 					if (target.getColour(target.getPkVal()) == BattleModeCode.red) {
 						return true;
 					}
-					// if (target.getColour(target.getPkVal()) ==
-					// BattleModeCode.white) {
-					// if (target.isFlashName())
-					// return true;
-					// return false;
-					// }
-
 					if (!target.isFlashName()) {// 没有闪不能攻击
 						return false;
 					}

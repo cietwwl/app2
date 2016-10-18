@@ -15,6 +15,7 @@ import com.chuangyou.xianni.email.EmailInventory;
 import com.chuangyou.xianni.email.manager.EmailManager;
 import com.chuangyou.xianni.email.vo.EmailItemVo;
 import com.chuangyou.xianni.entity.email.Email;
+import com.chuangyou.xianni.entity.item.BindType;
 import com.chuangyou.xianni.entity.item.ItemAddType;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -70,7 +71,7 @@ public class GetEmailAttachmentCmd extends AbstractCommand {
 				player.getBasePlayer().addBindCash(item.getCount(), ItemAddType.EMAIL_ADD);
 				it.remove();
 			} else {
-				if (player.getBagInventory().addItem(item.getItemTemplateId(), item.getCount(), ItemAddType.EMAIL_ADD, true)) {
+				if (player.getBagInventory().addItem(item.getItemTemplateId(), item.getCount(), ItemAddType.EMAIL_ADD, item.getBind()==BindType.BIND?true:false)) {
 					it.remove();
 				} else {
 					ErrorMsgUtil.sendErrorMsg(player, ErrorCode.BAG_IS_FULL, Protocol.C_REQ_GETEMAILATTACKMENT, "背包已满");

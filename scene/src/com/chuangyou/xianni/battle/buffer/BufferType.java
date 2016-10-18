@@ -9,8 +9,12 @@ public class BufferType {
 																// 先恢复有元魂后恢复气血
 	public static final int	ONLY_RESTORE_BLOOD			= 5;	// 只恢复气血
 	public static final int	ONLY_RESTORE_SOUL			= 6;	// 只恢复 元魂
+
+	public static final int	REAL_RESTORE_OR_DAMARGE		= 7;	// 真实回复/伤害的BUFF
+	public static final int	PURIFY						= 8;	// 净化buffer
 	public static final int	FIXED_BODY					= 100;	// 定身
 	public static final int	ATTR_BODY					= 200;	// 属性buffer
+	public static final int	TRUCK_ATTR_BODY				= 201;	// 镖车属性buffer
 
 	public static final int	CRIT_4_BLOOD				= 301;	// 对X%气血以下的怪物造成的气血伤害必定暴击
 	public static final int	BUFFER_CREATER				= 302;	// 通用buffer产生器
@@ -23,6 +27,9 @@ public class BufferType {
 
 	public static final int	ATTACK_COVENT_SOULATTACK	= 401;	// x%攻击转化为魂攻
 	public static final int	SOULATTACK_COVENT_ATTACK	= 402;	// x%魂攻转化为物攻
+
+	public static final int	TRUCE_ADD_ATTR				= 501;	// 运镖buff，根据周边人
+	public static final int	TRUCE_ANONYMOUS				= 502;	// 劫镖buff，匿名劫镖
 
 	public static class FromType {
 		public static final int	COMMON	= 0;	// 正常来源（技能）

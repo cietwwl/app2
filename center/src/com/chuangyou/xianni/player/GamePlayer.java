@@ -580,7 +580,7 @@ public class GamePlayer extends AbstractEvent {
 	 */
 	private void onLevelUpdate() {
 		armyInventory.getArmy().getHero().addTemp(PlayerManager.getTempProperty(this));
-		armyInventory.updateProperty();
+		armyInventory.updatePropertyOnlevelUp();
 	}
 
 	private boolean initData(boolean initResult, String componentName) {

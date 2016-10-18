@@ -63,7 +63,9 @@ public class ActivityInventory extends AbstractEvent implements IInventory {
 		GetActivityInfosRespMsg.Builder infosRespMsg = GetActivityInfosRespMsg.newBuilder();
 		for (ActivityType type : ActivityType.values()) {
 			ActivityInfo ainfo = getActivityInfo(type);
-			infosRespMsg.addInfos(ainfo.getMsg());
+			if (ainfo != null) {
+				infosRespMsg.addInfos(ainfo.getMsg());
+			}
 		}
 		PBMessage message = MessageUtil.buildMessage(Protocol.U_RESP_ACTIVITY_INFOS, infosRespMsg);
 		player.sendPbMessage(message);

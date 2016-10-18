@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg;
 import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
 import com.chuangyou.common.protobuf.pb.army.ArmyInfoReloadMsgProto.ArmyInfoReloadMsg;
@@ -107,6 +106,9 @@ public class ArmyProxy extends AbstractActionQueue {
 			if (pet != null) {
 				field.leaveField(pet);
 			}
+			for (Avatar avatar : avatars.values()) {
+				field.leaveField(avatar);
+			}
 			setFieldId(0);
 		}
 	}
@@ -122,6 +124,24 @@ public class ArmyProxy extends AbstractActionQueue {
 			pet.setProtection(true);
 			field.enterField(pet);
 		}
+		for (Avatar avatar : avatars.values()) {
+			if (!player.isCorrespondStatu() && avatar.getCampaignId() != 0 && avatar.getCampaignId() == field.getCampaignId()) {
+				avatar.setPostion(postion);
+				avatar.setProtection(true);
+				field.enterField(avatar);
+			}
+		}
+	}
+
+	public void cancelProtection() {
+		player.setProtection(false);
+		if (pet != null) {
+			pet.setProtection(false);
+		}
+		for (Avatar avatar : avatars.values()) {
+			avatar.setProtection(false);
+		}
+
 	}
 
 	// 添加分身
@@ -159,10 +179,6 @@ public class ArmyProxy extends AbstractActionQueue {
 
 			player.getField().enterField(pet);
 
-			// PBMessage selfMsg =
-			// MessageUtil.buildMessage(Protocol.U_RESP_ATT_SNAP,
-			// pet.getAttSnapMsg());
-			// this.sendPbMessage(selfMsg);
 		} else {
 			if (pet.getSkin() != petInfo.getPetTempId()) {
 				pet.getField().leaveField(pet);
@@ -171,12 +187,7 @@ public class ArmyProxy extends AbstractActionQueue {
 				pet.readPetInfo(petInfo);
 				pet.setPostion(player.getPostion());
 
-				player.getField().enterField(pet);
-
-				// PBMessage selfMsg =
-				// MessageUtil.buildMessage(Protocol.U_RESP_ATT_SNAP,
-				// pet.getAttSnapMsg());
-				// this.sendPbMessage(selfMsg);
+				player.getField().enterField(pet);;
 			} else {
 				PlayerAttUpdateMsg.Builder attUpdateMsg = PlayerAttUpdateMsg.newBuilder();
 				if (petInfo.getPetSoul() != pet.getPetSoul()) {
@@ -202,12 +213,6 @@ public class ArmyProxy extends AbstractActionQueue {
 				}
 				if (attUpdateMsg.getAttList() != null && attUpdateMsg.getAttList().size() > 0) {
 					attUpdateMsg.setPlayerId(pet.getId());
-
-					// PBMessage selfMsg =
-					// MessageUtil.buildMessage(Protocol.U_RESP_PLAYER_ATT_UPDATE,
-					// attUpdateMsg);
-					// this.sendPbMessage(selfMsg);
-
 					Set<Long> nears = pet.getNears(new PlayerSelectorHelper(pet));
 					NotifyNearHelper.notifyAttrChange(this, nears, attUpdateMsg.build());
 				}
@@ -262,7 +267,7 @@ public class ArmyProxy extends AbstractActionQueue {
 
 	private static final EnumAttr[] reloadAttrs = { EnumAttr.CUR_SOUL, EnumAttr.CUR_BLOOD, EnumAttr.MANA };
 
-	public void unload() {
+	public synchronized void unload() {
 		Field field = FieldMgr.getIns().getField(getFieldId());
 		try {
 			ArmyInfoReloadMsg.Builder armyReload = ArmyInfoReloadMsg.newBuilder();
@@ -289,21 +294,18 @@ public class ArmyProxy extends AbstractActionQueue {
 				}
 				// 离开地图
 				field.leaveField(player);
-				player.clearData();
 				if (pet != null) {
 					field.leaveField(pet);
-					pet.clearData();
 				}
 			}
-
 			PBMessage redata = MessageUtil.buildMessage(CenterProtocol.C_PLAYER_RELOAD_SCENCE_DATA, armyReload);
 			sendPbMessage(redata);
 		} catch (Exception e) {
 			Log.error("unload player error,playerId :" + getPlayerId(), e);
 		} finally {
-			player.destory();
+			player.clearData();
 			if (pet != null) {
-				pet.destory();
+				pet.clearData();
 			}
 			unlodAvatar();
 		}
@@ -314,6 +316,9 @@ public class ArmyProxy extends AbstractActionQueue {
 		avatarDatas.clear();
 		for (RobotInfoMsg data : datas) {
 			avatarDatas.add(data);
+			Avatar robot = new Avatar();
+			robot.instill(data);
+			addAvatar(robot);
 		}
 	}
 

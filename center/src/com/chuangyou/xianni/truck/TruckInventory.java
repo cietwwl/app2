@@ -4,12 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.chuangyou.common.protobuf.pb.truck.TruckSkillProto.TruckSkill;
 import com.chuangyou.common.util.Log;
-import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.entity.Option;
-import com.chuangyou.xianni.entity.common.SystemConfig;
 import com.chuangyou.xianni.entity.truck.TruckFun;
 import com.chuangyou.xianni.entity.truck.TruckInfo;
 import com.chuangyou.xianni.entity.truck.TruckSkillConfig;

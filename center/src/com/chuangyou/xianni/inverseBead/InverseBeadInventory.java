@@ -11,7 +11,7 @@ import com.chuangyou.xianni.entity.inverseBead.PlayerInverseBead;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.interfaces.IInventory;
-import com.chuangyou.xianni.inverseBead.action.InverseBeadLoopAction;
+import com.chuangyou.xianni.inverseBead.help.InverseBeadLoopManager;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.skill.SkillUtil;
 import com.chuangyou.xianni.sql.dao.DBManager;
@@ -38,11 +38,10 @@ public class InverseBeadInventory extends AbstractEvent implements IInventory {
 
 	public InverseBeadInventory(GamePlayer player) {
 		this.player = player;
-
 	}
-	public void load(){
-		InverseBeadLoopAction action = new InverseBeadLoopAction(player, player.getActionQueue(), beadRefreshIdList, true);
-		player.getActionQueue().enqueue(action);
+
+	public void load() {
+		new InverseBeadLoopManager(player, beadRefreshIdList).execute();
 	}
 
 	@Override

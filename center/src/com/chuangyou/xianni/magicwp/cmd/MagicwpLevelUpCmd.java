@@ -13,7 +13,6 @@ import com.chuangyou.xianni.entity.magicwp.MagicwpInfo;
 import com.chuangyou.xianni.entity.magicwp.MagicwpLevelCfg;
 import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.event.ObjectEvent;
-import com.chuangyou.xianni.magicwp.manager.MagicwpManager;
 import com.chuangyou.xianni.magicwp.template.MagicwpTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;

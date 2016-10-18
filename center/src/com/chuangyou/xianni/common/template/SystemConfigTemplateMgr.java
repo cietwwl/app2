@@ -31,7 +31,7 @@ public class SystemConfigTemplateMgr {
 		SystemConfig cfg = systemTemps.get(key);
 		if (cfg == null) {
 			Log.error("getIntValue is null ,key : " + key);
-			return 0;
+			return 10;
 		}
 		return cfg.getValue();
 	}

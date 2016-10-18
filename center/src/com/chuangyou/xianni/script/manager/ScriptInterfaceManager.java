@@ -7,6 +7,7 @@ import com.chuangyou.common.protobuf.pb.gather.CreatePrivateMonsterInnerProto.Cr
 import com.chuangyou.common.protobuf.pb.npcDialog.HintRespProto.HintRespMsg;
 import com.chuangyou.common.util.ChangeCharsetUtil;
 import com.chuangyou.xianni.entity.item.ItemAddType;
+import com.chuangyou.xianni.entity.task.TaskInfo;
 import com.chuangyou.xianni.map.MapProxyManager;
 import com.chuangyou.xianni.netty.GatewayLinkedSet;
 import com.chuangyou.xianni.npcDialog.NpcCommand;
@@ -69,7 +70,11 @@ public class ScriptInterfaceManager {
 		if(info == null){
 			return false;
 		}else{
-			return true;
+			if(info.getInfo().getState() == TaskInfo.ACCEPT){
+				return true;
+			}else{
+				return false;
+			}
 		}
 	}
 	

@@ -1,0 +1,7 @@
+option java_package = "com.chuangyou.common.protobuf.pb.scene";
+option java_outer_classname = "PlayerKillMonsterProto";
+//通知center。玩家杀死怪物
+import "scene/PlayerKillMonsterMsg.proto";
+message PlayerKillMonsterListMsg {
+	repeated PlayerKillMonsterMsg killInfos = 1;
+}

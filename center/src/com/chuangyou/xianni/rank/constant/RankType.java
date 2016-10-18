@@ -54,7 +54,7 @@ public interface RankType {
 	/**
 	 * 门派榜
 	 */
-	public static final int UNITY   = 200;
+	public static final int GUILD   = 200;
 	/**
 	 * 人气榜
 	 */

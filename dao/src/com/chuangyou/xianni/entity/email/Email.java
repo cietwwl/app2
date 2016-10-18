@@ -157,6 +157,7 @@ public class Email extends DataObject{
 			String[] subList = list[i].split(",");
 			map.put(Integer.parseInt(subList[0]),Integer.parseInt(subList[1]));
 		}
+		
 		return map;		
 	}
 	

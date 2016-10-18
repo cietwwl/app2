@@ -6,6 +6,7 @@ import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.role.objects.Living;
 
+/**被攻击者伤害修改*/
 public class BeAttackDamageEffectBuffer extends FormulaBuffer {
 
 	public BeAttackDamageEffectBuffer(Living source, Living target, SkillBufferTemplateInfo bufferInfo) {

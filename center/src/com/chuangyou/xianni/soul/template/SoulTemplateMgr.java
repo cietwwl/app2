@@ -116,6 +116,39 @@ public class SoulTemplateMgr {
 		return true;
 	}
 	
+	public static boolean reloadMap(){//tb_z_soul_template
+		map = DBManager.getSoulDao().getCardConfigs();
+		return true;
+	}
+	public static boolean reloadLvMap(){//tb_z_soul_cardLevel
+		lvMap = DBManager.getSoulDao().getCardLvConfigs();
+		return true;
+	}
+	public static boolean reloadStarMap(){//tb_z_soul_star
+		starMap = DBManager.getSoulDao().getCardStarConfig();
+		return true;
+	}
+	public static boolean reloadSkillMap(){//tb_z_soul_skill
+		skillMap = DBManager.getSoulDao().getCardSkillCofig();
+		return true;
+	}
+	public static boolean reloadMakeMap(){//tb_z_soul_proficiency
+		makeMap = DBManager.getSoulDao().getSoulMakeConfig();
+		return true;
+	}
+	public static boolean reloadFuseSkillMap(){//tb_z_soul_fuseSkill
+		fuseSkillMap = DBManager.getSoulDao().getFuseSkillConfig();
+		return true;
+	}
+	public static boolean reloadFuseItemConfigMap(){//tb_z_soul_fuseItem
+		fuseItemConfigMap = DBManager.getSoulDao().getFuseItemConfig();
+		return true;
+	}
+	public static boolean reloadCardComboMap(){//tb_z_soul_combo
+		cardComboMap = DBManager.getSoulDao().getCardComboConfig();
+		return true;
+	}
+	
 	
 	public static SoulCardConfig getCardConfig(int cardId){
 		return map.get(cardId);

@@ -17,6 +17,7 @@ import com.chuangyou.xianni.common.template.LevelUpTempleteMgr;
 import com.chuangyou.xianni.common.template.PropertyFightingTemplateMgr;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.common.timer.TimerTaskMgr;
+import com.chuangyou.xianni.drop.templete.DropTempleteMgr;
 import com.chuangyou.xianni.entity_id.EntityIdBuilder;
 import com.chuangyou.xianni.equip.template.EquipTemplateMgr;
 import com.chuangyou.xianni.fashion.template.FashionTemplateMgr;
@@ -36,6 +37,7 @@ import com.chuangyou.xianni.npcDialog.NpcInfoTemplateMgr;
 import com.chuangyou.xianni.pet.template.PetTemplateMgr;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.rank.RankServerManager;
+import com.chuangyou.xianni.rank.template.RankTempMgr;
 import com.chuangyou.xianni.reward.RewardManager;
 import com.chuangyou.xianni.robot.RobotManager;
 import com.chuangyou.xianni.script.manager.ScriptManager;
@@ -149,6 +151,11 @@ public class CenterServer extends BaseServer {
 		if (!initComponent(CampaignTempMgr.init(), "初始化副本模板数据")) {
 			return false;
 		}
+		
+		if (!initComponent(DropTempleteMgr.init(), "初始化物品掉落模板数据")) {
+			return false;
+		}
+		
 		if (!initComponent(ScriptManager.init(), "=====初始化脚本======")) {
 			return false;
 		}
@@ -200,10 +207,19 @@ public class CenterServer extends BaseServer {
 		if(!initComponent(GuildTemplateMgr.init(), "帮派模板数据")){
 			return false;
 		}
+		if (!initComponent(AvatarTempManager.init(), "加载分身模板数据")) {
+			return false;
+		}
 		
-		
+		if (!initComponent(TruckTempMgr.init(), "初始化镖车模块")) {
+			return false;
+		}
+			
 		//管理器可能会用到模板数据，所以放在所有模板数据之后初始化
 		if(!initComponent(RankServerManager.getInstance().init(),"初始化排行榜数据")){
+			return false;
+		}
+		if (!initComponent(RankTempMgr.init(), "排行榜模板数据初始化")) {
 			return false;
 		}
 		if (!initComponent(RobotManager.init(), "初始化机器模块")) {
@@ -213,13 +229,7 @@ public class CenterServer extends BaseServer {
 		if (!initComponent(RewardManager.init(), "奖励模块")) {
 			return false;
 		}
-		if (!initComponent(AvatarTempManager.init(), "加载分身模板数据")) {
-			return false;
-		}
 		
-		if (!initComponent(TruckTempMgr.init(), "初始化镖车模块")) {
-			return false;
-		}
 		if(!initComponent(GuildManager.getIns().init(), "初始化帮派模块")){
 			return false;
 		}

@@ -9,25 +9,24 @@ public class Grid {
 	/**
 	 * 九宫格
 	 */
-	public static final int[][] GRID9 = { { -1, -1 }, { 0, -1 }, { 1, -1 },
-			{ -1, 0 }, { 0, 0 }, { 1, 0 }, { -1, 1 }, { 0, 1 }, { 1, 1 } };
+	public static final int[][]	GRID9		= { { -1, -1 }, { 0, -1 }, { 1, -1 }, { -1, 0 }, { 0, 0 }, { 1, 0 }, { -1, 1 }, { 0, 1 }, { 1, 1 } };
 
 	/**
 	 * 格子尺寸
 	 */
-	public static final int GRID_SIZE = 15;
+	public static final int		GRID_SIZE	= 15;
 
-	private GridItem[] _items;
-	private Rect _rect;
+	private GridItem[]			_items;
+	private Rect				_rect;
 
-	public int GridX;
-	public int GridZ;
+	public int					GridX;
+	public int					GridZ;
 
 	public Grid(Rect rect) {
 		_rect = rect;
 		GridX = (int) (rect.getWidth() / GRID_SIZE + 1);
 		GridZ = (int) (rect.getHeight() / GRID_SIZE + 1);
-		//TODO 在长度为360的地图中，取到了360的点
+		// TODO 在长度为360的地图中，取到了360的点
 		_items = new GridItem[GridX * GridZ];
 		for (int i = 0; i < _items.length; i++) {
 			_items[i] = new GridItem();
@@ -46,11 +45,13 @@ public class Grid {
 		GridItem goalGI = getGridItem(goal.x, goal.z);
 		// System.err.println("moveto = " + living.getPostion() + " goal = " +
 		// goal + " curGI = " + curGI + " goal = " + goalGI);
-		if(curGI == null || goalGI == null) return;
+		if (curGI == null || goalGI == null)
+			return;
 		if (curGI.id == goalGI.id)
 			return;
-//		if(living.getId() < 200)
-//			System.out.println("---------------------------------------------------------" + living.getId() + " from : " + curGI.id + " to = " + goalGI.id );
+		// if(living.getId() < 200)
+		// System.out.println("---------------------------------------------------------"
+		// + living.getId() + " from : " + curGI.id + " to = " + goalGI.id );
 		curGI.removeLiving(living);
 		goalGI.addLiving(living);
 	}
@@ -62,7 +63,7 @@ public class Grid {
 	 */
 	public void addLiving(Living living) {
 		GridItem gi = getGridItem(living);
-		//System.out.println("addLiving -- " + gi.id);
+		// System.out.println("addLiving -- " + gi.id);
 		if (gi == null)
 			return;
 		gi.addLiving(living);
@@ -87,6 +88,9 @@ public class Grid {
 	 * @return
 	 */
 	public GridItem getGridItem(Vector3 position) {
+		if (position == Vector3.Invalid) {
+			return null;
+		}
 		return getGridItem(position.x, position.z);
 	}
 
@@ -97,6 +101,9 @@ public class Grid {
 	 * @return
 	 */
 	public GridItem getGridItem(Living role) {
+		if (role.getPostion() == Vector3.Invalid) {
+			return null;
+		}
 		return getGridItem(role.getPostion().x, role.getPostion().z);
 	}
 
@@ -129,7 +136,8 @@ public class Grid {
 	 */
 	public GridItem getGridItem(int x, int z) {
 		int index = x + z * GridX;
-		if(index < 0 || index >= _items.length) return null;
+		if (index < 0 || index >= _items.length)
+			return null;
 		GridItem gi = _items[index];
 		return gi;
 	}
@@ -140,10 +148,8 @@ public class Grid {
 	 * @return
 	 */
 	public int getIndex(float x, float z) {
-		int startXPos = (int) Math.floor(Math.abs(x - _rect.getxMin())
-				/ GRID_SIZE);
-		int startZPos = (int) Math.floor(Math.abs(z - _rect.getyMin())
-				/ GRID_SIZE);
+		int startXPos = (int) Math.floor(Math.abs(x - _rect.getxMin()) / GRID_SIZE);
+		int startZPos = (int) Math.floor(Math.abs(z - _rect.getyMin()) / GRID_SIZE);
 		return startXPos + startZPos * GridX;
 	}
 
@@ -155,8 +161,6 @@ public class Grid {
 	 * @return
 	 */
 	public GridCoord getGridCrood(float x, float z) {
-		return new GridCoord((int) Math.floor(Math.abs(x - _rect.getxMin())
-				/ GRID_SIZE), (int) Math.floor(Math.abs(z - _rect.getyMin())
-				/ GRID_SIZE));
+		return new GridCoord((int) Math.floor(Math.abs(x - _rect.getxMin()) / GRID_SIZE), (int) Math.floor(Math.abs(z - _rect.getyMin()) / GRID_SIZE));
 	}
 }

@@ -11,11 +11,11 @@ import com.chuangyou.xianni.warfield.field.Field;
 public class Chase extends MonsterBaseBehavior {
 
 	// 可以巡逻
-	private boolean needChase = false;
-	private Vector3 realTarget = Vector3.Invalid;
-	private Vector3 chaseTarget;
-	private boolean changedChaseTarget = false;
-	
+	private boolean	needChase			= false;
+	private Vector3	realTarget			= Vector3.Invalid;
+	private Vector3	chaseTarget;
+	private boolean	changedChaseTarget	= false;
+
 	public Chase(Monster m) {
 		super(AIState.CHASE, m);
 	}
@@ -42,7 +42,8 @@ public class Chase extends MonsterBaseBehavior {
 		}
 		resetChaseTarget(l);
 		// if (getMonster().getId() == 1000000000033L)
-		// System.out.println("11111111111111 自己位置：" + getMonster().getPostion() + " 追击到点：" + chaseTarget + " 人物位置： " + l.getPostion());
+		// System.out.println("11111111111111 自己位置：" + getMonster().getPostion()
+		// + " 追击到点：" + chaseTarget + " 人物位置： " + l.getPostion());
 		// getMonster().stop(false);
 		getMonster().moveto(chaseTarget);
 	}
@@ -51,8 +52,8 @@ public class Chase extends MonsterBaseBehavior {
 	public AIState next() {
 		if (!needChase)
 			return AIState.IDLE;
-//		if (getMonster().isCooldowning(CoolDownTypes.BE_ATTACK, null))
-//			return AIState.BEATTACK;
+		// if (getMonster().isCooldowning(CoolDownTypes.BE_ATTACK, null))
+		// return AIState.BEATTACK;
 		if (checkAttackTarget())
 			return AIState.ATTACK;
 
@@ -68,10 +69,12 @@ public class Chase extends MonsterBaseBehavior {
 			return AIState.IDLE;
 
 		// 获取当前离目标的距离
-		//chaseTarget = MathUtils.GetRandomVector3ByCenter(l.getPostion(), 1, false);
+		// chaseTarget = MathUtils.GetRandomVector3ByCenter(l.getPostion(), 1,
+		// false);
 		resetChaseTarget(l);
 		float distance = Vector3.distance(getMonster().getInitPosition(), chaseTarget);// 出生点与目标的距离
-		// System.out.println(getMonster().getId() + "---追击怪物位置：" + getMonster().getPostion() + "怪物目标位置：" + l.getPostion());
+		// System.out.println(getMonster().getId() + "---追击怪物位置：" +
+		// getMonster().getPostion() + "怪物目标位置：" + l.getPostion());
 		// 脱离追击范围
 		if (distance > getMonster().getMonsterInfo().getFollowUpDistance()) {
 			float leaveBornDistance = Vector3.distance(getMonster().getInitPosition(), getMonster().getPostion());// 当前位置与出生点的距离
@@ -94,14 +97,13 @@ public class Chase extends MonsterBaseBehavior {
 		} else {
 			// System.err.println("isArrial = " + getMonster().isArrial());
 			if (getMonster().isArrial()) {
-				//getMonster().stop(false);
+				// getMonster().stop(false);
 				getMonster().moveto(chaseTarget);
 			} else {// 继续追
-				//getMonster().stop(false);
-				//getMonster().moveto(chaseTarget);
-				if(changedChaseTarget)
-				{
-					//getMonster().stop(false);
+				// getMonster().stop(false);
+				// getMonster().moveto(chaseTarget);
+				if (changedChaseTarget) {
+					// getMonster().stop(false);
 					getMonster().moveto(chaseTarget);
 					changedChaseTarget = false;
 				}
@@ -118,29 +120,30 @@ public class Chase extends MonsterBaseBehavior {
 	 */
 	private boolean checkAttackTarget() {
 		Field f = getMonster().getField();
-		if(f == null){
+		if (f == null) {
 			return false;
 		}
 		Living l = f.getLiving(getMonster().getTarget());
 		if (l == null)
 			return false;
-		// System.err.println("distance = " + Vector3.distance(getMonster().getPostion(), l.getPostion()));
+		// System.err.println("distance = " +
+		// Vector3.distance(getMonster().getPostion(), l.getPostion()));
 		if (Vector3.distance(getMonster().getPostion(), l.getPostion()) <= getMonster().getMonsterInfo().getAttackRange())
 			return true;
 		return false;
 	}
-	
-	private void resetChaseTarget(Living l)
-	{
-		if(Vector3.IsInvalid(realTarget) || !Vector3.Equal(realTarget, l.getPostion()))
-		{
+
+	private void resetChaseTarget(Living l) {
+		if (Vector3.IsInvalid(realTarget) || !Vector3.Equal(realTarget, l.getPostion())) {
+			int range = getMonster().getMonsterInfo().getAttackRange();
+			if (range < 1)
+				range = 1;
 			realTarget = l.getPostion();
-			Vector3 tmpChase = MathUtils.GetRandomVector3ByCenter(realTarget, 1, false);// l.getPostion();
-			if(isValidPoint(tmpChase))
-			{
+			Vector3 tmpChase = MathUtils.GetRandomVector3ByCenter(realTarget, range*0.95f, false);// l.getPostion();
+			if (isValidPoint(tmpChase)) {
 				chaseTarget = tmpChase;
 				changedChaseTarget = true;
-			}else {
+			} else {
 				chaseTarget = l.getPostion();
 			}
 		}

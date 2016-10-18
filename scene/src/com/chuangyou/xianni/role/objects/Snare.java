@@ -228,12 +228,12 @@ public class Snare extends ActiveLiving {
 	// 陷阱死亡
 	public boolean onDie(Living killer) {
 		synchronized (dieLock) {
-			if (this.livingState == DIE) {
+			if (getLivingState() == DIE) {
 				return false;
 			}
-			this.livingState = DIE;
+			setLivingState(DIE);
 		}
-		sendChangeStatuMsg(LIVING, livingState);// 死亡状态不推，客户端自己判断
+		sendChangeStatuMsg(LIVING, getLivingState());// 死亡状态不推，客户端自己判断
 		// 清理掉所有受陷阱影响玩家的状态
 		if (snareInfo.getStateId() != 0) {
 			for (Living living : affectingState) {
@@ -267,7 +267,7 @@ public class Snare extends ActiveLiving {
 
 	/** 判断是否死亡 */
 	public boolean isDie() {
-		return livingState == DIE || livingState == DISTORY;
+		return getLivingState() == DIE || getLivingState() == DISTORY;
 	}
 
 	public void counter() {

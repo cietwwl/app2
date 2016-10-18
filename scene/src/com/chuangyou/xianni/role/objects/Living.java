@@ -31,6 +31,7 @@ import com.chuangyou.xianni.battle.buffer.BufferState;
 import com.chuangyou.xianni.battle.buffer.BufferType;
 import com.chuangyou.xianni.battle.buffer.ExecWayType;
 import com.chuangyou.xianni.battle.buffer.specialbuf.AttackConvertSoulAttackBuffer;
+import com.chuangyou.xianni.battle.buffer.specialbuf.AttributesBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.SoulAttackConvertAttackBuffer;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.damage.effect.DamageEffecter;
@@ -44,7 +45,6 @@ import com.chuangyou.xianni.cooldown.CoolDownTypes;
 import com.chuangyou.xianni.cooldown.obj.CoolDown;
 import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.entity.buffer.LivingStatusTemplateInfo;
-import com.chuangyou.xianni.entity.soul.SoulFuseSkillConfig;
 import com.chuangyou.xianni.exec.ThreadManager;
 import com.chuangyou.xianni.netty.GatewayLinkedSet;
 import com.chuangyou.xianni.proto.BroadcastUtil;
@@ -118,7 +118,7 @@ public class Living extends LivingProperties {
 	protected boolean							protection;
 
 	// 生存状态
-	protected int								livingState;
+	private int									livingState;
 
 	/** 战斗形态 :是否处于元魂状态 */
 	protected boolean							isSoulState				= false;
@@ -618,7 +618,7 @@ public class Living extends LivingProperties {
 		}
 	}
 
-	/** 改变英雄属性值 */
+	/** 计算伤害 */
 	public int takeDamage(Damage damage) {
 
 		DamageEffecter effecter = DamageEffecterFactory.effecterBuilder(damage);
@@ -1134,11 +1134,17 @@ public class Living extends LivingProperties {
 	/* 根据属性类型添加修改的变化，刷新对应属性 */
 	public void refreshProperties(int type) {
 		// 获取所有影响该属性的buffer
-		List<Buffer> buffers = getTypeBuffers(BufferType.ATTR_BODY);
-		List<Buffer> invock = new ArrayList<>();
-		for (Buffer buffer : buffers) {
+		List<Buffer> attrBuffers = getTypeBuffers(BufferType.ATTR_BODY);
+		List<Buffer> truckBuffers = getTypeBuffers(BufferType.TRUCK_ATTR_BODY);
+		List<AttributesBuffer> invock = new ArrayList<>();
+		for (Buffer buffer : attrBuffers) {
 			if (buffer.getBufferInfo().getValueType() == type) {
-				invock.add(buffer);
+				invock.add((AttributesBuffer) buffer);
+			}
+		}
+		for (Buffer buffer : truckBuffers) {
+			if (buffer.getBufferInfo().getValueType() == type) {
+				invock.add((AttributesBuffer) buffer);
 			}
 		}
 		EnumAttr etype = EnumAttr.getEnumAttrByValue(type);
@@ -1150,15 +1156,8 @@ public class Living extends LivingProperties {
 		int lastValue = getInitValue(etype);
 		// 计算变更值
 		int addValue = 0;
-		for (Buffer buffer : invock) {
-			if (buffer.getBufferInfo().getValueType() == type) {
-				int effectValue = buffer.getBufferInfo().getValue() + (int) Math.ceil(lastValue * (buffer.getBufferInfo().getValuePercent() / 10000f));
-				addValue = buffer.calSoullv(effectValue, SoulFuseSkillConfig.EFFECT);
-			}
-			if (buffer.getBufferInfo().getValueType1() == type) {
-				int effectValue = buffer.getBufferInfo().getValue1() + (int) Math.ceil(lastValue * (buffer.getBufferInfo().getValuePercent1() / 10000f));
-				addValue = buffer.calSoullv(effectValue, SoulFuseSkillConfig.EFFECT);
-			}
+		for (AttributesBuffer buffer : invock) {
+			addValue = buffer.getAddValue(type, lastValue);
 		}
 
 		// 当玩家身上存在魂攻物攻转换buffer时，在计算完毕所有属性加成，再做转换。
@@ -1356,17 +1355,19 @@ public class Living extends LivingProperties {
 		});
 
 		for (int i = 0; i < skills.size(); i++) {
-			if(!isCooldowning(CoolDownTypes.SKILL, skills.get(i).getValue().getActionId() + "")){
+			if (!isCooldowning(CoolDownTypes.SKILL, skills.get(i).getValue().getActionId() + "")) {
 				skill = skills.get(i).getValue();
 				break;
 			}
-			
-//			if (isCooldowning(CoolDownTypes.SKILL, skills.get(i).getValue().getActionId() + "") && (i == skills.size() - 1)) {
-//				skill = skills.get(i).getValue();
-//				continue;
-//			}
-//			skill = skills.get(i).getValue();
-//			break;
+
+			// if (isCooldowning(CoolDownTypes.SKILL,
+			// skills.get(i).getValue().getActionId() + "") && (i ==
+			// skills.size() - 1)) {
+			// skill = skills.get(i).getValue();
+			// continue;
+			// }
+			// skill = skills.get(i).getValue();
+			// break;
 		}
 		return skill;
 	}
@@ -1855,6 +1856,9 @@ public class Living extends LivingProperties {
 	}
 
 	public void setLivingState(int livingState) {
+		if (this.livingState == DISTORY) {
+			Log.error("-----------重要调试日志，发现请通知---------------");
+		}
 		this.livingState = livingState;
 	}
 

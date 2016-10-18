@@ -18,6 +18,7 @@ import com.chuangyou.xianni.army.Hero;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.constant.GuildConstant;
 import com.chuangyou.xianni.constant.RobotConstant;
+import com.chuangyou.xianni.entity.avatar.AvatarInfo;
 import com.chuangyou.xianni.entity.robot.RobotTemplate;
 import com.chuangyou.xianni.entity.role.RoleConfig;
 import com.chuangyou.xianni.login.template.RoleConfigMgr;
@@ -25,12 +26,12 @@ import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.sql.dao.DBManager;
 
 public class RobotManager {
-	public static Map<Integer, RobotTemplate>		robots				= new HashMap<>();
+	public static Map<Integer, RobotTemplate>						robots				= new HashMap<>();
 
-	public static Map<Integer, List<RobotTemplate>>	fightMappingRobots	= new HashMap<>();
-	
+	public static Map<Integer, List<RobotTemplate>>					fightMappingRobots	= new HashMap<>();
+
 	/** 系统帮派机器人 */
-	public static Map<Integer, Map<Integer, List<RobotTemplate>>> guildRobots = new HashMap<>();
+	public static Map<Integer, Map<Integer, List<RobotTemplate>>>	guildRobots			= new HashMap<>();
 
 	public static boolean init() {
 		return reload();
@@ -75,8 +76,8 @@ public class RobotManager {
 		List<RobotTemplate> robosList = DBManager.getRobotTemplateDao().getAll();
 		for (RobotTemplate robot : robosList) {
 			robots.put(robot.getId(), robot);
-			
-			if(robot.getType() == RobotConstant.Type.PLAYER_ROBOT){
+
+			if (robot.getType() == RobotConstant.Type.PLAYER_ROBOT) {
 				List<RobotTemplate> teamFight = fightMappingRobots.get(robot.getFluctuate());
 				if (teamFight == null) {
 					teamFight = new ArrayList<>();
@@ -84,15 +85,15 @@ public class RobotManager {
 				}
 				teamFight.add(robot);
 			}
-			
-			if(robot.getType() == RobotConstant.Type.STATIC_ROBOT && robot.getGuildId() > 0 && robot.getGuildJob() > 0){
+
+			if (robot.getType() == RobotConstant.Type.STATIC_ROBOT && robot.getGuildId() > 0 && robot.getGuildJob() > 0) {
 				Map<Integer, List<RobotTemplate>> guildJobRobots = guildRobots.get(robot.getGuildId());
-				if(guildJobRobots == null){
+				if (guildJobRobots == null) {
 					guildJobRobots = new HashMap<>();
 					guildRobots.put(robot.getGuildId(), guildJobRobots);
 				}
 				List<RobotTemplate> jobRobotList = guildJobRobots.get(robot.getGuildJob());
-				if(jobRobotList == null){
+				if (jobRobotList == null) {
 					jobRobotList = new ArrayList<>();
 					guildJobRobots.put(robot.getGuildJob(), jobRobotList);
 				}
@@ -106,47 +107,52 @@ public class RobotManager {
 		int id = Integer.valueOf(tempId);
 		return robots.get(id);
 	}
-	
+
 	/**
 	 * 获取帮派机器人
+	 * 
 	 * @param guildId
 	 * @param guildJob
 	 * @return
 	 */
-	public static RobotTemplate getGuildLeaderTemp(int guildId){
+	public static RobotTemplate getGuildLeaderTemp(int guildId) {
 		Map<Integer, List<RobotTemplate>> jobRobotMap = guildRobots.get(guildId);
-		if(jobRobotMap == null){
+		if (jobRobotMap == null) {
 			return null;
 		}
 		List<RobotTemplate> jobRobotList = jobRobotMap.get(GuildConstant.GuildJob.LEADER);
-		if(jobRobotList == null || jobRobotList.size() <= 0){
+		if (jobRobotList == null || jobRobotList.size() <= 0) {
 			return null;
 		}
 		return jobRobotList.get(0);
 	}
+
 	/**
 	 * 获取职业列表
+	 * 
 	 * @param guildId
 	 * @param job
 	 * @return
 	 */
-	public static List<RobotTemplate> getGuildJobRobots(int guildId, int job){
+	public static List<RobotTemplate> getGuildJobRobots(int guildId, int job) {
 		Map<Integer, List<RobotTemplate>> jobRobotMap = guildRobots.get(guildId);
-		if(jobRobotMap == null){
+		if (jobRobotMap == null) {
 			return null;
 		}
 		List<RobotTemplate> jobRobotList = jobRobotMap.get(GuildConstant.GuildJob.LEADER);
-		if(jobRobotList == null || jobRobotList.size() <= 0){
+		if (jobRobotList == null || jobRobotList.size() <= 0) {
 			return null;
 		}
 		return jobRobotList;
 	}
+
 	/**
 	 * 获取指定帮派的机器人
+	 * 
 	 * @param guildId
 	 * @return
 	 */
-	public static Map<Integer, List<RobotTemplate>> getGuildRobots(int guildId){
+	public static Map<Integer, List<RobotTemplate>> getGuildRobots(int guildId) {
 		return guildRobots.get(guildId);
 	}
 
@@ -184,15 +190,15 @@ public class RobotManager {
 		if (player.getArmyInventory() == null) {
 			return;
 		}
-		if(temp.getType() == RobotConstant.Type.PLAYER_ROBOT){
+		if (temp.getType() == RobotConstant.Type.PLAYER_ROBOT) {
 			Hero baseTemp = player.getArmyInventory().getHero();
-	
+
 			RoleConfig roleConfig = RoleConfigMgr.getRoleConfig(temp.getJob());
 			if (roleConfig == null) {
 				Log.error("the robot job is erro,that not find the roleConfig" + temp.getId() + " --- the job is " + temp.getJob());
 				return;
 			}
-	
+
 			PlayerInfoMsg.Builder simpleInfo = PlayerInfoMsg.newBuilder();
 			simpleInfo.setPlayerId(temp.getId());
 			simpleInfo.setJob(temp.getJob());
@@ -204,15 +210,15 @@ public class RobotManager {
 			simpleInfo.setWeaponId(temp.getWeaponId());
 			simpleInfo.setWingId(temp.getWingId());
 			robotInfo.setSimpInfo(simpleInfo);
-	
+
 			PropertyListMsg.Builder propertyMsgs = PropertyListMsg.newBuilder();
 			writePropertyProto(baseTemp, propertyMsgs, temp);
 			robotInfo.setPropertis(propertyMsgs);
-	
+
 			String skills = roleConfig.getSkill();
 			writeSkillProto(skills, robotInfo);
-		}else if(temp.getType() == RobotConstant.Type.STATIC_ROBOT){
-			
+		} else if (temp.getType() == RobotConstant.Type.STATIC_ROBOT) {
+
 			PlayerInfoMsg.Builder simpleInfo = PlayerInfoMsg.newBuilder();
 			simpleInfo.setPlayerId(temp.getId());
 			simpleInfo.setNickName(temp.getNickName());
@@ -223,13 +229,20 @@ public class RobotManager {
 			simpleInfo.setWeaponId(temp.getWeaponId());
 			simpleInfo.setWingId(temp.getWingId());
 			robotInfo.setSimpInfo(simpleInfo);
-			
+
 			PropertyListMsg.Builder protpertyMsgs = PropertyListMsg.newBuilder();
 			writePropertyProto(null, protpertyMsgs, temp);
 			robotInfo.setPropertis(protpertyMsgs);
-			
+
 			String skills = temp.getSkillIds();
 			writeSkillProto(skills, robotInfo);
+		}
+		// 所有机器人，都需要搭配分身，分身为对应挑战玩家分身
+		if (player.getAvatarInventory() != null) {
+			List<AvatarInfo> avatars = player.getAvatarInventory().getFinghtingInfos();
+			for (AvatarInfo avatar : avatars) {
+				robotInfo.addAvatarInfos(player.getAvatarInventory().writeProto(avatar));
+			}
 		}
 	}
 
@@ -240,13 +253,13 @@ public class RobotManager {
 		int type = temp.getType();
 		for (EnumAttr attr : attrs) {
 			long totalPoint = 0;
-			if(type == RobotConstant.Type.PLAYER_ROBOT){
+			if (type == RobotConstant.Type.PLAYER_ROBOT) {
 				int value = hero.getTotalProperty(attr.getValue() - 1);
 				totalPoint = value + value * temp.getValue(attr) / 100;
-			}else if(type == RobotConstant.Type.STATIC_ROBOT){
+			} else if (type == RobotConstant.Type.STATIC_ROBOT) {
 				totalPoint = temp.getValue(attr);
 			}
-			
+
 			PropertyMsg.Builder proMsg = PropertyMsg.newBuilder();
 			proMsg.setType(attr.getValue());
 			proMsg.setTotalPoint(totalPoint);
@@ -267,12 +280,14 @@ public class RobotManager {
 			}
 		}
 	}
-	
-	private static void writeSkillProto(String skills, RobotInfoMsg.Builder robotInfo){
-		if(skills == null || skills.equals("0")) return;
+
+	private static void writeSkillProto(String skills, RobotInfoMsg.Builder robotInfo) {
+		if (skills == null || skills.equals("0"))
+			return;
 		String[] skillAttr = skills.split(",");
 		for (String strId : skillAttr) {
-			if(strId == null || strId.equals("0")) continue;
+			if (strId == null || strId.equals("0"))
+				continue;
 			robotInfo.addBattleSkills(Integer.valueOf(strId));
 		}
 	}

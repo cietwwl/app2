@@ -1,9 +1,13 @@
 package com.chuangyou.xianni.arena.cmd;
 
+import java.util.List;
+
 import com.chuangyou.common.protobuf.pb.arena.ArenaOptionMsgProto.ArenaOptionMsg;
 import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
+import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.arena.ArenaInventory;
 import com.chuangyou.xianni.base.AbstractCommand;
+import com.chuangyou.xianni.entity.avatar.AvatarInfo;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -13,7 +17,7 @@ import com.chuangyou.xianni.robot.RobotManager;
 import com.chuangyou.xianni.socket.Cmd;
 import com.chuangyou.xianni.word.WorldMgr;
 
-@Cmd(code = Protocol.C_DEKARON_OPTION, desc = "请求创建副本/前往组队目标")
+@Cmd(code = Protocol.C_DEKARON_OPTION, desc = "竞技场操作")
 public class ArenaOptionCmd extends AbstractCommand {
 
 	@Override
@@ -35,7 +39,6 @@ public class ArenaOptionCmd extends AbstractCommand {
 		if (opMsg.getOptionType() == 3) {
 			reset(player);
 		}
-
 	}
 
 	private void challenge(GamePlayer player, long targetId) {
@@ -45,8 +48,18 @@ public class ArenaOptionCmd extends AbstractCommand {
 				RobotManager.writeRobotData(player, targetId, builder);
 			} else {
 				GamePlayer target = WorldMgr.getPlayer(targetId);
-				if (target != null && target.getArmyInventory() != null) {
+				if (target == null) {
+					Log.error("------challenge not find player----" + player.getPlayerId() + "  targetId : " + targetId);
+					return;
+				}
+				if (target.getArmyInventory() != null) {
 					target.getArmyInventory().getArmy().getHero().writeRobotInfo(target, builder);
+				}
+				if (target.getAvatarInventory() != null) {
+					List<AvatarInfo> avatars = player.getAvatarInventory().getFinghtingInfos();
+					for (AvatarInfo avatar : avatars) {
+						builder.addAvatarInfos(player.getAvatarInventory().writeProto(avatar));
+					}
 				}
 			}
 			PBMessage message = MessageUtil.buildMessage(Protocol.S_CREATE_ARENA_BATTLE, builder);

@@ -9,7 +9,6 @@ import com.chuangyou.common.protobuf.pb.item.ItemFullInfoMsgProto.ItemFullInfoMs
 import com.chuangyou.common.protobuf.pb.item.ItemListProto.ItemListMsg;
 import com.chuangyou.common.util.LockData;
 import com.chuangyou.common.util.Log;
-import com.chuangyou.xianni.army.Living;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.equip.EquipBarGradeCfg;
@@ -20,13 +19,8 @@ import com.chuangyou.xianni.entity.item.ItemInfo;
 import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.equip.template.EquipTemplateMgr;
-import com.chuangyou.xianni.event.EventNameType;
-import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerInfoSendCmd;
-import com.chuangyou.xianni.proto.MessageUtil;
-import com.chuangyou.xianni.proto.PBMessage;
-import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.skill.SkillUtil;
 import com.chuangyou.xianni.skill.template.SimpleProperty;
 
@@ -428,7 +422,6 @@ public class BaseBag extends AbstractBag {
 		// 一、计算物品加成
 		List<BaseItem> items = getItems();
 		Map<Integer, Integer> suitMap = new HashMap<Integer, Integer>();
-		List<Integer> skills = new ArrayList<Integer>();
 		StringBuilder tempStr = new StringBuilder();
 		tempStr.append(",");
 		for (BaseItem item : items) {
@@ -560,15 +553,13 @@ public class BaseBag extends AbstractBag {
 		// }
 	}
 
-	private void joinSkill(BaseProperty bag, int skillTempId, boolean addType) {
 
-	}
 
-	private ItemTemplateInfo getJoin(int templateId) {
-		if (templateId > 0)
-			return ItemManager.findItemTempInfo(templateId);
-		return null;
-	}
+//	private ItemTemplateInfo getJoin(int templateId) {
+//		if (templateId > 0)
+//			return ItemManager.findItemTempInfo(templateId);
+//		return null;
+//	}
 
 	public void joinTempInfo(BaseProperty bagEffect, ItemTemplateInfo itemTempInfo) {
 

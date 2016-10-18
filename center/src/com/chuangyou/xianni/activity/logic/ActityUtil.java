@@ -97,7 +97,7 @@ public class ActityUtil {
 		Date now = new Date();
 		SimpleDateFormat cf = new SimpleDateFormat("yyyy-MM-dd");
 		String str = cf.format(now);
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-ddmmss");
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-ddHHmmss");
 		Date startDate = df.parse(str + timeStr);
 		return startDate;
 	}

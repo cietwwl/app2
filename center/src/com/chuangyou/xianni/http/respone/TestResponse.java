@@ -6,20 +6,11 @@ package com.chuangyou.xianni.http.respone;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.chuangyou.common.protobuf.pb.campaign.CreateCampaignMsgProto.CreateCampaignMsg;
-import com.chuangyou.xianni.campaign.action.CreateCampaignAction;
-import com.chuangyou.xianni.campaign.cmd.QuitCampaignCmd;
-import com.chuangyou.xianni.common.ErrorCode;
-import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.http.BaseRespone;
 import com.chuangyou.xianni.http.HttpCmd;
 import com.chuangyou.xianni.http.HttpResult;
 import com.chuangyou.xianni.http.HttpResult.Code;
-import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.proto.PBMessage;
-import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.word.WorldMgr;
 
 /**
  * @author zhanghuibin

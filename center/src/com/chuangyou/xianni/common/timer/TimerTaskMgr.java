@@ -13,6 +13,7 @@ import com.chuangyou.xianni.chat.manager.ChatManager;
 import com.chuangyou.xianni.guild.action.GuildCheckOfflineAction;
 import com.chuangyou.xianni.guild.manager.GuildManager;
 import com.chuangyou.xianni.log.LogManager;
+import com.chuangyou.xianni.rank.logic.RankRewardLogic;
 import com.chuangyou.xianni.rank.logic.UpdateRankLogic;
 import com.chuangyou.xianni.task.manager.TaskManager;
 import com.chuangyou.xianni.word.WorldMgr;
@@ -27,7 +28,7 @@ public class TimerTaskMgr {
 	/** 定时执行器 */
 	private static Timer		commonTimer;
 
-	/** 定时器 */
+	/** 5点重置日常任务  */
 	private static Timer		taskDayClearTimer;
 
 	/** 5点重置玩家参数 */
@@ -36,6 +37,11 @@ public class TimerTaskMgr {
 	 * 排行榜刷新定时器
 	 */
 	private static Timer		rankTimer;
+	
+	/**
+	 * 定时0点发排行榜奖励定时器
+	 */
+	private static Timer        rankRewardTimer;
 
 	/** 保存用户数据定时任务 */
 	private static TimerTask	saveUserData;
@@ -58,6 +64,11 @@ public class TimerTaskMgr {
 	 * 排行榜每两小时更新
 	 */
 	private static TimerTask	rankUpdateData;
+	
+	/**
+	 * 0点排行榜发奖
+	 */
+	private static TimerTask    rankRewardData;
 
 	public static boolean init() {
 		// 设置启动时间(在当前时间基础上向后推2分10秒)
@@ -103,11 +114,31 @@ public class TimerTaskMgr {
 			e.printStackTrace();
 		}
 
+		
+		
 		// 排行榜
 		rankTimer = new Timer("RankTimer");
 		rankUpdateData = new RankUpdateData();
 		rankTimer.schedule(rankUpdateData, beginDate, MINTIME * 120);
 
+		
+		//排行傍发奖
+		SimpleDateFormat rankRewardSdf = new SimpleDateFormat("yyyy-MM-dd '00:01:00'");
+		rankRewardTimer = new Timer("0点排行榜发奖");
+		rankRewardData  = new RankRewardData();
+		try {
+			Date startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rankRewardSdf.format(new Date()));
+			// 如果是0点后启动服务器，执行时间加一天
+			if (System.currentTimeMillis() > startTime.getTime()) {
+				startTime = TimeUtil.addTime(startTime, Calendar.DATE, 1);
+			}
+			rankRewardTimer.scheduleAtFixedRate(rankRewardData, startTime, MINTIME * 60 * 24);			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			Log.error("定时器 rankRewardTimer异常", e);
+			e.printStackTrace();
+		}
+		
 		return true;
 	}
 }
@@ -243,5 +274,21 @@ class RankUpdateData extends Task {
 	public void exec() {
 		// TODO Auto-generated method stub
 		new UpdateRankLogic().updateRank();
+	}
+}
+
+//==================>每天0点，发排行榜奖励<=====================================================
+class RankRewardData extends Task {
+
+	public RankRewardData() {
+		super("每天0点，发排行榜奖励");
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void exec() {
+		// TODO Auto-generated method stub
+		new UpdateRankLogic().updateRank();
+		new RankRewardLogic().reward();
 	}
 }

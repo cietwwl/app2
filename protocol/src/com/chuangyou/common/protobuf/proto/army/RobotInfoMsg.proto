@@ -2,8 +2,9 @@ option java_package = "com.chuangyou.common.protobuf.pb.army";
 option java_outer_classname = "RobotInfoProto";
 import "army/PropertyListMsg.proto";
 import "player/PlayerInfoMsg.proto";
-message RobotInfoMsg{
+message RobotInfoMsg {
 	optional PlayerInfoMsg simpInfo = 1; //基础信息
 	optional PropertyListMsg propertis = 2; //机器人属性
 	repeated int32 battleSkills = 3; //机器人出战技能
+	repeated RobotInfoMsg avatarInfos = 4; //机器人分身
 }

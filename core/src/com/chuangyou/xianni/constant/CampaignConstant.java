@@ -15,10 +15,10 @@ public class CampaignConstant {
 
 	// ----------------scene副本通知center状态--------------------//
 	public static class CampaignStatu {
-		public static final int	NOTITY2C_OUT			= 0;	// 退出
-		public static final int	NOTITY2C_IN				= 1;	// 进入
-		public static final int	NOTITY2C_OUT_SUCCESS	= 2;	// 成功结束退出
-		public static final int	NOTITY2C_OUT_FAIL		= 3;	// 失败结束退出
+		public static final int	NOTITY2C_OUT		= 0;	// 退出
+		public static final int	NOTITY2C_IN			= 1;	// 进入
+		public static final int	NOTITY2C_SUCCESS	= 2;	// 成功结束退出
+		public static final int	NOTITY2C_OVER		= 3;	// 失败结束退出
 		// public static final int NOTITY2C_SUCCESS = 4; // 副本成功结算
 	}
 

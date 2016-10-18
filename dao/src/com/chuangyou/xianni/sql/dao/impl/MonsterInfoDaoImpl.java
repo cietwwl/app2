@@ -64,6 +64,7 @@ public class MonsterInfoDaoImpl extends BaseDao implements MonsterInfoDao {
 					info.setToughnessValue(rs.getInt("toughnessValue"));
 					info.setHurtType(rs.getInt("hurtType"));
 					info.setBeKilledExp(rs.getInt("beKilledExp"));
+					info.setDropType(rs.getInt("dropType"));
 					info.setDrop1(rs.getInt("drop1"));
 					info.setDrop2(rs.getInt("drop2"));
 					info.setDrop3(rs.getInt("drop3"));

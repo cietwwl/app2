@@ -2,14 +2,11 @@ package com.chuangyou.xianni.skill.cmd;
 
 import java.util.Map;
 import java.util.Map.Entry;
-
 import com.chuangyou.common.protobuf.pb.skill.SkillListMsgProto.SkillListMsg;
-import com.chuangyou.common.protobuf.pb.skill.SkillTotalProResMsgProto.SkillTotalProResMsg;
 import com.chuangyou.common.protobuf.pb.skill.UpSkillMsgProto.UpSkillMsg;
 import com.chuangyou.common.protobuf.pb.skill.UpSkillOKMsgProto.UpSkillOKMsg;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.entity.hero.HeroSkill;
-import com.chuangyou.xianni.entity.property.SkillBaseProperty;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.chuangyou.xianni.role.helper.RoleConstants;
 import com.chuangyou.xianni.role.objects.Living;
 
 public class GridItem {

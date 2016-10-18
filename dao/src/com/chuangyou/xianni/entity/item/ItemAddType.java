@@ -85,5 +85,11 @@ public interface ItemAddType {
 	 * 镖车领奖
 	 */
 	public static final short	TRUCK_REWARD	= 3015;
+	
+	/**
+	 * 任务掉落物品
+	 */
+	public static final short TASK_DROP   = 3016;
+	
 
 }

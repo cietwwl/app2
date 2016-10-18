@@ -1,7 +1,6 @@
 package com.chuangyou.xianni.team.cmd;
 
 import com.chuangyou.common.protobuf.pb.team.TeamMemberLeaveRespProto.TeamMemberLeaveRespMsg;
-import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.campaign.TeamCampaign;
 import com.chuangyou.xianni.constant.EnumAttr;

@@ -37,12 +37,6 @@ public class ActivityTemplateMgr {
 		if (activitConfigMap == null) {
 			return false;
 		}
-		List<GamePlayer> all = WorldMgr.getAllPlayers();
-		if (all != null) {
-			for (GamePlayer player : all) {
-				sendTempsMsg(player);
-			}
-		}
 		activityCheck();
 		return true;
 	}

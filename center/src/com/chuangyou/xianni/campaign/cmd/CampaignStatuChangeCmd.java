@@ -19,11 +19,11 @@ public class CampaignStatuChangeCmd implements Command {
 	public void execute(io.netty.channel.Channel channel, PBMessage packet) throws Exception {
 		CampaignStatuMsg smsg = CampaignStatuMsg.parseFrom(packet.getBytes());
 		GamePlayer player = WorldMgr.getPlayer(packet.getPlayerId());
-		
+
 		if (player == null) {
 			return;
 		}
-		
+
 		// 进入
 		if (smsg.getStatu() == CampaignStatu.NOTITY2C_IN) {
 			player.setCurCampaign(smsg.getIndexId());
@@ -34,13 +34,13 @@ public class CampaignStatuChangeCmd implements Command {
 		}
 
 		// 通关副本
-		if (smsg.getStatu() == CampaignStatu.NOTITY2C_OUT_SUCCESS && smsg.getIsIn() == 1) {
+		if (smsg.getStatu() == CampaignStatu.NOTITY2C_SUCCESS) {
 			passCampaign(player, smsg.getTempId());
 			billingTask(player, smsg.getTempId(), smsg.getTaskId());
 		}
 
-		// 成功退出或者失败退出
-		if (smsg.getIsIn() ==  0 && (smsg.getStatu() == CampaignStatu.NOTITY2C_OUT_FAIL || smsg.getStatu() == CampaignStatu.NOTITY2C_OUT_SUCCESS)) {
+		// 结束退出
+		if (smsg.getStatu() == CampaignStatu.NOTITY2C_OVER) {
 			player.setCurCampaign(0);
 			teamCampaignOver(smsg.getTeamId());
 		}

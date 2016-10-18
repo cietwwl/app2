@@ -1,6 +1,5 @@
 package com.chuangyou.xianni.inverseBead.cmd;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.chuangyou.common.protobuf.pb.inverseBead.SyncMonsterPoolMsgProto.SyncMonsterPoolMsg;

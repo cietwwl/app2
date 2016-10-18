@@ -26,9 +26,7 @@ public class RelieveProtectionCmd extends AbstractCommand {
 
 	@Override
 	public void execute(ArmyProxy army, PBMessage packet) throws Exception {
-		army.getPlayer().setProtection(false);
-		if (army.getPet() != null)
-			army.getPet().setProtection(false);
+		army.cancelProtection();
 		// System.err.println("玩家 " + army.getPlayerId() + " 进入地图");
 		// 进入新场景通知 新玩家集合同移动集合的差集
 		// PlayerAttSnapMsg.Builder mine = PlayerAttSnapMsg.newBuilder();
@@ -42,10 +40,10 @@ public class RelieveProtectionCmd extends AbstractCommand {
 
 		// 推送附近场景对象
 		Set<Long> nears = army.getPlayer().getNears(new AllSelectorHelper(army.getPlayer()));
-		
+
 		System.err.println("RelieveProtectionCmd nears = " + nears.size());
 		for (Long id : nears) {
-			//自己不发送自己
+			// 自己不发送自己
 			if (id == army.getPlayerId()) {
 				continue;
 			}
@@ -60,7 +58,8 @@ public class RelieveProtectionCmd extends AbstractCommand {
 			// snap.setSkinId(l.getSkin());
 			// snap.setPostion(Vector3BuilderHelper.build(l.getPostion()));
 			// snap.setTarget(Vector3BuilderHelper.build(l.getTargetPostion()));
-			//Log.error(TimeUtil.getDateFormat(new Date()) + army.getPlayerId() + "(收件人)xxxxxxxx发送快照数据至客户端:" + " PlayerId(发件人):" + id);
+			// Log.error(TimeUtil.getDateFormat(new Date()) + army.getPlayerId()
+			// + "(收件人)xxxxxxxx发送快照数据至客户端:" + " PlayerId(发件人):" + id);
 			army.sendPbMessage(MessageUtil.buildMessage(Protocol.U_RESP_ATT_SNAP, snap));
 
 			// 通知附近的玩家进入 <--------迁移至进入地图方法---------->

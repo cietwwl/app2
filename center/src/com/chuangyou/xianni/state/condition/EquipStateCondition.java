@@ -27,40 +27,7 @@ public class EquipStateCondition extends BaseStateCondition {
 	@Override
 	public void addTrigger(GamePlayer player) {
 		// TODO Auto-generated method stub
-		this.listener = new ObjectListener() {
-			
-			@Override
-			public void onEvent(ObjectEvent event) {
-				// TODO Auto-generated method stub
-				int targetId =  config.getTargetId();
-				EquipBarInfo equipInfo = (EquipBarInfo) event.getObject();
-				int old = info.getProcess();
-				if(equipInfo!=null){
-					if(targetId == 1){ 
-						if(config.getTargetId1() == equipInfo.getPosition()){
-							info.setProcess(equipInfo.getLevel());
-						}
-					}else if(targetId == 2){
-						info.setProcess(getCountLv(player.getEquipInventory().getEquipBarInfoMap(), config.getTargetId1()));
-					}else if(targetId == 3){  
-						if(config.getTargetId1() == equipInfo.getPosition()){
-							info.setProcess(equipInfo.getGrade());
-						}
-					}else if(targetId == 4){
-						info.setProcess(getCountGrade(player.getEquipInventory().getEquipBarInfoMap(), config.getTargetId1()));
-					}
-				}else if(targetId == 5){
-					RankTempInfo rankInfo = RankServerManager.getInstance().getRankTempInfo(player.getPlayerId());
-					if(rankInfo!=null){
-						info.setProcess((int)rankInfo.getEquip());
-					}
-				}
-				
-				if(old!=info.getProcess()){
-					doNotifyUpdate();
-				}
-			}
-		};
+		this.initListener();
 		player.addListener(this.listener, EventNameType.EQUIP);
 	}
 
@@ -120,6 +87,46 @@ public class EquipStateCondition extends BaseStateCondition {
 	public boolean commitProcess() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void initListener() {
+		// TODO Auto-generated method stub
+		if(this.listener!=null)return;
+		this.listener = new ObjectListener() {
+			
+			@Override
+			public void onEvent(ObjectEvent event) {
+				// TODO Auto-generated method stub
+				int targetId =  config.getTargetId();
+				EquipBarInfo equipInfo = (EquipBarInfo) event.getObject();
+				int old = info.getProcess();
+				if(equipInfo!=null){
+					if(targetId == 1){ 
+						if(config.getTargetId1() == equipInfo.getPosition()){
+							info.setProcess(equipInfo.getLevel());
+						}
+					}else if(targetId == 2){
+						info.setProcess(getCountLv(player.getEquipInventory().getEquipBarInfoMap(), config.getTargetId1()));
+					}else if(targetId == 3){  
+						if(config.getTargetId1() == equipInfo.getPosition()){
+							info.setProcess(equipInfo.getGrade());
+						}
+					}else if(targetId == 4){
+						info.setProcess(getCountGrade(player.getEquipInventory().getEquipBarInfoMap(), config.getTargetId1()));
+					}
+				}else if(targetId == 5){
+					RankTempInfo rankInfo = RankServerManager.getInstance().getRankTempInfo(player.getPlayerId());
+					if(rankInfo!=null){
+						info.setProcess((int)rankInfo.getEquip());
+					}
+				}
+				
+				if(old!=info.getProcess()){
+					doNotifyUpdate();
+				}
+			}
+		};
 	}
 
 }

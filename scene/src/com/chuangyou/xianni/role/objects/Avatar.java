@@ -28,6 +28,7 @@ public class Avatar extends Robot {
 	private int			dieTime			= 15;		// 死亡时间
 	private int			correspond;					// 默契等级
 	protected boolean	correspondStatu	= false;	// 变身状态 0 未合体 1 合体
+	private int			campaignId;					// 所在副本ID
 
 	public Avatar() {
 		super(IDMakerHelper.nextID());
@@ -62,7 +63,8 @@ public class Avatar extends Robot {
 			return;
 		}
 		Field field = army.getPlayer().getField();
-		if (field != null) {
+
+		if (field != null && field.getCampaignId() > 0) {
 			this.setPostion(army.getPlayer().getPostion());
 			field.enterField(this);
 		}
@@ -154,6 +156,14 @@ public class Avatar extends Robot {
 
 	public int getCorrespond() {
 		return correspond;
+	}
+
+	public int getCampaignId() {
+		return campaignId;
+	}
+
+	public void setCampaignId(int campaignId) {
+		this.campaignId = campaignId;
 	}
 
 }

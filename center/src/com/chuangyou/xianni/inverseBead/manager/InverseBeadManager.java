@@ -191,13 +191,17 @@ public class InverseBeadManager {
 		// System.out.println("-----syncSpawn-----syncSpawn-----");
 		player.getInverseBeadInventory().load();
 
-		PlayerBeadTimeInfo playerBeadTimeInfo = player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
-		List<Integer> list = InverseBeadManager.getBeadRefreshId(playerBeadTimeInfo.getBeadRefreshId());
-		SyncMonsterPoolMsg.Builder msg = SyncMonsterPoolMsg.newBuilder();
-		msg.addAllMonsterRefreshId(list);
-		msg.setCurCampaign(player.getCurCampaign());
-		PBMessage c2s = MessageUtil.buildMessage(Protocol.S_CREATE_INVERSE_SYNC_MONSTER, msg);
-		player.sendPbMessage(c2s);
+		// PlayerBeadTimeInfo playerBeadTimeInfo =
+		// player.getInverseBeadRefreshInventory().getplayerBeadTimeInfo();
+		// List<Integer> list =
+		// InverseBeadManager.getBeadRefreshId(playerBeadTimeInfo.getBeadRefreshId());
+		// SyncMonsterPoolMsg.Builder msg = SyncMonsterPoolMsg.newBuilder();
+		// msg.addAllMonsterRefreshId(list);
+		// msg.setCurCampaign(player.getCurCampaign());
+		// PBMessage c2s =
+		// MessageUtil.buildMessage(Protocol.S_CREATE_INVERSE_SYNC_MONSTER,
+		// msg);
+		// player.sendPbMessage(c2s);
 	}
 
 	// public static void main(String[] args) {

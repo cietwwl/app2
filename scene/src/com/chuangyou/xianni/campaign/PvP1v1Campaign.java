@@ -114,7 +114,7 @@ public class PvP1v1Campaign extends Campaign {
 
 	public Vector3 getBornNode(ArmyProxy army) {
 		if (army.getPlayerId() == red.getPlayerId()) {
-			return super.getBornNode();
+			return super.getBornNode(army);
 		}
 		return starField.getFieldInfo().getPosition();
 	}

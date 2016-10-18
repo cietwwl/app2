@@ -1,5 +1,6 @@
 package com.chuangyou.xianni.avatar;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,9 @@ import com.chuangyou.xianni.entity.avatar.AvatarTemplateInfo;
 import com.chuangyou.xianni.entity.avatar.AvatarUpGradeTemplate;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
+import com.chuangyou.xianni.entity.item.ItemAddType.RewardType;
 import com.chuangyou.xianni.entity.property.BaseProperty;
+import com.chuangyou.xianni.entity.reward.RewardTemplate;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.entity_id.EntityIdBuilder;
 import com.chuangyou.xianni.interfaces.IInventory;
@@ -37,10 +40,10 @@ import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.reward.RewardManager;
 import com.chuangyou.xianni.skill.template.SkillTempMgr;
 import com.chuangyou.xianni.sql.dao.AvatarInfoDao;
 import com.chuangyou.xianni.sql.dao.DBManager;
-import com.chuangyou.xianni.word.WorldMgr;
 
 public class AvatarInventory implements IInventory {
 	private GamePlayer					player;
@@ -52,7 +55,6 @@ public class AvatarInventory implements IInventory {
 	public static final int				FIGHTING					= 1;
 	// 初始仙力上限为1000
 	public static final int				INIT_AVATAR_ENERGY			= 1000;
-
 	// 失败
 	static final int					REWARD_NOTHING				= 0;
 	// 等级提升
@@ -248,8 +250,8 @@ public class AvatarInventory implements IInventory {
 		if (info == null) {
 			return;
 		}
+		finghtingInfos.remove(info.getIndex());
 		info.setIndex(0);
-		finghtingInfos.remove(info);
 		sendSingleAvatarInfo(info);
 	}
 
@@ -320,6 +322,7 @@ public class AvatarInventory implements IInventory {
 				break;
 			}
 		}
+		updataProperty();
 		sendSingleAvatarInfo(ainfo);
 	}
 
@@ -333,7 +336,6 @@ public class AvatarInventory implements IInventory {
 		}
 		PBMessage message = MessageUtil.buildMessage(Protocol.U_TOAL_AVARTAR_INFOS, builder);
 		player.sendPbMessage(message);
-		writeAvatarMsg2Scene();
 	}
 
 	// 发送某个分身的信息
@@ -405,7 +407,7 @@ public class AvatarInventory implements IInventory {
 
 	// 获取几个分身信息
 	public void writeAvatarMsg2Scene() {
-		if (finghtingInfos == null || finghtingInfos.size() == 0) {
+		if (finghtingInfos == null) {
 			return;
 		}
 		RobotInfoListMsg.Builder builder = RobotInfoListMsg.newBuilder();
@@ -417,7 +419,7 @@ public class AvatarInventory implements IInventory {
 	}
 
 	// 写入PB
-	private RobotInfoMsg writeProto(AvatarInfo ainfo) {
+	public RobotInfoMsg writeProto(AvatarInfo ainfo) {
 		// 机器人信息
 		RobotInfoMsg.Builder builder = RobotInfoMsg.newBuilder();
 
@@ -463,7 +465,6 @@ public class AvatarInventory implements IInventory {
 		if (ainfo.getSkillStrengthen5() != 0) {
 			builder.addBattleSkills(ainfo.getSkillStrengthen5());
 		}
-
 		return builder.build();
 	}
 
@@ -498,39 +499,152 @@ public class AvatarInventory implements IInventory {
 				}
 				// 2随机获奖类型
 				int type = getRewardType(campaignId, avatar);
-				// 3奖励生效
+				// ------ 3奖励生效------
+				// 等级提升
 				if (type == REWARD_GREAD_UP) {
 					int newGreade = avatar.getGrade() + 1;
 					if (AvatarTempManager.getAvatarUpGradeTemplate(avatar.getTempId(), newGreade) != null) {
 						avatar.setGrade(newGreade);
+						reward.setType(type);
 					}
 					type = REWARD_ITEM;
 				}
+				// 升级技能
 				if (type == REWARD_SKILL_UP) {
-					
+					int nextSkillId = findNextGreadSkill(avatar.getSkillId());
+					if (nextSkillId != 0) {
+						avatar.setSkillId(nextSkillId);
+						reward.setParam(nextSkillId);
+						reward.setType(type);
+					} else {
+						type = REWARD_ITEM;
+					}
 				}
+				// 升级秘籍
 				if (type == REWARD_SKILLSTRENTHEN_UP) {
-
+					int random = ThreadSafeRandom.getInstance().next(4) + 1;
+					if (random == 1) {
+						int nextSkillId = findNextGreadSkill(avatar.getSkillStrengthen1());
+						if (nextSkillId != 0) {
+							avatar.setSkillStrengthen1(nextSkillId);
+							reward.setParam(nextSkillId);
+							reward.setType(type);
+						} else {
+							type = REWARD_ITEM;
+						}
+					}
+					if (random == 2) {
+						int nextSkillId = findNextGreadSkill(avatar.getSkillStrengthen2());
+						if (nextSkillId != 0) {
+							avatar.setSkillStrengthen2(nextSkillId);
+							reward.setParam(nextSkillId);
+							reward.setType(type);
+						} else {
+							type = REWARD_ITEM;
+						}
+					}
+					if (random == 3) {
+						int nextSkillId = findNextGreadSkill(avatar.getSkillStrengthen3());
+						if (nextSkillId != 0) {
+							avatar.setSkillStrengthen3(nextSkillId);
+							reward.setParam(nextSkillId);
+							reward.setType(type);
+						} else {
+							type = REWARD_ITEM;
+						}
+					}
+					if (random == 4) {
+						int nextSkillId = findNextGreadSkill(avatar.getSkillStrengthen4());
+						if (nextSkillId != 0) {
+							avatar.setSkillStrengthen4(nextSkillId);
+							reward.setParam(nextSkillId);
+							reward.setType(type);
+						} else {
+							type = REWARD_ITEM;
+						}
+					}
 				}
+				// 奖励物品
 				if (type == REWARD_ITEM) {
-
+					if (sendReward(campaignId)) {
+						reward.setType(type);
+					} else {
+						reward.setType(REWARD_NOTHING);
+						Log.error("avatar send reward error : " + campaignId + " playerId :" + player.getPlayerId());
+					}
 				}
-
+				rewards.addRewards(reward);
 			}
+			sendSingleAvatarInfo(avatar);
+			listBuilder.addAvatarRewards(rewards);
 		}
-
-		return false;
+		updataProperty();
+		PBMessage message = MessageUtil.buildMessage(Protocol.U_CAMPAIGN_AVARTAR_REWARDS, listBuilder);
+		player.sendPbMessage(message);
+		return true;
 	}
 
 	private boolean canGet(int campaignId, AvatarInfo avatar) {
+		int difference = campaignId % 40000 - avatar.getGrade();
+		if (difference < 0) {
+			return false;
+		}
+		if (difference <= 1) {
+			return ThreadSafeRandom.getInstance().next(100) <= 5;
+		}
+		if (difference <= 3) {
+			return ThreadSafeRandom.getInstance().next(100) <= 10;
+		}
+		if (difference <= 5) {
+			return ThreadSafeRandom.getInstance().next(100) <= 30;
+		}
+		if (difference <= 7) {
+			return ThreadSafeRandom.getInstance().next(100) <= 50;
+		}
+		if (difference <= 9) {
+			return ThreadSafeRandom.getInstance().next(100) <= 70;
+		}
 		return true;
 	}
 
 	private int getRewardType(int campaignId, AvatarInfo avatar) {
-		return ThreadSafeRandom.instance.next(4) + 1;
+		return ThreadSafeRandom.getInstance().next(4) + 1;
 	}
 
-	private int findNextGreadSkill(int skillIds) {
+	private int findNextGreadSkill(int skillId) {
+		SkillTempateInfo skill = SkillTempMgr.getSkillTemp(skillId);
+		if (skill == null) {
+			return 0;
+		}
+		SkillTempateInfo nextTempId = SkillTempMgr.getSkillTemp(skill.getNextTempId());
+		if (nextTempId != null) {
+			nextTempId.getTemplateId();
+		}
 		return 0;
+	}
+
+	/** 发送分身副本奖励 */
+	public boolean sendReward(int campaignId) {
+		List<RewardTemplate> rewards = RewardManager.getRewardTemps(RewardType.AVATAR_CAMPAIGN);
+		if (rewards == null) {
+			return false;
+		}
+		RewardTemplate get = null;
+		for (RewardTemplate reard : rewards) {
+			if (campaignId == reard.getParam1()) {
+				get = reard;
+				break;
+			}
+		}
+		if (get != null) {
+			return RewardManager.sendReward(get, player);
+		}
+		return false;
+	}
+
+	public List<AvatarInfo> getFinghtingInfos() {
+		List<AvatarInfo> avatars = new ArrayList<AvatarInfo>();
+		avatars.addAll(finghtingInfos.values());
+		return avatars;
 	}
 }

@@ -59,6 +59,61 @@ public class AvatarTempManager {
 		return true;
 	}
 
+	public static boolean reloadAvatarTemps() {//tb_z_avatar_template_info
+		// 加载模板数据
+		avatarTemps.clear();
+		List<AvatarTemplateInfo> at_all = DBManager.getAvatarTemplateInfoDao().getAll();
+		for (AvatarTemplateInfo at : at_all) {
+			avatarTemps.put(at.getId(), at);
+		}
+		return true;
+	}
+
+	public static boolean reloadAvatarStarTemps() {//tb_z_avatar_star_template
+		// 加载升星模板
+		avatarStarTemps.clear();
+		List<AvatarStarTemplate> ats_all = DBManager.getAvatarStarTemplateDao().getAll();
+		for (AvatarStarTemplate at : ats_all) {
+			Map<Integer, AvatarStarTemplate> sigleStarTemps = avatarStarTemps.get(at.getAvatarTempId());
+			if (sigleStarTemps == null) {
+				sigleStarTemps = new HashMap<>();
+				avatarStarTemps.put(at.getAvatarTempId(), sigleStarTemps);
+			}
+			sigleStarTemps.put(at.getLevel(), at);
+		}
+		return true;
+	}
+
+	public static boolean reloadAvatarUpGradeTemps() {//tb_z_avatar_upgrade_template
+		// 加载升级模板
+		avatarUpGradeTemps.clear();
+		List<AvatarUpGradeTemplate> aupg_all = DBManager.getAvatarUpGradeTemplateDao().getAll();
+		for (AvatarUpGradeTemplate aupg : aupg_all) {
+			Map<Integer, AvatarUpGradeTemplate> singleUpgTemps = avatarUpGradeTemps.get(aupg.getAvatarTempId());
+			if (singleUpgTemps == null) {
+				singleUpgTemps = new HashMap<>();
+				avatarUpGradeTemps.put(aupg.getAvatarTempId(), singleUpgTemps);
+			}
+			singleUpgTemps.put(aupg.getLevel(), aupg);
+		}
+		return true;
+	}
+
+	public static boolean reloadAvatarCorrespondTemps() {//tb_z_avatar_correspond_template
+		// 分身默契模板
+		avatarCorrespondTemps.clear();
+		List<AvatarCorrespondTemplateInfo> act_all = DBManager.getAvatarCorrespondTemplateInfoDao().getAll();
+		for (AvatarCorrespondTemplateInfo act : act_all) {
+			Map<Integer, AvatarCorrespondTemplateInfo> actTemps = avatarCorrespondTemps.get(act.getAvatarTempId());
+			if (actTemps == null) {
+				actTemps = new HashMap<>();
+				avatarCorrespondTemps.put(act.getAvatarTempId(), actTemps);
+			}
+			actTemps.put(act.getLevel(), act);
+		}
+		return true;
+	}
+
 	public static AvatarTemplateInfo getAvatarTemplateInfo(int tempId) {
 		return avatarTemps.get(tempId);
 	}

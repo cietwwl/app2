@@ -12,9 +12,11 @@ import com.chuangyou.xianni.netty.GatewayLinkedSet;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.role.objects.Avatar;
 import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.role.objects.Robot;
 import com.chuangyou.xianni.world.ArmyProxy;
+import com.chuangyou.xianni.world.WorldMgr;
 
 public class ArenaBattleCampaign extends Campaign {
 
@@ -46,6 +48,15 @@ public class ArenaBattleCampaign extends Campaign {
 		Vector3 vector3 = new Vector3(fieldInfo.getPosition().x, fieldInfo.getPosition().y, fieldInfo.getPosition().z, fieldInfo.getPosition().angle);
 		robot.setPostion(vector3);
 		starField.enterField(robot);
+
+		// 创建机器人分身
+		for (RobotInfoMsg data : robotDATA.getAvatarInfosList()) {
+			Avatar ravatar = new Avatar();
+			ravatar.setPostion(vector3);
+			ravatar.instill(data);
+			ravatar.setArmyId(robot.getArmyId());
+			starField.enterField(ravatar);
+		}
 	}
 
 	public void win() {

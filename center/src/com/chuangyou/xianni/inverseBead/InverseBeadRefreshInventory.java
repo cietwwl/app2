@@ -4,7 +4,6 @@ import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.inverseBead.PlayerBeadTimeInfo;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.interfaces.IInventory;
-import com.chuangyou.xianni.inverseBead.manager.InverseBeadManager;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.sql.dao.DBManager;
 

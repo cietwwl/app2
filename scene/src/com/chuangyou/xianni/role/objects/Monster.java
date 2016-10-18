@@ -2,28 +2,27 @@ package com.chuangyou.xianni.role.objects;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import com.chuangyou.common.protobuf.pb.PlayerKillMonsterProto.PlayerKillMonsterMsg;
+
 import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
+import com.chuangyou.common.protobuf.pb.scene.PlayerKillMonsterListProto.PlayerKillMonsterListMsg;
+import com.chuangyou.common.protobuf.pb.scene.PlayerKillMonsterProto.PlayerKillMonsterMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.ai.proxy.MonsterAI;
 import com.chuangyou.xianni.battle.action.MonsterPollingAction;
-import com.chuangyou.xianni.battle.buffer.Buffer;
-import com.chuangyou.xianni.battle.buffer.BufferFactory;
 import com.chuangyou.xianni.battle.damage.Damage;
-import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.campaign.task.CTBaseCondition;
 import com.chuangyou.xianni.config.SceneGlobal;
+import com.chuangyou.xianni.constant.BattleSettlementConstant;
 import com.chuangyou.xianni.constant.EnumAttr;
-import com.chuangyou.xianni.cooldown.CoolDownTypes;
 import com.chuangyou.xianni.drop.manager.DropManager;
-import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.spawn.AiConfig;
 import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 import com.chuangyou.xianni.exec.DelayAction;
@@ -40,6 +39,8 @@ import com.chuangyou.xianni.role.script.IMonsterDie;
 import com.chuangyou.xianni.role.template.AiConfigTemplateMgr;
 import com.chuangyou.xianni.script.IScript;
 import com.chuangyou.xianni.script.manager.ScriptManager;
+import com.chuangyou.xianni.team.Team;
+import com.chuangyou.xianni.team.TeamMgr;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.spawn.MonsterSpawnNode;
@@ -64,15 +65,15 @@ public class Monster extends ActiveLiving {
 	// 攻击者
 	private Long			attacker;
 
+	// 参与者
+	private Set<Long>		joiners	= new HashSet<>();
+
 	public int getCurSkillID() {
 		return curSkillID;
 	}
 
 	public void setCurSkillID(int curSkillID) {
 		this.curSkillID = curSkillID;
-		// 写死一个怪物执行技能
-		// Skill test = new Skill(BattleTempMgr.getActionInfo(curSkillID));
-		// addSkill(test);
 	}
 
 	public Long getTarget() {
@@ -96,11 +97,7 @@ public class Monster extends ActiveLiving {
 		setType(RoleType.monster);
 		this.node = node;
 
-		// enDelayQueue(new MonsterAI(this));
-		// enDelayQueue(new UpdatePositionAction(this));new
-		// PlayerSelectorHelper(this.activeLiving);
 		enDelayQueue(new MonsterPollingAction(this, new MonsterAI(this), new UpdatePositionAction(this, new PlayerSelectorHelper(this))));
-		// setCurSkillID(1001);
 	}
 
 	public boolean onDie(Living killer) {
@@ -110,13 +107,11 @@ public class Monster extends ActiveLiving {
 				MonsterSpawnNode mnode = (MonsterSpawnNode) node;
 				mnode.lvingDie(this);
 			}
-			if (killer != null && this.getField() != null) {
-				DropManager.dropFromMonster(this.getSkin(), killer.getArmyId(), this.getId(), this.getField().id, this.getPostion());
-			}
 
 			DieAction die = new DieAction(this, killer, 1000);
 			die.getActionQueue().enDelayQueue(die);
 
+			// 执行死亡脚本
 			if (getAiConfig() != null) {
 				IScript iScript = ScriptManager.getScriptById(getAiConfig().getScript());
 				if (iScript != null) {
@@ -150,7 +145,7 @@ public class Monster extends ActiveLiving {
 		@Override
 		public void execute() {
 			if (killer != null && killer.getArmyId() > 0) {
-				notifyCenter(getSkin(), killer.getArmyId());
+				calculationProfit(getSkin(), killer);
 			}
 		}
 
@@ -158,23 +153,50 @@ public class Monster extends ActiveLiving {
 
 	@Override
 	public void enterField(Field f) {
-		// TODO Auto-generated method stub
 		super.enterField(f);
 		initPosition = getPostion().clone();
 	}
 
 	/**
-	 * 通知
-	 * 
-	 * @param tempId
-	 * @param playerId
+	 * 计算收益
 	 */
-	protected void notifyCenter(int tempId, long playerId) {
+	protected void calculationProfit(int tempId, Living killer) {
+		// 无论什么类型，击杀者必定掉落
+		if (killer != null && this.getField() != null) {
+			DropManager.dropFromMonster(this.getSkin(), killer.getArmyId(), this.getId(), this.getField().id, this.getPostion());
+		}
+		// 当怪物类型为2时，参与者也掉落物品
+		if (getMonsterInfo().getDropType() == 2) {
+			for (Long id : joiners) {
+				Living l = getField().getLiving(id);
+				if (l != null) {
+					DropManager.dropFromMonster(this.getSkin(), l.getArmyId(), this.getId(), this.getField().id, this.getPostion());
+				}
+			}
+		}
+
+		PlayerKillMonsterListMsg.Builder list = PlayerKillMonsterListMsg.newBuilder();
+		for (Long id : joiners) {
+			if (id == killer.getId()) {
+				continue;
+			}
+			Living l = getField().getLiving(id);
+			if (l != null) {
+				PlayerKillMonsterMsg.Builder msg = PlayerKillMonsterMsg.newBuilder();
+				msg.setBeKillId(tempId);
+				msg.setPlayerId(l.getArmyId());
+				msg.setType(RoleType.monster);
+				msg.setJoinType(BattleSettlementConstant.JOINER);// 参与者
+				list.addKillInfos(msg);
+			}
+		}
 		PlayerKillMonsterMsg.Builder msg = PlayerKillMonsterMsg.newBuilder();
 		msg.setBeKillId(tempId);
-		msg.setPlayerId(playerId);
-		msg.setType(1);
-		PBMessage pkg = MessageUtil.buildMessage(Protocol.C_PLAYER_KILL_MONSTER, msg);
+		msg.setPlayerId(killer.getArmyId());
+		msg.setType(RoleType.monster);
+		msg.setJoinType(BattleSettlementConstant.KILLER);// 击杀者
+		list.addKillInfos(msg);
+		PBMessage pkg = MessageUtil.buildMessage(Protocol.C_PLAYER_KILL_MONSTER, list);
 		GatewayLinkedSet.send2Server(pkg);
 	}
 
@@ -230,7 +252,8 @@ public class Monster extends ActiveLiving {
 				// }
 				// }
 
-				//addCooldown(CoolDownTypes.BE_ATTACK, null, SceneGlobal.AI_BEATTACK_TIME);
+				// addCooldown(CoolDownTypes.BE_ATTACK, null,
+				// SceneGlobal.AI_BEATTACK_TIME);
 			}
 			if (getAiConfig() != null && getAiConfig().isRunAway()) {
 				return;
@@ -313,28 +336,6 @@ public class Monster extends ActiveLiving {
 	public Long getAttackTarget() {
 		return getDefaultAttackTarget();
 	}
-
-	// public void clearWorkBuffer() {
-	// List<Buffer> allbuffer = new ArrayList<>();
-	// synchronized (workBuffers) {
-	// for (Entry<Integer, List<Buffer>> entry : workBuffers.entrySet()) {
-	// List<Buffer> wayBufs = entry.getValue();
-	// allbuffer.addAll(wayBufs);
-	// wayBufs.clear();
-	// }
-	// workBuffers.clear();
-	// }
-	//
-	// for (Buffer buff : allbuffer) {
-	// buff.stop();
-	// BufferMsg.Builder bmsg = BufferMsg.newBuilder();
-	// bmsg.setBufferId(buff.getBufferId());
-	// bmsg.setOption(4);// 4 删除
-	// bmsg.setSourceId(buff.getSource().getId());
-	// bmsg.setTargetId(buff.getTarget().getId());
-	// sendBufferChange(bmsg.build());
-	// }
-	// }
 
 	/**
 	 * 获取默认攻击目标
@@ -445,6 +446,21 @@ public class Monster extends ActiveLiving {
 
 	public AiConfig getAiConfig() {
 		return aiConfig;
+	}
+
+	/** 受伤 */
+	public int takeDamage(Damage damage) {
+		Living source = damage.getSource();
+		if (source.getArmyId() != 0) {
+			joiners.add(source.getArmyId());
+			if (source.getTeamId() != 0) {
+				Team team = TeamMgr.getTeam(source.getTeamId());
+				if (team != null) {
+					joiners.addAll(team.getMembers());
+				}
+			}
+		}
+		return super.takeDamage(damage);
 	}
 
 	/**

@@ -8,7 +8,6 @@ import java.util.Map;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.entity.equip.EquipAwakenCfg;
 import com.chuangyou.xianni.entity.equip.EquipBarGradeCfg;
-import com.chuangyou.xianni.entity.equip.EquipResolveCfg;
 import com.chuangyou.xianni.entity.equip.EquipSuitCfg;
 import com.chuangyou.xianni.sql.dao.EquipConfigDao;
 import com.chuangyou.xianni.sql.db.BaseDao;

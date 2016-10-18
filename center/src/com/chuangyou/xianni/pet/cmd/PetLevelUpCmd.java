@@ -9,7 +9,6 @@ import com.chuangyou.xianni.entity.pet.PetInfo;
 import com.chuangyou.xianni.entity.pet.PetInfoCfg;
 import com.chuangyou.xianni.entity.pet.PetLevelCfg;
 import com.chuangyou.xianni.pet.manager.PetLevelManager;
-import com.chuangyou.xianni.pet.manager.PetManager;
 import com.chuangyou.xianni.pet.template.PetTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;

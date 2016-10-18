@@ -13,11 +13,11 @@ import io.netty.channel.Channel;
  */
 public class CmdTask implements Runnable {
 
-	private CmdTaskQueue queue;
-	private Channel channel;
-	private PBMessage packet;
-	private Command cmd;
-	protected Long createTime;
+	private CmdTaskQueue	queue;
+	private Channel			channel;
+	private PBMessage		packet;
+	private Command			cmd;
+	protected Long			createTime;
 
 	public CmdTask(Command cmd, Channel channel, PBMessage packet, CmdTaskQueue queue) {
 		this.channel = channel;
@@ -36,7 +36,7 @@ public class CmdTask implements Runnable {
 				long end = System.currentTimeMillis();
 				long interval = end - start;
 				long leftTime = end - createTime;
-				if (interval >= 1000) {
+				if (interval >= 100) {
 					Log.warn("execute cmder : " + this.toString() + ", interval : " + interval + ", leftTime : " + leftTime + ", size : " + queue.getQueue().size());
 				}
 			} catch (Exception e) {

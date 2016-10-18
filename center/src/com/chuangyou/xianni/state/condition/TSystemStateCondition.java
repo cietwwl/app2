@@ -37,4 +37,10 @@ public class TSystemStateCondition extends BaseStateCondition {
 		return false;
 	}
 
+	@Override
+	public void initListener() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

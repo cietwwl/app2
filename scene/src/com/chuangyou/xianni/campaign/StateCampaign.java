@@ -95,12 +95,12 @@ public class StateCampaign extends SingleCampaign {
 	 * 失败结束
 	 */
 	public void failOver(){
-		this.over();
 		ArmyProxy army = WorldMgr.getArmy(this.creater);
-		if (army == null){			
+		if (army != null){			
 			StateRevivalPlayerAction revival = new StateRevivalPlayerAction(army);
 			ThreadManager.actionExecutor.enDelayQueue(revival);
 		}
+		this.over();
 	}
 	
 	

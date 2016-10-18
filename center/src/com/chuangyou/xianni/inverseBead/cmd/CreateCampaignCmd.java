@@ -2,10 +2,7 @@ package com.chuangyou.xianni.inverseBead.cmd;
 
 import com.chuangyou.common.protobuf.pb.inverseBead.ReqEnterCampaignMsgProto.ReqEnterCampaignMsg;
 import com.chuangyou.xianni.base.AbstractCommand;
-import com.chuangyou.xianni.exec.ThreadManager;
-import com.chuangyou.xianni.inverseBead.InverseBeadInventory;
 import com.chuangyou.xianni.inverseBead.action.CreateInverSeBeadCampaignAction;
-import com.chuangyou.xianni.inverseBead.action.InverseBeadLoopAction;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;

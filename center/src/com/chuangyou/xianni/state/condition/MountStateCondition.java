@@ -28,35 +28,7 @@ public class MountStateCondition extends BaseStateCondition {
 	@Override
 	public void addTrigger(GamePlayer player) {
 		// TODO Auto-generated method stub
-		this.listener = new ObjectListener() {
-			
-			@Override
-			public void onEvent(ObjectEvent event) {
-				// TODO Auto-generated method stub
-				MountStateEvent e = (MountStateEvent) event;
-				int old = info.getProcess();
-				if(e!=null){
-					if(e.getTargetId()>=1 && e.getTargetId()<=3){						
-						if(e.getTargetId() == config.getTargetId()){
-							info.setProcess(e.getTargetNum());
-						}
-					}else if(e.getTargetId() == 4){
-						if(e.getTargetId1() == config.getTargetId1()){
-							info.setProcess(e.getTargetNum());
-						}
-						info.setProcess(getCount(player.getMountInventory().getMountEquip(),config.getTargetId1()));
-					}else if(e.getTargetId() == 6){ //战力
-						RankTempInfo rankInfo = RankServerManager.getInstance().getRankTempInfo(player.getPlayerId());
-						if(rankInfo!=null){
-							info.setProcess((int)rankInfo.getMount());
-						}
-					}
-				}
-				if(old!=info.getProcess()){
-					doNotifyUpdate();
-				}
-			}
-		};
+		this.initProcess();
 		player.addListener(listener, EventNameType.MOUNT);
 	}
 
@@ -100,11 +72,45 @@ public class MountStateCondition extends BaseStateCondition {
 	}
 	
 
-
 	@Override
 	public boolean commitProcess() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void initListener() {
+		// TODO Auto-generated method stub
+		if(this.listener!=null)return;
+		this.listener = new ObjectListener() {
+			
+			@Override
+			public void onEvent(ObjectEvent event) {
+				// TODO Auto-generated method stub
+				MountStateEvent e = (MountStateEvent) event;
+				int old = info.getProcess();
+				if(e!=null){
+					if(e.getTargetId()>=1 && e.getTargetId()<=3){						
+						if(e.getTargetId() == config.getTargetId()){
+							info.setProcess(e.getTargetNum());
+						}
+					}else if(e.getTargetId() == 4){
+						if(e.getTargetId1() == config.getTargetId1()){
+							info.setProcess(e.getTargetNum());
+						}
+						info.setProcess(getCount(player.getMountInventory().getMountEquip(),config.getTargetId1()));
+					}else if(e.getTargetId() == 6){ //战力
+						RankTempInfo rankInfo = RankServerManager.getInstance().getRankTempInfo(player.getPlayerId());
+						if(rankInfo!=null){
+							info.setProcess((int)rankInfo.getMount());
+						}
+					}
+				}
+				if(old!=info.getProcess()){
+					doNotifyUpdate();
+				}
+			}
+		};
 	}
 
 }

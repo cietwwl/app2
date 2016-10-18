@@ -27,24 +27,7 @@ public class PlayerFightStateCondition extends BaseStateCondition {
 	@Override
 	public void addTrigger(GamePlayer player) {
 		// TODO Auto-generated method stub
-		this.listener = new ObjectListener() {
-			@Override
-			public void onEvent(ObjectEvent event) {
-				// TODO Auto-generated method stub
-				PlayerPropertyUpdateEvent e = (PlayerPropertyUpdateEvent) event;
-				Map<Integer, Long> map = e.getChangeMap();
-				if(map!=null){
-					for(Map.Entry<Integer, Long> entry:map.entrySet()){
-						if(entry.getKey() == EnumAttr.FightValue.getValue()){
-							long fight = entry.getValue();
-							info.setProcess((int)fight);
-							info.setOp(Option.Update);
-							doNotifyUpdate();
-						}
-					}
-				}
-			}
-		};
+		this.initListener();
 		player.getBasePlayer().addListener(listener, EventNameType.UPDATE_PLAYER_PROPERTY);
 	}
 
@@ -65,6 +48,30 @@ public class PlayerFightStateCondition extends BaseStateCondition {
 	public boolean commitProcess() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void initListener() {
+		// TODO Auto-generated method stub
+		if(this.listener!=null)return;
+		this.listener = new ObjectListener() {
+			@Override
+			public void onEvent(ObjectEvent event) {
+				// TODO Auto-generated method stub
+				PlayerPropertyUpdateEvent e = (PlayerPropertyUpdateEvent) event;
+				Map<Integer, Long> map = e.getChangeMap();
+				if(map!=null){
+					for(Map.Entry<Integer, Long> entry:map.entrySet()){
+						if(entry.getKey() == EnumAttr.FightValue.getValue()){
+							long fight = entry.getValue();
+							info.setProcess((int)fight);
+							info.setOp(Option.Update);
+							doNotifyUpdate();
+						}
+					}
+				}
+			}
+		};
 	}
 
 }

@@ -1,5 +1,8 @@
 package com.chuangyou.xianni.guild.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.chuangyou.common.protobuf.pb.guild.GuildWarehouseItemInfoProto.GuildWarehouseItemInfoMsg;
 import com.chuangyou.common.protobuf.pb.guild.GuildWarehouseReqProto.GuildWarehouseReqMsg;
 import com.chuangyou.common.protobuf.pb.guild.GuildWarehouseRespProto.GuildWarehouseRespMsg;
@@ -7,9 +10,11 @@ import com.chuangyou.common.util.LanguageSet;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.email.manager.EmailManager;
+import com.chuangyou.xianni.email.vo.EmailItemVo;
 import com.chuangyou.xianni.entity.guild.GuildJobPowerCfg;
 import com.chuangyou.xianni.entity.guild.GuildMemberInfo;
 import com.chuangyou.xianni.entity.guild.GuildWarehouseItemInfo;
+import com.chuangyou.xianni.entity.item.BindType;
 import com.chuangyou.xianni.guild.GuildWarehouseAction;
 import com.chuangyou.xianni.guild.action.baseAction.GuildIsGuildMemberAction;
 import com.chuangyou.xianni.guild.struct.Guild;
@@ -80,7 +85,7 @@ public class GuildWarehouseGiveAction extends GuildIsGuildMemberAction {
 		respMsg.setAction(GuildWarehouseAction.GIVE_TO_MEMBER);
 		respMsg.setFlag(2);
 		
-		String successItems = "";
+		List<EmailItemVo> successItemList = new ArrayList<>();
 		//分配 - 扣除物品
 		for(GuildWarehouseItemInfoMsg itemMsg: req.getItemList()){
 			int needNum = itemMsg.getAmount() * req.getMemberIdList().size();
@@ -88,7 +93,8 @@ public class GuildWarehouseGiveAction extends GuildIsGuildMemberAction {
 			if(itemInfo == null){
 				continue;
 			}
-			successItems += itemMsg.getItemTempId() + "," + itemMsg.getAmount() + ";";
+			EmailItemVo emailItem = new EmailItemVo(itemMsg.getItemTempId(), itemMsg.getAmount(), BindType.BIND);
+			successItemList.add(emailItem);
 			
 			GuildWarehouseItemInfoMsg.Builder itemRespMsg = GuildWarehouseItemInfoMsg.newBuilder();
 			itemRespMsg.setItemTempId(itemInfo.getItemTempId());
@@ -103,7 +109,7 @@ public class GuildWarehouseGiveAction extends GuildIsGuildMemberAction {
 		String emailTitle = LanguageSet.getResource("CenterServer.guild.emailTitle");
 		String emailContent = LanguageSet.getResource("CenterServer.guild.warehouseEmailContent");
 		for(long memberId: req.getMemberIdList()){
-			EmailManager.insertEmail(memberId, emailTitle, emailContent, successItems);
+			EmailManager.insertEmail(memberId, emailTitle, emailContent, successItemList);
 		}
 	}
 

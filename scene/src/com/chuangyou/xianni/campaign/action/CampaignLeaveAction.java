@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.state.CampaignState;
+import com.chuangyou.xianni.campaign.state.StopState;
 import com.chuangyou.xianni.constant.CampaignConstant.CampaignType;
 import com.chuangyou.xianni.exec.Action;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -35,33 +36,32 @@ public class CampaignLeaveAction extends Action {
 			PBMessage quit = new PBMessage(Protocol.C_QUIT_CAMPAIGN);
 			army.sendPbMessage(quit);
 		}
-		campaign.removeArmy(army);
-		// campaign.setExpiredTime(System.currentTimeMillis() + 30 * 60 * 1000);
+		campaign.removeArmy(army,false);
 
 		/** 挑战副本离开则销毁 */
 		if (campaign.getTemp().getType() == CampaignType.AVATAR) {
-			campaign.over();
+			campaign.stateTransition(new StopState(campaign));
 		}
 
 		/** 竞技场副本离开则销毁 */
 		if (campaign.getTemp().getType() == CampaignType.ARENA) {
-			campaign.over();
+			campaign.stateTransition(new StopState(campaign));
 		}
 
 		if (campaign.getTemp().getType() == CampaignType.GUILD_SEIZE) {
 
 			/** 渡节副本成功离开时就销毁 */
 			if (campaign.getTemp().getType() == CampaignType.STATE && campaign.getState().getCode() >= CampaignState.SUCCESS) {
-				campaign.over();
+				campaign.stateTransition(new StopState(campaign));
 			}
 
 			if (campaign.getTemp().getType() == CampaignType.GUILD_SEIZE) {
-				campaign.over();
+				campaign.stateTransition(new StopState(campaign));
 			}
 
 			/** 组队副本，当所有人离开时，销毁副本 */
 			if (campaign.getTemp().getType() == CampaignType.TEAM && campaign.isEmpty() && campaign.getState().getCode() != CampaignState.STOP) {
-				campaign.over();
+				campaign.stateTransition(new StopState(campaign));
 			} else {
 				campaign.sendCampaignInfo(army);
 			}

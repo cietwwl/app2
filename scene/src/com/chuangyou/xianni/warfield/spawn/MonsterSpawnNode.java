@@ -65,17 +65,21 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 	}
 
 	public void lvingDie(Living living) {
-		if (field != null) {
-			children.remove(living.getId());
-			field.addDeathLiving(living);
-			curCount--;
-			if (isOver()) {
-				stateTransition(new OverState(this));
-			} else {
-				if (((spwanInfo.getToalCount() == 0 || toalCount < spwanInfo.getToalCount()) && curCount < spwanInfo.getMaxCount())) {
-					field.enDelayQueue(new CreateChildAction());
-					curCount++;
-				}
+		if (field == null) {
+			return;
+		}
+		if (state.getCode() != NodeState.WORK) {
+			return;
+		}
+		children.remove(living.getId());
+		field.addDeathLiving(living);
+		curCount--;
+		if (isOver()) {
+			stateTransition(new OverState(this));
+		} else {
+			if (((spwanInfo.getToalCount() == 0 || toalCount < spwanInfo.getToalCount()) && curCount < spwanInfo.getMaxCount())) {
+				field.enDelayQueue(new CreateChildAction());
+				curCount++;
 			}
 		}
 	}
@@ -148,13 +152,13 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 		monster.setProperty(EnumAttr.CUR_SOUL, monsterInfo.getSoulHpValue());
 
 		monster.setProperty(EnumAttr.ATTACK, monsterInfo.getHurtValue());
-		//monster.setInitAttack(monsterInfo.getHurtValue());
+		// monster.setInitAttack(monsterInfo.getHurtValue());
 		monster.setProperty(EnumAttr.DEFENCE, monsterInfo.getArmorValue());
-		//monster.setInitDefence(monsterInfo.getArmorValue());
+		// monster.setInitDefence(monsterInfo.getArmorValue());
 		monster.setProperty(EnumAttr.SOUL_ATTACK, monsterInfo.getSoulHurtValue());
-		//monster.setInitSoulAttack(monsterInfo.getSoulHurtValue());
+		// monster.setInitSoulAttack(monsterInfo.getSoulHurtValue());
 		monster.setProperty(EnumAttr.SOUL_DEFENCE, monsterInfo.getSoulArmorValue());
-		//monster.setInitSoulDefence(monsterInfo.getSoulArmorValue());
+		// monster.setInitSoulDefence(monsterInfo.getSoulArmorValue());
 
 		monster.setProperty(EnumAttr.ACCURATE, monsterInfo.getHitRateValue());
 		monster.setProperty(EnumAttr.DODGE, monsterInfo.getDodgeValue());

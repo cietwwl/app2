@@ -63,12 +63,14 @@ public class StateCampaign extends SingleCampaign {
 	 * 
 	 */
 	public void execRandomEvent() {
-		if (!checkIsInScene())
+		if (!checkIsInScene()) {
 			return; // 不在地图中随机事件停止
-		if (this.state.getCode() != CampaignState.OPENING)
+		}
+		if (this.state.getCode() != CampaignState.START) {
 			return;
+		}
 		if (this.curProcess >= this.maxProcess) {
-			if (!isEndEvent){
+			if (!isEndEvent) {
 				isEndEvent = true;
 				doEndEvents(); // 执行结束事件
 			}
@@ -94,17 +96,15 @@ public class StateCampaign extends SingleCampaign {
 	/**
 	 * 失败结束
 	 */
-	public void failOver(){
+	public void failOver() {
 		ArmyProxy army = WorldMgr.getArmy(this.creater);
-		if (army != null){			
+		if (army != null) {
 			StateRevivalPlayerAction revival = new StateRevivalPlayerAction(army);
 			ThreadManager.actionExecutor.enDelayQueue(revival);
 		}
-		this.over();
+		this.stop();
 	}
-	
-	
-	
+
 	/**
 	 * QTE完成执行指定的事件
 	 * 
@@ -113,7 +113,7 @@ public class StateCampaign extends SingleCampaign {
 	public void execOneEvent(StateEventConfig event) {
 		if (!checkIsInScene())
 			return; // 不在地图中随机事件停止
-		if (this.state.getCode() != CampaignState.OPENING)
+		if (this.state.getCode() != CampaignState.START)
 			return;
 		ArmyProxy army = WorldMgr.getArmy(this.creater);
 		if (army == null)
@@ -135,18 +135,19 @@ public class StateCampaign extends SingleCampaign {
 			action.getActionQueue().enDelayQueue(action);
 		}
 	}
-	
+
 	/**
-	 *  更新进度
+	 * 更新进度
+	 * 
 	 * @param value
 	 */
-	private void notifyProcess(){
+	private void notifyProcess() {
 		ArmyProxy army = WorldMgr.getArmy(this.creater);
-		if (army != null){
+		if (army != null) {
 			NotifyStateProcessMsg.Builder resp = NotifyStateProcessMsg.newBuilder();
 			resp.setProcess(this.curProcess);
-			army.sendPbMessage(MessageUtil.buildMessage(Protocol.U_RESP_STATE_FB_PROCESS,resp));
-			
+			army.sendPbMessage(MessageUtil.buildMessage(Protocol.U_RESP_STATE_FB_PROCESS, resp));
+
 		}
 	}
 
@@ -218,22 +219,22 @@ public class StateCampaign extends SingleCampaign {
 		super.onPlayerEnter(army);
 		this.doEnter(army);
 	}
-	
-	private void doEnter(ArmyProxy army){
+
+	private void doEnter(ArmyProxy army) {
 		if (this.isReady == false) {
 			this.isReady = true;
 			notifyProcess();
 		} else { // 有相应的处罚
-			if(this.curProcess<this.maxProcess){				
-				this.curProcess = (this.curProcess/2);
+			if (this.curProcess < this.maxProcess) {
+				this.curProcess = (this.curProcess / 2);
 			}
 			notifyProcess();
-			//所有怪物回血
+			// 所有怪物回血
 			for (Field field : allFields.values()) {
-				if(field!=null){
+				if (field != null) {
 					List<Living> lives = field.getMonsters();
 					for (Living living : lives) {
-						if(living instanceof Monster){
+						if (living instanceof Monster) {
 							Monster m = (Monster) living;
 							m.fullState();
 						}
@@ -245,7 +246,6 @@ public class StateCampaign extends SingleCampaign {
 		EmptyStateDelayAction action = new EmptyStateDelayAction(getActionQueue(), 30 * 1000, this, army);
 		action.getActionQueue().enDelayQueue(action);
 	}
-	
 
 	public Map<Integer, QteTemp> getQteTempMap() {
 		return qteTempMap;
@@ -253,7 +253,6 @@ public class StateCampaign extends SingleCampaign {
 
 	@Override
 	public void clearCampaignData() {
-		// TODO Auto-generated method stub
 		super.clearCampaignData();
 		if (qteTempMap != null) {
 			this.qteTempMap.clear();

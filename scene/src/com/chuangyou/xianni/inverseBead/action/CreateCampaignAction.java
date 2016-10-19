@@ -8,6 +8,7 @@ import com.chuangyou.xianni.campaign.CampaignFactory;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
 import com.chuangyou.xianni.campaign.TeamCampaign;
+import com.chuangyou.xianni.campaign.state.StartState;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.exec.Action;
 import com.chuangyou.xianni.team.Team;
@@ -48,7 +49,7 @@ public class CreateCampaignAction extends Action {
 		Campaign campaign = CampaignFactory.createCampaign(temp, army, 0);
 		CampaignMgr.add(campaign);
 
-		campaign.start();
+		campaign.stateTransition(new StartState(campaign));
 		campaign.onPlayerEnter(army);
 //		System.out.println("-----------campaign.onPlayerEnter(army);------------------");
 	}

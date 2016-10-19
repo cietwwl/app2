@@ -7,6 +7,7 @@ import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignFactory;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
+import com.chuangyou.xianni.campaign.state.StartState;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
@@ -38,7 +39,7 @@ public class CreateArenaBattleCampaignCmd extends AbstractCommand {
 
 		Campaign campaign = CampaignFactory.createArenaBattleCampaign(temp, army, msg);
 		CampaignMgr.add(campaign);
-		campaign.start();
+		campaign.stateTransition(new StartState(campaign));
 		campaign.onPlayerEnter(army);
 	}
 

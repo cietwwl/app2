@@ -290,7 +290,7 @@ public class ArmyProxy extends AbstractActionQueue {
 
 				Campaign campaign = CampaignMgr.getCampagin(field.getCampaignId());
 				if (campaign != null) {
-					campaign.unline(this);
+					campaign.onPlayerLeave(this, true);
 				}
 				// 离开地图
 				field.leaveField(player);

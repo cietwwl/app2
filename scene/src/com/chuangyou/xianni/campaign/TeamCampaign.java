@@ -6,6 +6,7 @@ import java.util.List;
 import com.chuangyou.common.protobuf.pb.campaign.CampaignInfoMsgProto.CampaignInfoMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CampaignStatuMsgProto.CampaignStatuMsg;
 import com.chuangyou.xianni.campaign.state.CampaignState;
+import com.chuangyou.xianni.campaign.state.StopState;
 import com.chuangyou.xianni.constant.CampaignConstant.CampaignStatu;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -40,15 +41,15 @@ public class TeamCampaign extends Campaign {
 	/**
 	 * 副本结束
 	 */
-	public void over() {
-		super.over();
+	public void stop() {
+		super.stop();
 	}
 
 	public void onKick(ArmyProxy army) {
 
 		/** 组队副本，当所有人离开时，销毁副本 */
 		if (isEmpty() && getState().getCode() != CampaignState.STOP) {
-			over();
+			stateTransition(new StopState(this));
 		} else {
 			CampaignStatuMsg.Builder cstatu = CampaignStatuMsg.newBuilder();
 			cstatu.setIndexId(getIndexId());
@@ -59,7 +60,7 @@ public class TeamCampaign extends Campaign {
 
 			PBMessage quit = new PBMessage(Protocol.C_QUIT_CAMPAIGN);
 			army.sendPbMessage(quit);
-			removeArmy(army);
+			removeArmy(army, true);
 
 			CampaignInfoMsg.Builder infoMsg = CampaignInfoMsg.newBuilder();
 			infoMsg.setId(id);

@@ -32,7 +32,7 @@ public class CampaignOptionCmd extends AbstractCommand {
 				ErrorMsgUtil.sendErrorMsg(army, ErrorCode.CAMPAIGN_NOT_EXIST, Protocol.S_CAMPAIGN_OPTION, "");
 			}
 		}
-		
+
 		// 返回副本
 		if (op == CampaignConstant.JOIN) {
 			Campaign campaign = CampaignMgr.getCampagin(parm1);
@@ -45,7 +45,7 @@ public class CampaignOptionCmd extends AbstractCommand {
 		if (op == CampaignConstant.LEAVE) {
 			Campaign campaign = CampaignMgr.getCampagin(parm1);
 			if (campaign != null) {
-				campaign.onPlayerLeave(army);
+				campaign.onPlayerLeave(army, false);
 			}
 		}
 		/* 进入队伍所在副本 */

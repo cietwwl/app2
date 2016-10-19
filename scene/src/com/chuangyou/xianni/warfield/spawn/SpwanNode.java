@@ -39,7 +39,7 @@ public class SpwanNode {
 
 	/** 激活 */
 	public void active(ArmyProxy army) {
-		if (getState().getCode() != NodeState.START) {
+		if (getState().getCode() != NodeState.WORK) {
 			return;
 		}
 		Campaign campaign = CampaignMgr.getCampagin(getCampaignId());

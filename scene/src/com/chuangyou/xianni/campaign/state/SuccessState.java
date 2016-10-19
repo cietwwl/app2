@@ -11,6 +11,6 @@ public class SuccessState extends CampaignState {
 
 	@Override
 	public void work() {
-
+		campaign.success();
 	}
 }

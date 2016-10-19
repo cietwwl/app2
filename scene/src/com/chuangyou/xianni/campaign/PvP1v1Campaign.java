@@ -43,15 +43,11 @@ public class PvP1v1Campaign extends Campaign {
 			sendBattleResult(this.red.getPlayerId(), playerId);
 		}
 		sendBattleResult();
-
 		OverDelayAction action = new OverDelayAction(this);
 		enDelayQueue(action);
 	}
 
-	public void over() {
-		if (areadyOver()) {
-			return;
-		}
+	public void stop() {
 		sendBattleResult();
 		Player redPlayer = red.getPlayer();
 		if (redPlayer != null && redPlayer.isDie()) {
@@ -62,7 +58,7 @@ public class PvP1v1Campaign extends Campaign {
 		if (bluePlayer != null && bluePlayer.isDie()) {
 			bluePlayer.renascence();
 		}
-		super.over();
+		super.stop();
 	}
 
 	/**
@@ -129,7 +125,7 @@ public class PvP1v1Campaign extends Campaign {
 
 		@Override
 		public void execute() {
-			campaign.over();
+			campaign.stop();
 		}
 	}
 }

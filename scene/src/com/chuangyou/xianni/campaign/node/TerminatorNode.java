@@ -5,10 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import com.chuangyou.common.util.AccessTextFile;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.campaign.Campaign;
+import com.chuangyou.xianni.campaign.state.SuccessState;
 import com.chuangyou.xianni.drop.manager.DropManager;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.warfield.spawn.MonsterSpawnNode;
@@ -40,7 +39,7 @@ public class TerminatorNode extends CampaignNodeDecorator {
 
 	public void over(Campaign campaign, SpwanNode node) {
 		exec(campaign, node);
-		campaign.passCampaign();
+		campaign.stateTransition(new SuccessState(campaign));
 	}
 
 	public void exec(Campaign campaign, SpwanNode node) {

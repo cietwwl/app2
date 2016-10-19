@@ -1,11 +1,10 @@
 package com.chuangyou.xianni.warfield.spawn;
 
-
 public class WorkingState extends NodeState {
 
 	public WorkingState(SpwanNode spawnNode) {
 		super(spawnNode);
-		this.code = START;
+		this.code = WORK;
 	}
 
 	@Override

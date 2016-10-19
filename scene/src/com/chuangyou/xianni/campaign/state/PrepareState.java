@@ -11,7 +11,7 @@ public class PrepareState extends CampaignState {
 	
 	@Override
 	public void work() {
-
+		campaign.prepare();
 	}
 
 }

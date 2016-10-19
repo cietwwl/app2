@@ -37,7 +37,7 @@ public class ArenaGuildSeizeCampaign extends ArenaBattleCampaign {
 	}
 	
 	@Override
-	public void fail() {
+	public void playerFail() {
 		// TODO Auto-generated method stub
 		if (isOver) {
 			return;

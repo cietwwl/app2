@@ -2,16 +2,15 @@ package com.chuangyou.xianni.campaign.state;
 
 import com.chuangyou.xianni.campaign.Campaign;
 
-public class StopState extends CampaignState {
+public class FailState extends CampaignState {
 
-	public StopState(Campaign campaign) {
+	public FailState(Campaign campaign) {
 		super(campaign);
-		this.code = CampaignState.STOP;
+		this.code = CampaignState.FAIL;
 	}
 
 	@Override
 	public void work() {
-		campaign.stop();
+		campaign.fail();
 	}
-
 }

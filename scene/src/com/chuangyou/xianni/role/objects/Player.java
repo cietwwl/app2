@@ -162,7 +162,7 @@ public class Player extends ActiveLiving {
 				if (campaign != null) {
 					campaign.notifyTaskEvent(CTBaseCondition.LESS_DEAD_COUNT, 1);
 					if (campaign instanceof ArenaBattleCampaign) {
-						((ArenaBattleCampaign) campaign).fail();
+						((ArenaBattleCampaign) campaign).playerFail();
 					}
 					if (campaign instanceof PvP1v1Campaign) {
 						((PvP1v1Campaign) campaign).die(this.getArmyId());

@@ -1857,7 +1857,8 @@ public class Living extends LivingProperties {
 
 	public void setLivingState(int livingState) {
 		if (this.livingState == DISTORY) {
-			Log.error("-----------重要调试日志，发现请通知---------------");
+			Log.error("-----------重要调试日志，发现请通知---------------", new Exception());
+			return;
 		}
 		this.livingState = livingState;
 	}

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.chuangyou.xianni.campaign.state.StopState;
+
 public class CampaignMgr {
 	// 副本地图
 	public static Map<Integer, Campaign> campagins = new ConcurrentHashMap<>();
@@ -36,9 +38,9 @@ public class CampaignMgr {
 		}
 		for (Campaign c : cattrr) {
 			if (c.isExpried()) {
-				c.over();
+				c.stateTransition(new StopState(c));
 			}
-			if (c.isClear()) {
+			if (c.isOver()) {
 				c.clearCampaignData();
 			}
 		}

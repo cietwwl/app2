@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.chuangyou.xianni.campaign.Campaign;
-import com.chuangyou.xianni.campaign.state.OpeningState;
+import com.chuangyou.xianni.campaign.state.StartState;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.entity.field.FieldInfo;
 import com.chuangyou.xianni.warfield.BeadFieldManager;
@@ -31,7 +31,7 @@ public class InverseBeadCampaign extends Campaign {
 	/** 地图开始 */
 	@Override
 	public void start() {
-		state = new OpeningState(this);
+		state = new StartState(this);
 		// 获取副本所有地图
 		Map<Integer, FieldInfo> finfos = FieldTemplateMgr.getCFieldInfos(tempId);
 		// 创建当前地图
@@ -65,8 +65,8 @@ public class InverseBeadCampaign extends Campaign {
 	 * 副本结束
 	 */
 	@Override
-	public void over() {
-		super.over();
+	public void stop() {
+		super.stop();
 	}
 
 }

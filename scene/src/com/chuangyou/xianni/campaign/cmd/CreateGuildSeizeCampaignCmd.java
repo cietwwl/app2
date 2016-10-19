@@ -7,6 +7,7 @@ import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignFactory;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
+import com.chuangyou.xianni.campaign.state.StartState;
 import com.chuangyou.xianni.constant.CampaignConstant;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.netty.GatewayLinkedSet;
@@ -56,7 +57,7 @@ public class CreateGuildSeizeCampaignCmd extends AbstractCommand {
 		
 		Campaign campaign = CampaignFactory.createGuildSeizeCampaign(temp, army, req);
 		CampaignMgr.add(campaign);
-		campaign.start();
+		campaign.stateTransition(new StartState(campaign));
 		campaign.onPlayerEnter(army);
 	}
 

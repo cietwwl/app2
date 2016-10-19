@@ -1,7 +1,6 @@
 package com.chuangyou.xianni.campaign;
 
 import com.chuangyou.common.protobuf.pb.avatar.PassAvatarCampaignProto.PassAvatarCampaignMsg;
-import com.chuangyou.xianni.campaign.state.SuccessState;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.netty.GatewayLinkedSet;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -18,17 +17,7 @@ public class AvatarCampaign extends Campaign {
 	}
 
 	/** 通关副本 */
-	public void passCampaign() {
-		// 通关后发放奖励
-		if (state instanceof SuccessState) {
-			return;
-		}
-		state = new SuccessState(this);
-		for (ArmyProxy army : getAllArmys()) {
-			sendCampaignInfo(army);
-			sendCampaignStatu(army);
-		}
-
+	public void success() {
 		// 分身副本，额外通过发放奖励
 		PassAvatarCampaignMsg.Builder builder = PassAvatarCampaignMsg.newBuilder();
 		builder.setPlayerId(creater);

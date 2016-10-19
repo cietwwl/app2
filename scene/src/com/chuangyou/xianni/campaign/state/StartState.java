@@ -2,16 +2,16 @@ package com.chuangyou.xianni.campaign.state;
 
 import com.chuangyou.xianni.campaign.Campaign;
 
-public class OpeningState extends CampaignState {
-	
-	public OpeningState(Campaign campaign) {
+public class StartState extends CampaignState {
+
+	public StartState(Campaign campaign) {
 		super(campaign);
-		this.code = CampaignState.OPENING;
+		this.code = CampaignState.START;
 	}
 
 	@Override
 	public void work() {
-
+		campaign.start();
 	}
 
 }

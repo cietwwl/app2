@@ -4,6 +4,8 @@ import com.chuangyou.common.protobuf.pb.arena.ArenaResultProto.ArenaResultMsg;
 import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
 import com.chuangyou.common.protobuf.pb.battle.BattleResultMsgProto.BattleResultMsg;
 import com.chuangyou.common.util.Vector3;
+import com.chuangyou.xianni.campaign.state.StopState;
+import com.chuangyou.xianni.campaign.state.SuccessState;
 import com.chuangyou.xianni.constant.CampaignConstant;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.entity.field.FieldInfo;
@@ -16,7 +18,6 @@ import com.chuangyou.xianni.role.objects.Avatar;
 import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.role.objects.Robot;
 import com.chuangyou.xianni.world.ArmyProxy;
-import com.chuangyou.xianni.world.WorldMgr;
 
 public class ArenaBattleCampaign extends Campaign {
 
@@ -76,7 +77,7 @@ public class ArenaBattleCampaign extends Campaign {
 		enDelayQueue(action);
 	}
 
-	public void fail() {
+	public void playerFail() {
 		if (isOver) {
 			return;
 		}
@@ -103,18 +104,15 @@ public class ArenaBattleCampaign extends Campaign {
 		}
 	}
 
-	public void over() {
-		// 不会结束第二遍
-		if (areadyOver()) {
-			return;
+	public void stop() {
+		/** 第一次时间到:计算成平局,并弹出平局界面,延迟结束 ,第二次结束,则直接退出副本 */
+		if (isOver == false) {
+			playerFail();
+			OverDelayAction action = new OverDelayAction(this);
+			enDelayQueue(action);
+		} else {
+			super.stop();
 		}
-		fail();
-		OverDelayAction action = new OverDelayAction(this);
-		enDelayQueue(action);
-	}
-
-	public void delayOver() {
-		super.over();
 	}
 
 	protected class OverDelayAction extends DelayAction {
@@ -127,7 +125,7 @@ public class ArenaBattleCampaign extends Campaign {
 
 		@Override
 		public void execute() {
-			campaign.delayOver();
+			campaign.stop();
 			for (ArmyProxy army : JoinArmys) {
 				Player cp = army.getPlayer();
 				if (cp != null && cp.isDie()) {

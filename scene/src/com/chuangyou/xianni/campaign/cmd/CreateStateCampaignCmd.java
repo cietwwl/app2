@@ -6,6 +6,7 @@ import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignFactory;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
+import com.chuangyou.xianni.campaign.state.StartState;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.entity.state.StateConfig;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -45,7 +46,7 @@ public class CreateStateCampaignCmd extends AbstractCommand {
 		}
 		Campaign campaign = CampaignFactory.createStateConfig(temp, army, config);
 		CampaignMgr.add(campaign);
-		campaign.start();
+		campaign.stateTransition(new StartState(campaign));
 		campaign.onPlayerEnter(army);
 		
 		System.out.println("==========>playerId: " + army.getPlayerId() + "进入渡节副本<====================");

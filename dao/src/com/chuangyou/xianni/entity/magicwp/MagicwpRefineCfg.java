@@ -205,32 +205,32 @@ public class MagicwpRefineCfg {
 		this.randomMax8 = randomMax8;
 	}
 	
+	public void setAttMap(){
+		this.minAttMap = new HashMap<Integer, Integer>();
+		this.minAttMap.put((int)(randomMin1/1000000), randomMin1%1000000);
+		this.minAttMap.put((int)(randomMin2/1000000), randomMin2%1000000);
+		this.minAttMap.put((int)(randomMin3/1000000), randomMin3%1000000);
+		this.minAttMap.put((int)(randomMin4/1000000), randomMin4%1000000);
+		this.minAttMap.put((int)(randomMin5/1000000), randomMin5%1000000);
+		this.minAttMap.put((int)(randomMin6/1000000), randomMin6%1000000);
+		this.minAttMap.put((int)(randomMin7/1000000), randomMin7%1000000);
+		this.minAttMap.put((int)(randomMin8/1000000), randomMin8%1000000);
+		
+		this.maxAttMap = new HashMap<>();
+		this.maxAttMap.put((int)(randomMax1/1000000), randomMax1%1000000);
+		this.maxAttMap.put((int)(randomMax2/1000000), randomMax2%1000000);
+		this.maxAttMap.put((int)(randomMax3/1000000), randomMax3%1000000);
+		this.maxAttMap.put((int)(randomMax4/1000000), randomMax4%1000000);
+		this.maxAttMap.put((int)(randomMax5/1000000), randomMax5%1000000);
+		this.maxAttMap.put((int)(randomMax6/1000000), randomMax6%1000000);
+		this.maxAttMap.put((int)(randomMax7/1000000), randomMax7%1000000);
+		this.maxAttMap.put((int)(randomMax8/1000000), randomMax8%1000000);
+	}
+	
 	public Map<Integer, Integer> getMinAttMap(){
-		if(this.minAttMap == null){
-			this.minAttMap = new HashMap<Integer, Integer>();
-			this.minAttMap.put((int)(randomMin1/1000000), randomMin1%1000000);
-			this.minAttMap.put((int)(randomMin2/1000000), randomMin2%1000000);
-			this.minAttMap.put((int)(randomMin3/1000000), randomMin3%1000000);
-			this.minAttMap.put((int)(randomMin4/1000000), randomMin4%1000000);
-			this.minAttMap.put((int)(randomMin5/1000000), randomMin5%1000000);
-			this.minAttMap.put((int)(randomMin6/1000000), randomMin6%1000000);
-			this.minAttMap.put((int)(randomMin7/1000000), randomMin7%1000000);
-			this.minAttMap.put((int)(randomMin8/1000000), randomMin8%1000000);
-		}
 		return this.minAttMap;
 	}
 	public Map<Integer, Integer> getMaxAttMap(){
-		if(this.maxAttMap == null){
-			this.maxAttMap = new HashMap<>();
-			this.maxAttMap.put((int)(randomMax1/1000000), randomMax1%1000000);
-			this.maxAttMap.put((int)(randomMax2/1000000), randomMax2%1000000);
-			this.maxAttMap.put((int)(randomMax3/1000000), randomMax3%1000000);
-			this.maxAttMap.put((int)(randomMax4/1000000), randomMax4%1000000);
-			this.maxAttMap.put((int)(randomMax5/1000000), randomMax5%1000000);
-			this.maxAttMap.put((int)(randomMax6/1000000), randomMax6%1000000);
-			this.maxAttMap.put((int)(randomMax7/1000000), randomMax7%1000000);
-			this.maxAttMap.put((int)(randomMax8/1000000), randomMax8%1000000);
-		}
 		return this.maxAttMap;
 	}
 	

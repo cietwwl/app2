@@ -74,6 +74,7 @@ public class StateDaoImpl extends BaseDao implements StateDao {
 				info.setEvents(rs.getString("events"));
 				info.setEndEvents(rs.getString("endEvents"));
 				info.setMaxProcess(rs.getInt("maxProcess"));
+				info.setStartEvent(rs.getInt("startEvent"));
 				infos.put(info.getId(), info);
 			}
 		} catch (SQLException e) {

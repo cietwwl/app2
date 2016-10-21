@@ -20,6 +20,7 @@ import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.constant.EquipConstant;
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.email.EmailInventory;
 import com.chuangyou.xianni.entity.field.FieldInfo;
 import com.chuangyou.xianni.entity.guild.GuildMemberInfo;
@@ -330,7 +331,6 @@ public class GamePlayer extends AbstractEvent {
 		if (!initData(armyInventory.loadFromDataBase(), "用户部队")) {
 			return false;
 		}
-
 		regeditEvent();
 		return true;
 	}
@@ -461,6 +461,11 @@ public class GamePlayer extends AbstractEvent {
 		if (!initData(truckInventory.loadFromDataBase(), "镖车数据")) {
 			return false;
 		}
+		
+		// 添加境界任务监听
+		if(stateInventory!=null){
+			stateInventory.addStateTrigger();
+		}
 		return true;
 	}
 
@@ -515,6 +520,10 @@ public class GamePlayer extends AbstractEvent {
 		if (arenaInventory != null) {
 			arenaInventory.unloadData();
 			arenaInventory = null;
+		}
+		
+		if(stateInventory!=null){
+			stateInventory.removeStateTrigger();
 		}
 		return true;
 	}
@@ -657,7 +666,7 @@ public class GamePlayer extends AbstractEvent {
 
 	public void sendPbMessage(PBMessage message) {
 		if (this.getPlayerState() == PlayerState.OFFLINE) {
-			Log.error("send msg but player is not onLine, code : " + message.getCode() + " playerId :" + getPlayerId());
+			Log.error("send msg but player is not onLine, code : " + message.getCode() + " playerId :" + getPlayerId(), new Exception());
 			return;
 		}
 

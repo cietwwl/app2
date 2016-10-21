@@ -70,6 +70,7 @@ public enum EnumAttr {
 	BATTLE_MODE ( 66 , "攻击模式" ) ,
 	VIP_TEMPORARY ( 67 , "临时vip到期时间" ) ,
 	AVTAR_CORRESPOND ( 68 , "分身默契等级" ) ,
+	WORLDBOSS_TREASURE ( 69, "世界BOSS触发夺宝中玩家宝箱数量" ) ,
 	MONEY ( 711 , " 灵石" ) ,
 	CASH ( 712 , " 仙玉" ) ,
 	CASH_BIND ( 713 , "绑定仙玉" ) ,

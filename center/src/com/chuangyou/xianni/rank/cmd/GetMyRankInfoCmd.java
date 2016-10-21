@@ -26,12 +26,16 @@ public class GetMyRankInfoCmd extends AbstractCommand {
 			if(req.getRankType() == RankType.PET){
 				resp.setParam(info.getPet());
 			}
+			
 			if(req.getRankType() == RankType.MOUNT){
 				resp.setParam(info.getMount());
 			}
+			
 			if(req.getRankType() == RankType.MAGICWP){
 				resp.setParam(info.getMagicwp());
 			}
+			
+		
 			player.sendPbMessage(MessageUtil.buildMessage(Protocol.U_RESP_RANK_MYRANK,resp));
 		}
 		

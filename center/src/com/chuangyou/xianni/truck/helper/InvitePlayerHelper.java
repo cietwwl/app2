@@ -1,7 +1,7 @@
 package com.chuangyou.xianni.truck.helper;
 
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.player.PlayerState;
 
 public class InvitePlayerHelper {
 	

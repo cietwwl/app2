@@ -117,36 +117,36 @@ public class ArtifactJewelSuitCfg {
 		this.attr8 = attr8;
 	}
 	
-	public List<Integer> getAttList() {
-		if (this.attList == null) {
-
-			List<Integer> list = new ArrayList<Integer>();
-			if (attr1 > 0) {
-				list.add(attr1);
-			}
-			if (attr2 > 0) {
-				list.add(attr2);
-			}
-			if (attr3 > 0) {
-				list.add(attr3);
-			}
-			if (attr4 > 0) {
-				list.add(attr4);
-			}
-			if (attr5 > 0) {
-				list.add(attr5);
-			}
-			if (attr6 > 0) {
-				list.add(attr6);
-			}
-			if (attr7 > 0) {
-				list.add(attr7);
-			}
-			if (attr8 > 0) {
-				list.add(attr8);
-			}
-			this.attList = list;
+	public void setAttList(){
+		List<Integer> list = new ArrayList<Integer>();
+		if (attr1 > 0) {
+			list.add(attr1);
 		}
+		if (attr2 > 0) {
+			list.add(attr2);
+		}
+		if (attr3 > 0) {
+			list.add(attr3);
+		}
+		if (attr4 > 0) {
+			list.add(attr4);
+		}
+		if (attr5 > 0) {
+			list.add(attr5);
+		}
+		if (attr6 > 0) {
+			list.add(attr6);
+		}
+		if (attr7 > 0) {
+			list.add(attr7);
+		}
+		if (attr8 > 0) {
+			list.add(attr8);
+		}
+		this.attList = list;
+	}
+	
+	public List<Integer> getAttList() {
 		return this.attList;
 	}
 }

@@ -3,7 +3,6 @@ package com.chuangyou.xianni.campaign.cmd;
 import com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg;
 import com.chuangyou.common.protobuf.pb.ReqChangeMapMsgProto.ReqChangeMapMsg;
 import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
-import com.chuangyou.common.util.AccessTextFile;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.entity.player.PlayerPositionInfo;
 import com.chuangyou.xianni.player.GamePlayer;

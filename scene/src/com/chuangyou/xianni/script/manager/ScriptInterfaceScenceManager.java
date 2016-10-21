@@ -3,8 +3,8 @@ package com.chuangyou.xianni.script.manager;
 import com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg;
 import com.chuangyou.common.protobuf.pb.ReqChangeMapMsgProto.ReqChangeMapMsg;
 import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
-import com.chuangyou.common.protobuf.pb.campaign.CreateCampaignMsgProto.CreateCampaignMsg;
 import com.chuangyou.common.util.Log;
+import com.chuangyou.xianni.campaign.action.CampaignCreateAction;
 import com.chuangyou.xianni.entity.field.FieldInfo;
 import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 import com.chuangyou.xianni.exec.CmdTask;
@@ -25,15 +25,11 @@ public class ScriptInterfaceScenceManager {
 			Log.error("army:" + playerId + " touchPoint,but is null,campaignId :" + campaignId);
 			return;
 		}
-		CreateCampaignMsg.Builder cmsg = CreateCampaignMsg.newBuilder();
-		cmsg.setCampaign(campaignId);
-		cmsg.setUseItem(false);
-		PBMessage message = MessageUtil.buildMessage(Protocol.C_CREATE_CAMPAIGN, cmsg);
-		army.sendPbMessage(message);
-
+		CampaignCreateAction createAction = new CampaignCreateAction(army, campaignId, true);
+		army.enqueue(createAction);
 	}
 
-	public static void changeMap(long playerId, int mapKey, int x, int y, int z, short angle) {
+	public static void changeMap(long playerId, int mapKey, int x, int y, int z, int angle) {
 
 		ArmyProxy army = WorldMgr.getArmy(playerId);
 

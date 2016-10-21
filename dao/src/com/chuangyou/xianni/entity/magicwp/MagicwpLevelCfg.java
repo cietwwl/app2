@@ -185,19 +185,20 @@ public class MagicwpLevelCfg {
 		}
 		return atts;
 	}
+	
+	public void setAttMap(){
+		this.attMap = new HashMap<Integer, Integer>();
+		putAttNum(attMap, getAtt1());
+		putAttNum(attMap, getAtt2());
+		putAttNum(attMap, getAtt3());
+		putAttNum(attMap, getAtt4());
+		putAttNum(attMap, getAtt5());
+		putAttNum(attMap, getAtt6());
+		putAttNum(attMap, getAtt7());
+		putAttNum(attMap, getAtt8());
+	}
 
 	public Map<Integer, Integer> getAttMap() {
-		if (this.attMap == null) {
-			this.attMap = new HashMap<Integer, Integer>();
-			putAttNum(attMap, getAtt1());
-			putAttNum(attMap, getAtt2());
-			putAttNum(attMap, getAtt3());
-			putAttNum(attMap, getAtt4());
-			putAttNum(attMap, getAtt5());
-			putAttNum(attMap, getAtt6());
-			putAttNum(attMap, getAtt7());
-			putAttNum(attMap, getAtt8());
-		}
 		return this.attMap;
 	}
 

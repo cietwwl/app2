@@ -28,6 +28,10 @@ message RankInfoMsg{
 	 * playerName：玩家名字  playerId：玩家ID  param1：魂幡战力值
 	 * 108 - 1 (分身日榜)
 	 * playerName：玩家名字  playerId：玩家ID  param1：分身战力值
+	 *
+	 * 200 - 1(帮派日榜)
+	 *  playerId：帮派ID  playerName:帮派名字  param1:帮派等级  param2:帮派战力  paramStr:帮主名字
+	 *
 	 * 300 - 1 ( 人气日榜)
 	 * playerName：玩家名字  playerId：玩家ID  param1：人气值    param2：鲜花  param3：鸡蛋
 	 *

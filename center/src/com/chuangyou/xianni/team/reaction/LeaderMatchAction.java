@@ -2,8 +2,8 @@ package com.chuangyou.xianni.team.reaction;
 
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.team.TeamMgr;
 import com.chuangyou.xianni.team.pool.MemberMatchPool;

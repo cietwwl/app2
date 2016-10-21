@@ -105,18 +105,19 @@ public class MagicwpGradeCfg {
 		this.att8 = att8;
 	}
 	
+	public void setMaxAttMap(){
+		this.maxAttMap = new HashMap<Integer, Integer>();
+		putAttNum(maxAttMap, getAtt1());
+		putAttNum(maxAttMap, getAtt2());
+		putAttNum(maxAttMap, getAtt3());
+		putAttNum(maxAttMap, getAtt4());
+		putAttNum(maxAttMap, getAtt5());
+		putAttNum(maxAttMap, getAtt6());
+		putAttNum(maxAttMap, getAtt7());
+		putAttNum(maxAttMap, getAtt8());
+	}
+	
 	public Map<Integer, Integer> getMaxAttMap(){
-		if(this.maxAttMap == null){
-			this.maxAttMap = new HashMap<Integer, Integer>();
-			putAttNum(maxAttMap, getAtt1());
-			putAttNum(maxAttMap, getAtt2());
-			putAttNum(maxAttMap, getAtt3());
-			putAttNum(maxAttMap, getAtt4());
-			putAttNum(maxAttMap, getAtt5());
-			putAttNum(maxAttMap, getAtt6());
-			putAttNum(maxAttMap, getAtt7());
-			putAttNum(maxAttMap, getAtt8());
-		}
 		return this.maxAttMap;
 	}
 	

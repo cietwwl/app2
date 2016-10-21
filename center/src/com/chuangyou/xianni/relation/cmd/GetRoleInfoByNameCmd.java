@@ -7,9 +7,9 @@ import com.chuangyou.common.protobuf.pb.friend.GetRoleInfoByNameRespProto.GetRol
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;

@@ -3,13 +3,13 @@ package com.chuangyou.xianni.http.respone;
 import java.util.Map;
 
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.entity.item.ItemAddType;
 import com.chuangyou.xianni.http.BaseRespone;
 import com.chuangyou.xianni.http.HttpCmd;
 import com.chuangyou.xianni.http.HttpResult;
 import com.chuangyou.xianni.http.HttpResult.Code;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.word.WorldMgr;
 
 @HttpCmd(command = "addMoney", desc = "添加金币")

@@ -11,7 +11,6 @@ import com.chuangyou.common.protobuf.pb.PlayerInfoListMsgProto.PlayerInfoListMsg
 import com.chuangyou.common.protobuf.pb.PlayerInfoMsgProto.PlayerInfoMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.common.ErrorCode;
-import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.entity.field.FieldInfo;
 import com.chuangyou.xianni.entity.hero.HeroSkill;
@@ -70,17 +69,16 @@ public class PlayerCreateCmd implements Command {
 					result = ErrorCode.PLAYERNAME_IS_ALREADY_EXISTS;
 					break;
 			}
-			return;
 		}
 
-		RoleConfig roleConfig = RoleConfigMgr.getRoleConfig(req.getRoleConfigId());
-		if (roleConfig == null) {
-			Log.error("缺少角色配置!id：" + req.getRoleConfigId());
-			result = ErrorCode.UNKNOW_ERROR;
-		}
 
 		PlayerInfo playerInfo = null;
 		if (result == ErrorCode.SUCCESS) {
+			RoleConfig roleConfig = RoleConfigMgr.getRoleConfig(req.getRoleConfigId());
+			if (roleConfig == null) {
+				Log.error("缺少角色配置!id：" + req.getRoleConfigId());
+				result = ErrorCode.UNKNOW_ERROR;
+			}
 			// RoleConfig roleConfig = roleConfigMgr.getRoleConfig(1);
 			playerInfo = new PlayerInfo();
 			playerInfo.setPlayerId(EntityIdBuilder.playerIdBuilder());

@@ -100,7 +100,7 @@ public class DropManager {
 		}
 		if (pool.getLimitType() > 0) {
 			long curTime = TimeUtil.getSysCurTimeMillis();
-			if(!TimeUtil.isInTime(curTime, pool.getLimitType(), pool.getStartTime(), pool.getEndTime())){
+			if (!TimeUtil.isInTime(curTime, pool.getLimitType(), pool.getStartTime(), pool.getEndTime())) {
 				return;
 			}
 		}
@@ -165,7 +165,7 @@ public class DropManager {
 		}
 
 		// 给队友掉落
-		Team team = TeamMgr.getTeam(playerId);
+		Team team = TeamMgr.getTeamByPlayerId(playerId);
 		if (team == null)
 			return;
 		List<Long> members = team.getMembers(playerId);

@@ -1,0 +1,9 @@
+//protocol=1624;
+option java_package = "com.chuangyou.common.protobuf.pb.state";
+option java_outer_classname = "NotifyStateEventProto";
+
+//通知事件
+message NotifyStateEventMsg{
+	required int32 eventId = 1; //qteID
+
+}

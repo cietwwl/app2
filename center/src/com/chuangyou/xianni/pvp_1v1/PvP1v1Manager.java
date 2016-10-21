@@ -15,11 +15,11 @@ import com.chuangyou.common.protobuf.pb.pvp1v1.PvP1v1RankinfoProto.PvP1v1Rankinf
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.constant.MsgCodeConstant;
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.exec.AbstractActionQueue;
 import com.chuangyou.xianni.exec.ActionQueue;
 import com.chuangyou.xianni.exec.ThreadManager;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;

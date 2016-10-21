@@ -2,7 +2,6 @@ package com.chuangyou.xianni.world.login;
 
 import com.chuangyou.common.protobuf.pb.LoginResultMsgProto.LoginResultMsg;
 import com.chuangyou.common.protobuf.pb.army.ArmyInfoMsgProto.ArmyInfoMsg;
-import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.common.LoginResult;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -29,19 +28,13 @@ public class LoginIn implements Command {
 		long playerId = msg.getHeorAppearance().getPlayerId();
 		SimplePlayerInfo simPlayer = new SimplePlayerInfo();
 		simPlayer.readProto(msg.getHeorAppearance());
-		// 清理数据
-		ArmyProxy existed = WorldMgr.getArmy(playerId);
-		if (existed != null) {
-			Log.error("------------------调试为啥有部队没有清理的问题,看到输出日志请告知-----------------" + playerId);
-			WorldMgr.unLine(playerId);
-		}
 
 		ArmyProxy army = new ArmyProxy(playerId, "center", channel, simPlayer);
 		WorldMgr.addOnline(army);
 
 		// 初始化英雄数据
 		Player player = new Player(playerId);
-		Team t = TeamMgr.getTeam(playerId);
+		Team t = TeamMgr.getTeamByPlayerId(playerId);
 		if (t == null) {
 			player.setTeamId(0);
 		} else {

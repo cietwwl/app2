@@ -9,6 +9,7 @@
 //import com.chuangyou.common.util.MathUtils;
 //import com.chuangyou.xianni.army.template.MonsterInfoTemplateMgr;
 //import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
+//import com.chuangyou.xianni.constant.PlayerState;
 //import com.chuangyou.xianni.entity.inverseBead.PlayerBeadTimeInfo;
 //import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 //import com.chuangyou.xianni.entity.spawn.SpawnInfo;
@@ -17,7 +18,6 @@
 //import com.chuangyou.xianni.inverseBead.manager.InverseBeadManager;
 //import com.chuangyou.xianni.inverseBead.template.InverseBeadTemMgr;
 //import com.chuangyou.xianni.player.GamePlayer;
-//import com.chuangyou.xianni.player.PlayerState;
 //import com.chuangyou.xianni.proto.MessageUtil;
 //import com.chuangyou.xianni.proto.PBMessage;
 //import com.chuangyou.xianni.protocol.Protocol;

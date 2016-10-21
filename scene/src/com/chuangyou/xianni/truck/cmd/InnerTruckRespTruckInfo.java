@@ -88,7 +88,7 @@ public class InnerTruckRespTruckInfo extends AbstractCommand {
 		truck.setProperty(EnumAttr.WOOD, durable);			//抗劫镖值，劫镖血量
 		truck.setProperty(EnumAttr.WATER, maxWeight);		//载重
 		truck.setProperty(EnumAttr.FIRE, intMat);			//初始物资
-		truck.setProperty(EnumAttr.SPEED, baseSpeed * 100);		//基础速度
+		truck.setProperty(EnumAttr.SPEED, baseSpeed);		//基础速度
 		
 		truck.setProperty(EnumAttr.PK_VAL, 0);															//劫镖状态
 		truck.setNextCheckPoint(TruckTempMgr.getFristCheckPoint().getId() + 1);

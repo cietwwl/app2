@@ -8,11 +8,11 @@ import com.chuangyou.common.protobuf.pb.email.EmailInfoProto.EmailInfo;
 import com.chuangyou.common.protobuf.pb.email.OperationEmailRespProto.OperationEmailRespMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.StringUtils;
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.email.vo.EmailItemVo;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.email.Email;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
@@ -137,6 +137,22 @@ public class EmailManager {
 			if (!attachment.toString().equals("")) {
 				insertEmail(playerId, title, content, attachment.toString());
 			}
+		}
+	}
+	
+	/**
+	 * 插入带单独附件的邮件接品
+	 * 
+	 * @param playerId
+	 * @param title
+	 * @param content
+	 * @param emailItems
+	 */
+	public static void insertEmail(long playerId, String title, String content, EmailItemVo item) {
+		if (item == null) {
+			insertEmail(playerId, title, content, "");
+		} else {
+			insertEmail(playerId, title, content, item.attachmentStr());
 		}
 	}
 

@@ -1,10 +1,10 @@
 package com.chuangyou.xianni.pvp_1v1.action;
 
 import com.chuangyou.common.protobuf.pb.campaign.Create1V1PvPCampaignProto.Create1V1PvPCampaignMsg;
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.exec.ActionQueue;
 import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;

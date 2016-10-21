@@ -17,7 +17,7 @@ public class NotifyHelper {
 	 * @param t
 	 */
 	public static void notifyInfo(ArmyProxy army) {
-		Team t = TeamMgr.getTeam(army.getPlayerId());
+		Team t = TeamMgr.getTeamByPlayerId(army.getPlayerId());
 		if(t!=null && t.getMembers().size()>1){			
 			List<Long> members = t.getMembers(army.getPlayerId());
 			if (army != null) {

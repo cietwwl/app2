@@ -104,14 +104,12 @@ public class ArenaBattleCampaign extends Campaign {
 		}
 	}
 
-	public void stop() {
+	public void fail() {
 		/** 第一次时间到:计算成平局,并弹出平局界面,延迟结束 ,第二次结束,则直接退出副本 */
 		if (isOver == false) {
 			playerFail();
 			OverDelayAction action = new OverDelayAction(this);
 			enDelayQueue(action);
-		} else {
-			super.stop();
 		}
 	}
 

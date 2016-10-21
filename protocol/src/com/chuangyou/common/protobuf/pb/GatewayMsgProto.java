@@ -13,30 +13,21 @@ public final class GatewayMsgProto {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional string notify_msg = 1;</code>
+     * <code>optional int32 type = 1;</code>
      *
      * <pre>
-     * 鎻愮ず娑堟伅
+     * 提示消息    1 账号在其他地方登录 2 被GM踢下线
      * </pre>
      */
-    boolean hasNotifyMsg();
+    boolean hasType();
     /**
-     * <code>optional string notify_msg = 1;</code>
+     * <code>optional int32 type = 1;</code>
      *
      * <pre>
-     * 鎻愮ず娑堟伅
+     * 提示消息    1 账号在其他地方登录 2 被GM踢下线
      * </pre>
      */
-    java.lang.String getNotifyMsg();
-    /**
-     * <code>optional string notify_msg = 1;</code>
-     *
-     * <pre>
-     * 鎻愮ず娑堟伅
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getNotifyMsgBytes();
+    int getType();
   }
   /**
    * Protobuf type {@code GatewayMsg}
@@ -90,10 +81,9 @@ public final class GatewayMsgProto {
               }
               break;
             }
-            case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+            case 8: {
               bitField0_ |= 0x00000001;
-              notifyMsg_ = bs;
+              type_ = input.readInt32();
               break;
             }
           }
@@ -136,62 +126,31 @@ public final class GatewayMsgProto {
     }
 
     private int bitField0_;
-    public static final int NOTIFY_MSG_FIELD_NUMBER = 1;
-    private java.lang.Object notifyMsg_;
+    public static final int TYPE_FIELD_NUMBER = 1;
+    private int type_;
     /**
-     * <code>optional string notify_msg = 1;</code>
+     * <code>optional int32 type = 1;</code>
      *
      * <pre>
-     * 鎻愮ず娑堟伅
+     * 提示消息    1 账号在其他地方登录 2 被GM踢下线
      * </pre>
      */
-    public boolean hasNotifyMsg() {
+    public boolean hasType() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional string notify_msg = 1;</code>
+     * <code>optional int32 type = 1;</code>
      *
      * <pre>
-     * 鎻愮ず娑堟伅
+     * 提示消息    1 账号在其他地方登录 2 被GM踢下线
      * </pre>
      */
-    public java.lang.String getNotifyMsg() {
-      java.lang.Object ref = notifyMsg_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          notifyMsg_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string notify_msg = 1;</code>
-     *
-     * <pre>
-     * 鎻愮ず娑堟伅
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getNotifyMsgBytes() {
-      java.lang.Object ref = notifyMsg_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        notifyMsg_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getType() {
+      return type_;
     }
 
     private void initFields() {
-      notifyMsg_ = "";
+      type_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -207,7 +166,7 @@ public final class GatewayMsgProto {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getNotifyMsgBytes());
+        output.writeInt32(1, type_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -220,7 +179,7 @@ public final class GatewayMsgProto {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getNotifyMsgBytes());
+          .computeInt32Size(1, type_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -339,7 +298,7 @@ public final class GatewayMsgProto {
 
       public Builder clear() {
         super.clear();
-        notifyMsg_ = "";
+        type_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
@@ -372,7 +331,7 @@ public final class GatewayMsgProto {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.notifyMsg_ = notifyMsg_;
+        result.type_ = type_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -389,10 +348,8 @@ public final class GatewayMsgProto {
 
       public Builder mergeFrom(com.chuangyou.common.protobuf.pb.GatewayMsgProto.GatewayMsg other) {
         if (other == com.chuangyou.common.protobuf.pb.GatewayMsgProto.GatewayMsg.getDefaultInstance()) return this;
-        if (other.hasNotifyMsg()) {
-          bitField0_ |= 0x00000001;
-          notifyMsg_ = other.notifyMsg_;
-          onChanged();
+        if (other.hasType()) {
+          setType(other.getType());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -421,102 +378,50 @@ public final class GatewayMsgProto {
       }
       private int bitField0_;
 
-      private java.lang.Object notifyMsg_ = "";
+      private int type_ ;
       /**
-       * <code>optional string notify_msg = 1;</code>
+       * <code>optional int32 type = 1;</code>
        *
        * <pre>
-       * 鎻愮ず娑堟伅
+       * 提示消息    1 账号在其他地方登录 2 被GM踢下线
        * </pre>
        */
-      public boolean hasNotifyMsg() {
+      public boolean hasType() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional string notify_msg = 1;</code>
+       * <code>optional int32 type = 1;</code>
        *
        * <pre>
-       * 鎻愮ず娑堟伅
+       * 提示消息    1 账号在其他地方登录 2 被GM踢下线
        * </pre>
        */
-      public java.lang.String getNotifyMsg() {
-        java.lang.Object ref = notifyMsg_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            notifyMsg_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      public int getType() {
+        return type_;
       }
       /**
-       * <code>optional string notify_msg = 1;</code>
+       * <code>optional int32 type = 1;</code>
        *
        * <pre>
-       * 鎻愮ず娑堟伅
+       * 提示消息    1 账号在其他地方登录 2 被GM踢下线
        * </pre>
        */
-      public com.google.protobuf.ByteString
-          getNotifyMsgBytes() {
-        java.lang.Object ref = notifyMsg_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          notifyMsg_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string notify_msg = 1;</code>
-       *
-       * <pre>
-       * 鎻愮ず娑堟伅
-       * </pre>
-       */
-      public Builder setNotifyMsg(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        notifyMsg_ = value;
+      public Builder setType(int value) {
+        bitField0_ |= 0x00000001;
+        type_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string notify_msg = 1;</code>
+       * <code>optional int32 type = 1;</code>
        *
        * <pre>
-       * 鎻愮ず娑堟伅
+       * 提示消息    1 账号在其他地方登录 2 被GM踢下线
        * </pre>
        */
-      public Builder clearNotifyMsg() {
+      public Builder clearType() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        notifyMsg_ = getDefaultInstance().getNotifyMsg();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string notify_msg = 1;</code>
-       *
-       * <pre>
-       * 鎻愮ず娑堟伅
-       * </pre>
-       */
-      public Builder setNotifyMsgBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        notifyMsg_ = value;
+        type_ = 0;
         onChanged();
         return this;
       }
@@ -546,9 +451,9 @@ public final class GatewayMsgProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020GatewayMsg.proto\" \n\nGatewayMsg\022\022\n\nnoti" +
-      "fy_msg\030\001 \001(\tB3\n com.chuangyou.common.pro" +
-      "tobuf.pbB\017GatewayMsgProto"
+      "\n\020GatewayMsg.proto\"\032\n\nGatewayMsg\022\014\n\004type" +
+      "\030\001 \001(\005B3\n com.chuangyou.common.protobuf." +
+      "pbB\017GatewayMsgProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -567,7 +472,7 @@ public final class GatewayMsgProto {
     internal_static_GatewayMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_GatewayMsg_descriptor,
-        new java.lang.String[] { "NotifyMsg", });
+        new java.lang.String[] { "Type", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

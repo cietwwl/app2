@@ -1,11 +1,17 @@
 package com.chuangyou.xianni.warfield.spawn;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.campaign.node.CampaignNodeDecorator;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
+import com.chuangyou.xianni.entity.spawn.SpwanInfoRefreshType.SpwanInfoIntervalType;
+import com.chuangyou.xianni.exec.AbstractActionQueue;
 import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.exec.ThreadManager;
+import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.template.SpawnTemplateMgr;
 import com.chuangyou.xianni.world.ArmyProxy;
@@ -19,14 +25,18 @@ public class SpwanNode {
 	protected CampaignNodeDecorator	decorator;			// 副本功能修饰器
 	protected int					blood;				// 节点血量（适用于需要循环开闭的节点，如传送阵）
 
-	static final int				WAKE_OVER	= 0;	// 激活时唤醒下一个
-	static final int				WAKE_START	= 1;	// 结束时唤醒下一个
+	protected long					refreshTime;		// 刷新时间
+	protected long					timeControlerTime;	// 定时刷新时间
+	static final int				WAKE_OVER	= 0;	// 结束时唤醒下一个
+	static final int				WAKE_START	= 1;	// 激活时唤醒下一个
+	protected Map<Long, Living>		children;			// 子孙们
 
 	public SpwanNode(SpawnInfo spwanInfo, Field field) {
 		this.spwanInfo = spwanInfo;
 		this.field = field;
 		this.campaignId = field.getCampaignId();
 		this.decorator = CampaignNodeDecorator.createDecorator(spwanInfo.getCampaignFeatures());
+		this.children = new ConcurrentHashMap<>();
 	}
 
 	public void build() {
@@ -61,15 +71,19 @@ public class SpwanNode {
 		if (campaign != null) {
 			decorator.start(campaign, this);
 		}
-		if (spwanInfo.getWakeType() != WAKE_START) {
-			return;
+		if (spwanInfo.getWakeType() == WAKE_START) {
+
+			if (spwanInfo.getWakeDelay() == 0) {
+				wakeNext();
+			} else {
+				AbstractActionQueue queue = ThreadManager.getActionRandom();
+				WakeNextDelayAction action = new WakeNextDelayAction(queue, spwanInfo.getWakeDelay() * 1000);
+				queue.enDelayQueue(action);
+			}
 		}
 
-		if (spwanInfo.getWakeDelay() == 0) {
-			wakeNext();
-		} else {
-			WakeDelayAction action = new WakeDelayAction(spwanInfo.getWakeDelay() * 1000);
-			ThreadManager.actionExecutor.enDelayQueue(action);
+		if (spwanInfo.getRestType() == SpwanInfoIntervalType.BRON_SIGN) {
+			refreshTime = System.currentTimeMillis();
 		}
 	}
 
@@ -89,14 +103,52 @@ public class SpwanNode {
 				campaign.updataProgress(spwanInfo.getProgress());
 			}
 		}
-		if (spwanInfo.getWakeType() != WAKE_OVER) {
-			return;
+		if (spwanInfo.getWakeType() == WAKE_OVER) {
+
+			if (spwanInfo.getWakeDelay() == 0) {
+				wakeNext();
+			} else {
+				AbstractActionQueue queue = ThreadManager.getActionRandom();
+				WakeNextDelayAction action = new WakeNextDelayAction(queue, spwanInfo.getWakeDelay() * 1000);
+				queue.enDelayQueue(action);
+			}
 		}
-		if (spwanInfo.getWakeDelay() == 0) {
-			wakeNext();
-		} else {
-			WakeDelayAction action = new WakeDelayAction(spwanInfo.getWakeDelay() * 1000);
-			ThreadManager.actionExecutor.enDelayQueue(action);
+		if (spwanInfo.getRestType() == SpwanInfoIntervalType.DIE_SIGN) {
+			refreshTime = System.currentTimeMillis();
+		}
+
+		/*----------当有时间控制时，判断是否唤醒自己--------------*/
+		if (spwanInfo.getRestType() != 0) {
+			// 当副本结束后，节点不再复活自己
+			if (campaignId != 0 && (campaign == null || campaign.isOver())) {
+				return;
+			}
+			long relive = refreshTime + spwanInfo.getRestSecs() * 60l * 1000;
+			long leftTime = relive - System.currentTimeMillis();
+			if (leftTime <= 0) {
+				this.revive();
+			} else {
+				AbstractActionQueue queue = ThreadManager.getActionRandom();
+				WakeSelfDelayAction action = new WakeSelfDelayAction(queue, (int) leftTime, this);
+				queue.enDelayQueue(action);
+			}
+		}
+	}
+
+	/** 强制关停节点 */
+	public void forceStop() {
+		state = new OverState(this);
+		for (Living l : children.values()) {
+			if (l.getField() != null) {
+				l.getField().leaveField(l);
+			}
+			l.destory();
+			l.clearData();
+		}
+		Campaign campaign = CampaignMgr.getCampagin(campaignId);
+		// @atuo 2016-09-05 副本进度指引
+		if (campaign != null) {
+			campaign.updateSpawnInfo(this);
 		}
 	}
 
@@ -153,26 +205,48 @@ public class SpwanNode {
 		state.work();
 		// 通知副本，该节点发送改变
 		Campaign campaign = CampaignMgr.getCampagin(campaignId);
-		// if (spwanInfo.getEntityType() != SpwanInfoType.MONSTER &&
-		// spwanInfo.getEntityType() != SpwanInfoType.NPC && campaign != null) {
-		// campaign.updateSpawnInfo(this);
-		// }
 		// @atuo 2016-09-05 副本进度指引
 		if (campaign != null) {
 			campaign.updateSpawnInfo(this);
 		}
 	}
 
-	class WakeDelayAction extends DelayAction {
-		public WakeDelayAction(int delay) {
-			super(ThreadManager.actionExecutor.getDefaultQueue(), delay);
+	/** 延迟唤醒下一个 */
+	class WakeNextDelayAction extends DelayAction {
+		public WakeNextDelayAction(AbstractActionQueue queue, int delay) {
+			super(queue, delay);
 		}
 
 		@Override
 		public void execute() {
 			wakeNext();
 		}
+	}
 
+	/** 延迟唤醒自己 */
+	class WakeSelfDelayAction extends DelayAction {
+		SpwanNode node;
+
+		public WakeSelfDelayAction(AbstractActionQueue queue, int delay, SpwanNode node) {
+			super(queue, delay);
+			this.node = node;
+		}
+
+		@Override
+		public void execute() {
+			node.revive();
+		}
+	}
+
+	/** 复生 */
+	public void revive() {
+		reset();
+		stateTransition(new WorkingState(this));
+	}
+
+	/** 销毁 */
+	public void stop() {
+		stateTransition(new OverState(this));
 	}
 
 	protected void wakeNext() {
@@ -208,12 +282,19 @@ public class SpwanNode {
 					}
 				}
 			}
-
 			// 如果下一个节点，不在激活状态，则激活下一个刷怪点
 			if (!(node.getState() instanceof WorkingState)) {
 				node.stateTransition(new WorkingState(node));
 			}
 		}
+	}
+
+	public long getTimeControlerTime() {
+		return timeControlerTime;
+	}
+
+	public void setTimeControlerTime(long timeControlerTime) {
+		this.timeControlerTime = timeControlerTime;
 	}
 
 }

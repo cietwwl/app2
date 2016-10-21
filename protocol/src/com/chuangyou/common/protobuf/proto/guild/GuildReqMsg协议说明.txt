@@ -182,3 +182,8 @@
 	广播给帮派成员GuildRespMsg.proto
 	param1 自动退出的玩家ID
 	paramStr 自动退出的玩家名字
+	
+30、请求帮派快照
+	param1 帮派ID
+	
+	返回GuildSnapMsg.proto

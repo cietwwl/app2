@@ -125,8 +125,16 @@ public final class RankInfoProto {
      * playerName：玩家名字  playerId：玩家ID  param1：魂幡战力值
      * 108 - 1 (分身日榜)
      * playerName：玩家名字  playerId：玩家ID  param1：分身战力值
+     * 200 - 1(帮派日榜)
+     *  playerId：帮派ID  playerName:帮派名字  param1:帮派等级  param2:帮派战力  paramStr:帮主名字
      * 300 - 1 ( 人气日榜)
      * playerName：玩家名字  playerId：玩家ID  param1：人气值    param2：鲜花  param3：鸡蛋
+     * 401 - 1 (境界1阶日榜)
+     * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+     * 402 - 1 (境界2阶日榜)
+     * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+     * .........
+     * ........
      * </pre>
      */
     boolean hasParam3();
@@ -151,8 +159,16 @@ public final class RankInfoProto {
      * playerName：玩家名字  playerId：玩家ID  param1：魂幡战力值
      * 108 - 1 (分身日榜)
      * playerName：玩家名字  playerId：玩家ID  param1：分身战力值
+     * 200 - 1(帮派日榜)
+     *  playerId：帮派ID  playerName:帮派名字  param1:帮派等级  param2:帮派战力  paramStr:帮主名字
      * 300 - 1 ( 人气日榜)
      * playerName：玩家名字  playerId：玩家ID  param1：人气值    param2：鲜花  param3：鸡蛋
+     * 401 - 1 (境界1阶日榜)
+     * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+     * 402 - 1 (境界2阶日榜)
+     * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+     * .........
+     * ........
      * </pre>
      */
     long getParam3();
@@ -485,8 +501,16 @@ public final class RankInfoProto {
      * playerName：玩家名字  playerId：玩家ID  param1：魂幡战力值
      * 108 - 1 (分身日榜)
      * playerName：玩家名字  playerId：玩家ID  param1：分身战力值
+     * 200 - 1(帮派日榜)
+     *  playerId：帮派ID  playerName:帮派名字  param1:帮派等级  param2:帮派战力  paramStr:帮主名字
      * 300 - 1 ( 人气日榜)
      * playerName：玩家名字  playerId：玩家ID  param1：人气值    param2：鲜花  param3：鸡蛋
+     * 401 - 1 (境界1阶日榜)
+     * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+     * 402 - 1 (境界2阶日榜)
+     * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+     * .........
+     * ........
      * </pre>
      */
     public boolean hasParam3() {
@@ -513,8 +537,16 @@ public final class RankInfoProto {
      * playerName：玩家名字  playerId：玩家ID  param1：魂幡战力值
      * 108 - 1 (分身日榜)
      * playerName：玩家名字  playerId：玩家ID  param1：分身战力值
+     * 200 - 1(帮派日榜)
+     *  playerId：帮派ID  playerName:帮派名字  param1:帮派等级  param2:帮派战力  paramStr:帮主名字
      * 300 - 1 ( 人气日榜)
      * playerName：玩家名字  playerId：玩家ID  param1：人气值    param2：鲜花  param3：鸡蛋
+     * 401 - 1 (境界1阶日榜)
+     * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+     * 402 - 1 (境界2阶日榜)
+     * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+     * .........
+     * ........
      * </pre>
      */
     public long getParam3() {
@@ -1266,8 +1298,16 @@ public final class RankInfoProto {
        * playerName：玩家名字  playerId：玩家ID  param1：魂幡战力值
        * 108 - 1 (分身日榜)
        * playerName：玩家名字  playerId：玩家ID  param1：分身战力值
+       * 200 - 1(帮派日榜)
+       *  playerId：帮派ID  playerName:帮派名字  param1:帮派等级  param2:帮派战力  paramStr:帮主名字
        * 300 - 1 ( 人气日榜)
        * playerName：玩家名字  playerId：玩家ID  param1：人气值    param2：鲜花  param3：鸡蛋
+       * 401 - 1 (境界1阶日榜)
+       * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+       * 402 - 1 (境界2阶日榜)
+       * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+       * .........
+       * ........
        * </pre>
        */
       public boolean hasParam3() {
@@ -1294,8 +1334,16 @@ public final class RankInfoProto {
        * playerName：玩家名字  playerId：玩家ID  param1：魂幡战力值
        * 108 - 1 (分身日榜)
        * playerName：玩家名字  playerId：玩家ID  param1：分身战力值
+       * 200 - 1(帮派日榜)
+       *  playerId：帮派ID  playerName:帮派名字  param1:帮派等级  param2:帮派战力  paramStr:帮主名字
        * 300 - 1 ( 人气日榜)
        * playerName：玩家名字  playerId：玩家ID  param1：人气值    param2：鲜花  param3：鸡蛋
+       * 401 - 1 (境界1阶日榜)
+       * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+       * 402 - 1 (境界2阶日榜)
+       * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+       * .........
+       * ........
        * </pre>
        */
       public long getParam3() {
@@ -1322,8 +1370,16 @@ public final class RankInfoProto {
        * playerName：玩家名字  playerId：玩家ID  param1：魂幡战力值
        * 108 - 1 (分身日榜)
        * playerName：玩家名字  playerId：玩家ID  param1：分身战力值
+       * 200 - 1(帮派日榜)
+       *  playerId：帮派ID  playerName:帮派名字  param1:帮派等级  param2:帮派战力  paramStr:帮主名字
        * 300 - 1 ( 人气日榜)
        * playerName：玩家名字  playerId：玩家ID  param1：人气值    param2：鲜花  param3：鸡蛋
+       * 401 - 1 (境界1阶日榜)
+       * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+       * 402 - 1 (境界2阶日榜)
+       * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+       * .........
+       * ........
        * </pre>
        */
       public Builder setParam3(long value) {
@@ -1353,8 +1409,16 @@ public final class RankInfoProto {
        * playerName：玩家名字  playerId：玩家ID  param1：魂幡战力值
        * 108 - 1 (分身日榜)
        * playerName：玩家名字  playerId：玩家ID  param1：分身战力值
+       * 200 - 1(帮派日榜)
+       *  playerId：帮派ID  playerName:帮派名字  param1:帮派等级  param2:帮派战力  paramStr:帮主名字
        * 300 - 1 ( 人气日榜)
        * playerName：玩家名字  playerId：玩家ID  param1：人气值    param2：鲜花  param3：鸡蛋
+       * 401 - 1 (境界1阶日榜)
+       * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+       * 402 - 1 (境界2阶日榜)
+       * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+       * .........
+       * ........
        * </pre>
        */
       public Builder clearParam3() {

@@ -29,6 +29,10 @@ public class StateConfig {
 	private String events;
 	
 	private String endEvents;
+	/**
+	 * 副本事件开始时间 
+	 */
+	private int startEvent;
 
 	
 	
@@ -189,6 +193,14 @@ public class StateConfig {
 
 	public void setEndEvents(String endEvents) {
 		this.endEvents = endEvents;
+	}
+
+	public int getStartEvent() {
+		return startEvent;
+	}
+
+	public void setStartEvent(int startEvent) {
+		this.startEvent = startEvent;
 	}
 	
 	

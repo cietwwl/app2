@@ -48,7 +48,7 @@ public class EmailItemVo {
 	 * @return
 	 */
 	public String attachmentStr(){
-		return itemTemplateId+","+count+","+bind;
+		return itemTemplateId+","+count+","+bind + ";";
 	}
 	
 	public int getItemTemplateId() {

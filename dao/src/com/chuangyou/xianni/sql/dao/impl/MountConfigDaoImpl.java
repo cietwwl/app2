@@ -69,6 +69,8 @@ public class MountConfigDaoImpl extends BaseDao implements MountConfigDao {
 					info.setAtt10(rs.getInt("att10"));
 					info.setUpLevCd(rs.getInt("upLevCd"));
 					info.setClearCdCash(rs.getInt("clearCdCash"));
+					info.setAttList();
+					
 					infos.put(info.getLevel(), info);
 				}
 			} catch (Exception e) {
@@ -116,6 +118,8 @@ public class MountConfigDaoImpl extends BaseDao implements MountConfigDao {
 					info.setFailBlessMin(rs.getInt("failBlessMin"));
 					info.setFailBlessMax(rs.getInt("failBlessMax"));
 					info.setBlessValve(rs.getInt("blessValve"));
+					info.setAttList();
+					
 					infos.put(info.getId(), info);
 				}
 			} catch (Exception e) {
@@ -150,6 +154,7 @@ public class MountConfigDaoImpl extends BaseDao implements MountConfigDao {
 					info.setAtt1(rs.getInt("att1"));
 					info.setAtt2(rs.getInt("att2"));
 					info.setAtt3(rs.getInt("att3"));
+					info.setAttList();
 					
 					equipLevels = infos.get(info.getId());
 					if(equipLevels == null){
@@ -200,6 +205,8 @@ public class MountConfigDaoImpl extends BaseDao implements MountConfigDao {
 					info.setFailBlessMin(rs.getInt("failBlessMin"));
 					info.setFailBlessMax(rs.getInt("failBlessMax"));
 					info.setBlessValve(rs.getInt("blessValve"));
+					info.setAttList();
+					
 					infos.put(info.getGrade(), info);
 				}
 			} catch (Exception e) {

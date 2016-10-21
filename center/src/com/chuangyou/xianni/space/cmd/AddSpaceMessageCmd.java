@@ -39,7 +39,7 @@ public class AddSpaceMessageCmd extends AbstractCommand {
 			}
 			if(reqSpace.getIsNoMsg() == SpaceInfo.FRIEND_MSG){
 				//自己是否是对方的好友
-				if(!player.getRelationInventory().isRelationTypeSelfToTarget(player.getPlayerId(), PlayerRelationConstant.FRIEND)){
+				if(!player.getRelationInventory().isRelationTypeSelfToTarget(reqPlayer.getPlayerId(), PlayerRelationConstant.FRIEND)){
 					ErrorMsgUtil.sendErrorMsg(player, 7002, Protocol.C_REQ_SPACE_ADD_MSG,"非好友禁止留言");		
 					return;
 				}

@@ -19,7 +19,7 @@ public class GetTeamHpMpCmd extends AbstractCommand {
 	@Override
 	public void execute(ArmyProxy army, PBMessage packet) throws Exception {
 		// TODO Auto-generated method stub
-		Team t = TeamMgr.getTeam(army.getPlayerId());
+		Team t = TeamMgr.getTeamByPlayerId(army.getPlayerId());
 		if(t!=null && t.getMembers().size()>1){
 			List<Long> members = t.getMembers(army.getPlayerId());
 			for (Long pid : members) {

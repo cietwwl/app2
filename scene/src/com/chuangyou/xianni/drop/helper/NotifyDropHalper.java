@@ -13,7 +13,6 @@ import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.warfield.FieldMgr;
 import com.chuangyou.xianni.warfield.field.Field;
-import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.WorldMgr;
 

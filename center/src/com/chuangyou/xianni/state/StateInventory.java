@@ -46,7 +46,6 @@ public class StateInventory extends AbstractEvent implements IInventory {
 	private Map<Integer, StateTrigger> stateTriggers;
 	
 	
-	
 	public StateConditionInfo getCondition(int stateId){
 		StateConditionInfo info = conditions.get(stateId);
 		if(info == null){
@@ -64,16 +63,10 @@ public class StateInventory extends AbstractEvent implements IInventory {
 	}
 	
 	/**
-	 * 重置
+	 * 添加触发器
 	 */
-	public void resetStateTrigger(){
-		if(stateTriggers!=null){
-			Iterator<StateTrigger> it = stateTriggers.values().iterator();
-			while(it.hasNext()){
-				it.next().removeTrigger();
-			}
-			stateTriggers.clear();
-		}
+	public void addStateTrigger(){
+		removeStateTrigger();
 		stateTriggers = new HashMap<>();
 		int lv = player.getBasePlayer().getPlayerInfo().getStateLv()+1;
 		StateConfig config = StateTemplateMgr.getStates().get(lv);
@@ -92,6 +85,20 @@ public class StateInventory extends AbstractEvent implements IInventory {
 			Log.error("stateConfig配置表错误，找不到等级："+lv+" 对应该的配置信息");
 		}
 	}
+	
+	/**
+	 * 删除触发器
+	 */
+	public void removeStateTrigger(){
+		if(stateTriggers!=null){
+			Iterator<StateTrigger> it = stateTriggers.values().iterator();
+			while(it.hasNext()){
+				it.next().removeTrigger();
+			}
+			stateTriggers.clear();
+		}
+	}
+	
 	
 	/**
 	 *  通关副本
@@ -123,7 +130,7 @@ public class StateInventory extends AbstractEvent implements IInventory {
 	public boolean loadFromDataBase() {
 		// TODO Auto-generated method stub
 		conditions = DBManager.getStateDao().getStateConditions(player.getPlayerId());
-		resetStateTrigger();
+	//	resetStateTrigger();
 		return true;
 	}
 
@@ -135,10 +142,7 @@ public class StateInventory extends AbstractEvent implements IInventory {
 			conditions.clear();
 			conditions = null;
 		}
-		if(stateTriggers!=null){
-			stateTriggers.clear();
-			stateTriggers = null;
-		}
+		this.removeStateTrigger();
 		return true;
 	}
 
@@ -174,6 +178,11 @@ public class StateInventory extends AbstractEvent implements IInventory {
 	
 	public Map<Integer, StateTrigger> getStateTriggers() {
 		return stateTriggers;
+	}
+
+	public void resetStateTrigger() {
+		// TODO Auto-generated method stub
+		this.addStateTrigger();
 	}
 
 }

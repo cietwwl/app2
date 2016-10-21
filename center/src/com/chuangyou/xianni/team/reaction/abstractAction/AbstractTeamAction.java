@@ -2,9 +2,9 @@ package com.chuangyou.xianni.team.reaction.abstractAction;
 
 import com.chuangyou.common.protobuf.pb.team.TeamInfoRespProto.TeamInfoRespMsg;
 import com.chuangyou.common.protobuf.pb.team.TeamMemberInfoProto.TeamMemberInfoMsg;
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.exec.Action;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.team.TeamMgr;
 import com.chuangyou.xianni.team.struct.Team;

@@ -21,6 +21,8 @@ import com.chuangyou.xianni.sql.dao.impl.EquipBarInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.EquipConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.FashionConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.FashionInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.FieldBossConfigDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.FieldBossInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.FieldInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.FriendDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.GuildApplyDaoImpl;
@@ -828,5 +830,23 @@ public class DBManager {
 	
 	public static GuildLogInfoDao getGuildLogDao(){
 		return guildLogDao;
+	}
+	
+	/**
+	 * 野外BOSS模板配置
+	 */
+	public static final FieldBossConfigDao fieldBossConfigDao = new FieldBossConfigDaoImpl();
+	
+	public static FieldBossConfigDao getFieldBossConfigDao(){
+		return fieldBossConfigDao;
+	}
+	
+	/**
+	 * 野外BOSS死亡时间信息
+	 */
+	public static final FieldBossInfoDao fieldBossInfoDao = new FieldBossInfoDaoImpl();
+	
+	public static FieldBossInfoDao getFieldBossInfoDao(){
+		return fieldBossInfoDao;
 	}
 }

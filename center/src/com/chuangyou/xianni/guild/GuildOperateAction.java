@@ -88,4 +88,7 @@ public class GuildOperateAction {
 	
 	/** 系统门派的成员3天未上线自动退出 */
 	public static final short GUILD_SYSTEM_AUTO_EXIT = 29;
+	
+	/** 请求门派快照 */
+	public static final short GUILD_SNAP_REQ = 30;
 }

@@ -39,13 +39,14 @@ public class CreateCampaignAction extends Action {
 		}
 
 		// 扣除进入副本消耗物品
-		// if (costItem(temp) == false) {
-		// rspCode = CampaignRspCode.ITEM_NOT_ENOUGHT;
-		// }
-		// 如果在副本内，不允许创建副本
-		if (player.getCurCampaign() != 0) {
-			// rspCode = CampaignRspCode.ALREAD_IN_CAMPAIGN;
+		if (costItem(temp) == false) {
+			rspCode = CampaignRspCode.ITEM_NOT_ENOUGHT;
 		}
+		// 如果在副本内，不允许创建副本
+		// if (player.getCurCampaign() != 0) {
+		// rspCode = CampaignRspCode.ALREAD_IN_CAMPAIGN;
+		// }
+
 		if (rspCode != CampaignRspCode.SUCCESS) {
 			CampaignResponeMsg.Builder rsp = CampaignResponeMsg.newBuilder();
 			rsp.setRspCode(rspCode);
@@ -68,6 +69,9 @@ public class CreateCampaignAction extends Action {
 		}
 		boolean hasEnough = true;
 		for (int itemId : arrItems) {
+			if (itemId == 0) {
+				continue;
+			}
 			if (player.getBagInventory().isEnought(itemId, 1) == false) {
 				hasEnough = false;
 				continue;

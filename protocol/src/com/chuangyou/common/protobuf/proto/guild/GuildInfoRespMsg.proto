@@ -10,7 +10,7 @@ message GuildInfoRespMsg{
 	optional int64 gangId = 4; // 帮主ID
 	optional string gangName = 5; // 帮主名字
 	optional int32 level = 6; // 门派等级
-	optional int32 fight = 7; // 门派战力
+	optional int64 fight = 7; // 门派战力
 
 	optional int32 playerNum = 8; // 成员数量
 	optional int32 maxPlayerNum = 9; // 最大成员数量

@@ -159,42 +159,42 @@ public class MountWeaponCfg {
 	public void setBlessValve(int blessValve) {
 		this.blessValve = blessValve;
 	}
-	public List<Integer> getAttList() {
-		if (this.attList == null) {
-
-			List<Integer> list = new ArrayList<Integer>();
-			if (att1 > 0) {
-				list.add(att1);
-			}
-			if (att2 > 0) {
-				list.add(att2);
-			}
-			if (att3 > 0) {
-				list.add(att3);
-			}
-			if (att4 > 0) {
-				list.add(att4);
-			}
-			if (att5 > 0) {
-				list.add(att5);
-			}
-			if (att6 > 0) {
-				list.add(att6);
-			}
-			if (att7 > 0) {
-				list.add(att7);
-			}
-			if (att8 > 0) {
-				list.add(att8);
-			}
-			if (att9 > 0) {
-				list.add(att9);
-			}
-			if (att10 > 0) {
-				list.add(att10);
-			}
-			this.attList = list;
+	
+	public void setAttList(){
+		List<Integer> list = new ArrayList<Integer>();
+		if (att1 > 0) {
+			list.add(att1);
 		}
+		if (att2 > 0) {
+			list.add(att2);
+		}
+		if (att3 > 0) {
+			list.add(att3);
+		}
+		if (att4 > 0) {
+			list.add(att4);
+		}
+		if (att5 > 0) {
+			list.add(att5);
+		}
+		if (att6 > 0) {
+			list.add(att6);
+		}
+		if (att7 > 0) {
+			list.add(att7);
+		}
+		if (att8 > 0) {
+			list.add(att8);
+		}
+		if (att9 > 0) {
+			list.add(att9);
+		}
+		if (att10 > 0) {
+			list.add(att10);
+		}
+		this.attList = list;
+	}
+	public List<Integer> getAttList() {
 		return this.attList;
 	}
 	@Override

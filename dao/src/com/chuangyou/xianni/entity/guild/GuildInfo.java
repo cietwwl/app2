@@ -43,6 +43,9 @@ public class GuildInfo extends DataObject {
 	/** 物资清理检测时间 */
 	private long supplyCheckTime;
 	
+	/** 帮派战力 */
+	private long fight;
+	
 	public GuildInfo() {
 		// TODO Auto-generated constructor stub
 	}
@@ -64,6 +67,7 @@ public class GuildInfo extends DataObject {
 		this.levelLimit = 0;
 		this.fightLimit = 0;
 		this.supplyCheckTime = System.currentTimeMillis();
+		this.fight = 0;
 	}
 	
 	public int getGuildId() {
@@ -189,5 +193,12 @@ public class GuildInfo extends DataObject {
 	public void setSupplyCheckTime(long supplyCheckTime) {
 		this.setOp(Option.Update);
 		this.supplyCheckTime = supplyCheckTime;
+	}
+	public long getFight() {
+		return fight;
+	}
+	public void setFight(long fight) {
+		this.setOp(Option.Update);
+		this.fight = fight;
 	}
 }

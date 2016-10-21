@@ -11,6 +11,7 @@ import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.battle.snare.SnareCreateFilter;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.role.PrivateMonsterMgr;
+import com.chuangyou.xianni.warfield.spawn.TimeControlerNodeMgr;
 
 public class TimerTaskMgr {
 
@@ -25,9 +26,10 @@ public class TimerTaskMgr {
 	private static Timer		clearTaskMonsterTimer;	// 定时器
 	private static Task			clearMonsterTask;; // 任务
 
-	/* 5点数据清理 */
+	/* 到点数据清理 */
 	private static Timer		day_reset_clearTimer;	// 定时器
-	private static Task			day_reset_Data;; // 任务
+	private static Task			day_reset_Data;			// 任务
+	private static Task			timeControlerNode;		// 控制时间刷新副本
 
 	public static boolean init() {
 		// 设置启动时间(在当前时间基础上向后推2分10秒)
@@ -41,15 +43,17 @@ public class TimerTaskMgr {
 		// 清理过期任务怪
 		clearTaskMonsterTimer = new Timer("clearTaskMonsterTimer");
 		clearMonsterTask = new ClearPrivateMonster();
-		clearTaskMonsterTimer.schedule(clearMonsterTask, beginDate, MINTIME * 1);
+		clearTaskMonsterTimer.schedule(clearMonsterTask, beginDate, MINTIME * 5);
 
 		// 凌晨5点定时清理
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd '5:00:00'");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:m'0:00'");
 		day_reset_clearTimer = new Timer("scence_day_reset_clearTimer");
 		day_reset_Data = new Day_5ClearData();
+		timeControlerNode = new TimeControlerNode();
 		try {
 			Date startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(new Date()));
-			day_reset_clearTimer.scheduleAtFixedRate(day_reset_Data, startTime, MINTIME * 60 * 24);
+			day_reset_clearTimer.scheduleAtFixedRate(day_reset_Data, startTime, MINTIME * 60);
+			day_reset_clearTimer.scheduleAtFixedRate(timeControlerNode, startTime, MINTIME * 5);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			Log.error("定时器 taskDayClearTimer,taskDayClearTimer 异常", e);
@@ -125,4 +129,17 @@ class Day_5ClearData extends Task {
 	public void exec() {
 		SnareCreateFilter.clearExiped();
 	}
+}
+
+class TimeControlerNode extends Task {
+
+	public TimeControlerNode() {
+		super("控制根据时间来刷新的节点状态变更");
+	}
+
+	@Override
+	public void exec() {
+		TimeControlerNodeMgr.check();
+	}
+
 }

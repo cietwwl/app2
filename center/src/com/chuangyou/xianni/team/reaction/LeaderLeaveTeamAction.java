@@ -1,7 +1,7 @@
 package com.chuangyou.xianni.team.reaction;
 
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.team.reaction.abstractAction.TeamLeaderAction;
 import com.chuangyou.xianni.team.struct.TeamMember;

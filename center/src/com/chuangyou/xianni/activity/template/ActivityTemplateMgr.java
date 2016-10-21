@@ -8,9 +8,9 @@ import com.chuangyou.common.protobuf.pb.activity.GetActivityTempRespProto.GetAct
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.activity.ActivityType;
 import com.chuangyou.xianni.activity.logic.ActityUtil;
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.entity.activity.ActivityConfig;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;

@@ -50,7 +50,7 @@ public class MonsterAI implements AI {// extends BaseProxy {
 			((Monster) living).countHatreds();
 			if (((Monster) living).getHatreds().size() > 0) {
 				living.addCooldown(CoolDownTypes.RECOUNTHATRED, null, SceneGlobal.AI_MONSTER_HETRED_RECOUNT);
-				return;
+				//return;
 			}
 		}
 		if (living.isCooldowning(CoolDownTypes.BE_ATTACK, null)) {
@@ -68,11 +68,12 @@ public class MonsterAI implements AI {// extends BaseProxy {
 
 		AIState next = behaviors.get(current).next();
 
-		// if (living.getId() == 1000000000083L) {
+		// if (living.getId() == 1000000000492L) {
 		// System.out.println("怪物 id： " + living.getId() + " 状态： " + current + "
 		// 下一个状态：" + next + " 位置：" + living.getPostion() + " 目标：" +
 		// living.getTargetPostion() + "距离："
 		// + Vector3.distance(living.getPostion(), living.getTargetPostion()));
+		// System.out.println( ((Monster)living).getMonsterInfo().getName());
 		// }
 
 		if (next == AIState.INVALID)
@@ -88,7 +89,7 @@ public class MonsterAI implements AI {// extends BaseProxy {
 		// TODO Auto-generated method stub
 		behaviors.put(AIState.IDLE, new Idle((Monster) living));
 		behaviors.put(AIState.PATROL, new Patrol((Monster) living));
-		//behaviors.put(AIState.BEATTACK, new BeAttack((Monster) living));
+		// behaviors.put(AIState.BEATTACK, new BeAttack((Monster) living));
 		behaviors.put(AIState.ATTACK, new Attack((Monster) living));
 		behaviors.put(AIState.CHASE, new Chase((Monster) living));
 		behaviors.put(AIState.RUNBACK, new RunBack((Monster) living));

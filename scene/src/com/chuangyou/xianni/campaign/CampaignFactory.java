@@ -1,12 +1,12 @@
 package com.chuangyou.xianni.campaign;
 
 import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
-import com.chuangyou.common.util.JSONUtil;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.constant.CampaignConstant.CampaignType;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.entity.state.StateConfig;
 import com.chuangyou.xianni.inverseBead.InverseBeadCampaign;
+import com.chuangyou.xianni.role.objects.Transfer;
 import com.chuangyou.xianni.world.ArmyProxy;
 
 public class CampaignFactory {
@@ -62,6 +62,27 @@ public class CampaignFactory {
 	 */
 	public static Campaign createStateConfig(CampaignTemplateInfo tempInfo, ArmyProxy creater,StateConfig config){
 		return new StateCampaign(tempInfo, creater, config);
+	}
+	
+	/**
+	 * 创建精英BOSS死亡触发的事件副本
+	 * @param tempInfo
+	 * @param transfer 对应的传送门
+	 * @param tagId 副本刷节点怪tagId
+	 * @return
+	 */
+	public static Campaign createEliteTriggerCampaign(CampaignTemplateInfo tempInfo, Transfer transfer, int tagId){
+		return new EliteBossTriggerCampaign(tempInfo, transfer, tagId);
+	}
+	
+	/**
+	 * 创建世界BOSS死亡触发的事件副本
+	 * @param tempInfo
+	 * @param transfer
+	 * @return
+	 */
+	public static Campaign createWorldBossTriggerCampaign(CampaignTemplateInfo tempInfo, Transfer transfer){
+		return new WorldBossTriggerCampaign(tempInfo, transfer);
 	}
 
 }

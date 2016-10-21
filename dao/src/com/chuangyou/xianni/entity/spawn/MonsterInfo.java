@@ -11,6 +11,8 @@ public class MonsterInfo {
 
 	private int		monsterType;		// 怪物种类
 
+	private int		dynamic;			// 动态怪物，会根据玩家ID来刷新不同怪物
+
 	private int		alertRange;			// 警戒范围
 
 	private int		seekEnemyRange;		// 索敌范围
@@ -313,4 +315,13 @@ public class MonsterInfo {
 	public void setDropType(int dropType) {
 		this.dropType = dropType;
 	}
+
+	public int getDynamic() {
+		return dynamic;
+	}
+
+	public void setDynamic(int dynamic) {
+		this.dynamic = dynamic;
+	}
+
 }

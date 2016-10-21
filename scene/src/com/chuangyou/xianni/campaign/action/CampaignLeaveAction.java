@@ -48,28 +48,26 @@ public class CampaignLeaveAction extends Action {
 			campaign.stateTransition(new StopState(campaign));
 		}
 
+
+		/** 渡节副本成功离开时就销毁 */
+		if (campaign.getTemp().getType() == CampaignType.STATE && campaign.getState().getCode() >= CampaignState.SUCCESS) {
+			campaign.stateTransition(new StopState(campaign));
+		}
+
 		if (campaign.getTemp().getType() == CampaignType.GUILD_SEIZE) {
+			campaign.stateTransition(new StopState(campaign));
+		}
 
-			/** 渡节副本成功离开时就销毁 */
-			if (campaign.getTemp().getType() == CampaignType.STATE && campaign.getState().getCode() >= CampaignState.SUCCESS) {
-				campaign.stateTransition(new StopState(campaign));
-			}
-
-			if (campaign.getTemp().getType() == CampaignType.GUILD_SEIZE) {
-				campaign.stateTransition(new StopState(campaign));
-			}
-
-			/** 组队副本，当所有人离开时，销毁副本 */
-			if (campaign.getTemp().getType() == CampaignType.TEAM && campaign.isEmpty() && campaign.getState().getCode() != CampaignState.STOP) {
-				campaign.stateTransition(new StopState(campaign));
-			} else {
-				campaign.sendCampaignInfo(army);
-			}
-			army.getPlayer().removeCampaignBuffer();
-			List<Avatar> avatars = army.getAvatars();
-			for (Avatar avatar : avatars) {
-				avatar.leaveCampaign();
-			}
+		/** 组队副本，当所有人离开时，销毁副本 */
+		if (campaign.getTemp().getType() == CampaignType.TEAM && campaign.isEmpty() && campaign.getState().getCode() != CampaignState.STOP) {
+			campaign.stateTransition(new StopState(campaign));
+		} else {
+			campaign.sendCampaignInfo(army);
+		}
+		army.getPlayer().removeCampaignBuffer();
+		List<Avatar> avatars = army.getAvatars();
+		for (Avatar avatar : avatars) {
+			avatar.leaveCampaign();
 		}
 	}
 }

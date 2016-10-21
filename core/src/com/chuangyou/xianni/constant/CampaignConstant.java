@@ -12,6 +12,8 @@ public class CampaignConstant {
 	public static final int	LEAVE		= 3;
 	/** 成员进入队伍所在副本 */
 	public static final int	JOIN_TEAM	= 4;
+	/** 清除副本 */
+	public static final int	DETORY		= 5;
 
 	// ----------------scene副本通知center状态--------------------//
 	public static class CampaignStatu {
@@ -32,6 +34,10 @@ public class CampaignConstant {
 		public static final int	PVP_1V1		= 7;	// PVP11副本
 
 		public static final int	GUILD_SEIZE	= 8;	// 帮派夺权副本
+		
+		public static final int ELITE_BOSS_TRIGGER = 9; // 精英BOSS触发副本
+		
+		public static final int WORLD_BOSS_TRIGGER = 11; // 世界BOSS触发副本
 
 	}
 

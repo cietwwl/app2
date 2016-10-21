@@ -3,9 +3,11 @@ package com.chuangyou.xianni.role.objects;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.chuangyou.common.protobuf.pb.PlayerAttSnapProto.PlayerAttSnapMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
+import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLivingInfoMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.battle.action.RobotPollingAction;
 import com.chuangyou.xianni.battle.mgr.AvatarTempManager;
@@ -35,6 +37,21 @@ public class Avatar extends Robot {
 		setType(RoleType.avatar);
 		RobotPollingAction robotAction = new RobotPollingAction(this);
 		this.enDelayQueue(robotAction);
+	}
+
+	public PlayerAttSnapMsg.Builder getAttSnapMsg() {
+		PlayerAttSnapMsg.Builder builder = super.getAttSnapMsg();
+		return builder;
+	}
+
+	/** 判断是否死亡 */
+	public boolean isDie() {
+		return false;
+	}
+
+	public BattleLivingInfoMsg.Builder getBattlePlayerInfoMsg() {
+		BattleLivingInfoMsg.Builder builder = super.getBattlePlayerInfoMsg();
+		return builder;
 	}
 
 	// 设置成合体状态并且踢出地图

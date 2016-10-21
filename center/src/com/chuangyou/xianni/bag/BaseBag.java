@@ -16,6 +16,7 @@ import com.chuangyou.xianni.entity.equip.EquipBarInfo;
 import com.chuangyou.xianni.entity.equip.EquipSuitCfg;
 import com.chuangyou.xianni.entity.item.BindType;
 import com.chuangyou.xianni.entity.item.ItemInfo;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.equip.template.EquipTemplateMgr;
@@ -577,6 +578,19 @@ public class BaseBag extends AbstractBag {
 			}
 		} catch (Exception e) {
 			Log.error("发送背包信息出错，playerId :" + player.getPlayerId(), e);
+		}
+	}
+	//清空背包
+	public void clearAllItems(){
+		try {
+			for (BaseItem info : baseItems) {
+				if (info == null || info.getItemInfo() == null) {
+					continue;
+				}
+				removeByItem(info, ItemRemoveType.DELETE);
+			}
+		} catch (Exception e) {
+			Log.error("清空失败 " + player.getPlayerId(), e);
 		}
 	}
 

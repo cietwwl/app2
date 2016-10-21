@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import com.chuangyou.common.protobuf.pb.army.HeroInfoMsgProto.HeroInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLivingInfoMsg;
@@ -170,6 +171,10 @@ public class Player extends ActiveLiving {
 					if (campaign instanceof StateCampaign) {
 						((StateCampaign) campaign).failOver();
 					}
+					
+					if(source.getArmyId() > 0){
+						campaign.onPlayerDie(this, source);
+					}
 				}
 			}
 			if (isCorrespondStatu()) {
@@ -270,6 +275,9 @@ public class Player extends ActiveLiving {
 	/* 满血复活 */
 	public boolean renascence() {
 		if (getLivingState() == ALIVE) {
+			return false;
+		}
+		if (getLivingState() == DISTORY) {
 			return false;
 		}
 		setLivingState(ALIVE);
@@ -453,6 +461,13 @@ public class Player extends ActiveLiving {
 			temp.clearSkills();
 			for (Skill skill : avatarSkills.values()) {
 				temp.addSkills(skill.getSkillId());
+			}
+		}
+		if(field != null && field.getCampaignId() > 0){
+			Campaign campaign = CampaignMgr.getCampagin(field.getCampaignId());
+			if(campaign != null){
+				//获取场景玩家详情时，如果在副本中，插入副本临时属性
+				campaign.insertCampaignAtt(this.getArmyId(), temp);
 			}
 		}
 		return temp;

@@ -1,7 +1,6 @@
 package com.chuangyou.xianni.activity.logic;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.TimeUtil;
@@ -15,8 +14,8 @@ public class ActityUtil {
 		// 是否是在限制时间上
 		if (config.getTimeType() == ActivityConfig.TIMETYPE_EVERYDAY) {
 			try {
-				Date startDate = getDate(config.getStartTime());
-				Date endDate = getDate(config.getEndTime());
+				Date startDate = TimeUtil.getDate(config.getStartTime());
+				Date endDate = TimeUtil.getDate(config.getEndTime());
 				if (!inTime(config, startDate, endDate)) {
 					return false;
 				}
@@ -39,8 +38,8 @@ public class ActityUtil {
 				return false;
 			}
 			try {
-				Date startDate = getDate(starts[index]);
-				Date endDate = getDate(ends[index]);
+				Date startDate = TimeUtil.getDate(starts[index]);
+				Date endDate = TimeUtil.getDate(ends[index]);
 				if (!inTime(config, startDate, endDate)) {
 					return false;
 				}
@@ -86,19 +85,4 @@ public class ActityUtil {
 		return TimeUtil.isInDate(System.currentTimeMillis(), startDate, endDate);
 	}
 
-	/**
-	 * 获取时间
-	 * 
-	 * @param timeStr
-	 * @return
-	 * @throws ParseException
-	 */
-	private static Date getDate(String timeStr) throws ParseException {
-		Date now = new Date();
-		SimpleDateFormat cf = new SimpleDateFormat("yyyy-MM-dd");
-		String str = cf.format(now);
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-ddHHmmss");
-		Date startDate = df.parse(str + timeStr);
-		return startDate;
-	}
 }

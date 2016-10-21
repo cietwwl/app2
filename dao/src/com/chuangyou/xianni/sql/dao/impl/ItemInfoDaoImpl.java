@@ -100,6 +100,9 @@ public class ItemInfoDaoImpl extends BaseDao implements ItemInfoDao {
 		para.put(22, new DbParameter(Types.INTEGER, info.getStone()));
 
 		result = execNoneQuery(sql, para) > -1 ? true : false;
+		if(result == true){
+			info.setOp(Option.None);
+		}
 		return result;
 	}
 

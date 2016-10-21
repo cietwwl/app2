@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+
 import com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg;
 import com.chuangyou.common.util.Config;
 import com.chuangyou.common.util.FileOperate;
@@ -17,6 +18,7 @@ import com.chuangyou.common.util.Rect;
 import com.chuangyou.xianni.constant.SpwanInfoType;
 import com.chuangyou.xianni.entity.field.FieldInfo;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
+import com.chuangyou.xianni.fieldBoss.manager.WorldBossManager;
 import com.chuangyou.xianni.netty.GatewayLinkedSet;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -27,6 +29,7 @@ import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.helper.ParseMapDataHelper;
 import com.chuangyou.xianni.warfield.navi.seeker.NavmeshSeeker;
 import com.chuangyou.xianni.warfield.spawn.ActiveSpwanNode;
+import com.chuangyou.xianni.warfield.spawn.EliteBossSpawnNode;
 import com.chuangyou.xianni.warfield.spawn.GatherSpawnNode;
 import com.chuangyou.xianni.warfield.spawn.MonsterSpawnNode;
 import com.chuangyou.xianni.warfield.spawn.NpcSpawnNode;
@@ -34,6 +37,7 @@ import com.chuangyou.xianni.warfield.spawn.PerareState;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
 import com.chuangyou.xianni.warfield.spawn.TriggerPointSpwanNode;
 import com.chuangyou.xianni.warfield.spawn.WorkingState;
+import com.chuangyou.xianni.warfield.spawn.WorldBossSpawnNode;
 import com.chuangyou.xianni.warfield.template.FieldTemplateMgr;
 import com.chuangyou.xianni.warfield.template.SpawnTemplateMgr;
 
@@ -90,6 +94,7 @@ public class FieldMgr {
 			return false;
 		}
 		createStateField();
+		WorldBossManager.init();
 		return true;
 	}
 
@@ -143,7 +148,7 @@ public class FieldMgr {
 			}
 		}
 	}
-
+	
 	// /所有地图的集合
 	private static ConcurrentHashMap<Integer, Field> fields = new ConcurrentHashMap<Integer, Field>();
 
@@ -239,6 +244,12 @@ public class FieldMgr {
 					break;
 				case SpwanInfoType.COMMON_TRIGGER:
 					node = new ActiveSpwanNode(sf, f);
+					break;
+				case SpwanInfoType.BOSS_ELITE:
+					node = new EliteBossSpawnNode(sf, f);
+					break;
+				case SpwanInfoType.BOSS_WORLD:
+					node = new WorldBossSpawnNode(sf, f);
 					break;
 				default:
 					node = new SpwanNode(sf, f);

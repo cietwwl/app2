@@ -3,6 +3,7 @@ package com.chuangyou.xianni.campaign.cmd;
 import com.chuangyou.common.protobuf.pb.campaign.CampaignOptionMsgProto.CampaignOptionMsg;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignMgr;
+import com.chuangyou.xianni.campaign.state.StopState;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.constant.CampaignConstant;
@@ -48,14 +49,23 @@ public class CampaignOptionCmd extends AbstractCommand {
 				campaign.onPlayerLeave(army, false);
 			}
 		}
+
 		/* 进入队伍所在副本 */
 		if (op == CampaignConstant.JOIN_TEAM) {
-			Team tem = TeamMgr.getTeam(army.getPlayerId());
+			Team tem = TeamMgr.getTeamByPlayerId(army.getPlayerId());
 			if (tem != null && tem.getCampaignId() != 0) {
 				Campaign campaign = CampaignMgr.getCampagin(tem.getCampaignId());
 				if (campaign != null) {
 					campaign.onPlayerEnter(army);
 				}
+			}
+		}
+
+		/* 销毁副本 */
+		if (op == CampaignConstant.DETORY) {
+			Campaign campaign = CampaignMgr.getCampagin(parm1);
+			if (campaign != null && campaign.isBuilder(army.getPlayerId())) {
+				campaign.stateTransition(new StopState(campaign));
 			}
 		}
 	}

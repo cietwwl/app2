@@ -12,6 +12,6 @@ public interface CampaignRspCode {
 	/* 需要物品不足 */
 	public static final int	ITEM_NOT_ENOUGHT	= 1004;
 
-	/* 已经在副本中 */
+	/* 已经在副本状态 */
 	public static final int	ALREAD_IN_CAMPAIGN	= 1005;
 }

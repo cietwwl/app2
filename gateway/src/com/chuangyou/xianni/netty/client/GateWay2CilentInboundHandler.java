@@ -58,9 +58,9 @@ public class GateWay2CilentInboundHandler extends ServerInboundHandler {
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		try {
-			Log.error("客户端异常", cause);
+			// Log.error("客户端异常", cause);
 			ctx.close();
-			System.err.println("客户端异常" + cause);
+			// System.err.println("客户端异常" + cause);
 		} catch (Exception e) {
 			Log.error("Con2CilentInboundHandler", e);
 		}

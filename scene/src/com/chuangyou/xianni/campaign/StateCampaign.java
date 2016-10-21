@@ -243,7 +243,7 @@ public class StateCampaign extends SingleCampaign {
 			}
 			qteTempMap.clear();
 		}
-		EmptyStateDelayAction action = new EmptyStateDelayAction(getActionQueue(), 30 * 1000, this, army);
+		EmptyStateDelayAction action = new EmptyStateDelayAction(getActionQueue(),config.getStartEvent()*1000 , this, army);
 		action.getActionQueue().enDelayQueue(action);
 	}
 

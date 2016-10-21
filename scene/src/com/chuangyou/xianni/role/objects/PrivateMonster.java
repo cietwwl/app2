@@ -30,7 +30,7 @@ public class PrivateMonster extends Monster {
 			return true;
 		}
 		// 判断与创建人，是否属于同一个小组
-		Team team = TeamMgr.getTeam(creater);
+		Team team = TeamMgr.getTeamByPlayerId(creater);
 		if (team == null) {
 			return false;
 		}

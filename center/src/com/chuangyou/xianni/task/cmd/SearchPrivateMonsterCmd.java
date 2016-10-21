@@ -4,10 +4,10 @@ import java.util.Date;
 
 import com.chuangyou.common.protobuf.pb.gather.SearchPrivateMonsterInnerProto.SearchPrivateMonsterInnerMsg;
 import com.chuangyou.common.protobuf.pb.task.TaskUpdateRespProto.TaskUpdateRespMsg;
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.task.TaskInfo;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;

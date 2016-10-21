@@ -209,7 +209,7 @@ public class NotifyNearHelper {
 	 * @param nears
 	 * @param infoMsg
 	 */
-	public static void notifyAttrChange(ArmyProxy army, Set<Long> nears, PlayerAttUpdateMsg attMsg) {
+	public static void notifyAttrChange(Set<Long> nears, PlayerAttUpdateMsg attMsg) {
 		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_RESP_PLAYER_ATT_UPDATE, attMsg);
 	}
 

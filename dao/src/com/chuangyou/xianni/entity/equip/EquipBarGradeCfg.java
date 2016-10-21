@@ -192,19 +192,20 @@ public class EquipBarGradeCfg {
 		this.addProperty = addProperty;
 	}
 	
-	public Map<Integer, Integer> getNeedItems(){
-		if(this.needItemMap == null){
-			this.needItemMap = new HashMap<>();
-			if(upgradeItem1 > 0){
-				this.needItemMap.put(this.upgradeItem1, this.upgradeItemNum1);
-			}
-			if(upgradeItem2 > 0){
-				this.needItemMap.put(this.upgradeItem2, this.upgradeItemNum2);
-			}
-			if(upgradeItem3 > 0){
-				this.needItemMap.put(this.upgradeItem3, this.upgradeItemNum3);
-			}
+	public void setNeedItems(){
+		this.needItemMap = new HashMap<>();
+		if(upgradeItem1 > 0){
+			this.needItemMap.put(this.upgradeItem1, this.upgradeItemNum1);
 		}
+		if(upgradeItem2 > 0){
+			this.needItemMap.put(this.upgradeItem2, this.upgradeItemNum2);
+		}
+		if(upgradeItem3 > 0){
+			this.needItemMap.put(this.upgradeItem3, this.upgradeItemNum3);
+		}
+	}
+	
+	public Map<Integer, Integer> getNeedItems(){
 		return this.needItemMap;
 	}
 }

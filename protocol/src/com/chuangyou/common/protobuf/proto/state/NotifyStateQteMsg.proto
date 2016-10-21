@@ -7,4 +7,5 @@ message NotifyStateQteMsg{
 	required int32 qteId = 1; //qteID
 	required int32 qteLimitTime = 2;//QTE限时（单位：秒）
 	required int32 eventId = 3;//事件相关
+
 }

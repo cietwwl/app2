@@ -1,4 +1,4 @@
-package com.chuangyou.xianni.player;
+package com.chuangyou.xianni.constant;
 
 public interface PlayerState {
 	/** 下线 */

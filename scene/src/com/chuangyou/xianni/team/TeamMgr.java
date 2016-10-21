@@ -22,7 +22,7 @@ public class TeamMgr {
 	 * @param playerId
 	 * @return 没有队伍返回null
 	 */
-	public static Team getTeam(long playerId) {
+	public static Team getTeamByPlayerId(long playerId) {
 		if (playerTeamMap.containsKey(playerId)) {
 			return allTeams.get(playerTeamMap.get(playerId));
 		}
@@ -36,7 +36,7 @@ public class TeamMgr {
 	 * @return
 	 */
 	public static List<Long> getTeamMembers(long playerId) {
-		Team team = getTeam(playerId);
+		Team team = getTeamByPlayerId(playerId);
 
 		List<Long> members;
 		if (team == null) {
@@ -78,7 +78,7 @@ public class TeamMgr {
 		return allTeams;
 	}
 
-	public static Team getTeam(int teamId) {
+	public static Team getTeamByTeamId(int teamId) {
 		return allTeams.get(teamId);
 	}
 

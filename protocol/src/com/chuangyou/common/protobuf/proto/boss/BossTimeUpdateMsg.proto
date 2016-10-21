@@ -1,0 +1,10 @@
+option java_package = "com.chuangyou.common.protobuf.pb.boss";
+option java_outer_classname = "BossTimeUpdateProto";
+
+message BossTimeUpdateMsg{
+	optional int32 monsterId = 1; // BOSS怪模板ID
+
+	optional int64 deathTime = 2; // 死亡时间
+
+	optional int64 nextTime = 3; // 下次刷新时间
+}

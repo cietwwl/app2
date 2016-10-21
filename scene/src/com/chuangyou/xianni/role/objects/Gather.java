@@ -5,7 +5,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.chuangyou.xianni.campaign.Campaign;
+import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
+import com.chuangyou.xianni.warfield.spawn.GatherSpawnNode;
+import com.chuangyou.xianni.world.ArmyProxy;
 
 /**
  * 采集物
@@ -22,9 +26,10 @@ public class Gather extends Living {
 	 */
 	private Map<Long, Long>	playerCdTimers	= new HashMap<>();
 
-	public Gather(long id, String name) {
+	public Gather(long id, GatherSpawnNode node, String name) {
 		super(id);
 		setType(RoleType.gather);
+		this.node = node;
 		this.name = name;
 	}
 
@@ -91,6 +96,19 @@ public class Gather extends Living {
 				if (currentT - it.next().getValue() > 60 * 1000) {
 					it.remove();
 				}
+			}
+		}
+	}
+	
+	/**
+	 * 触发采集
+	 * @param army
+	 */
+	public void trigger(ArmyProxy army){
+		if (field != null && field.getCampaignId() > 0) {
+			Campaign campaign = CampaignMgr.getCampagin(field.getCampaignId());
+			if (campaign != null) {
+				campaign.onTriggerPoint(army, this.node);
 			}
 		}
 	}

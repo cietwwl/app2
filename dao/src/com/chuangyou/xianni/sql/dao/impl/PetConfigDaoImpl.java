@@ -103,6 +103,8 @@ public class PetConfigDaoImpl extends BaseDao implements PetConfigDao {
 					info.setFailBlessMin(rs.getInt("failBlessMin"));
 					info.setFailBlessMax(rs.getInt("failBlessMax"));
 					info.setBlessValve(rs.getInt("blessValve"));
+					info.setAttList();
+					
 					infos.put(info.getId(), info);
 				}
 			} catch (Exception e) {
@@ -154,6 +156,8 @@ public class PetConfigDaoImpl extends BaseDao implements PetConfigDao {
 					info.setItemExp2(rs.getInt("itemExp2"));
 					info.setItemId3(rs.getInt("itemId3"));
 					info.setItemExp3(rs.getInt("itemExp3"));
+					info.setAttList();
+					
 					infos.put(info.getId(), info);
 				}
 			} catch (Exception e) {
@@ -201,6 +205,8 @@ public class PetConfigDaoImpl extends BaseDao implements PetConfigDao {
 					info.setAtt6(rs.getInt("att6"));
 					info.setAtt7(rs.getInt("att7"));
 					info.setAtt8(rs.getInt("att8"));
+					info.setAttList();
+					
 					infos.put(info.getId(), info);
 				}
 			} catch (Exception e) {
@@ -249,6 +255,8 @@ public class PetConfigDaoImpl extends BaseDao implements PetConfigDao {
 					info.setAtt7(rs.getInt("att7"));
 					info.setAtt8(rs.getInt("att8"));
 					info.setAttPer(rs.getShort("attPer"));
+					info.setAttList();
+					
 					infos.put(info.getId(), info);
 				}
 			} catch (Exception e) {
@@ -300,6 +308,8 @@ public class PetConfigDaoImpl extends BaseDao implements PetConfigDao {
 					info.setAtt9(rs.getInt("att9"));
 					info.setAtt10(rs.getInt("att10"));
 					info.setAtt11(rs.getInt("att11"));
+					info.setAttList();
+					
 					infos.put(info.getLv(), info);
 				}
 			} catch (Exception e) {

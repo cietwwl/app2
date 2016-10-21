@@ -28,7 +28,7 @@ public class SetCollectionNumLogic extends AddCollectionLogic {
 			return;
 		}
 		int needMoney = newNum * SystemConfigTemplateMgr.getSpaceCollectionPrice();
-		if (player.getBasePlayer().consumeCash(needMoney, ItemRemoveType.SET_COLLECTION_LIMIT)) {
+		if (!player.getBasePlayer().consumeCash(needMoney, ItemRemoveType.SET_COLLECTION_LIMIT)) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Cash_UnEnough, Protocol.C_REQ_SPACE_SET_COLLECTION, "元宝不够或扣钱失败");
 			return;
 		} else {

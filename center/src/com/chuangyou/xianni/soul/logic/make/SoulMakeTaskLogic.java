@@ -1,7 +1,7 @@
 package com.chuangyou.xianni.soul.logic.make;
 
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;

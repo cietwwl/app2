@@ -3,18 +3,16 @@ package com.chuangyou.xianni.http.respone;
 import java.util.Map;
 
 import com.chuangyou.common.protobuf.pb.shop.BuyGoodsReqProto.BuyGoodsReqMsg;
-import com.chuangyou.common.protobuf.pb.shop.GetMallInfoReqProto.GetMallInfoReqMsg;
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.exec.CmdTask;
 import com.chuangyou.xianni.http.BaseRespone;
 import com.chuangyou.xianni.http.HttpCmd;
 import com.chuangyou.xianni.http.HttpResult;
 import com.chuangyou.xianni.http.HttpResult.Code;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.shop.cmd.GetMallInfoReqCmd;
 import com.chuangyou.xianni.shop.cmd.ShopBuyGoodCmd;
 import com.chuangyou.xianni.word.WorldMgr;
 

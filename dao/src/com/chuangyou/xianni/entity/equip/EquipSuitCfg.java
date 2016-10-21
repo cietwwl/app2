@@ -254,34 +254,35 @@ public class EquipSuitCfg {
 		this.resolveNum = resolveNum;
 	}
 	
-	public Map<Integer, Integer> getAttMap(){
-		if(this.attMap == null){
-			attMap = new HashMap<>();
-			if(this.att1 > 0){
-				attMap.put(1, att1);
-			}
-			if(this.att2 > 0){
-				attMap.put(2, att2);
-			}
-			if(this.att3 > 0){
-				attMap.put(3, att3);
-			}
-			if(this.att4 > 0){
-				attMap.put(4, att4);
-			}
-			if(this.att5 > 0){
-				attMap.put(5, att5);
-			}
-			if(this.att6 > 0){
-				attMap.put(6, att6);
-			}
-			if(this.att7 > 0){
-				attMap.put(7, att7);
-			}
-			if(this.att8 > 0){
-				attMap.put(8, att8);
-			}
+	public void setAttMap(){
+		attMap = new HashMap<>();
+		if(this.att1 > 0){
+			attMap.put(1, att1);
 		}
+		if(this.att2 > 0){
+			attMap.put(2, att2);
+		}
+		if(this.att3 > 0){
+			attMap.put(3, att3);
+		}
+		if(this.att4 > 0){
+			attMap.put(4, att4);
+		}
+		if(this.att5 > 0){
+			attMap.put(5, att5);
+		}
+		if(this.att6 > 0){
+			attMap.put(6, att6);
+		}
+		if(this.att7 > 0){
+			attMap.put(7, att7);
+		}
+		if(this.att8 > 0){
+			attMap.put(8, att8);
+		}
+	}
+	
+	public Map<Integer, Integer> getAttMap(){
 		return this.attMap;
 	}
 

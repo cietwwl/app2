@@ -16,7 +16,6 @@ public class MonsterInfoDaoImpl extends BaseDao implements MonsterInfoDao {
 
 	@Override
 	public Map<Integer, MonsterInfo> getAll() {
-		// TODO Auto-generated method stub
 		String sql = "SELECT * FROM tb_z_monster_info";
 		Map<Integer, MonsterInfo> result = read(sql, null);
 		return result;
@@ -44,14 +43,13 @@ public class MonsterInfoDaoImpl extends BaseDao implements MonsterInfoDao {
 					info.setSkin(rs.getInt("skin"));
 					info.setLevel(rs.getInt("level"));
 					info.setMonsterType(rs.getInt("monsterType"));
-
+					info.setDynamic(rs.getInt("dynamic"));
 					info.setAlertRange(rs.getInt("alertRange"));
 					info.setSeekEnemyRange(rs.getInt("seekEnemyRange"));
 					info.setAttackRange(rs.getInt("attackRange"));
 					info.setFollowUpDistance(rs.getInt("followUpDistance"));
 					info.setMoveSpeed(rs.getInt("moveSpeed"));
 					info.setAttackSpeed(rs.getInt("attackSpeed"));
-
 					info.setSoulHpValue(rs.getLong("soulHpValue"));
 					info.setHp(rs.getLong("hp"));
 					info.setHurtValue(rs.getInt("hurtValue"));

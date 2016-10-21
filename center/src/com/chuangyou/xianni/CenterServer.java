@@ -21,6 +21,7 @@ import com.chuangyou.xianni.drop.templete.DropTempleteMgr;
 import com.chuangyou.xianni.entity_id.EntityIdBuilder;
 import com.chuangyou.xianni.equip.template.EquipTemplateMgr;
 import com.chuangyou.xianni.fashion.template.FashionTemplateMgr;
+import com.chuangyou.xianni.fieldBoss.template.FieldBossTemplateMgr;
 import com.chuangyou.xianni.guild.manager.GuildManager;
 import com.chuangyou.xianni.guild.template.GuildTemplateMgr;
 import com.chuangyou.xianni.inverseBead.template.InverseBeadTemMgr;
@@ -215,6 +216,11 @@ public class CenterServer extends BaseServer {
 			return false;
 		}
 			
+		if(!initComponent(FieldBossTemplateMgr.init(), "野外BOSS模板数据")){
+			return false;
+		}
+		
+		
 		//管理器可能会用到模板数据，所以放在所有模板数据之后初始化
 		if(!initComponent(RankServerManager.getInstance().init(),"初始化排行榜数据")){
 			return false;

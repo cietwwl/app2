@@ -72,21 +72,22 @@ public class MountEquipCfg {
 	public void setAtt3(int att3) {
 		this.att3 = att3;
 	}
-	public List<Integer> getAttList() {
-		if (this.attList == null) {
-
-			List<Integer> list = new ArrayList<Integer>();
-			if (att1 > 0) {
-				list.add(att1);
-			}
-			if (att2 > 0) {
-				list.add(att2);
-			}
-			if (att3 > 0) {
-				list.add(att3);
-			}
-			this.attList = list;
+	
+	public void setAttList(){
+		List<Integer> list = new ArrayList<Integer>();
+		if (att1 > 0) {
+			list.add(att1);
 		}
+		if (att2 > 0) {
+			list.add(att2);
+		}
+		if (att3 > 0) {
+			list.add(att3);
+		}
+		this.attList = list;
+	}
+	
+	public List<Integer> getAttList() {
 		return this.attList;
 	}
 	@Override

@@ -1,11 +1,8 @@
 package com.chuangyou.xianni.warfield.cmd;
 
-import java.util.Date;
 import java.util.Set;
-
 import com.chuangyou.common.protobuf.pb.PlayerAttSnapProto.PlayerAttSnapMsg;
 import com.chuangyou.common.util.Log;
-import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.drop.helper.NotifyDropHalper;
@@ -41,7 +38,7 @@ public class RelieveProtectionCmd extends AbstractCommand {
 		// 推送附近场景对象
 		Set<Long> nears = army.getPlayer().getNears(new AllSelectorHelper(army.getPlayer()));
 
-		System.err.println("RelieveProtectionCmd nears = " + nears.size());
+		Log.error("RelieveProtectionCmd nears = " + nears.size());
 		for (Long id : nears) {
 			// 自己不发送自己
 			if (id == army.getPlayerId()) {

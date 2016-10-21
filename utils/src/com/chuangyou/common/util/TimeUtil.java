@@ -159,23 +159,23 @@ public class TimeUtil {
 	public static java.util.Date addSystemCurTime(int type, int value) {
 		Calendar cal = getCalendar();
 		switch (type) {
-		case Calendar.DATE:// 增加天数
-			cal.add(Calendar.DATE, value);
-			break;
-		case Calendar.HOUR:// 增加小时
-			cal.add(Calendar.HOUR, value);
-			break;
-		case Calendar.MINUTE:// 增加分钟
-			cal.add(Calendar.MINUTE, value);
-			break;
-		case Calendar.SECOND:// 增加秒
-			cal.add(Calendar.SECOND, value);
-			break;
-		case Calendar.MILLISECOND:// 增加毫秒
-			cal.add(Calendar.MILLISECOND, value);
-			break;
-		default:
-			break;
+			case Calendar.DATE:// 增加天数
+				cal.add(Calendar.DATE, value);
+				break;
+			case Calendar.HOUR:// 增加小时
+				cal.add(Calendar.HOUR, value);
+				break;
+			case Calendar.MINUTE:// 增加分钟
+				cal.add(Calendar.MINUTE, value);
+				break;
+			case Calendar.SECOND:// 增加秒
+				cal.add(Calendar.SECOND, value);
+				break;
+			case Calendar.MILLISECOND:// 增加毫秒
+				cal.add(Calendar.MILLISECOND, value);
+				break;
+			default:
+				break;
 		}
 		return new java.util.Date(cal.getTimeInMillis());
 	}
@@ -206,8 +206,10 @@ public class TimeUtil {
 	/**
 	 * 判断是否在时间段
 	 * 
-	 * @param startTime 格式 HH:mm
-	 * @param endTime 格式 HH:mm
+	 * @param startTime
+	 *            格式 HH:mm
+	 * @param endTime
+	 *            格式 HH:mm
 	 * @return
 	 */
 	public static boolean checkPeriod(String startTime, String endTime) {
@@ -360,8 +362,10 @@ public class TimeUtil {
 	/**
 	 * 返回两个日期相差天数
 	 * 
-	 * @param startDate 开始日期
-	 * @param endDate 结束日期
+	 * @param startDate
+	 *            开始日期
+	 * @param endDate
+	 *            结束日期
 	 * @return
 	 */
 	public static int dateCompare(java.util.Calendar startDate, java.util.Calendar endDate) {
@@ -440,7 +444,8 @@ public class TimeUtil {
 	/**
 	 * 比较日期是否是同一个月份
 	 * 
-	 * @param date 被比较的日期
+	 * @param date
+	 *            被比较的日期
 	 * @return
 	 */
 	public static boolean monthCompare(Date date) {// 一年之内是否是同一个月
@@ -476,8 +481,10 @@ public class TimeUtil {
 	/**
 	 * 重置防沉迷刷新时间
 	 * 
-	 * @param hour 刷新时间点
-	 * @param refreshTime 刷新时间引用
+	 * @param hour
+	 *            刷新时间点
+	 * @param refreshTime
+	 *            刷新时间引用
 	 */
 	public static void setAASRefreshTime(int hour, Calendar refreshTime) {
 		refreshTime.setTime(getSysteCurTime());
@@ -508,8 +515,8 @@ public class TimeUtil {
 	}
 
 	public static String getSignStr() {
-		String[] strs = new String[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1",
-				"2", "3", "4", "5", "6", "7", "8", "9" };
+		String[] strs = new String[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5",
+				"6", "7", "8", "9" };
 
 		ThreadSafeRandom random = new ThreadSafeRandom();
 		String signStr = "";
@@ -541,7 +548,7 @@ public class TimeUtil {
 		calendar.setTime(date);
 		return calendar;
 	}
-	
+
 	/**
 	 * 获取指定的时间
 	 * 
@@ -554,12 +561,12 @@ public class TimeUtil {
 		return calendar;
 	}
 
-	//这个方法好像有问题，先注释掉
-//	public static Timestamp getCalendarToDate(java.util.Calendar calendar) {
-//		if (calendar != null)
-//			return new Timestamp(getCalendar().getTimeInMillis());
-//		return null;
-//	}
+	// 这个方法好像有问题，先注释掉
+	// public static Timestamp getCalendarToDate(java.util.Calendar calendar) {
+	// if (calendar != null)
+	// return new Timestamp(getCalendar().getTimeInMillis());
+	// return null;
+	// }
 
 	public static Date addDate(Date date, long value) {
 		long time = date.getTime() + value;
@@ -696,23 +703,23 @@ public class TimeUtil {
 	public static Date addTime(Date current, int type, int value) {
 		Calendar cal = getCalendar(current);
 		switch (type) {
-		case Calendar.DATE:// 增加天数
-			cal.add(Calendar.DATE, value);
-			break;
-		case Calendar.HOUR:// 增加小时
-			cal.add(Calendar.HOUR, value);
-			break;
-		case Calendar.MINUTE:// 增加分钟
-			cal.add(Calendar.MINUTE, value);
-			break;
-		case Calendar.SECOND:// 增加秒
-			cal.add(Calendar.SECOND, value);
-			break;
-		case Calendar.MILLISECOND:// 增加毫秒
-			cal.add(Calendar.MILLISECOND, value);
-			break;
-		default:
-			break;
+			case Calendar.DATE:// 增加天数
+				cal.add(Calendar.DATE, value);
+				break;
+			case Calendar.HOUR:// 增加小时
+				cal.add(Calendar.HOUR, value);
+				break;
+			case Calendar.MINUTE:// 增加分钟
+				cal.add(Calendar.MINUTE, value);
+				break;
+			case Calendar.SECOND:// 增加秒
+				cal.add(Calendar.SECOND, value);
+				break;
+			case Calendar.MILLISECOND:// 增加毫秒
+				cal.add(Calendar.MILLISECOND, value);
+				break;
+			default:
+				break;
 		}
 		return new java.util.Date(cal.getTimeInMillis());
 	}
@@ -812,60 +819,68 @@ public class TimeUtil {
 		currentDate.set(Calendar.SECOND, 0);
 		return currentDate;
 	}
-	
+
 	/**
 	 * 判断指定时间是否在时间范围内
-	 * @param curTime 指定时间
-	 * @param timeType 时间限制类型 0无限制 1 每日  2固定时间
-	 * @param startTime 开始时间，格式如下：
-	 * 时间限制timeType为1时格式：HHmmss;
-	 * 时间限制timeType为2时格式：yyyyMMddHHmmss
-	 * @param endTime 结束时间，格式同开始时间
+	 * 
+	 * @param curTime
+	 *            指定时间
+	 * @param timeType
+	 *            时间限制类型 0无限制 1 每日 2固定时间
+	 * @param startTime
+	 *            开始时间，格式如下： 时间限制timeType为1时格式：HHmmss;
+	 *            时间限制timeType为2时格式：yyyyMMddHHmmss
+	 * @param endTime
+	 *            结束时间，格式同开始时间
 	 * @return
 	 */
-	public static boolean isInTime(long curTime, int timeType, String startTime, String endTime){
+	public static boolean isInTime(long curTime, int timeType, String startTime, String endTime) {
 		return isInTime(getCalendar(curTime), timeType, startTime, endTime);
 	}
-	
+
 	/**
 	 * 判断指定时间是否在时间范围内
-	 * @param curTime 指定时间
-	 * @param timeType 时间限制类型 0无限制 1 每日  2固定时间
-	 * @param startTime 开始时间，格式如下：
-	 * 时间限制timeType为1时格式：HHmmss;
-	 * 时间限制timeType为2时格式：yyyyMMddHHmmss
-	 * @param endTime 结束时间，格式同开始时间
+	 * 
+	 * @param curTime
+	 *            指定时间
+	 * @param timeType
+	 *            时间限制类型 0无限制 1 每日 2固定时间
+	 * @param startTime
+	 *            开始时间，格式如下： 时间限制timeType为1时格式：HHmmss;
+	 *            时间限制timeType为2时格式：yyyyMMddHHmmss
+	 * @param endTime
+	 *            结束时间，格式同开始时间
 	 * @return
 	 */
-	public static boolean isInTime(Calendar curTime, int timeType, String startTime, String endTime){
-		if(timeType == 0){
+	public static boolean isInTime(Calendar curTime, int timeType, String startTime, String endTime) {
+		if (timeType == 0) {
 			return true;
 		}
 		DateFormat dfDate = new SimpleDateFormat("yyyyMMddHHmmss");
-		
+
 		String startStr;
 		String endStr;
-		
-		switch(timeType){
+
+		switch (timeType) {
 			case 1:
-				while(startTime.length() < 6){
+				while (startTime.length() < 6) {
 					startTime = "0" + startTime;
 				}
-				while(endTime.length() < 6){
+				while (endTime.length() < 6) {
 					endTime = "0" + endTime;
 				}
-				
+
 				DateFormat yyyyMMddDf = new SimpleDateFormat("yyyyMMdd");
 				String yyyyMMddStr = yyyyMMddDf.format(curTime.getTime());
-				
+
 				startStr = yyyyMMddStr + startTime;
 				endStr = yyyyMMddStr + endTime;
 				break;
 			case 2:
-				while(startTime.length() < 14){
+				while (startTime.length() < 14) {
 					startTime = "0" + startTime;
 				}
-				while(endTime.length() < 14){
+				while (endTime.length() < 14) {
 					endTime = "0" + endTime;
 				}
 				startStr = startTime;
@@ -884,16 +899,15 @@ public class TimeUtil {
 			e.printStackTrace();
 			return false;
 		}
-		if(curTime.getTimeInMillis() >= startDate.getTime() && curTime.getTimeInMillis() <= endDate.getTime()){
+		if (curTime.getTimeInMillis() >= startDate.getTime() && curTime.getTimeInMillis() <= endDate.getTime()) {
 			return true;
 		}
 		return false;
 	}
 
 	/**
-	 * 字符串转DATE
-	 * 1:hhmmss
-	 * 3:yyyyMMddHHmmss
+	 * 字符串转DATE 1:hhmmss 3:yyyyMMddHHmmss
+	 * 
 	 * @param dateStr
 	 * @return
 	 */
@@ -906,9 +920,9 @@ public class TimeUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		if (timeType == 1) {
 			dateStr = getNowYYYYMMDD() + dateStr;
-		}else if(timeType == 3){
-			 format = "yyyyMMddHHmmss";
-			 sdf =  new SimpleDateFormat(format);
+		} else if (timeType == 3) {
+			format = "yyyyMMddHHmmss";
+			sdf = new SimpleDateFormat(format);
 		}
 		try {
 			date = sdf.parse(dateStr);
@@ -941,7 +955,6 @@ public class TimeUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return date;
 	}
 
@@ -953,5 +966,22 @@ public class TimeUtil {
 	public static final String getNowYYYYMMDD() {
 		DateFormat ymdFormat = new SimpleDateFormat("yyyyMMdd");
 		return ymdFormat.format(getCalendar().getTime());
+	}
+
+	/**
+	 * 获取时间
+	 * 
+	 * @param timeStr
+	 *            配置格式：HHmmss
+	 * @return
+	 * @throws ParseException
+	 */
+	public static Date getDate(String timeStr) throws ParseException {
+		Date now = new Date();
+		SimpleDateFormat cf = new SimpleDateFormat("yyyy-MM-dd");
+		String str = cf.format(now);
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-ddHHmmss");
+		Date startDate = df.parse(str + timeStr);
+		return startDate;
 	}
 }

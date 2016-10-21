@@ -1,7 +1,7 @@
 package com.chuangyou.xianni.word.selectors;
 
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.word.Selector;
 
 public class OnlineSelector extends Selector {

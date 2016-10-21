@@ -157,25 +157,26 @@ public class EquipResolveCfg {
 		this.num5 = num5;
 	}
 	
-	public Map<Integer, Integer> getItems(){
-		if(this.items == null){
-			this.items = new HashMap<>();
-			if(this.item1 > 0){
-				this.items.put(item1, num1);
-			}
-			if(this.item2 > 0){
-				this.items.put(item2, num2);
-			}
-			if(this.item3 > 0){
-				this.items.put(item3, num3);
-			}
-			if(this.item4 > 0){
-				this.items.put(item4, num4);
-			}
-			if(this.item5 > 0){
-				this.items.put(item5, num5);
-			}
+	public void setItems(){
+		this.items = new HashMap<>();
+		if(this.item1 > 0){
+			this.items.put(item1, num1);
 		}
+		if(this.item2 > 0){
+			this.items.put(item2, num2);
+		}
+		if(this.item3 > 0){
+			this.items.put(item3, num3);
+		}
+		if(this.item4 > 0){
+			this.items.put(item4, num4);
+		}
+		if(this.item5 > 0){
+			this.items.put(item5, num5);
+		}
+	}
+	
+	public Map<Integer, Integer> getItems(){
 		return this.items;
 	}
 

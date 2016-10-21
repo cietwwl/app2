@@ -1,0 +1,8 @@
+option java_package = "com.chuangyou.common.protobuf.pb.boss";
+option java_outer_classname = "WorldBossTreasureProto";
+
+//世界BOSS夺宝活动，玩家奖励信息
+message WorldBossTreasureMsg{
+	optional int64 playerId = 1; // 玩家ID
+	optional int32 treasureCount = 2; //夺到宝条数量
+}

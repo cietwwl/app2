@@ -1,4 +1,4 @@
-//protocol=0;
+//protocol=20748;
 option java_package = "com.chuangyou.common.protobuf.pb.boss";
 option java_outer_classname = "BossListReqProto";
 

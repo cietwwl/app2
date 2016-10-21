@@ -17,13 +17,6 @@ import com.chuangyou.xianni.warfield.spawn.SpwanNode;
 import com.chuangyou.xianni.world.ArmyProxy;
 
 public class TouchPointSpwanNode extends SpwanNode {
-	// private int spawnId = 0;
-	//
-	// private int pointId = 0;
-	//
-	// private int mapKey = 0;
-	//
-	// private int sstate = 0;
 
 	public TouchPointSpwanNode(SpawnInfo spwanInfo, Field field) {
 		super(spwanInfo, field);
@@ -68,61 +61,4 @@ public class TouchPointSpwanNode extends SpwanNode {
 			Log.error("-------------npcInfo.getScriptId()-------------" + npcInfo.getScriptId());
 		}
 	}
-
-	//
-	// public void update() {
-	// List<Field> fields = FieldMgr.getIns().getFieldsByMapKey(getMapKey());
-	//
-	// for (Field field : fields) {
-	// List<Long> players = field.getLivings(new PlayerSelectorHelper());
-	// for (Long id : players) {
-	// ArmyProxy army = WorldMgr.getArmy(id);
-	// if (army == null)
-	// continue;
-	//
-	// TouchPointUpdateMsg.Builder msg = TouchPointUpdateMsg.newBuilder();
-	// msg.setMapId(getMapKey());
-	// msg.setPointId(getPointId());
-	// msg.setState(getSstate());
-	//
-	// PBMessage p = MessageUtil.buildMessage(Protocol.U_TOUCH_POINT_UPDATE,
-	// msg);
-	// army.sendPbMessage(p);
-	// System.out.println("告诉 id = " + army.getPlayerId() + " ::: 地图踩点状态更新 ");
-	// }
-	// }
-	// }
-	//
-	// public int getSpawnId() {
-	// return spawnId;
-	// }
-	//
-	// public void setSpawnId(int spawnId) {
-	// this.spawnId = spawnId;
-	// }
-	//
-	// public int getPointId() {
-	// return pointId;
-	// }
-	//
-	// public void setPointId(int pointId) {
-	// this.pointId = pointId;
-	// }
-	//
-	// public int getMapKey() {
-	// return mapKey;
-	// }
-	//
-	// public void setMapKey(int mapKey) {
-	// this.mapKey = mapKey;
-	// }
-
-	// public int getSstate() {
-	// return sstate;
-	// }
-	//
-	// public void setSstate(int sstate) {
-	// this.sstate = sstate;
-	// this.update();
-	// }
 }

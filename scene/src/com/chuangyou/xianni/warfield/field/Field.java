@@ -147,8 +147,9 @@ public class Field extends AbstractActionQueue {
 
 	public void leaveField(Living l, boolean notifyClient) {
 		// System.out.println("leaveField = " + l.getId());
-		grid.removeRole(l);
-		livings.remove(l.getId());
+		if(livings.remove(l.getId()) != null){
+			grid.removeRole(l);
+		}
 		// 通知附近玩家，自己离开
 		if (notifyClient) {
 			Set<Long> nears = l.getNears(new PlayerSelectorHelper(l));
@@ -168,7 +169,7 @@ public class Field extends AbstractActionQueue {
 		this.mapKey = mapKey;
 		fieldInfo = FieldTemplateMgr.fieldTemps.get(mapKey);
 		if (FieldMgr.getIns().GetBound(fieldInfo.getResName().toLowerCase()) == null) {
-			System.err.println("------地图资源找不到------地图资源找不到-----" + fieldInfo.getResName());
+			Log.error("------地图资源找不到------地图资源找不到-----" + fieldInfo.getResName());
 		}
 		grid = new Grid(FieldMgr.getIns().GetBound(fieldInfo.getResName().toLowerCase()));
 		seeker = FieldMgr.getIns().GetSeekerTemp(fieldInfo.getResName()).clone();

@@ -59,7 +59,7 @@ public class PlayerPropertyUpdateCmd extends AbstractCommand {
 
 				// 通知附近玩家
 				Set<Long> nears = pArmy.getPlayer().getNears(new PlayerSelectorHelper(pArmy.getPlayer()));
-				NotifyNearHelper.notifyAttrChange(pArmy, nears, req);
+				NotifyNearHelper.notifyAttrChange(nears, req);
 			} else {
 				notifyMsg.clear();
 				notifyMsg = null;

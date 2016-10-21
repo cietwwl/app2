@@ -1,13 +1,10 @@
 package com.chuangyou.xianni.campaign.action;
 
-import java.util.List;
-
-import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CreateCampaignMsgProto.CreateCampaignMsg;
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.exec.ActionQueue;
 import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;

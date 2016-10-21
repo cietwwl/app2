@@ -2,8 +2,6 @@ package com.chuangyou.xianni.warfield.spawn;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.StringUtils;
 import com.chuangyou.common.util.Vector3;
@@ -28,20 +26,18 @@ import com.chuangyou.xianni.role.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.warfield.field.Field;
 
 public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
-	protected int				toalCount;	// 刷怪总数
-	protected int				curCount;	// 当前数量
-	protected Map<Long, Living>	children;	// 子孙们
+	protected int	toalCount;	// 刷怪总数
+	protected int	curCount;	// 当前数量
 
 	public MonsterSpawnNode(SpawnInfo info, Field field) {
 		super(info, field);
 		this.nodeType = SpwanInfoType.MONSTER;
-		this.children = new ConcurrentHashMap<>();
+
 	}
 
 	public void reset() {
 		this.toalCount = 0;
 		this.curCount = 0;
-		this.children.clear();
 	}
 
 	public void stateTransition(NodeState state) {
@@ -50,15 +46,17 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 
 	@Override
 	public void prepare() {
-		System.out.println(".........准备状态...........");
 	}
 
 	@Override
 	public void start() {
 		super.start();
-		// System.err.println("spwanInfo :" + spwanInfo.getTagId());
-
-		while (curCount < spwanInfo.getMaxCount() && (toalCount < spwanInfo.getToalCount() || spwanInfo.getToalCount() <= 0)) {
+		int count = spwanInfo.getMaxCount() - curCount;
+		if (spwanInfo.getToalCount() > 0) {
+			count = Math.max(spwanInfo.getToalCount() - toalCount, count);
+		}
+		count = count >= 50 ? 50 : count;
+		for (int i = 0; i < count; i++) {
 			curCount++;
 			createChildren();
 		}
@@ -115,7 +113,8 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 		} else {
 			Log.error(spwanInfo.getId() + "----" + spwanInfo.getEntityId() + " 在MonsterInfo里面未找到配置");
 		}
-		System.out.println("monster:" + monster + "  skinId :" + monster.getSkin());
+		// System.out.println("monster:" + monster + " skinId :" +
+		// monster.getSkin() + " spwanInfo :" + spwanInfo.getId());
 
 		// 添加副本挑战任务buff
 		Campaign campaign = CampaignMgr.getCampagin(campaignId);
@@ -211,7 +210,7 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 	}
 
 	// 获取当前所有怪物
-	public List<Living> getAlive() {
+	public List<Living> getAlives() {
 		List<Living> aLive = new ArrayList<>();
 		aLive.addAll(children.values());
 		return aLive;

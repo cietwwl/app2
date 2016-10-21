@@ -177,12 +177,12 @@ public class ReqTruckCompleteCmd extends AbstractCommand {
 		Map<Integer, Reward> rewardMaps = new HashMap<Integer, ReqTruckCompleteCmd.Reward>();
 		for(int i = 0; i<rewardTypes.size(); i++)
 		{
-			List<Reward> rewards = getReward(rewardTypes.get(i), state);
+			List<Reward> rewards = getReward(rewardTypes.get(i), leaveMat, state);
 			for(int j = 0; j<rewards.size(); j++)
 			{
 				if(!rewardMaps.containsKey(rewards.get(j).itemtype))
 				{
-					rewardMaps.put(rewards.get(j).itemtype, new Reward(rewards.get(j).itemtype, rewards.get(j).count, state));
+					rewardMaps.put(rewards.get(j).itemtype, new Reward(rewards.get(j).itemtype, rewards.get(j).count, leaveMat, state));
 				}
 				else
 				{
@@ -193,14 +193,14 @@ public class ReqTruckCompleteCmd extends AbstractCommand {
 		//经验
 		if(trucktype == TruckInventory.TYPE_P)
 		{
-			Reward truckExp = new Reward(SystemConfigTemplateMgr.getIntValue("EscortSupplies.Exp.EscortCar.Individual"), addExp, state);
+			Reward truckExp = new Reward(SystemConfigTemplateMgr.getIntValue("EscortSupplies.Exp.EscortCar.Individual"), addExp, leaveMat, state);
 			builder.addRewards(truckExp.createReward(player));
-			Reward truckerExp = new Reward(SystemConfigTemplateMgr.getIntValue("EscortSupplies.Exp.BiaoShi"), addExp, state);
+			Reward truckerExp = new Reward(SystemConfigTemplateMgr.getIntValue("EscortSupplies.Exp.BiaoShi"), addExp, leaveMat, state);
 			builder.addRewards(truckerExp.createReward(player));
 		}
 		else if(trucktype == TruckInventory.TYPE_G)
 		{
-			Reward guildTruckExp = new Reward(SystemConfigTemplateMgr.getIntValue("EscortSupplies.Exp.EscortCar.Faction"), addExp, state);
+			Reward guildTruckExp = new Reward(SystemConfigTemplateMgr.getIntValue("EscortSupplies.Exp.EscortCar.Faction"), addExp, leaveMat, state);
 			builder.addRewards(guildTruckExp.createReward(player));
 		}
 		for(Reward reward : rewardMaps.values())
@@ -224,12 +224,12 @@ public class ReqTruckCompleteCmd extends AbstractCommand {
 		Map<Integer, Reward> rewardMaps = new HashMap<Integer, ReqTruckCompleteCmd.Reward>();
 		for(int i = 0; i<rewardTypes.size(); i++)
 		{
-			List<Reward> rewards = getReward(rewardTypes.get(i), state);
+			List<Reward> rewards = getReward(rewardTypes.get(i), leaveMat, state);
 			for(int j = 0; j<rewards.size(); j++)
 			{
 				if(!rewardMaps.containsKey(rewards.get(j).itemtype))
 				{
-					rewardMaps.put(rewards.get(j).itemtype, new Reward(rewards.get(j).itemtype, rewards.get(j).count, state));
+					rewardMaps.put(rewards.get(j).itemtype, new Reward(rewards.get(j).itemtype, rewards.get(j).count, leaveMat, state));
 				}
 				else
 				{
@@ -249,20 +249,20 @@ public class ReqTruckCompleteCmd extends AbstractCommand {
 		}
 	}
 	
-	private List<Reward> getReward(int rewardType, int state)
+	private List<Reward> getReward(int rewardType, int leaveMat, int state)
 	{
 		List<Reward> rewards = new ArrayList<Reward>();
 		RewardTemplate rewardTemp = RewardManager.rewardTemps.get(rewardType).get(0);
 		if(rewardTemp.getItemTempId1() != 0)
-			rewards.add(new Reward(rewardTemp.getItemTempId1(), rewardTemp.getCount1(), state));
+			rewards.add(new Reward(rewardTemp.getItemTempId1(), rewardTemp.getCount1(), leaveMat, state));
 		if(rewardTemp.getItemTempId2() != 0)
-			rewards.add(new Reward(rewardTemp.getItemTempId2(), rewardTemp.getCount2(), state));
+			rewards.add(new Reward(rewardTemp.getItemTempId2(), rewardTemp.getCount2(), leaveMat, state));
 		if(rewardTemp.getItemTempId3() != 0)
-			rewards.add(new Reward(rewardTemp.getItemTempId3(), rewardTemp.getCount3(), state));
+			rewards.add(new Reward(rewardTemp.getItemTempId3(), rewardTemp.getCount3(), leaveMat, state));
 		if(rewardTemp.getItemTempId4() != 0)
-			rewards.add(new Reward(rewardTemp.getItemTempId4(), rewardTemp.getCount4(), state));
+			rewards.add(new Reward(rewardTemp.getItemTempId4(), rewardTemp.getCount4(), leaveMat, state));
 		if(rewardTemp.getItemTempId5() != 0)
-			rewards.add(new Reward(rewardTemp.getItemTempId5(), rewardTemp.getCount5(), state));
+			rewards.add(new Reward(rewardTemp.getItemTempId5(), rewardTemp.getCount5(), leaveMat, state));
 		return rewards;
 	}
 	
@@ -276,13 +276,16 @@ public class ReqTruckCompleteCmd extends AbstractCommand {
 		public int itemtype = 0;
 		/** 数量 */
 		public int count = 0;
+		/** 剩余物资 */
+		public int leaveMat = 0;
 		/** 结算状态 */
 		public int state = 0;
 		
-		public Reward(int itemtype, int count, int state)
+		public Reward(int itemtype, int count, int leaveMat, int state)
 		{
 			this.itemtype = itemtype;
 			this.count = count;
+			this.leaveMat = leaveMat;
 			this.state = state;
 		}
 		
@@ -302,11 +305,11 @@ public class ReqTruckCompleteCmd extends AbstractCommand {
 			}
 			else
 			{
-				player.getBagInventory().addItem(itemtype, count, ItemAddType.TRUCK_REWARD, true);
+				player.getBagInventory().addItem(itemtype, count * leaveMat, ItemAddType.TRUCK_REWARD, true);
 			}
 			TruckReward.Builder builder = TruckReward.newBuilder();
 			builder.setItemtype(itemtype);
-			builder.setCount(count);
+			builder.setCount(count * leaveMat);
 			return builder;
 		}
 	}

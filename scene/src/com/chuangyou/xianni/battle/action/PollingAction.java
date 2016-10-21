@@ -3,7 +3,6 @@ package com.chuangyou.xianni.battle.action;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
 import com.chuangyou.xianni.battle.damage.Damage;
@@ -14,14 +13,13 @@ import com.chuangyou.xianni.proto.BroadcastUtil;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.objects.Living;
-import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 
 public abstract class PollingAction extends DelayAction {
 	Living					living;
 	int						delay;
 
-	public static final int	DELAY	= 400;
+	public static final int	DELAY	= 1000;
 
 	public PollingAction(Living queue, int delay) {
 		super(queue, delay);

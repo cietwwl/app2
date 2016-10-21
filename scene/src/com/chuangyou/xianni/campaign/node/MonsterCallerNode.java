@@ -16,8 +16,7 @@ public class MonsterCallerNode extends CampaignNodeDecorator {
 			List<SpwanNode> nodes = campaign.randomTeamNode(node.getSpawnInfo().getTagId());
 			if (nodes != null && nodes.size() > 0) {
 				for (SpwanNode n : nodes) {
-					n.reset();
-					n.stateTransition(new WorkingState(n));
+					n.revive();
 				}
 			}
 			node.stateTransition(new OverState(node));

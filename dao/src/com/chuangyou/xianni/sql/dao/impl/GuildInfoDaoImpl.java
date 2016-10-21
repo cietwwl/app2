@@ -101,8 +101,8 @@ public class GuildInfoDaoImpl extends BaseDao implements GuildInfoDao {
 		boolean result = false;
 		info.beginAdd();
 		String sql = "insert tb_u_guild(guildId,type,name,createTime,level,buildExp,totalBuildExp,supply,mainBuildLevel,skillShopLevel,"
-				+ "shopLevel,warehouseLevel,notice,leaderId,joinType,levelLimit,fightLimit,isDelete,supplyCheckTime) "
-				+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "shopLevel,warehouseLevel,notice,leaderId,joinType,levelLimit,fightLimit,isDelete,supplyCheckTime,fight) "
+				+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		Map<Integer, DbParameter> params = new HashMap<>();
 		params.put(1, new DbParameter(Types.INTEGER, info.getGuildId()));
 		params.put(2, new DbParameter(Types.INTEGER, info.getType()));
@@ -123,6 +123,7 @@ public class GuildInfoDaoImpl extends BaseDao implements GuildInfoDao {
 		params.put(17, new DbParameter(Types.INTEGER, info.getFightLimit()));
 		params.put(18, new DbParameter(Types.TINYINT, isDelete));
 		params.put(19, new DbParameter(Types.BIGINT, info.getSupplyCheckTime()));
+		params.put(20, new DbParameter(Types.BIGINT, info.getFight()));
 		result = execNoneQuery(sql, params) > -1? true: false;
 		info.commitAdd(result);
 		return result;
@@ -135,7 +136,7 @@ public class GuildInfoDaoImpl extends BaseDao implements GuildInfoDao {
 		info.beginUpdate();
 		
 		String sql = "update tb_u_guild set type = ?,name = ?,createTime = ?,level = ?,buildExp = ?, totalBuildExp = ?,supply = ?,mainBuildLevel = ?,skillShopLevel = ?,"
-				+ "shopLevel = ?,warehouseLevel = ?,notice = ?,leaderId = ?,joinType = ?,levelLimit = ?,fightLimit = ?,supplyCheckTime = ? where guildId = ?";
+				+ "shopLevel = ?,warehouseLevel = ?,notice = ?,leaderId = ?,joinType = ?,levelLimit = ?,fightLimit = ?,supplyCheckTime = ?,fight = ? where guildId = ?";
 		Map<Integer, DbParameter> params = new HashMap<>();
 		params.put(1, new DbParameter(Types.INTEGER, info.getType()));
 		params.put(2, new DbParameter(Types.VARCHAR, info.getName()));
@@ -154,7 +155,8 @@ public class GuildInfoDaoImpl extends BaseDao implements GuildInfoDao {
 		params.put(15, new DbParameter(Types.INTEGER, info.getLevelLimit()));
 		params.put(16, new DbParameter(Types.INTEGER, info.getFightLimit()));
 		params.put(17, new DbParameter(Types.BIGINT, info.getSupplyCheckTime()));
-		params.put(18, new DbParameter(Types.INTEGER, info.getGuildId()));
+		params.put(18, new DbParameter(Types.BIGINT, info.getFight()));
+		params.put(19, new DbParameter(Types.INTEGER, info.getGuildId()));
 		result = execNoneQuery(sql, params) > -1? true: false;
 		
 		info.commitUpdate(result);
@@ -191,6 +193,7 @@ public class GuildInfoDaoImpl extends BaseDao implements GuildInfoDao {
 					info.setLevelLimit(rs.getInt("levelLimit"));
 					info.setFightLimit(rs.getInt("fightLimit"));
 					info.setSupplyCheckTime(rs.getLong("supplyCheckTime"));
+					info.setFight(rs.getLong("fight"));
 					info.setOp(Option.None);
 					infos.add(info);
 				}

@@ -55,7 +55,7 @@ public class TerminatorNode extends CampaignNodeDecorator {
 			}
 			MonsterSpawnNode sn = (MonsterSpawnNode) n;
 			int leftMonster = sn.getLeftMonster();
-			monsters.addAll(sn.getAlive());
+			monsters.addAll(sn.getAlives());
 			if (leftMonster <= 0) {
 				continue;
 			}
@@ -65,7 +65,6 @@ public class TerminatorNode extends CampaignNodeDecorator {
 				leftMonster += dropMonsters.get(monsterId);
 			}
 			dropMonsters.put(monsterId, leftMonster);
-
 		}
 		// 真实掉落掉落
 		for (Entry<Integer, Integer> entry : dropMonsters.entrySet()) {

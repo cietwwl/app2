@@ -31,7 +31,7 @@ public class TeamCampaign extends Campaign {
 		if (army.getPlayerId() == creater) {
 			return true;
 		}
-		Team team = TeamMgr.getTeam(creater);
+		Team team = TeamMgr.getTeamByPlayerId(creater);
 		if (team == null) {
 			return false;
 		}
@@ -78,7 +78,7 @@ public class TeamCampaign extends Campaign {
 	}
 
 	public List<ArmyProxy> getAllArmys() {
-		Team team = TeamMgr.getTeam(creater);
+		Team team = TeamMgr.getTeamByPlayerId(creater);
 		if (team != null) {
 			List<ArmyProxy> all = new ArrayList<>();
 			List<Long> members = team.getMembers();
@@ -94,4 +94,20 @@ public class TeamCampaign extends Campaign {
 		}
 	}
 
+	public int getJoinAvaterCount() {
+		Team team = TeamMgr.getTeamByTeamId(teamId);
+		if (team != null && team.getMembers().size() < 4) {
+			return 4 - team.getMembers().size();
+		}
+		return 0;
+	}
+
+	/** 是否可以创建分身进入 */
+	public boolean isAvatarBuilder(long playerId) {
+		Team team = TeamMgr.getTeamByTeamId(teamId);
+		if (team == null) {
+			return false;
+		}
+		return playerId == team.getLeader();
+	}
 }

@@ -17,6 +17,7 @@ import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.GuildConstant;
 import com.chuangyou.xianni.constant.GuildConstant.GuildJob;
 import com.chuangyou.xianni.constant.GuildConstant.GuildType;
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.guild.GuildApplyInfo;
 import com.chuangyou.xianni.entity.guild.GuildInfo;
@@ -33,7 +34,6 @@ import com.chuangyou.xianni.guild.GuildOperateAction;
 import com.chuangyou.xianni.guild.template.GuildTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.player.PlayerInfoSendCmd;
-import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.robot.RobotManager;
 import com.chuangyou.xianni.sql.dao.DBManager;
 import com.chuangyou.xianni.word.WorldMgr;
@@ -68,8 +68,6 @@ public class Guild {
 	 */
 	private List<GuildLogInfo> logList = new ArrayList<>();
 	
-	/** 帮派战力 */
-	private int fight = 0;
 	/** 上次计算战力的时间 */
 	private long lastComputeFight = 0;
 	
@@ -681,7 +679,7 @@ public class Guild {
 	 * 获取门派战力
 	 * @return
 	 */
-	public int getGuildFight(){
+	public long getGuildFight(){
 		if(System.currentTimeMillis() - lastComputeFight > 20 * 1000){
 			int guildFight = 0;
 			for(long memberId: memberMap.keySet()){
@@ -695,11 +693,11 @@ public class Guild {
 					guildFight += memberPlayer.getBasePlayer().getPlayerInfo().getFight();
 				}
 			}
-			this.fight = guildFight;
+			this.guildInfo.setFight(guildFight);
 			
 			lastComputeFight = System.currentTimeMillis();
 		}
-		return this.fight;
+		return this.guildInfo.getFight();
 	}
 	
 	/**
@@ -810,6 +808,7 @@ public class Guild {
 	 */
 	public boolean saveToDatabase(){
 		if(guildInfo != null){
+//			this.getGuildFight();
 			short option = guildInfo.getOp();
 			if(option == Option.Insert){
 				DBManager.getGuildInfoDao().add(guildInfo);

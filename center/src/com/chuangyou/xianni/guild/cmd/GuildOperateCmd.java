@@ -24,6 +24,7 @@ import com.chuangyou.xianni.guild.action.GuildShopLevelupAction;
 import com.chuangyou.xianni.guild.action.GuildSkillLevelupAction;
 import com.chuangyou.xianni.guild.action.GuildSkillListAction;
 import com.chuangyou.xianni.guild.action.GuildSkillShopLevelUpAction;
+import com.chuangyou.xianni.guild.action.GuildSnapReqAction;
 import com.chuangyou.xianni.guild.action.GuildSupplyDonateAction;
 import com.chuangyou.xianni.guild.action.GuildWarehouseLevelupAction;
 import com.chuangyou.xianni.guild.action.baseAction.GuildBaseAction;
@@ -111,6 +112,9 @@ public class GuildOperateCmd extends AbstractCommand {
 				break;
 			case GuildOperateAction.GUILD_JOB_SEIZE:
 				action = new GuildJobSeizeAction(player, packet);
+				break;
+			case GuildOperateAction.GUILD_SNAP_REQ:
+				action = new GuildSnapReqAction(player, packet);
 				break;
 		}
 		action.getActionQueue().enqueue(action);

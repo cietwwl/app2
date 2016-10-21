@@ -42,11 +42,11 @@ public class PlayerLoginCmd implements Command {
 					// 挤老用户下线
 					GatewayMsg.Builder gatewayMsg = GatewayMsg.newBuilder();
 					// "您的账号在别处登录！"
-					gatewayMsg.setNotifyMsg("你的用户在别处登录");
+					gatewayMsg.setType(DisconnectType.OTHER_LOGIN);
 					PBMessage resp = MessageUtil.buildMessage(Protocol.U_G_LOGIN_OTHER, gatewayMsg);
 					user.sendToUser(resp);
 					Log.info("被其他玩家挤下线 , serverName : " + user.getServerName() + " ,userId : " + playerId);
-					//防止关闭连接时候，再次回调移除在线状态操作
+					// 防止关闭连接时候，再次回调移除在线状态操作
 					user.getChannel().attr(AttributeKeySet.PLAYER_ID).set(-1l);
 				} catch (Exception e) {
 					Log.error("挤在线玩家错误 userId : " + playerId + ", nickName : " + user.getServerName(), e);

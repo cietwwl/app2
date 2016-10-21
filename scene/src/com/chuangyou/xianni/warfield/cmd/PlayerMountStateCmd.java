@@ -56,7 +56,7 @@ public class PlayerMountStateCmd extends AbstractCommand {
 			army.sendPbMessage(selfPkg);
 			
 			// 通知附近玩家
-			NotifyNearHelper.notifyAttrChange(army, nears, attMsg.build());
+			NotifyNearHelper.notifyAttrChange(nears, attMsg.build());
 		}
 	}
 

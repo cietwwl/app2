@@ -1,5 +1,7 @@
 package com.chuangyou.xianni.exec;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -7,9 +9,23 @@ import java.util.Random;
  */
 public class ThreadManager {
 
-	static Random					r	= new Random();
+	static Random										r						= new Random();
 	// 用户响应动作执行线程池
-	public static ActionExecutor	actionExecutor;
+	public static ActionExecutor						actionExecutor;
+
+	public static final short							WORLD_ACTION_QUEUE_NUM	= 100;
+	// 用户响应动作执行队列
+	private static Map<Integer, AbstractActionQueue>	ActionQueues			= new HashMap<Integer, AbstractActionQueue>();
+	static {
+		for (int i = 0; i <= WORLD_ACTION_QUEUE_NUM + 2; i++) {
+			AbstractActionQueue actionQueue = new AbstractActionQueue(actionExecutor);
+			ActionQueues.put(i, actionQueue);
+		}
+	}
+
+	public static AbstractActionQueue getActionRandom() {
+		return ActionQueues.get(r.nextInt(WORLD_ACTION_QUEUE_NUM));
+	}
 
 	static {
 		int corePoolSize = 8;

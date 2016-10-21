@@ -1,8 +1,6 @@
 package com.chuangyou.xianni.campaign.action;
 
 import java.util.List;
-
-import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignFactory;
@@ -25,12 +23,20 @@ public class CampaignCreateAction extends Action {
 	private ArmyProxy	army;
 	private int			campaignId;
 	private int			taskId;
+	private boolean		noCrossMap	= false;	// 是否允许跨地图拉入
 
 	public CampaignCreateAction(ArmyProxy army, int campaignId, int taskId) {
 		super(army);
 		this.army = army;
 		this.campaignId = campaignId;
 		this.taskId = taskId;
+	}
+
+	public CampaignCreateAction(ArmyProxy army, int campaignId, boolean noCrossMap) {
+		super(army);
+		this.army = army;
+		this.campaignId = campaignId;
+		this.noCrossMap = noCrossMap;
 	}
 
 	@Override
@@ -57,7 +63,7 @@ public class CampaignCreateAction extends Action {
 		campaign.stateTransition(new StartState(campaign));
 		campaign.onPlayerEnter(army);
 		if (campaign.getTemp().getType() == CampaignType.TEAM) {
-			Team team = TeamMgr.getTeam(army.getPlayerId());
+			Team team = TeamMgr.getTeamByPlayerId(army.getPlayerId());
 			if (team == null) {
 				return;
 			}
@@ -70,6 +76,10 @@ public class CampaignCreateAction extends Action {
 					continue;
 				}
 				ArmyProxy teamMember = WorldMgr.getArmy(playerId);
+				// 当不允许跨地图拉入时，判断是否在同一个地图
+				if (noCrossMap && teamMember.getPlayer().getField() != army.getPlayer().getField()) {
+					continue;
+				}
 				if (teamMember != null) {
 					campaign.onPlayerEnter(teamMember);
 				}

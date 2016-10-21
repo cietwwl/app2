@@ -123,6 +123,7 @@ public class ArtifactConfigDaoImpl extends BaseDao implements ArtifactConfigDao 
 					info.setAtt6(rs.getInt("att6"));
 					info.setAtt7(rs.getInt("att7"));
 					info.setAtt8(rs.getInt("att8"));
+					info.setAttlist();
 					
 					infos.put(info.getId(), info);
 				}
@@ -269,6 +270,7 @@ public class ArtifactConfigDaoImpl extends BaseDao implements ArtifactConfigDao 
 					info.setAttr6(rs.getInt("attr6"));
 					info.setAttr7(rs.getInt("attr7"));
 					info.setAttr8(rs.getInt("attr8"));
+					info.setAttList();
 					
 					infos.add(info);
 				}

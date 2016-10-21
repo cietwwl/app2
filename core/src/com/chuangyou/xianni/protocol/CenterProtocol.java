@@ -413,6 +413,16 @@ public interface CenterProtocol {
 
 	/** 帮派夺权挑战结果 */
 	public static short			C_GUILD_SEIZE_RESULT			= 10159;
+	
+	// ==========================野外BOSS========================================
+	/** 野外BOSS奖励发送 */
+	public static short			C_FIELD_BOSS_DIE_AWARD			= 10160;
+	
+	/** 野外BOSS死亡和刷新时间更新 */
+	public static short			C_FIELD_BOSS_TIME_UPDATE		= 10161;
+	
+	/** 世界BOSS夺宝活动奖励 */
+	public static short			C_WORLD_BOSS_TREASURE_AWARD		= 10162;
 
 	// =========================>时装<===================================
 	/** 获取时装信息 */

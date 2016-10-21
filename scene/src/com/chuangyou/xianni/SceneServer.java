@@ -13,6 +13,7 @@ import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.common.timer.TimerTaskMgr;
 import com.chuangyou.xianni.drop.templete.DropTempleteMgr;
 import com.chuangyou.xianni.equip.template.EquipTemplateMgr;
+import com.chuangyou.xianni.fieldBoss.template.FieldBossTemplateMgr;
 import com.chuangyou.xianni.mount.MountTempleteMgr;
 import com.chuangyou.xianni.netty.codec.PBMessageDecoder;
 import com.chuangyou.xianni.netty.codec.PBMessageEncoder;
@@ -100,6 +101,10 @@ public class SceneServer extends BaseServer {
 			return false;
 		}
 		if (!initComponent(NpcInfoTemplateMgr.init(), "初始化NPC/转场点模板数据")) {
+			return false;
+		}
+		
+		if(!initComponent(FieldBossTemplateMgr.init(), "初始化野外BOSS模板数据")){
 			return false;
 		}
 

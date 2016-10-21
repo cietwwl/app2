@@ -1,0 +1,9 @@
+option java_package = "com.chuangyou.common.protobuf.pb.boss";
+option java_outer_classname = "WorldBossTreasureListProto";
+
+import "boss/WorldBossTreasureMsg.proto";
+
+//世界BOSS夺宝活动奖励
+message WorldBossTreasureListMsg{
+	repeated WorldBossTreasureMsg info = 1; // 玩家宝箱信息
+}

@@ -1,8 +1,8 @@
 package com.chuangyou.xianni.team.struct;
 
 import com.chuangyou.common.protobuf.pb.team.TeamMemberInfoProto.TeamMemberInfoMsg;
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.word.WorldMgr;
 
 public class TeamMember {

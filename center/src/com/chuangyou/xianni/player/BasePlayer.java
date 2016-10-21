@@ -8,6 +8,7 @@ import com.chuangyou.common.util.LockData;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.common.template.LevelUpTempleteMgr;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.constant.CommonType.CurrencyItemType;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.level.LevelUp;
@@ -430,6 +431,72 @@ public class BasePlayer extends AbstractEvent {
 	}
 
 	/**
+	 * 修改vip等级（gm使用
+	 * 
+	 * @param count
+	 * @return
+	 */
+	public boolean updateVipLevle(int lv) {
+		beginChanges();
+		try {
+			if (commonLock.beginLock()) {
+				this.playerInfo.setVipLevel((short) lv);
+				this.playerInfo.setOp(Option.Update);
+			} else {
+				Log.error("playerId : " + getPlayerInfo().getPlayerId() + "addEquipExp Lock");
+				return false;
+			}
+		} catch (Exception e) {
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + "UpdateVipLevle  lv :" + lv, e);
+			return false;
+		} finally {
+			commitChages(EnumAttr.VipLevel.getValue(), playerInfo.getVipLevel());
+			commonLock.commitLock();
+		}
+		return true;
+	}
+
+	/**
+	 * 修改元魂(gm使用
+	 * 
+	 * @param magicwpId
+	 * @return
+	 */
+	public boolean updateSoul(int soul) {
+		beginChanges();
+		try {
+			this.playerJoinInfo.setCurSoul(soul);
+			this.playerJoinInfo.setOp(Option.Update);
+		} catch (Exception e) {
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " updateMagicwpId", e);
+			return false;
+		} finally {
+			commitSceneChange(EnumAttr.CUR_SOUL.getValue(), playerJoinInfo.getCurSoul());
+		}
+		return true;
+	}
+
+	/**
+	 * 修改元魂(gm使用
+	 * 
+	 * @param magicwpId
+	 * @return
+	 */
+	public boolean updateBlood(int blood) {
+		beginChanges();
+		try {
+			this.playerJoinInfo.setCurBlood(blood);
+			this.playerJoinInfo.setOp(Option.Update);
+		} catch (Exception e) {
+			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " updateMagicwpId", e);
+			return false;
+		} finally {
+			commitSceneChange(EnumAttr.CUR_BLOOD.getValue(), playerJoinInfo.getCurBlood());
+		}
+		return true;
+	}
+
+	/**
 	 * @param quest
 	 *            单条提交
 	 */
@@ -654,7 +721,7 @@ public class BasePlayer extends AbstractEvent {
 					long needTotalExp = LevelUpTempleteMgr.getPlayerLevelNeedExp(canLevel);
 					long tempExp = playerInfo.getTotalExp() - needTotalExp;
 					LevelUp up = LevelUpTempleteMgr.getPlayerLevelUp(canLevel);
-					//境界未到，最多累计四倍经验
+					// 境界未到，最多累计四倍经验
 					tempExp = Math.min(tempExp, up.getExp() * 4);
 					playerInfo.setLevel(canLevel);
 					playerInfo.setExp(tempExp);

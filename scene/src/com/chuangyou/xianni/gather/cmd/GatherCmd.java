@@ -41,6 +41,9 @@ public class GatherCmd extends AbstractCommand {
 				ErrorMsgUtil.sendErrorMsg(army, ErrorCode.UNKNOW_ERROR, Protocol.S_REQ_GATHER, "进度条未走完");
 				return;
 			}
+			gather.removeCdTime(army.getPlayerId());
+			
+			gather.trigger(army);
 			sendResp(msg,army);
 			
 			//发送脚本触发

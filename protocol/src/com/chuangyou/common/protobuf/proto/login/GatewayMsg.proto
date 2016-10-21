@@ -1,5 +1,6 @@
+//protocol=1;
 option java_package = "com.chuangyou.common.protobuf.pb";
 option java_outer_classname = "GatewayMsgProto";						
 message GatewayMsg{
-	optional string notify_msg = 1;				// 提示消息
+	optional int32 type = 1;				// 提示消息    1 账号在其他地方登录 2 被GM踢下线
 }

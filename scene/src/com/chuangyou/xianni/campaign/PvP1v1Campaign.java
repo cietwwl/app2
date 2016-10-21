@@ -4,6 +4,7 @@ import com.chuangyou.common.protobuf.pb.battle.BattleResultMsgProto.BattleResult
 import com.chuangyou.common.protobuf.pb.campaign.PvP1v1BattleResultProto.PvP1v1BattleResultMsg;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.campaign.action.CampaignLeaveAction;
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.netty.GatewayLinkedSet;
@@ -47,18 +48,18 @@ public class PvP1v1Campaign extends Campaign {
 		enDelayQueue(action);
 	}
 
-	public void stop() {
+	public void fail() {
 		sendBattleResult();
 		Player redPlayer = red.getPlayer();
-		if (redPlayer != null && redPlayer.isDie()) {
+		if (redPlayer != null && redPlayer.isDie() && red.getOnlineStatu() == PlayerState.ONLINE) {
 			redPlayer.renascence();
 		}
 
 		Player bluePlayer = blue.getPlayer();
-		if (bluePlayer != null && bluePlayer.isDie()) {
+		if (bluePlayer != null && bluePlayer.isDie() && red.getOnlineStatu() == PlayerState.ONLINE) {
 			bluePlayer.renascence();
 		}
-		super.stop();
+		endTime = System.currentTimeMillis() + 5 * 1000;
 	}
 
 	/**

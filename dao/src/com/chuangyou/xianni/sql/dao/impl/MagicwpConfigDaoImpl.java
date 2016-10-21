@@ -120,6 +120,8 @@ public class MagicwpConfigDaoImpl extends BaseDao implements MagicwpConfigDao {
 					info.setAtt10(rs.getInt("att10"));
 					info.setUpLevCd(rs.getInt("upLevCd"));
 					info.setClearCdCash(rs.getInt("clearCdCash"));
+					info.setAttMap();
+					
 					infos.put(info.getId(), info);
 				}
 			} catch (Exception e) {
@@ -158,6 +160,8 @@ public class MagicwpConfigDaoImpl extends BaseDao implements MagicwpConfigDao {
 					info.setAtt6(rs.getInt("att6"));
 					info.setAtt7(rs.getInt("att7"));
 					info.setAtt8(rs.getInt("att8"));
+					info.setMaxAttMap();
+					
 					infos.put(info.getId(), info);
 				}
 			} catch (Exception e) {
@@ -208,6 +212,8 @@ public class MagicwpConfigDaoImpl extends BaseDao implements MagicwpConfigDao {
 					
 					info.setRandomMin8(rs.getInt("randomMin8"));
 					info.setRandomMax8(rs.getInt("randomMax8"));
+					
+					info.setAttMap();
 					
 					infos.put(info.getId(), info);
 				}

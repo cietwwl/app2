@@ -2,8 +2,8 @@ package com.chuangyou.xianni.shop.cmd;
 
 import com.chuangyou.common.protobuf.pb.shop.GetMallInfoReqProto.GetMallInfoReqMsg;
 import com.chuangyou.xianni.base.AbstractCommand;
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.player.PlayerState;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.shop.logic.GetMaillInfoLogic;

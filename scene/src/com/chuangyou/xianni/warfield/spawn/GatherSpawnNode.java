@@ -11,6 +11,7 @@ import com.chuangyou.xianni.warfield.field.Field;
 
 /**
  * 采集物结点
+ * 
  * @author laofan
  *
  */
@@ -23,19 +24,22 @@ public class GatherSpawnNode extends SpwanNode {
 
 	@Override
 	public void start() {
-		//System.out.println("spawn - skin = " + spwanInfo.getEntityId());
+		super.start();
+		// System.out.println("spawn - skin = " + spwanInfo.getEntityId());
 		NpcInfo npcInfo = NpcInfoTemplateMgr.npcInfoTemps.get(spwanInfo.getEntityId());
 		if (npcInfo != null) {
-			Gather gather = new Gather(IDMakerHelper.nextID(), npcInfo.getName());
+			Gather gather = new Gather(IDMakerHelper.nextID(), this, npcInfo.getName());
 			// npc.setSkin(npcInfo.getSkin());
 			gather.setSkin(spwanInfo.getEntityId());
 			gather.setPostion(new Vector3(spwanInfo.getBound_x() / Vector3.Accuracy, spwanInfo.getBound_y() / Vector3.Accuracy, spwanInfo.getBound_z() / Vector3.Accuracy));
-			//System.out.println("gatherID :" + gather.getId() + " skinId :" + gather.getSkin()+"mapId:"+spwanInfo.getMapid());
+			// System.out.println("gatherID :" + gather.getId() + " skinId :" +
+			// gather.getSkin()+"mapId:"+spwanInfo.getMapid());
 			field.enterField(gather);
+			children.put(gather.getId(), gather);
 		} else {
 			Log.error(spwanInfo.getId() + "----------" + spwanInfo.getEntityId() + " 在NpcInfo里面未找到配置");
 		}
-			
+
 	}
-	
+
 }

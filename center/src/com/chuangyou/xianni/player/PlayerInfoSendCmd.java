@@ -17,6 +17,7 @@ import com.chuangyou.common.protobuf.pb.player.PlayerTimeMsgProto.PlayerTimeMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.army.ArmyInventory;
 import com.chuangyou.xianni.bag.BagMessage;
+import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.entity.guild.GuildMemberInfo;
 import com.chuangyou.xianni.entity.pet.PetAtt;
 import com.chuangyou.xianni.entity.pet.PetInfo;

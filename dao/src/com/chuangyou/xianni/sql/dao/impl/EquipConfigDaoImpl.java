@@ -68,6 +68,7 @@ public class EquipConfigDaoImpl extends BaseDao implements EquipConfigDao {
 					info.setFailBlessMax(rs.getInt("failBlessMax"));
 					info.setBlessValve(rs.getInt("blessValve"));
 					info.setAddProperty(rs.getInt("addProperty"));
+					info.setNeedItems();
 					
 					barGrades = infos.get(info.getPosition());
 					if(barGrades == null){
@@ -145,6 +146,7 @@ public class EquipConfigDaoImpl extends BaseDao implements EquipConfigDao {
 //					info.setItem5(rs.getInt("item5"));
 //					info.setNum5(rs.getInt("num5"));
 //					info.setExp(rs.getLong("exp"));
+//					info.setItems();
 //					infos.put(info.getEquipId(), info);
 //				}
 //			} catch (Exception e) {
@@ -189,6 +191,7 @@ public class EquipConfigDaoImpl extends BaseDao implements EquipConfigDao {
 					info.setAtt1(rs.getInt("att8"));
 					info.setResolveItem(rs.getInt("resolveItem"));
 					info.setResolveNum(rs.getInt("resolveNum"));
+					info.setAttMap();
 					
 					infos.put(info.getId(), info);
 				}

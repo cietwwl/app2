@@ -26,9 +26,6 @@ public class BeadMonsterSpawnNode extends MonsterSpawnNode { // 刷怪模板
 				stateTransition(new OverState(this));
 				Campaign campaign = CampaignMgr.getCampagin(campaignId);
 				if (campaign != null) {
-					// ((InverseBeadCampaign)
-					// campaign).add(this.spwanInfo.getTagId());
-
 					SyncMonsterPoolMsg.Builder msg = SyncMonsterPoolMsg.newBuilder();
 					msg.addMonsterRefreshId(this.spwanInfo.getTagId());
 					PBMessage pbm = MessageUtil.buildMessage(Protocol.C_INVERSE_MONSTER_SPAWN, msg);
@@ -46,15 +43,4 @@ public class BeadMonsterSpawnNode extends MonsterSpawnNode { // 刷怪模板
 			}
 		}
 	}
-
-//	@Override
-//	public void start() {
-//		// super.start();
-//		System.err.println("---------------创建怪物  spwanInfo :" + spwanInfo.getId());
-//		while (curCount < spwanInfo.getMaxCount() && (toalCount < spwanInfo.getToalCount() || spwanInfo.getToalCount() <= 0)) {
-//			curCount++;
-//			createChildren();
-//		}
-//	}
-
 }

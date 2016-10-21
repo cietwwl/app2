@@ -1,0 +1,14 @@
+option java_package = "com.chuangyou.common.protobuf.pb.boss";
+option java_outer_classname = "BossDieProto";
+
+message BossDieMsg{
+	optional int32 monsterId = 1; // BOSS怪模板ID
+
+	repeated int64 normalPlayer = 2; // 拿到普通奖励的玩家列表(只要造成了伤害的玩家都可获得)
+
+	optional int64 firstDamagePlayer = 3; // 第一击伤害的玩家
+
+	optional int64 mostDamagePlayer = 4; // 最高伤害的玩家
+
+	optional int64 shieldKiller = 5; // 护盾击破者
+}

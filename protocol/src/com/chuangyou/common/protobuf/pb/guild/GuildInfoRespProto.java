@@ -125,7 +125,7 @@ public final class GuildInfoRespProto {
     int getLevel();
 
     /**
-     * <code>optional int32 fight = 7;</code>
+     * <code>optional int64 fight = 7;</code>
      *
      * <pre>
      * 门派战力
@@ -133,13 +133,13 @@ public final class GuildInfoRespProto {
      */
     boolean hasFight();
     /**
-     * <code>optional int32 fight = 7;</code>
+     * <code>optional int64 fight = 7;</code>
      *
      * <pre>
      * 门派战力
      * </pre>
      */
-    int getFight();
+    long getFight();
 
     /**
      * <code>optional int32 playerNum = 8;</code>
@@ -529,7 +529,7 @@ public final class GuildInfoRespProto {
             }
             case 56: {
               bitField0_ |= 0x00000040;
-              fight_ = input.readInt32();
+              fight_ = input.readInt64();
               break;
             }
             case 64: {
@@ -851,9 +851,9 @@ public final class GuildInfoRespProto {
     }
 
     public static final int FIGHT_FIELD_NUMBER = 7;
-    private int fight_;
+    private long fight_;
     /**
-     * <code>optional int32 fight = 7;</code>
+     * <code>optional int64 fight = 7;</code>
      *
      * <pre>
      * 门派战力
@@ -863,13 +863,13 @@ public final class GuildInfoRespProto {
       return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     /**
-     * <code>optional int32 fight = 7;</code>
+     * <code>optional int64 fight = 7;</code>
      *
      * <pre>
      * 门派战力
      * </pre>
      */
-    public int getFight() {
+    public long getFight() {
       return fight_;
     }
 
@@ -1302,7 +1302,7 @@ public final class GuildInfoRespProto {
       gangId_ = 0L;
       gangName_ = "";
       level_ = 0;
-      fight_ = 0;
+      fight_ = 0L;
       playerNum_ = 0;
       maxPlayerNum_ = 0;
       joinType_ = 0;
@@ -1353,7 +1353,7 @@ public final class GuildInfoRespProto {
         output.writeInt32(6, level_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeInt32(7, fight_);
+        output.writeInt64(7, fight_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         output.writeInt32(8, playerNum_);
@@ -1441,7 +1441,7 @@ public final class GuildInfoRespProto {
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(7, fight_);
+          .computeInt64Size(7, fight_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
@@ -1644,7 +1644,7 @@ public final class GuildInfoRespProto {
         bitField0_ = (bitField0_ & ~0x00000010);
         level_ = 0;
         bitField0_ = (bitField0_ & ~0x00000020);
-        fight_ = 0;
+        fight_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000040);
         playerNum_ = 0;
         bitField0_ = (bitField0_ & ~0x00000080);
@@ -2301,9 +2301,9 @@ public final class GuildInfoRespProto {
         return this;
       }
 
-      private int fight_ ;
+      private long fight_ ;
       /**
-       * <code>optional int32 fight = 7;</code>
+       * <code>optional int64 fight = 7;</code>
        *
        * <pre>
        * 门派战力
@@ -2313,30 +2313,30 @@ public final class GuildInfoRespProto {
         return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
-       * <code>optional int32 fight = 7;</code>
+       * <code>optional int64 fight = 7;</code>
        *
        * <pre>
        * 门派战力
        * </pre>
        */
-      public int getFight() {
+      public long getFight() {
         return fight_;
       }
       /**
-       * <code>optional int32 fight = 7;</code>
+       * <code>optional int64 fight = 7;</code>
        *
        * <pre>
        * 门派战力
        * </pre>
        */
-      public Builder setFight(int value) {
+      public Builder setFight(long value) {
         bitField0_ |= 0x00000040;
         fight_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 fight = 7;</code>
+       * <code>optional int64 fight = 7;</code>
        *
        * <pre>
        * 门派战力
@@ -2344,7 +2344,7 @@ public final class GuildInfoRespProto {
        */
       public Builder clearFight() {
         bitField0_ = (bitField0_ & ~0x00000040);
-        fight_ = 0;
+        fight_ = 0L;
         onChanged();
         return this;
       }
@@ -3246,7 +3246,7 @@ public final class GuildInfoRespProto {
       "InfoRespMsg\022\017\n\007guildId\030\001 \001(\005\022\021\n\tguildTyp" +
       "e\030\002 \001(\005\022\014\n\004name\030\003 \001(\t\022\016\n\006gangId\030\004 \001(\003\022\020\n" +
       "\010gangName\030\005 \001(\t\022\r\n\005level\030\006 \001(\005\022\r\n\005fight\030" +
-      "\007 \001(\005\022\021\n\tplayerNum\030\010 \001(\005\022\024\n\014maxPlayerNum" +
+      "\007 \001(\003\022\021\n\tplayerNum\030\010 \001(\005\022\024\n\014maxPlayerNum" +
       "\030\t \001(\005\022\020\n\010joinType\030\n \001(\005\022\022\n\nlevelLimit\030\013" +
       " \001(\005\022\022\n\nfightLimit\030\014 \001(\005\022\016\n\006notice\030\r \001(\t" +
       "\022\020\n\010buildExp\030\016 \001(\003\022\016\n\006supply\030\017 \001(\003\022\026\n\016ma" +

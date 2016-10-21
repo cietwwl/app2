@@ -454,7 +454,7 @@ public class Monster extends ActiveLiving {
 		if (source.getArmyId() != 0) {
 			joiners.add(source.getArmyId());
 			if (source.getTeamId() != 0) {
-				Team team = TeamMgr.getTeam(source.getTeamId());
+				Team team = TeamMgr.getTeamByPlayerId(source.getTeamId());
 				if (team != null) {
 					joiners.addAll(team.getMembers());
 				}

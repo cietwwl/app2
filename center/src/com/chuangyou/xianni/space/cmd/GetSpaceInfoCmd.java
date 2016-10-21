@@ -25,7 +25,7 @@ public class GetSpaceInfoCmd extends AbstractCommand {
 		if(reqPlayer!=null){
 			GetSpaceInfoRespMsg.Builder msg = reqPlayer.getSpaceInventory().getSpaceInfoMsg();
 			//自己是否是对方的好友
-			boolean isFriends = player.getRelationInventory().isRelationTypeSelfToTarget(player.getPlayerId(), PlayerRelationConstant.FRIEND);
+			boolean isFriends = player.getRelationInventory().isRelationTypeSelfToTarget(reqPlayer.getPlayerId(), PlayerRelationConstant.FRIEND);
 			msg.setIsFriends(isFriends);
 			PBMessage pkg = MessageUtil.buildMessage(Protocol.U_RESP_GET_SPACE_INFO,msg);
 			player.sendPbMessage(pkg);		

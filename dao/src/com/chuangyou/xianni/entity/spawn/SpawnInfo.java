@@ -4,76 +4,43 @@ import com.chuangyou.common.util.Vector3;
 
 public class SpawnInfo {
 	private int		id;								// ID
-
 	private int		mapid;							// 地图id
-
 	private int		bound_x;						// x轴
-
 	private int		bound_y;						// y轴
-
 	private int		bound_z;						// z轴
-
 	private int		angle;							// 面向
-
 	private Vector3	position	= new Vector3();	// 出生点
-
 	private int		initStatu;						// 初始节点状态
-
 	private int		tagId;							// 唯一标记ID
 	private int[]	preSpawanIdAttr;				// 前置节点集
-
 	private int[]	nextSpawanIdAttr;				// 后置节点集
-
 	private int		progress;						// 进度
 	private int		wakeType;						// 激活下一个节点类型 0 默认为
-													// 节点结束激活下一个，1 节点开始即调用
-
 	private int		wakeDelay;						// 延迟多长时间唤醒下一个节点
 
-	private int		restType;						// 刷新模式\r\n1：普通模式，死亡后计算刷新时间刷新\r\n2：boss模式，刷新后计算刷新时间重新刷新\r\n3：副本模式，死亡后不刷新\r\n其他特殊模式待有需求时添加
-
-	private int		restSecs;						// 死亡刷新间隔时间
-
-	private int		maxCount;						// 刷怪数量\r\n1：定点刷\r\n＞1：在定点周围1米范围刷多个怪
-
+	private int		maxCount;						// 刷怪数量在定点周围1米范围刷多个怪
 	private int		toalCount;						// 怪物总数(刷完节点销毁,0为永远刷新)
-
-	private int		campaignFeatures;				// 节点在副本中类型 0 普通，1 副本出生点 2
-													// 副本复活点 3 副本结束点
-
+	private int		campaignFeatures;				// 节点在副本中类型
 	private int		entityType;						// 实体类型(由于历史原因，采用此字段，作为节点说明字段)
-
 	private int		entityId;						// 实体ID
 
-	private int		timerType;						// ` int(11) DEFAULT NULL
-													// COMMENT
-													// '1:每天定时刷\r\n2：utc时间范围内刷',
+	// 1默认死亡开始计时 2 刷新开始计时
+	private int		restType;
+	private int		restSecs;						// 刷新间隔时间(分钟)
 
-	private String	timerBegin;						// ` varchar(11) DEFAULT
-													// NULL COMMENT
-													// '开始刷新时间\r\n配0为不限时\r\n时间格式hhmmss，开始时间刷新怪物，结束时间删除所有怪物',
+	// 1 时间范围开始-结束 2 仅开始（如有怪，跳过）
+	private int		timerType;
+	private String	timerBegin;						// 开始刷新时间
+	private String	timerEnd;						// 结束刷新时间
 
-	private String	timerEnd;						// ` varchar(11) DEFAULT
-													// NULL COMMENT
-													// '结束刷新时间',
-
-	private int		initSecs;						// ` int(11) DEFAULT NULL
-													// COMMENT
-													// '开服刷怪延迟时间\r\n避免开服瞬间刷新太多怪物导致卡死',
-
+	private int		initSecs;						// 怪物延迟时间
 	private int		param1;							// 节点参数1
-
 	private int		param2;							// 节点参数2
-
 	private int		param3;							// 节点参数3
-
 	private int		param4;							// 节点参数4
-
-	private String	strParam1;						// 节点参数4
-
-	private String	strParam2;						// 节点参数4
-
-	private String	strParam3;						// 节点参数4
+	private String	strParam1;						// 节点参数1
+	private String	strParam2;						// 节点参数2
+	private String	strParam3;						// 节点参数3
 
 	public int[] getPreSpawanIdAttr() {
 		return preSpawanIdAttr;

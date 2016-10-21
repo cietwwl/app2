@@ -20,7 +20,6 @@ import com.chuangyou.xianni.role.objects.Living;
  * BufferFactory创建的工厂类
  */
 public class BufferFactory {
-
 	/**
 	 * 建立BUFFER
 	 */

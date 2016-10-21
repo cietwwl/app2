@@ -337,6 +337,11 @@ public interface ClientProtocol {
 	 * 境界副本进度通知
 	 */
 	public static final short U_RESP_STATE_FB_PROCESS				= 1623;
+	
+	/**
+	 * 通知有事件触发
+	 */
+	public static final short U_RESP_STATE_NOTIFY_EVENT				= 1624;
 
 	// =========================>坐骑<===================================
 	/** 返回坐骑信息 */
@@ -515,6 +520,22 @@ public interface ClientProtocol {
 
 	/** 玩家帮派信息同步更新 */
 	public static final short	U_PLAYER_GUILD_NOTIFY				= 171;
+	
+	/**
+	 * 野外BOSS信息列表
+	 */
+	public static final short	U_FIELD_BOSS_LIST					= 172;
+	
+	/**
+	 * 世界BOSS夺宝中玩家箱子数量
+	 */
+	public static final short	U_TREASURE_COUNT					= 173;
+	
+	/**
+	 * 帮派快照信息
+	 */
+	public static final short	U_GUILD_SNAP						= 174;
+	
 
 	/** 获取时装信息 */
 	public static short			U_FASHION_GET						= 201;

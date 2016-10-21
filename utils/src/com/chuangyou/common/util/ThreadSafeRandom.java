@@ -39,7 +39,7 @@ public class ThreadSafeRandom {
 	}
 
 	/**
-	 * 随机区间值，如 min=1 maxValue=5 随机，其结果值不包括5
+	 * 随机区间值，如 min=1 maxValue=5 随机，其结果值包括5
 	 * 
 	 * @param minValue
 	 *            开始值

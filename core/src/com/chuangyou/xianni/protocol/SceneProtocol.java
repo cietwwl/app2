@@ -135,8 +135,6 @@ public interface SceneProtocol {
 	/** 回应镖车技能使用消耗 */
 	public static final short	S_RESP_TRUCK_FUNCCONSUM			= 20715;
 	// =============================>分身<=========================
-	/** 副本操作 */
-	public static final short	S_AVATAR_CAMPAIGN_OP			= 20737;
 	/** 同步分身数据 */
 	public static final short	S_SYNC_AVATAR_DATA				= 20738;
 	/** 同步修改灵气 */
@@ -174,5 +172,25 @@ public interface SceneProtocol {
 	 * 境界QTE结果返回
 	 */
 	public static final short	S_STATE_QTE_RES					= 20747;
+	
+	/**
+	 * 请求野外BOSS信息
+	 */
+	public static final short	S_FIELD_BOSS_LIST				= 20748;
+	
+	/**
+	 * 实体传送门触发
+	 */
+	public static final short	S_TRANSFER_TRIGGER				= 20749;
+	
+	/**
+	 * 前往BOSS刷新点
+	 */
+	public static final short	S_FIELD_BOSS_GOTO				= 20750;
+	
+	/**
+	 * 获取玩家在世界BOSS夺宝中的箱子数量
+	 */
+	public static final short	S_TREASURE_COUNT_REQ			= 20751;
 
 }

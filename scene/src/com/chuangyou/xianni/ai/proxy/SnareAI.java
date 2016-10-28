@@ -6,7 +6,7 @@ import com.chuangyou.xianni.ai.behavior.snare.SnareIdle;
 import com.chuangyou.xianni.ai.behavior.snare.SnareMoveLine;
 import com.chuangyou.xianni.ai.behavior.snare.SnareMoveRandom;
 import com.chuangyou.xianni.battle.snare.SnareConstant.MoveType;
-import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
+import com.chuangyou.xianni.constant.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.objects.Snare;
 
 public class SnareAI implements AI {

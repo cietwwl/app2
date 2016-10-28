@@ -45,6 +45,23 @@ public final class NpcDialogSelectReqProto {
      * </pre>
      */
     int getCommandParam();
+
+    /**
+     * <code>optional int64 npcEntryId = 3;</code>
+     *
+     * <pre>
+     * npc实体ID
+     * </pre>
+     */
+    boolean hasNpcEntryId();
+    /**
+     * <code>optional int64 npcEntryId = 3;</code>
+     *
+     * <pre>
+     * npc实体ID
+     * </pre>
+     */
+    long getNpcEntryId();
   }
   /**
    * Protobuf type {@code NpcDialogSelectReqMsg}
@@ -110,6 +127,11 @@ public final class NpcDialogSelectReqProto {
             case 16: {
               bitField0_ |= 0x00000002;
               commandParam_ = input.readInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              npcEntryId_ = input.readInt64();
               break;
             }
           }
@@ -198,9 +220,33 @@ public final class NpcDialogSelectReqProto {
       return commandParam_;
     }
 
+    public static final int NPCENTRYID_FIELD_NUMBER = 3;
+    private long npcEntryId_;
+    /**
+     * <code>optional int64 npcEntryId = 3;</code>
+     *
+     * <pre>
+     * npc实体ID
+     * </pre>
+     */
+    public boolean hasNpcEntryId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional int64 npcEntryId = 3;</code>
+     *
+     * <pre>
+     * npc实体ID
+     * </pre>
+     */
+    public long getNpcEntryId() {
+      return npcEntryId_;
+    }
+
     private void initFields() {
       npcType_ = 0;
       commandParam_ = 0;
+      npcEntryId_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -229,6 +275,9 @@ public final class NpcDialogSelectReqProto {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeInt32(2, commandParam_);
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt64(3, npcEntryId_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -245,6 +294,10 @@ public final class NpcDialogSelectReqProto {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(2, commandParam_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, npcEntryId_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -371,6 +424,8 @@ public final class NpcDialogSelectReqProto {
         bitField0_ = (bitField0_ & ~0x00000001);
         commandParam_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
+        npcEntryId_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -407,6 +462,10 @@ public final class NpcDialogSelectReqProto {
           to_bitField0_ |= 0x00000002;
         }
         result.commandParam_ = commandParam_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.npcEntryId_ = npcEntryId_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -428,6 +487,9 @@ public final class NpcDialogSelectReqProto {
         }
         if (other.hasCommandParam()) {
           setCommandParam(other.getCommandParam());
+        }
+        if (other.hasNpcEntryId()) {
+          setNpcEntryId(other.getNpcEntryId());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -560,6 +622,54 @@ public final class NpcDialogSelectReqProto {
         return this;
       }
 
+      private long npcEntryId_ ;
+      /**
+       * <code>optional int64 npcEntryId = 3;</code>
+       *
+       * <pre>
+       * npc实体ID
+       * </pre>
+       */
+      public boolean hasNpcEntryId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional int64 npcEntryId = 3;</code>
+       *
+       * <pre>
+       * npc实体ID
+       * </pre>
+       */
+      public long getNpcEntryId() {
+        return npcEntryId_;
+      }
+      /**
+       * <code>optional int64 npcEntryId = 3;</code>
+       *
+       * <pre>
+       * npc实体ID
+       * </pre>
+       */
+      public Builder setNpcEntryId(long value) {
+        bitField0_ |= 0x00000004;
+        npcEntryId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 npcEntryId = 3;</code>
+       *
+       * <pre>
+       * npc实体ID
+       * </pre>
+       */
+      public Builder clearNpcEntryId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        npcEntryId_ = 0L;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:NpcDialogSelectReqMsg)
     }
 
@@ -586,10 +696,10 @@ public final class NpcDialogSelectReqProto {
   static {
     java.lang.String[] descriptorData = {
       "\n%npcDialog/NpcDialogSelectReqMsg.proto\"" +
-      ">\n\025NpcDialogSelectReqMsg\022\017\n\007npcType\030\001 \002(" +
-      "\005\022\024\n\014commandParam\030\002 \002(\005BE\n*com.chuangyou" +
-      ".common.protobuf.pb.npcDialogB\027NpcDialog" +
-      "SelectReqProto"
+      "R\n\025NpcDialogSelectReqMsg\022\017\n\007npcType\030\001 \002(" +
+      "\005\022\024\n\014commandParam\030\002 \002(\005\022\022\n\nnpcEntryId\030\003 " +
+      "\001(\003BE\n*com.chuangyou.common.protobuf.pb." +
+      "npcDialogB\027NpcDialogSelectReqProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -608,7 +718,7 @@ public final class NpcDialogSelectReqProto {
     internal_static_NpcDialogSelectReqMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_NpcDialogSelectReqMsg_descriptor,
-        new java.lang.String[] { "NpcType", "CommandParam", });
+        new java.lang.String[] { "NpcType", "CommandParam", "NpcEntryId", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

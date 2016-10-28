@@ -8,4 +8,5 @@ public interface ItemTemplateInfoDao {
 
 	List<ItemTemplateInfo> getItemTemps();
 
+	List<ItemTemplateInfo> getItemTemps(String name);
 }

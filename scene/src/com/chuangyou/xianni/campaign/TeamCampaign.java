@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.chuangyou.common.protobuf.pb.campaign.CampaignInfoMsgProto.CampaignInfoMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CampaignStatuMsgProto.CampaignStatuMsg;
+import com.chuangyou.xianni.campaign.action.CampaignExitAction;
 import com.chuangyou.xianni.campaign.state.CampaignState;
 import com.chuangyou.xianni.campaign.state.StopState;
 import com.chuangyou.xianni.constant.CampaignConstant.CampaignStatu;
@@ -14,6 +15,8 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.team.Team;
 import com.chuangyou.xianni.team.TeamMgr;
+import com.chuangyou.xianni.warfield.action.EnterFieldAction;
+import com.chuangyou.xianni.world.ArmyPositionRecord;
 import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.WorldMgr;
 
@@ -51,25 +54,7 @@ public class TeamCampaign extends Campaign {
 		if (isEmpty() && getState().getCode() != CampaignState.STOP) {
 			stateTransition(new StopState(this));
 		} else {
-			CampaignStatuMsg.Builder cstatu = CampaignStatuMsg.newBuilder();
-			cstatu.setIndexId(getIndexId());
-			cstatu.setTempId(tempId);
-			cstatu.setStatu(CampaignStatu.NOTITY2C_OUT);// 退出
-			PBMessage statuMsg = MessageUtil.buildMessage(Protocol.C_CAMPAIGN_STATU, cstatu);
-			army.sendPbMessage(statuMsg);
-
-			PBMessage quit = new PBMessage(Protocol.C_QUIT_CAMPAIGN);
-			army.sendPbMessage(quit);
-			removeArmy(army, true);
-
-			CampaignInfoMsg.Builder infoMsg = CampaignInfoMsg.newBuilder();
-			infoMsg.setId(id);
-			infoMsg.setCount(armys.size());
-			infoMsg.setCreaterId(creater);
-			infoMsg.setState(CampaignState.STOP);
-			infoMsg.setTempId(tempId);
-			PBMessage message = MessageUtil.buildMessage(Protocol.U_CAMPAIGN_INFO, infoMsg);
-			army.sendPbMessage(message);
+			onPlayerExit(army);
 		}
 	}
 

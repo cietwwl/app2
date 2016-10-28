@@ -1,4 +1,4 @@
-package com.chuangyou.xianni.battle.damage.effect;
+package com.chuangyou.xianni.constant;
 
 public interface DamageEffecterType {
 	/** 普通伤害：【 扣血，优先气血，元魂态扣元魂】【加血，先提升元魂，再提升气血】 */

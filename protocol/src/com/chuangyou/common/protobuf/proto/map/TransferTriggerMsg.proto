@@ -5,5 +5,4 @@ option java_outer_classname = "TransferTriggerProto";
 //触发了实体传送门
 message TransferTriggerMsg{
 	optional int64 id = 1; //实体ID
-	optional int32 mapId = 2; // 实体所在地图ID
 }

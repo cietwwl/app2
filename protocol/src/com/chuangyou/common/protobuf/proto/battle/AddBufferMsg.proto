@@ -1,0 +1,9 @@
+//protocol=20604;
+option java_package = "com.chuangyou.common.protobuf.pb.battle";
+option java_outer_classname = "AddBufferMsgProto";
+//给玩家添加或删除buffer
+message AddBufferMsg {
+	optional int32 option=1;      //操作类型 1 添加，2 删除
+	optional int64 bufferId = 2;   //buffer唯一ID
+}
+

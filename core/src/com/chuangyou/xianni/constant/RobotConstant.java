@@ -4,14 +4,18 @@ public class RobotConstant {
 
 	/**
 	 * 机器人类型
+	 * 
 	 * @author Joseph
 	 *
 	 */
-	public static interface Type{
+	public static interface Type {
 		/** 人物镜像 */
-		public static final int PLAYER_ROBOT = 1;
-		
+		public static final int	PLAYER_ROBOT	= 1;
+
 		/** 静态配置的机器人 */
-		public static final int STATIC_ROBOT = 2;
+		public static final int	STATIC_ROBOT	= 2;
+
+		/** 剧情机器人 */
+		public static final int	PLOT_ROBOT		= 3;
 	}
 }

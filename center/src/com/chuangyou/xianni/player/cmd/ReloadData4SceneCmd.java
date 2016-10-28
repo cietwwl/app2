@@ -4,8 +4,6 @@ import com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg;
 import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
 import com.chuangyou.common.protobuf.pb.army.ArmyInfoReloadMsgProto.ArmyInfoReloadMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
-import com.chuangyou.common.util.AccessTextFile;
-import com.chuangyou.common.util.JSONUtil;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.field.FieldInfo;
@@ -58,9 +56,8 @@ public class ReloadData4SceneCmd extends AbstractCommand {
 				if (property.getType() == EnumAttr.CUR_BLOOD.getValue()) {
 					join.setCurBlood((int) property.getTotalPoint());
 				}
-				
-				if(property.getType() == EnumAttr.MANA.getValue()){
-					join.setMana((int)property.getTotalPoint());
+				if (property.getType() == EnumAttr.MANA.getValue()) {
+					join.setMana((int) property.getTotalPoint());
 				}
 
 			}

@@ -110,8 +110,10 @@ public class PlayerInfo extends DataObject {
 	 */
 	private int		stateLv		= 0;
 
-	/** 灵气（分身合体消耗品 */
+	/** 仙气（分身合体消耗品 */
 	private int		avatarEnergy;
+	private String  account;
+	private Date 	createTime;
 
 	public long getPlayerId() {
 		return playerId;
@@ -430,6 +432,22 @@ public class PlayerInfo extends DataObject {
 			setOp(Option.Update);
 			this.avatarEnergy = avatarEnergy;
 		}
+	}
+
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	/**

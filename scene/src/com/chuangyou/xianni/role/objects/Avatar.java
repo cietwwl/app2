@@ -2,40 +2,49 @@ package com.chuangyou.xianni.role.objects;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Set;
 import com.chuangyou.common.protobuf.pb.PlayerAttSnapProto.PlayerAttSnapMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
 import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLivingInfoMsg;
+import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
+import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
 import com.chuangyou.common.util.Log;
-import com.chuangyou.xianni.battle.action.RobotPollingAction;
+import com.chuangyou.xianni.battle.action.AvatarPollingAction;
+import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.mgr.AvatarTempManager;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.skill.Skill;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.constant.RoleConstants.RoleType;
 import com.chuangyou.xianni.entity.avatar.AvatarTemplateInfo;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
+import com.chuangyou.xianni.exec.DelayAction;
+import com.chuangyou.xianni.proto.MessageUtil;
+import com.chuangyou.xianni.proto.PBMessage;
+import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
-import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.warfield.field.Field;
+import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.SimplePlayerInfo;
 import com.chuangyou.xianni.world.WorldMgr;
 
 /** 死亡时间 */
 public class Avatar extends Robot {
-	private int			dieTime			= 15;		// 死亡时间
-	private int			correspond;					// 默契等级
-	protected boolean	correspondStatu	= false;	// 变身状态 0 未合体 1 合体
-	private int			campaignId;					// 所在副本ID
+	private int					dieTime			= 15;		// 死亡时间
+	private int					correspond;					// 默契等级
+	protected boolean			correspondStatu	= false;	// 变身状态 0 未合体 1 合体
+	private int					campaignId;					// 所在副本ID
+	private volatile boolean	revivaling		= false;
 
 	public Avatar() {
 		super(IDMakerHelper.nextID());
 		setType(RoleType.avatar);
-		RobotPollingAction robotAction = new RobotPollingAction(this);
+		AvatarPollingAction robotAction = new AvatarPollingAction(this);
 		this.enDelayQueue(robotAction);
 	}
 
@@ -46,7 +55,15 @@ public class Avatar extends Robot {
 
 	/** 判断是否死亡 */
 	public boolean isDie() {
-		return false;
+		if (otherDamageCalWay()) {
+			return curBlood <= 0 || getLivingState() == DIE || getLivingState() == DISTORY;
+		}
+		return curSoul <= 0 || getLivingState() == DIE || getLivingState() == DISTORY;
+	}
+
+	/** 死亡规则：玩家元婴期以前，不计算魂血，魂伤扣气血 */
+	public boolean otherDamageCalWay() {
+		return super.otherDamageCalWay();
 	}
 
 	public BattleLivingInfoMsg.Builder getBattlePlayerInfoMsg() {
@@ -108,6 +125,11 @@ public class Avatar extends Robot {
 		if (super.onDie(killer)) {
 			if (killer.getArmyId() != this.getArmyId()) {
 				dieTime = dieTime + 5 > 30 ? 30 : dieTime + 5;
+			}
+			if (revivaling == false) {
+				RevivalAvatarAction die = new RevivalAvatarAction(this, dieTime * 1000);
+				die.getActionQueue().enDelayQueue(die);
+				revivaling = true;
 			}
 		}
 		return true;
@@ -171,6 +193,70 @@ public class Avatar extends Robot {
 		}
 	}
 
+	/* 满血复活 */
+	public boolean renascence() {
+		if (getLivingState() == ALIVE) {
+			return false;
+		}
+		if (getLivingState() == DISTORY) {
+			return false;
+		}
+		setLivingState(ALIVE);
+		sendChangeStatuMsg(LIVING, getLivingState());
+		List<Damage> damages = new ArrayList<>();
+		Damage curSoul = new Damage(this, this);
+		curSoul.setDamageType(EnumAttr.CUR_SOUL.getValue());
+		curSoul.setDamageValue(0 - getInitSoul());
+		damages.add(curSoul);
+		takeDamage(curSoul);
+
+		Damage curBlood = new Damage(this, this);
+		curBlood.setDamageType(EnumAttr.CUR_BLOOD.getValue());
+		curBlood.setDamageValue(0 - getInitBlood());
+		damages.add(curBlood);
+		takeDamage(curBlood);
+
+		if (damages.size() > 0) {
+			DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
+			damagesPb.setAttackId(-1);
+			for (Damage d : damages) {
+				DamageMsg.Builder dmsg = DamageMsg.newBuilder();
+				d.writeProto(dmsg);
+				damagesPb.addDamages(dmsg);
+			}
+			Set<Long> players = getNears(new PlayerSelectorHelper(this));
+			// 添加自己
+			players.add(getArmyId());
+			for (Long armyId : players) {
+				ArmyProxy army = WorldMgr.getArmy(armyId);
+				PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
+				if (army != null) {
+					army.sendPbMessage(message);
+				}
+			}
+		}
+		this.isSoulState = false;
+		this.revivaling = false;
+		AvatarPollingAction robotAction = new AvatarPollingAction(this);
+		this.enDelayQueue(robotAction);
+		return true;
+	}
+
+	class RevivalAvatarAction extends DelayAction {
+		private Avatar avatar;
+
+		public RevivalAvatarAction(Avatar avatar, int delay) {
+			super(avatar, delay);
+			this.avatar = avatar;
+		}
+
+		@Override
+		public void execute() {
+			avatar.renascence();
+		}
+
+	}
+
 	public int getCorrespond() {
 		return correspond;
 	}
@@ -182,5 +268,4 @@ public class Avatar extends Robot {
 	public void setCampaignId(int campaignId) {
 		this.campaignId = campaignId;
 	}
-
 }

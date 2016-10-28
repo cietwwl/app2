@@ -11,7 +11,7 @@ public class MonsterInfo {
 
 	private int		monsterType;		// 怪物种类
 
-	private int		dynamic;			// 动态怪物，会根据玩家ID来刷新不同怪物
+	private int		dynamic;			// 动态怪物，会根据玩家等级来刷新不同怪物
 
 	private int		alertRange;			// 警戒范围
 
@@ -69,6 +69,7 @@ public class MonsterInfo {
 	private int		drop4;
 	/** 技能 */
 	private String	skillIds;
+	private int		defaultState;		// 默认状态
 	/** ai **/
 	private int		aiId;
 
@@ -322,6 +323,14 @@ public class MonsterInfo {
 
 	public void setDynamic(int dynamic) {
 		this.dynamic = dynamic;
+	}
+
+	public int getDefaultState() {
+		return defaultState;
+	}
+
+	public void setDefaultState(int defaultState) {
+		this.defaultState = defaultState;
 	}
 
 }

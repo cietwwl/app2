@@ -1,6 +1,7 @@
 package com.chuangyou.xianni.gather.cmd;
 
 import com.chuangyou.common.protobuf.pb.gather.TriggerReqProto.TriggerReqMsg;
+import com.chuangyou.xianni.constant.RoleConstants.NpcType;
 import com.chuangyou.xianni.entity.spawn.NpcInfo;
 import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.event.ObjectEvent;
@@ -27,7 +28,7 @@ public class TriggerCmd implements Command  {
 		NpcInfo info = NpcInfoTemplateMgr.npcInfoTemps.get(id);
 		GamePlayer player = WorldMgr.getPlayer(playerId);
 		if(player!=null && info!=null){
-			if(info.getType() == 5){
+			if(info.getType() == NpcType.TRIGGER){
 				player.notifyListeners(new ObjectEvent(this, id, EventNameType.TASK_TRIGGER));
 			}
 			ScriptLogic.doScript(info.getScriptId(), player,id);		

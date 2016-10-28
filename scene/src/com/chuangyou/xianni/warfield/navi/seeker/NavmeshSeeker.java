@@ -23,12 +23,12 @@ import com.chuangyou.xianni.warfield.field.Field;
  */
 public class NavmeshSeeker {
 
-	private List<NavmeshTriangle> _meshTriangles;
-	private Map<Integer, List<Integer>> _grids;
-	private Rect _rect;
-	private int _step;
-	private int _gridX;
-	private int _gridZ;
+	private List<NavmeshTriangle>		_meshTriangles;
+	private Map<Integer, List<Integer>>	_grids;
+	private Rect						_rect;
+	private int							_step;
+	private int							_gridX;
+	private int							_gridZ;
 
 	public List<NavmeshTriangle> getNavmeshData() {
 		return _meshTriangles;
@@ -82,7 +82,7 @@ public class NavmeshSeeker {
 	 * @return
 	 */
 	public NavmeshTriangle getTriangle(Vector3 point3D) {
-		return getTriangle(new Vector2(point3D.x, point3D.z));
+		return getTriangle(new Vector2(point3D.getX(), point3D.getZ()));
 	}
 
 	/**
@@ -109,20 +109,25 @@ public class NavmeshSeeker {
 	/**
 	 * 寻路
 	 * 
-	 * @param startPos 起始位置
-	 * @param endPos 终点位置
-	 * @param path 输出路径点
-	 * @param offset 物体大小(体积)
+	 * @param startPos
+	 *            起始位置
+	 * @param endPos
+	 *            终点位置
+	 * @param path
+	 *            输出路径点
+	 * @param offset
+	 *            物体大小(体积)
 	 * @return
 	 */
 	public NavmeshSeekerStatuCode seek(Vector3 startPos, Vector3 endPos, List<Vector3> path, int offset) {
 		if (_meshTriangles == null || _meshTriangles.size() == 0) {
-			// System.out.println("_meshTriangles: " + _meshTriangles + " _meshTriangles.size():" + _meshTriangles.size());
+			// System.out.println("_meshTriangles: " + _meshTriangles + "
+			// _meshTriangles.size():" + _meshTriangles.size());
 			return NavmeshSeekerStatuCode.NoMeshData;
 		}
 		resetData();
 		List<NavmeshTriangle> pathTri = new ArrayList<NavmeshTriangle>();
-		NavmeshSeekerStatuCode code = seekTrianglePath(new Vector2(startPos.x, startPos.z), new Vector2(endPos.x, endPos.z), pathTri, offset);
+		NavmeshSeekerStatuCode code = seekTrianglePath(new Vector2(startPos.getX(), startPos.getZ()), new Vector2(endPos.getX(), endPos.getZ()), pathTri, offset);
 		if (code != NavmeshSeekerStatuCode.Success)
 			return code;
 		code = createWayPoints(startPos, endPos, pathTri, path);
@@ -148,10 +153,12 @@ public class NavmeshSeeker {
 		if (endTri == null)
 			endTri = getTriangle(endPos);
 		if (startTri == null || endTri == null) {
-			// System.out.println("已经跳出三角形----startTri: " + startTri + " " + "endTri: " + endTri + " endPos:" + endPos);
+			// System.out.println("已经跳出三角形----startTri: " + startTri + " " +
+			// "endTri: " + endTri + " endPos:" + endPos);
 			return NavmeshSeekerStatuCode.NoStartTriOrEndTri;
 		}
-		//////////////////////////////////// A*算法 ///////////////////////////////////////
+		//////////////////////////////////// A*算法
+		//////////////////////////////////// ///////////////////////////////////////
 		int pathSessionId = 1;
 		boolean foundPath = false;
 		List<NavmeshTriangle> openList = new ArrayList<NavmeshTriangle>();
@@ -175,7 +182,7 @@ public class NavmeshSeeker {
 				int neighborID = currNode.getNeighbor(i);
 				NavmeshTriangle neighborTri;
 				// 3. 如果该相邻节点不可通行,则什么操作也不执行,继续检验下一个节点;
-				if (neighborID < 0)  // 没有该邻居节点
+				if (neighborID < 0) // 没有该邻居节点
 					continue;
 				else {
 					neighborTri = _meshTriangles.get(neighborID);// [neighborID];
@@ -249,14 +256,18 @@ public class NavmeshSeeker {
 	/**
 	 * 生成最终的路径点
 	 * 
-	 * @param startPos 起始点
-	 * @param endPos 终点
-	 * @param triPathList 三角形路径列表
-	 * @param wayPoints 路径点
+	 * @param startPos
+	 *            起始点
+	 * @param endPos
+	 *            终点
+	 * @param triPathList
+	 *            三角形路径列表
+	 * @param wayPoints
+	 *            路径点
 	 * @return
 	 */
 	private NavmeshSeekerStatuCode createWayPoints(Vector3 startPos, Vector3 endPos, List<NavmeshTriangle> triPathList, List<Vector3> wayPoints) {
-		Vector2 endPoint2D = new Vector2(endPos.x, endPos.z);
+		Vector2 endPoint2D = new Vector2(endPos.getX(), endPos.getZ());
 		if (triPathList.size() == 0 || startPos == null || endPos == null)
 			return NavmeshSeekerStatuCode.Failed;
 		// 保证从起点到终点的顺序
@@ -276,15 +287,17 @@ public class NavmeshSeeker {
 			wayPoints.add(endPos);
 			return NavmeshSeekerStatuCode.Success;
 		}
-		NavmeshWayPoint wayPoint = new NavmeshWayPoint(triPathList.get(0), new Vector2(startPos.x, startPos.z), startPos);
+		NavmeshWayPoint wayPoint = new NavmeshWayPoint(triPathList.get(0), new Vector2(startPos.getX(), startPos.getZ()), startPos);
 		while (!NavmeshMath.isEqualZero(Vector2.sub(wayPoint.point2D(), endPoint2D))) {
 			wayPoint = getFurthestWayPoint(wayPoint, triPathList, endPos);
 			if (wayPoint == null) {
-				// System.out.println("--------CanNotGetNextWayPoint: " + NavmeshSeekerStatuCode.CanNotGetNextWayPoint);
+				// System.out.println("--------CanNotGetNextWayPoint: " +
+				// NavmeshSeekerStatuCode.CanNotGetNextWayPoint);
 				return NavmeshSeekerStatuCode.CanNotGetNextWayPoint;
 			}
 			if (wayPoints.contains(wayPoint.point3D())) {
-				// System.out.println("--------*CanNotGetNextWayPoint: " + NavmeshSeekerStatuCode.CanNotGetNextWayPoint);
+				// System.out.println("--------*CanNotGetNextWayPoint: " +
+				// NavmeshSeekerStatuCode.CanNotGetNextWayPoint);
 				return NavmeshSeekerStatuCode.CanNotGetNextWayPoint;
 			}
 			wayPoints.add(wayPoint.point3D());
@@ -317,7 +330,7 @@ public class NavmeshSeeker {
 			currTri = triPathList.get(i);
 			outSide = currTri.getSide(currTri.getOutWallIndex());
 			if (i == triPathList.size() - 1) {
-				testPntA = new Vector2(endPos.x, endPos.z);// endPos;
+				testPntA = new Vector2(endPos.getX(), endPos.getZ());// endPos;
 				testPntB = testPntA;
 			} else {
 				testPntA = outSide.getStartPoint();
@@ -352,7 +365,7 @@ public class NavmeshSeeker {
 		}
 
 		// 到达终点
-		nextWay = new NavmeshWayPoint(triPathList.get(triPathList.size() - 1), new Vector2(endPos.x, endPos.z), endPos);
+		nextWay = new NavmeshWayPoint(triPathList.get(triPathList.size() - 1), new Vector2(endPos.getX(), endPos.getZ()), endPos);
 
 		return nextWay;
 	}

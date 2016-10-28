@@ -61,8 +61,20 @@ function isHasTask(playerId,taskId){
  * @param isBind
  * @return true:成功
  */
-function addItem(playerId,templateId,count,isBind){
-	return com.chuangyou.xianni.script.manager.ScriptInterfaceManager.addItem(playerId,templateId,count,isBind);
+function addItemFromGather(playerId,templateId,count,isBind){
+	return com.chuangyou.xianni.script.manager.ScriptInterfaceManager.addItemFromGather(playerId,templateId,count,isBind);
+}
+
+/**
+ * 开箱子获得物品
+ * @param playerId
+ * @param templateId
+ * @param count
+ * @param isBind
+ * @returns
+ */
+function addItemFromOpenBox(playerId,templateId,count,isBind){
+	return com.chuangyou.xianni.script.manager.ScriptInterfaceManager.addItemFromOpenItem(playerId,templateId,count,isBind);
 }
 
 
@@ -90,4 +102,98 @@ function createPrivateMonster(playerId,monsterId,leaveTime,mapId){
 function createPrivateMonster(playerId,monsterId,x,y,z,leaveTime,mapId){
 	com.chuangyou.xianni.script.manager.ScriptInterfaceManager.createPrivateMonster(playerId,monsterId,x,y,z,leaveTime,mapId);
 }
+/**
+ * 点击NPC进入某个副本
+ * @param playerId
+ * @param camaignId  副本ID
+ * @param npcIndexId npc唯一的ID
+ */
+function createCampaingByOnceNpc(playerId,camaignId,npcIndexId){
+	com.chuangyou.xianni.script.manager.ScriptInterfaceManager.createCampaingByOnceNpc(playerId,camaignId,npcIndexId);
+}
 
+/**
+ * 触发传送门
+ * @param playerId
+ * @param npcEntityId
+ */
+function triggerTransferNpc(playerId,npcEntityId){
+	com.chuangyou.xianni.script.manager.ScriptInterfaceManager.triggerTransferNpc(playerId, npcEntityId);
+}
+
+/**
+ * 获取玩家等级
+ * @param playerId
+ */
+function getPlayerLevel(playerId){
+	return com.chuangyou.xianni.script.manager.ScriptInterfaceManager.getPlayerLevel(playerId);
+}
+
+/**
+ * 获取玩家名字
+ * @param playerId
+ * @return
+ */
+function getPlayerName(playerId){
+	return com.chuangyou.xianni.script.manager.ScriptInterfaceManager.getPlayerName(playerId);
+}
+
+/**
+ * 获取玩家职业
+ * @param playerId
+ * @return
+ */
+function getPlayerJob(playerId){
+	return com.chuangyou.xianni.script.manager.ScriptInterfaceManager.getPlayerJob(playerId);
+}
+
+/**
+ * 获取玩家境界等级
+ * @param playerId
+ * @return
+ */
+function getPlayerState(playerId){
+	return com.chuangyou.xianni.script.manager.ScriptInterfaceManager.getPlayerState(playerId);
+}
+
+/**
+ * 获取玩家背包剩余空间
+ * @param playerId
+ * @return
+ */
+function getPlayerBagSpace(playerId){
+	return com.chuangyou.xianni.script.manager.ScriptInterfaceManager.getPlayerBagSpace(playerId);
+}
+
+/**
+ * 只加气血
+ */
+function addCurBlood(playerId, addNum){
+	com.chuangyou.xianni.script.manager.ScriptInterfaceManager.addCurBlood(playerId, addNum);
+}
+/**
+ * 只加魂血
+ * @param playerId
+ * @param addNum
+ */
+function addCurSoul(playerId, addNum){
+	com.chuangyou.xianni.script.manager.ScriptInterfaceManager.addCurSoul(playerId, addNum);
+}
+
+/**
+ * 加血，先提升元魂，再提升气血
+ * @param playerId
+ * @param addNum
+ */
+function addCurSoulOrBlood(playerId, addNum){
+	com.chuangyou.xianni.script.manager.ScriptInterfaceManager.addCurSoulOrBlood(playerId, addNum);
+}
+
+/**
+ * 给玩家加buff
+ * @param playerId
+ * @param buffTempId
+ */
+function addBuff(playerId, buffTempId){
+	com.chuangyou.xianni.script.manager.ScriptInterfaceManager.addBuff(playerId, buffTempId);
+}

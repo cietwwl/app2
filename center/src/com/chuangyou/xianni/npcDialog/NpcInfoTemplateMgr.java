@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.chuangyou.xianni.constant.RoleConstants.NpcType;
 import com.chuangyou.xianni.entity.spawn.NpcInfo;
 import com.chuangyou.xianni.sql.dao.DBManager;
 import com.chuangyou.xianni.sql.dao.NpcInfoDao;
@@ -26,7 +27,7 @@ public class NpcInfoTemplateMgr {
 		List<NpcInfo> infos = dao.getAll();
 		for(NpcInfo npc : infos)
 		{
-			if(npc.getType() == 3) //转场点
+			if(npc.getType() == NpcType.TRANSFER) //转场点
 			{
 				transpointTemps.put(npc.getNpcId(), npc);
 			}else{

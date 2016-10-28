@@ -1,7 +1,6 @@
 package com.chuangyou.xianni.entity.fieldBoss;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class FieldBossCfg {
@@ -43,10 +42,16 @@ public class FieldBossCfg {
 	private int multiTag;
 	
 	/** 刷新公告 */
-	private String bornNotice;
+	private int bornNotice;
 	
 	/** 击杀公告 */
-	private String deadNotice;
+	private int deadNotice;
+	
+	/** 触发单人副本的死亡公告 */
+	private int singleNotice;
+	
+	/** 触发多人副本的死亡公告 */
+	private int multiNotice;
 	
 	/** 对boss第一击玩家奖励物品id */
 	private int firstAwardItem;
@@ -69,7 +74,7 @@ public class FieldBossCfg {
 	private int shieldAwardNum;
 	
 	/** 传送阵模型id */
-	private int transferModelId;
+	private int transferNpcId;
 	
 	private List<String> timeList = null;
 
@@ -178,20 +183,36 @@ public class FieldBossCfg {
 		this.multiTag = multiTag;
 	}
 
-	public String getBornNotice() {
+	public int getBornNotice() {
 		return bornNotice;
 	}
 
-	public void setBornNotice(String bornNotice) {
+	public void setBornNotice(int bornNotice) {
 		this.bornNotice = bornNotice;
 	}
 
-	public String getDeadNotice() {
+	public int getDeadNotice() {
 		return deadNotice;
 	}
 
-	public void setDeadNotice(String deadNotice) {
+	public void setDeadNotice(int deadNotice) {
 		this.deadNotice = deadNotice;
+	}
+
+	public int getSingleNotice() {
+		return singleNotice;
+	}
+
+	public void setSingleNotice(int singleNotice) {
+		this.singleNotice = singleNotice;
+	}
+
+	public int getMultiNotice() {
+		return multiNotice;
+	}
+
+	public void setMultiNotice(int multiNotice) {
+		this.multiNotice = multiNotice;
 	}
 
 	public int getFirstAwardItem() {
@@ -258,12 +279,12 @@ public class FieldBossCfg {
 		this.shieldAwardNum = shieldAwardNum;
 	}
 
-	public int getTransferModelId() {
-		return transferModelId;
+	public int getTransferNpcId() {
+		return transferNpcId;
 	}
 
-	public void setTransferModelId(int transferModelId) {
-		this.transferModelId = transferModelId;
+	public void setTransferNpcId(int transferNpcId) {
+		this.transferNpcId = transferNpcId;
 	}
 
 	public void setTimeList(List<String> timeList) {

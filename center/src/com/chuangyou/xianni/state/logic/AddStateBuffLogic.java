@@ -1,13 +1,12 @@
 package com.chuangyou.xianni.state.logic;
 
-import com.chuangyou.common.protobuf.pb.state.AddStateBuffProto.AddStateBuffMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
+import com.chuangyou.xianni.constant.CampaignConstant.CampaignType;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.state.ConsumSystemConfig;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.state.template.StateTemplateMgr;
 
@@ -29,9 +28,9 @@ public class AddStateBuffLogic extends BaseStateLogic{
 		//加BUFF
 		int buffId = config.getParam1();
 		if(buffId>0){
-			AddStateBuffMsg.Builder msg = AddStateBuffMsg.newBuilder();
-			msg.setBuffId(buffId);
-			player.sendPbMessage(MessageUtil.buildMessage(Protocol.S_ADD_STATE_BUFF,msg));
+			if(player.getArmyInventory() != null){
+				player.getArmyInventory().addCampaignBuff(buffId, CampaignType.STATE);
+			}
 		}
 		
 		this.sendResult(player, 2, id);

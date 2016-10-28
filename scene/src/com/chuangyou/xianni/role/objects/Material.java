@@ -8,8 +8,8 @@ import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.constant.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.action.MaterialAutoDestroy;
-import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 
 /**
  * 镖车物资

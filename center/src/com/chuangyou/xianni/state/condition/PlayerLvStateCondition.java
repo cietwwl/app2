@@ -29,7 +29,7 @@ public class PlayerLvStateCondition extends BaseStateCondition {
 	@Override
 	public void addTrigger(GamePlayer player) {
 		// TODO Auto-generated method stub
-		this.initProcess();
+		this.initListener();
 		player.getBasePlayer().addListener(listener, EventNameType.UPDATE_PLAYER_PROPERTY);
 	}
 

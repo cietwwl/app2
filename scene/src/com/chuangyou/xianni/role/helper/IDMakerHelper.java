@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class IDMakerHelper {
-	private static AtomicInteger	current		= new AtomicInteger(100000);
+	private static AtomicInteger	current		= new AtomicInteger(1000000);
 	private static AtomicLong		NPC_ID		= new AtomicLong(1000000000000l);  			
 	private static AtomicLong		BUFFER_ID	= new AtomicLong(1);
 	private static AtomicInteger	CAMPAIGN_ID	= new AtomicInteger(1);

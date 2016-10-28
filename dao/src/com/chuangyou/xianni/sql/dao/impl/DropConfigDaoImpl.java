@@ -76,6 +76,7 @@ public class DropConfigDaoImpl extends BaseDao implements DropConfigDao {
 					info.setItemId(rs.getInt("itemId"));
 					info.setCount(rs.getInt("count"));
 					info.setWeight(rs.getInt("weight"));
+					info.setSendNotice(rs.getInt("sendNotice"));
 					
 					pool = infos.get(info.getPoolId());
 					if(pool == null){

@@ -1,0 +1,7 @@
+option java_package = "com.chuangyou.common.protobuf.pb.battle";
+option java_outer_classname = "AddSoulAndBloodProto";
+
+message AddSoulAndBloodMsg{
+	optional int32 addNum = 1; // 添加数量
+	optional int32 addType = 2; // 添加类型
+}

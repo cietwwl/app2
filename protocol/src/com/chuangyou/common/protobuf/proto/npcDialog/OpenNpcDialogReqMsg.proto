@@ -5,4 +5,5 @@ option java_outer_classname = "OpenNpcDialogReqProto";
 //打开NPC对话
 message OpenNpcDialogReqMsg{
 	required int32 npcType = 1; // NPC静态表中的唯一ID
+	optional int64 npcEntryId = 2;// npc实体ID
 }

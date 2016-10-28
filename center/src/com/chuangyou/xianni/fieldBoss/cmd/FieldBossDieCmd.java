@@ -42,28 +42,28 @@ public class FieldBossDieCmd implements Command {
 		//第一击奖励
 		if(req.getFirstDamagePlayer() > 0){
 			emailContent = LanguageSet.getResource("CenterServer.fieldBoss.firstDamageAward");
-			emailContent.replace("@bossName@", monsterCfg.getName());
+			emailContent = emailContent.replaceAll("@bossName@", monsterCfg.getName());
 			
 			sendAward(req.getFirstDamagePlayer(), cfg.getFirstAwardItem(), cfg.getFirstAwardNum(), emailTitle, emailContent);
 		}
 		//最高伤害奖励
 		if(req.getMostDamagePlayer() > 0){
 			emailContent = LanguageSet.getResource("CenterServer.fieldBoss.mostDamageAward");
-			emailContent.replace("@bossName@", monsterCfg.getName());
+			emailContent = emailContent.replaceAll("@bossName@", monsterCfg.getName());
 			
 			sendAward(req.getMostDamagePlayer(), cfg.getDmgAwardItem(), cfg.getDmgAwardNum(), emailTitle, emailContent);
 		}
 		//破盾奖励
 		if(req.getShieldKiller() > 0){
 			emailContent = LanguageSet.getResource("CenterServer.fieldBoss.shieldAward");
-			emailContent.replace("@bossName@", monsterCfg.getName());
+			emailContent = emailContent.replaceAll("@bossName@", monsterCfg.getName());
 			
 			sendAward(req.getShieldKiller(), cfg.getShieldAwardItem(), cfg.getShieldAwardNum(), emailTitle, emailContent);
 		}
 		
 		//以上奖励都没拿到时，只要对BOSS造成伤害就会有以下奖励
 		emailContent = LanguageSet.getResource("CenterServer.fieldBoss.normalAward");
-		emailContent.replace("@bossName", monsterCfg.getName());
+		emailContent = emailContent.replaceAll("@bossName", monsterCfg.getName());
 		for(long playerId: req.getNormalPlayerList()){
 			if(playerId <= 0) continue;
 			

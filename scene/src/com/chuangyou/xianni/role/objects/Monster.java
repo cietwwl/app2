@@ -22,6 +22,7 @@ import com.chuangyou.xianni.campaign.task.CTBaseCondition;
 import com.chuangyou.xianni.config.SceneGlobal;
 import com.chuangyou.xianni.constant.BattleSettlementConstant;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.constant.RoleConstants.RoleType;
 import com.chuangyou.xianni.drop.manager.DropManager;
 import com.chuangyou.xianni.entity.spawn.AiConfig;
 import com.chuangyou.xianni.entity.spawn.MonsterInfo;
@@ -34,7 +35,6 @@ import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.action.UpdatePositionAction;
 import com.chuangyou.xianni.role.helper.Hatred;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
-import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.script.IMonsterDie;
 import com.chuangyou.xianni.role.template.AiConfigTemplateMgr;
 import com.chuangyou.xianni.script.IScript;
@@ -178,6 +178,10 @@ public class Monster extends ActiveLiving {
 		PlayerKillMonsterListMsg.Builder list = PlayerKillMonsterListMsg.newBuilder();
 		for (Long id : joiners) {
 			if (id == killer.getId()) {
+				continue;
+			}
+			if (getField() == null) {
+				Log.error("--------------击杀者没有地图信息-------------");
 				continue;
 			}
 			Living l = getField().getLiving(id);

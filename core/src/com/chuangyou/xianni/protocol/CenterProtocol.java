@@ -423,6 +423,9 @@ public interface CenterProtocol {
 	
 	/** 世界BOSS夺宝活动奖励 */
 	public static short			C_WORLD_BOSS_TREASURE_AWARD		= 10162;
+	
+	/** 场景服请求发送公告 */
+	public static short			C_CHAT_NOTICE_SEND				= 10163;
 
 	// =========================>时装<===================================
 	/** 获取时装信息 */
@@ -504,4 +507,6 @@ public interface CenterProtocol {
 	public static final short	C_TRUCK_UPDATE_TRUCK_STATE	= 10731;
 	/** 镖车被劫 **/
 	public static final short	C_TRUCK_ROBBED	= 10732;
+	/** 领取福利奖励 **/
+	public static final short	C_RECEIVE_WELFARE_AWARD	= 10733;
 }

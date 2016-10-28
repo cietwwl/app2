@@ -3,12 +3,9 @@ package com.chuangyou.xianni.ai.proxy;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.ai.AIState;
 import com.chuangyou.xianni.ai.behavior.Attack;
 import com.chuangyou.xianni.ai.behavior.MonsterBaseBehavior;
-import com.chuangyou.xianni.ai.behavior.BeAttack;
 import com.chuangyou.xianni.ai.behavior.Chase;
 import com.chuangyou.xianni.ai.behavior.Idle;
 import com.chuangyou.xianni.ai.behavior.Patrol;
@@ -50,7 +47,7 @@ public class MonsterAI implements AI {// extends BaseProxy {
 			((Monster) living).countHatreds();
 			if (((Monster) living).getHatreds().size() > 0) {
 				living.addCooldown(CoolDownTypes.RECOUNTHATRED, null, SceneGlobal.AI_MONSTER_HETRED_RECOUNT);
-				//return;
+				// return;
 			}
 		}
 		if (living.isCooldowning(CoolDownTypes.BE_ATTACK, null)) {

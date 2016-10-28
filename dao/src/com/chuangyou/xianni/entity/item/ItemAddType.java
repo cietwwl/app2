@@ -45,8 +45,8 @@ public interface ItemAddType {
 	 */
 	public static final short	DROP_PICKUP		= 3006;
 
-	/** 脚本获得物品 */
-	public static final short	SCRIPT_ADD		= 3007;
+	/** 采集物 */
+	public static final short	GATHER_ADD		= 3007;
 	/**
 	 * 空间获得
 	 */
@@ -85,11 +85,20 @@ public interface ItemAddType {
 	 * 镖车领奖
 	 */
 	public static final short	TRUCK_REWARD	= 3015;
-	
+
 	/**
 	 * 任务掉落物品
 	 */
-	public static final short TASK_DROP   = 3016;
+	public static final short	TASK_DROP		= 3016;
+
+	/**
+	 * 消耗物品获取
+	 */
+	public static final short	COST_ITEM		= 3017;
 	
+	/**
+	 * 开箱子
+	 */
+	public static final short	OPEN_BOX		= 3018;
 
 }

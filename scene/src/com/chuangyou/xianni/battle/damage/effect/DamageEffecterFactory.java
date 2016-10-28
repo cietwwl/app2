@@ -1,6 +1,7 @@
 package com.chuangyou.xianni.battle.damage.effect;
 
 import com.chuangyou.xianni.battle.damage.Damage;
+import com.chuangyou.xianni.constant.DamageEffecterType;
 
 /** 伤害作用器工厂 */
 public class DamageEffecterFactory {

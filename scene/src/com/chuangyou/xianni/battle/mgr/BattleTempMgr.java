@@ -11,6 +11,7 @@ import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.entity.skill.SnareTemplateInfo;
 import com.chuangyou.xianni.entity.soul.SoulFuseSkillConfig;
+import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.sql.dao.DBManager;
 
 public class BattleTempMgr {
@@ -34,6 +35,8 @@ public class BattleTempMgr {
 	 * 融合技能模板
 	 */
 	private static Map<Integer, SoulFuseSkillConfig>			fuseSkillMappingSkillId	= new HashMap<>();
+
+	private static SkillActionTemplateInfo						UN_TRANS_SKILL_TEMP;
 
 	public static boolean init() {
 		reloadPb();
@@ -142,6 +145,13 @@ public class BattleTempMgr {
 			return fuseSkillMappingSkillId.get(skillId);
 		}
 		return null;
+	}
+
+	public static SkillActionTemplateInfo getUN_TRANS_SKILL_TEMP() {
+		if (UN_TRANS_SKILL_TEMP == null) {
+			UN_TRANS_SKILL_TEMP = getActionInfo(getBSkillInfo(Player.UN_TRANS_SKILL_ID).getActionId());
+		}
+		return UN_TRANS_SKILL_TEMP;
 	}
 
 }

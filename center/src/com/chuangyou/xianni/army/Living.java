@@ -195,6 +195,8 @@ public abstract class Living {
 		properties[DEFENCE].setTempData(tempData.getDefence());
 		properties[SOUL_ATTACK].setTempData(tempData.getSoulAttack());
 		properties[SOUL_DEFENCE].setTempData(tempData.getSoulDefence());
+		properties[REGAIN_SOUL].setTempData(tempData.getRegainSoul());
+		properties[REGAIN_BLOOD].setTempData(tempData.getRegainBlood());
 		properties[SPEED].setTempData(tempData.getSpeed());
 
 		// // 添加背包百分比加成

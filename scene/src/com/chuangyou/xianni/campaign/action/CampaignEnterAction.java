@@ -11,11 +11,9 @@ import com.chuangyou.xianni.battle.buffer.BufferFactory;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.task.CTBaseCondition;
-import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.constant.CampaignConstant.CampaignStatu;
-import com.chuangyou.xianni.constant.CampaignConstant.CampaignType;
 import com.chuangyou.xianni.constant.EnterMapResult;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.field.FieldInfo;
@@ -25,8 +23,6 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.CenterProtocol;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.objects.Player;
-import com.chuangyou.xianni.team.Team;
-import com.chuangyou.xianni.team.TeamMgr;
 import com.chuangyou.xianni.warfield.FieldMgr;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.template.FieldTemplateMgr;
@@ -66,41 +62,27 @@ public class CampaignEnterAction extends Action {
 	@Override
 	public void execute() {
 		if (!campaign.agreedToEnter(army)) {
-			// ErrorMsgUtil.sendErrorMsg(army, ErrorCode.CAMPAIGN_CAN_NOT_JOIN,
-			// Protocol.S_CAMPAIGN_OPTION, "不允许进入");
-			// 地图变更信息
-			ChangeMapResultMsg.Builder cmbuilder = ChangeMapResultMsg.newBuilder();
-			cmbuilder.setResult(EnterMapResult.CAMPAIGN_ERROR);// 副本错误;
-			army.sendPbMessage(MessageUtil.buildMessage(Protocol.C_ENTER_SENCE_MAP_RESULT, cmbuilder));
+			army.returnBornMap();
+			ErrorMsgUtil.sendErrorMsg(army, EnterMapResult.CAMPAIGN_ERROR, (short) -1, "副本不允许进入");
 			return;
 		}
 
 		// 进入前，向center服务器同步一次位置
 		reloadPos(army);
-		// 进入地图
-		FieldInfo fieldTemp = FieldTemplateMgr.getFieldTemp(field.getMapKey());
 		// 若无初始位置,则设置进入时占无效位置
-		if (vector3 == null || (vector3.x <= 0 && vector3.y <= 0 && vector3.z <= 0)) {
+		if (vector3 == null || vector3 == Vector3.Invalid) {
 			// 当副本有出生点时候，进入地图，优先出现在出生点
-			Vector3 born = campaign.getBornNode(army);
-			if (born == null) {
-				vector3 = new Vector3(fieldTemp.getPosition().x, fieldTemp.getPosition().y, fieldTemp.getPosition().z, fieldTemp.getPosition().angle);
-			} else {
-				vector3 = new Vector3(born.x, born.y, born.z, born.angle);
-			}
+			vector3 = campaign.getBornNode(army);
 		}
 
 		army.changeField(field, vector3);
-
 		// 地图变更信息
 		ChangeMapResultMsg.Builder cmbuilder = ChangeMapResultMsg.newBuilder();
 		cmbuilder.setResult(EnterMapResult.SUCCESS);// 进入成功
 		PostionMsg.Builder postionMsg = PostionMsg.newBuilder();
 		postionMsg.setMapId(field.id);
 		postionMsg.setMapKey(field.getMapKey());
-
 		PBVector3.Builder builder = Vector3BuilderHelper.build(vector3);
-
 		postionMsg.setPostion(builder);
 		cmbuilder.setPostion(postionMsg);
 		army.sendPbMessage(MessageUtil.buildMessage(Protocol.C_ENTER_SENCE_MAP_RESULT, cmbuilder));
@@ -115,24 +97,10 @@ public class CampaignEnterAction extends Action {
 		army.sendPbMessage(statuMsg);
 		// 发送副本信息
 		campaign.sendCampaignInfo(army);
-		// 如果有副本任务，则添加副本buff
-		if (campaign.getTask() != null && campaign.getTask().getConditionType() == CTBaseCondition.ADD_BUFF_PLAYER) {
-			String bufferIds = campaign.getTask().getTemp().getStrParam1();
-			if (bufferIds != null && !bufferIds.equals("")) {
-				String[] attr = bufferIds.split(",");
-				for (String str : attr) {
-					int bufferId = Integer.valueOf(str);
-					SkillBufferTemplateInfo bufferTemp = BattleTempMgr.getBufferInfo(bufferId);
-					if (bufferTemp != null) {
-						Buffer buffer = BufferFactory.createBuffer(army.getPlayer(), army.getPlayer(), bufferTemp);
-						army.getPlayer().addCampaignBuff(buffer);
-					}
-				}
-			}
-		}
+		campaign.addCampaignBuff(army);
 	}
 
-	private void reloadPos(ArmyProxy army) {
+	public static void reloadPos(ArmyProxy army) {
 		ArmyInfoReloadMsg.Builder armyReload = ArmyInfoReloadMsg.newBuilder();
 		Player player = army.getPlayer();
 		Field field = FieldMgr.getIns().getField(army.getFieldId());
@@ -145,6 +113,8 @@ public class CampaignEnterAction extends Action {
 			PBVector3.Builder pbPos = Vector3BuilderHelper.build(curPos);
 			postion.setPostion(pbPos.build());
 			armyReload.setPostion(postion.build());
+
+			army.updataPostion(field.getMapKey(), field.id, curPos);
 		}
 		PBMessage redata = MessageUtil.buildMessage(CenterProtocol.C_PLAYER_RELOAD_SCENCE_DATA, armyReload);
 		army.sendPbMessage(redata);

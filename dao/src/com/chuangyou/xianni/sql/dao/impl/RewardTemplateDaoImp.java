@@ -36,15 +36,14 @@ public class RewardTemplateDaoImp extends BaseDao implements RewardTemplateDao {
 					info.setParam2(rs.getInt("param2"));
 					info.setItemTempId1(rs.getInt("itemTempId1"));
 					info.setCount1(rs.getInt("count1"));
-					info.setItemTempId2(rs.getInt("itemTempId1"));
-					info.setCount2(rs.getInt("count1"));
-					info.setItemTempId3(rs.getInt("itemTempId1"));
-					info.setCount3(rs.getInt("count1"));
-					info.setItemTempId4(rs.getInt("itemTempId1"));
-					info.setCount4(rs.getInt("count1"));
-					info.setItemTempId5(rs.getInt("itemTempId1"));
-					info.setCount5(rs.getInt("count1"));
-					info.setItemTempId5(rs.getInt("itemTempId1"));
+					info.setItemTempId2(rs.getInt("itemTempId2"));
+					info.setCount2(rs.getInt("count2"));
+					info.setItemTempId3(rs.getInt("itemTempId3"));
+					info.setCount3(rs.getInt("count3"));
+					info.setItemTempId4(rs.getInt("itemTempId4"));
+					info.setCount4(rs.getInt("count4"));
+					info.setItemTempId5(rs.getInt("itemTempId5"));
+					info.setCount5(rs.getInt("count5"));
 					info.setExtendParam(rs.getString("extendParam"));
 					infos.add(info);
 				}

@@ -6,6 +6,7 @@ import com.chuangyou.xianni.role.objects.Transfer;
 import com.chuangyou.xianni.warfield.spawn.MonsterSpawnNode;
 import com.chuangyou.xianni.warfield.spawn.WorkingState;
 import com.chuangyou.xianni.warfield.template.SpawnTemplateMgr;
+import com.chuangyou.xianni.world.ArmyProxy;
 
 public class EliteBossTriggerCampaign extends Campaign {
 
@@ -20,6 +21,18 @@ public class EliteBossTriggerCampaign extends Campaign {
 		// TODO Auto-generated constructor stub
 		this.transfer = enterTransfer;
 		this.tagId = tagId;
+	}
+	
+	@Override
+	public void onPlayerLeave(ArmyProxy army, boolean isUnline) {
+		// TODO Auto-generated method stub
+		this.onPlayerExit(army);
+	}
+	
+	@Override
+	public void onOverLeave(ArmyProxy army) {
+		// TODO Auto-generated method stub
+		this.onPlayerExit(army);
 	}
 	
 	@Override
@@ -45,7 +58,9 @@ public class EliteBossTriggerCampaign extends Campaign {
 		
 		//副本销毁时移除传送门
 		if(transfer != null){
-			transfer.getField().leaveField(transfer, true);
+			if(transfer.getField() != null){
+				transfer.getField().leaveField(transfer, true);
+			}
 			transfer = null;
 		}
 	}
@@ -56,7 +71,9 @@ public class EliteBossTriggerCampaign extends Campaign {
 		super.clearCampaignData();
 		
 		if(transfer != null){
-			transfer.getField().leaveField(transfer, true);
+			if(transfer.getField() != null){
+				transfer.getField().leaveField(transfer, true);
+			}
 			transfer = null;
 		}
 	}

@@ -8,6 +8,7 @@ import com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg;
 import com.chuangyou.common.protobuf.pb.army.ArmyInfoMsgProto.ArmyInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.HeroInfoMsgProto.HeroInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.PetInfoProto.PetInfoMsg;
+import com.chuangyou.common.protobuf.pb.army.PlayerPositionInfoProto.PlayerPositionInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.item.ItemFullInfoMsgProto.ItemFullInfoMsg;
 import com.chuangyou.common.protobuf.pb.item.ItemListProto.ItemListMsg;
@@ -124,6 +125,10 @@ public class PlayerInfoSendCmd {
 			PetInfoMsg petInfo = getPetInfoPacket(gamePlayer);
 			army.setPetBattleInfo(petInfo);
 
+			PlayerPositionInfoMsg.Builder postionMsg = PlayerPositionInfoMsg.newBuilder();
+			gamePlayer.getBasePlayer().getPlayerPositionInfo().writePlayerPositionInfoMsg(postionMsg);
+			army.setPostionInfo(postionMsg);
+
 			return army.build();
 		} catch (Exception e) {
 			Log.error("生成部队信息异常", e);
@@ -196,31 +201,36 @@ public class PlayerInfoSendCmd {
 			Log.error(String.format("用户%s物品位置更新出错!", player.getPlayerId()), e);
 		}
 	}
-	
+
 	/**
 	 * 玩家所在帮派变更
+	 * 
 	 * @param playerId
 	 */
-	public static void sendGuildUpdatePacket(long playerId){
+	public static void sendGuildUpdatePacket(long playerId) {
 		GamePlayer player = WorldMgr.getPlayer(playerId);
 		sendGuildUpdatePacket(player);
 	}
+
 	/**
 	 * 玩家所在帮派变更
+	 * 
 	 * @param playerId
 	 */
-	public static void sendGuildUpdatePacket(GamePlayer player){
-		if(player == null) return;
-		if(player.getPlayerState() == PlayerState.OFFLINE) return;
+	public static void sendGuildUpdatePacket(GamePlayer player) {
+		if (player == null)
+			return;
+		if (player.getPlayerState() == PlayerState.OFFLINE)
+			return;
 		PlayerGuildInfoMsg.Builder guildMsg = PlayerGuildInfoMsg.newBuilder();
 		guildMsg.setPlayerId(player.getPlayerId());
 		guildMsg.setGuildId(0);
 		guildMsg.setGuildName("");
 		guildMsg.setGuildJob(0);
 		Guild guild = GuildManager.getIns().getPlayerGuild(player.getPlayerId());
-		if(guild != null){
+		if (guild != null) {
 			GuildMemberInfo member = guild.getMember(player.getPlayerId());
-			if(member != null){
+			if (member != null) {
 				guildMsg.setGuildId(guild.getGuildInfo().getGuildId());
 				guildMsg.setGuildName(guild.getGuildInfo().getName());
 				guildMsg.setGuildJob(member.getJob());

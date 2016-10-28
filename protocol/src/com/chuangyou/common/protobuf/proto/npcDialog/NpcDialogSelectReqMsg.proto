@@ -6,4 +6,5 @@ option java_outer_classname = "NpcDialogSelectReqProto";
 message NpcDialogSelectReqMsg{
 	required int32 npcType = 1; // NPC静态表中的唯一ID
 	required int32 commandParam = 2;//选项参数
+	optional int64 npcEntryId = 3;// npc实体ID
 }

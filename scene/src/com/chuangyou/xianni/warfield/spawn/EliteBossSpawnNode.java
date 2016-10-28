@@ -16,17 +16,20 @@ import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignFactory;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
+import com.chuangyou.xianni.campaign.state.StartState;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.constant.SpwanInfoType;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.entity.fieldBoss.FieldBossCfg;
 import com.chuangyou.xianni.entity.fieldBoss.FieldBossDieInfo;
+import com.chuangyou.xianni.entity.notice.NoticeCfg;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
 import com.chuangyou.xianni.fieldBoss.action.CreateEliteBossAction;
 import com.chuangyou.xianni.fieldBoss.manager.FieldBossHelper;
 import com.chuangyou.xianni.fieldBoss.template.FieldBossTemplateMgr;
+import com.chuangyou.xianni.notice.template.NoticeTemplateMgr;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.role.objects.FieldBoss;
 import com.chuangyou.xianni.role.objects.Living;
@@ -147,7 +150,7 @@ public class EliteBossSpawnNode extends FieldBossSpawnNode {
 		if (monsterInfo != null) {
 			monster.setPostion(new Vector3(randomx / Vector3.Accuracy, randomy / Vector3.Accuracy, randomz / Vector3.Accuracy));
 			instill(monster, monsterInfo);
-			children.put(monster.getId(), monster);
+			this.monster = monster;
 			field.enterField(monster);
 		} else {
 			Log.error(spwanInfo.getId() + "----" + spwanInfo.getEntityId() + " 在MonsterInfo里面未找到配置");
@@ -218,45 +221,65 @@ public class EliteBossSpawnNode extends FieldBossSpawnNode {
 		ThreadSafeRandom random = new ThreadSafeRandom();
 		boolean openEvent = random.isSuccessful(bossCfg.getCampaignChance(), 10000);
 		
-		if(openEvent == false) return;
-		
-		int openEventType = random.next(1, 2);
-		
-		//创建副本
-		CampaignTemplateInfo tempInfo = CampaignTempMgr.get(bossCfg.getOpenCampaignId());
-		if(tempInfo == null){
-			Log.error("精英BOSS死亡触发副本配置错误：bossMonsterId = " + bossCfg.getMonsterId() + "  campaignId = " + bossCfg.getOpenCampaignId());
-			return;
-		}
-		
-		if(openEventType == 1){ //多人副本
-			//创建传送门
-			Transfer transfer = new Transfer(IDMakerHelper.nextID(), Transfer.CAMPAIGN_TRANSFER);
-			transfer.setPostion(living.getPostion());
-			transfer.setSkin(bossCfg.getTransferModelId());
+		NoticeCfg noticeCfg = null;
+		String noticeContent = "";
+		if(openEvent == true){
+			int openEventType = random.next(1, 2);
 			
 			//创建副本
-			Campaign campaign = CampaignFactory.createEliteTriggerCampaign(tempInfo, transfer, bossCfg.getMultiTag());
-			CampaignMgr.add(campaign);
-			campaign.start();
+			CampaignTemplateInfo tempInfo = CampaignTempMgr.get(bossCfg.getOpenCampaignId());
+			if(tempInfo == null){
+				Log.error("精英BOSS死亡触发副本配置错误：bossMonsterId = " + bossCfg.getMonsterId() + "  campaignId = " + bossCfg.getOpenCampaignId());
+				return;
+			}
 			
-			transfer.setTargetId(campaign.getIndexId());
-			field.enterField(transfer);
+			if(openEventType == 1){ //多人副本
+				//创建传送门
+				Transfer transfer = new Transfer(IDMakerHelper.nextID(), Transfer.CAMPAIGN_TRANSFER);
+				transfer.setPostion(living.getPostion());
+				transfer.setSkin(bossCfg.getTransferNpcId());
+				transfer.setMinLevel(bossCfg.getMinLevel());
+				transfer.setMaxLevel(bossCfg.getMaxLevel());
+				field.enterField(transfer);
+				
+				//创建副本
+				Campaign campaign = CampaignFactory.createEliteTriggerCampaign(tempInfo, transfer, bossCfg.getMultiTag());
+				CampaignMgr.add(campaign);
+				campaign.stateTransition(new StartState(campaign));
+				
+				transfer.setTargetId(campaign.getIndexId());
+				
+				noticeCfg = NoticeTemplateMgr.getNoticeCfg(bossCfg.getMultiNotice());
+				noticeContent = noticeCfg.getContent();
+				noticeContent = noticeContent.replaceAll("@minLev@", String.valueOf(bossCfg.getMinLevel()));
+				noticeContent = noticeContent.replaceAll("@maxLev@", String.valueOf(bossCfg.getMaxLevel()));
+			}else{
+				//周围随机一个玩家进入副本
+				Set<Long> playerSet = living.getNears(new PlayerSelectorHelper(living));
+				if(playerSet.size() <= 0){
+					return;
+				}
+				Long[] players = new Long[playerSet.size()];
+				int randomIndex = (new ThreadSafeRandom()).next(playerSet.size());
+				playerSet.toArray(players);
+				long enterPlayerId = players[randomIndex];
+				
+				Campaign campaign = CampaignFactory.createEliteTriggerCampaign(tempInfo, null, bossCfg.getSingleTag());
+				CampaignMgr.add(campaign);
+				campaign.stateTransition(new StartState(campaign));
+				
+				ArmyProxy enterArmy = WorldMgr.getArmy(enterPlayerId);
+				campaign.onPlayerEnter(enterArmy);
+				
+				noticeCfg = NoticeTemplateMgr.getNoticeCfg(bossCfg.getSingleNotice());
+				noticeContent = noticeCfg.getContent();
+				noticeContent = noticeContent.replaceAll("@enterName@", enterArmy.getPlayer().getSimpleInfo().getNickName());
+			}
 		}else{
-			Campaign campaign = CampaignFactory.createEliteTriggerCampaign(tempInfo, null, bossCfg.getSingleTag());
-			CampaignMgr.add(campaign);
-			campaign.start();
-			
-			//周围随机一个玩家进入副本
-			Set<Long> playerSet = living.getNears(new PlayerSelectorHelper(living));
-			Long[] players = new Long[playerSet.size()];
-			int randomIndex = (new ThreadSafeRandom()).next(playerSet.size());
-			playerSet.toArray(players);
-			long enterPlayerId = players[randomIndex];
-			
-			ArmyProxy enterArmy = WorldMgr.getArmy(enterPlayerId);
-			campaign.onPlayerEnter(enterArmy);
+			noticeCfg = NoticeTemplateMgr.getNoticeCfg(bossCfg.getDeadNotice());
+			noticeContent = noticeCfg.getContent();
 		}
+		dieNotice(noticeCfg, noticeContent);
 	}
 
 	@Override

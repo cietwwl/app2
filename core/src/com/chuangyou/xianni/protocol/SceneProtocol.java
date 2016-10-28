@@ -29,7 +29,7 @@ public interface SceneProtocol {
 	public static final short	S_ARMY_ATTACK					= 20024;	// 玩家请求攻击
 	// ===========================>end<==============================
 
-	public static final short	S_PROPERTY_UPDATE				= 20025;	// 玩家属性更新
+	public static final short	S_PROPERTY_UPDATE				= 20025;	// 玩家所有战斗属性更新
 
 	public static final short	S_SCRIPT_RELOAD					= 20026;	// 重新加载脚本
 
@@ -43,16 +43,20 @@ public interface SceneProtocol {
 
 	public static final short	S_PLAYER_CALL_REQ_MOVE			= 20031;	// 角色召唤物请求移动
 
-	public static final short	S_ATTRIBUTE_SCENE_UPDATE		= 20032;	// 影响场景中外形的属性更新
+	public static final short	S_ATTRIBUTE_UPDATE				= 20032;	// 玩家属性更新
 
 	public static final short	S_PLAYER_MOUNT_STATE_REQ		= 20033;	// 请求上下坐骑
 	public static final short	S_PLAYER_UPDATE					= 20034;	// 玩家数据更新
 
 	public static final short	S_PLAYER_MANA_UPDATE			= 20035;	// 玩家灵力更新
+	
+	public static final short	S_PLAYER_SOUL_BLOOD_ADD			= 20036;	// 玩家魂血回复
 
 	// ===========================>campaign<=========================
 	public static final short	S_CREATE_CAMPAIGN				= 20050;	// 请求创建副本
 	public static final short	S_CAMPAIGN_OPTION				= 20051;	// 副本操作
+	public static final short	S_CREATE_CAMPAIGN_BY_NPC		= 20052;	// 根据NPCID创建NPC
+	public static final short	S_CREATE_PLOT					= 20053;	// 创建剧情人物
 	// ===========================>end<==============================
 	public static final short	S_PLAYER_REVIVAL				= 20101;	// 复活
 
@@ -155,9 +159,9 @@ public interface SceneProtocol {
 	public static final short	S_CREATE_STATE_CAMPAIGN			= 20742;
 
 	/**
-	 * 添加境界副本BUFF
+	 * 添加BUFF
 	 */
-	public static final short	S_ADD_STATE_BUFF				= 20743;
+	public static final short	S_ADD_BUFF						= 20743;
 
 	/**
 	 * 帮派夺权挑战
@@ -172,25 +176,28 @@ public interface SceneProtocol {
 	 * 境界QTE结果返回
 	 */
 	public static final short	S_STATE_QTE_RES					= 20747;
-	
+
 	/**
 	 * 请求野外BOSS信息
 	 */
 	public static final short	S_FIELD_BOSS_LIST				= 20748;
-	
+
 	/**
 	 * 实体传送门触发
 	 */
 	public static final short	S_TRANSFER_TRIGGER				= 20749;
-	
+
 	/**
 	 * 前往BOSS刷新点
 	 */
 	public static final short	S_FIELD_BOSS_GOTO				= 20750;
-	
+
 	/**
 	 * 获取玩家在世界BOSS夺宝中的箱子数量
 	 */
 	public static final short	S_TREASURE_COUNT_REQ			= 20751;
-
+	/**
+	 * 移动到某种怪附近
+	 */
+	public static final short	S_NEARMONSTER					= 20752;
 }

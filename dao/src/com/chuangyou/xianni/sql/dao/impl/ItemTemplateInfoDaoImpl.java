@@ -3,7 +3,9 @@ package com.chuangyou.xianni.sql.dao.impl;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.chuangyou.common.util.Log;
@@ -78,11 +80,13 @@ public class ItemTemplateInfoDaoImpl extends BaseDao implements ItemTemplateInfo
 
 					info.setSuit_id(rs.getInt("suit_id"));
 					info.setDes(rs.getString("des"));
-					
+
 					info.setResolveId(rs.getInt("resolveId"));
 					info.setResolveCount(rs.getInt("resolveCount"));
 					info.setIsVirtual(rs.getInt("isVirtual"));
 					info.setSaveGuild(rs.getByte("saveGuild"));
+					
+					info.setScriptId(rs.getString("scriptId"));
 
 					infos.add(info);
 				}
@@ -94,6 +98,15 @@ public class ItemTemplateInfoDaoImpl extends BaseDao implements ItemTemplateInfo
 			}
 		}
 		return infos;
+	}
+
+	@Override
+	public List<ItemTemplateInfo> getItemTemps(String name) {
+		String sql = "SELECT * FROM tb_z_item_template where name like '%?%'";
+		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
+		para.put(1, new DbParameter(Types.VARCHAR, name));
+		List<ItemTemplateInfo> temps = read(sql, null);
+		return temps;
 	}
 
 }

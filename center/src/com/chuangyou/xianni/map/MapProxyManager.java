@@ -126,4 +126,10 @@ public class MapProxyManager {
 			player.enqueue(new CmdTask(new ChangeMapCmd(), null, pkg, player.getCmdTaskQueue()));
 		}
 	}
+
+	/** 通过NPC请求创建副本 */
+	public static void createCampaignByNpc(long playerId, int campaignId, long npcId) {
+
+	}
+
 }

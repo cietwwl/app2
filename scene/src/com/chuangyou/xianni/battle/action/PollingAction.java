@@ -3,16 +3,18 @@ package com.chuangyou.xianni.battle.action;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
 import com.chuangyou.xianni.battle.damage.Damage;
-import com.chuangyou.xianni.battle.damage.effect.DamageEffecterType;
+import com.chuangyou.xianni.constant.DamageEffecterType;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.constant.RoleConstants.RoleType;
 import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.proto.BroadcastUtil;
 import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.objects.Living;
+import com.chuangyou.xianni.warfield.helper.FieldConstants.FieldAttackRule;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 
 public abstract class PollingAction extends DelayAction {
@@ -111,7 +113,7 @@ public abstract class PollingAction extends DelayAction {
 	/* pk值计算 **/
 	private void calPkVal() {
 		if (living.getType() == RoleType.player && living.getField() != null) {
-			if (living.getPkVal() > 0 && System.currentTimeMillis() - living.getPkValCalTime() >= 10 * 1000 && living.getField().getFieldInfo().getBattleType() == 1) {
+			if (living.getPkVal() > 0 && System.currentTimeMillis() - living.getPkValCalTime() >= 10 * 1000 && living.getField().getAttackRule(null, null) == FieldAttackRule.USEPLAYERMODE) {
 				living.calPkVal();
 			}
 		}

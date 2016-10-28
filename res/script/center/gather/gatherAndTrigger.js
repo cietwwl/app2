@@ -20,16 +20,16 @@ function doScript(playerId,id){
 
 	switch (id) {
 	case 1009403:
-		addItem(playerId,8100004,1,1)
+		addItemFromGather(playerId,8100004,1,1)
 		break;
 	case 1009404:
-		addItem(playerId,8100005,2,1)
+		addItemFromGather(playerId,8100005,2,1)
 		break;
 	case 1009405:
-		addItem(playerId,8100006,2,1)
+		addItemFromGather(playerId,8100006,2,1)
 		break;
 	case 1014402:
-		addItem(playerId,8100007,1,1)
+		addItemFromGather(playerId,8100007,1,1)
 		break;	
 	}
 }

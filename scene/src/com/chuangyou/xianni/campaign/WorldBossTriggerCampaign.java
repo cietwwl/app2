@@ -1,13 +1,22 @@
 package com.chuangyou.xianni.campaign;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLivingInfoMsg;
+import com.chuangyou.common.util.ThreadSafeRandom;
+import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.campaign.state.CampaignState;
+import com.chuangyou.xianni.chat.manager.ChatManager;
+import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.constant.NoticeConstant;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
+import com.chuangyou.xianni.entity.notice.NoticeCfg;
 import com.chuangyou.xianni.fieldBoss.manager.FieldBossHelper;
+import com.chuangyou.xianni.notice.template.NoticeTemplateMgr;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.role.objects.Transfer;
@@ -23,6 +32,14 @@ public class WorldBossTriggerCampaign extends Campaign {
 	
 	/** 玩家拿到的宝物数量 */
 	private ConcurrentHashMap<Long, Integer> treasureNumMap = new ConcurrentHashMap<Long, Integer>();
+	
+	/** 复活点和出生点随机池 */
+	private List<SpwanNode> revivalNodeList = new ArrayList<>();
+	
+	/** 上次发送宝箱刷新提醒公告时间 */
+	private long lastNoticeTime = 0;
+	
+	private int timeInterval = 0;
 
 	public WorldBossTriggerCampaign(CampaignTemplateInfo tempInfo, Transfer enterTransfer) {
 		// TODO Auto-generated constructor stub
@@ -34,6 +51,9 @@ public class WorldBossTriggerCampaign extends Campaign {
 	public void start() {
 		// TODO Auto-generated method stub
 		super.start();
+		
+		lastNoticeTime = System.currentTimeMillis() - 10 * 1000L;
+		timeInterval = SystemConfigTemplateMgr.getIntValue("worldBoss.campaign.noticeTime");
 	}
 	
 	@Override
@@ -51,11 +71,22 @@ public class WorldBossTriggerCampaign extends Campaign {
 	}
 	
 	@Override
+	public void onPlayerLeave(ArmyProxy army, boolean isUnline) {
+		// TODO Auto-generated method stub
+		this.onPlayerExit(army);
+	}
+	
+	@Override
+	public void onOverLeave(ArmyProxy army) {
+		// TODO Auto-generated method stub
+		this.onPlayerExit(army);
+	}
+	
+	@Override
 	public void removeArmy(ArmyProxy army, boolean noBack) {
 		// TODO Auto-generated method stub
 		super.removeArmy(army, noBack);
-		
-		if(state.getCode() == CampaignState.START){
+		if(state.getCode() != CampaignState.STOP){
 			//退出副本时，清除宝箱记录
 			this.treasureNumMap.remove(army.getPlayerId());
 		}
@@ -157,6 +188,56 @@ public class WorldBossTriggerCampaign extends Campaign {
 	}
 	
 	@Override
+	public void changeRevivalNode(SpwanNode revivalNode) {
+		// TODO Auto-generated method stub
+		revivalNodeList.add(revivalNode);
+	}
+	
+	@Override
+	public SpwanNode getRevivalNode() {
+		// TODO Auto-generated method stub
+		if(revivalNodeList == null || revivalNodeList.size() <= 0){
+			return null;
+		}
+		int randomIndex = ThreadSafeRandom.getInstance().next(revivalNodeList.size());
+		return revivalNodeList.get(randomIndex);
+	}
+	
+	@Override
+	public Vector3 getBornNode(ArmyProxy player) {
+		// TODO Auto-generated method stub
+		SpwanNode bornNode = getRevivalNode();
+		if(bornNode == null) {
+			return null;
+		}
+		return bornNode.getSpawnInfo().getPosition();
+	}
+	
+	@Override
+	public void pollingCheck() {
+		// TODO Auto-generated method stub
+		super.pollingCheck();
+		
+		if(timeInterval <= 0){
+			return;
+		}
+		if(System.currentTimeMillis() - lastNoticeTime >= timeInterval * 60L * 1000){
+			warnNotice();
+			lastNoticeTime = System.currentTimeMillis();
+		}
+	}
+	
+	private void warnNotice(){
+		NoticeCfg noticeCfg = NoticeTemplateMgr.getNoticeCfg(NoticeConstant.WORLDBOSS_CAMPAIGN_TREASURE);
+		if(noticeCfg == null || noticeCfg.getNoticeClose() > 0){
+			return;
+		}
+		if(starField != null){
+			ChatManager.sendNotice(noticeCfg.getChannel(), noticeCfg.getNotifyRange(), starField, noticeCfg.getContent());
+		}
+	}
+	
+	@Override
 	public void clearCampaignData() {
 		// TODO Auto-generated method stub
 		super.clearCampaignData();
@@ -169,6 +250,11 @@ public class WorldBossTriggerCampaign extends Campaign {
 		if(treasureNumMap != null){
 			treasureNumMap.clear();
 			treasureNumMap = null;
+		}
+		
+		if(revivalNodeList != null){
+			revivalNodeList.clear();
+			revivalNodeList = null;
 		}
 	}
 }

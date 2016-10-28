@@ -12,6 +12,7 @@ import com.chuangyou.xianni.constant.BattleModeCode;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.warfield.field.Field;
+import com.chuangyou.xianni.warfield.helper.FieldConstants.FieldAttackRule;
 
 /**
  * 战斗指令工厂类
@@ -48,12 +49,20 @@ public class OrderFactory {
 				return false;
 			}
 
-			if (field.getFieldInfo().getBattleType() == 2) {
-				return true; // 竞技地图，任意PK
+			int fieldAttackRule = field.getAttackRule(player, target);
+//			if (field.getFieldInfo().getBattleType() == FieldConstants.BattleType.ARENA) {
+//				return true; // 竞技地图，任意PK
+//			}
+			if(fieldAttackRule == FieldAttackRule.ATTACK){
+				return true;
 			}
+			if(fieldAttackRule == FieldAttackRule.UNATTACK){
+				return false;
+			}
+			
 			String startTime = field.getFieldInfo().getStartBattleTime();
 			String endTime = field.getFieldInfo().getEndBattleTime();
-			if (field.getFieldInfo().getBattleType() == 1) {// pk 地图才能攻击
+			if (fieldAttackRule == FieldAttackRule.USEPLAYERMODE) {// pk 地图才能攻击
 				int openLv = SystemConfigTemplateMgr.getIntValue("pk.openLv");
 				if (target.getSimpleInfo().getLevel() < openLv) {
 					return false;
@@ -61,9 +70,14 @@ public class OrderFactory {
 				if (player.getArmyId() == target.getArmyId()) {
 					return false;
 				}
-				if (player.getBattleMode() == BattleModeCode.sectsBattleMode) {
-					if (player.getTeamId() != 0 && player.getTeamId() == (target).getTeamId()) {// 队友
-						return false;
+				if (player.getTeamId() != 0 && player.getTeamId() == target.getTeamId()) {// 队友
+					return false;
+				}
+				if (player.getBattleMode() == BattleModeCode.sectsBattleMode) {//帮派模式同帮派的不能对砍
+					if(player.getSimpleInfo() != null || target.getSimpleInfo() != null){
+						if(player.getSimpleInfo().getGuildId() != 0 && player.getSimpleInfo().getGuildId() == target.getSimpleInfo().getGuildId()){
+							return false;
+						}
 					}
 				}
 

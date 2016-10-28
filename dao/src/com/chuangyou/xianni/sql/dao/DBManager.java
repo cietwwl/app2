@@ -52,6 +52,7 @@ import com.chuangyou.xianni.sql.dao.impl.MountConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.MountEquipDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.MountInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.MountSpecialInfoDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.NoticeConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.NpcInfoDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PetConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.PetInfoDaoImpl;
@@ -90,6 +91,8 @@ import com.chuangyou.xianni.sql.dao.impl.UserDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.VipBagTemplateDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.VipLevelTemplateDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.VipTemDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.WelfareDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.WelfareTemplateDaoImpl;
 
 public class DBManager {
 	/**
@@ -508,13 +511,14 @@ public class DBManager {
 	public static PlayerBeadRefreshTimeDao getPlayerBeadRefreshTimeDao() {
 		return playerBeadRefreshTime;
 	}
-	/** 个人vip 领取数据***/
+
+	/** 个人vip 领取数据 ***/
 	private static final PlayerVipReceiveImplDao PLAYER_VIP_RECEIVE_IMPL_DAO = new PlayerVipReceiveImplDao();
-	
+
 	public static PlayerVipReceiveImplDao getPlayerVipReceiveImplDao() {
 		return PLAYER_VIP_RECEIVE_IMPL_DAO;
 	}
-	
+
 	/** living状态表 */
 	private static final LivingStatusTemplateInfoDao livingStatusTemplateInfoDao = new LivingStatusTemplateInfoDaoImpl();
 
@@ -759,94 +763,120 @@ public class DBManager {
 		return truckDao;
 	}
 
-	
 	/**
 	 * 门派配置
 	 */
 	private static final GuildConfigDao guildConfigDao = new GuildConfigDaoImpl();
-	
-	public static GuildConfigDao getGuildConfigDao(){
+
+	public static GuildConfigDao getGuildConfigDao() {
 		return guildConfigDao;
 	}
-	
+
 	/**
 	 * 门派信息
 	 */
 	private static final GuildInfoDao guildInfoDao = new GuildInfoDaoImpl();
-	
-	public static GuildInfoDao getGuildInfoDao(){
+
+	public static GuildInfoDao getGuildInfoDao() {
 		return guildInfoDao;
 	}
-	
+
 	/**
 	 * 门派成员
 	 */
 	private static final GuildMemberDao guildMemberDao = new GuildMemberDaoImpl();
-	
-	public static GuildMemberDao getGuildMemberDao(){
+
+	public static GuildMemberDao getGuildMemberDao() {
 		return guildMemberDao;
 	}
-	
+
 	/**
 	 * 门派邀请表
 	 */
 	private static final GuildApplyDao guildApplyDao = new GuildApplyDaoImpl();
-	
-	public static GuildApplyDao getGuildApplyDao(){
+
+	public static GuildApplyDao getGuildApplyDao() {
 		return guildApplyDao;
 	}
-	
+
 	/**
 	 * 玩家上次所在帮派的信息
 	 */
 	private static final GuildHistoryDao guildHistoryDao = new GuildHistoryDaoImpl();
-	
-	public static GuildHistoryDao getGuildHistoryDao(){
+
+	public static GuildHistoryDao getGuildHistoryDao() {
 		return guildHistoryDao;
 	}
-	
+
 	/**
 	 * 门派技能表
 	 */
 	private static final GuildSkillDao guildSkillDao = new GuildSkillDaoImpl();
-	
-	public static GuildSkillDao getGuildSkillDao(){
+
+	public static GuildSkillDao getGuildSkillDao() {
 		return guildSkillDao;
 	}
-	
+
 	/**
 	 * 帮派仓库表
 	 */
 	private static final GuildWarehouseItemDao guildWarehouseDao = new GuildWarehouseItemDaoImpl();
-	
-	public static GuildWarehouseItemDao getGuildWarehouseDao(){
+
+	public static GuildWarehouseItemDao getGuildWarehouseDao() {
 		return guildWarehouseDao;
 	}
-	
+
 	/**
 	 * 帮派日志
 	 */
 	public static final GuildLogInfoDao guildLogDao = new GuildLogInfoDaoImpl();
-	
-	public static GuildLogInfoDao getGuildLogDao(){
+
+	public static GuildLogInfoDao getGuildLogDao() {
 		return guildLogDao;
 	}
-	
+
 	/**
 	 * 野外BOSS模板配置
 	 */
 	public static final FieldBossConfigDao fieldBossConfigDao = new FieldBossConfigDaoImpl();
-	
-	public static FieldBossConfigDao getFieldBossConfigDao(){
+
+	public static FieldBossConfigDao getFieldBossConfigDao() {
 		return fieldBossConfigDao;
 	}
-	
+
 	/**
 	 * 野外BOSS死亡时间信息
 	 */
 	public static final FieldBossInfoDao fieldBossInfoDao = new FieldBossInfoDaoImpl();
-	
-	public static FieldBossInfoDao getFieldBossInfoDao(){
+
+	public static FieldBossInfoDao getFieldBossInfoDao() {
 		return fieldBossInfoDao;
+	}
+
+	/**
+	 * 福利信息
+	 */
+	private static final WelfareDao welfareDao = new WelfareDaoImpl();
+
+	public static WelfareDao getWelfaredao() {
+		return welfareDao;
+	}
+
+	/**
+	 * 福利模板配置
+	 */
+	private static final WelfareTemplateDao welfareTemplateDao = new WelfareTemplateDaoImpl();
+
+	public static WelfareTemplateDao getWelfareTemplateDao() {
+		return welfareTemplateDao;
+	}
+	
+	/**
+	 * 公告模板表
+	 */
+	public static final NoticeConfigDao noticeConfigDao = new NoticeConfigDaoImpl();
+	
+	public static NoticeConfigDao getNoticeConfigDao(){
+		return noticeConfigDao;
 	}
 }

@@ -12,6 +12,7 @@ import com.chuangyou.xianni.army.Hero;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
+import com.chuangyou.xianni.constant.AvatarConstant;
 import com.chuangyou.xianni.constant.CommonType.CurrencyItemType;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.email.manager.EmailManager;
@@ -269,7 +270,6 @@ public class BagInventory extends AbstractEvent implements IInventory {
 			case CurrencyItemType.VIP_TEMPORARY:
 				player.getBasePlayer().addVipTemporary(count);
 				return true;
-
 		}
 
 		ItemTemplateInfo tempInfo = ItemManager.findItemTempInfo(templateId);
@@ -292,6 +292,11 @@ public class BagInventory extends AbstractEvent implements IInventory {
 
 		if (result) {
 			this.notifyListeners(new ObjectEvent(this, templateId, EventNameType.TASK_ITEM_CHANGE_ADD));
+			if (templateId == AvatarConstant.AVATAR_ENERGY_ITEM_ID) {
+				if (player.getAvatarInventory() != null) {
+					player.getAvatarInventory().costAvatarEnergy(0);
+				}
+			}
 		}
 		return result;
 	}
@@ -377,9 +382,9 @@ public class BagInventory extends AbstractEvent implements IInventory {
 	 */
 	public boolean removeItem(short bagType, int templateId, int count, short bindType, short itemRemoveType) {
 		BaseBag bag = getBag(bagType);
-		if (bag == null)
+		if (bag == null) {
 			return false;
-
+		}
 		int playerItemCount = bag.getTemplateCount(templateId, bindType);
 		ItemTemplateInfo tempInfo = ItemManager.findItemTempInfo(templateId);
 		if ((tempInfo != null) && (count <= playerItemCount)) {
@@ -569,7 +574,7 @@ public class BagInventory extends AbstractEvent implements IInventory {
 			attMsg.addAtt(awakenMsg);
 
 			attMsg.setPlayerId(player.getPlayerId());
-			PBMessage message = MessageUtil.buildMessage(Protocol.S_ATTRIBUTE_SCENE_UPDATE, attMsg);
+			PBMessage message = MessageUtil.buildMessage(Protocol.S_ATTRIBUTE_UPDATE, attMsg);
 			player.sendPbMessage(message);
 
 			player.getBasePlayer().getPlayerInfo().setWeaponId(weaponId);

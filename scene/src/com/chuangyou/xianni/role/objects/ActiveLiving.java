@@ -60,6 +60,8 @@ public class ActiveLiving extends Living {
 	}
 
 	public Vector3 getGoal() {
+		if(goal == null)
+			goal = Vector3.Invalid;
 		return goal;
 	}
 
@@ -80,7 +82,6 @@ public class ActiveLiving extends Living {
 	 * @param goal
 	 */
 	public void moveto(Vector3 goal) {
-
 		this.goal = goal;
 		// @auto living.setSpeed*100
 		if (getPostion() == null) {
@@ -135,6 +136,7 @@ public class ActiveLiving extends Living {
 	 */
 	public void stop(boolean need2Client) {
 		this.moveTime = 0;
+		if(Vector3.IsInvalid(getGoal())) return;
 		this.goal = Vector3.Invalid;
 		this.targetPostion = Vector3.Invalid;
 		if (this.path != null)
@@ -187,7 +189,7 @@ public class ActiveLiving extends Living {
 	 * 寻路到达目的地
 	 */
 	public void navigateComplete(NavmeshSeekerStatuCode code, List<Vector3> path) {
-		System.err.println("code = " + code + " path.size = " + path.size() + " xxxx " + (code == NavmeshSeekerStatuCode.Success));
+		Log.error("code = " + code + " path.size = " + path.size() + " xxxx " + (code == NavmeshSeekerStatuCode.Success));
 		navWaiting = false;
 		if (code == NavmeshSeekerStatuCode.Success) {
 			this.path = path;

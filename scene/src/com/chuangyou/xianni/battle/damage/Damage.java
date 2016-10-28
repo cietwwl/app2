@@ -1,7 +1,7 @@
 package com.chuangyou.xianni.battle.damage;
 
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
-import com.chuangyou.xianni.battle.damage.effect.DamageEffecterType;
+import com.chuangyou.xianni.constant.DamageEffecterType;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.role.objects.Living;
 
@@ -11,30 +11,33 @@ import com.chuangyou.xianni.role.objects.Living;
  * </pre>
  */
 public class Damage {
-	private Living			target;
-	private Living			source;
-	private int				damageType;
-	private int				damageValue;	// 伤害值
-	private int				leftValue;		// 伤害后的当前值
-	private int				tipType;		// 是否暴击 0x0001
-	private int				fromType;		// 来源类型 0 无来源，1 技能，2 buffer ，3 陷阱
-	private long			fromId;			// 由什么技能造成
-	private int				order;			// 第几次伤害
-	private boolean			deadly;			// 致死伤害
-	private int				calcType;		// 计算类型 1 混合计算 （先扣血后扣魂，先加魂后加血） 2
-											// 只计算元魂 3 只计算气血
+	private Living				target;
+	private Living				source;
+	private int					damageType;
+	private int					damageValue;			// 伤害值
+	private int					leftValue;				// 伤害后的当前值
+	private int					tipType;				// 是否暴击 0x0001
+	private int					fromType;				// 来源类型 0 无来源，1 技能，2
+														// buffer ，3 陷阱
+	private long				fromId;					// 由什么技能造成
+	private int					order;					// 第几次伤害
+	private boolean				deadly;					// 致死伤害
+	private int					calcType;				// 计算类型 1 混合计算
+														// （先扣血后扣魂，先加魂后加血） 2
+														// 只计算元魂 3 只计算气血
 
-	public static final int	MISS	= 2;
-	public static final int	CRIPT	= 1;
+	public static final int		MISS	= 2;
+	public static final int		CRIPT	= 1;
 
 	// 技能
-	public static final int	SKILL	= 1;
+	public static final int		SKILL	= 1;
 	// buffer
-	public static final int	BUFFER	= 2;
+	public static final int		BUFFER	= 2;
 	// 陷阱
-	public static final int	SNARE	= 3;
-	
-	public static final Damage DEFAULT = new Damage();
+	public static final int		SNARE	= 3;
+
+	public static final Damage	DEFAULT	= new Damage();
+
 	/**
 	 * 技能计算伤害
 	 * 
@@ -60,7 +63,7 @@ public class Damage {
 		dmsg.setOrder(this.order);
 		dmsg.setTargetId(target.getId());
 		dmsg.setTipType(tipType);
-		dmsg.setSourceId(source.getArmyId());
+		dmsg.setSourceId(source.getId());
 	}
 
 	public Living getTarget() {

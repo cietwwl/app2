@@ -1,23 +1,30 @@
 package com.chuangyou.xianni.warfield.spawn;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.StringUtils;
 import com.chuangyou.common.util.Vector3;
+import com.chuangyou.xianni.battle.damage.DamageStatistic;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.skill.Skill;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignFactory;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
+import com.chuangyou.xianni.campaign.state.StartState;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.constant.SpwanInfoType;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.entity.fieldBoss.FieldBossCfg;
+import com.chuangyou.xianni.entity.notice.NoticeCfg;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
 import com.chuangyou.xianni.fieldBoss.manager.WorldBossManager;
 import com.chuangyou.xianni.fieldBoss.template.FieldBossTemplateMgr;
+import com.chuangyou.xianni.notice.template.NoticeTemplateMgr;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.role.objects.FieldBoss;
 import com.chuangyou.xianni.role.objects.Living;
@@ -61,10 +68,10 @@ public class WorldBossSpawnNode extends FieldBossSpawnNode {
 		if (monsterInfo != null) {
 			monster.setPostion(new Vector3(randomx / Vector3.Accuracy, randomy / Vector3.Accuracy, randomz / Vector3.Accuracy));
 			instill(monster, monsterInfo);
-			children.put(monster.getId(), monster);
+			this.monster = monster;
 			field.enterField(monster);
 			
-			System.out.println("世界BOSS：" + monster.getId() + "  position:" + monster.getPostion());
+			System.out.println("世界BOSS：" + monster.getId() + "  mapId:" + field.getMapKey() + "  position:" + monster.getPostion());
 		} else {
 			Log.error(spwanInfo.getId() + "----" + spwanInfo.getEntityId() + " 在MonsterInfo里面未找到配置");
 		}
@@ -136,22 +143,34 @@ public class WorldBossSpawnNode extends FieldBossSpawnNode {
 		//创建副本
 		CampaignTemplateInfo tempInfo = CampaignTempMgr.get(bossCfg.getOpenCampaignId());
 		if(tempInfo == null){
-			Log.error("精英BOSS死亡触发副本配置错误：bossMonsterId = " + bossCfg.getMonsterId() + "  campaignId = " + bossCfg.getOpenCampaignId());
+			Log.error("世界BOSS死亡触发副本配置错误：bossMonsterId = " + bossCfg.getMonsterId() + "  campaignId = " + bossCfg.getOpenCampaignId());
 			return;
 		}
 		
 		//创建传送门
 		Transfer transfer = new Transfer(IDMakerHelper.nextID(), Transfer.CAMPAIGN_TRANSFER);
 		transfer.setPostion(living.getPostion());
-		transfer.setSkin(bossCfg.getTransferModelId());
+		transfer.setSkin(bossCfg.getTransferNpcId());
+		FieldBoss boss = (FieldBoss) living;
+		if(boss != null){
+			DamageStatistic statistic = boss.getStatistic();
+			if(statistic != null){
+				Set<Long> canEnterIds = new HashSet<>();
+				canEnterIds.addAll(statistic.getDamageMap().keySet());
+				transfer.setCanEnterIds(canEnterIds);
+			}
+		}
 		
 		//创建副本
 		Campaign campaign = CampaignFactory.createWorldBossTriggerCampaign(tempInfo, transfer);
 		CampaignMgr.add(campaign);
-		campaign.start();
+		campaign.stateTransition(new StartState(campaign));
 		
 		transfer.setTargetId(campaign.getIndexId());
 		field.enterField(transfer);
+		
+		NoticeCfg noticeCfg = NoticeTemplateMgr.getNoticeCfg(bossCfg.getDeadNotice());
+		dieNotice(noticeCfg, noticeCfg.getContent());
 	}
 
 

@@ -43,8 +43,8 @@ public class LoginIn implements Command {
 		player.setSimpleInfo(simPlayer);
 		// 初始化觉醒技能buff
 		player.updateWeaponBuff();
-		player.readHeroInfo(msg.getHeoBattleInfo());
 		army.setPlayer(player);
+		player.readHeroInfo(msg.getHeoBattleInfo());
 
 		// 设置宠物
 		Pet pet = null;
@@ -54,6 +54,7 @@ public class LoginIn implements Command {
 			pet.readPetInfo(msg.getPetBattleInfo());
 		}
 		army.setPet(pet);
+		army.readPositionMsg(msg.getPostionInfo());
 
 		PBMessage message = MessageUtil.buildMessage(Protocol.U_ARMY_HERO_INFO, msg.getHeoBattleInfo());
 		army.sendPbMessage(message);

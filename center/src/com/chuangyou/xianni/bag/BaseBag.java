@@ -263,12 +263,12 @@ public class BaseBag extends AbstractBag {
 		try {
 			for (int i = beginPos; i < capability; i++) {
 				if ((baseItems[i] != null) && (baseItems[i].getItemTempInfo().getId() == templateId)) {
-					if(bindType == BindType.ALL){
+					if (bindType == BindType.ALL) {
 						count += baseItems[i].getItemInfo().getCount();
-					}else{
-						if(bindType == BindType.BIND && baseItems[i].getItemInfo().isBinds() == true){
+					} else {
+						if (bindType == BindType.BIND && baseItems[i].getItemInfo().isBinds() == true) {
 							count += baseItems[i].getItemInfo().getCount();
-						}else if(bindType == BindType.NOBIND && baseItems[i].getItemInfo().isBinds() == false){
+						} else if (bindType == BindType.NOBIND && baseItems[i].getItemInfo().isBinds() == false) {
 							count += baseItems[i].getItemInfo().getCount();
 						}
 					}
@@ -461,7 +461,7 @@ public class BaseBag extends AbstractBag {
 			}
 
 			// 加持激活额外属性
-			if (tempInfo.getJiachi1() > 0 && tempInfo.getStatistics1() > 0) { 
+			if (tempInfo.getJiachi1() > 0 && tempInfo.getStatistics1() > 0) {
 				if (equipBar.getGrade() >= tempInfo.getJiachi1()) {
 					SimpleProperty jiachiPro1 = SkillUtil.readPro(tempInfo.getStatistics1());
 					if (jiachiPro1.isPre()) {
@@ -554,13 +554,62 @@ public class BaseBag extends AbstractBag {
 		// }
 	}
 
-
-
-//	private ItemTemplateInfo getJoin(int templateId) {
-//		if (templateId > 0)
-//			return ItemManager.findItemTempInfo(templateId);
-//		return null;
-//	}
+	/**
+	 * 获取装备的加持属性
+	 * 
+	 * @param tempInfo
+	 * @param equipBar
+	 * @param bagData
+	 * @param bagPer
+	 */
+	public void getJiachiPro(ItemTemplateInfo tempInfo, EquipBarInfo equipBar, BaseProperty bagData, BaseProperty bagPer) {
+		// 加持激活额外属性
+		if (tempInfo.getJiachi1() > 0 && tempInfo.getStatistics1() > 0) {
+			if (equipBar.getGrade() >= tempInfo.getJiachi1()) {
+				SimpleProperty jiachiPro1 = SkillUtil.readPro(tempInfo.getStatistics1());
+				if (jiachiPro1.isPre()) {
+					SkillUtil.joinPro(bagPer, jiachiPro1.getType(), jiachiPro1.getValue());
+				} else {
+					SkillUtil.joinPro(bagData, jiachiPro1.getType(), jiachiPro1.getValue());
+				}
+			}
+		}
+		if (tempInfo.getJiachi2() > 0 && tempInfo.getStatistics2() > 0) {
+			if (equipBar.getGrade() >= tempInfo.getJiachi2()) {
+				SimpleProperty jiachiPro2 = SkillUtil.readPro(tempInfo.getStatistics2());
+				if (jiachiPro2.isPre()) {
+					SkillUtil.joinPro(bagPer, jiachiPro2.getType(), jiachiPro2.getValue());
+				} else {
+					SkillUtil.joinPro(bagData, jiachiPro2.getType(), jiachiPro2.getValue());
+				}
+			}
+		}
+		if (tempInfo.getJiachi3() > 0 && tempInfo.getStatistics3() > 0) {
+			if (equipBar.getGrade() >= tempInfo.getJiachi3()) {
+				SimpleProperty jiachiPro3 = SkillUtil.readPro(tempInfo.getStatistics3());
+				if (jiachiPro3.isPre()) {
+					SkillUtil.joinPro(bagPer, jiachiPro3.getType(), jiachiPro3.getValue());
+				} else {
+					SkillUtil.joinPro(bagData, jiachiPro3.getType(), jiachiPro3.getValue());
+				}
+			}
+		}
+		if (tempInfo.getJiachi4() > 0 && tempInfo.getStatistics4() > 0) {
+			if (equipBar.getGrade() >= tempInfo.getJiachi4()) {
+				SimpleProperty jiachiPro4 = SkillUtil.readPro(tempInfo.getStatistics4());
+				if (jiachiPro4.isPre()) {
+					SkillUtil.joinPro(bagPer, jiachiPro4.getType(), jiachiPro4.getValue());
+				} else {
+					SkillUtil.joinPro(bagData, jiachiPro4.getType(), jiachiPro4.getValue());
+				}
+			}
+		}
+	}
+	// private ItemTemplateInfo getJoin(int templateId) {
+	// if (templateId > 0)
+	// return ItemManager.findItemTempInfo(templateId);
+	// return null;
+	// }
 
 	public void joinTempInfo(BaseProperty bagEffect, ItemTemplateInfo itemTempInfo) {
 
@@ -580,8 +629,9 @@ public class BaseBag extends AbstractBag {
 			Log.error("发送背包信息出错，playerId :" + player.getPlayerId(), e);
 		}
 	}
-	//清空背包
-	public void clearAllItems(){
+
+	// 清空背包
+	public void clearAllItems() {
 		try {
 			for (BaseItem info : baseItems) {
 				if (info == null || info.getItemInfo() == null) {

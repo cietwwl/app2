@@ -64,6 +64,10 @@ public class PlayerManager {
 	 * @param level
 	 * @return
 	 */
+	/**
+	 * @param level
+	 * @return
+	 */
 	public static BaseProperty getPlayerBaseProperty(int level) {
 		BaseProperty baseProperty = new BaseProperty();
 		baseProperty.setSoul(20 + level * 50);
@@ -72,6 +76,8 @@ public class PlayerManager {
 		baseProperty.setDefence(10 + level * 5);
 		baseProperty.setSoulAttack(1 + level * 3);
 		baseProperty.setSoulDefence(1 + level * 3);
+		baseProperty.setRegainSoul(10 + level * 25);
+		baseProperty.setRegainBlood(200 + level * 50);
 		baseProperty.setSpeed(600);
 		return baseProperty;
 	}

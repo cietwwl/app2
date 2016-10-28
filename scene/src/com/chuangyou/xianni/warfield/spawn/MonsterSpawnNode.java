@@ -2,6 +2,7 @@ package com.chuangyou.xianni.warfield.spawn;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.StringUtils;
 import com.chuangyou.common.util.Vector3;
@@ -24,6 +25,7 @@ import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
 import com.chuangyou.xianni.role.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.warfield.field.Field;
+import com.chuangyou.xianni.world.ArmyProxy;
 
 public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 	protected int	toalCount;	// 刷怪总数
@@ -103,36 +105,51 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 		int randomy = spwanInfo.getBound_y();
 		int randomz = spwanInfo.getBound_z();
 
-		Monster monster = new Monster(this);
 		MonsterInfo monsterInfo = MonsterInfoTemplateMgr.get(spwanInfo.getEntityId());
-		if (monsterInfo != null) {
-			monster.setPostion(new Vector3(randomx / Vector3.Accuracy, randomy / Vector3.Accuracy, randomz / Vector3.Accuracy));
-			instill(monster, monsterInfo);
-			children.put(monster.getId(), monster);
-			field.enterField(monster);
-		} else {
+		if (monsterInfo == null) {
 			Log.error(spwanInfo.getId() + "----" + spwanInfo.getEntityId() + " 在MonsterInfo里面未找到配置");
+			return;
 		}
-		// System.out.println("monster:" + monster + " skinId :" +
-		// monster.getSkin() + " spwanInfo :" + spwanInfo.getId());
-
 		// 添加副本挑战任务buff
 		Campaign campaign = CampaignMgr.getCampagin(campaignId);
+		if (monsterInfo.getDynamic() != 0) {
+			MonsterInfo next = getDynamicMonster(monsterInfo, campaign);
+			if (next != null) {
+				monsterInfo = next;
+			}
+		}
+
+		Monster monster = new Monster(this);
+		monster.setPostion(new Vector3(randomx / Vector3.Accuracy, randomy / Vector3.Accuracy, randomz / Vector3.Accuracy));
+		instill(monster, monsterInfo);
+		children.put(monster.getId(), monster);
+		field.enterField(monster);
+
 		if (campaign != null && campaign.getTask() != null && campaign.getTask().getConditionType() == CTBaseCondition.ADD_BUFF_MONSTER) {
 			String bufferIds = campaign.getTask().getTemp().getStrParam1();
-			if (bufferIds != null && !bufferIds.equals("")) {
-				String[] attr = bufferIds.split(",");
-				for (String str : attr) {
-					int bufferId = Integer.valueOf(str);
-					SkillBufferTemplateInfo bufferTemp = BattleTempMgr.getBufferInfo(bufferId);
-					if (bufferTemp != null) {
-						Buffer buffer = BufferFactory.createBuffer(monster, monster, bufferTemp);
-						monster.addBuffer(buffer);
-					}
+			if (StringUtils.isNullOrEmpty(bufferIds)) {
+				return;
+			}
+			String[] attr = bufferIds.split(",");
+			for (String str : attr) {
+				int bufferId = Integer.valueOf(str);
+				SkillBufferTemplateInfo bufferTemp = BattleTempMgr.getBufferInfo(bufferId);
+				if (bufferTemp != null) {
+					Buffer buffer = BufferFactory.createBuffer(monster, monster, bufferTemp);
+					monster.addBuffer(buffer);
 				}
 			}
-
 		}
+	}
+
+	public static MonsterInfo getDynamicMonster(MonsterInfo monsterInfo, Campaign campaign) {
+		ArmyProxy creater = campaign.getCreater();
+		if (creater == null) {
+			return null;
+		}
+		int grade = creater.getPlayer().getSimpleInfo().getLevel();
+		int newId = monsterInfo.getMonsterId() + grade / 10;
+		return MonsterInfoTemplateMgr.get(newId);
 	}
 
 	/** 浸染 */
@@ -189,6 +206,7 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 			Skill test = new Skill(BattleTempMgr.getActionInfo(1001));
 			monster.addSkill(test);
 		}
+		monster.addLivingState(monsterInfo.getDefaultState());
 
 	}
 

@@ -28,6 +28,23 @@ public final class OpenNpcDialogReqProto {
      * </pre>
      */
     int getNpcType();
+
+    /**
+     * <code>optional int64 npcEntryId = 2;</code>
+     *
+     * <pre>
+     * npc实体ID
+     * </pre>
+     */
+    boolean hasNpcEntryId();
+    /**
+     * <code>optional int64 npcEntryId = 2;</code>
+     *
+     * <pre>
+     * npc实体ID
+     * </pre>
+     */
+    long getNpcEntryId();
   }
   /**
    * Protobuf type {@code OpenNpcDialogReqMsg}
@@ -88,6 +105,11 @@ public final class OpenNpcDialogReqProto {
             case 8: {
               bitField0_ |= 0x00000001;
               npcType_ = input.readInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              npcEntryId_ = input.readInt64();
               break;
             }
           }
@@ -153,8 +175,32 @@ public final class OpenNpcDialogReqProto {
       return npcType_;
     }
 
+    public static final int NPCENTRYID_FIELD_NUMBER = 2;
+    private long npcEntryId_;
+    /**
+     * <code>optional int64 npcEntryId = 2;</code>
+     *
+     * <pre>
+     * npc实体ID
+     * </pre>
+     */
+    public boolean hasNpcEntryId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional int64 npcEntryId = 2;</code>
+     *
+     * <pre>
+     * npc实体ID
+     * </pre>
+     */
+    public long getNpcEntryId() {
+      return npcEntryId_;
+    }
+
     private void initFields() {
       npcType_ = 0;
+      npcEntryId_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -176,6 +222,9 @@ public final class OpenNpcDialogReqProto {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeInt32(1, npcType_);
       }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt64(2, npcEntryId_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -188,6 +237,10 @@ public final class OpenNpcDialogReqProto {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, npcType_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(2, npcEntryId_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -312,6 +365,8 @@ public final class OpenNpcDialogReqProto {
         super.clear();
         npcType_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
+        npcEntryId_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -344,6 +399,10 @@ public final class OpenNpcDialogReqProto {
           to_bitField0_ |= 0x00000001;
         }
         result.npcType_ = npcType_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.npcEntryId_ = npcEntryId_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -362,6 +421,9 @@ public final class OpenNpcDialogReqProto {
         if (other == com.chuangyou.common.protobuf.pb.npcDialog.OpenNpcDialogReqProto.OpenNpcDialogReqMsg.getDefaultInstance()) return this;
         if (other.hasNpcType()) {
           setNpcType(other.getNpcType());
+        }
+        if (other.hasNpcEntryId()) {
+          setNpcEntryId(other.getNpcEntryId());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -442,6 +504,54 @@ public final class OpenNpcDialogReqProto {
         return this;
       }
 
+      private long npcEntryId_ ;
+      /**
+       * <code>optional int64 npcEntryId = 2;</code>
+       *
+       * <pre>
+       * npc实体ID
+       * </pre>
+       */
+      public boolean hasNpcEntryId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional int64 npcEntryId = 2;</code>
+       *
+       * <pre>
+       * npc实体ID
+       * </pre>
+       */
+      public long getNpcEntryId() {
+        return npcEntryId_;
+      }
+      /**
+       * <code>optional int64 npcEntryId = 2;</code>
+       *
+       * <pre>
+       * npc实体ID
+       * </pre>
+       */
+      public Builder setNpcEntryId(long value) {
+        bitField0_ |= 0x00000002;
+        npcEntryId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 npcEntryId = 2;</code>
+       *
+       * <pre>
+       * npc实体ID
+       * </pre>
+       */
+      public Builder clearNpcEntryId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        npcEntryId_ = 0L;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:OpenNpcDialogReqMsg)
     }
 
@@ -467,10 +577,11 @@ public final class OpenNpcDialogReqProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n#npcDialog/OpenNpcDialogReqMsg.proto\"&\n" +
-      "\023OpenNpcDialogReqMsg\022\017\n\007npcType\030\001 \002(\005BC\n" +
-      "*com.chuangyou.common.protobuf.pb.npcDia" +
-      "logB\025OpenNpcDialogReqProto"
+      "\n#npcDialog/OpenNpcDialogReqMsg.proto\":\n" +
+      "\023OpenNpcDialogReqMsg\022\017\n\007npcType\030\001 \002(\005\022\022\n" +
+      "\nnpcEntryId\030\002 \001(\003BC\n*com.chuangyou.commo" +
+      "n.protobuf.pb.npcDialogB\025OpenNpcDialogRe" +
+      "qProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -489,7 +600,7 @@ public final class OpenNpcDialogReqProto {
     internal_static_OpenNpcDialogReqMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_OpenNpcDialogReqMsg_descriptor,
-        new java.lang.String[] { "NpcType", });
+        new java.lang.String[] { "NpcType", "NpcEntryId", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

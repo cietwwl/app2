@@ -1,7 +1,7 @@
 package com.chuangyou.xianni.warfield.helper;
 
-import com.chuangyou.xianni.role.helper.RoleConstants;
-import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
+import com.chuangyou.xianni.constant.RoleConstants;
+import com.chuangyou.xianni.constant.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.objects.Living;
 
 public abstract class Selector {

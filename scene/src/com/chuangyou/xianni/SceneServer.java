@@ -19,7 +19,9 @@ import com.chuangyou.xianni.netty.codec.PBMessageDecoder;
 import com.chuangyou.xianni.netty.codec.PBMessageEncoder;
 import com.chuangyou.xianni.netty.server.SceneInboundHandler;
 import com.chuangyou.xianni.netty.server.SceneOutboundHandler;
+import com.chuangyou.xianni.notice.template.NoticeTemplateMgr;
 import com.chuangyou.xianni.proto.PBMessage;
+import com.chuangyou.xianni.robot.RobotManager;
 import com.chuangyou.xianni.role.template.AiConfigTemplateMgr;
 import com.chuangyou.xianni.role.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.role.template.NpcInfoTemplateMgr;
@@ -103,8 +105,12 @@ public class SceneServer extends BaseServer {
 		if (!initComponent(NpcInfoTemplateMgr.init(), "初始化NPC/转场点模板数据")) {
 			return false;
 		}
-		
-		if(!initComponent(FieldBossTemplateMgr.init(), "初始化野外BOSS模板数据")){
+
+		if (!initComponent(FieldBossTemplateMgr.init(), "初始化野外BOSS模板数据")) {
+			return false;
+		}
+
+		if (!initComponent(NoticeTemplateMgr.init(), "公告模板数据")) {
 			return false;
 		}
 
@@ -154,6 +160,9 @@ public class SceneServer extends BaseServer {
 			return false;
 		}
 		if (!initComponent(AvatarTempManager.init(), "分身默契模板")) {
+			return false;
+		}
+		if (!initComponent(RobotManager.init(), "剧情机器人")) {
 			return false;
 		}
 		return true;

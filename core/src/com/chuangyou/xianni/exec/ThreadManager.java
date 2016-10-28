@@ -16,12 +16,6 @@ public class ThreadManager {
 	public static final short							WORLD_ACTION_QUEUE_NUM	= 100;
 	// 用户响应动作执行队列
 	private static Map<Integer, AbstractActionQueue>	ActionQueues			= new HashMap<Integer, AbstractActionQueue>();
-	static {
-		for (int i = 0; i <= WORLD_ACTION_QUEUE_NUM + 2; i++) {
-			AbstractActionQueue actionQueue = new AbstractActionQueue(actionExecutor);
-			ActionQueues.put(i, actionQueue);
-		}
-	}
 
 	public static AbstractActionQueue getActionRandom() {
 		return ActionQueues.get(r.nextInt(WORLD_ACTION_QUEUE_NUM));
@@ -33,6 +27,11 @@ public class ThreadManager {
 		int keepAliveTime = 5;
 		int cacheSize = 64;
 		actionExecutor = new ActionExecutor(corePoolSize, maxPoolSize, keepAliveTime, cacheSize, "WORD_ACTION_EXECUTOR");
+		
+		for (int i = 0; i <= WORLD_ACTION_QUEUE_NUM + 2; i++) {
+			AbstractActionQueue actionQueue = new AbstractActionQueue(actionExecutor);
+			ActionQueues.put(i, actionQueue);
+		}
 	}
 
 	// 用户请求动作执行线程池

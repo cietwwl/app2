@@ -1,31 +1,48 @@
 package com.chuangyou.xianni.warfield.helper;
 
 public class FieldConstants {
-	/**
-     * 刷怪定时类型
-     * 
-     * @author wanyi
-     *        
+    /**
+     * 场景PK类型
+     * @author Joseph
+     *
      */
-    public interface MonsterReflushTimerType
-    {
-    	int none = 1; //0:根据开服刷新
+    public interface BattleType{
     	
-        int timing = 2;// 1:每天定时刷
-        
-        int utcRange = 3;// 2：utc时间范围内刷
+    	/**
+    	 * 安全区
+    	 */
+    	public static final int SAFETY 		= 0;
+    	
+    	/**
+    	 * 可战斗，但要记pk值
+    	 */
+    	public static final int FIGHT		= 1;
+    	
+    	/**
+    	 * 竞技，不记PK值
+    	 */
+    	public static final int ARENA		= 2;
+    	
+    	/**
+    	 * 帮派团战地图，不记PK值
+    	 */
+    	public static final int GUILD		= 3;
     }
     
     /**
-     * 刷新重置类型
-     * @author wanyi
+     * 地图PK规则判断结果
+     * @author Joseph
      *
      */
-    public interface MonsterRestType
-    {
-        int normal = 1;// 普通模式
-        int boss = 2; // boss模式
-        int dunguon = 3;// 副本模式
+    public interface FieldAttackRule{
+    	
+    	/** 地图不作强制处理，需要判断玩家模式 */
+    	public static final int USEPLAYERMODE = 0;
+    	
+    	/** 地图规则强制可以攻击，不记PK值 */
+    	public static final int ATTACK = 1;
+    	
+    	/** 地图规则强制不能攻击 */
+    	public static final int UNATTACK = 2;
     }
-    
 }

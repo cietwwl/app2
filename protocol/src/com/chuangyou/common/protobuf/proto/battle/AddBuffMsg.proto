@@ -1,0 +1,9 @@
+
+option java_package = "com.chuangyou.common.protobuf.pb.battle";
+option java_outer_classname = "AddBuffProto";
+
+message AddBuffMsg{
+	required int32 buffTempId = 1; //要添加的buffID
+	optional int32 isCampaignBuff = 2; // 是否是副本buff 0不是 1是
+	optional int32 campaignType = 3; // 副本类型 0不需要判断副本类型 大于0时表示副本类型
+}

@@ -16,7 +16,7 @@ function getInterfaceName() {
  * @param roleId
  */
 
-function showDialog(roleId,npcId){
+function showDialog(roleId,npcId,npcEntryId){
 	 //=====================>固定格式，创建NPC对话选项数组<=========================
 	 var listClass = Java.type('java.util.ArrayList'); 
 	 var commandStructClass = Java.type('com.chuangyou.xianni.npcDialog.NpcCommand'); 
@@ -32,7 +32,7 @@ function showDialog(roleId,npcId){
  * 处理NPC对话选项
  * @param commandParam：选项携带的参数ID
  */
-function processWithCommandParam(roleId,commandParam,npcId){
+function processWithCommandParam(roleId,commandParam,npcId,npcEntryId){
 	 //=====================>固定格式，创建NPC对话选项数组<=========================
 	 var listClass = Java.type('java.util.ArrayList'); 
 	 var commandStructClass =Java.type('com.chuangyou.xianni.npcDialog.NpcCommand'); 

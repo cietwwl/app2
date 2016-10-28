@@ -25,6 +25,7 @@ public class AvatarCampaign extends Campaign {
 		builder.setRewardCount(rewardCount);
 		PBMessage message = MessageUtil.buildMessage(Protocol.C_PASS_CAMPAIGN_N2CENTER, builder);
 		GatewayLinkedSet.send2Server(message);
+		endTime = System.currentTimeMillis() + 120 * 1000;
 	}
 
 }

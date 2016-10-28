@@ -40,6 +40,9 @@ public class FieldBoss extends Monster {
 	@Override
 	public boolean onDie(Living killer) {
 		// TODO Auto-generated method stub
+		synchronized (statistic) {
+			statistic.setKiller(killer);
+		}
 		return super.onDie(killer);
 	}
 

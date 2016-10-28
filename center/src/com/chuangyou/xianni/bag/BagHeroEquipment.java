@@ -2,6 +2,8 @@ package com.chuangyou.xianni.bag;
 
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.constant.ItemType;
+import com.chuangyou.xianni.constant.EquipConstant.EquipPosition;
+import com.chuangyou.xianni.constant.EquipConstant.EquipType;
 import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.player.GamePlayer;
@@ -108,29 +110,29 @@ public class BagHeroEquipment extends BaseBag {
 		short pos = -1;
 		if (tempInfo.getMasterType() == ItemType.MainType.EQUIP) {
 			switch (tempInfo.getSonType()) {
-				case 11:// 武器
-					pos = 0;
+				case EquipType.weapon:// 武器
+					pos = EquipPosition.weaponPosition;
 					break;
-				case 12:// 头盔
-					pos = 1;
+				case EquipType.head:// 头盔
+					pos = EquipPosition.headPosition;
 					break;
-				case 13:// 项链
-					pos = 2;
+				case EquipType.necklace:// 项链
+					pos = EquipPosition.necklacePosition;
 					break;
-				case 14:// 衣服
-					pos = 3;
+				case EquipType.body:// 衣服
+					pos = EquipPosition.bodyPosition;
 					break;
-				case 15:// 戒指
-					pos = 4;
+				case EquipType.ring:// 戒指
+					pos = EquipPosition.ringPosition;
 					break;
-				case 16:// 手套
-					pos = 5;
+				case EquipType.hand:// 手套
+					pos = EquipPosition.handPosition;
 					break;
-				case 17:// 玉佩
-					pos = 6;
+				case EquipType.ornament:// 玉佩
+					pos = EquipPosition.ornamentPosition;
 					break;
-				case 18:// 鞋子
-					pos = 7;
+				case EquipType.foot:// 鞋子
+					pos = EquipPosition.footPosition;
 					break;
 				default:
 					pos = -1;

@@ -1,6 +1,8 @@
 package com.chuangyou.xianni.player;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.chuangyou.common.protobuf.pb.PlayerInfoMsgProto.PlayerInfoMsg;
 import com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg;
@@ -20,6 +22,7 @@ import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.constant.EquipConstant;
+import com.chuangyou.xianni.constant.NotifyType;
 import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.email.EmailInventory;
 import com.chuangyou.xianni.entity.field.FieldInfo;
@@ -51,7 +54,6 @@ import com.chuangyou.xianni.map.MapProxyManager;
 import com.chuangyou.xianni.mount.MountInventory;
 import com.chuangyou.xianni.pet.PetInventory;
 import com.chuangyou.xianni.player.event.PlayerPropertyUpdateEvent;
-import com.chuangyou.xianni.player.event.PlayerSceneAttEvent;
 import com.chuangyou.xianni.player.manager.PlayerManager;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -65,6 +67,7 @@ import com.chuangyou.xianni.state.StateInventory;
 import com.chuangyou.xianni.task.TaskInventory;
 import com.chuangyou.xianni.truck.TruckInventory;
 import com.chuangyou.xianni.vip.PlayerVipInventory;
+import com.chuangyou.xianni.welfare.WelfareInventory;
 import com.chuangyou.xianni.word.WorldMgr;
 
 import io.netty.channel.Channel;
@@ -151,6 +154,9 @@ public class GamePlayer extends AbstractEvent {
 
 	/** 镖车信息 */
 	private TruckInventory				truckInventory;
+
+	/** 福利信息 */
+	private WelfareInventory			welfareInventory;
 
 	private Channel						channel;					// 服务器持有连接
 
@@ -254,7 +260,9 @@ public class GamePlayer extends AbstractEvent {
 		if (avatarInventory != null) {
 			avatarInventory.saveToDatabase();
 		}
-
+		if (welfareInventory != null) {
+			welfareInventory.saveToDatabase();
+		}
 	}
 
 	// 加载共享数据
@@ -403,6 +411,10 @@ public class GamePlayer extends AbstractEvent {
 			avatarInventory.unloadData();
 			avatarInventory = null;
 		}
+		if (welfareInventory != null) {
+			welfareInventory.unloadData();
+			welfareInventory = null;
+		}
 		return true;
 	}
 
@@ -461,11 +473,18 @@ public class GamePlayer extends AbstractEvent {
 		if (!initData(truckInventory.loadFromDataBase(), "镖车数据")) {
 			return false;
 		}
-		
+
+		// 福利信息
+		welfareInventory = new WelfareInventory(this);
+		if (!welfareInventory.loadFromDataBase()) {
+			return false;
+		}
+
 		// 添加境界任务监听
-		if(stateInventory!=null){
+		if (stateInventory != null) {
 			stateInventory.addStateTrigger();
 		}
+
 		return true;
 	}
 
@@ -521,8 +540,8 @@ public class GamePlayer extends AbstractEvent {
 			arenaInventory.unloadData();
 			arenaInventory = null;
 		}
-		
-		if(stateInventory!=null){
+
+		if (stateInventory != null) {
 			stateInventory.removeStateTrigger();
 		}
 		return true;
@@ -548,32 +567,31 @@ public class GamePlayer extends AbstractEvent {
 				@Override
 				public void onEvent(ObjectEvent event) {
 					// TODO Auto-generated method stub
-					GamePlayer player = WorldMgr.getPlayerFromCache(basePlayer.getPlayerInfo().getPlayerId());
-					if (player != null) {
-						PlayerSceneAttEvent e = (PlayerSceneAttEvent) event;
-
-						PlayerAttUpdateMsg msg = PlayerInfoSendCmd.getPropertyUpdatePacket(e.getAttType(), e.getAttValue(), basePlayer.getPlayerInfo().getPlayerId());
-						player.sendPbMessage(MessageUtil.buildMessage(Protocol.S_ATTRIBUTE_SCENE_UPDATE, msg));
-
-						if (e.getAttType() == EnumAttr.Level.getValue()) {
-							player.onLevelUpdate();
-						}
-					}
-				}
-			}, EventNameType.UPDATE_PLAYER_PROPERTY_SCENE);
-
-			basePlayer.addListener(new ObjectListener() {
-
-				@Override
-				public void onEvent(ObjectEvent event) {
-					// TODO Auto-generated method stub
 					// TODO Auto-generated method stub
 					GamePlayer player = WorldMgr.getPlayerFromCache(basePlayer.getPlayerInfo().getPlayerId());
 					if (player != null) {
 						PlayerPropertyUpdateEvent e = (PlayerPropertyUpdateEvent) event;
+						
+						Map<Integer, Long> userMap = new HashMap<>();
+						Map<Integer, Long> sceneMap = new HashMap<>();
+						
+						for(int attType: e.getChangeMap().keySet()){
+							EnumAttr attr = EnumAttr.getEnumAttrByValue(attType);
+							if(attr.getNotifyType() == NotifyType.NOTIFY_USER){
+								userMap.put(attType, e.getChangeMap().get(attType));
+							}else{
+								sceneMap.put(attType, e.getChangeMap().get(attType));
+							}
+						}
 
-						PlayerAttUpdateMsg msg = PlayerInfoSendCmd.getPropertyUpdatePacket(e.getChangeMap(), basePlayer.getPlayerInfo().getPlayerId());
-						player.sendPbMessage(MessageUtil.buildMessage(Protocol.U_RESP_PLAYER_ATT_UPDATE, msg));
+						if(userMap.size() > 0){
+							PlayerAttUpdateMsg msg = PlayerInfoSendCmd.getPropertyUpdatePacket(userMap, basePlayer.getPlayerInfo().getPlayerId());
+							player.sendPbMessage(MessageUtil.buildMessage(Protocol.U_RESP_PLAYER_ATT_UPDATE, msg));
+						}
+						if(sceneMap.size() > 0){
+							PlayerAttUpdateMsg msg = PlayerInfoSendCmd.getPropertyUpdatePacket(sceneMap, basePlayer.getPlayerInfo().getPlayerId());
+							player.sendPbMessage(MessageUtil.buildMessage(Protocol.S_ATTRIBUTE_UPDATE, msg));
+						}
 
 						if (e.getChangeMap().get(EnumAttr.Level.getValue()) != null) {
 							player.onLevelUpdate();
@@ -666,7 +684,9 @@ public class GamePlayer extends AbstractEvent {
 
 	public void sendPbMessage(PBMessage message) {
 		if (this.getPlayerState() == PlayerState.OFFLINE) {
-			Log.error("send msg but player is not onLine, code : " + message.getCode() + " playerId :" + getPlayerId(), new Exception());
+			// Log.error("send msg but player is not onLine, code : " +
+			// message.getCode() + " playerId :" + getPlayerId(), new
+			// Exception());
 			return;
 		}
 
@@ -882,6 +902,14 @@ public class GamePlayer extends AbstractEvent {
 
 	public AvatarInventory getAvatarInventory() {
 		return avatarInventory;
+	}
+
+	public WelfareInventory getWelfareInventory() {
+		return welfareInventory;
+	}
+
+	public void setWelfareInventory(WelfareInventory welfareInventory) {
+		this.welfareInventory = welfareInventory;
 	}
 
 }

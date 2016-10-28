@@ -201,29 +201,29 @@ public interface ItemRemoveType {
 	 * 卡牌碎片删除
 	 */
 	public static final short	CARD_PIECE				= 1055;
-	
+
 	/**
 	 * 运镖物质添加消耗
 	 */
 	public static final short	TRUCK_MAT				= 1056;
-	
+
 	/**
 	 * 境界消耗
 	 */
 	public static final short	STATE					= 1057;
-	
+
 	/** 创建帮派 */
 	public static final short	GUILD_CREATE			= 1058;
-	
+
 	/** 帮派捐献 */
 	public static final short	GUILD_DONATE			= 1059;
-	
+
 	/** 存入帮派仓库 */
 	public static final short	GUILD_WAREHOUSE_ADD		= 1060;
-	
+
 	/** 购买属性(灵力) */
 	public static final short	BUY_PROPERTY			= 1061;
-	
+
 	/** 帮派夺权 */
 	public static final short	GUILD_SEIZE				= 1062;
 
@@ -241,7 +241,7 @@ public interface ItemRemoveType {
 	 * 分身升星消耗
 	 */
 	public static final short	AVATAR_UP_STAR_COST		= 1065;
-	
+
 	/**
 	 * 运镖物质创建消耗
 	 */
@@ -250,5 +250,10 @@ public interface ItemRemoveType {
 	 * 运镖技能消耗
 	 */
 	public static final short	TRUCK_SKILL				= 1067;
+
+	/**
+	 * 添加分身能量消耗
+	 */
+	public static final short	ADD_AVATAR_ENERGY		= 1068;
 
 }

@@ -1,7 +1,7 @@
 package com.chuangyou.xianni.chat.cmd;
 
 import com.chuangyou.common.protobuf.pb.chat.ChatReceiveProto.ChatReceiveMsg;
-import com.chuangyou.xianni.proto.BroadcastUtil;
+import com.chuangyou.xianni.chat.manager.ChatManager;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
@@ -19,8 +19,7 @@ public class ChatSceneMsgCmd extends AbstractCommand {
 
 		ChatReceiveMsg req = ChatReceiveMsg.parseFrom(packet.getBytes());
 		Field field = FieldMgr.getIns().getField(army.getFieldId());
-		if(field == null) return;
-		BroadcastUtil.sendBroadcastPacket(field.getLivings(), Protocol.U_CHAT_RECEIVE, req);
+		ChatManager.sendSceneChatMsg(field, req);
 	}
 
 }

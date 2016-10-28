@@ -26,6 +26,11 @@ public class DropItemInfo {
 	 * 权重
 	 */
 	private int weight;
+	
+	/**
+	 * 获取物品时发送全服公告
+	 */
+	private int sendNotice;
 
 	public int getId() {
 		return id;
@@ -65,5 +70,13 @@ public class DropItemInfo {
 
 	public void setWeight(int weight) {
 		this.weight = weight;
+	}
+
+	public int getSendNotice() {
+		return sendNotice;
+	}
+
+	public void setSendNotice(int sendNotice) {
+		this.sendNotice = sendNotice;
 	}
 }

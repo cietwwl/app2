@@ -48,8 +48,8 @@ public class TransferFieldAction extends Action {
 		// 进入地图
 		FieldInfo fieldTemp = FieldTemplateMgr.getFieldTemp(field.getMapKey());
 		// 若无初始位置,则设置进入时占无效位置
-		if (vector3 == null || (vector3.x <= 0 && vector3.y <= 0 && vector3.z <= 0)) {
-			vector3 = new Vector3(fieldTemp.getPosition().x, fieldTemp.getPosition().y, fieldTemp.getPosition().z);
+		if (vector3 == null || (vector3.getX() <= 0 && vector3.getY() <= 0 && vector3.getZ() <= 0)) {
+			vector3 = new Vector3(fieldTemp.getPosition().getX(), fieldTemp.getPosition().getY(), fieldTemp.getPosition().getZ());
 		}
 		army.changeField(field, vector3);
 

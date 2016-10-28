@@ -73,7 +73,7 @@ public class ChatManager {
 		msg.setReceiverId(sendMsg.getReceiverId());
 		String resultContent = sendMsg.getChatContent();
 		if(!StringUtils.verifyMaxByteLen(resultContent, 150)){
-			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.CHAT_CONTENT_MAXLENGTH, Protocol.C_CHAT_SEND, "频道不存在");
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.CHAT_CONTENT_MAXLENGTH, Protocol.C_CHAT_SEND, "聊天内容太长");
 			return;
 		}
 		resultContent = SensitivewordFilterUtil.getIntence().replaceSensitiveWord(resultContent);
@@ -93,6 +93,9 @@ public class ChatManager {
 //		chatSendMsg.setChannel(channel);
 //		chatSendMsg.setChatContent(content);
 //		sendChatMsg(null, chatSendMsg.build());
+//		if(channel != ChatConstant.Channel.SYSTEM && channel != ChatConstant.Channel.NOTICE){
+//			return;
+//		}
 		
 		ChatBaseAction action = ChatSenderFactory.getIns().getAction(channel);
 		if(action == null) return;
@@ -101,7 +104,6 @@ public class ChatManager {
 		msgInfo.setChannel(channel);
 		msgInfo.setChatContent(content);
 		action.sendChatMsg(null, msgInfo);
-		
 	}
 	
 	/**
@@ -145,7 +147,9 @@ public class ChatManager {
 	 * @return
 	 */
 	public static List<ChatReceiveMsg> getWorldHistory(){
-		return worldHistory;
+		List<ChatReceiveMsg> list = new ArrayList<>();
+		list.addAll(worldHistory);
+		return list;
 	}
 	
 	/**

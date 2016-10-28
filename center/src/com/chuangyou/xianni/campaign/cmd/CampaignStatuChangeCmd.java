@@ -1,6 +1,7 @@
 package com.chuangyou.xianni.campaign.cmd;
 
 import com.chuangyou.common.protobuf.pb.campaign.CampaignStatuMsgProto.CampaignStatuMsg;
+import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.constant.CampaignConstant.CampaignStatu;
 import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.event.ObjectEvent;
@@ -27,6 +28,7 @@ public class CampaignStatuChangeCmd implements Command {
 		// 进入
 		if (smsg.getStatu() == CampaignStatu.NOTITY2C_IN) {
 			player.setCurCampaign(smsg.getIndexId());
+			Log.error("=============================================" + smsg.getIndexId());
 		}
 		// 只退出
 		if (smsg.getStatu() == CampaignStatu.NOTITY2C_OUT) {
@@ -43,6 +45,7 @@ public class CampaignStatuChangeCmd implements Command {
 		if (smsg.getStatu() == CampaignStatu.NOTITY2C_OVER) {
 			player.setCurCampaign(0);
 			teamCampaignOver(smsg.getTeamId());
+			Log.error("=============================================" + 0);
 		}
 	}
 

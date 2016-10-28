@@ -1,6 +1,6 @@
 package com.chuangyou.xianni.role.objects;
 
-import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
+import com.chuangyou.xianni.constant.RoleConstants.RoleType;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
 
 public class NPC extends Living {

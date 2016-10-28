@@ -10,10 +10,10 @@ public class Vector3 {
 	 */
 	public static final float	Accuracy	= 10.0f;
 
-	public float				x;
-	public float				y;
-	public float				z;
-	public int					angle;
+	private float				x;
+	private float				y;
+	private float				z;
+	private int					angle;
 
 	public Vector3() {
 	}
@@ -216,6 +216,22 @@ public class Vector3 {
 		if (magnitude != 0)
 			return Vector3.add(current, Vector3.multipy(Vector3.division(vector, magnitude), maxDistanceDelta));
 		return target;
+	}
+
+	public float getX() {
+		return x;
+	}
+
+	public float getY() {
+		return y;
+	}
+
+	public float getZ() {
+		return z;
+	}
+
+	public int getAngle() {
+		return angle;
 	}
 
 	@Override

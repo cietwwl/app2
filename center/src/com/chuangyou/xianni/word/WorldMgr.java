@@ -94,8 +94,8 @@ public class WorldMgr {
 			playerJoinInfo.setAttackCut(0);
 			playerJoinInfo.setSoulAttackAddtion(0);
 			playerJoinInfo.setSoulAttackCut(0);
-			playerJoinInfo.setRegainSoul(0);
-			playerJoinInfo.setRegainBlood(0);
+			playerJoinInfo.setRegainSoul(initProperty.getRegainSoul());
+			playerJoinInfo.setRegainBlood(initProperty.getRegainBlood());
 			playerJoinInfo.setMetal(0);
 			playerJoinInfo.setWood(0);
 			playerJoinInfo.setWater(0);

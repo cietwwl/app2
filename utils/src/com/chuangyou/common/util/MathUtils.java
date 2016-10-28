@@ -7,12 +7,12 @@ public class MathUtils {
 	/**
 	 * 弧度转角度
 	 */
-	public static final float deg2ang = 57.29578f;
+	public static final float	deg2ang	= 57.29578f;
 
 	/**
 	 * 随机数
 	 */
-	private static final Random R = new Random();
+	private static final Random	R		= new Random();
 
 	/**
 	 * 计算概率 0 - 100
@@ -45,16 +45,14 @@ public class MathUtils {
 		}
 		return value;
 	}
-	
-	public static void main(String[] args)
-	{
-		Vector3 a = new Vector3(40.27079f,-1.0845418f,-129.52719f);
-		Vector3 b = new Vector3(40.559185f,-1.1f,-132.47057f);
+
+	public static void main(String[] args) {
+		Vector3 a = new Vector3(40.27079f, -1.0845418f, -129.52719f);
+		Vector3 b = new Vector3(40.559185f, -1.1f, -132.47057f);
 		float dist = Vector3.distance(a, b);
 		System.out.println(dist);
 		int timer = 2957;
-		for(int i = 2957; i>0; i=i-100)
-		{
+		for (int i = 2957; i > 0; i = i - 100) {
 			a = GetVector3InDistance(a, b, 0.1f);
 			System.out.println(a);
 		}
@@ -121,28 +119,28 @@ public class MathUtils {
 
 	/**
 	 * 在XZ水平上的方向
+	 * 
 	 * @param src
 	 * @param tar
 	 * @return
 	 */
-	public static Vector3 getDirByXZ(Vector3 src, Vector3 tar)
-	{
-		return new Vector3(src.x - tar.x, 0, src.z - tar.z).getNormalize();
+	public static Vector3 getDirByXZ(Vector3 src, Vector3 tar) {
+		return new Vector3(src.getX() - tar.getX(), 0, src.getZ() - tar.getZ()).getNormalize();
 	}
-	
+
 	/**
 	 * 在XZ水平上的距离计算
+	 * 
 	 * @param src
 	 * @param tar
 	 * @return
 	 */
-	public static float getDistByXZ(Vector3 src, Vector3 tar)
-	{
-		float dx = src.x - tar.x;
-		float dz = src.z - tar.z;
+	public static float getDistByXZ(Vector3 src, Vector3 tar) {
+		float dx = src.getX() - tar.getY();
+		float dz = src.getZ() - tar.getZ();
 		return (float) Math.sqrt(dx * dx + 0 + dz * dz);
 	}
-	
+
 	/**
 	 * 在一个中心随机一个点
 	 * 
@@ -154,34 +152,38 @@ public class MathUtils {
 		float angle = 360 * R.nextFloat() / deg2ang;
 		if (randomRadius)
 			radius = radius * R.nextFloat();
-		return new Vector3(center.x + (float) (Math.cos(angle) * radius), center.y, center.z + (float) (Math.sin(angle) * radius));
+		return new Vector3(center.getX() + (float) (Math.cos(angle) * radius), center.getY(), center.getZ() + (float) (Math.sin(angle) * radius));
 	}
 
 	/**
 	 * 随机范围
 	 * 
-	 * @param min 最小值
-	 * @param max 最大值
+	 * @param min
+	 *            最小值
+	 * @param max
+	 *            最大值
 	 * @return
 	 */
 	public static int randomClamp(int min, int max) {
 		int v = (int) (min + Math.random() * (max - min + 1));
 		return v;
 	}
-	
+
 	/**
 	 * 检测一个点是否在自己面向的夹角内
+	 * 
 	 * @param src
 	 * @param dir
 	 * @param tar
 	 * @param angle
 	 * @return
 	 */
-	public static boolean detectedAngle(Vector3 src, Vector3 dir, Vector3 tar, float angle)
-	{
-		Vector3 src2tar = getDirByXZ(dir, src);//Vector3.sub(tar, src).getNormalize();
+	public static boolean detectedAngle(Vector3 src, Vector3 dir, Vector3 tar, float angle) {
+		Vector3 src2tar = getDirByXZ(dir, src);// Vector3.sub(tar,
+												// src).getNormalize();
 		float src2tarAngle = Vector3.angle(dir, src2tar);
-		if(Math.abs(src2tarAngle) < angle/2) return true;
+		if (Math.abs(src2tarAngle) < angle / 2)
+			return true;
 		return false;
 	}
 

@@ -1,5 +1,6 @@
 package com.chuangyou.xianni.sql.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.chuangyou.xianni.entity.arena.FightData;
@@ -36,4 +37,8 @@ public interface PlayerInfoDao {
 	public PlayerTimeInfo getTimeInfo(long playerId);
 
 	public PlayerInfo getPlayerInfo(String nickName);
+	
+	public List<PlayerInfo> getPlayerList(String account,String user,int userType,Date regBeginTime,Date regEndTime,int startLv,int endLv,int page,int pageSize);
+
+	public int getCount(String account,String user,int userType,Date regBeginTime,Date regEndTime,int startLv,int endLv);
 }

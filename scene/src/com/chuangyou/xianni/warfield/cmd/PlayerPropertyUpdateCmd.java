@@ -7,6 +7,7 @@ import java.util.Set;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.constant.NotifyType;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
@@ -17,7 +18,7 @@ import com.chuangyou.xianni.world.AbstractCommand;
 import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.WorldMgr;
 
-@Cmd(code = Protocol.S_PROPERTY_UPDATE, desc = "玩家属性更新")
+@Cmd(code = Protocol.S_PROPERTY_UPDATE, desc = "玩家战斗属性更新")
 public class PlayerPropertyUpdateCmd extends AbstractCommand {
 
 	@Override
@@ -47,11 +48,13 @@ public class PlayerPropertyUpdateCmd extends AbstractCommand {
 			boolean needNotify = false;
 			PlayerAttUpdateMsg.Builder notifyMsg = PlayerAttUpdateMsg.newBuilder();
 			for (PropertyMsg property : attList) {
-				if (property.getType() == EnumAttr.Mount.getValue()) {
-					PropertyMsg.Builder speedMsg = PropertyMsg.newBuilder();
-					speedMsg.setType(EnumAttr.SPEED.getValue());
-					speedMsg.setTotalPoint(pArmy.getPlayer().getProperty(EnumAttr.SPEED.getValue()));
-					notifyMsg.addAtt(speedMsg);
+				EnumAttr attr = EnumAttr.getEnumAttrByValue(property.getType());
+				if(attr.getNotifyType() == NotifyType.NOTIFY_NEARS){
+					PropertyMsg.Builder proMsg = PropertyMsg.newBuilder();
+					proMsg.setType(property.getType());
+					proMsg.setTotalPoint(property.getTotalPoint());
+					notifyMsg.addAtt(proMsg);
+					needNotify = true;
 				}
 			}
 			if (needNotify == true) {

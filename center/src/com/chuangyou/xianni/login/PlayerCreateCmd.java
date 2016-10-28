@@ -71,7 +71,6 @@ public class PlayerCreateCmd implements Command {
 			}
 		}
 
-
 		PlayerInfo playerInfo = null;
 		if (result == ErrorCode.SUCCESS) {
 			RoleConfig roleConfig = RoleConfigMgr.getRoleConfig(req.getRoleConfigId());
@@ -113,6 +112,7 @@ public class PlayerCreateCmd implements Command {
 			playerInfo.setBattleMode(1);
 			playerInfo.setPkVal(0);
 			playerInfo.setChangeBattleModeTime(0);
+			playerInfo.setCreateTime(new Date());
 
 			// if (req.getRoleConfigId() == 1) {
 			// playerInfo.setWeaponId(2110001);
@@ -144,8 +144,8 @@ public class PlayerCreateCmd implements Command {
 			playerJoinInfo.setAttackCut(0);
 			playerJoinInfo.setSoulAttackAddtion(0);
 			playerJoinInfo.setSoulAttackCut(0);
-			playerJoinInfo.setRegainSoul(0);
-			playerJoinInfo.setRegainBlood(0);
+			playerJoinInfo.setRegainSoul(initProperty.getRegainSoul());
+			playerJoinInfo.setRegainBlood(initProperty.getRegainBlood());
 			playerJoinInfo.setMetal(0);
 			playerJoinInfo.setWood(0);
 			playerJoinInfo.setWater(0);

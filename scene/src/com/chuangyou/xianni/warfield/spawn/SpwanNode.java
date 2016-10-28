@@ -3,6 +3,7 @@ package com.chuangyou.xianni.warfield.spawn;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.campaign.node.CampaignNodeDecorator;
@@ -25,7 +26,7 @@ public class SpwanNode {
 	protected CampaignNodeDecorator	decorator;			// 副本功能修饰器
 	protected int					blood;				// 节点血量（适用于需要循环开闭的节点，如传送阵）
 
-	protected long					refreshTime;		// 刷新时间
+	protected long					refreshTime;		// 刷新时间 10:00
 	protected long					timeControlerTime;	// 定时刷新时间
 	static final int				WAKE_OVER	= 0;	// 结束时唤醒下一个
 	static final int				WAKE_START	= 1;	// 激活时唤醒下一个
@@ -113,18 +114,26 @@ public class SpwanNode {
 				queue.enDelayQueue(action);
 			}
 		}
-		if (spwanInfo.getRestType() == SpwanInfoIntervalType.DIE_SIGN) {
-			refreshTime = System.currentTimeMillis();
-		}
 
 		/*----------当有时间控制时，判断是否唤醒自己--------------*/
-		if (spwanInfo.getRestType() != 0) {
+		if (spwanInfo.getRestType() != 0 && spwanInfo.getRestSecs() != 0) {
 			// 当副本结束后，节点不再复活自己
 			if (campaignId != 0 && (campaign == null || campaign.isOver())) {
 				return;
 			}
-			long relive = refreshTime + spwanInfo.getRestSecs() * 60l * 1000;
-			long leftTime = relive - System.currentTimeMillis();
+			long currentTimeMillis = System.currentTimeMillis();
+			if (spwanInfo.getRestType() == SpwanInfoIntervalType.DIE_SIGN) {
+				refreshTime = currentTimeMillis;
+			}
+			//刷新间隔
+			long refreshInterval = spwanInfo.getRestSecs() * 60L * 1000;
+			//经历完整间隔时间次数+1
+			long restCount = (long)Math.floor((currentTimeMillis - refreshTime)/refreshInterval) + 1;
+			
+			//复活时间
+			long relive = refreshTime + restCount * spwanInfo.getRestSecs() * 60L * 1000;
+			long leftTime = relive - currentTimeMillis;
+			
 			if (leftTime <= 0) {
 				this.revive();
 			} else {
@@ -201,6 +210,9 @@ public class SpwanNode {
 	}
 
 	public void stateTransition(NodeState state) {
+		if (this.state != null && state.getCode() == this.state.getCode()) {
+			Log.error("------重复设置一个状态------" + state.getCode());
+		}
 		this.state = state;
 		state.work();
 		// 通知副本，该节点发送改变

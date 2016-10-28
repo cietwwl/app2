@@ -621,5 +621,10 @@ public interface ClientProtocol {
 	public static final short	U_RESP_TRUCK_REWARD					= 2624;
 	/** 帮派成员护镖运镖时间 */
 	public static final short	U_RESP_TRUCK_PROT_TIMER				= 2625;
+	//福利相关协议
+	/** 推送全部福利信息 */
+	public static final short	U_ALL_WELFARE_INFO					= 2626;
+	/** 更新单个福利信息 */
+	public static final short	U_ONE_WELFARE_INFO				= 2627;
 
 }

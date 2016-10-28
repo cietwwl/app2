@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.bag.ItemManager;
 import com.chuangyou.xianni.entity.shop.ShopCfg;
 import com.chuangyou.xianni.sql.dao.DBManager;
@@ -34,6 +35,7 @@ public class ShopTemplateMgr {
 		shops = DBManager.getShopConfigDao().getAll();
 		for (ShopCfg cfg : shops.values()) {
 			if (ItemManager.findItemTempInfo(cfg.getItemType()) == null) {
+				Log.error(cfg.getItemType());
 				return false;
 			}
 			if (!shopLists.containsKey(cfg.getShopid())) {

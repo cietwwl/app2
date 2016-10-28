@@ -14,10 +14,10 @@ public class Vector3BuilderHelper {
 	public static PBVector3.Builder build(Vector3 v3) {
 		PBVector3.Builder builder = PBVector3.newBuilder();
 		if (v3 != null) {
-			builder.setX((int) (v3.x * Vector3.Accuracy));
-			builder.setY((int) (v3.y * Vector3.Accuracy));
-			builder.setZ((int) (v3.z * Vector3.Accuracy));
-			builder.setAngle(v3.angle);
+			builder.setX((int) (v3.getX() * Vector3.Accuracy));
+			builder.setY((int) (v3.getY() * Vector3.Accuracy));
+			builder.setZ((int) (v3.getZ() * Vector3.Accuracy));
+			builder.setAngle(v3.getAngle());
 		}
 		return builder;
 	}

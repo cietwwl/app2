@@ -34,6 +34,7 @@ import com.chuangyou.xianni.netty.codec.PBMessageEncoder;
 import com.chuangyou.xianni.netty.server.CenterInboundHandler;
 import com.chuangyou.xianni.netty.server.CenterOutboundHandler;
 import com.chuangyou.xianni.netty.server.HttpServerInboundHandler;
+import com.chuangyou.xianni.notice.template.NoticeTemplateMgr;
 import com.chuangyou.xianni.npcDialog.NpcInfoTemplateMgr;
 import com.chuangyou.xianni.pet.template.PetTemplateMgr;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -51,6 +52,7 @@ import com.chuangyou.xianni.task.template.TaskTemplateMgr;
 import com.chuangyou.xianni.team.TeamTargetTempMgr;
 import com.chuangyou.xianni.truck.TruckTempMgr;
 import com.chuangyou.xianni.vip.templete.VipTemplateMgr;
+import com.chuangyou.xianni.welfare.WelfareManager;
 import com.chuangyou.xianni.word.WorldMgr;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -220,6 +222,10 @@ public class CenterServer extends BaseServer {
 			return false;
 		}
 		
+		if(!initComponent(NoticeTemplateMgr.init(), "公告模板数据")){
+			return false;
+		}
+		
 		
 		//管理器可能会用到模板数据，所以放在所有模板数据之后初始化
 		if(!initComponent(RankServerManager.getInstance().init(),"初始化排行榜数据")){
@@ -239,6 +245,11 @@ public class CenterServer extends BaseServer {
 		if(!initComponent(GuildManager.getIns().init(), "初始化帮派模块")){
 			return false;
 		}
+		
+		if(!initComponent(WelfareManager.init(), "初始化福利配置信息模块")){
+			return false;
+		}
+		
 		return true;
 	}
 

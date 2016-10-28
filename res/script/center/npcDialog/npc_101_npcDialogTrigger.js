@@ -15,7 +15,7 @@ function getInterfaceName() {
  * 显示NPC对话（点击NPC首先调用这个接口）
  * @param roleId
  */
-function showDialog(roleId,npcId){
+function showDialog(roleId,npcId,npcEntryId){
 	 //=====================>固定格式，创建NPC对话选项数组<=========================
 	 var listClass = Java.type('java.util.ArrayList'); 
 	 var commandStructClass = Java.type('com.chuangyou.xianni.npcDialog.NpcCommand'); 
@@ -39,7 +39,7 @@ function showDialog(roleId,npcId){
  * 处理NPC对话选项
  * @param commandParam：选项携带的参数ID
  */
-function processWithCommandParam(roleId,commandParam,npcId){
+function processWithCommandParam(roleId,commandParam,npcId,npcEntryId){
 	 //=====================>固定格式，创建NPC对话选项数组<=========================
 	 var listClass = Java.type('java.util.ArrayList'); 
 	 var commandStructClass =Java.type('com.chuangyou.xianni.npcDialog.NpcCommand'); 
@@ -88,6 +88,8 @@ function processWithCommandParam(roleId,commandParam,npcId){
 		
 		content = "我一秒钟几十万上下会和你闲聊？！";
 
+	}else if (commandParam==123456){
+		createCampaingByOnceNpc(roleId,10086,npcEntryId)
 	}
 	
 	sendToClient(roleId,list,content);

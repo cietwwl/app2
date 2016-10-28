@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignMgr;
-import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
+import com.chuangyou.xianni.constant.RoleConstants.RoleType;
 import com.chuangyou.xianni.warfield.spawn.GatherSpawnNode;
 import com.chuangyou.xianni.world.ArmyProxy;
 

@@ -1,6 +1,6 @@
 package com.chuangyou.xianni.warfield.helper.selectors;
 
-import com.chuangyou.xianni.role.helper.RoleConstants;
+import com.chuangyou.xianni.constant.RoleConstants;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.warfield.helper.Selector;
 

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.chuangyou.common.util.Log;
+import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.arena.FightData;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
@@ -55,7 +56,8 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		String sql = "INSERT INTO tb_u_player_info (playerId,userId,job,nickname,level,exp,totalExp,money,bindCash,cash,vipLevel"
 				+ ",fight,skinId,pBagCount,mountId,magicWeaponId,skillStage,repair,battleMode,pkVal,changeBattleModeTime,fashionId,"
 
-				+ "weaponId,wingId,points,vipTimeLimit,vipInterimTimeLimit,vipExp,equipExp,stateLv) " + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+				+ "weaponId,wingId,points,vipTimeLimit,vipInterimTimeLimit,vipExp,equipExp,stateLv,avatarEnergy,createTime) "
+				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.BIGINT, playerInfo.getPlayerId()));
@@ -91,6 +93,8 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 
 		para.put(29, new DbParameter(Types.BIGINT, playerInfo.getEquipExp()));
 		para.put(30, new DbParameter(Types.INTEGER, playerInfo.getStateLv()));
+		para.put(31, new DbParameter(Types.INTEGER, playerInfo.getAvatarEnergy()));
+		para.put(31, new DbParameter(Types.DATE, playerInfo.getCreateTime()));
 
 		result = execNoneQuery(sql, para) > -1 ? true : false;
 		playerInfo.commitAdd(result);
@@ -102,7 +106,7 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		boolean result = false;
 		playerInfo.beginUpdate();
 		String sql = "update tb_u_player_info set nickname=?,level=?,exp=?,totalExp=?,money=?" + ",bindCash=?,cash=?,vipLevel=?,fight=?,skinId=?,pBagCount=?,mountId=?,magicWeaponId=?,skillStage=?,"
-				+ "repair=?,battleMode=?,pkVal=?,changeBattleModeTime=?,fashionId=?,weaponId=?,wingId=?,points=?,vipTimeLimit=?,vipInterimTimeLimit=?,vipExp=?,equipExp=?,stateLv=? where playerId=?";
+				+ "repair=?,battleMode=?,pkVal=?,changeBattleModeTime=?,fashionId=?,weaponId=?,wingId=?,points=?,vipTimeLimit=?,vipInterimTimeLimit=?,vipExp=?,equipExp=?,stateLv=?,avatarEnergy=? where playerId=?";
 
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.VARCHAR, playerInfo.getNickName()));
@@ -136,8 +140,8 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 
 		para.put(26, new DbParameter(Types.BIGINT, playerInfo.getEquipExp()));
 		para.put(27, new DbParameter(Types.INTEGER, playerInfo.getStateLv()));
-
-		para.put(28, new DbParameter(Types.BIGINT, playerInfo.getPlayerId()));
+		para.put(28, new DbParameter(Types.INTEGER, playerInfo.getAvatarEnergy()));
+		para.put(29, new DbParameter(Types.BIGINT, playerInfo.getPlayerId()));
 
 		result = execNoneQuery(sql, para) > -1 ? true : false;
 
@@ -209,8 +213,10 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 					info.setVipExp(rs.getInt("vipExp"));
 
 					info.setStateLv(rs.getInt("stateLv"));
+					info.setAvatarEnergy(rs.getInt("avatarEnergy"));
 
 					info.setOp(Option.None);
+					info.setCreateTime(rs.getDate("createDateTime"));
 					infos.add(info);
 				}
 			} catch (SQLException e) {
@@ -505,6 +511,172 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 			}
 		}
 		return maxId == 0 ? 1 : maxId + 1;
+	}
+
+	@Override
+	public List<PlayerInfo> getPlayerList(String account, String user, int userType, Date regBeginTime, Date regEndTime, int startLv, int endLv, int page, int pageSize) {
+		List<PlayerInfo> infos = new ArrayList<PlayerInfo>();
+		StringBuffer strSql = new StringBuffer();
+		StringBuffer where = new StringBuffer();
+		strSql.append("SELECT * from tb_u_player_info a LEFT JOIN tb_u_user_info b on a.userId=b.userId");
+		if (account != null) {
+			where.append(" b.userName='" + account + "'");
+		}
+		if (user != null) {
+			if (where.length() > 0) {
+				where.append(" and");
+			}
+			if (userType == 1) {// 昵称查询
+				where.append(" a.nickName='" + user + "'");
+			} else {
+				where.append(" a.playerId=" + user);
+			}
+		}
+		if (regBeginTime != null) {
+			if (where.length() > 0) {
+				where.append(" and");
+			}
+			where.append(" createTime>='" + TimeUtil.getDateFormat(regBeginTime) + "'");
+		}
+		if (regEndTime != null) {
+			if (where.length() > 0) {
+				where.append(" and");
+			}
+			where.append(" createTime<='" + TimeUtil.getDateFormat(regEndTime) + "'");
+		}
+		if (startLv >= 0) {
+			if (where.length() > 0) {
+				where.append(" and");
+			}
+			where.append(" level>=" + startLv);
+		}
+		if (endLv >= 0) {
+			if (where.length() > 0) {
+				where.append(" and");
+			}
+			where.append(" level<=" + endLv);
+		}
+
+		if (where.length() > 0) {
+			strSql.append(" where ");
+			strSql.append(where);
+		}
+
+		strSql.append(" limit " + (page - 1) * pageSize + "," + pageSize);
+		strSql.append(";");
+
+		PreparedStatement pstmt = execQuery(strSql.toString(), null);
+		ResultSet rs = null;
+		PlayerInfo info = null;
+		if (pstmt != null) {
+			try {
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					info = new PlayerInfo();
+					info.setPlayerId(rs.getLong("playerId"));
+					info.setUserId(rs.getLong("userId"));
+					info.setJob(rs.getInt("job"));
+					info.setNickName(rs.getString("nickName"));
+					info.setLevel(rs.getInt("level"));
+					info.setExp(rs.getLong("exp"));
+					info.setTotalExp(rs.getLong("totalExp"));
+					info.setMoney(rs.getLong("money"));
+					info.setBindCash(rs.getInt("bindCash"));
+					info.setCash(rs.getInt("cash"));
+					info.setVipLevel(rs.getShort("vipLevel"));
+					info.setFight(rs.getInt("fight"));
+					info.setSkinId(rs.getInt("skinId"));
+					info.setpBagCount(rs.getInt("pBagCount"));
+					info.setMountId(rs.getInt("mountId"));
+					info.setMagicWeaponId(rs.getInt("magicWeaponId"));
+					info.setSkillStage(rs.getInt("skillStage"));
+					info.setRepair(rs.getInt("repair"));
+					info.setBattleMode(rs.getInt("battleMode"));
+					info.setPkVal(rs.getInt("pkVal"));
+					info.setChangeBattleModeTime(rs.getLong("changeBattleModeTime"));
+					info.setFashionId(rs.getInt("fashionId"));
+					info.setWeaponId(rs.getInt("weaponId"));
+					info.setWingId(rs.getInt("wingId"));
+					info.setPoints(rs.getInt("points"));
+					info.setEquipExp(rs.getLong("equipExp"));
+					info.setVipTimeLimit(rs.getDate("vipTimeLimit"));
+					info.setVipInterimTimeLimit(rs.getDate("vipInterimTimeLimit"));
+					info.setVipExp(rs.getInt("vipExp"));
+					info.setStateLv(rs.getInt("stateLv"));
+					info.setCreateTime(rs.getDate("createDateTime"));
+					info.setAccount(rs.getString("userName"));
+					infos.add(info);
+				}
+			} catch (SQLException e) {
+				infos = null;
+				Log.error("执行出错" + strSql, e);
+			} finally {
+				closeConn(pstmt, rs);
+			}
+		}
+		System.out.println(strSql);
+		return infos;
+	}
+
+	public int getCount(String account, String user, int userType, Date regBeginTime, Date regEndTime, int startLv, int endLv) {
+		StringBuffer strSql = new StringBuffer();
+		StringBuffer where = new StringBuffer();
+		strSql.append("SELECT count(*) as count from tb_u_player_info a LEFT JOIN tb_u_user_info b on a.userId=b.userId");
+		if (account != null) {
+			where.append(" b.userName='" + account + "'");
+		}
+		if (user != null) {
+			if (where.length() > 0) {
+				where.append(" and");
+			}
+			if (userType == 1) {// 昵称查询
+				where.append(" a.nickName='" + user + "'");
+			} else {
+				where.append(" a.userId=" + user);
+			}
+		}
+		if (regBeginTime != null) {
+			if (where.length() > 0) {
+				where.append(" and");
+			}
+			where.append(" createTime>='" + TimeUtil.getDateFormat(regBeginTime) + "'");
+		}
+		if (regEndTime != null) {
+			if (where.length() > 0) {
+				where.append(" and");
+			}
+			where.append(" createTime<='" + TimeUtil.getDateFormat(regEndTime) + "'");
+		}
+		if (startLv >= 0) {
+			if (where.length() > 0) {
+				where.append(" and");
+			}
+			where.append(" level>=" + startLv);
+		}
+		if (endLv >= 0) {
+			if (where.length() > 0) {
+				where.append(" and");
+			}
+			where.append(" level<=" + endLv);
+		}
+		if (where.length() > 0) {
+			strSql.append(" where ");
+			strSql.append(where);
+		}
+		strSql.append(";");
+		PreparedStatement pstmt = execQuery(strSql.toString(), null);
+		ResultSet rs = null;
+		try {
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				return rs.getInt("count");
+			}
+		} catch (SQLException e) {
+			Log.error("执行出错" + strSql.toString(), e);
+		} finally {
+			closeConn(pstmt, rs);
+		}
+		return 0;
 	}
 
 }

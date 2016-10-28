@@ -3,6 +3,7 @@ package com.chuangyou.xianni.warfield.navi.exector;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.role.objects.ActiveLiving;
 import com.chuangyou.xianni.role.objects.Living;
@@ -47,11 +48,11 @@ public class NavigationTask implements Runnable {
 		this.end = end;
 	}
 
-	private long livingID;
-	private Vector3 start;
-	private Vector3 end;
+	private long						livingID;
+	private Vector3						start;
+	private Vector3						end;
 
-	private TasksQueue<NavigationTask> tasksQueue;
+	private TasksQueue<NavigationTask>	tasksQueue;
 
 	public NavigationTask(int fieldId, long livingID, Vector3 start, Vector3 end) {
 		// TODO Auto-generated constructor stub
@@ -93,7 +94,8 @@ public class NavigationTask implements Runnable {
 				((ActiveLiving) l).navigateComplete(code, path);
 			}
 			// long s = System.currentTimeMillis();
-			// NavmeshSeeker seeker = FieldMgr.getIns().GetSeeker("");//NavigationExector.GetSeeker(mapid);
+			// NavmeshSeeker seeker =
+			// FieldMgr.getIns().GetSeeker("");//NavigationExector.GetSeeker(mapid);
 			// List<Vector3> path = new ArrayList<Vector3>();
 			// NavmeshSeekerStatuCode code = seeker.seek(start, end, path, 0);
 			////// 回调寻路数据
@@ -106,7 +108,7 @@ public class NavigationTask implements Runnable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("findPath Cost = " + (System.currentTimeMillis() - startTime));
+			Log.error("findPath Cost = " + (System.currentTimeMillis() - startTime));
 		}
 	}
 

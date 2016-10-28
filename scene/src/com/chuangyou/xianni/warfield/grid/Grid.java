@@ -42,7 +42,7 @@ public class Grid {
 	 */
 	public void moveto(Living living, Vector3 goal) {
 		GridItem curGI = _items[living.getGridIndex()];// getGridItem(living);
-		GridItem goalGI = getGridItem(goal.x, goal.z);
+		GridItem goalGI = getGridItem(goal.getX(), goal.getZ());
 		// System.err.println("moveto = " + living.getPostion() + " goal = " +
 		// goal + " curGI = " + curGI + " goal = " + goalGI);
 		if (curGI == null || goalGI == null)
@@ -91,7 +91,7 @@ public class Grid {
 		if (position == Vector3.Invalid) {
 			return null;
 		}
-		return getGridItem(position.x, position.z);
+		return getGridItem(position.getX(), position.getZ());
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class Grid {
 		if (role.getPostion() == Vector3.Invalid) {
 			return null;
 		}
-		return getGridItem(role.getPostion().x, role.getPostion().z);
+		return getGridItem(role.getPostion().getX(), role.getPostion().getZ());
 	}
 
 	/**

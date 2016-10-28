@@ -1,7 +1,5 @@
 package com.chuangyou.xianni.pet.manager;
 
-import java.util.List;
-
 import com.chuangyou.common.protobuf.pb.pet.PetSkillBeanProto.PetSkillBeanMsg;
 import com.chuangyou.common.protobuf.pb.pet.PetSkillUpdateRespProto.PetSkillUpdateRespMsg;
 import com.chuangyou.xianni.entity.pet.PetSkill;

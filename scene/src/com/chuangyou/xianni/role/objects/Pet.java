@@ -14,7 +14,7 @@ import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.skill.Skill;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.constant.EnumAttr;
-import com.chuangyou.xianni.role.helper.RoleConstants;
+import com.chuangyou.xianni.constant.RoleConstants;
 
 public class Pet extends ActiveLiving {
 

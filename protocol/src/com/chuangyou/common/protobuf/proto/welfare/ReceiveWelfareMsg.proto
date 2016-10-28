@@ -1,0 +1,8 @@
+//protocol= 10733;
+option java_package = "com.chuangyou.common.protobuf.pb.welfare";
+option java_outer_classname = "ReceiveWelfareMsgProto";
+
+//领取福利奖励
+message ReceiveWelfareMsg {
+	required int32 id = 1; // 领取的福利ID
+}

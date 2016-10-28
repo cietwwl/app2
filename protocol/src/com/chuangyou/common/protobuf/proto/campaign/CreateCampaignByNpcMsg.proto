@@ -1,0 +1,9 @@
+option java_package = "com.chuangyou.common.protobuf.pb.campaign";
+option java_outer_classname = "CreateCampaignByNpcProto";
+
+//根据NPC创建副本
+message CreateCampaignByNpcMsg{
+	optional int64 playerId = 1;  //用户ID
+	optional int32 campaignId = 2;  //副本ID
+	optional int64 npcId = 3;  // livingID
+}

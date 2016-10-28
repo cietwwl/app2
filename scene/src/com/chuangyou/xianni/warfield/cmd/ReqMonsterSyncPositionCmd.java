@@ -26,6 +26,7 @@ public class ReqMonsterSyncPositionCmd extends AbstractCommand {
 		MonsterPosSyncMsg moveSync = MonsterPosSyncMsg.parseFrom(packet.getBytes());
 		Vector3 current = Vector3BuilderHelper.get(moveSync.getCur());
 		ActiveLiving living = (ActiveLiving) f.getLiving(moveSync.getLivingId());
+		//System.out.println("sys monster position = " + current);
 		//NotifyNearHelper.notifyHelper(f, living, current,new ExcludePetSelector(living));
 		GridItem curGI = f.getGrid().getGridItem(living.getPostion());
 		GridItem tarGI = f.getGrid().getGridItem(current);
@@ -33,6 +34,7 @@ public class ReqMonsterSyncPositionCmd extends AbstractCommand {
 			return; // 找不到对应的格子， 返回。。
 		// System.err.println("curGI.id = " + curGI.id );
 		// System.err.println("tarGI.id = " + tarGI.id );
+		living.stop(false);
 		living.setPostion(current);
 	}
 

@@ -7,9 +7,6 @@ public interface EventNameType {
 	/**所有属性变更*/ 
 	public static final int	UPDATE_PLAYER_PROPERTY_ALL	= 2;
 	
-	/** 更新场景可见属性（需要广播给周围玩家） */
-	public static final int UPDATE_PLAYER_PROPERTY_SCENE = 4;
-	
 	/** 玩家属性变更 */
 	public static final int UPDATE_PLAYER_PROPERTY = 5;
 	

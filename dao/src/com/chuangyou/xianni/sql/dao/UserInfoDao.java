@@ -6,7 +6,8 @@ public interface UserInfoDao {
 	public UserInfo getUser(String userName);
 
 	public boolean save(UserInfo user);
-	
+
 	public long getMaxId();
 
+	public UserInfo getUser(long userid);
 }

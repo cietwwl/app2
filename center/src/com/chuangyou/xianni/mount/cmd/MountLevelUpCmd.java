@@ -13,7 +13,6 @@ import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.mount.MountInfo;
 import com.chuangyou.xianni.entity.mount.MountLevelCfg;
 import com.chuangyou.xianni.event.EventNameType;
-import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.mount.manager.MountManager;
 import com.chuangyou.xianni.mount.template.MountTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;

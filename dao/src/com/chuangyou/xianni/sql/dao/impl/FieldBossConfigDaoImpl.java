@@ -41,8 +41,10 @@ public class FieldBossConfigDaoImpl extends BaseDao implements FieldBossConfigDa
 					info.setMaxLevel(rs.getInt("maxLevel"));
 					info.setSingleTag(rs.getInt("singleTag"));
 					info.setMultiTag(rs.getInt("multiTag"));
-					info.setBornNotice(rs.getString("bornNotice"));
-					info.setDeadNotice(rs.getString("deadNotice"));
+					info.setBornNotice(rs.getInt("bornNotice"));
+					info.setDeadNotice(rs.getInt("deadNotice"));
+					info.setSingleNotice(rs.getInt("singleNotice"));
+					info.setMultiNotice(rs.getInt("multiNotice"));
 					info.setFirstAwardItem(rs.getInt("firstAwardItem"));
 					info.setFirstAwardNum(rs.getInt("firstAwardNum"));
 					info.setNormalAwardItem(rs.getInt("normalAwardItem"));
@@ -51,7 +53,7 @@ public class FieldBossConfigDaoImpl extends BaseDao implements FieldBossConfigDa
 					info.setDmgAwardNum(rs.getInt("dmgAwardNum"));
 					info.setShieldAwardItem(rs.getInt("shieldAwardItem"));
 					info.setShieldAwardNum(rs.getInt("shieldAwardNum"));
-					info.setTransferModelId(rs.getInt("transferModelId"));
+					info.setTransferNpcId(rs.getInt("transferNpcId"));
 					info.setTimeList();
 					
 					infos.put(info.getMonsterId(), info);

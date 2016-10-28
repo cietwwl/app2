@@ -518,6 +518,9 @@ public class ErrorCode {
 	/** 请先升级门派等级 */
 	public static final int GUILD_LEVEL_UNENOUGH						= 2007;
 	
+	/** 物品不能使用 */
+	public static final int ITEM_CANNOT_USE								= 2008;
+	
 
 	/** 此NPC未绑定脚本 */
 	public static final int	NPC_NO_HAVE_SCRIPT						= 2501;

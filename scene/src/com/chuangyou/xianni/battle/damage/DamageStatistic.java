@@ -3,6 +3,7 @@ package com.chuangyou.xianni.battle.damage;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
 
 /**
@@ -22,6 +23,9 @@ public class DamageStatistic {
 	
 	/** 造成最高伤害者ID */
 	private long mostDamageSender;
+	
+	/** 击杀者 */
+	private Living killer;
 	
 	public DamageStatistic(Monster monster) {
 		// TODO Auto-generated constructor stub
@@ -100,5 +104,13 @@ public class DamageStatistic {
 
 	public void setMostDamageSender(long mostDamageSender) {
 		this.mostDamageSender = mostDamageSender;
+	}
+
+	public Living getKiller() {
+		return killer;
+	}
+
+	public void setKiller(Living killer) {
+		this.killer = killer;
 	}
 }

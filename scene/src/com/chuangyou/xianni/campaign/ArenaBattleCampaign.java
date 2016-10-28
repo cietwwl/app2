@@ -46,7 +46,7 @@ public class ArenaBattleCampaign extends Campaign {
 		robot.instill(robotDATA);
 
 		FieldInfo fieldInfo = starField.getFieldInfo();
-		Vector3 vector3 = new Vector3(fieldInfo.getPosition().x, fieldInfo.getPosition().y, fieldInfo.getPosition().z, fieldInfo.getPosition().angle);
+		Vector3 vector3 = new Vector3(fieldInfo.getPosition().getX(), fieldInfo.getPosition().getY(), fieldInfo.getPosition().getZ(), fieldInfo.getPosition().getAngle());
 		robot.setPostion(vector3);
 		starField.enterField(robot);
 

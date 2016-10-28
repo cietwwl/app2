@@ -104,7 +104,7 @@ public class EquipManager {
 				attMsg.addAtt(awakenMsg);
 				attMsg.setPlayerId(player.getPlayerId());
 				
-				PBMessage pkg = MessageUtil.buildMessage(Protocol.S_ATTRIBUTE_SCENE_UPDATE, attMsg);
+				PBMessage pkg = MessageUtil.buildMessage(Protocol.S_ATTRIBUTE_UPDATE, attMsg);
 				player.sendPbMessage(pkg);
 			}
 		}

@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.battle.action.FieldPollingAction;
+import com.chuangyou.xianni.constant.RoleConstants.RoleType;
 import com.chuangyou.xianni.drop.helper.NotifyDropHalper;
 import com.chuangyou.xianni.drop.objects.DropPackage;
 import com.chuangyou.xianni.entity.field.FieldInfo;
@@ -17,11 +18,13 @@ import com.chuangyou.xianni.exec.AbstractActionQueue;
 import com.chuangyou.xianni.exec.ThreadManager;
 import com.chuangyou.xianni.proto.BroadcastUtil;
 import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.objects.Living;
+import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.warfield.FieldMgr;
 import com.chuangyou.xianni.warfield.grid.Grid;
 import com.chuangyou.xianni.warfield.helper.NotifyNearHelper;
+import com.chuangyou.xianni.warfield.helper.FieldConstants.BattleType;
+import com.chuangyou.xianni.warfield.helper.FieldConstants.FieldAttackRule;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.navi.seeker.NavmeshSeeker;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
@@ -34,40 +37,41 @@ import com.chuangyou.xianni.warfield.template.FieldTemplateMgr;
  *
  */
 public class Field extends AbstractActionQueue {
+	public static final int								MAX_ID		= 1000000;
 	/**
 	 * 地图生成后的唯一ID
 	 */
-	public int									id;
+	public int											id;
 
 	/**
 	 * Map对应的资源key
 	 */
-	protected int								mapKey;
+	protected int										mapKey;
 
 	/**
 	 * 格子
 	 */
-	protected Grid								grid;
+	protected Grid										grid;
 
 	/**
 	 * 
 	 */
-	protected NavmeshSeeker						seeker;
+	protected NavmeshSeeker								seeker;
 
 	/**
 	 * 地图模型信息
 	 */
-	protected FieldInfo							fieldInfo;
+	protected FieldInfo									fieldInfo;
 
 	/**
 	 * 轮循自调度，每个地图都有，副本销毁时必须清理
 	 */
-	protected FieldPollingAction				pollingAction;
+	protected FieldPollingAction						pollingAction;
 
 	/**
 	 * 存在的对象
 	 */
-	protected ConcurrentHashMap<Long, Living>	livings		= new ConcurrentHashMap<Long, Living>();
+	protected ConcurrentHashMap<Long, Living>			livings		= new ConcurrentHashMap<Long, Living>();
 
 	// /**
 	// * 接触触发的点
@@ -78,16 +82,16 @@ public class Field extends AbstractActionQueue {
 	/**
 	 * 场景里的掉落物
 	 */
-	protected ConcurrentHashMap<Integer, DropPackage>			dropItems	= new ConcurrentHashMap<Integer, DropPackage>();
+	protected ConcurrentHashMap<Integer, DropPackage>	dropItems	= new ConcurrentHashMap<Integer, DropPackage>();
 
 	/** 所属副本ID(唯一ID) */
-	protected int								campaignId;
+	protected int										campaignId;
 
 	/** 所有地图节点 */
-	protected Map<Integer, SpwanNode>			spwanNodes	= new HashMap<Integer, SpwanNode>();
+	protected Map<Integer, SpwanNode>					spwanNodes	= new HashMap<Integer, SpwanNode>();
 
 	/** 死亡living */
-	protected List<Living>						deathLiving	= new ArrayList<>();
+	protected List<Living>								deathLiving	= new ArrayList<>();
 
 	public Field() {
 		// TODO Auto-generated constructor stub
@@ -121,7 +125,6 @@ public class Field extends AbstractActionQueue {
 		// 通知附近的玩家进入
 		Set<Long> nears = l.getNears(new PlayerSelectorHelper(l));
 
-
 		if (nears != null && nears.size() > 0) {
 			BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_RESP_ATT_SNAP, l.getAttSnapMsg().build());
 		}
@@ -134,20 +137,21 @@ public class Field extends AbstractActionQueue {
 	 */
 	public void leaveField(Living l) {
 		leaveField(l, true);
-//		//如果是玩家，判断是否有宠物，并移除宠物
-//		if(l.getType() == RoleType.player){
-//			ArmyProxy army = WorldMgr.getArmy(l.getArmyId());
-//			if(army != null){
-//				if(army.getPet() != null && army.getPet().getField() != null){
-//					if(this.getLiving(army.getPet().getId()) != null) leaveField(army.getPet(), true);
-//				}
-//			}
-//		}
+		// //如果是玩家，判断是否有宠物，并移除宠物
+		// if(l.getType() == RoleType.player){
+		// ArmyProxy army = WorldMgr.getArmy(l.getArmyId());
+		// if(army != null){
+		// if(army.getPet() != null && army.getPet().getField() != null){
+		// if(this.getLiving(army.getPet().getId()) != null)
+		// leaveField(army.getPet(), true);
+		// }
+		// }
+		// }
 	}
 
 	public void leaveField(Living l, boolean notifyClient) {
 		// System.out.println("leaveField = " + l.getId());
-		if(livings.remove(l.getId()) != null){
+		if (livings.remove(l.getId()) != null) {
 			grid.removeRole(l);
 		}
 		// 通知附近玩家，自己离开
@@ -201,6 +205,37 @@ public class Field extends AbstractActionQueue {
 		if (livings.containsKey(id))
 			return livings.get(id);
 		return null;
+	}
+	
+	/**
+	 * 是否地图强制可以攻击，该判断优先级高于玩家的pk模式
+	 * 返回true时，直接判定可以攻击，返回false时才判断pk模式
+	 * @param player
+	 * @param target
+	 * @return
+	 */
+	public int getAttackRule(Player player, Player target){
+		if(fieldInfo.getBattleType() == BattleType.ARENA){
+			return FieldAttackRule.ATTACK;
+		}
+		if(fieldInfo.getBattleType() == BattleType.FIGHT){
+			return FieldAttackRule.USEPLAYERMODE;
+		}
+		if(player == null || target == null){
+			return FieldAttackRule.UNATTACK;
+		}
+		if (player.getTeamId() != 0 && player.getTeamId() == target.getTeamId()) {// 队友
+			return FieldAttackRule.UNATTACK;
+		}
+		if(fieldInfo.getBattleType() == BattleType.GUILD){
+			if(player.getSimpleInfo() != null || target.getSimpleInfo() != null){
+				if(player.getSimpleInfo().getGuildId() != 0 && player.getSimpleInfo().getGuildId() == target.getSimpleInfo().getGuildId()){
+					return FieldAttackRule.UNATTACK;
+				}
+			}
+			return FieldAttackRule.ATTACK;
+		}
+		return FieldAttackRule.UNATTACK;
 	}
 
 	// /**
@@ -300,9 +335,10 @@ public class Field extends AbstractActionQueue {
 
 	/**
 	 * 获取所有怪物
+	 * 
 	 * @return
 	 */
-	public List<Living> getMonsters(){
+	public List<Living> getMonsters() {
 		List<Living> ret = new ArrayList<>();
 		Iterator<Entry<Long, Living>> it = this.livings.entrySet().iterator();
 		while (it.hasNext()) {
@@ -313,7 +349,7 @@ public class Field extends AbstractActionQueue {
 		}
 		return ret;
 	}
-	
+
 	public int getCampaignId() {
 		return campaignId;
 	}

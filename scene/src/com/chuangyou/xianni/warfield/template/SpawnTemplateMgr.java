@@ -11,14 +11,14 @@ import com.chuangyou.xianni.entity.spawn.SpawnInfo;
 import com.chuangyou.xianni.sql.dao.DBManager;
 
 public class SpawnTemplateMgr {
-	/** 刷新节点  id--info */
-	private static Map<Integer, SpawnInfo> 					spawns					= new HashMap<Integer, SpawnInfo>();
+	/** 刷新节点 id--info */
+	private static Map<Integer, SpawnInfo>					spawns					= new HashMap<Integer, SpawnInfo>();
 
-	// 刷新节点配置  mapkey--<id--info>
+	// 刷新节点配置 mapkey--<id--info>
 	private static Map<Integer, Map<Integer, SpawnInfo>>	spwnInfo				= new HashMap<Integer, Map<Integer, SpawnInfo>>();
-	// ID标记与节点ID关系表  tagId--id
+	// ID标记与节点ID关系表 tagId--id
 	private static Map<Integer, Integer>					tagId_spanId_mapping	= new HashMap<>();
-	// 地图对应的节点列表  mapkey--list
+	// 地图对应的节点列表 mapkey--list
 	private static Map<Integer, List<SpawnInfo>>			reLiveNodes				= new HashMap<>();
 
 	public static boolean init() {
@@ -26,8 +26,8 @@ public class SpawnTemplateMgr {
 	}
 
 	public static Map<Integer, SpawnInfo> getFieldSpawnInfos(int mapKey) {
-		Map<Integer, SpawnInfo> result =  spwnInfo.get(mapKey);
-		if(result == null){
+		Map<Integer, SpawnInfo> result = spwnInfo.get(mapKey);
+		if (result == null) {
 			result = new HashMap<>();
 		}
 		return result;
@@ -40,8 +40,8 @@ public class SpawnTemplateMgr {
 			return 0;
 		}
 	}
-	
-	public static SpawnInfo getSpawnInfo(int id){
+
+	public static SpawnInfo getSpawnInfo(int id) {
 		return spawns.get(id);
 	}
 
@@ -99,6 +99,6 @@ public class SpawnTemplateMgr {
 	}
 
 	private static int getDistance(Vector3 v1, Vector3 v2) {
-		return (int) Vector3.distance(new Vector3(v1.x, 0, v1.z), new Vector3(v2.x, 0, v2.z));
+		return (int) Vector3.distance(new Vector3(v1.getX(), 0, v1.getZ()), new Vector3(v2.getX(), 0, v2.getZ()));
 	}
 }

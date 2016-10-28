@@ -21,13 +21,14 @@ import com.chuangyou.xianni.battle.buffer.BufferTargetType;
 import com.chuangyou.xianni.battle.damage.BloodDamageCalculator;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.damage.SoulDamageCalculator;
-import com.chuangyou.xianni.battle.damage.effect.DamageEffecterType;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.snare.SnareConstant.ExeWay;
 import com.chuangyou.xianni.battle.snare.SnareConstant.LockType;
 import com.chuangyou.xianni.battle.snare.SnareConstant.TargetType;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
+import com.chuangyou.xianni.constant.DamageEffecterType;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.constant.RoleConstants.RoleType;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SnareTemplateInfo;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -35,7 +36,6 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.action.UpdatePositionAction;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
-import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.WorldMgr;
@@ -290,7 +290,7 @@ public class Snare extends ActiveLiving {
 			return false;
 		}
 
-		float dist = Vector3.distance(new Vector3(source.getPostion().x, 0, source.getPostion().z), new Vector3(target.getPostion().x, 0, target.getPostion().z));
+		float dist = Vector3.distance(new Vector3(source.getPostion().getX(), 0, source.getPostion().getZ()), new Vector3(target.getPostion().getX(), 0, target.getPostion().getZ()));
 		if (dist > snareInfo.getCheckX() + 50) {
 			return false;
 		}

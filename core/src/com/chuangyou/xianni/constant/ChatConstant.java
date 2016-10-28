@@ -47,6 +47,16 @@ public class ChatConstant {
 		 * 系统提示频道
 		 */
 		public static final int PROMPT = 8;
+		
+		/**
+		 * 公告
+		 */
+		public static final int NOTICE = 9;
+		
+		/**
+		 * 特殊公告，可以快速被后面的顶掉的
+		 */
+		public static final int NOTICE_SPECIAL = 10;
 	}
 	
 	/**
@@ -132,5 +142,22 @@ public class ChatConstant {
 		 * 添加好友提示
 		 */
 		public static final short ADDFRIEND = 2;
+	}
+	
+	/**
+	 * 公告区域
+	 * @author Joseph
+	 *
+	 */
+	public static interface NoticeReceiveArea{
+		/**
+		 * 默认全服
+		 */
+		public static final short WORLD = 0;
+		
+		/**
+		 * 某个场景中
+		 */
+		public static final short SCENE = 1;
 	}
 }

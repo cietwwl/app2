@@ -2,6 +2,7 @@ package com.chuangyou.xianni.entity.player;
 
 import com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg;
 import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
+import com.chuangyou.common.protobuf.pb.army.PlayerPositionInfoProto.PlayerPositionInfoMsg;
 import com.chuangyou.xianni.entity.DataObject;
 import com.chuangyou.xianni.entity.Option;
 
@@ -13,15 +14,14 @@ public class PlayerPositionInfo extends DataObject {
 	private int		x;				// 坐标
 	private int		y;
 	private int		z;
-	
+
 	// 上一个地图位置
 	private int		preMapId;
 	private int		preMapTempId;
 	private int		preX;
 	private int		preY;
 	private int		preZ;
-	
-	
+
 	public void writeProto(PostionMsg.Builder proto) {
 		proto.setMapId(mapId);
 		proto.setMapKey(mapTempId);
@@ -31,6 +31,29 @@ public class PlayerPositionInfo extends DataObject {
 		vector3.setY(y);
 		vector3.setZ(z);
 		proto.setPostion(vector3.build());
+	}
+
+	public void writePlayerPositionInfoMsg(PlayerPositionInfoMsg.Builder proto) {
+		PostionMsg.Builder curPos = PostionMsg.newBuilder();
+		curPos.setMapId(mapId);
+		curPos.setMapKey(mapTempId);
+		PBVector3.Builder vector3 = PBVector3.newBuilder();
+		vector3.setX(x);
+		vector3.setY(y);
+		vector3.setZ(z);
+		curPos.setPostion(vector3);
+		proto.setCurPos(curPos);
+
+		PostionMsg.Builder prePos = PostionMsg.newBuilder();
+		prePos.setMapId(preMapId);
+		prePos.setMapKey(preMapTempId);
+		PBVector3.Builder preV3 = PBVector3.newBuilder();
+		preV3.setX(preX);
+		preV3.setY(preY);
+		preV3.setZ(preZ);
+		prePos.setPostion(preV3);
+		proto.setPrePos(prePos);
+
 	}
 
 	public long getPlayerId() {

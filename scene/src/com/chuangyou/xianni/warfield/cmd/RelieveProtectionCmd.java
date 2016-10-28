@@ -38,7 +38,7 @@ public class RelieveProtectionCmd extends AbstractCommand {
 		// 推送附近场景对象
 		Set<Long> nears = army.getPlayer().getNears(new AllSelectorHelper(army.getPlayer()));
 
-		Log.error("RelieveProtectionCmd nears = " + nears.size());
+		// Log.error("RelieveProtectionCmd nears = " + nears.size());
 		for (Long id : nears) {
 			// 自己不发送自己
 			if (id == army.getPlayerId()) {

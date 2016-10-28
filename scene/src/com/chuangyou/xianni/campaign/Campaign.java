@@ -17,7 +17,11 @@ import com.chuangyou.common.util.JSONUtil;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.common.util.Vector3;
+import com.chuangyou.xianni.battle.buffer.Buffer;
+import com.chuangyou.xianni.battle.buffer.BufferFactory;
+import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.campaign.action.CampaignEnterAction;
+import com.chuangyou.xianni.campaign.action.CampaignExitAction;
 import com.chuangyou.xianni.campaign.action.CampaignLeaveAction;
 import com.chuangyou.xianni.campaign.action.CampaignPlayerDieAction;
 import com.chuangyou.xianni.campaign.action.CampaignTriggerPointAction;
@@ -31,6 +35,7 @@ import com.chuangyou.xianni.campaign.state.SuccessState;
 import com.chuangyou.xianni.campaign.task.CTBaseCondition;
 import com.chuangyou.xianni.campaign.task.CampaignTask;
 import com.chuangyou.xianni.constant.CampaignConstant.CampaignStatu;
+import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.campaign.CampaignTaskTemplateInfo;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.entity.field.FieldInfo;
@@ -46,8 +51,6 @@ import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.role.objects.Avatar;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Player;
-import com.chuangyou.xianni.team.Team;
-import com.chuangyou.xianni.team.TeamMgr;
 import com.chuangyou.xianni.warfield.FieldMgr;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
@@ -140,7 +143,7 @@ public class Campaign extends AbstractActionQueue implements ICampaignStateWork 
 	}
 
 	/**
-	 * 退出副本
+	 * 离开副本
 	 */
 	public void onPlayerLeave(ArmyProxy army, boolean isUnline) {
 		CampaignLeaveAction action = new CampaignLeaveAction(this, army, isUnline);
@@ -148,10 +151,19 @@ public class Campaign extends AbstractActionQueue implements ICampaignStateWork 
 	}
 
 	/**
-	 * 退出副本
+	 * 离开副本
 	 */
 	public void onOverLeave(ArmyProxy army) {
 		CampainOverLeaveAction action = new CampainOverLeaveAction(this, army);
+		enqueue(action);
+	}
+	
+	/**
+	 * 玩家彻底退出副本，被踢出副本
+	 * @param army
+	 */
+	public void onPlayerExit(ArmyProxy army){
+		CampaignExitAction action = new CampaignExitAction(this, army);
 		enqueue(action);
 	}
 
@@ -283,7 +295,8 @@ public class Campaign extends AbstractActionQueue implements ICampaignStateWork 
 		if (bornNode != null) {
 			return bornNode.getSpawnInfo().getPosition();
 		}
-		return null;
+		return new Vector3(starField.getFieldInfo().getPosition().getX(), starField.getFieldInfo().getPosition().getY(), starField.getFieldInfo().getPosition().getZ(),
+				starField.getFieldInfo().getPosition().getAngle());
 	}
 
 	/** 添加副本分组管理 */
@@ -359,7 +372,7 @@ public class Campaign extends AbstractActionQueue implements ICampaignStateWork 
 
 		@Override
 		public void execute() {
-			notifyTaskEvent(CTBaseCondition.PASS_TIME_LIMIT, 1);
+			pollingCheck();
 			// 当副本已经结束，返回
 			if (state.getCode() == CampaignState.STOP) {
 				return;
@@ -376,6 +389,10 @@ public class Campaign extends AbstractActionQueue implements ICampaignStateWork 
 			this.execTime = System.currentTimeMillis() + 1000;
 			this.getActionQueue().enDelayQueue(this);
 		}
+	}
+	
+	public void pollingCheck(){
+		notifyTaskEvent(CTBaseCondition.PASS_TIME_LIMIT, 1);
 	}
 
 	public void notifyTaskEvent(int event, int param) {
@@ -540,29 +557,29 @@ public class Campaign extends AbstractActionQueue implements ICampaignStateWork 
 	}
 
 	// 添加分身进入副本
-	public void addAvatars(List<RobotInfoMsg> avatars) {
-		if (avatars != null && avatars.size() > 0) {
-			for (RobotInfoMsg msg : avatars) {
-				createAvatar(msg);
-			}
-		}
-	}
+	// public void addAvatars(List<RobotInfoMsg> avatars) {
+	// if (avatars != null && avatars.size() > 0) {
+	// for (RobotInfoMsg msg : avatars) {
+	// createAvatar(msg);
+	// }
+	// }
+	// }
 
-	private void createAvatar(RobotInfoMsg msg) {
-		Avatar robot = null;
-		ArmyProxy army = WorldMgr.getArmy(msg.getSimpInfo().getPlayerId());
-		if (army == null) {
-			return;
-		}
-		if (army.getAvatars(msg.getSimpInfo().getSkinId()) == null) {
-			robot = new Avatar();
-			robot.instill(msg);
-			army.addAvatar(robot);
-		} else {
-			robot = army.getAvatars(msg.getSimpInfo().getSkinId());
-		}
-		robot.setCampaignId(getIndexId());
-	}
+//	private void createAvatar(RobotInfoMsg msg) {
+//		Avatar robot = null;
+//		ArmyProxy army = WorldMgr.getArmy(msg.getSimpInfo().getPlayerId());
+//		if (army == null) {
+//			return;
+//		}
+//		if (army.getAvatars(msg.getSimpInfo().getSkinId()) == null) {
+//			robot = new Avatar(army);
+//			robot.instill(msg);
+//			army.addAvatar(robot);
+//		} else {
+//			robot = army.getAvatars(msg.getSimpInfo().getSkinId());
+//		}
+//		robot.setCampaignId(getIndexId());
+//	}
 
 	/**
 	 * 节点触发（外部调用）
@@ -640,6 +657,17 @@ public class Campaign extends AbstractActionQueue implements ICampaignStateWork 
 		return playerId == creater;
 	}
 
+	public ArmyProxy getCreater() {
+		if (creater == 0) {
+			return null;
+		}
+		return WorldMgr.getArmy(creater);
+	}
+	
+	public long getCreaterId(){
+		return creater;
+	}
+	
 	// public void addAvatars(List<Avatar> avatars) {
 	// for (Avatar avatar : avatars) {
 	//
@@ -670,4 +698,21 @@ public class Campaign extends AbstractActionQueue implements ICampaignStateWork 
 	// }
 	// robot.setCampaignId(getIndexId());
 	// }
+	public void addCampaignBuff(ArmyProxy army) {
+		// 如果有副本任务，则添加副本buff
+		if (getTask() != null && getTask().getConditionType() == CTBaseCondition.ADD_BUFF_PLAYER) {
+			String bufferIds = getTask().getTemp().getStrParam1();
+			if (bufferIds != null && !bufferIds.equals("")) {
+				String[] attr = bufferIds.split(",");
+				for (String str : attr) {
+					int bufferId = Integer.valueOf(str);
+					SkillBufferTemplateInfo bufferTemp = BattleTempMgr.getBufferInfo(bufferId);
+					if (bufferTemp != null) {
+						Buffer buffer = BufferFactory.createBuffer(army.getPlayer(), army.getPlayer(), bufferTemp);
+						army.getPlayer().addCampaignBuff(buffer);
+					}
+				}
+			}
+		}
+	}
 }

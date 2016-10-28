@@ -19,7 +19,9 @@ import com.chuangyou.common.protobuf.pb.player.PlayerSomeThingUpdateProto.Player
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.avatar.temlate.AvatarTempManager;
+import com.chuangyou.xianni.bag.ItemManager;
 import com.chuangyou.xianni.campaign.CampaignTempMgr;
+import com.chuangyou.xianni.constant.AvatarConstant;
 import com.chuangyou.xianni.constant.CampaignConstant;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.Option;
@@ -30,6 +32,8 @@ import com.chuangyou.xianni.entity.avatar.AvatarTemplateInfo;
 import com.chuangyou.xianni.entity.avatar.AvatarUpGradeTemplate;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
+import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
+import com.chuangyou.xianni.entity.item.ItemAddType;
 import com.chuangyou.xianni.entity.item.ItemAddType.RewardType;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.entity.reward.RewardTemplate;
@@ -65,6 +69,8 @@ public class AvatarInventory implements IInventory {
 	static final int					REWARD_SKILLSTRENTHEN_UP	= 3;
 	// 物品奖励
 	static final int					REWARD_ITEM					= 4;
+
+	public final int					RESCORT_ITEM				= 3100003;			// 仙力丹
 
 	public AvatarInventory(GamePlayer player) {
 		this.player = player;
@@ -103,12 +109,41 @@ public class AvatarInventory implements IInventory {
 		int newCount = oldCount + addCount;
 		player.getBasePlayer().addAvatarEnergy(newCount > max ? max : newCount, addType);
 
-		// 复写仙力值到scene服
-		PlayerSomeThingUpdateMsg.Builder msg = PlayerSomeThingUpdateMsg.newBuilder();
-		msg.setCount(player.getBasePlayer().getPlayerInfo().getAvatarEnergy());
-		PBMessage message = MessageUtil.buildMessage(Protocol.S_RE_WRITE_AVATAR_ENERGY, msg);
-		player.sendPbMessage(message);
+		// // 复写仙力值到scene服
+		// @Deprecated
+		// PlayerSomeThingUpdateMsg.Builder msg =
+		// PlayerSomeThingUpdateMsg.newBuilder();
+		// msg.setCount(player.getBasePlayer().getPlayerInfo().getAvatarEnergy());
+		// PBMessage message =
+		// MessageUtil.buildMessage(Protocol.S_RE_WRITE_AVATAR_ENERGY, msg);
+		// player.sendPbMessage(message);
 		return newCount - oldCount;
+	}
+
+	// 消费仙力
+	public void costAvatarEnergy(int costCount) {
+		player.getBasePlayer().consumeAvatarEnergy(costCount);
+		int remained = player.getBasePlayer().getPlayerInfo().getAvatarEnergy();
+		if (remained >= AvatarConstant.TRANSFIGURATION_COST) {
+			return;
+		}
+		int count = player.getBagInventory().getItemCount(AvatarConstant.AVATAR_ENERGY_ITEM_ID);
+		if (count <= 0) {
+			return;
+		}
+		ItemTemplateInfo temp = ItemManager.findItemTempInfo(AvatarConstant.AVATAR_ENERGY_ITEM_ID);
+		if (temp == null || temp.getItemBase() <= 0) {
+			Log.error("the addAvatarEnergy item error ");
+			return;
+		}
+		int defaultCount = (AvatarConstant.TRANSFIGURATION_COST - remained);
+		int needItemCount = defaultCount / temp.getItemBase();
+		if (defaultCount % temp.getItemBase() > 0) {
+			needItemCount += 1;
+		}
+		int removeCount = needItemCount > count ? count : needItemCount;
+		addAvatarEnergy(removeCount * temp.getItemBase(), ItemAddType.COST_ITEM);
+		player.getBagInventory().removeItem(AvatarConstant.AVATAR_ENERGY_ITEM_ID, removeCount, ItemRemoveType.ADD_AVATAR_ENERGY);
 	}
 
 	// 获取灵气最大值
@@ -407,9 +442,6 @@ public class AvatarInventory implements IInventory {
 
 	// 获取几个分身信息
 	public void writeAvatarMsg2Scene() {
-		if (finghtingInfos == null) {
-			return;
-		}
 		RobotInfoListMsg.Builder builder = RobotInfoListMsg.newBuilder();
 		for (AvatarInfo ainfo : finghtingInfos.values()) {
 			builder.addRobotDatas(writeProto(ainfo));
@@ -433,11 +465,22 @@ public class AvatarInventory implements IInventory {
 		simpleInfo.setSkinId(ainfo.getTempId());
 		simpleInfo.setMagicWeaponId(ainfo.getCorrespond());
 		simpleInfo.setFashionId(ainfo.getStar());
+		simpleInfo.setStateLv(player.getBasePlayer().getPlayerInfo().getStateLv());
 
 		builder.setSimpInfo(simpleInfo);
 
 		PropertyListMsg.Builder propertyMsgs = PropertyListMsg.newBuilder();
 		avatarData.writeProto(propertyMsgs);
+
+		PropertyMsg.Builder cur_hp = PropertyMsg.newBuilder();
+		cur_hp.setType(EnumAttr.CUR_SOUL.getValue());
+		cur_hp.setTotalPoint(avatarData.getSoul());
+		propertyMsgs.addPropertys(cur_hp);
+
+		PropertyMsg.Builder cur_blood = PropertyMsg.newBuilder();
+		cur_blood.setType(EnumAttr.CUR_BLOOD.getValue());
+		cur_blood.setTotalPoint(avatarData.getBlood());
+		propertyMsgs.addPropertys(cur_blood);
 
 		// 注入分身默契等级
 		PropertyMsg.Builder proMsg = PropertyMsg.newBuilder();
@@ -506,8 +549,9 @@ public class AvatarInventory implements IInventory {
 					if (AvatarTempManager.getAvatarUpGradeTemplate(avatar.getTempId(), newGreade) != null) {
 						avatar.setGrade(newGreade);
 						reward.setType(type);
+					} else {
+						type = REWARD_ITEM;
 					}
-					type = REWARD_ITEM;
 				}
 				// 升级技能
 				if (type == REWARD_SKILL_UP) {
@@ -584,27 +628,29 @@ public class AvatarInventory implements IInventory {
 		return true;
 	}
 
+	// 分身试炼后升级成功率=(max(关数,10)-分身等级+1)*9%∈[0%,100%]
 	private boolean canGet(int campaignId, AvatarInfo avatar) {
-		int difference = campaignId % 40000 - avatar.getGrade();
-		if (difference < 0) {
-			return false;
-		}
-		if (difference <= 1) {
-			return ThreadSafeRandom.getInstance().next(100) <= 5;
-		}
-		if (difference <= 3) {
-			return ThreadSafeRandom.getInstance().next(100) <= 10;
-		}
-		if (difference <= 5) {
-			return ThreadSafeRandom.getInstance().next(100) <= 30;
-		}
-		if (difference <= 7) {
-			return ThreadSafeRandom.getInstance().next(100) <= 50;
-		}
-		if (difference <= 9) {
-			return ThreadSafeRandom.getInstance().next(100) <= 70;
-		}
-		return true;
+		return ThreadSafeRandom.getInstance().next(100) <= 50;
+		// int difference = campaignId % 40000 - avatar.getGrade();
+		// if (difference < 0) {
+		// return false;
+		// }
+		// if (difference <= 1) {
+		// return ThreadSafeRandom.getInstance().next(100) <= 5;
+		// }
+		// if (difference <= 3) {
+		// return ThreadSafeRandom.getInstance().next(100) <= 10;
+		// }
+		// if (difference <= 5) {
+		// return ThreadSafeRandom.getInstance().next(100) <= 30;
+		// }
+		// if (difference <= 7) {
+		// return ThreadSafeRandom.getInstance().next(100) <= 50;
+		// }
+		// if (difference <= 9) {
+		// return ThreadSafeRandom.getInstance().next(100) <= 70;
+		// }
+		// return true;
 	}
 
 	private int getRewardType(int campaignId, AvatarInfo avatar) {
@@ -618,7 +664,7 @@ public class AvatarInventory implements IInventory {
 		}
 		SkillTempateInfo nextTempId = SkillTempMgr.getSkillTemp(skill.getNextTempId());
 		if (nextTempId != null) {
-			nextTempId.getTemplateId();
+			return nextTempId.getTemplateId();
 		}
 		return 0;
 	}

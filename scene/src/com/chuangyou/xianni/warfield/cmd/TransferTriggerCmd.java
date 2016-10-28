@@ -18,7 +18,7 @@ public class TransferTriggerCmd extends AbstractCommand {
 		// TODO Auto-generated method stub
 
 		TransferTriggerMsg req = TransferTriggerMsg.parseFrom(packet.getBytes());
-		Field field = FieldMgr.getIns().getField(req.getMapId());
+		Field field = FieldMgr.getIns().getField(army.getFieldId());
 		if(field == null){
 			return;
 		}

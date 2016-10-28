@@ -35,10 +35,11 @@ import com.chuangyou.xianni.campaign.PvP1v1Campaign;
 import com.chuangyou.xianni.campaign.StateCampaign;
 import com.chuangyou.xianni.campaign.node.CampaignNodeDecorator;
 import com.chuangyou.xianni.campaign.task.CTBaseCondition;
-import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
+import com.chuangyou.xianni.constant.AvatarConstant;
 import com.chuangyou.xianni.constant.BattleModeCode;
 import com.chuangyou.xianni.constant.BattleSettlementConstant;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.constant.RoleConstants.RoleType;
 import com.chuangyou.xianni.entity.avatar.AvatarCorrespondTemplateInfo;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.equip.EquipAwakenCfg;
@@ -58,7 +59,6 @@ import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.action.RevivalPlayerAction;
-import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.spawn.BeadMonsterSpawnNode;
@@ -106,6 +106,8 @@ public class Player extends ActiveLiving {
 	private static EnumAttr[]			avatarAttrs;
 	// 变身技能ID
 	public static final int				TRANS_SKILL_ID			= 70001001;
+	// 取消变身技能ID
+	public static final int				UN_TRANS_SKILL_ID		= 70001002;
 	// 变身后技能
 	protected Map<Integer, Skill>		avatarSkills			= new HashMap<>();
 	protected int						avatarEnergy;										// 仙力
@@ -171,8 +173,8 @@ public class Player extends ActiveLiving {
 					if (campaign instanceof StateCampaign) {
 						((StateCampaign) campaign).failOver();
 					}
-					
-					if(source.getArmyId() > 0){
+
+					if (source.getArmyId() > 0) {
 						campaign.onPlayerDie(this, source);
 					}
 				}
@@ -254,24 +256,6 @@ public class Player extends ActiveLiving {
 
 	}
 
-	/**
-	 * 获取颜色级别
-	 * 
-	 * @param val
-	 * @return
-	 */
-	public int getColour(int val) {
-		int minRed = SystemConfigTemplateMgr.getIntValue("pk.colour.minRed");
-		int minYellow = SystemConfigTemplateMgr.getIntValue("pk.colour.minYellow");
-
-		if (val >= minRed) {
-			return BattleModeCode.red;
-		} else if (val >= minYellow) {
-			return BattleModeCode.yellow;
-		}
-		return BattleModeCode.white;
-	}
-
 	/* 满血复活 */
 	public boolean renascence() {
 		if (getLivingState() == ALIVE) {
@@ -351,6 +335,7 @@ public class Player extends ActiveLiving {
 		if (toalSkillInfos != null && toalSkillInfos.size() != 0) {
 			// 添加变身技能
 			toalSkillInfos.add(TRANS_SKILL_ID);
+			toalSkillInfos.add(UN_TRANS_SKILL_ID);
 			for (Integer tempId : toalSkillInfos) {
 				SkillTempateInfo skillInfo = BattleTempMgr.getBSkillInfo(tempId);
 				if (skillInfo == null) {
@@ -463,10 +448,10 @@ public class Player extends ActiveLiving {
 				temp.addSkills(skill.getSkillId());
 			}
 		}
-		if(field != null && field.getCampaignId() > 0){
+		if (field != null && field.getCampaignId() > 0) {
 			Campaign campaign = CampaignMgr.getCampagin(field.getCampaignId());
-			if(campaign != null){
-				//获取场景玩家详情时，如果在副本中，插入副本临时属性
+			if (campaign != null) {
+				// 获取场景玩家详情时，如果在副本中，插入副本临时属性
 				campaign.insertCampaignAtt(this.getArmyId(), temp);
 			}
 		}
@@ -475,10 +460,11 @@ public class Player extends ActiveLiving {
 
 	// 获取技能
 	public Skill getSkill(int skillId) {
-		if (isCorrespondStatu()) {
-			return avatarSkills.get(skillId);
+		if (!isCorrespondStatu() || skillId == TRANS_SKILL_ID || skillId == UN_TRANS_SKILL_ID) {
+			return drivingSkills.get(skillId);
 		}
-		return drivingSkills.get(skillId);
+		return avatarSkills.get(skillId);
+
 	}
 
 	public void addCampaignBuff(Buffer buff) {
@@ -715,7 +701,10 @@ public class Player extends ActiveLiving {
 			return;
 		}
 		// 第四步 判断灵气是否足够变身
-		/*-----------------------TODO 稍后做灵气------------------------*/
+		if (getAvatarEnergy() < AvatarConstant.TRANSFIGURATION_COST) {
+			return;
+		}
+		costAvatarEnergy(AvatarConstant.TRANSFIGURATION_COST);
 		// 第五步 统计分身属性并从地图中移除所有分身
 		BaseProperty baseProperty = new BaseProperty();
 		for (Avatar avatar : avatars) {
@@ -730,7 +719,10 @@ public class Player extends ActiveLiving {
 		for (Avatar avatar : avatars) {
 			AvatarCorrespondTemplateInfo at = AvatarTempManager.getAvatarCorrespondTemplateInfo(avatar.getSkin(), avatar.getCorrespond());
 			durationTime += at.getFitTime();
+
+			Log.error("durationTime  : " + durationTime + "  at" + at.getFitTime());
 		}
+
 		unTransfigurationTime = System.currentTimeMillis() + durationTime * 1000;
 		// ---- 第八步：随机某个分身作为主体并补充其技能-----
 		Avatar chosened = avatars.get(ThreadSafeRandom.getInstance().next(avatars.size()));
@@ -738,11 +730,14 @@ public class Player extends ActiveLiving {
 		mountState = 0;
 		avatarTempId = chosened.getSimpleInfo().getSkinId();
 
+		Skill un_trans_skill = new Skill(BattleTempMgr.getUN_TRANS_SKILL_TEMP());
+		avatarSkills.put(un_trans_skill.getSkillId(), un_trans_skill);
 		// 被选中者补入其所有技能
 		for (Skill skill : chosened.getDrivingSkills().values()) {
 			Skill newSkill = new Skill(skill.getTemplateInfo());
 			avatarSkills.put(newSkill.getSkillId(), newSkill);
 		}
+
 		// 其他补入非配普攻技能
 		for (Avatar avatar : avatars) {
 			if (avatar == chosened) {
@@ -751,8 +746,8 @@ public class Player extends ActiveLiving {
 			if (avatar.getSimpleInfo().getSkinId() == chosened.getSimpleInfo().getSkinId()) {
 				continue;
 			}
-			for (Skill skill : chosened.getDrivingSkills().values()) {
-				// 分省技能 子类型为8
+			for (Skill skill : avatar.getDrivingSkills().values()) {
+				// 分身技能 子类型为8
 				if (skill.getSkillTempateInfo().getSonType() != 8) {
 					continue;
 				}
@@ -774,10 +769,10 @@ public class Player extends ActiveLiving {
 			return;
 		}
 		// 第二步 是否存在分身
-		List<Avatar> avatars = army.getAvatars();
-		if (avatars == null || avatars.size() == 0) {
-			return;
-		}
+		// List<Avatar> avatars = army.getAvatars();
+		// if (avatars == null || avatars.size() == 0) {
+		// return;
+		// }
 		// 第三步 移除合体属性
 		clearAvatarProperty();
 		// 第四步：人物变更状态并且通知客户端
@@ -785,11 +780,7 @@ public class Player extends ActiveLiving {
 		avatarTempId = 0;
 		avatarSkills.clear();
 		// 第五步 返回出战的分身
-		for (Avatar avatar : avatars) {
-			if (getField() != null && avatar.getCampaignId() != 0 && avatar.getCampaignId() == getField().getCampaignId()) {
-				avatar.reback();
-			}
-		}
+		army.instillAvatar(getField(), getPostion());
 		// ----- 第六步：人物变更状态------
 		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
 		nears.add(getArmyId());
@@ -842,6 +833,7 @@ public class Player extends ActiveLiving {
 
 	public void setAvatarEnergy(int avatarEnergy) {
 		if (this.avatarEnergy != avatarEnergy) {
+			this.avatarEnergy = avatarEnergy;
 			ArmyProxy army = WorldMgr.getArmy(this.getArmyId());
 			if (army != null) {
 				army.notifyAvatarEnergy(0);
@@ -852,15 +844,13 @@ public class Player extends ActiveLiving {
 	public boolean costAvatarEnergy(int count) {
 		if (this.avatarEnergy >= count) {
 			this.avatarEnergy = this.avatarEnergy - count;
-
 			ArmyProxy army = WorldMgr.getArmy(this.getArmyId());
 			if (army != null) {
-				army.notifyMana();
+				army.notifyAvatarEnergy(count);
 			}
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	public long getUnTransfigurationTime() {
@@ -869,6 +859,13 @@ public class Player extends ActiveLiving {
 
 	public boolean isCorrespondStatu() {
 		return correspondStatu == 1;
+	}
+
+	public void setProperty(EnumAttr attr, long value) {
+		super.setProperty(attr, value);
+		if (attr == EnumAttr.AVATAR_ENERGY) {
+			setAvatarEnergy((int) value);
+		}
 	}
 
 }

@@ -40,9 +40,9 @@ public class TouchPointSpwanNode extends SpwanNode {
 		}
 
 		Vector3 v3 = army.getPlayer().getPostion();
-		int offsetX = Math.abs((int) (v3.x - spwanInfo.getBound_x() / Vector3.Accuracy));
-		int offsetY = Math.abs((int) (v3.y - spwanInfo.getBound_y() / Vector3.Accuracy));
-		int offsetZ = Math.abs((int) (v3.z - spwanInfo.getBound_z() / Vector3.Accuracy));
+		int offsetX = Math.abs((int) (v3.getX() - spwanInfo.getBound_x() / Vector3.Accuracy));
+		int offsetY = Math.abs((int) (v3.getY() - spwanInfo.getBound_y() / Vector3.Accuracy));
+		int offsetZ = Math.abs((int) (v3.getZ() - spwanInfo.getBound_z() / Vector3.Accuracy));
 
 		if (offsetX > 100 || offsetY > 100 || offsetZ > 100) {
 			return;

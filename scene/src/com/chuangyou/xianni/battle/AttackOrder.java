@@ -18,12 +18,12 @@ import com.chuangyou.xianni.battle.calc.SkillCalc;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.skill.Skill;
+import com.chuangyou.xianni.constant.RoleConstants.RoleType;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SnareTemplateInfo;
 import com.chuangyou.xianni.proto.BroadcastUtil;
 import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.objects.ActiveLiving;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Player;
@@ -79,6 +79,12 @@ public class AttackOrder {
 			Player ps = (Player) source;
 			ps.transfiguration();
 		}
+		// 如果是变身技能,执行变身
+		if (skill.getSkillId() == Player.UN_TRANS_SKILL_ID && source instanceof Player) {
+			Player ps = (Player) source;
+			ps.unTransfiguration();;
+		}
+
 		if (targets == null || targets.size() == 0) {
 			// 没有目标，只广播动作
 			// Log.error("attackId :" + this.attackId);

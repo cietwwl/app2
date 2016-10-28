@@ -16,6 +16,10 @@ public abstract class AbstractEvent {
 	private Object											lock	= new AbstractEventLock();
 
 	public void addListener(ObjectListener objectListener, int eventType) {
+		if (objectListener == null) {
+			Log.error("-----------eventType-----------------" + eventType);
+			return;
+		}
 		synchronized (lock) {
 			if (listeners == null)
 				listeners = new Hashtable<Integer, Collection<ObjectListener>>();
@@ -68,6 +72,9 @@ public abstract class AbstractEvent {
 		// 触发
 		if (tempList != null) {
 			for (ObjectListener listener : tempList) {
+				if (listener == null) {
+					Log.error("", new Exception());
+				}
 				listener.onEvent(event);
 			}
 		}

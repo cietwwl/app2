@@ -54,6 +54,11 @@ public class CampaignCreateAction extends Action {
 			return;
 		}
 
+		if (temp.getType() == CampaignType.THE_PLANE && army.getPlayer().getField().id != campaignId % Field.MAX_ID) {
+			Log.error("playerId: " + army.getPlayerId() + " create plane  fail ,campaignId:" + campaignId);
+			return;
+		}
+
 		Campaign campaign = CampaignFactory.createCampaign(temp, army, taskId);
 		if (campaign == null) {
 			Log.error("创建副本失败---------------------------------------------campaignId :" + campaignId);

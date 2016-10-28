@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import com.chuangyou.common.protobuf.pb.PlayerAttSnapProto.PlayerAttSnapMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
@@ -36,11 +37,15 @@ import com.chuangyou.xianni.battle.buffer.specialbuf.SoulAttackConvertAttackBuff
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.damage.effect.DamageEffecter;
 import com.chuangyou.xianni.battle.damage.effect.DamageEffecterFactory;
-import com.chuangyou.xianni.battle.damage.effect.DamageEffecterType;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.skill.Skill;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
+import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
+import com.chuangyou.xianni.constant.BattleModeCode;
+import com.chuangyou.xianni.constant.DamageEffecterType;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.constant.RoleConstants;
+import com.chuangyou.xianni.constant.RoleConstants.RoleType;
 import com.chuangyou.xianni.cooldown.CoolDownTypes;
 import com.chuangyou.xianni.cooldown.obj.CoolDown;
 import com.chuangyou.xianni.entity.buffer.LivingState;
@@ -51,13 +56,12 @@ import com.chuangyou.xianni.proto.BroadcastUtil;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.role.helper.RoleConstants;
-import com.chuangyou.xianni.role.helper.RoleConstants.RoleType;
 import com.chuangyou.xianni.role.helper.TruckerStateHelper;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.grid.Grid;
 import com.chuangyou.xianni.warfield.grid.GridCoord;
 import com.chuangyou.xianni.warfield.grid.GridItem;
+import com.chuangyou.xianni.warfield.helper.FieldConstants.FieldAttackRule;
 import com.chuangyou.xianni.warfield.helper.Selector;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
@@ -568,7 +572,25 @@ public class Living extends LivingProperties {
 		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
 		nears.add(living.getArmyId());
 		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_RESP_PLAYER_ATT_UPDATE, msg.build());
+	}
 
+	/**
+	 * 更新属性只广播自己
+	 * 
+	 * @param type
+	 * @param value
+	 */
+	public void upProperty(Living living, List<PropertyMsg> properties) {
+		// 修改玩家属性
+		living.readProperty(properties);
+		PlayerAttUpdateMsg.Builder msg = PlayerAttUpdateMsg.newBuilder();
+		msg.setPlayerId(living.getArmyId());
+		msg.addAllAtt(properties);
+		ArmyProxy army = WorldMgr.getArmy(armyId);
+		if (army != null) {
+			PBMessage message = MessageUtil.buildMessage(Protocol.U_RESP_PLAYER_ATT_UPDATE, msg.build());
+			army.sendPbMessage(message);
+		}
 	}
 
 	public void readProperty(List<PropertyMsg> properties) {
@@ -613,14 +635,13 @@ public class Living extends LivingProperties {
 				if (attr == null) {
 					continue;
 				}
-				setProperty(attr, p.getTotalPoint());
+				this.setProperty(attr, p.getTotalPoint());
 			}
 		}
 	}
 
 	/** 计算伤害 */
 	public int takeDamage(Damage damage) {
-
 		DamageEffecter effecter = DamageEffecterFactory.effecterBuilder(damage);
 		effecter.exec(this, damage);
 		if (isDie()) {
@@ -668,7 +689,7 @@ public class Living extends LivingProperties {
 		cachBattleInfoPacket.setLivingId(getId());
 		cachBattleInfoPacket.setPlayerId(getArmyId());
 		cachBattleInfoPacket.setType(getType());
-		if (simpleInfo != null) {
+		if (simpleInfo != null) {	
 			cachBattleInfoPacket.setNickName(simpleInfo.getNickName());
 			cachBattleInfoPacket.setLevel(simpleInfo.getLevel());
 			cachBattleInfoPacket.setVipLevel(simpleInfo.getVipLevel());
@@ -746,7 +767,9 @@ public class Living extends LivingProperties {
 		cacheAttSnapPacker.setOwnerId(getArmyId());
 		if (this.getSimpleInfo() != null) {
 			cacheAttSnapPacker.setGuildId(this.getSimpleInfo().getGuildId());
-			cacheAttSnapPacker.setGuildName(this.getSimpleInfo().getGuildName());
+			if (this.getSimpleInfo().getGuildName() != null) {
+				cacheAttSnapPacker.setGuildName(this.getSimpleInfo().getGuildName());
+			}
 			cacheAttSnapPacker.setGuildJob(this.getSimpleInfo().getGuildJob());
 		}
 		if (node != null) {
@@ -770,9 +793,9 @@ public class Living extends LivingProperties {
 		}
 		GridCoord coord = null;
 		try {
-			coord = field.getGrid().getGridCrood(postion.x, postion.z);
+			coord = field.getGrid().getGridCrood(postion.getX(), postion.getZ());
 		} catch (Exception e) {
-			Log.error("position.x" + postion.x + " position.z" + postion.z, e);
+			Log.error("position.x" + postion.getX() + " position.z" + postion.getZ(), e);
 			return ret;
 		}
 		for (int i = 0; i < Grid.GRID9.length; i++) {
@@ -1258,9 +1281,10 @@ public class Living extends LivingProperties {
 	}
 
 	public void calPkVal() {
-		if (this.getField().getFieldInfo().getBattleType() == 1 && this.getPkVal() > 0) {
+		if (this.getField().getAttackRule(null, null) == FieldAttackRule.USEPLAYERMODE && this.getPkVal() > 0) {
 			this.pkValCalTime = System.currentTimeMillis();
 			int changePkVal = MathUtils.randomClamp(1, 5);
+			int colour = getColour(this.getPkVal());
 			changePkVal = this.getPkVal() - changePkVal < 0 ? 0 : this.getPkVal() - changePkVal;
 			this.setPkVal(changePkVal);
 			Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
@@ -1273,8 +1297,30 @@ public class Living extends LivingProperties {
 			p.setTotalPoint(this.getPkVal());
 			p.setType(EnumAttr.PK_VAL.getValue());
 			properties.add(p.build());
-			updateProperty(this, properties);
+			if (colour != getColour(this.getPkVal())) {
+				updateProperty(this, properties);
+			} else {
+				upProperty(this, properties);
+			}
 		}
+	}
+
+	/**
+	 * 获取颜色级别
+	 * 
+	 * @param val
+	 * @return
+	 */
+	public int getColour(int val) {
+		int minRed = SystemConfigTemplateMgr.getIntValue("pk.colour.minRed");
+		int minYellow = SystemConfigTemplateMgr.getIntValue("pk.colour.minYellow");
+
+		if (val >= minRed) {
+			return BattleModeCode.red;
+		} else if (val >= minYellow) {
+			return BattleModeCode.yellow;
+		}
+		return BattleModeCode.white;
 	}
 
 	/**
@@ -1424,7 +1470,7 @@ public class Living extends LivingProperties {
 		return true;
 	}
 
-	protected void addLivingState(int stateId) {
+	public void addLivingState(int stateId) {
 		LivingStatusTemplateInfo temp = BattleTempMgr.getLSInfo(stateId);
 		// 模板不存在
 		if (temp == null) {
@@ -1898,6 +1944,9 @@ public class Living extends LivingProperties {
 	}
 
 	public void clearData() {
+		if (field != null) {
+			field.leaveField(this);
+		}
 		field = null;
 		node = null;
 		cachBattleInfoPacket = null;

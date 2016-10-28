@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.chuangyou.common.protobuf.pb.common.BroadcastMsgProto.BroadcastMsg;
-import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.netty.GatewayLinkedSet;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.google.protobuf.Message;

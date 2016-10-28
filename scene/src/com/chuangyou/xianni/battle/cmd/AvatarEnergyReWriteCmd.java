@@ -7,6 +7,7 @@ import com.chuangyou.xianni.socket.Cmd;
 import com.chuangyou.xianni.world.AbstractCommand;
 import com.chuangyou.xianni.world.ArmyProxy;
 
+@Deprecated
 @Cmd(code = Protocol.S_RE_WRITE_AVATAR_ENERGY, desc = "center重写仙气值")
 public class AvatarEnergyReWriteCmd extends AbstractCommand {
 

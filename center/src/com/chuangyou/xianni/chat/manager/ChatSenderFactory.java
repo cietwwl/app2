@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.chuangyou.xianni.chat.manager.action.ChatBaseAction;
 import com.chuangyou.xianni.chat.manager.action.ChatFactionAction;
+import com.chuangyou.xianni.chat.manager.action.ChatNoticeAction;
 import com.chuangyou.xianni.chat.manager.action.ChatPrivateAction;
 import com.chuangyou.xianni.chat.manager.action.ChatPromptAction;
 import com.chuangyou.xianni.chat.manager.action.ChatSceneAction;
@@ -38,6 +39,7 @@ public class ChatSenderFactory {
 		_chatSenderMap.put(ChatConstant.Channel.SEARCH_TEAM, new ChatSearchTeamAction());
 		_chatSenderMap.put(ChatConstant.Channel.PRIVATE, new ChatPrivateAction());
 		_chatSenderMap.put(ChatConstant.Channel.PROMPT, new ChatPromptAction());
+		_chatSenderMap.put(ChatConstant.Channel.NOTICE, new ChatNoticeAction());
 	}
 	
 	public ChatBaseAction getAction(int channel){

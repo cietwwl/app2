@@ -4,12 +4,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import com.chuangyou.common.util.LockData;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.common.template.LevelUpTempleteMgr;
+import com.chuangyou.xianni.constant.CommonType.CurrencyItemType;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.constant.PlayerState;
-import com.chuangyou.xianni.constant.CommonType.CurrencyItemType;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.level.LevelUp;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
@@ -21,7 +22,6 @@ import com.chuangyou.xianni.entity.vip.VipLevelTemplate;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.player.event.PlayerProperEvent;
 import com.chuangyou.xianni.player.event.PlayerPropertyUpdateEvent;
-import com.chuangyou.xianni.player.event.PlayerSceneAttEvent;
 import com.chuangyou.xianni.player.logic.PlayerAddExpLogic;
 import com.chuangyou.xianni.state.template.StateTemplateMgr;
 import com.chuangyou.xianni.vip.templete.VipTemplateMgr;
@@ -471,7 +471,7 @@ public class BasePlayer extends AbstractEvent {
 			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " updateMagicwpId", e);
 			return false;
 		} finally {
-			commitSceneChange(EnumAttr.CUR_SOUL.getValue(), playerJoinInfo.getCurSoul());
+			commitChages(EnumAttr.CUR_SOUL.getValue(), playerJoinInfo.getCurSoul());
 		}
 		return true;
 	}
@@ -491,7 +491,7 @@ public class BasePlayer extends AbstractEvent {
 			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " updateMagicwpId", e);
 			return false;
 		} finally {
-			commitSceneChange(EnumAttr.CUR_BLOOD.getValue(), playerJoinInfo.getCurBlood());
+			commitChages(EnumAttr.CUR_BLOOD.getValue(), playerJoinInfo.getCurBlood());
 		}
 		return true;
 	}
@@ -589,7 +589,7 @@ public class BasePlayer extends AbstractEvent {
 			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " updateMountId", e);
 			return false;
 		} finally {
-			commitSceneChange(EnumAttr.Mount.getValue(), playerInfo.getMountId());
+			commitChages(EnumAttr.Mount.getValue(), playerInfo.getMountId());
 		}
 		return true;
 	}
@@ -664,27 +664,9 @@ public class BasePlayer extends AbstractEvent {
 			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " updateMagicwpId", e);
 			return false;
 		} finally {
-			commitSceneChange(EnumAttr.FaBao.getValue(), playerInfo.getMagicWeaponId());
+			commitChages(EnumAttr.FaBao.getValue(), playerInfo.getMagicWeaponId());
 		}
 		return true;
-	}
-
-	/**
-	 * 更新场景可见的属性
-	 * 
-	 * @param type
-	 * @param value
-	 */
-	public void commitSceneChange(int type, int value) {
-		int changes = changeCount.decrementAndGet();
-		if (changes < 0) {
-			Log.error("用户消息列表溢出,需检查BeginChange相关位置");
-			changeCount.set(0);
-		}
-		if (changes <= 0) {
-			PlayerSceneAttEvent event = new PlayerSceneAttEvent(this, type, value);
-			notifyListeners(event);
-		}
 	}
 
 	/**
@@ -743,7 +725,7 @@ public class BasePlayer extends AbstractEvent {
 			commitChages(changeMap);
 			if (hasLevelUp) {
 				beginChanges();
-				commitSceneChange(EnumAttr.Level.getValue(), playerInfo.getLevel());
+				commitChages(EnumAttr.Level.getValue(), playerInfo.getLevel());
 			}
 		}
 		return true;
@@ -781,7 +763,7 @@ public class BasePlayer extends AbstractEvent {
 			commitChages(changeMap);
 			if (hasLevelUp) {
 				beginChanges();
-				commitSceneChange(EnumAttr.VipLevel.getValue(), playerInfo.getVipLevel());
+				commitChages(EnumAttr.VipLevel.getValue(), playerInfo.getVipLevel());
 			}
 		}
 
@@ -847,7 +829,7 @@ public class BasePlayer extends AbstractEvent {
 			Log.error("playerId : " + getPlayerInfo().getPlayerId() + " consumeAvatarEnergy", e);
 			return false;
 		} finally {
-			commitChages(EnumAttr.AVATAR_ENERGY.getValue(), playerInfo.getBindCash());
+			commitChages(EnumAttr.AVATAR_ENERGY.getValue(), playerInfo.getAvatarEnergy());
 			commonLock.commitLock();
 		}
 		MonetaryLogHelper.addLog(playerInfo.getPlayerId(), playerInfo.getAvatarEnergy(), CurrencyItemType.AVATAR_ENERGY, -1, count);

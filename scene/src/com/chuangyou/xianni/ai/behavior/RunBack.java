@@ -25,7 +25,7 @@ public class RunBack extends MonsterBaseBehavior {
 
 		// 寻路
 		if (getMonster().isNavFail()) {
-			getMonster().moveto(getMonster().getInitPosition());
+			//getMonster().moveto(getMonster().getInitPosition());
 		} else {
 			getMonster().stop(true);
 			getMonster().navigateto(getMonster().getInitPosition());

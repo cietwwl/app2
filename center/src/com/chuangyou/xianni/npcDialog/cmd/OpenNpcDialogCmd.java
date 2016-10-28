@@ -32,7 +32,7 @@ public class OpenNpcDialogCmd extends AbstractCommand {
 			return ;
 		}
 		
-		script.showDialog(player.getPlayerId(), npcid);
+		script.showDialog(player.getPlayerId(), npcid,req.getNpcEntryId());
 		//TaskManager.calcNpcDialog(player, npcid);
 
 	}

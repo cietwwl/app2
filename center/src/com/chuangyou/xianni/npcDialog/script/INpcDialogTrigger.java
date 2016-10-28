@@ -17,7 +17,7 @@ public interface INpcDialogTrigger extends IScript{
 	 * @param commandParam
 	 * @param npcId
 	 */
-	public void processWithCommandParam(long roleId,int commandParam,int npcId);
+	public void processWithCommandParam(long roleId,int commandParam,int npcId,long npcEntryId);
 	
 
 	/**
@@ -25,5 +25,5 @@ public interface INpcDialogTrigger extends IScript{
 	 * @param roleId
 	 * @param npcId
 	 */
-	public void showDialog(long roleId,int npcId);
+	public void showDialog(long roleId,int npcId,long npcEntryId);
 }

@@ -3,6 +3,8 @@ package com.chuangyou.xianni.army;
 import java.util.Random;
 import com.chuangyou.common.protobuf.pb.army.HeroInfoMsgProto.HeroInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
+import com.chuangyou.common.protobuf.pb.battle.AddBuffProto.AddBuffMsg;
+import com.chuangyou.common.protobuf.pb.battle.AddSoulAndBloodProto.AddSoulAndBloodMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.property.BaseProperty;
@@ -168,8 +170,53 @@ public class ArmyInventory extends AbstractEvent implements UnlineInventory {
 		cur_blood.setType(EnumAttr.CUR_BLOOD.getValue());
 		cur_blood.setTotalPoint(army.getHero().getTotalProperty(Living.BLOOD));
 		attMsg.addAtt(cur_blood);
+		
 		PBMessage message = MessageUtil.buildMessage(Protocol.S_PROPERTY_UPDATE, attMsg);
 		player.sendPbMessage(message);
+	}
+	
+	/**
+	 * 回复魂血/气血
+	 * @param num
+	 * @param addType
+	 */
+	public void addSoulAndBlood(int addNum, int addType){
+		if(player != null){
+			AddSoulAndBloodMsg.Builder msg = AddSoulAndBloodMsg.newBuilder();
+			msg.setAddNum(addNum);
+			msg.setAddType(addType);
+			PBMessage pkg = MessageUtil.buildMessage(Protocol.S_PLAYER_SOUL_BLOOD_ADD, msg);
+			player.sendPbMessage(pkg);
+		}
+	}
+	
+	/**
+	 * 给玩家加buff
+	 * @param buffTempId
+	 */
+	public void addBuff(int buffTempId){
+		if(player != null){
+			AddBuffMsg.Builder msg = AddBuffMsg.newBuilder();
+			msg.setBuffTempId(buffTempId);
+			msg.setIsCampaignBuff(0);
+			msg.setCampaignType(0);
+			player.sendPbMessage(MessageUtil.buildMessage(Protocol.S_ADD_BUFF, msg));
+		}
+	}
+	
+	/**
+	 * 给玩家加副本buff
+	 * @param buffTempId
+	 * @param campaignType
+	 */
+	public void addCampaignBuff(int buffTempId, int campaignType){
+		if(player != null){
+			AddBuffMsg.Builder msg = AddBuffMsg.newBuilder();
+			msg.setBuffTempId(buffTempId);
+			msg.setIsCampaignBuff(1);
+			msg.setCampaignType(campaignType);
+			player.sendPbMessage(MessageUtil.buildMessage(Protocol.S_ADD_BUFF, msg));
+		}
 	}
 
 	public Army getArmy() {

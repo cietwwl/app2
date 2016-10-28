@@ -23,7 +23,7 @@ public class AvatarInfoDaoImpl extends BaseDao implements AvatarInfoDao {
 	public boolean saveOrUpdata(AvatarInfo avatarInfo) {
 		// TODO Auto-generated method stub
 		boolean result = false;
-		String sql = "REPLACE INTO tb_u_avatar_info(id,playerId,tempId,grade,star,correspond,schedule,statu,cindex,createTime) VALUES(?,?,?,?,?,?,?,?,?,?)";
+		String sql = "REPLACE INTO tb_u_avatar_info(id,playerId,tempId,grade,star,correspond,schedule,statu,cindex,skillId,skillStrengthen1,skillStrengthen2,skillStrengthen3,skillStrengthen4,skillStrengthen5,createTime) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		Map<Integer, DbParameter> params = new HashMap<Integer, DbParameter>();
 		params.put(1, new DbParameter(Types.INTEGER, avatarInfo.getId()));
 		params.put(2, new DbParameter(Types.BIGINT, avatarInfo.getPlayerId()));
@@ -34,7 +34,13 @@ public class AvatarInfoDaoImpl extends BaseDao implements AvatarInfoDao {
 		params.put(7, new DbParameter(Types.INTEGER, avatarInfo.getSchedule()));
 		params.put(8, new DbParameter(Types.INTEGER, avatarInfo.getStatu()));
 		params.put(9, new DbParameter(Types.INTEGER, avatarInfo.getIndex()));
-		params.put(10, new DbParameter(Types.TIMESTAMP, avatarInfo.getCreateTime()));
+		params.put(10, new DbParameter(Types.INTEGER, avatarInfo.getSkillId()));
+		params.put(11, new DbParameter(Types.INTEGER, avatarInfo.getSkillStrengthen1()));
+		params.put(12, new DbParameter(Types.INTEGER, avatarInfo.getSkillStrengthen2()));
+		params.put(13, new DbParameter(Types.INTEGER, avatarInfo.getSkillStrengthen3()));
+		params.put(14, new DbParameter(Types.INTEGER, avatarInfo.getSkillStrengthen4()));
+		params.put(15, new DbParameter(Types.INTEGER, avatarInfo.getSkillStrengthen5()));
+		params.put(16, new DbParameter(Types.TIMESTAMP, avatarInfo.getCreateTime()));
 		result = execNoneQuery(sql, params) > -1 ? true : false;
 		avatarInfo.setOp(Option.None);
 		return result;
@@ -92,6 +98,12 @@ public class AvatarInfoDaoImpl extends BaseDao implements AvatarInfoDao {
 					info.setSchedule(rs.getInt("schedule"));
 					info.setStatu(rs.getInt("statu"));
 					info.setIndex(rs.getInt("cindex"));
+					info.setSkillId(rs.getInt("skillId"));
+					info.setSkillStrengthen1(rs.getInt("skillStrengthen1"));
+					info.setSkillStrengthen2(rs.getInt("skillStrengthen2"));
+					info.setSkillStrengthen3(rs.getInt("skillStrengthen3"));
+					info.setSkillStrengthen4(rs.getInt("skillStrengthen4"));
+					info.setSkillStrengthen5(rs.getInt("skillStrengthen5"));
 					Timestamp time = rs.getTimestamp("createTime");
 					if (time != null) {
 						info.setCreateTime(new Date(time.getTime()));

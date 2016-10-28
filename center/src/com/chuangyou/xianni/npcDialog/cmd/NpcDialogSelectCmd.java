@@ -32,7 +32,7 @@ public class NpcDialogSelectCmd extends AbstractCommand {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.NPC_NO_HAVE_SCRIPT, Protocol.C_REQ_OPENNPCDIALOG);
 			return ;
 		}
-		script.processWithCommandParam(player.getPlayerId(), commandParam, npcid);
+		script.processWithCommandParam(player.getPlayerId(), commandParam, npcid,req.getNpcEntryId());
 	}
 
 }

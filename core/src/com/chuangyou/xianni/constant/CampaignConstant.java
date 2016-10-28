@@ -25,20 +25,17 @@ public class CampaignConstant {
 	}
 
 	public static class CampaignType {
-		public static final int	SINGLE		= 1;	// 单人本
-		public static final int	TEAM		= 2;	// 组队副本
-		public static final int	BEAD		= 3;	// 天逆珠副本
-		public static final int	AVATAR		= 4;	// 挑战副本(更换为分身副本)
-		public static final int	ARENA		= 5;	// 竞技场副本
-		public static final int	STATE		= 6;	// 境界副本
-		public static final int	PVP_1V1		= 7;	// PVP11副本
-
-		public static final int	GUILD_SEIZE	= 8;	// 帮派夺权副本
-		
-		public static final int ELITE_BOSS_TRIGGER = 9; // 精英BOSS触发副本
-		
-		public static final int WORLD_BOSS_TRIGGER = 11; // 世界BOSS触发副本
-
+		public static final int	SINGLE				= 1;	// 单人本
+		public static final int	TEAM				= 2;	// 组队副本
+		public static final int	BEAD				= 3;	// 天逆珠副本
+		public static final int	AVATAR				= 4;	// 挑战副本(更换为分身副本)
+		public static final int	ARENA				= 5;	// 竞技场副本
+		public static final int	STATE				= 6;	// 境界副本
+		public static final int	PVP_1V1				= 7;	// PVP11副本
+		public static final int	GUILD_SEIZE			= 8;	// 帮派夺权副本
+		public static final int	ELITE_BOSS_TRIGGER	= 9;	// 精英BOSS触发副本
+		public static final int	WORLD_BOSS_TRIGGER	= 11;	// 世界BOSS触发副本
+		public static final int	THE_PLANE			= 12;	// 位面副本
 	}
 
 	public static class ChallengeResult {

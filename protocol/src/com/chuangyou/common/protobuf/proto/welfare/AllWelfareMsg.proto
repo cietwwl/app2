@@ -1,0 +1,8 @@
+//protocol=2026;
+option java_package = "com.chuangyou.common.protobuf.pb.welfare";
+option java_outer_classname = "AllWelfareMsgProto";
+import "welfare/OneWelfareMsg.proto";
+//通知客户端玩家某个福利的状态
+message AllWelfareMsg{
+	repeated OneWelfareMsg list = 1;  //福利配置表ID
+}

@@ -14,7 +14,9 @@ public class AvatarEnergyCostCmd extends AbstractCommand {
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
 		PlayerSomeThingUpdateMsg msg = PlayerSomeThingUpdateMsg.parseFrom(packet.getBytes());
 		int count = msg.getCount();
-		player.getBasePlayer().consumeAvatarEnergy(count);
+		if (player.getAvatarInventory() != null) {
+			player.getAvatarInventory().costAvatarEnergy(count);
+		}
 	}
 
 }

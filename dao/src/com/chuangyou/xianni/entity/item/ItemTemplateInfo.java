@@ -3,121 +3,123 @@ package com.chuangyou.xianni.entity.item;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 
 public class ItemTemplateInfo extends BaseProperty {
-	
+
 	/**
 	 * 虚拟物品
 	 */
-	public static final int TYPE_VIR = 1;
+	public static final int	TYPE_VIR	= 1;
 	/**
 	 * 背包中实际的物品
 	 */
-	public static final int TYPE_BAG = 0;
-	
-	private int id;
+	public static final int	TYPE_BAG	= 0;
 
-	private String name;
-	private int masterType; // 主类型   
-	private int sonType; // 子类型	
+	private int				id;
 
-	private int profession; // 1.成女2.成男 3.萝莉
+	private String			name;
+	private int				masterType;			// 主类型
+	private int				sonType;			// 子类型
 
-	private int mod; // 作者:模型id
+	private int				profession;			// 1.成女2.成男 3.萝莉
 
-	private String icon; // 作者:图标id
+	private int				mod;				// 作者:模型id
 
-	private int level; // 作者:初始等级
+	private String			icon;				// 作者:图标id
 
-	private byte sex; // 作者:0 无性别，1 男，2女
+	private int				level;				// 作者:初始等级
 
-	private byte itemcolor; // 作者:1 白，2 绿，3 蓝，4 紫，5 黄，6红
+	private byte			sex;				// 作者:0 无性别，1 男，2女
 
-	private int exp; // 作者:分解经验系数
+	private byte			itemcolor;			// 作者:1 白，2 绿，3 蓝，4 紫，5 黄，6红
 
-	private int buy; // 作者:购买价格
+	private int				exp;				// 作者:分解经验系数
 
-	private int sell; // 作者:出售价格
+	private int				buy;				// 作者:购买价格
 
-	private int amount; // 作者: 叠加数量
+	private int				sell;				// 作者:出售价格
 
-	private int init_life_time; // 作者:存在时间，单位毫秒
+	private int				amount;				// 作者: 叠加数量
 
-	private int itemBase; // 作者:基础属性
+	private int				init_life_time;		// 作者:存在时间，单位毫秒
 
-	private int qualityCoefficient;// 品质系数
+	private int				itemBase;			// 作者:基础属性(某些物品，做参数使用)
 
-	private int grow; // 作者:成长系数
+	private int				qualityCoefficient;	// 品质系数
 
-	private int attspeed; // 作者:武器攻击速度，单位毫秒
+	private int				grow;				// 作者:成长系数
 
-	private byte bind; // 作者:1 不绑定，2 绑定，3 装备绑定，4时间解绑
+	private int				attspeed;			// 作者:武器攻击速度，单位毫秒
 
-	private int bindtime; // 作者:解绑时间，毫秒
+	private byte			bind;				// 作者:1 不绑定，2 绑定，3 装备绑定，4时间解绑
 
-	private String id_action; // 作者:脚本
-	
-	private int jiachilimit; // 加持等级上限
+	private int				bindtime;			// 作者:解绑时间，毫秒
 
-	private int jiachi1; // 作者:加持激活级别
+	private String			id_action;			// 作者:脚本
 
-	private int statistics1; // 作者: 加持激活属性
+	private int				jiachilimit;		// 加持等级上限
 
-	private int jiachi2; // 作者: 加持激活级别
+	private int				jiachi1;			// 作者:加持激活级别
 
-	private int statistics2; // 作者: 加持激活属性
+	private int				statistics1;		// 作者: 加持激活属性
 
-	private int jiachi3; // 作者: 加持激活级别
+	private int				jiachi2;			// 作者: 加持激活级别
 
-	private int statistics3; // 作者: 加持激活属性
+	private int				statistics2;		// 作者: 加持激活属性
 
-	private int jiachi4; // 作者: 加持激活级别
+	private int				jiachi3;			// 作者: 加持激活级别
 
-	private int statistics4; // 作者: 加持激活属性
+	private int				statistics3;		// 作者: 加持激活属性
 
-	private int awakeskill1; // 作者:1级觉醒技能
+	private int				jiachi4;			// 作者: 加持激活级别
 
-	private int awakenum1; // 作者: 激活次数
+	private int				statistics4;		// 作者: 加持激活属性
 
-	private int addmoneytype1; // 作者:恢复次数资金类型
+	private int				awakeskill1;		// 作者:1级觉醒技能
 
-	private int addmoneynum1; // 作者: 资金数值
+	private int				awakenum1;			// 作者: 激活次数
 
-	private int awakeskill2; // 作者:2 级觉醒技能
+	private int				addmoneytype1;		// 作者:恢复次数资金类型
 
-	private int awakenum2; // 作者: 激活次数
+	private int				addmoneynum1;		// 作者: 资金数值
 
-	private int addmoneytype2; // 作者: 恢复次数资金类型
+	private int				awakeskill2;		// 作者:2 级觉醒技能
 
-	private int addmoneynum2; // 作者: 资金数值
+	private int				awakenum2;			// 作者: 激活次数
 
-	private int awakeskill3; // 作者:3 级觉醒技能
+	private int				addmoneytype2;		// 作者: 恢复次数资金类型
 
-	private int awakenum3; // 作者: 激活次数
+	private int				addmoneynum2;		// 作者: 资金数值
 
-	private int addmoneytype3; // 作者: 恢复次数资金类型
+	private int				awakeskill3;		// 作者:3 级觉醒技能
 
-	private int addmoneynum3; // 作者: 资金数值
+	private int				awakenum3;			// 作者: 激活次数
 
-	private int suit_id; // 作者:套装id
+	private int				addmoneytype3;		// 作者: 恢复次数资金类型
 
-	private String des; // 作者:描述
-	
+	private int				addmoneynum3;		// 作者: 资金数值
+
+	private int				suit_id;			// 作者:套装id
+
+	private String			des;				// 作者:描述
+
 	/**
 	 * 分解物品ID
 	 */
-	private int resolveId;
+	private int				resolveId;
 	/**
 	 * 分解物品数量
 	 */
-	private int resolveCount;
-	
-	
+	private int				resolveCount;
+
 	/**
 	 * 是否是虚拟物品
 	 */
-	private int isVirtual;
-	
+	private int				isVirtual;
+
 	/** 是否能存入帮派仓库 0不能 1能 */
-	private byte saveGuild;
+	private byte			saveGuild;
+	
+	/** 物品对应脚本ID */
+	private String			scriptId;
 
 	public int getId() {
 		return id;
@@ -509,6 +511,14 @@ public class ItemTemplateInfo extends BaseProperty {
 
 	public void setSaveGuild(byte saveGuild) {
 		this.saveGuild = saveGuild;
+	}
+
+	public String getScriptId() {
+		return scriptId;
+	}
+
+	public void setScriptId(String scriptId) {
+		this.scriptId = scriptId;
 	}
 
 }

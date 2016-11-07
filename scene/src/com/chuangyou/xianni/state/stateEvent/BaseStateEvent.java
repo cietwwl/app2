@@ -27,6 +27,7 @@ public class BaseStateEvent {
 
 
 	public void exec(StateCampaign campaign, ArmyProxy army){
+		System.out.println("exec event:"+event.getId());
 		doComboEvent(campaign,army);
 		notifyProduceEvent(army);
 	}

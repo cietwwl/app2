@@ -51,7 +51,7 @@ public class EmailDaoImpl extends BaseDao implements EmailDao {
 		// TODO Auto-generated method stub
 		boolean result = false;
 		String sql = "DELETE from tb_u_email_info WHERE privateId = " + privateId;
-		result = execNoneQuery(sql) > -1 ? true : false;
+		result = execNoneQuery(sql) > -1 ? true : false;		
 		return result;
 	}
 

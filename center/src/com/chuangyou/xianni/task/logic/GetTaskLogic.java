@@ -10,7 +10,7 @@ import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.task.TaskTriggerInfo;
+import com.chuangyou.xianni.retask.vo.RealTask;
 import com.chuangyou.xianni.task.manager.TaskManager;
 
 public class GetTaskLogic {
@@ -20,8 +20,8 @@ public class GetTaskLogic {
 		TaskManager.clearDayTask(player, false);
 		player.getTaskInventory().setReady(true);
 		GetTaskListRespMsg.Builder resp = GetTaskListRespMsg.newBuilder();
-		for (TaskTriggerInfo info : player.getTaskInventory().getTaskInfos().values()) {
-			checkLimitTimeTask(info.getInfo(),info.getCondition().getCfg());
+		for (RealTask info : player.getTaskInventory().getTaskInfos().values()) {
+			checkLimitTimeTask(info.getInfo(),info.getConfig());
 			resp.addTasks(TaskManager.getTaskMsg(info.getInfo()));
 		}
 		PBMessage pkg = MessageUtil.buildMessage(Protocol.U_RESP_TASKLIST,resp);

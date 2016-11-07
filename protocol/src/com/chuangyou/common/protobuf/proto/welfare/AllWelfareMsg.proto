@@ -1,8 +1,9 @@
-//protocol=2026;
+//protocol=2626;
 option java_package = "com.chuangyou.common.protobuf.pb.welfare";
 option java_outer_classname = "AllWelfareMsgProto";
 import "welfare/OneWelfareMsg.proto";
 //通知客户端玩家某个福利的状态
 message AllWelfareMsg{
-	repeated OneWelfareMsg list = 1;  //福利配置表ID
+	repeated OneWelfareMsg list = 1;  //所有福利状态信息
+	optional int32 onlineTime = 2;  //达到相应等级以后在线时间
 }

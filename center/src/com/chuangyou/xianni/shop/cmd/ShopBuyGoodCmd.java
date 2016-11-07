@@ -17,7 +17,6 @@ public class ShopBuyGoodCmd extends AbstractCommand {
 
 	@Override
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
-		// TODO Auto-generated method stub
 		BuyGoodsReqMsg req = BuyGoodsReqMsg.parseFrom(packet.getBytes());
 		int privateId = req.getPrivateId();
 		int num = req.getCount();
@@ -28,7 +27,6 @@ public class ShopBuyGoodCmd extends AbstractCommand {
 			return;
 		}
 		new BuyGoodsAction(player, cfg).buy(num, totalPrice);
-		
 	}
 
 }

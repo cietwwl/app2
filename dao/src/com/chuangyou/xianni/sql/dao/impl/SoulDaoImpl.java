@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.entity.soul.CardComboConfig;
 import com.chuangyou.xianni.entity.soul.CardLvConfig;
+import com.chuangyou.xianni.entity.soul.CardRateConfig;
 import com.chuangyou.xianni.entity.soul.CardSkillConfig;
 import com.chuangyou.xianni.entity.soul.CardStarConfig;
 import com.chuangyou.xianni.entity.soul.FuseItemConfig;
@@ -338,6 +339,7 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 				info.setCombo4(rs.getInt("combo4"));
 				info.setNeedClip(rs.getInt("needClip"));
 				info.setSkill(rs.getInt("skill"));
+				info.setWeight(rs.getInt("weight"));
 				infos.put(info.getId(), info);
 			}
 		} catch (SQLException e) {
@@ -661,6 +663,63 @@ public class SoulDaoImpl extends BaseDao implements SoulDao {
 					info.getMateList().add(info.getMate3());
 				}
 				infos.put(info.getId(), info);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			infos = null;
+			Log.error("执行出错" + sql, e);
+		} finally {
+			closeConn(pst, rs);
+		}
+		return infos;
+	}
+
+	@Override
+	public Map<Integer, CardRateConfig> getCardRateConfig() {
+		// TODO Auto-generated method stub
+		String sql = "select * from tb_z_soul_card_rate";
+		PreparedStatement pst = execQuery(sql);
+		ResultSet rs = null;
+		CardRateConfig info = null;
+		Map<Integer, CardRateConfig> infos = null;
+		try {
+			rs = pst.executeQuery();
+			infos = new HashMap<>();
+			while (rs.next()) {
+				info = new CardRateConfig();
+				info.setType(rs.getInt("type"));
+				info.setOneSpend(rs.getInt("oneSpend"));
+				info.setTenSpend(rs.getInt("tenSpend"));
+				info.setDiscount(rs.getInt("discount"));
+				
+				info.setClipChanceWhite(rs.getInt("clipChanceWhite"));
+				info.setClipChanceWhiteStartNum(rs.getInt("clipChanceWhiteStartNum"));
+				info.setClipChanceWhiteEndNum(rs.getInt("clipChanceWhiteEndNum"));
+				
+				info.setClipChanceGreen(rs.getInt("clipChanceGreen"));
+				info.setClipChanceGreenStartNum(rs.getInt("clipChanceGreenStartNum"));
+				info.setClipChanceGreenEndNum(rs.getInt("clipChanceGreenEndNum"));
+				
+				info.setClipChanceBule(rs.getInt("clipChanceBule"));
+				info.setClipChanceBuleStartNum(rs.getInt("clipChanceBuleStartNum"));
+				info.setClipChanceBuleEndNum(rs.getInt("clipChanceBuleEndNum"));
+				
+				info.setClipChancePurple(rs.getInt("clipChancePurple"));
+				info.setClipChancePurpleStartNum(rs.getInt("clipChancePurpleStartNum"));
+				info.setClipChancePurpleEndNum(rs.getInt("clipChancePurpleEndNum"));
+				
+				info.setClipChanceOrange(rs.getInt("clipChanceOrange"));
+				info.setClipChanceOrangeStartNum(rs.getInt("clipChanceOrangeStartNum"));
+				info.setClipChanceOrangeEndNum(rs.getInt("clipChanceOrangeEndNum"));
+				
+				info.setClipChanceRed(rs.getInt("clipChanceRed"));
+				info.setClipChanceRedStartNum(rs.getInt("clipChanceRedStartNum"));
+				info.setClipChanceRedEndNum(rs.getInt("clipChanceRedEndNum"));
+				
+				info.setFirstCardId(rs.getInt("firstCardId"));
+
+				infos.put(info.getType(), info);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

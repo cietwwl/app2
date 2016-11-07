@@ -102,7 +102,7 @@ public class ItemTemplateInfoDaoImpl extends BaseDao implements ItemTemplateInfo
 
 	@Override
 	public List<ItemTemplateInfo> getItemTemps(String name) {
-		String sql = "SELECT * FROM tb_z_item_template where name like '%?%'";
+		String sql = "SELECT * FROM tb_z_item_template where name like '%"+name+"%'";
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.VARCHAR, name));
 		List<ItemTemplateInfo> temps = read(sql, null);

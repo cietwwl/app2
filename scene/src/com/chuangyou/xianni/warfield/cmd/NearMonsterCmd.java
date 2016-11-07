@@ -64,7 +64,8 @@ public class NearMonsterCmd extends AbstractCommand {
 		// if (true) {
 		// return;
 		// }
-		army.join(field, v);
+
+		army.changeField(field, v);
 	}
 
 }

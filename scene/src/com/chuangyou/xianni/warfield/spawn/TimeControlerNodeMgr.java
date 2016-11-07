@@ -1,5 +1,6 @@
 package com.chuangyou.xianni.warfield.spawn;
 
+import java.sql.Time;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -41,19 +42,25 @@ public class TimeControlerNodeMgr {
 	}
 
 	private static void begin(SpwanNode node) {
-		long difference = difference(node.getTimeControlerTime(), node.getSpawnInfo().getTimerBegin());
 		// 今天已经刷新过(5分钟刷新间隔)
-		if (difference > -5 * 60 * 1000) {
+		if (!isOpen(node.getSpawnInfo().getTimerBegin(), node.getSpawnInfo().getTimerEnd()) || node.getState().getCode() == NodeState.WORK) {
 			return;
+		}
+		try {
+			if (node.getTimerControlerTime() >= TimeUtil.getDate(node.getSpawnInfo().getTimerBegin()).getTime()) {
+				return;
+			}
+		} catch (Exception e) {
+			Log.error(node.getSpawnInfo().getId() + "-----" + node.getSpawnInfo().getTimerBegin());
 		}
 		// 刷新
 		node.revive();
+		node.setTimerControlerTime(System.currentTimeMillis());
 	}
 
 	private static void end(SpwanNode node) {
-		long difference = difference(node.getTimeControlerTime(), node.getSpawnInfo().getTimerEnd());
-		// 今天已经结束
-		if (difference > -5 * 60 * 1000) {
+		// 今天已经刷新过(5分钟刷新间隔)
+		if (isOpen(node.getSpawnInfo().getTimerBegin(), node.getSpawnInfo().getTimerEnd()) || node.getState().getCode() == NodeState.OVER) {
 			return;
 		}
 		// 结束
@@ -61,13 +68,18 @@ public class TimeControlerNodeMgr {
 	}
 
 	/** 前后五分钟之内 */
-	private static long difference(long exeTime, String beginTime) {
+	private static boolean isOpen(String beginTime, String endTime) {
 		try {
-			Date time = TimeUtil.getDate(beginTime);
-			return exeTime - time.getTime();
+			Date begin = TimeUtil.getDate(beginTime);
+			Date end = TimeUtil.getDate(endTime);
+			long now = System.currentTimeMillis();
+			if (now >= begin.getTime() && now <= end.getTime()) {
+				return true;
+			}
+			return false;
 		} catch (Exception e) {
 			Log.error("difference" + beginTime, e);
 		}
-		return 10000000l;
+		return false;
 	}
 }

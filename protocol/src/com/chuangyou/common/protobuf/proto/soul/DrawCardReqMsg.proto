@@ -1,0 +1,9 @@
+//protocol=11616;
+option java_package = "com.chuangyou.common.protobuf.pb.soul";
+option java_outer_classname = "DrawCardReqProto";
+
+//请求抽卡
+message DrawCardReqMsg{
+	required int32 type = 1;//抽卡类型    1：免费抽卡一次    2:免费10连抽    3：付费抽卡一次   4：付费抽卡10次
+
+}

@@ -1,6 +1,7 @@
 package com.chuangyou.xianni.skill.cmd;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.chuangyou.common.protobuf.pb.skill.ResSkillInfoMsgProto.ResSkillInfoMsg;
 import com.chuangyou.common.protobuf.pb.skill.SkillListProto.SkillList;
@@ -16,11 +17,11 @@ import com.chuangyou.xianni.socket.Cmd;
 public class GetHeroSkillCmd extends AbstractCommand {
 	@Override
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
-		Map<String, HeroSkill> heroSkill = player.getSkillInventory().getHeroSkill();
+		Map<Integer, HeroSkill> heroSkills = player.getSkillInventory().getHeroSkill();
 		ResSkillInfoMsg.Builder msg = ResSkillInfoMsg.newBuilder();
-		for (HeroSkill skill : heroSkill.values()) {
+		for (Entry<Integer, HeroSkill> entry : heroSkills.entrySet()) {
 			SkillList.Builder bean = SkillList.newBuilder();
-			bean.setSkillId(skill.getSkillId());
+			bean.setSkillId(entry.getValue().getSkillId());
 			msg.addInfo(bean);
 		}
 		PBMessage p = MessageUtil.buildMessage(Protocol.U_HERO_GETSKILLINFO, msg);

@@ -3,24 +3,26 @@ package com.chuangyou.xianni.task;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.chuangyou.xianni.entity.Option;
+import com.chuangyou.xianni.entity.task.TaskCfg;
 import com.chuangyou.xianni.entity.task.TaskInfo;
 import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.interfaces.IInventory;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.retask.constant.ConditionType;
+import com.chuangyou.xianni.retask.vo.RealTask;
 import com.chuangyou.xianni.sql.dao.DBManager;
 import com.chuangyou.xianni.task.template.TaskTemplateMgr;
 
 public class TaskInventory extends AbstractEvent implements IInventory {
 
-	private GamePlayer						player;
+	private GamePlayer				player;
 
-	private Map<Integer, TaskTriggerInfo>	taskInfos;
+	private Map<Integer, RealTask>	taskInfos;
 
 	/** 是否准备好 */
-	private boolean							isReady	= false;
+	private boolean					isReady	= false;
 
 	public TaskInventory(GamePlayer player) {
 		this.player = player;
@@ -32,40 +34,43 @@ public class TaskInventory extends AbstractEvent implements IInventory {
 	 * @param info
 	 * @return
 	 */
-	public boolean add(TaskTriggerInfo info) {
-		info.addTrigger();
-		taskInfos.put(info.getInfo().getTaskId(), info);
-		return DBManager.getTaskdao().add(info.getInfo());
+	public void add(RealTask task) {
+		taskInfos.put(task.getInfo().getTaskId(),task);
+		DBManager.getTaskdao().add(task.getInfo());
 	}
 
-	/**
+	 /**
 	 * 删除任务
-	 * 
+	 *
 	 * @param info
 	 * @return
 	 */
-	public boolean del(TaskInfo info) {
-		TaskTriggerInfo trigger = taskInfos.get(info.getTaskId());
-		trigger.removeTrigger();
-		taskInfos.remove(info.getTaskId());
-		return DBManager.getTaskdao().del(info);
-	}
+	 public boolean del(int taskId) {
+		 RealTask trigger = taskInfos.get(taskId);
+		 trigger.removeTrigger();
+		 taskInfos.remove(taskId);
+		 return DBManager.getTaskdao().del(trigger.getInfo());
+	 }
 
 	/////////////////////////////////////////////////////////////
 	@Override
 	public boolean loadFromDataBase() {
 		// TODO Auto-generated method stub
 		Map<Integer, TaskInfo> infos = DBManager.getTaskdao().get(player.getPlayerId());
-		if (infos == null)
+		if (infos == null) {
 			return false;
+		}
 		taskInfos = new HashMap<>();
 		for (TaskInfo info : infos.values()) {
-			if(TaskTemplateMgr.getTaskCfg(info.getTaskId())==null)continue;
-			TaskTriggerInfo triggerInfo = new TaskTriggerInfo(player, info);
-			taskInfos.put(info.getTaskId(), triggerInfo);
-			triggerInfo.addTrigger();
-			if (triggerInfo.condition != null) {
-				triggerInfo.condition.initProcess();
+			TaskCfg cfg = TaskTemplateMgr.getTaskCfg(info.getTaskId());
+			if (cfg == null) {
+				continue;
+			}
+			RealTask realTask = new RealTask(cfg, info, player);
+			taskInfos.put(info.getTaskId(), realTask);
+			realTask.addTrigger();
+			if(cfg.getTaskTarget() == ConditionType.KILL_PRIVATE_MONSTER){
+				realTask.initTask();
 			}
 		}
 		return true;
@@ -74,7 +79,7 @@ public class TaskInventory extends AbstractEvent implements IInventory {
 	@Override
 	public boolean unloadData() {
 		// TODO Auto-generated method stub
-		for (TaskTriggerInfo info : taskInfos.values()) {
+		for (RealTask info : taskInfos.values()) {
 			info.removeTrigger();
 		}
 		taskInfos.clear();
@@ -86,20 +91,22 @@ public class TaskInventory extends AbstractEvent implements IInventory {
 	@Override
 	public boolean saveToDatabase() {
 		// TODO Auto-generated method stub
-		if (taskInfos == null)
+		if (taskInfos == null){			
 			return true;
-		Iterator<Entry<Integer, TaskTriggerInfo>> it = taskInfos.entrySet().iterator();
+		}
+		Iterator<RealTask> it = taskInfos.values().iterator();
 		while (it.hasNext()) {
-			TaskTriggerInfo info = it.next().getValue();
+			RealTask info = it.next();
 			if (info.getInfo().getOp() == Option.Update) {
 				DBManager.getTaskdao().update(info.getInfo());
+			}else if(info.getInfo().getOp() == Option.Insert){
+				DBManager.getTaskdao().add(info.getInfo());
 			}
 		}
 		return true;
 	}
-	
 
-	public Map<Integer, TaskTriggerInfo> getTaskInfos() {
+	public Map<Integer, RealTask> getTaskInfos() {
 		return taskInfos;
 	}
 

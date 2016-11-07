@@ -29,10 +29,11 @@ public class PlayerLoginReceiveCmd implements Command {
 		}
 
 		player.setChannel(channel);
+		//从数据库加载玩家数据
 		player.loadPersonData();
+		//处理登录相关逻辑
+		player.login();
 		player.setPlayerState(PlayerState.ONLINE);
-
-
 
 		// TODO 返回角色数据
 		player.sendPbMessage(MessageUtil.buildMessage(Protocol.U_G_PLAYERINFO, PlayerInfoSendCmd.getProperPacket(player)));

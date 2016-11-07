@@ -19,10 +19,13 @@ import com.chuangyou.xianni.warfield.template.FieldTemplateMgr;
 import com.chuangyou.xianni.world.ArmyProxy;
 
 public class EnterFieldAction extends Action {
-	ArmyProxy	army;
-	int			mapId;
-	int			mapKey;
-	Vector3		postion;
+	ArmyProxy			army;
+	int					mapId;
+	int					mapKey;
+	Vector3				postion;
+
+	static final int	NOVICE_MAP	= 1007;
+	static final int	MAX_SIZE	= 2;
 
 	public EnterFieldAction(ArmyProxy army, int mapId, int mapKey, Vector3 postion) {
 		super(army);
@@ -34,13 +37,13 @@ public class EnterFieldAction extends Action {
 
 	@Override
 	public void execute() {
-		System.out.println("玩家请求进入场景：playerId : +" + army.getPlayerId());
 		FieldInfo fieldTemp = FieldTemplateMgr.getFieldTemp(mapKey);
 		if (fieldTemp == null) {
 			army.returnBornMap();
 			ErrorMsgUtil.sendErrorMsg(army, EnterMapResult.TEMP_ERROR, (short) -1, "地图模板不存在");
 			return;
 		}
+		mapKey = getImageField(mapKey);
 		// 副本地图,需要创建
 		Field field = null;
 		boolean isPubMap = fieldTemp.getType() == 1;
@@ -84,6 +87,25 @@ public class EnterFieldAction extends Action {
 				ErrorMsgUtil.sendErrorMsg(army, EnterMapResult.CAMPAIGN_DESTORY, (short) -1, "副本不存在");
 			}
 		}
+	}
+
+	/** 地图分压，获取镜像地图ID */
+	public int getImageField(int mapKey) {
+		if (mapKey != NOVICE_MAP) {
+			return mapKey;
+		}
+		Field field = FieldMgr.getIns().getField(mapKey);
+		if (field.getLivings().size() < MAX_SIZE) {
+			return mapKey;
+		}
+		for (int i = 1; i <= 10; i++) {
+			int newMapKey = mapKey * 100 + i;
+			Field nf = FieldMgr.getIns().getField(newMapKey);
+			if (nf.getLivings().size() < MAX_SIZE) {
+				return newMapKey;
+			}
+		}
+		return mapKey;
 	}
 
 }

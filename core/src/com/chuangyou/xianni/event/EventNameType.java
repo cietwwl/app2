@@ -98,4 +98,24 @@ public interface EventNameType {
 	 * 宠物战力
 	 */
 	public static final int PET_FIGHT     = 33;
+	
+	/**
+	 * 完成任务，添加活跃值
+	 */
+	public static final int ADD_ACTIVE_VALUE = 34;
+	
+	/**
+	 * 境界任务完成
+	 */
+	public static final int STATE_TAKS_FINISH = 35;
+	
+	/**
+	 * 技能相关的事件
+	 */
+	public static final int SKILL_LEVEL  = 36;
+	
+	/**
+	 * 分身数据更新事件
+	 */
+	public static final int AVATAR_UPDATE = 37;
 }

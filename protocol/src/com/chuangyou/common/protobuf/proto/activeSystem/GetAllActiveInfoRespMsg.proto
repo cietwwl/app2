@@ -1,0 +1,10 @@
+//protocol=1630;
+option java_package = "com.chuangyou.common.protobuf.pb.activeSystem";
+option java_outer_classname = "GetAllActiveInfoRespProto";
+
+import "activeSystem/ActiveInfoMsg.proto";
+
+//一次性获得所有的活跃进度
+message GetAllActiveInfoRespMsg{
+	repeated ActiveInfoMsg infos = 1;
+}

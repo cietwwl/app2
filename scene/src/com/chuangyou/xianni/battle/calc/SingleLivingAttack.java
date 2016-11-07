@@ -10,9 +10,12 @@ import com.chuangyou.xianni.battle.buffer.BufferType;
 import com.chuangyou.xianni.battle.buffer.FormulaBuffer;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.damage.DamageCalculator;
+import com.chuangyou.xianni.battle.magicwpban.MagicwpCompanent;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.constant.MagicwpBanConstant;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
 import com.chuangyou.xianni.role.objects.Living;
+import com.chuangyou.xianni.role.objects.Player;
 
 /**
  * <pre>
@@ -108,6 +111,15 @@ public class SingleLivingAttack extends AbstractSkillCalc {
 			bloodDamageValue += bloodDamageValue * critAdd;
 			soulDamageValue += soulDamageValue * critAdd;
 			tipType = Damage.CRIPT;
+
+			// 暴击时触发法宝禁制
+			if (source instanceof Player) {
+				Player p = (Player) source;
+				MagicwpCompanent companent = p.getMagicwpCompanent(MagicwpBanConstant.COOL_DOWN);
+				if (companent != null && companent.isEffect()) {
+					companent.exe();
+				}
+			}
 		}
 
 		// 群攻分摊伤害技能

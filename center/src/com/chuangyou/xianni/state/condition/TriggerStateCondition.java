@@ -3,7 +3,7 @@ package com.chuangyou.xianni.state.condition;
 import com.chuangyou.xianni.entity.state.StateConditionConfig;
 import com.chuangyou.xianni.entity.state.StateConditionInfo;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.task.constant.ConditionType;
+import com.chuangyou.xianni.retask.constant.ConditionType;
 
 /**
  * 触发器境界任务

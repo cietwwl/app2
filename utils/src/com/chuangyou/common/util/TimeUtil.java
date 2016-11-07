@@ -306,7 +306,7 @@ public class TimeUtil {
 	 * </pre>
 	 * 
 	 * @param date
-	 * @return
+	 * @return false:不是同一天
 	 */
 	public static boolean dataCompare5(Date date) {
 		if (date == null)
@@ -794,6 +794,29 @@ public class TimeUtil {
 		return c.getTime();
 	}
 
+
+	/**
+	 * 是否是同一周。以每同一的5点为分隔点
+	 * @param d1
+	 * @param d2
+	 * @return
+	 */
+	public static boolean isSameWeek5(Date d1,Date d2){
+		Calendar cal1 = Calendar.getInstance();
+		cal1.setTime(d1);
+		cal1.add(Calendar.HOUR, -5);  //向前推5个小时
+		
+		Calendar cal2 = Calendar.getInstance();
+		cal2.setTime(d2);
+		cal2.add(Calendar.HOUR, -5);
+		
+		if(cal1.get(Calendar.WEEK_OF_YEAR) == cal2.get(Calendar.WEEK_OF_YEAR)){			
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 	public static Calendar getNextDateByIndex(int indexOfWeek) {
 		int addDay = 0;
 		int mondayPlus = getDayOfWeekIndex();

@@ -19,7 +19,11 @@ public class ChatMsgInfo extends DataObject {
 	/** 聊天内容 */
 	private String chatContent;
 	
-	/** 备用参数(在系统提示中用作提示类型) */
+	/**
+	 * 备用参数
+	 * 在系统提示频道(频道8)中用作提示类型
+	 * 在系统消息频道和公告频道(频道1、9、10)中用作是否只有当前地图内的玩家才能收到
+	 */
 	private int param1;
 
 	public int getChannel() {

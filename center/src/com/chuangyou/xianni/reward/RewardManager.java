@@ -172,6 +172,38 @@ public class RewardManager {
 		EmailManager.insertEmail(playerId, title, content, emailItems);
 	}
 	
+	/**
+	 * 发送奖励。如果背包满。就发送到邮件中
+	 * @param template
+	 * @param player
+	 */
+	public static boolean sendRewardCanInEmail(RewardTemplate template, GamePlayer player){
+		BagInventory bag = player.getBagInventory();
+		if (bag == null) {
+			Log.error("sendReward error, template:" + template.getType() + " player:" + player.getPlayerId());
+			return false;
+		}
+		boolean result = true;
+		if (template.getItemTempId1() != 0 && template.getCount1() != 0) {
+			bag.addItemInBagOrEmail(template.getItemTempId1(), template.getCount1(), (short) template.getType(), true);
+			
+		}
+		if (template.getItemTempId2() != 0 && template.getCount2() != 0) {
+			bag.addItem(template.getItemTempId2(), template.getCount2(), (short) template.getType(), true);
+		}
+		if (template.getItemTempId3() != 0 && template.getCount3() != 0) {
+			bag.addItem(template.getItemTempId3(), template.getCount3(), (short) template.getType(), true);
+		}
+		if (template.getItemTempId4() != 0 && template.getCount4() != 0) {
+			bag.addItem(template.getItemTempId4(), template.getCount4(), (short) template.getType(), true);
+		}
+		if (template.getItemTempId5() != 0 && template.getCount5() != 0) {
+			bag.addItem(template.getItemTempId5(), template.getCount5(), (short) template.getType(), true);
+		}
+		return result;
+	}
+	
+	
 	public static boolean sendReward(RewardTemplate template, GamePlayer player) {
 		BagInventory bag = player.getBagInventory();
 		if (bag == null) {

@@ -49,7 +49,9 @@ public class TaskTemplateImpl extends BaseDao implements TaskTemplateDao {
 					info.setAcceptScriptId(rs.getString("acceptScriptId"));
 					info.setTaskTarget(rs.getByte("taskTarget"));
 					info.setTargetId(rs.getInt("targetId"));
+					info.setTargetId1(rs.getInt("targetId1"));
 					info.setTargetNum(rs.getInt("targetNum"));
+					info.setTargetTrigger(rs.getInt("targetTrigger"));
 					info.setCompleteScriptId(rs.getString("completeScriptId"));
 					info.setExp(rs.getInt("exp"));
 					info.setItems(rs.getString("items"));

@@ -23,6 +23,7 @@ public class TerminatorNode extends CampaignNodeDecorator {
 	/** 激活 */
 	public void active(ArmyProxy army, Campaign campaign, SpwanNode node) {
 		exec(campaign, node);
+		campaign.stateTransition(new SuccessState(campaign));
 	}
 
 	public void prepare(Campaign campaign, SpwanNode node) {
@@ -83,6 +84,6 @@ public class TerminatorNode extends CampaignNodeDecorator {
 		for (Living alive : monsters) {
 			alive.suicide();
 		}
-		campaign.changeEndTime(System.currentTimeMillis() + 60 * 1000);
+//		campaign.changeEndTime(System.currentTimeMillis() + 60 * 1000);
 	}
 }

@@ -18,6 +18,8 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
 import com.chuangyou.xianni.socket.Command;
+import com.chuangyou.xianni.welfare.WelfareConditionHandleFactory;
+import com.chuangyou.xianni.welfare.WelfareManager;
 import com.chuangyou.xianni.word.WorldMgr;
 
 import io.netty.channel.Channel;

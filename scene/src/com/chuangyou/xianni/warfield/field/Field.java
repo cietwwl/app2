@@ -37,7 +37,7 @@ import com.chuangyou.xianni.warfield.template.FieldTemplateMgr;
  *
  */
 public class Field extends AbstractActionQueue {
-	public static final int								MAX_ID		= 1000000;
+	public static final int								MAX_ID		= 10000;
 	/**
 	 * 地图生成后的唯一ID
 	 */
@@ -206,30 +206,30 @@ public class Field extends AbstractActionQueue {
 			return livings.get(id);
 		return null;
 	}
-	
+
 	/**
-	 * 是否地图强制可以攻击，该判断优先级高于玩家的pk模式
-	 * 返回true时，直接判定可以攻击，返回false时才判断pk模式
+	 * 是否地图强制可以攻击，该判断优先级高于玩家的pk模式 返回true时，直接判定可以攻击，返回false时才判断pk模式
+	 * 
 	 * @param player
 	 * @param target
 	 * @return
 	 */
-	public int getAttackRule(Player player, Player target){
-		if(fieldInfo.getBattleType() == BattleType.ARENA){
+	public int getAttackRule(Player player, Living target) {
+		if (fieldInfo.getBattleType() == BattleType.ARENA) {
 			return FieldAttackRule.ATTACK;
 		}
-		if(fieldInfo.getBattleType() == BattleType.FIGHT){
+		if (fieldInfo.getBattleType() == BattleType.FIGHT) {
 			return FieldAttackRule.USEPLAYERMODE;
 		}
-		if(player == null || target == null){
+		if (player == null || target == null) {
 			return FieldAttackRule.UNATTACK;
 		}
 		if (player.getTeamId() != 0 && player.getTeamId() == target.getTeamId()) {// 队友
 			return FieldAttackRule.UNATTACK;
 		}
-		if(fieldInfo.getBattleType() == BattleType.GUILD){
-			if(player.getSimpleInfo() != null || target.getSimpleInfo() != null){
-				if(player.getSimpleInfo().getGuildId() != 0 && player.getSimpleInfo().getGuildId() == target.getSimpleInfo().getGuildId()){
+		if (fieldInfo.getBattleType() == BattleType.GUILD) {
+			if (player.getSimpleInfo() != null || target.getSimpleInfo() != null) {
+				if (player.getSimpleInfo().getGuildId() != 0 && player.getSimpleInfo().getGuildId() == target.getSimpleInfo().getGuildId()) {
 					return FieldAttackRule.UNATTACK;
 				}
 			}

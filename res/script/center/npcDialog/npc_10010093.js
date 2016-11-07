@@ -23,7 +23,7 @@ function showDialog(roleId,npcId,npcEntryId){
 	 //=====================>NED固定格式，创建NPC对话选项数组<=========================
 	 
 	 //添加选项  new commandStructClass(commandId,param,"des")
-	 list.add(new commandStructClass(100,969691,"进入副本"));	 
+	 list.add(new commandStructClass(100,969691,"前往追击"));	 
 	 //发送给客户端sendToClient(roleId,list,"显示NPC对话内容");
 	
 	 

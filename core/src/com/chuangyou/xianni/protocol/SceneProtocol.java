@@ -200,4 +200,9 @@ public interface SceneProtocol {
 	 * 移动到某种怪附近
 	 */
 	public static final short	S_NEARMONSTER					= 20752;
+	
+	/**
+	 * 法定已装备禁制改变
+	 */
+	public static final short	S_MAGICWP_DATA_UPDATE		= 20753;
 }

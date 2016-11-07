@@ -61,25 +61,6 @@ public class SoulCalcLogic {
 		}
 	}
 
-	/**
-	 *  计算卡牌组合给魂幡功能加成属性
-	 * @param player
-	 * @param map
-	 */
-	private void calcCardComboAtts(GamePlayer player, Map<Integer, SimpleProperty> map) {
-//		for (CardComboConfig info : SoulTemplateMgr.getCardComboMap().values()) {
-//			ConcreteComponent component = new ConcreteComponent();
-//			if(info.getType() == CardComboConfig.TYPE_UP){
-//				ICalcAttLogic upAtt = new UpComboAttLogic(component);
-//				upAtt.doProcess(player, map, info, player.getSoulInventory().getCards());
-//			}else if(info.getType() == CardComboConfig.TYPE_GET){
-//				ICalcAttLogic getAtt = new GetComboAttLogic(component);
-//				ICalcAttLogic lvAtt  = new LvAddComboAttLogic(getAtt);
-//				ICalcAttLogic starAtt = new StarAddComboAttLogic(lvAtt);
-//				starAtt.doProcess(player, map,info, player.getSoulInventory().getCards());
-//			}
-//		}
-	}
 
 	
 	/**

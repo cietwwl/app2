@@ -1,0 +1,9 @@
+//protocol=1625;
+option java_package = "com.chuangyou.common.protobuf.pb.soul";
+option java_outer_classname = "GetSoulLuckInfoRespProto";
+
+//请求抽卡数据
+message GetSoulLuckInfoRespMsg{
+	required int32 freeTime = 1; //免费已抽卡次数
+	required int32 moneyTime = 2;//付费已抽卡次数
+}

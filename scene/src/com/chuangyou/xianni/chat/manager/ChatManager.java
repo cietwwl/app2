@@ -16,7 +16,12 @@ public class ChatManager {
 		if(field == null){
 			return;
 		}
-		BroadcastUtil.sendBroadcastPacket(field.getLivings(), Protocol.U_CHAT_RECEIVE, chatMsg);
+		ChatReceiveMsg.Builder sendMsg = chatMsg.toBuilder();
+		if(chatMsg.getParam1() > 0){
+			sendMsg.setSenderId(0);
+			sendMsg.setParam1(0);
+		}
+		BroadcastUtil.sendBroadcastPacket(field.getLivings(), Protocol.U_CHAT_RECEIVE, sendMsg.build());
 	}
 	
 	public static void sendSceneNotice(int channel, Field field, String content){

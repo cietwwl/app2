@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.chuangyou.common.util.LockData;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.common.template.LevelUpTempleteMgr;
+import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.CommonType.CurrencyItemType;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.constant.PlayerState;
@@ -25,6 +26,8 @@ import com.chuangyou.xianni.player.event.PlayerPropertyUpdateEvent;
 import com.chuangyou.xianni.player.logic.PlayerAddExpLogic;
 import com.chuangyou.xianni.state.template.StateTemplateMgr;
 import com.chuangyou.xianni.vip.templete.VipTemplateMgr;
+import com.chuangyou.xianni.welfare.WelfareConditionHandleFactory;
+import com.chuangyou.xianni.word.WorldMgr;
 
 /**
  * 玩家数据
@@ -724,6 +727,12 @@ public class BasePlayer extends AbstractEvent {
 		} finally {
 			commitChages(changeMap);
 			if (hasLevelUp) {
+				// 福利等级限制监听
+				GamePlayer player = WorldMgr.getPlayer(this.playerInfo.getPlayerId());
+				player.getWelfareInventory().getWelfareConditionHandleMap().get(WelfareConditionHandleFactory.LEVEL_MIN).listen();
+				if (playerInfo.getLevel() >= SystemConfigTemplateMgr.getSystemTemps().get("welfare.newPlayerOpenLevel").getValue() && player.getWelfareConditionRecordInventory().getOnlineStartTime() == -1) {
+					player.getWelfareConditionRecordInventory().setOnlineStartTime(System.currentTimeMillis());
+				}
 				beginChanges();
 				commitChages(EnumAttr.Level.getValue(), playerInfo.getLevel());
 			}

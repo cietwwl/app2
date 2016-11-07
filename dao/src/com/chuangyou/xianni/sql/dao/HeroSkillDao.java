@@ -7,6 +7,7 @@ import com.chuangyou.xianni.entity.hero.HeroSkill;
 public interface HeroSkillDao {
 	/**
 	 * 插入
+	 * 
 	 * @param email
 	 * @return
 	 */
@@ -14,6 +15,7 @@ public interface HeroSkillDao {
 
 	/**
 	 * 更新
+	 * 
 	 * @param email
 	 * @return
 	 */
@@ -21,8 +23,11 @@ public interface HeroSkillDao {
 
 	/**
 	 * 获取玩家所有技能
+	 * 
 	 * @param playerId
 	 * @return
 	 */
-	public Map<String, HeroSkill> getAll(long playerId);
+	//public Map<String, HeroSkill> getAll(long playerId);
+
+	public Map<Integer, HeroSkill> getAll(long playerId);
 }

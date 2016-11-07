@@ -1,6 +1,6 @@
 ﻿// 脚本id 唯一
 function getScriptId() {
-	return "npc_1009214";   //对应跟NPC配置表配置的脚本ID
+	return "npc_4002000";   //对应跟NPC配置表配置的脚本ID
 }
 
 // 脚本类型
@@ -41,21 +41,22 @@ function processWithCommandParam(roleId,commandParam,npcId,npcEntryId){
 	 var content = "";  // 对话内容
 	 //=====================>NED固定格式，创建NPC对话选项数组<=========================
 	 
-	if(commandParam==4002000){
+	if(commandParam==4002000) {
+		//=====================>取出玩家<=========================
+		var playerlv = getPlayerLevel(roleId);
 		//=====================>判断等级是否达到35级<=========================
-		
-		//=====================>达到35级进入副本<=========================
-		
-		//=====================>未达到35级弹出提示<=========================
-		content = "我一秒钟几十万上下会和你闲聊？！";
-
+		if (playerlv >= 35) {
+			//=====================>进入副本<=========================
+			createCampaingByOnceNpc(roleId,80001,npcEntryId);
+		}
+		else{
+			//=====================>未达到35级弹出提示<=========================
+			var content = "达到35级才能平安地通过溶洞，请多加修炼后再来尝试";
+			sendHintToClient(roleId,content);
+		}
 	}
 	
 	sendToClient(roleId,list,content);
 }
-
-
-
-
 
 

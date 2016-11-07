@@ -1,0 +1,8 @@
+//protocol=11615;
+option java_package = "com.chuangyou.common.protobuf.pb.soul";
+option java_outer_classname = "GetSoulLuckInfoRepProto";
+
+//请求抽卡数据
+message GetSoulLuckInfoRepMsg{
+
+}

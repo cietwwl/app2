@@ -8,11 +8,13 @@ import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.pet.PetInfo;
 import com.chuangyou.xianni.entity.pet.PetInfoCfg;
+import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.pet.template.PetTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.retask.event.PetStateEvent;
 import com.chuangyou.xianni.socket.Cmd;
 
 @Cmd(code = Protocol.C_PET_TALENT_UP, desc = "宠物资质提升")
@@ -70,6 +72,8 @@ public class PetTalentUpCmd extends AbstractCommand {
 //		PetManager.changePetAtt(roleId);
 		//影响人物属性改变
 		player.getPetInventory().updataProperty();
+		
+		player.notifyListeners(new PetStateEvent(this, 13, pet.getPetId(), pet.getTalent(), EventNameType.PET));
 	}
 
 }

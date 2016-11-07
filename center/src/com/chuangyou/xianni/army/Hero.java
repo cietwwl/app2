@@ -1,5 +1,6 @@
 package com.chuangyou.xianni.army;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -10,6 +11,7 @@ import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
 import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
 import com.chuangyou.xianni.common.template.LevelUpTempleteMgr;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.constant.SkillConstant.SkillMainType;
 import com.chuangyou.xianni.entity.hero.HeroSkill;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.player.GamePlayer;
@@ -45,7 +47,7 @@ public class Hero extends Living {
 	}
 
 	public int getMana() {
-		if(player.getBasePlayer() == null || player.getBasePlayer().getPlayerJoinInfo() == null){
+		if (player.getBasePlayer() == null || player.getBasePlayer().getPlayerJoinInfo() == null) {
 			return 0;
 		}
 		return player.getBasePlayer().getPlayerJoinInfo().getMana();
@@ -113,11 +115,10 @@ public class Hero extends Living {
 
 		heroInfo.setPropertis(propertis);
 
-		Map<String, HeroSkill> heroSkills = gamePlayer.getSkillInventory().getHeroSkill();
+		List<HeroSkill> heroSkills = gamePlayer.getSkillInventory().getToalSkills();
 		// System.out.println("-----------------------#");
-		for (Entry<String, HeroSkill> entry : heroSkills.entrySet()) {
-			HeroSkill heroSkill = entry.getValue();
-			if (heroSkill.getType() == SkillInventory.passiveSkillType) {// 培养类技能
+		for (HeroSkill heroSkill : heroSkills) {
+			if (heroSkill.getType() == SkillMainType.PASSIVE) {// 培养类技能
 				continue;
 			}
 			// heroInfo.addBattleSkills(heroSkill.getSkillId());
@@ -154,10 +155,9 @@ public class Hero extends Living {
 		propertyList.addPropertys(cur_blood);
 		robotInfo.setPropertis(propertyList);
 
-		Map<String, HeroSkill> heroSkills = player.getSkillInventory().getHeroSkill();
-		for (Entry<String, HeroSkill> entry : heroSkills.entrySet()) {
-			HeroSkill heroSkill = entry.getValue();
-			if (heroSkill.getType() == SkillInventory.passiveSkillType) {// 培养类技能
+		List<HeroSkill> heroSkills = player.getSkillInventory().getToalSkills();
+		for (HeroSkill heroSkill : heroSkills) {
+			if (heroSkill.getType() == SkillMainType.PASSIVE) {// 培养类技能
 				continue;
 			}
 			robotInfo.addBattleSkills(heroSkill.getSkillId());

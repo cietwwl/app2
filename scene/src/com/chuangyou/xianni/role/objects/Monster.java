@@ -16,12 +16,14 @@ import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.ai.proxy.MonsterAI;
 import com.chuangyou.xianni.battle.action.MonsterPollingAction;
 import com.chuangyou.xianni.battle.damage.Damage;
+import com.chuangyou.xianni.battle.magicwpban.MagicwpCompanent;
 import com.chuangyou.xianni.campaign.Campaign;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.campaign.task.CTBaseCondition;
 import com.chuangyou.xianni.config.SceneGlobal;
 import com.chuangyou.xianni.constant.BattleSettlementConstant;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.constant.MagicwpBanConstant;
 import com.chuangyou.xianni.constant.RoleConstants.RoleType;
 import com.chuangyou.xianni.drop.manager.DropManager;
 import com.chuangyou.xianni.entity.spawn.AiConfig;
@@ -455,6 +457,17 @@ public class Monster extends ActiveLiving {
 	/** 受伤 */
 	public int takeDamage(Damage damage) {
 		Living source = damage.getSource();
+
+		// 人物法宝禁制对怪物伤害放大
+		if (source instanceof Player) {
+			Player p = (Player) source;
+			MagicwpCompanent companent = p.getMagicwpCompanent(MagicwpBanConstant.MONSTER_DAMAGE_ADD);
+			if (companent != null && companent.isEffect() && damage.getDamageValue() > 0) {
+				int addDamageValue = damage.getDamageValue() * companent.getEffectValue() / 100;
+				damage.setDamageValue(damage.getDamageValue() + addDamageValue);
+			}
+		}
+
 		if (source.getArmyId() != 0) {
 			joiners.add(source.getArmyId());
 			if (source.getTeamId() != 0) {
@@ -463,6 +476,7 @@ public class Monster extends ActiveLiving {
 					joiners.addAll(team.getMembers());
 				}
 			}
+
 		}
 		return super.takeDamage(damage);
 	}

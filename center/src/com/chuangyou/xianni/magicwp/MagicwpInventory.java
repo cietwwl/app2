@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
+import com.chuangyou.common.protobuf.pb.magicwp.MagicwpBanGetInfoRespProto.MagicwpBanGetInfoRespMsg;
+import com.chuangyou.common.protobuf.pb.magicwp.MagicwpBanInfoBeanProto.MagicwpBanInfoBeanMsg;
 import com.chuangyou.common.protobuf.pb.player.OtherMagicwpMsgProto.OtherMagicwpMsg;
 import com.chuangyou.xianni.army.Hero;
 import com.chuangyou.xianni.bag.ItemManager;
@@ -25,6 +27,9 @@ import com.chuangyou.xianni.interfaces.IInventory;
 import com.chuangyou.xianni.magicwp.manager.MagicwpRefineManager;
 import com.chuangyou.xianni.magicwp.template.MagicwpTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.proto.MessageUtil;
+import com.chuangyou.xianni.proto.PBMessage;
+import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.skill.SkillUtil;
 import com.chuangyou.xianni.skill.template.SimpleProperty;
 import com.chuangyou.xianni.sql.dao.DBManager;
@@ -354,6 +359,28 @@ public class MagicwpInventory extends AbstractEvent implements IInventory {
 			player.getArmyInventory().getHero().addMagicwp(skillData, skillPer);
 			player.getArmyInventory().updateProperty();
 		}
+	}
+	
+	/**
+	 * 通知scene服已装备禁制更新
+	 */
+	public void writeMagicwpMsg2Scene(){
+		MagicwpBanGetInfoRespMsg.Builder msg = MagicwpBanGetInfoRespMsg.newBuilder();
+		
+		for(MagicwpBanInfo ban:getBanInfoMap().values()){
+			if(ban.getPosition() > 0){
+				MagicwpBanInfoBeanMsg.Builder bean = MagicwpBanInfoBeanMsg.newBuilder();
+				bean.setBanId(ban.getBanId());
+				bean.setPosition(ban.getPosition());
+				bean.setFragmentStr(ban.getFragmentStr());
+				bean.setLevel(ban.getLevel());
+				bean.setExp(ban.getExp());
+				bean.setAutoUpLev(ban.getAutoUpLevel());
+				msg.addBans(bean);
+			}
+		}
+		PBMessage p = MessageUtil.buildMessage(Protocol.S_MAGICWP_DATA_UPDATE, msg);
+		player.sendPbMessage(p);
 	}
 
 	/** 写入其他用户查看信息 */

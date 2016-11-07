@@ -4,5 +4,9 @@ option java_outer_classname = "PlayerTimeMsgProto";
 message PlayerTimeMsg{
 	optional int32 sigleCampCount=1;          //每日单人副本次数
 	optional int32 challengeCampCount=2;      //每日挑战副本次数
+	optional int32 personalLuckCardFreeTime  = 3; //已经抽卡免费次数
+	optional int32 personalLuckCardMoneyTime = 4; //已经付费抽卡次数
+	optional int32 personalExchangeTime = 5; //个人兑换次数
+	optional int32 personalExchangeTotalTime = 6;//个人总兑换次数
 }
 

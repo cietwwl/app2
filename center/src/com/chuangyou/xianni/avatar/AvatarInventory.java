@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
 import com.chuangyou.common.protobuf.pb.PlayerInfoMsgProto.PlayerInfoMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
@@ -15,7 +16,6 @@ import com.chuangyou.common.protobuf.pb.avatar.AvatarBeanProto.AvatarBeanMsg;
 import com.chuangyou.common.protobuf.pb.avatar.AvatarCampaignRewardListProto.AvatarCampaignRewardListMsg;
 import com.chuangyou.common.protobuf.pb.avatar.AvatarCampaignRewardProto.AvatarCampaignRewardMsg;
 import com.chuangyou.common.protobuf.pb.avatar.SingleReardInfoMsgProto.SingleReardInfoMsg;
-import com.chuangyou.common.protobuf.pb.player.PlayerSomeThingUpdateProto.PlayerSomeThingUpdateMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.avatar.temlate.AvatarTempManager;
@@ -31,19 +31,21 @@ import com.chuangyou.xianni.entity.avatar.AvatarStarTemplate;
 import com.chuangyou.xianni.entity.avatar.AvatarTemplateInfo;
 import com.chuangyou.xianni.entity.avatar.AvatarUpGradeTemplate;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
-import com.chuangyou.xianni.entity.item.ItemRemoveType;
-import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
 import com.chuangyou.xianni.entity.item.ItemAddType;
 import com.chuangyou.xianni.entity.item.ItemAddType.RewardType;
+import com.chuangyou.xianni.entity.item.ItemRemoveType;
+import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.entity.reward.RewardTemplate;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.entity_id.EntityIdBuilder;
+import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.interfaces.IInventory;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.retask.event.AvatarEvent;
 import com.chuangyou.xianni.reward.RewardManager;
 import com.chuangyou.xianni.skill.template.SkillTempMgr;
 import com.chuangyou.xianni.sql.dao.AvatarInfoDao;
@@ -549,6 +551,7 @@ public class AvatarInventory implements IInventory {
 					if (AvatarTempManager.getAvatarUpGradeTemplate(avatar.getTempId(), newGreade) != null) {
 						avatar.setGrade(newGreade);
 						reward.setType(type);
+						player.notifyListeners(new AvatarEvent(this, 1, avatar.getTempId(), avatar.getGrade(), EventNameType.AVATAR_UPDATE));
 					} else {
 						type = REWARD_ITEM;
 					}
@@ -560,6 +563,8 @@ public class AvatarInventory implements IInventory {
 						avatar.setSkillId(nextSkillId);
 						reward.setParam(nextSkillId);
 						reward.setType(type);
+						SkillTempateInfo skill = SkillTempMgr.getSkillTemp(avatar.getSkillId());
+						player.notifyListeners(new AvatarEvent(this, 3, avatar.getTempId(), skill.getLevel(), EventNameType.AVATAR_UPDATE));
 					} else {
 						type = REWARD_ITEM;
 					}
@@ -692,5 +697,9 @@ public class AvatarInventory implements IInventory {
 		List<AvatarInfo> avatars = new ArrayList<AvatarInfo>();
 		avatars.addAll(finghtingInfos.values());
 		return avatars;
+	}
+
+	public Map<Integer, AvatarInfo> getAvatarInfos() {
+		return avatarInfos;
 	}
 }

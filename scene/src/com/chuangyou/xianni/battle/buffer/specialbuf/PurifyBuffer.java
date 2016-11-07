@@ -24,7 +24,7 @@ public class PurifyBuffer extends Buffer {
 			}
 		}
 
-		if (bufferInfo.getIsHelpful() == 2) {
+		if (bufferInfo.getIsHelpful() == 0) {
 			for (Buffer buffer : target.imageBuffs()) {
 				if (buffer.getBufferInfo().getIsHelpful() == 1) {
 					buffer.dispose();

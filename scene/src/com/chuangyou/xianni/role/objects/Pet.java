@@ -42,12 +42,12 @@ public class Pet extends ActiveLiving {
 	@Override
 	public Builder getBattlePlayerInfoMsg() {
 		// TODO Auto-generated method stub
-		cachBattleInfoPacket = BattleLivingInfoMsg.newBuilder();
+		BattleLivingInfoMsg.Builder cachBattleInfoPacket = BattleLivingInfoMsg.newBuilder();
 		cachBattleInfoPacket.setLivingId(getId());
 		cachBattleInfoPacket.setPlayerId(getArmyId());
 		cachBattleInfoPacket.setType(getType());
 		cachBattleInfoPacket.setSkinId(getSkin());
-		
+
 		if (getPostion() != null) {
 			cachBattleInfoPacket.setPostion(Vector3BuilderHelper.build(getPostion()));
 		} else {
@@ -97,8 +97,7 @@ public class Pet extends ActiveLiving {
 	 */
 	@Override
 	public PlayerAttSnapMsg.Builder getAttSnapMsg() {
-		if (cacheAttSnapPacker == null)
-			cacheAttSnapPacker = PlayerAttSnapMsg.newBuilder();
+		PlayerAttSnapMsg.Builder cacheAttSnapPacker = PlayerAttSnapMsg.newBuilder();
 		cacheAttSnapPacker.setPlayerId(id);
 		cacheAttSnapPacker.setType(getType());
 		cacheAttSnapPacker.setSkinId(getSkin());

@@ -29,8 +29,7 @@ public class EquipBarInfoDaoImpl extends BaseDao implements EquipBarInfoDao {
 		// TODO Auto-generated method stub
 		boolean result = false;
 		info.beginAdd();
-		String sql = "insert tb_u_equipbar_info(playerId,position,level,exp,grade,bless)"
-				+ " values(?,?,?,?,?,?)";
+		String sql = "insert tb_u_equipbar_info(playerId,position,level,exp,grade,bless)" + " values(?,?,?,?,?,?)";
 		Map<Integer, DbParameter> params = new HashMap<>();
 		params.put(1, new DbParameter(Types.BIGINT, info.getPlayerId()));
 		params.put(2, new DbParameter(Types.SMALLINT, info.getPosition()));
@@ -38,7 +37,7 @@ public class EquipBarInfoDaoImpl extends BaseDao implements EquipBarInfoDao {
 		params.put(4, new DbParameter(Types.INTEGER, info.getExp()));
 		params.put(5, new DbParameter(Types.INTEGER, info.getGrade()));
 		params.put(6, new DbParameter(Types.INTEGER, info.getBless()));
-		result = execNoneQuery(sql, params) > -1? true: false;
+		result = execNoneQuery(sql, params) > -1 ? true : false;
 		info.commitAdd(result);
 		return result;
 	}
@@ -54,23 +53,23 @@ public class EquipBarInfoDaoImpl extends BaseDao implements EquipBarInfoDao {
 		params.put(2, new DbParameter(Types.INTEGER, info.getExp()));
 		params.put(3, new DbParameter(Types.INTEGER, info.getGrade()));
 		params.put(4, new DbParameter(Types.INTEGER, info.getBless()));
-		
+
 		params.put(5, new DbParameter(Types.BIGINT, info.getPlayerId()));
 		params.put(6, new DbParameter(Types.SMALLINT, info.getPosition()));
-		result = execNoneQuery(sql, params) > -1? true: false;
+		result = execNoneQuery(sql, params) > -1 ? true : false;
 		return result;
 	}
-	
-	private Map<Short, EquipBarInfo> read(String sqlText, Map<Integer, DbParameter> params){
+
+	private Map<Short, EquipBarInfo> read(String sqlText, Map<Integer, DbParameter> params) {
 		PreparedStatement pst = execQuery(sqlText, params);
 		ResultSet rs = null;
 		Map<Short, EquipBarInfo> infos = null;
 		EquipBarInfo info = null;
-		if(pst != null){
+		if (pst != null) {
 			infos = new HashMap<Short, EquipBarInfo>();
 			try {
 				rs = pst.executeQuery();
-				while(rs.next()){
+				while (rs.next()) {
 					info = new EquipBarInfo();
 					info.setPlayerId(rs.getLong("playerId"));
 					info.setPosition(rs.getShort("position"));
@@ -90,6 +89,19 @@ public class EquipBarInfoDaoImpl extends BaseDao implements EquipBarInfoDao {
 			}
 		}
 		return infos;
+	}
+
+	public EquipBarInfo getEquipBarInfo(long playerId, short pos) {
+		// TODO Auto-generated method stub
+		String sql = "select * from tb_u_equipbar_info where playerId=? and position=?";
+		Map<Integer, DbParameter> params = new HashMap<>();
+		params.put(1, new DbParameter(Types.BIGINT, playerId));
+		params.put(2, new DbParameter(Types.SMALLINT, pos));
+		Map<Short, EquipBarInfo> m = read(sql, params);
+		if (m != null) {
+			return m.get(pos);
+		}
+		return null;
 	}
 
 }

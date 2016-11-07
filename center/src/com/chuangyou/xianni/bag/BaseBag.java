@@ -554,62 +554,42 @@ public class BaseBag extends AbstractBag {
 		// }
 	}
 
-	/**
-	 * 获取装备的加持属性
-	 * 
-	 * @param tempInfo
-	 * @param equipBar
-	 * @param bagData
-	 * @param bagPer
-	 */
-	public void getJiachiPro(ItemTemplateInfo tempInfo, EquipBarInfo equipBar, BaseProperty bagData, BaseProperty bagPer) {
-		// 加持激活额外属性
-		if (tempInfo.getJiachi1() > 0 && tempInfo.getStatistics1() > 0) {
-			if (equipBar.getGrade() >= tempInfo.getJiachi1()) {
-				SimpleProperty jiachiPro1 = SkillUtil.readPro(tempInfo.getStatistics1());
-				if (jiachiPro1.isPre()) {
-					SkillUtil.joinPro(bagPer, jiachiPro1.getType(), jiachiPro1.getValue());
-				} else {
-					SkillUtil.joinPro(bagData, jiachiPro1.getType(), jiachiPro1.getValue());
-				}
-			}
-		}
-		if (tempInfo.getJiachi2() > 0 && tempInfo.getStatistics2() > 0) {
-			if (equipBar.getGrade() >= tempInfo.getJiachi2()) {
-				SimpleProperty jiachiPro2 = SkillUtil.readPro(tempInfo.getStatistics2());
-				if (jiachiPro2.isPre()) {
-					SkillUtil.joinPro(bagPer, jiachiPro2.getType(), jiachiPro2.getValue());
-				} else {
-					SkillUtil.joinPro(bagData, jiachiPro2.getType(), jiachiPro2.getValue());
-				}
-			}
-		}
-		if (tempInfo.getJiachi3() > 0 && tempInfo.getStatistics3() > 0) {
-			if (equipBar.getGrade() >= tempInfo.getJiachi3()) {
-				SimpleProperty jiachiPro3 = SkillUtil.readPro(tempInfo.getStatistics3());
-				if (jiachiPro3.isPre()) {
-					SkillUtil.joinPro(bagPer, jiachiPro3.getType(), jiachiPro3.getValue());
-				} else {
-					SkillUtil.joinPro(bagData, jiachiPro3.getType(), jiachiPro3.getValue());
-				}
-			}
-		}
-		if (tempInfo.getJiachi4() > 0 && tempInfo.getStatistics4() > 0) {
-			if (equipBar.getGrade() >= tempInfo.getJiachi4()) {
-				SimpleProperty jiachiPro4 = SkillUtil.readPro(tempInfo.getStatistics4());
-				if (jiachiPro4.isPre()) {
-					SkillUtil.joinPro(bagPer, jiachiPro4.getType(), jiachiPro4.getValue());
-				} else {
-					SkillUtil.joinPro(bagData, jiachiPro4.getType(), jiachiPro4.getValue());
-				}
-			}
-		}
-	}
+
 	// private ItemTemplateInfo getJoin(int templateId) {
 	// if (templateId > 0)
 	// return ItemManager.findItemTempInfo(templateId);
 	// return null;
 	// }
+	/**
+	 * 获取装备基础属性
+	 */
+	public float getItemProVal(ItemInfo info) {
+		int itemBase = info.getPro();// 基础属性
+		float qualityCoefficient = info.getQualityCoefficient() / 10000f;// 品质系数
+		float grow = info.getGrow() / 10000f;// 成长系数
+
+		SimpleProperty property = SkillUtil.readPro(itemBase);
+
+		// 装备栏等级
+		ItemTemplateInfo tempInfo = ItemManager.findItemTempInfo(info.getTemplateId());
+		EquipBarInfo equipBar = player.getEquipInventory().getEquipBarByPos(info.getPos());
+		if (equipBar == null)
+			return 0;
+		int level = equipBar.getLevel();
+
+		float proVal = (property.getValue() + level * grow) * (1 + level * qualityCoefficient); // 装备属性=（初始属性+装备等级*属性成长值）*（1+装备等级*品质系数）
+
+		// 装备栏加持等级
+		int equipBarGrade = equipBar.getGrade();
+		if (tempInfo.getJiachilimit() < equipBarGrade) {
+			equipBarGrade = tempInfo.getJiachilimit();
+		}
+		EquipBarGradeCfg equipBarCfg = EquipTemplateMgr.getBarGradeCfg(info.getPos(), equipBarGrade);
+		if (equipBarCfg != null) {
+			proVal = proVal * (1 + equipBarCfg.getAddProperty() / 10000f);
+		}
+		return proVal;
+	}
 
 	public void joinTempInfo(BaseProperty bagEffect, ItemTemplateInfo itemTempInfo) {
 

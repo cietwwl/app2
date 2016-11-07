@@ -3,10 +3,10 @@ package com.chuangyou.xianni.state.condition;
 import com.chuangyou.xianni.entity.state.StateConditionConfig;
 import com.chuangyou.xianni.entity.state.StateConditionInfo;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.retask.constant.ConditionType;
 import com.chuangyou.xianni.state.condition.magicwp.MagicStateCondition;
 import com.chuangyou.xianni.state.condition.pet.PetStateCondition;
 import com.chuangyou.xianni.state.condition.soul.SoulStateCondition;
-import com.chuangyou.xianni.task.constant.ConditionType;
 
 /**
  * 工厂

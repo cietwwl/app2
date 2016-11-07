@@ -53,6 +53,7 @@ public class Robot extends ActiveLiving {
 		} else {
 			setProperty(EnumAttr.SPEED, 600);
 		}
+		setArmyId(simpleInfo.getPlayerId());
 		// 注入属性
 		readProperty(data.getPropertis());
 
@@ -77,6 +78,5 @@ public class Robot extends ActiveLiving {
 			}
 		}
 	}
-
 
 }

@@ -35,12 +35,15 @@ public class RobotCreateAttackOrderCmd extends AbstractCommand {
 
 		// 该玩家是否具有此技能
 		Living l = army.getPlayer().getField().getLiving(orderMsg.getRobotId());
-		if (l == null || (l.getType() != RoleType.robot && l.getType() != RoleType.avatar)) {
+		if (l == null || (l.getType() != RoleType.robot && l.getType() != RoleType.avatar && l.getType() != RoleType.plot)) {
 			Log.error("RobotCreateAttackOrderCmd but robot is not find ,playerId :" + army.getPlayerId() + " robot :" + orderMsg.getRobotId());
 			return;
 		}
 
 		Robot robot = (Robot) l;
+		if (robot.isDie()) {
+			return;
+		}
 		Skill skill = robot.getSkill(skillActionId);
 		if (skill == null) {
 			Log.error("skill is null,playerId : " + robot.getArmyId() + "  skillActionId:" + skillActionId);

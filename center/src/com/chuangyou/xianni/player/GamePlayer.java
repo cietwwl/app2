@@ -10,6 +10,7 @@ import com.chuangyou.common.protobuf.pb.ReqChangeMapMsgProto.ReqChangeMapMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.TimeUtil;
+import com.chuangyou.xianni.activeSystem.ActiveInventory;
 import com.chuangyou.xianni.activity.ActivityInventory;
 import com.chuangyou.xianni.arena.ArenaInventory;
 import com.chuangyou.xianni.army.ArmyInventory;
@@ -67,101 +68,112 @@ import com.chuangyou.xianni.state.StateInventory;
 import com.chuangyou.xianni.task.TaskInventory;
 import com.chuangyou.xianni.truck.TruckInventory;
 import com.chuangyou.xianni.vip.PlayerVipInventory;
+import com.chuangyou.xianni.welfare.WelfareConditionRecordInventory;
 import com.chuangyou.xianni.welfare.WelfareInventory;
 import com.chuangyou.xianni.word.WorldMgr;
 
 import io.netty.channel.Channel;
 
 public class GamePlayer extends AbstractEvent {
-	private CmdTaskQueue				cmdTaskQueue;
-	private ActionQueue					actionQueue;
+	
+
+	private CmdTaskQueue					cmdTaskQueue;
+	private ActionQueue						actionQueue;
 
 	/** 玩家所有数据 */
-	private BasePlayer					basePlayer;
+	private BasePlayer						basePlayer;
 
 	/*************************** 各模块数据管理 ****************************/
 	// <<----** 共享数据，离线保留内存一段时间 ,并且提供离线加载*/---------------->>
 	/** 部队数据 */
 
-	private ArmyInventory				armyInventory;
+	private ArmyInventory					armyInventory;
 
 	/** 空间数据 */
-	private SpaceInventory				spaceInventory;
+	private SpaceInventory					spaceInventory;
 
 	/** 帮派数据 */
-	private GuildInventory				guildInventory;
+	private GuildInventory					guildInventory;
 
 	// <<----** 非共享数据，玩家下线时卸载 */---------------->>
 	/** 邮件数据 */
-	private EmailInventory				emailInventory;
+	private EmailInventory					emailInventory;
 
 	/** 坐骑数据 */
-	private MountInventory				mountInventory;
+	private MountInventory					mountInventory;
 	/** 法宝数据 */
-	private MagicwpInventory			magicwpInventory;
+	private MagicwpInventory				magicwpInventory;
 	/** 宠物数据 */
-	private PetInventory				petInventory;
+	private PetInventory					petInventory;
 
 	/** 商店购购买信息 */
-	private ShopInventory				shopInventory;
+	private ShopInventory					shopInventory;
 
 	/** 背包 */
-	private BagInventory				bagInventory;
+	private BagInventory					bagInventory;
 
 	/** 时装 */
-	private FashionInventory			fashionInventory;
+	private FashionInventory				fashionInventory;
 
 	/** 任务 */
-	private TaskInventory				taskInventory;
+	private TaskInventory					taskInventory;
 
 	/** 副本 */
-	private CampaignInventory			campaignInventory;
+	private CampaignInventory				campaignInventory;
 	/** 英雄技能 **/
-	private SkillInventory				skillInventory;
+	private SkillInventory					skillInventory;
 	/** 天逆珠 **/
-	private InverseBeadInventory		inverseBeadInventory;
+	private InverseBeadInventory			inverseBeadInventory;
 	/** vip **/
-	private PlayerVipInventory			playerVipInventory;
+	private PlayerVipInventory				playerVipInventory;
 
 	/** 天逆珠刷新数据 **/
-	private InverseBeadRefreshInventory	inverseBeadRefreshInventory;
+	private InverseBeadRefreshInventory		inverseBeadRefreshInventory;
 
 	/** 装备 */
-	private EquipInventory				equipInventory;
+	private EquipInventory					equipInventory;
 	/**
 	 * 魂幡
 	 */
-	private SoulInventory				soulInventory;
+	private SoulInventory					soulInventory;
 
 	/** 关系数据 */
-	private RelationInventory			relationInventory;
+	private RelationInventory				relationInventory;
 
 	/** 神器数据 */
-	private ArtifactInventory			artifactInventory;
+	private ArtifactInventory				artifactInventory;
 	/**
 	 * 日常活动数据
 	 */
-	private ActivityInventory			activityInventory;
+	private ActivityInventory				activityInventory;
 
 	/** 竞技场信息 */
-	private ArenaInventory				arenaInventory;
+	private ArenaInventory					arenaInventory;
 	/** 分身 */
-	private AvatarInventory				avatarInventory;
+	private AvatarInventory					avatarInventory;
 	/**
 	 * 境界
 	 */
-	private StateInventory				stateInventory;
+	private StateInventory					stateInventory;
 
 	/** 镖车信息 */
-	private TruckInventory				truckInventory;
+	private TruckInventory					truckInventory;
+	
+	/**
+	 * 活跃系统
+	 */
+	private ActiveInventory				activeInventory;
 
 	/** 福利信息 */
-	private WelfareInventory			welfareInventory;
+	private WelfareInventory				welfareInventory;
 
-	private Channel						channel;					// 服务器持有连接
+	/** 7天登录奖励信息 */
+	private WelfareConditionRecordInventory	welfareConditionRecordInventory;
+	
+	private Channel							channel;						// 服务器持有连接
 
-	private int							curMapId	= -1;			// 玩家当前地图ID
-	private int							curCampaign	= 0;			// 玩家当前地图ID
+	private int								curMapId	= -1;				// 玩家当前地图ID
+	private int								curCampaign	= 0;				// 玩家当前地图ID
 
 	public GamePlayer() {
 		cmdTaskQueue = new AbstractCmdTaskQueue(ThreadManager.cmdExecutor);
@@ -262,6 +274,12 @@ public class GamePlayer extends AbstractEvent {
 		}
 		if (welfareInventory != null) {
 			welfareInventory.saveToDatabase();
+		}
+		if (welfareConditionRecordInventory != null) {
+			welfareConditionRecordInventory.saveToDatabase();
+		}
+		if (activeInventory != null) {
+			activeInventory.saveToDatabase();
 		}
 	}
 
@@ -411,10 +429,6 @@ public class GamePlayer extends AbstractEvent {
 			avatarInventory.unloadData();
 			avatarInventory = null;
 		}
-		if (welfareInventory != null) {
-			welfareInventory.unloadData();
-			welfareInventory = null;
-		}
 		return true;
 	}
 
@@ -480,9 +494,20 @@ public class GamePlayer extends AbstractEvent {
 			return false;
 		}
 
+		// 7天礼包信息
+		setWelfareConditionRecordInventory(new WelfareConditionRecordInventory(this));
+		if (!welfareConditionRecordInventory.loadFromDataBase()) {
+			return false;
+		}
+
 		// 添加境界任务监听
 		if (stateInventory != null) {
-			stateInventory.addStateTrigger();
+			stateInventory.addAllTrigger();
+		}
+		
+		activeInventory = new ActiveInventory(this);
+		if (!initData(activeInventory.loadFromDataBase(), "活跃系统数据")) {
+			return false;
 		}
 
 		return true;
@@ -491,6 +516,10 @@ public class GamePlayer extends AbstractEvent {
 	// 执行一些登录相关的逻辑操作
 	public void login() {
 		resetPlayerData();
+		// 福利登录时的初始化工作
+		welfareInventory.login();
+		//福利条件登录时需要处理的逻辑
+		welfareConditionRecordInventory.login();
 	}
 
 	// 卸载个人私有数据
@@ -544,6 +573,19 @@ public class GamePlayer extends AbstractEvent {
 		if (stateInventory != null) {
 			stateInventory.removeStateTrigger();
 		}
+		
+		if(activeInventory!=null){
+			activeInventory.unloadData();
+			activeInventory = null;
+		}
+		if (welfareInventory != null) {
+			welfareInventory.unloadData();
+			welfareInventory = null;
+		}
+		if (welfareConditionRecordInventory != null) {
+			welfareConditionRecordInventory.unloadData();
+			welfareConditionRecordInventory = null;
+		}
 		return true;
 	}
 
@@ -571,24 +613,24 @@ public class GamePlayer extends AbstractEvent {
 					GamePlayer player = WorldMgr.getPlayerFromCache(basePlayer.getPlayerInfo().getPlayerId());
 					if (player != null) {
 						PlayerPropertyUpdateEvent e = (PlayerPropertyUpdateEvent) event;
-						
+
 						Map<Integer, Long> userMap = new HashMap<>();
 						Map<Integer, Long> sceneMap = new HashMap<>();
-						
-						for(int attType: e.getChangeMap().keySet()){
+
+						for (int attType : e.getChangeMap().keySet()) {
 							EnumAttr attr = EnumAttr.getEnumAttrByValue(attType);
-							if(attr.getNotifyType() == NotifyType.NOTIFY_USER){
+							if (attr.getNotifyType() == NotifyType.NOTIFY_USER) {
 								userMap.put(attType, e.getChangeMap().get(attType));
-							}else{
+							} else {
 								sceneMap.put(attType, e.getChangeMap().get(attType));
 							}
 						}
 
-						if(userMap.size() > 0){
+						if (userMap.size() > 0) {
 							PlayerAttUpdateMsg msg = PlayerInfoSendCmd.getPropertyUpdatePacket(userMap, basePlayer.getPlayerInfo().getPlayerId());
 							player.sendPbMessage(MessageUtil.buildMessage(Protocol.U_RESP_PLAYER_ATT_UPDATE, msg));
 						}
-						if(sceneMap.size() > 0){
+						if (sceneMap.size() > 0) {
 							PlayerAttUpdateMsg msg = PlayerInfoSendCmd.getPropertyUpdatePacket(sceneMap, basePlayer.getPlayerInfo().getPlayerId());
 							player.sendPbMessage(MessageUtil.buildMessage(Protocol.S_ATTRIBUTE_UPDATE, msg));
 						}
@@ -845,6 +887,10 @@ public class GamePlayer extends AbstractEvent {
 		return artifactInventory;
 	}
 
+	public void setArtifactInventory(ArtifactInventory artifactInventory) {
+		this.artifactInventory = artifactInventory;
+	}
+
 	public ArenaInventory getArenaInventory() {
 		return arenaInventory;
 	}
@@ -904,12 +950,28 @@ public class GamePlayer extends AbstractEvent {
 		return avatarInventory;
 	}
 
+	public ActiveInventory getActiveInventory() {
+		return activeInventory;
+	}
+
 	public WelfareInventory getWelfareInventory() {
 		return welfareInventory;
 	}
 
 	public void setWelfareInventory(WelfareInventory welfareInventory) {
 		this.welfareInventory = welfareInventory;
+	}
+
+	public WelfareConditionRecordInventory getWelfareConditionRecordInventory() {
+		return welfareConditionRecordInventory;
+	}
+
+	public void setWelfareConditionRecordInventory(WelfareConditionRecordInventory welfareConditionRecordInventory) {
+		this.welfareConditionRecordInventory = welfareConditionRecordInventory;
+	}
+
+	public void setSoulInventory(SoulInventory soulInventory) {
+		this.soulInventory = soulInventory;
 	}
 
 }

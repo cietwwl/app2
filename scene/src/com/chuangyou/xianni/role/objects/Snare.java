@@ -266,7 +266,7 @@ public class Snare extends ActiveLiving {
 	}
 
 	/** 判断是否死亡 */
-	public boolean isDie() {
+	public synchronized boolean isDie() {
 		return getLivingState() == DIE || getLivingState() == DISTORY;
 	}
 
@@ -309,26 +309,6 @@ public class Snare extends ActiveLiving {
 
 		// 敌方
 		if (snareInfo.getTarget() == TargetType.ENEMY) {
-			// // 人怪敌对
-			// if (source.getType() == RoleType.player && target.getType() ==
-			// RoleType.monster) {
-			// return true;
-			// }
-			// // 怪人敌对
-			// if (source.getType() == RoleType.monster && target.getType() ==
-			// RoleType.player) {
-			// return true;
-			// }
-			// // 人机对战
-			// if (source.getType() == RoleType.player && target.getType() ==
-			// RoleType.robot) {
-			// return true;
-			// }
-			// // 机人对战
-			// if (source.getType() == RoleType.player && target.getType() ==
-			// RoleType.robot) {
-			// return true;
-			// }
 			if (source.getArmyId() == 0 && target.getArmyId() != 0) {
 				return true;
 			}
@@ -339,7 +319,6 @@ public class Snare extends ActiveLiving {
 			// 人人敌对
 			if (source.getArmyId() != 0 && target.getArmyId() != 0) {
 				Player sourcePlayer = null;
-				Player targetPlayer = null;
 				if (source.getType() == RoleType.player) {
 					sourcePlayer = (Player) source;
 				} else {
@@ -349,19 +328,8 @@ public class Snare extends ActiveLiving {
 					}
 					sourcePlayer = army.getPlayer();
 				}
-
-				if (target.getType() == RoleType.player) {
-					targetPlayer = (Player) target;
-				} else {
-					ArmyProxy army = WorldMgr.getArmy(target.getArmyId());
-					if (army == null) {
-						return true;
-					}
-					targetPlayer = army.getPlayer();
-				}
-				return OrderFactory.attackCheck(source.getField(), sourcePlayer, targetPlayer);
+				return OrderFactory.attackCheck(source.getField(), sourcePlayer, target);
 			}
-
 			return false;
 
 		}
@@ -408,8 +376,7 @@ public class Snare extends ActiveLiving {
 	 */
 	@Override
 	public PlayerAttSnapMsg.Builder getAttSnapMsg() {
-		if (cacheAttSnapPacker == null)
-			cacheAttSnapPacker = PlayerAttSnapMsg.newBuilder();
+		PlayerAttSnapMsg.Builder cacheAttSnapPacker = PlayerAttSnapMsg.newBuilder();
 		cacheAttSnapPacker.setPlayerId(id);
 		cacheAttSnapPacker.setType(getType());
 		cacheAttSnapPacker.setSkinId(getSkin());
@@ -436,7 +403,6 @@ public class Snare extends ActiveLiving {
 		blood.setCalcType(type);
 		blood.setFromType(fromType);
 		blood.setFromId(fromId);
-		damages.add(blood);
 		target.takeDamage(blood);
 
 		Damage soul = new Damage(target, getCreater());
@@ -449,8 +415,15 @@ public class Snare extends ActiveLiving {
 		soul.setCalcType(type);
 		soul.setFromType(fromType);
 		soul.setFromId(fromId);
-		damages.add(soul);
 		target.takeDamage(soul);
+
+		if (soul.getDamageType() == blood.getDamageType()) {
+			blood.setDamageValue(blood.getDamageValue() + soul.getDamageValue());
+			damages.add(blood);
+		} else {
+			damages.add(soul);
+			damages.add(blood);
+		}
 
 		DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
 		damagesPb.setAttackId(-1);

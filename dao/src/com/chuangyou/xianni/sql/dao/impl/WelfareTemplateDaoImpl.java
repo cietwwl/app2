@@ -26,10 +26,6 @@ public class WelfareTemplateDaoImpl extends BaseDao implements WelfareTemplateDa
 				info.setId(rs.getInt("id"));
 				info.setType(rs.getInt("type"));;
 				info.setAwardName(rs.getString("awardName"));
-				info.setLev(rs.getInt("lev"));
-				info.setResetType(rs.getInt("resetType"));
-				info.setTimeBegin(rs.getLong("timeBegin"));
-				info.setTimeEnd(rs.getLong("timeEnd"));
 				info.setItem1(rs.getInt("item1"));
 				info.setBind1(rs.getInt("bind1"));
 				info.setNum1(rs.getInt("num1"));
@@ -54,6 +50,10 @@ public class WelfareTemplateDaoImpl extends BaseDao implements WelfareTemplateDa
 				info.setItem8(rs.getInt("item8"));
 				info.setBind8(rs.getInt("bind8"));
 				info.setNum8(rs.getInt("num8"));
+				info.setParameter1(rs.getInt("parameter1"));
+				info.setParameter2(rs.getInt("parameter2"));
+				info.setParameter3(rs.getInt("parameter3"));
+				info.setParameter4(rs.getInt("parameter4"));
 				result.add(info);
 			}
 		} catch (SQLException e) {

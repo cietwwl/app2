@@ -14,7 +14,6 @@ import com.chuangyou.xianni.army.Hero;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.entity.soul.SoulCardInfo;
-import com.chuangyou.xianni.entity.soul.SoulCardPiece;
 import com.chuangyou.xianni.entity.soul.SoulInfo;
 import com.chuangyou.xianni.entity.soul.SoulMake;
 import com.chuangyou.xianni.event.AbstractEvent;
@@ -35,6 +34,7 @@ public class SoulInventory extends AbstractEvent implements IInventory {
 	 * 基本信息
 	 */
 	private SoulInfo					soulInfo;
+	
 	/**
 	 * 拥有的卡
 	 */
@@ -42,7 +42,7 @@ public class SoulInventory extends AbstractEvent implements IInventory {
 	/**
 	 * 拥有的碎片
 	 */
-	private Map<Integer, SoulCardPiece>	pieces;
+//	private Map<Integer, SoulCardPiece>	pieces;
 
 	/** 需要同步的属性协议 */
 	private List<PropertyMsg>			list;
@@ -82,13 +82,13 @@ public class SoulInventory extends AbstractEvent implements IInventory {
 		DBManager.getSoulDao().addSoulCardInfo(info);
 	}
 
-	public void addCardPiece(SoulCardPiece piece) {
-		if (pieces.containsKey(piece.getCardId()))
-			return;
-		pieces.put(piece.getCardId(), piece);
-		piece.setOp(Option.Insert);
-		DBManager.getSoulDao().addCardPieceInfo(piece);
-	}
+//	public void addCardPiece(SoulCardPiece piece) {
+//		if (pieces.containsKey(piece.getCardId()))
+//			return;
+//		pieces.put(piece.getCardId(), piece);
+//		piece.setOp(Option.Insert);
+//		DBManager.getSoulDao().addCardPieceInfo(piece);
+//	}
 
 	// ====================================================================================
 	@Override
@@ -96,7 +96,7 @@ public class SoulInventory extends AbstractEvent implements IInventory {
 		// TODO Auto-generated method stub
 		soulInfo = DBManager.getSoulDao().getSoulInfo(player.getPlayerId());
 		cards = DBManager.getSoulDao().getSoulCards(player.getPlayerId());
-		pieces = DBManager.getSoulDao().getCardPieces(player.getPlayerId());
+	//	pieces = DBManager.getSoulDao().getCardPieces(player.getPlayerId());
 		this.soulMake = DBManager.getSoulDao().getSoulMake(player.getPlayerId());
 		if (this.soulMake != null && this.soulMake.getState() == SoulMake.STATE_TASK_ING) {
 			initListener();
@@ -131,10 +131,10 @@ public class SoulInventory extends AbstractEvent implements IInventory {
 			cards.clear();
 			cards = null;
 		}
-		if (pieces != null) {
-			pieces.clear();
-			pieces = null;
-		}
+//		if (pieces != null) {
+//			pieces.clear();
+//			pieces = null;
+//		}
 		soulInfo = null;
 		this.soulMake = null;
 
@@ -171,17 +171,17 @@ public class SoulInventory extends AbstractEvent implements IInventory {
 				}
 			}
 		}
-		if (pieces != null) {
-			Iterator<SoulCardPiece> it = pieces.values().iterator();
-			while (it.hasNext()) {
-				SoulCardPiece info = it.next();
-				if (info.getOp() == Option.Update) {
-					DBManager.getSoulDao().updateCardPieceInfo(info);
-				} else if (info.getOp() == Option.Insert) {
-					DBManager.getSoulDao().addCardPieceInfo(info);
-				}
-			}
-		}
+//		if (pieces != null) {
+//			Iterator<SoulCardPiece> it = pieces.values().iterator();
+//			while (it.hasNext()) {
+//				SoulCardPiece info = it.next();
+//				if (info.getOp() == Option.Update) {
+//					DBManager.getSoulDao().updateCardPieceInfo(info);
+//				} else if (info.getOp() == Option.Insert) {
+//					DBManager.getSoulDao().addCardPieceInfo(info);
+//				}
+//			}
+//		}
 
 		if (soulMake != null) {
 			if (soulMake.getOp() == Option.Update) {
@@ -222,9 +222,9 @@ public class SoulInventory extends AbstractEvent implements IInventory {
 		return cards;
 	}
 
-	public Map<Integer, SoulCardPiece> getPieces() {
-		return pieces;
-	}
+//	public Map<Integer, SoulCardPiece> getPieces() {
+//		return pieces;
+//	}
 
 	public List<PropertyMsg> getList() {
 		return list;

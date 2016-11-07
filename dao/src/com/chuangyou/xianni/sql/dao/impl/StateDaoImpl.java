@@ -37,6 +37,7 @@ public class StateDaoImpl extends BaseDao implements StateDao {
 				info.setTargetNum(rs.getInt("targetNum"));
 				info.setTargetId(rs.getInt("targetId"));
 				info.setTargetId1(rs.getInt("targetId1"));
+				info.setTargetTrigger(rs.getInt("targetTrigger"));
 				infos.put(info.getId(), info);
 			}
 		} catch (SQLException e) {

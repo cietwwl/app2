@@ -101,4 +101,18 @@ public interface ItemAddType {
 	 */
 	public static final short	OPEN_BOX		= 3018;
 
+	/**
+	 * 福利领取物品
+	 */
+	public static final short	WELFARE			= 3019;
+	
+	/**
+	 * 兑换
+	 */
+	public static final short   EXCHANGE                = 3020;
+	
+	/**
+	 * 抽卡获取卡牌碎片
+	 */
+	public static final short LUCK_CARD = 3021;
 }

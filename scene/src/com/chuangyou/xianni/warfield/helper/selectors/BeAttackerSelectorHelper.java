@@ -12,7 +12,7 @@ public class BeAttackerSelectorHelper extends Selector {
 
 	@Override
 	public boolean selectorType(int type) {
-		if (type == RoleType.monster || type == RoleType.player || type == RoleType.snare) {
+		if (type == RoleType.monster || type == RoleType.player || type == RoleType.snare || type == RoleType.avatar || type == RoleType.robot) {
 			return true;
 		}
 		return false;

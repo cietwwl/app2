@@ -16,4 +16,8 @@ public interface ItemInfoDao {
 	boolean updateItemInfo(ItemInfo info);
 
 	long getMaxItemId();
+
+	List<ItemInfo> getAllItem(long playerId, List<Integer> tempId, int page, int pageSize);
+
+	public int getCount(long playerId, List<Integer> tempId);
 }

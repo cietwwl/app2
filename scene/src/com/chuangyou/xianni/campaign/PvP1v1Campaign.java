@@ -4,6 +4,7 @@ import com.chuangyou.common.protobuf.pb.battle.BattleResultMsgProto.BattleResult
 import com.chuangyou.common.protobuf.pb.campaign.PvP1v1BattleResultProto.PvP1v1BattleResultMsg;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.campaign.action.CampaignLeaveAction;
+import com.chuangyou.xianni.campaign.state.StopState;
 import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.exec.DelayAction;
@@ -60,6 +61,11 @@ public class PvP1v1Campaign extends Campaign {
 			bluePlayer.renascence();
 		}
 		endTime = System.currentTimeMillis() + 5 * 1000;
+	}
+
+	/** 是否可以创建分身进入 */
+	public boolean isBuilder(long playerId) {
+		return true;
 	}
 
 	/**
@@ -126,7 +132,13 @@ public class PvP1v1Campaign extends Campaign {
 
 		@Override
 		public void execute() {
-			campaign.stop();
+			campaign.stateTransition(new StopState(campaign));
+			for (ArmyProxy army : JoinArmys) {
+				Player cp = army.getPlayer();
+				if (cp != null && cp.isDie()) {
+					cp.renascence();
+				}
+			}
 		}
 	}
 }

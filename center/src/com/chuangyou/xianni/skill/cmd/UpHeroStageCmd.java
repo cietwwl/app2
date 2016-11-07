@@ -17,7 +17,7 @@ public class UpHeroStageCmd extends AbstractCommand {
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
 		UpHeroStageReqMsg msg = UpHeroStageReqMsg.parseFrom(packet.getBytes());
 		int stage = msg.getStage();
-		boolean res = SkillManager.UpSkillStage(player, stage, packet);
+		boolean res = SkillManager.upSkillStage(player, stage);
 		if (res && player.getSkillInventory() != null) {
 			// UpHeroStageResMsg.Builder okMsg = UpHeroStageResMsg.newBuilder();
 			// okMsg.setStage(stage);

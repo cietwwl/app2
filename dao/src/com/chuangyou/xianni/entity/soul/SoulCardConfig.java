@@ -22,6 +22,7 @@ public class SoulCardConfig {
 	private int combo4;//` int(11) NOT NULL DEFAULT '0' COMMENT '组合',
 	private int needClip;//` int(11) NOT NULL DEFAULT '0' COMMENT '需求碎片数量',
 	private int skill;//` int(11) NOT NULL DEFAULT '0' COMMENT '技能',
+	private int weight;  //权重
 	
 	
 	public List<Integer> getComboList(){
@@ -148,6 +149,14 @@ public class SoulCardConfig {
 	}
 	public void setMaxStar(int maxStar) {
 		this.maxStar = maxStar;
+	}
+
+	public int getWeight() {
+		return weight;
+	}
+
+	public void setWeight(int weight) {
+		this.weight = weight;
 	}
 	
 

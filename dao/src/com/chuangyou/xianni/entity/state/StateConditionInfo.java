@@ -5,13 +5,14 @@ import java.util.Date;
 import com.chuangyou.common.protobuf.pb.state.StateInfoProto.StateInfoMsg;
 import com.chuangyou.xianni.entity.DataObject;
 import com.chuangyou.xianni.entity.Option;
+import com.chuangyou.xianni.entity.task.ITaskInfo;
 
 /**
  * 境界任务静态数据
  * @author laofan
  *
  */
-public class StateConditionInfo extends DataObject {
+public class StateConditionInfo extends DataObject implements ITaskInfo{
 
 	private int stateId;
 	

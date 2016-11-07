@@ -12,6 +12,11 @@ public class PlaneCampaign extends Campaign {
 		super(tempInfo, creater, taskId);
 	}
 
+	@Override
+	public void success() {
+		endTime = System.currentTimeMillis() + 1 * 1000;// 马上结束
+	}
+
 	public boolean agreedToEnter(ArmyProxy army) {
 		if (super.agreedToEnter(army)) {
 			return army.getPlayerId() == creater;

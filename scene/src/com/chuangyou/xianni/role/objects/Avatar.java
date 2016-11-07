@@ -54,7 +54,7 @@ public class Avatar extends Robot {
 	}
 
 	/** 判断是否死亡 */
-	public boolean isDie() {
+	public synchronized boolean isDie() {
 		if (otherDamageCalWay()) {
 			return curBlood <= 0 || getLivingState() == DIE || getLivingState() == DISTORY;
 		}
@@ -229,6 +229,11 @@ public class Avatar extends Robot {
 			players.add(getArmyId());
 			for (Long armyId : players) {
 				ArmyProxy army = WorldMgr.getArmy(armyId);
+				// 宠物重生位置，在自己人物身边
+				if (getArmyId() == armyId) {
+					this.setPostion(army.getPlayer().getPostion());
+				}
+
 				PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
 				if (army != null) {
 					army.sendPbMessage(message);

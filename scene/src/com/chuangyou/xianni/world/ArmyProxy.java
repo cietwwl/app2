@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import com.chuangyou.common.protobuf.pb.ChangeMapResultMsgProto.ChangeMapResultMsg;
 import com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg;
 import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
@@ -38,15 +37,16 @@ import com.chuangyou.xianni.protocol.CenterProtocol;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.role.objects.Avatar;
+import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Pet;
 import com.chuangyou.xianni.role.objects.Player;
+import com.chuangyou.xianni.role.objects.PlotRobot;
 import com.chuangyou.xianni.team.NotifyHelper;
 import com.chuangyou.xianni.warfield.FieldMgr;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.helper.NotifyNearHelper;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.template.FieldTemplateMgr;
-
 import io.netty.channel.Channel;
 
 /**
@@ -69,6 +69,8 @@ public class ArmyProxy extends AbstractActionQueue {
 	private short					onlineStatu	= PlayerState.OFFLINE;
 
 	private ArmyPositionRecord		posRecord;							// 玩家位置信息
+
+	private List<PlotRobot>			followers;							// 副本内跟随的剧情人物
 
 	public ArmyProxy(long playerId, String site, Channel channel, SimplePlayerInfo simplePlayerInfo) {
 		super(ThreadManager.actionExecutor);
@@ -105,16 +107,29 @@ public class ArmyProxy extends AbstractActionQueue {
 
 	/** 切换地图 */
 	public void changeField(Field field, Vector3 postion) {
+		// 切地图时，销毁剧情角色
+		if (followers != null && followers.size() > 0) {
+			for (PlotRobot robot : followers) {
+				if (robot.getField() != null) {
+					robot.getField().leaveField(robot);
+				}
+				if (robot.getLivingState() != Living.DISTORY) {
+					robot.clearData();
+				}
+			}
+			followers.clear();
+		}
 		leave();
 		join(field, postion);
 		NotifyHelper.notifyInfo(this);
 	}
 
-	public void leave() {
+	private void leave() {
 		Field field = FieldMgr.getIns().getField(getFieldId());
 		if (field != null) {
 			Vector3 v3 = field.getFieldInfo().getPosition();
 			player.setPostion(v3);
+			field.leaveField(player);
 			if (pet != null && pet.getField() != null) {
 				pet.getField().leaveField(pet);
 			}
@@ -123,12 +138,13 @@ public class ArmyProxy extends AbstractActionQueue {
 					avatar.getField().leaveField(avatar);
 				}
 			}
-			field.leaveField(player);
 			setFieldId(0);
+		} else {
+			Log.error("------是否存在离开地图失败的日志-------" + this.getPlayerId());
 		}
 	}
 
-	public void join(Field field, Vector3 postion) {
+	private void join(Field field, Vector3 postion) {
 		player.setPostion(postion);
 		// 接受进场保护
 		player.setProtection(true);
@@ -329,6 +345,12 @@ public class ArmyProxy extends AbstractActionQueue {
 				pet.clearData();
 			}
 			unlodAvatar();
+			// 清理跟随剧情
+			if (followers != null) {
+				for (PlotRobot robot : followers) {
+					robot.clearData();
+				}
+			}
 		}
 	}
 
@@ -366,7 +388,7 @@ public class ArmyProxy extends AbstractActionQueue {
 
 	/** 获取分身数据 */
 	public void instillAvatar(Field field, Vector3 postion) {
-		if (field != null && field.getCampaignId() != 0) {
+		if (field != null && field.getCampaignId() != 0 && !getPlayer().isCorrespondStatu()) {
 			Campaign campaign = CampaignMgr.getCampagin(field.getCampaignId());
 			if (campaign == null) {
 				return;
@@ -442,6 +464,14 @@ public class ArmyProxy extends AbstractActionQueue {
 		postionMsg.setPostion(Vector3BuilderHelper.build(vector3));
 		cmbuilder.setPostion(postionMsg);
 		sendPbMessage(MessageUtil.buildMessage(Protocol.C_ENTER_SENCE_MAP_RESULT, cmbuilder));
+	}
+
+	// 添加跟随者
+	public void addPlotFollower(PlotRobot robot) {
+		if (followers == null) {
+			followers = new ArrayList<>();
+		}
+		followers.add(robot);
 	}
 
 	public long getPlayerId() {

@@ -69,6 +69,7 @@ public abstract class AbstractEvent {
 				}
 			}
 		}
+		
 		// 触发
 		if (tempList != null) {
 			for (ObjectListener listener : tempList) {

@@ -70,6 +70,8 @@ public class SoulInfo extends DataObject {
 	private int		proficiency2;							// 材料制作熟练度
 	private int		proficiency3;							// 材料制作熟练度
 	private int		proficiency4;							// 材料制作熟练度
+	
+	
 
 	
 	public List<Integer> getSoulProList() {

@@ -1,5 +1,8 @@
 package com.chuangyou.xianni.entity.hero;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.chuangyou.xianni.entity.DataObject;
 
 /**
@@ -8,14 +11,23 @@ import com.chuangyou.xianni.entity.DataObject;
  * @author Administrator
  *
  */
-public class HeroSkill extends DataObject {
-	private long playerId;// 玩家id
+public class HeroSkill extends DataObject implements Comparable<HeroSkill> {
+	private long	playerId;		// 玩家id
 	// private int heroId;//英雄id
-	private int skillId;// 技能id
-	private int type;// 技能主类型
-	private int subType;// 技能子类型
-	private int grandsonType;// 三级技能
-	private int skillLV;// 技能等級
+	private int		skillId;		// 技能id
+	private int		type;			// 技能主类型
+	private int		subType;		// 技能子类型
+	private int		grandsonType;	// 三级技能
+	private int		skillLV;		// 技能等級
+
+	public HeroSkill(long playerId, int skillId) {
+		this.playerId = playerId;
+		this.skillId = skillId;
+	}
+
+	public HeroSkill() {
+
+	}
 
 	public long getPlayerId() {
 		return playerId;
@@ -65,4 +77,8 @@ public class HeroSkill extends DataObject {
 		this.skillLV = skillLV;
 	}
 
+	@Override
+	public int compareTo(HeroSkill o) {
+		return this.getSkillLV() - o.getSkillLV();
+	}
 }

@@ -1,6 +1,7 @@
 package com.chuangyou.xianni.entity.welfare;
 
 import com.chuangyou.xianni.entity.DataObject;
+import com.chuangyou.xianni.entity.Option;
 
 public class WelfareInfo extends DataObject {
 
@@ -13,7 +14,10 @@ public class WelfareInfo extends DataObject {
 	}
 
 	public void setPlayerId(long playerId) {
-		this.playerId = playerId;
+		if (this.playerId != playerId) {
+			this.playerId = playerId;
+			setOp(Option.Update);
+		}
 	}
 
 	public int getWelfareId() {
@@ -21,7 +25,10 @@ public class WelfareInfo extends DataObject {
 	}
 
 	public void setWelfareId(int welfareId) {
-		this.welfareId = welfareId;
+		if (this.welfareId != welfareId) {
+			this.welfareId = welfareId;
+			setOp(Option.Update);
+		}
 	}
 
 	public int getStatus() {
@@ -29,6 +36,9 @@ public class WelfareInfo extends DataObject {
 	}
 
 	public void setStatus(int status) {
-		this.status = status;
+		if (this.status != status) {
+			this.status = status;
+			setOp(Option.Update);
+		}
 	}
 }

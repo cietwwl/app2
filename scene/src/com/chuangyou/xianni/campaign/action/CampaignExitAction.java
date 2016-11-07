@@ -50,7 +50,7 @@ public class CampaignExitAction extends Action {
 		army.sendPbMessage(message);
 		
 		if (campaign instanceof PlaneCampaign) {
-			int outFiledId = campaign.getTemp().getTemplateId() % Field.MAX_ID;
+			int outFiledId = campaign.getTemp().getTemplateId() % (Field.MAX_ID);
 			EnterFieldAction action = new EnterFieldAction(army, outFiledId, outFiledId, army.getPlayer().getPostion());
 			army.enqueue(action);
 		} else{

@@ -27,6 +27,7 @@ public class MonsterStateEvent extends BaseStateEvent {
 		int[] nodes = event.getParamStrToInt();
 		for (int nodeId : nodes) {		
 			SpwanNode node = campaign.getNode(SpawnTemplateMgr.getSpwanId(nodeId));
+			node.reset();
 			if(node!=null){
 				NodeState state = new WorkingState(node);
 				node.stateTransition(state);

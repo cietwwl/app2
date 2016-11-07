@@ -55,7 +55,7 @@ public class ArenaBattleCampaign extends Campaign {
 			Avatar ravatar = new Avatar();
 			ravatar.setPostion(vector3);
 			ravatar.instill(data);
-			ravatar.setArmyId(robot.getArmyId());
+			ravatar.setArmyId(robot.getId());
 			starField.enterField(ravatar);
 		}
 	}
@@ -113,6 +113,11 @@ public class ArenaBattleCampaign extends Campaign {
 		}
 	}
 
+	/** 是否可以创建分身进入 */
+	public boolean isBuilder(long playerId) {
+		return true;
+	}
+
 	protected class OverDelayAction extends DelayAction {
 		ArenaBattleCampaign campaign;
 
@@ -123,7 +128,7 @@ public class ArenaBattleCampaign extends Campaign {
 
 		@Override
 		public void execute() {
-			campaign.stop();
+			campaign.stateTransition(new StopState(campaign));
 			for (ArmyProxy army : JoinArmys) {
 				Player cp = army.getPlayer();
 				if (cp != null && cp.isDie()) {

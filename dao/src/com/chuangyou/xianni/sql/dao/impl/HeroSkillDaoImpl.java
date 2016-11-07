@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.entity.hero.HeroSkill;
@@ -49,15 +50,48 @@ public class HeroSkillDaoImpl extends BaseDao implements HeroSkillDao {
 		return result;
 	}
 
+	// @Override
+	// public Map<String, HeroSkill> getAll(long playerId) {
+	// String sql = "select * from tb_u_hero_skill_info where playerId=?";
+	// Map<Integer, DbParameter> params = new HashMap<Integer, DbParameter>();
+	// params.put(1, new DbParameter(Types.INTEGER, playerId));
+	//
+	// PreparedStatement pst = execQuery(sql, params);
+	// ResultSet rs = null;
+	// Map<String, HeroSkill> infos = new HashMap<String, HeroSkill>();
+	// HeroSkill info = null;
+	// if (pst != null) {
+	// try {
+	// rs = pst.executeQuery();
+	// while (rs.next()) {
+	// info = new HeroSkill();
+	// info.setPlayerId(rs.getLong("playerId"));
+	// info.setSkillId(rs.getInt("skillId"));
+	// info.setType(rs.getInt("type"));
+	// info.setSubType(rs.getInt("subType"));
+	// info.setGrandsonType(rs.getInt("grandsonType"));
+	// info.setSkillLV(rs.getInt("skillLV"));
+	// infos.put(rs.getInt("type") + "_" + rs.getInt("subType") + "_" +
+	// rs.getInt("grandsonType"), info);
+	// }
+	// } catch (Exception e) {
+	// Log.error("执行出错" + sql, e);
+	// } finally {
+	// closeConn(pst, rs);
+	// }
+	// }
+	// return infos;
+	// }
+
 	@Override
-	public Map<String, HeroSkill> getAll(long playerId) {
+	public Map<Integer, HeroSkill> getAll(long playerId) {
 		String sql = "select * from tb_u_hero_skill_info where playerId=?";
 		Map<Integer, DbParameter> params = new HashMap<Integer, DbParameter>();
 		params.put(1, new DbParameter(Types.INTEGER, playerId));
 
 		PreparedStatement pst = execQuery(sql, params);
 		ResultSet rs = null;
-		Map<String, HeroSkill> infos = new HashMap<String, HeroSkill>();
+		Map<Integer, HeroSkill> infos = new HashMap<Integer, HeroSkill>();
 		HeroSkill info = null;
 		if (pst != null) {
 			try {
@@ -70,7 +104,7 @@ public class HeroSkillDaoImpl extends BaseDao implements HeroSkillDao {
 					info.setSubType(rs.getInt("subType"));
 					info.setGrandsonType(rs.getInt("grandsonType"));
 					info.setSkillLV(rs.getInt("skillLV"));
-					infos.put(rs.getInt("type") + "_" + rs.getInt("subType") + "_" + rs.getInt("grandsonType"), info);
+					infos.put(info.getSkillId(), info);
 				}
 			} catch (Exception e) {
 				Log.error("执行出错" + sql, e);

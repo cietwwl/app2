@@ -13,31 +13,32 @@ import com.chuangyou.xianni.role.action.MaterialAutoDestroy;
 
 /**
  * 镖车物资
+ * 
  * @author wkghost
  *
  */
 public class Material extends Living {
 
 	private int trucktype = 0;
-	
+
 	public Material(long armyId, long id, int trucktype) {
 		super(armyId, id);
 		setType(RoleType.matrial);
 		this.trucktype = trucktype;
 		getTruckHelper().setTruckTimer(true);
-		getTruckHelper().setRelatedTruck(armyId);	//设置关联的镖车
+		getTruckHelper().setRelatedTruck(armyId); // 设置关联的镖车
 		this.enDelayQueue(new MaterialAutoDestroy(this, SystemConfigTemplateMgr.getIntValue("drop.package.overtime") * 1000));
 	}
-	
+
 	/**
 	 * 镖车类型
+	 * 
 	 * @return
 	 */
-	public int getTruckType()
-	{
+	public int getTruckType() {
 		return trucktype;
 	}
-	
+
 	/**
 	 * 获取场景对象的快照信息
 	 * 
@@ -45,8 +46,7 @@ public class Material extends Living {
 	 */
 	@Override
 	public PlayerAttSnapMsg.Builder getAttSnapMsg() {
-		if (cacheAttSnapPacker == null)
-			cacheAttSnapPacker = PlayerAttSnapMsg.newBuilder();
+		PlayerAttSnapMsg.Builder cacheAttSnapPacker = PlayerAttSnapMsg.newBuilder();
 		cacheAttSnapPacker.setPlayerId(id);
 		cacheAttSnapPacker.setType(getType());
 		cacheAttSnapPacker.setSkinId(1033010);
@@ -61,24 +61,24 @@ public class Material extends Living {
 	 */
 	@Override
 	public Builder getBattlePlayerInfoMsg() {
-		cachBattleInfoPacket = BattleLivingInfoMsg.newBuilder();
+		BattleLivingInfoMsg.Builder cachBattleInfoPacket = BattleLivingInfoMsg.newBuilder();
 		cachBattleInfoPacket.setLivingId(getId());
 		cachBattleInfoPacket.setSkinId(1033010);
 		cachBattleInfoPacket.setPlayerId(getArmyId());
 		cachBattleInfoPacket.setType(getType());
-		
+
 		PropertyMsg.Builder pmsg = PropertyMsg.newBuilder();
-		//物资
+		// 物资
 		pmsg = PropertyMsg.newBuilder();
 		pmsg.setType(EnumAttr.METAL.getValue());
 		pmsg.setTotalPoint(getProperty(EnumAttr.METAL.getValue()));
 		cachBattleInfoPacket.addPropertis(pmsg);
-		//镖车物资的itemtype
+		// 镖车物资的itemtype
 		pmsg = PropertyMsg.newBuilder();
 		pmsg.setType(EnumAttr.WOOD.getValue());
 		pmsg.setTotalPoint(getProperty(EnumAttr.WOOD.getValue()));
 		cachBattleInfoPacket.addPropertis(pmsg);
-		
+
 		if (getPostion() != null) {
 			cachBattleInfoPacket.setPostion(Vector3BuilderHelper.build(getPostion()));
 		} else {

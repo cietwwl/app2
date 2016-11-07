@@ -35,6 +35,7 @@ public class CreatePlotRobotCmd extends AbstractCommand {
 		Vector3 v3 = army.getPlayer().getPostion();
 		robot.setPostion(v3);
 		field.enterField(robot);
+		army.addPlotFollower(robot);
 	}
 
 }

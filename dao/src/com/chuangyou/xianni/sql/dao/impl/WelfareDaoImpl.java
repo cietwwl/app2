@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.chuangyou.common.util.Log;
+import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.welfare.WelfareInfo;
 import com.chuangyou.xianni.sql.dao.WelfareDao;
 import com.chuangyou.xianni.sql.db.BaseDao;
@@ -69,6 +70,7 @@ public class WelfareDaoImpl extends BaseDao implements WelfareDao {
 				info.setPlayerId(rs.getLong("playerId"));
 				info.setWelfareId(rs.getInt("welfareId"));
 				info.setStatus(rs.getInt("status"));
+				info.setOp(Option.None);
 				result.add(info);
 			}
 		} catch (SQLException e) {

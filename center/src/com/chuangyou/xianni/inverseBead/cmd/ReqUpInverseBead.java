@@ -4,11 +4,14 @@ import com.chuangyou.common.protobuf.pb.inverseBead.ReqUpInverseBeadMsgProto.Req
 import com.chuangyou.common.protobuf.pb.inverseBead.ResUpInverseBeadMsgProto.ResUpInverseBeadMsg;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.entity.inverseBead.PlayerInverseBead;
+import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.inverseBead.manager.InverseBeadManager;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.retask.event.InverseBeadEvent;
+import com.chuangyou.xianni.retask.event.MountStateEvent;
 import com.chuangyou.xianni.socket.Cmd;
 
 @Cmd(code = Protocol.C_INVERSE_BEAD_UP, desc = "升级五行")
@@ -20,8 +23,12 @@ public class ReqUpInverseBead extends AbstractCommand {
 		int marking = msg.getMarking();
 		boolean res = InverseBeadManager.up(player, fiveElements, marking, packet.getCode());
 
-		if (res) {
+		if (res) {		
 			PlayerInverseBead playerInverseBead = player.getInverseBeadInventory().get(fiveElements);
+			//todo 天逆珠等级发生改变
+			player.notifyListeners(new InverseBeadEvent(this,playerInverseBead.getFiveElements(),playerInverseBead.getStage()
+					,playerInverseBead.getMarking(),EventNameType.TASK_T_SYSTEM));
+			
 			ResUpInverseBeadMsg.Builder resUpInverseBeadMsg = ResUpInverseBeadMsg.newBuilder();
 			resUpInverseBeadMsg.setFiveElements(playerInverseBead.getFiveElements());
 			resUpInverseBeadMsg.setMarking(playerInverseBead.getMarking());

@@ -3,7 +3,6 @@ package com.chuangyou.xianni.battle.action;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
 import com.chuangyou.xianni.battle.damage.Damage;
@@ -14,7 +13,6 @@ import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.proto.BroadcastUtil;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.objects.Living;
-import com.chuangyou.xianni.warfield.helper.FieldConstants.FieldAttackRule;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 
 public abstract class PollingAction extends DelayAction {
@@ -33,7 +31,6 @@ public abstract class PollingAction extends DelayAction {
 	public void execute() {
 		exec();
 		calBlood();
-		calPkVal();
 		dateBufferCal();
 		leaveFight();
 		if (this.living.getLivingState() >= Living.DIE) {
@@ -73,24 +70,24 @@ public abstract class PollingAction extends DelayAction {
 				Damage soulDamage = new Damage(living, living);
 				soulDamage.setDamageType(EnumAttr.CUR_SOUL.getValue());
 				soulDamage.setCalcType(DamageEffecterType.SOUL);
-				int restore = Math.min(living.getRegainSoul(), living.lessSoul());
-				if (restore > 0) {
-					soulDamage.setDamageValue(0 - restore);
-					damages.add(soulDamage);
-					living.takeDamage(soulDamage);
-				}
+//				int restore = Math.min(living.getRegainSoul(), living.lessSoul());
+//				if (restore > 0) {
+//					soulDamage.setDamageValue(0 - restore);
+//					damages.add(soulDamage);
+//					living.takeDamage(soulDamage);
+//				}
 
 			}
 			if (living.lessBlood() > 0) {
 				Damage bloodDamage = new Damage(living, living);
 				bloodDamage.setDamageType(EnumAttr.CUR_BLOOD.getValue());
 				bloodDamage.setCalcType(DamageEffecterType.BLOOD);
-				int restore = Math.min(living.getRegainBlood(), living.lessBlood());
-				if (restore > 0) {
-					bloodDamage.setDamageValue(0 - restore);
-					damages.add(bloodDamage);
-					living.takeDamage(bloodDamage);
-				}
+//				int restore = Math.min(living.getRegainBlood(), living.lessBlood());
+//				if (restore > 0) {
+//					bloodDamage.setDamageValue(0 - restore);
+//					damages.add(bloodDamage);
+//					living.takeDamage(bloodDamage);
+//				}
 			}
 
 			if (damages.size() > 0) {
@@ -109,14 +106,4 @@ public abstract class PollingAction extends DelayAction {
 			}
 		}
 	}
-
-	/* pk值计算 **/
-	private void calPkVal() {
-		if (living.getType() == RoleType.player && living.getField() != null) {
-			if (living.getPkVal() > 0 && System.currentTimeMillis() - living.getPkValCalTime() >= 10 * 1000 && living.getField().getAttackRule(null, null) == FieldAttackRule.USEPLAYERMODE) {
-				living.calPkVal();
-			}
-		}
-	}
-
 }

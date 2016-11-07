@@ -14,7 +14,7 @@ import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.rank.RankServerManager;
-import com.chuangyou.xianni.state.event.ArtifactStateEvent;
+import com.chuangyou.xianni.retask.event.ArtifactStateEvent;
 
 /**
  * 所有属性集合,出站技能等汇聚的载体

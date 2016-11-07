@@ -242,6 +242,16 @@ public interface CenterProtocol {
 	 * 融合
 	 */
 	public static final short	C_REQ_SOUL_FUSE					= 11609;
+	
+	/**
+	 * 请求抽卡信息
+	 */
+	public static final short   C_REQ_SOUL_GET_LUCK_INFO        = 11615;
+	
+	/**
+	 * 抽卡
+	 */
+	public static final short  C_REQ_SOUL_DRAW_CARD             = 11616;
 
 	// ==========================>排行榜<======================================
 	/**
@@ -267,7 +277,15 @@ public interface CenterProtocol {
 	 * 操作
 	 */
 	public static final short	C_REQ_STATE_OP					= 11614;
+	
+	
+	//==========================>兑换<=====================================
 
+	public static final short C_REQ_EXCHANGE                    = 11617;
+	
+	//==========================>活跃系统<=====================================
+	
+	public static final short C_REQ_ACTIVE_REWARD                    = 11618;
 	// =========================>坐骑<===================================
 	/** 获取坐骑信息 */
 	public static short			C_MOUNT_GETINFO					= 10101;

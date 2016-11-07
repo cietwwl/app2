@@ -107,6 +107,26 @@ public class ChatManager {
 	}
 	
 	/**
+	 * 发送触发玩家所在地图才能收到的系统消息
+	 * @param playerId 触发这条系统消息的玩家ID
+	 * @param channel 频道
+	 * @param content 内容
+	 */
+	public static void sendSceneSystemChatMsg(long playerId, int channel, String content){
+		ChatBaseAction action = ChatSenderFactory.getIns().getAction(channel);
+		if(action == null) return;
+		
+		ChatMsgInfo msgInfo = new ChatMsgInfo();
+		msgInfo.setChannel(channel);
+		msgInfo.setChatContent(content);
+		
+		msgInfo.setSenderId(playerId);
+		msgInfo.setParam1(1);
+		
+		action.sendChatMsg(null, msgInfo);
+	}
+	
+	/**
 	 * 发送系统提示
 	 * @param senderId
 	 * @param receiverId

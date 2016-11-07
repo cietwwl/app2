@@ -12,7 +12,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import com.chuangyou.common.protobuf.pb.PlayerAttSnapProto.PlayerAttSnapMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
@@ -23,7 +22,6 @@ import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
 import com.chuangyou.common.protobuf.pb.battle.LivingStateChangeMsgProto.LivingStateChangeMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
 import com.chuangyou.common.util.Log;
-import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.battle.AttackOrder;
 import com.chuangyou.xianni.battle.buffer.Buffer;
@@ -61,7 +59,6 @@ import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.grid.Grid;
 import com.chuangyou.xianni.warfield.grid.GridCoord;
 import com.chuangyou.xianni.warfield.grid.GridItem;
-import com.chuangyou.xianni.warfield.helper.FieldConstants.FieldAttackRule;
 import com.chuangyou.xianni.warfield.helper.Selector;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
@@ -131,8 +128,7 @@ public class Living extends LivingProperties {
 	protected boolean							fightState				= false;
 	/** 最后一次战斗时间 */
 	protected long								lastFightTm;
-	/** pk 值计算时间 */
-	private long								pkValCalTime			= 0;
+
 	/**
 	 * 位置
 	 */
@@ -154,10 +150,6 @@ public class Living extends LivingProperties {
 
 	/** 怪物出生节点 */
 	protected SpwanNode							node;
-	/** 缓存在地图中，别人获取自己的时候的信息 */
-	protected BattleLivingInfoMsg.Builder		cachBattleInfoPacket;
-	/** 缓存地图中, 本人快照信息 */
-	protected PlayerAttSnapMsg.Builder			cacheAttSnapPacker;
 	/** 主动技能 */
 	protected Map<Integer, Skill>				drivingSkills;
 
@@ -267,7 +259,7 @@ public class Living extends LivingProperties {
 		this.permanentBuffer = new ConcurrentHashMap<>();
 		this.workBuffers = new ConcurrentHashMap<>();
 		this.typeBuffers = new ConcurrentHashMap<>();
-		this.livingState = ALIVE;
+		setLivingState(ALIVE);
 		this.postion = Vector3.Invalid;
 		this.allBuffers = new ConcurrentHashMap<>();
 		truckHelper = new TruckerStateHelper(this);
@@ -283,7 +275,7 @@ public class Living extends LivingProperties {
 		this.workBuffers = new ConcurrentHashMap<>();
 		this.typeBuffers = new ConcurrentHashMap<>();
 		this.postion = Vector3.Invalid;
-		this.livingState = ALIVE;
+		setLivingState(ALIVE);
 		this.allBuffers = new ConcurrentHashMap<>();
 		truckHelper = new TruckerStateHelper(this);
 		initState();
@@ -300,7 +292,7 @@ public class Living extends LivingProperties {
 	}
 
 	/** 判断是否死亡 */
-	public boolean isDie() {
+	public synchronized boolean isDie() {
 		if (otherDamageCalWay()) {
 			return curBlood <= 0 || livingState == DIE || livingState == DISTORY;
 		}
@@ -683,13 +675,11 @@ public class Living extends LivingProperties {
 	 * @return
 	 */
 	public BattleLivingInfoMsg.Builder getBattlePlayerInfoMsg() {
-		if (cachBattleInfoPacket == null) {
-			cachBattleInfoPacket = BattleLivingInfoMsg.newBuilder();
-		}
+		BattleLivingInfoMsg.Builder cachBattleInfoPacket = BattleLivingInfoMsg.newBuilder();
 		cachBattleInfoPacket.setLivingId(getId());
 		cachBattleInfoPacket.setPlayerId(getArmyId());
 		cachBattleInfoPacket.setType(getType());
-		if (simpleInfo != null) {	
+		if (simpleInfo != null) {
 			cachBattleInfoPacket.setNickName(simpleInfo.getNickName());
 			cachBattleInfoPacket.setLevel(simpleInfo.getLevel());
 			cachBattleInfoPacket.setVipLevel(simpleInfo.getVipLevel());
@@ -729,10 +719,6 @@ public class Living extends LivingProperties {
 			cachBattleInfoPacket.addBufferList(bufferMsg);
 		}
 
-		// for (Skill skill : drivingSkills.values()) {
-		// cachBattleInfoPacket.addSkills(skill.getSkillId());
-		// }
-
 		for (Skill skill : drivingSkills.values()) {
 			cachBattleInfoPacket.addSkills(skill.getSkillId());
 		}
@@ -743,10 +729,7 @@ public class Living extends LivingProperties {
 			pmsg.setType(attr.getValue());
 			cachBattleInfoPacket.addPropertis(pmsg);
 		}
-		BattleLivingInfoMsg.Builder msg = this.cachBattleInfoPacket;
-		this.cachBattleInfoPacket = null;
-
-		return msg;
+		return cachBattleInfoPacket;
 	}
 
 	/**
@@ -755,11 +738,8 @@ public class Living extends LivingProperties {
 	 * @return
 	 */
 	public PlayerAttSnapMsg.Builder getAttSnapMsg() {
-
-		if (cacheAttSnapPacker == null) {
-			cacheAttSnapPacker = PlayerAttSnapMsg.newBuilder();
-			cacheAttSnapPacker.setPlayerId(id);
-		}
+		PlayerAttSnapMsg.Builder cacheAttSnapPacker = PlayerAttSnapMsg.newBuilder();
+		cacheAttSnapPacker.setPlayerId(id);
 		cacheAttSnapPacker.setType(getType());
 		cacheAttSnapPacker.setSkinId(getSkin());
 		cacheAttSnapPacker.setPostion(Vector3BuilderHelper.build(getPostion()));
@@ -791,9 +771,10 @@ public class Living extends LivingProperties {
 		if (field == null) {
 			return ret;
 		}
+		Field temField = field;
 		GridCoord coord = null;
 		try {
-			coord = field.getGrid().getGridCrood(postion.getX(), postion.getZ());
+			coord = temField.getGrid().getGridCrood(postion.getX(), postion.getZ());
 		} catch (Exception e) {
 			Log.error("position.x" + postion.getX() + " position.z" + postion.getZ(), e);
 			return ret;
@@ -805,7 +786,7 @@ public class Living extends LivingProperties {
 			// if (tmpCoordX < 0 || tmpCoordZ < 0 || tmpCoordX >
 			// field.getGrid().GridX || tmpCoordZ > field.getGrid().GridZ)
 			// continue;
-			GridItem gi = field.getGrid().getGridItem(tmpCoordX, tmpCoordZ);
+			GridItem gi = temField.getGrid().getGridItem(tmpCoordX, tmpCoordZ);
 			if (gi == null)
 				continue;
 			Set<Entry<Integer, List<Long>>> set = gi.getLivings().entrySet();
@@ -824,7 +805,7 @@ public class Living extends LivingProperties {
 					if (tmp.get(j) == null)
 						continue;
 					long other = tmp.get(j);
-					Living nearLiving = field.getLiving(other);
+					Living nearLiving = temField.getLiving(other);
 					if (nearLiving == null) {
 						continue;
 					}
@@ -1014,7 +995,7 @@ public class Living extends LivingProperties {
 	}
 
 	/* 切换战斗状态 */
-	public void changeSoulState(boolean state) {
+	public synchronized void changeSoulState(boolean state) {
 		isSoulState = state;
 		sendChangeStatuMsg(FIGHT_STATU, state ? 1 : 0);
 	}
@@ -1280,31 +1261,6 @@ public class Living extends LivingProperties {
 		}
 	}
 
-	public void calPkVal() {
-		if (this.getField().getAttackRule(null, null) == FieldAttackRule.USEPLAYERMODE && this.getPkVal() > 0) {
-			this.pkValCalTime = System.currentTimeMillis();
-			int changePkVal = MathUtils.randomClamp(1, 5);
-			int colour = getColour(this.getPkVal());
-			changePkVal = this.getPkVal() - changePkVal < 0 ? 0 : this.getPkVal() - changePkVal;
-			this.setPkVal(changePkVal);
-			Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
-			changeMap.put(EnumAttr.PK_VAL.getValue(), (long) this.getPkVal());
-			notifyCenter(changeMap, this.getArmyId());
-
-			List<PropertyMsg> properties = new ArrayList<>();
-			PropertyMsg.Builder p = PropertyMsg.newBuilder();
-			// p.setBasePoint(this.getPkVal());
-			p.setTotalPoint(this.getPkVal());
-			p.setType(EnumAttr.PK_VAL.getValue());
-			properties.add(p.build());
-			if (colour != getColour(this.getPkVal())) {
-				updateProperty(this, properties);
-			} else {
-				upProperty(this, properties);
-			}
-		}
-	}
-
 	/**
 	 * 获取颜色级别
 	 * 
@@ -1345,10 +1301,6 @@ public class Living extends LivingProperties {
 
 	public long getLastFightTM() {
 		return lastFightTm;
-	}
-
-	public long getPkValCalTime() {
-		return pkValCalTime;
 	}
 
 	public boolean canSee(long id) {
@@ -1405,15 +1357,6 @@ public class Living extends LivingProperties {
 				skill = skills.get(i).getValue();
 				break;
 			}
-
-			// if (isCooldowning(CoolDownTypes.SKILL,
-			// skills.get(i).getValue().getActionId() + "") && (i ==
-			// skills.size() - 1)) {
-			// skill = skills.get(i).getValue();
-			// continue;
-			// }
-			// skill = skills.get(i).getValue();
-			// break;
 		}
 		return skill;
 	}
@@ -1595,6 +1538,13 @@ public class Living extends LivingProperties {
 		soul.setSource(this);
 		damages.add(soul);
 		takeDamage(soul);
+
+		Damage blood = new Damage(this, this);
+		blood.setDamageType(EnumAttr.CUR_BLOOD.getValue());
+		blood.setDamageValue(Integer.MAX_VALUE);
+		blood.setSource(this);
+		damages.add(blood);
+		takeDamage(blood);
 
 		DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
 		damagesPb.setAttackId(-1);
@@ -1852,11 +1802,11 @@ public class Living extends LivingProperties {
 
 	public void setCurBlood(int curBlood) {
 		this.curBlood = curBlood;
-		if (curBlood == 0 && isSoulState() == false) {
+		if (curBlood <= 0 && isSoulState() == false) {
 			changeSoulState(true);
 		}
 
-		if (curBlood == getMaxBlood() && isSoulState() == true) {
+		if (curBlood >= getMaxBlood() && isSoulState() == true) {
 			changeSoulState(false);
 		}
 	}
@@ -1903,7 +1853,7 @@ public class Living extends LivingProperties {
 
 	public void setLivingState(int livingState) {
 		if (this.livingState == DISTORY) {
-			Log.error("-----------重要调试日志，发现请通知---------------", new Exception());
+			Log.error("-----------重要调试日志，发现请通知---------------" + " livingId :" + this.getId(), new Exception());
 			return;
 		}
 		this.livingState = livingState;
@@ -1949,8 +1899,6 @@ public class Living extends LivingProperties {
 		}
 		field = null;
 		node = null;
-		cachBattleInfoPacket = null;
-		cacheAttSnapPacker = null;
 		drivingSkills.clear();
 		// mapSkill.clear();
 		permanentBuffer.clear();
@@ -1958,7 +1906,7 @@ public class Living extends LivingProperties {
 		allBuffers.clear();
 		livingStatus.clear();
 		cooldowns.clear();
-		livingState = DISTORY;
+		setLivingState(DISTORY);
 	}
 
 	public long getSoulExp() {

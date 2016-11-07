@@ -1,0 +1,10 @@
+//protocol=11617;
+
+option java_package = "com.chuangyou.common.protobuf.pb.exchange";
+option java_outer_classname = "ExchangeReqProto";
+
+
+ //兑换
+message ExchangeReqMsg{
+	required int32 exchangeType =1; //兑换次数  1:兑换1次   2：兑换10次
+}

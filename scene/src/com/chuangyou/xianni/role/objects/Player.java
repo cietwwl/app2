@@ -13,6 +13,8 @@ import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLi
 import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLivingInfoMsg.Builder;
 import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
+import com.chuangyou.common.protobuf.pb.magicwp.MagicwpBanGetInfoRespProto.MagicwpBanGetInfoRespMsg;
+import com.chuangyou.common.protobuf.pb.magicwp.MagicwpBanInfoBeanProto.MagicwpBanInfoBeanMsg;
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
 import com.chuangyou.common.protobuf.pb.scene.PlayerKillMonsterListProto.PlayerKillMonsterListMsg;
 import com.chuangyou.common.protobuf.pb.scene.PlayerKillMonsterProto.PlayerKillMonsterMsg;
@@ -24,6 +26,8 @@ import com.chuangyou.xianni.battle.action.HeroPollingAction;
 import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.buffer.BufferFactory;
 import com.chuangyou.xianni.battle.damage.Damage;
+import com.chuangyou.xianni.battle.magicwpban.MagicwpCompanent;
+import com.chuangyou.xianni.battle.magicwpban.MagicwpCompanentFactory;
 import com.chuangyou.xianni.battle.mgr.AvatarTempManager;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.skill.FuseSkillVo;
@@ -39,7 +43,9 @@ import com.chuangyou.xianni.constant.AvatarConstant;
 import com.chuangyou.xianni.constant.BattleModeCode;
 import com.chuangyou.xianni.constant.BattleSettlementConstant;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.constant.MagicwpBanConstant;
 import com.chuangyou.xianni.constant.RoleConstants.RoleType;
+import com.chuangyou.xianni.constant.SkillConstant.SkillSonType;
 import com.chuangyou.xianni.entity.avatar.AvatarCorrespondTemplateInfo;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.equip.EquipAwakenCfg;
@@ -60,6 +66,7 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.action.RevivalPlayerAction;
 import com.chuangyou.xianni.warfield.field.Field;
+import com.chuangyou.xianni.warfield.helper.FieldConstants.FieldAttackRule;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.spawn.BeadMonsterSpawnNode;
 import com.chuangyou.xianni.warfield.spawn.PerareState;
@@ -70,48 +77,53 @@ import com.chuangyou.xianni.world.WorldMgr;
 
 public class Player extends ActiveLiving {
 	/** 是否复活中 */
-	private volatile boolean			revivaling				= false;
+	private volatile boolean							revivaling				= false;
 	/**
 	 * 玩家坐骑状态 0未乘骑 1乘骑坐骑
 	 */
-	private int							mountState				= 1;
-	private List<Integer>				monsterRefreshIdList	= new ArrayList<Integer>();
-	private boolean						flashName				= false;
+	private int											mountState				= 1;
+	private List<Integer>								monsterRefreshIdList	= new ArrayList<Integer>();
+	private boolean										flashName				= false;
 
 	/** 副本buffer */
-	private List<Buffer>				campaignBuffers			= new ArrayList<>();
+	private List<Buffer>								campaignBuffers			= new ArrayList<>();
 
 	/** 魂幡携带buffer */
-	private Map<Integer, FuseSkillVo>	fuseSkillVos			= new HashMap<>();
+	private Map<Integer, FuseSkillVo>					fuseSkillVos			= new HashMap<>();
 
 	/** 魂幡buffers */
-	private Buffer[]					fuseSkillBuffers		= new Buffer[4];
+	private Buffer[]									fuseSkillBuffers		= new Buffer[4];
 
 	/** 武器携带buffer */
-	private Buffer						weaponBuffer;
+	private Buffer										weaponBuffer;
 
 	/** 武器技能(觉醒获得) */
-	private int							weaponBuffId			= 0;
+	private int											weaponBuffId			= 0;
+
+	/** 法宝禁制 */
+	private Map<MagicwpBanConstant, MagicwpCompanent>	magicwps				= new HashMap<>();
 	/**
 	 * 魂幡等级
 	 */
-	private int							soulLv					= 0;
+	private int											soulLv					= 0;
 	/** 解除变身时间 */
-	private long						unTransfigurationTime	= 0;
+	private long										unTransfigurationTime	= 0;
 	// 变身状态 0 未合体 1 合体
-	protected int						correspondStatu			= 0;
+	protected int										correspondStatu			= 0;
 	// 变身ID
-	protected int						avatarTempId			= 0;
+	protected int										avatarTempId			= 0;
 	// 变身相关属性
-	private static EnumAttr[]			avatarAttrs;
+	private static EnumAttr[]							avatarAttrs;
 	// 变身技能ID
-	public static final int				TRANS_SKILL_ID			= 70001001;
+	public static final int								TRANS_SKILL_ID			= 70001001;
 	// 取消变身技能ID
-	public static final int				UN_TRANS_SKILL_ID		= 70001002;
+	public static final int								UN_TRANS_SKILL_ID		= 70001002;
 	// 变身后技能
-	protected Map<Integer, Skill>		avatarSkills			= new HashMap<>();
-	protected int						avatarEnergy;										// 仙力
+	protected Map<Integer, Skill>						avatarSkills			= new HashMap<>();
+	protected int										avatarEnergy;										// 仙力
 
+	/** pk 值计算时间 */
+	private long										pkValCalTime			= 0;
 	static {
 		avatarAttrs = new EnumAttr[] { EnumAttr.BLOOD, EnumAttr.SOUL, EnumAttr.ATTACK, EnumAttr.DEFENCE, EnumAttr.ACCURATE, EnumAttr.DODGE, EnumAttr.CRIT, EnumAttr.CRIT_DEFENCE };
 	}
@@ -187,77 +199,8 @@ public class Player extends ActiveLiving {
 		return true;
 	}
 
-	class DieAction extends DelayAction {
-		Living	deather;
-		Living	source;
-
-		public DieAction(Living deather, Living source, int delay) {
-			super(source, delay);
-			this.deather = deather;
-			this.source = source;
-		}
-
-		@Override
-		public void execute() {
-			ArmyProxy army = WorldMgr.getArmy(getArmyId());
-			if (army == null) {
-				Log.error("not find army when player die,playerId :" + getArmyId());
-				return;
-			}
-			if (revivaling == false) {
-				RevivalPlayerAction revival = new RevivalPlayerAction(army);
-				ThreadManager.actionExecutor.enDelayQueue(revival);
-				revivaling = true;
-			}
-
-			// 攻击源处理
-			if (source.getBattleMode() == BattleModeCode.warBattleMode && getBattleMode() == BattleModeCode.peaceBattleMode) {// 增加pk值
-				source.setPkVal(source.getPkVal() + 1000);
-				// 通知
-				Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
-				changeMap.put(EnumAttr.PK_VAL.getValue(), (long) source.getPkVal());
-				notifyCenter(changeMap, source.getArmyId());
-
-				List<PropertyMsg> properties = new ArrayList<>();
-				PropertyMsg.Builder p = PropertyMsg.newBuilder();
-				p.setBasePoint((long) source.getPkVal());
-				p.setTotalPoint((long) source.getPkVal());
-				p.setType(EnumAttr.PK_VAL.getValue());
-				properties.add(p.build());
-				updateProperty(source, properties);
-			}
-
-			// 自己
-			List<PropertyMsg> properties = new ArrayList<>();
-			Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
-
-			int changePkVal = 0;// 减少pk值
-			if (getColour(getPkVal()) == BattleModeCode.yellow) {
-				changePkVal = MathUtils.randomClamp(10, 20);
-				notifyCenter(source.getArmyId(), getArmyId());
-			} else if (getColour(getPkVal()) == BattleModeCode.red) {
-				changePkVal = MathUtils.randomClamp(40, 80);
-				notifyCenter(source.getArmyId(), getArmyId());
-			}
-			if (changePkVal > 0) {
-				changePkVal = getPkVal() - changePkVal < 0 ? 0 : getPkVal() - changePkVal;
-				setPkVal(changePkVal);
-				PropertyMsg.Builder p = PropertyMsg.newBuilder();
-				// p.setBasePoint(changePkVal);
-				p.setTotalPoint(changePkVal);
-				p.setType(EnumAttr.PK_VAL.getValue());
-				properties.add(p.build());
-				changeMap.put(EnumAttr.PK_VAL.getValue(), (long) changePkVal);
-				notifyCenter(changeMap, getArmyId());
-				updateProperty(deather, properties);
-			}
-			calPKValue(source, deather);
-		}
-
-	}
-
 	/* 满血复活 */
-	public boolean renascence() {
+	public synchronized boolean renascence() {
 		if (getLivingState() == ALIVE) {
 			return false;
 		}
@@ -482,6 +425,7 @@ public class Player extends ActiveLiving {
 	private void calPKValue(Living source, Living deather) {
 		// 攻击源处理
 		if (source.getBattleMode() == BattleModeCode.warBattleMode && getBattleMode() == BattleModeCode.peaceBattleMode) {// 增加pk值
+			int colour = getColour(source.getPkVal());
 			source.setPkVal(source.getPkVal() + 1000);
 			// 通知
 			Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
@@ -494,7 +438,12 @@ public class Player extends ActiveLiving {
 			p.setTotalPoint((long) source.getPkVal());
 			p.setType(EnumAttr.PK_VAL.getValue());
 			properties.add(p.build());
-			updateProperty(source, properties);
+			// updateProperty(source, properties);
+			if (colour != getColour(source.getPkVal())) {
+				updateProperty(source, properties);
+			} else {
+				upProperty(source, properties);
+			}
 		}
 
 		// 自己
@@ -512,6 +461,7 @@ public class Player extends ActiveLiving {
 
 		if (changePkVal > 0) {
 			changePkVal = getPkVal() - changePkVal < 0 ? 0 : getPkVal() - changePkVal;
+			int colour = getColour(this.getPkVal());
 			setPkVal(changePkVal);
 			PropertyMsg.Builder p = PropertyMsg.newBuilder();
 			p.setBasePoint(changePkVal);
@@ -520,9 +470,13 @@ public class Player extends ActiveLiving {
 			properties.add(p.build());
 			changeMap.put(EnumAttr.PK_VAL.getValue(), (long) changePkVal);
 			notifyCenter(changeMap, getArmyId());
-			updateProperty(deather, properties);
+			// updateProperty(deather, properties);
+			if (colour != getColour(deather.getPkVal())) {
+				updateProperty(deather, properties);
+			} else {
+				upProperty(deather, properties);
+			}
 		}
-
 	}
 
 	public boolean isRevivaling() {
@@ -709,7 +663,6 @@ public class Player extends ActiveLiving {
 		BaseProperty baseProperty = new BaseProperty();
 		for (Avatar avatar : avatars) {
 			avatar.writeBaseProperty(baseProperty);
-			avatar.disappear();
 		}
 
 		// 第六步 ： 人物添加分身属性
@@ -748,7 +701,7 @@ public class Player extends ActiveLiving {
 			}
 			for (Skill skill : avatar.getDrivingSkills().values()) {
 				// 分身技能 子类型为8
-				if (skill.getSkillTempateInfo().getSonType() != 8) {
+				if (skill.getSkillTempateInfo().getSonType() != SkillSonType.AVATAR_SKILL) {
 					continue;
 				}
 				Skill newSkill = new Skill(skill.getTemplateInfo());
@@ -758,7 +711,18 @@ public class Player extends ActiveLiving {
 		// ----- 第九步：人物变更状态------
 		Set<Long> nears = getNears(new PlayerSelectorHelper(this));
 		nears.add(getArmyId());
-		BroadcastUtil.sendBroadcastPacket(nears, Protocol.U_G_BATTLEPLAYERINFO, getBattlePlayerInfoMsg().build());
+		for (long id : nears) {
+			ArmyProxy others = WorldMgr.getArmy(id);
+			if (others != null) {
+				PBMessage message = MessageUtil.buildMessage(Protocol.U_G_BATTLEPLAYERINFO, getBattlePlayerInfoMsg());
+				others.sendPbMessage(message);
+			}
+		}
+		// BroadcastUtil.sendBroadcastPacket(nears,
+		// Protocol.U_G_BATTLEPLAYERINFO, getBattlePlayerInfoMsg().build());
+		for (Avatar avatar : avatars) {
+			avatar.disappear();
+		}
 	}
 
 	/** 解除变身 */
@@ -779,6 +743,7 @@ public class Player extends ActiveLiving {
 		correspondStatu = 0;
 		avatarTempId = 0;
 		avatarSkills.clear();
+		unTransfigurationTime = System.currentTimeMillis();
 		// 第五步 返回出战的分身
 		army.instillAvatar(getField(), getPostion());
 		// ----- 第六步：人物变更状态------
@@ -789,10 +754,16 @@ public class Player extends ActiveLiving {
 
 	/** 添加合体属性 */
 	private void addAvatarProperty(BaseProperty baseProperty) {
+		// 判断是否有禁制-契
+		MagicwpCompanent companent = getMagicwpCompanent(MagicwpBanConstant.AVATAR_CONTRACT);
 		PlayerAttUpdateMsg.Builder notifyMsg = PlayerAttUpdateMsg.newBuilder();
 		for (EnumAttr enumAttr : avatarAttrs) {
 			Property pro = properties.get(enumAttr);
-			pro.setAvatarData(baseProperty.getProperty(enumAttr));
+			int addValue = baseProperty.getProperty(enumAttr);
+			if (companent != null && companent.isEffect()) {
+				addValue += addValue * companent.getEffectValue() / 100;
+			}
+			pro.setAvatarData(addValue);
 			PropertyMsg.Builder pmsg = PropertyMsg.newBuilder();
 			pmsg.setType(pro.getType());
 			pmsg.setTotalPoint(pro.getTotalJoin());
@@ -865,6 +836,110 @@ public class Player extends ActiveLiving {
 		super.setProperty(attr, value);
 		if (attr == EnumAttr.AVATAR_ENERGY) {
 			setAvatarEnergy((int) value);
+		}
+	}
+
+	public long getPkValCalTime() {
+		return pkValCalTime;
+	}
+
+	public void calPkVal() {
+		if (this.getField().getAttackRule(null, null) == FieldAttackRule.USEPLAYERMODE && this.getPkVal() > 0) {
+			this.pkValCalTime = System.currentTimeMillis();
+			int changePkVal = MathUtils.randomClamp(1, 5);
+			int colour = getColour(this.getPkVal());
+			changePkVal = this.getPkVal() - changePkVal < 0 ? 0 : this.getPkVal() - changePkVal;
+			this.setPkVal(changePkVal);
+			Map<Integer, Long> changeMap = new HashMap<Integer, Long>();
+			changeMap.put(EnumAttr.PK_VAL.getValue(), (long) this.getPkVal());
+			notifyCenter(changeMap, this.getArmyId());
+
+			List<PropertyMsg> properties = new ArrayList<>();
+			PropertyMsg.Builder p = PropertyMsg.newBuilder();
+			// p.setBasePoint(this.getPkVal());
+			p.setTotalPoint(this.getPkVal());
+			p.setType(EnumAttr.PK_VAL.getValue());
+			properties.add(p.build());
+			if (colour != getColour(this.getPkVal())) {
+				updateProperty(this, properties);
+			} else {
+				upProperty(this, properties);
+			}
+		}
+	}
+
+	public void loadMagicwpData(MagicwpBanGetInfoRespMsg dataMsg) {
+		magicwps.clear();
+		for (MagicwpBanInfoBeanMsg bean : dataMsg.getBansList()) {
+			MagicwpBanConstant banCon = MagicwpBanConstant.getCode(bean.getBanId());
+			if (banCon == null) {
+				Log.error("MagicwpBanConstant not find ,banId:" + bean.getBanId() + ",armyId " + this.id);
+				continue;
+			}
+			MagicwpCompanent companent = MagicwpCompanentFactory.buildMagicwpCompanent(this, banCon, bean.getLevel());
+			if (companent != null) {
+				magicwps.put(banCon, companent);
+			} else {
+				Log.error("MagicwpBanConstant not find Decorator ,banId:" + bean.getBanId() + ",armyId " + this.id);
+			}
+		}
+	}
+
+	public MagicwpCompanent getMagicwpCompanent(MagicwpBanConstant banCon) {
+		return magicwps.get(banCon);
+	}
+
+	public void setCurBlood(int curBlood) {
+		this.curBlood = curBlood;
+		if (curBlood <= 0 && isSoulState() == false) {
+			MagicwpCompanent companent = getMagicwpCompanent(MagicwpBanConstant.RESIST_DEATH);
+			if (companent == null || !companent.isEffect()) {
+				changeSoulState(true);
+			} else {
+				companent.exe();
+			}
+		}
+		if (curBlood >= getMaxBlood() && isSoulState() == true) {
+			changeSoulState(false);
+		}
+	}
+
+	/** 判断是否死亡 */
+	public synchronized boolean isDie() {
+		boolean isDie = super.isDie();
+		if (isDie) {
+			MagicwpCompanent companent = getMagicwpCompanent(MagicwpBanConstant.RESURRECTION);
+			if (companent != null && companent.isEffect()) {
+				companent.exe();
+				return false;
+			}
+		}
+		return isDie;
+	}
+
+	class DieAction extends DelayAction {
+		Living	deather;
+		Living	source;
+
+		public DieAction(Living deather, Living source, int delay) {
+			super(source, delay);
+			this.deather = deather;
+			this.source = source;
+		}
+
+		@Override
+		public void execute() {
+			ArmyProxy army = WorldMgr.getArmy(getArmyId());
+			if (army == null) {
+				Log.error("not find army when player die,playerId :" + getArmyId());
+				return;
+			}
+			if (revivaling == false) {
+				RevivalPlayerAction revival = new RevivalPlayerAction(army);
+				ThreadManager.actionExecutor.enDelayQueue(revival);
+				revivaling = true;
+			}
+			calPKValue(source, deather);
 		}
 	}
 

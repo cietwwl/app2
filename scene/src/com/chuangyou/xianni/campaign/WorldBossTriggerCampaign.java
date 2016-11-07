@@ -39,6 +39,7 @@ public class WorldBossTriggerCampaign extends Campaign {
 	/** 上次发送宝箱刷新提醒公告时间 */
 	private long lastNoticeTime = 0;
 	
+	/** 发送宝箱刷新的提示间隔 */
 	private int timeInterval = 0;
 
 	public WorldBossTriggerCampaign(CampaignTemplateInfo tempInfo, Transfer enterTransfer) {

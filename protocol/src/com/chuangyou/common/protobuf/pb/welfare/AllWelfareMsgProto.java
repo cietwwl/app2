@@ -16,7 +16,7 @@ public final class AllWelfareMsgProto {
      * <code>repeated .OneWelfareMsg list = 1;</code>
      *
      * <pre>
-     *福利配置表ID
+     *所有福利状态信息
      * </pre>
      */
     java.util.List<com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsg> 
@@ -25,7 +25,7 @@ public final class AllWelfareMsgProto {
      * <code>repeated .OneWelfareMsg list = 1;</code>
      *
      * <pre>
-     *福利配置表ID
+     *所有福利状态信息
      * </pre>
      */
     com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsg getList(int index);
@@ -33,7 +33,7 @@ public final class AllWelfareMsgProto {
      * <code>repeated .OneWelfareMsg list = 1;</code>
      *
      * <pre>
-     *福利配置表ID
+     *所有福利状态信息
      * </pre>
      */
     int getListCount();
@@ -41,7 +41,7 @@ public final class AllWelfareMsgProto {
      * <code>repeated .OneWelfareMsg list = 1;</code>
      *
      * <pre>
-     *福利配置表ID
+     *所有福利状态信息
      * </pre>
      */
     java.util.List<? extends com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsgOrBuilder> 
@@ -50,11 +50,28 @@ public final class AllWelfareMsgProto {
      * <code>repeated .OneWelfareMsg list = 1;</code>
      *
      * <pre>
-     *福利配置表ID
+     *所有福利状态信息
      * </pre>
      */
     com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsgOrBuilder getListOrBuilder(
         int index);
+
+    /**
+     * <code>optional int32 onlineTime = 2;</code>
+     *
+     * <pre>
+     *达到相应等级以后在线时间
+     * </pre>
+     */
+    boolean hasOnlineTime();
+    /**
+     * <code>optional int32 onlineTime = 2;</code>
+     *
+     * <pre>
+     *达到相应等级以后在线时间
+     * </pre>
+     */
+    int getOnlineTime();
   }
   /**
    * Protobuf type {@code AllWelfareMsg}
@@ -120,6 +137,11 @@ public final class AllWelfareMsgProto {
               list_.add(input.readMessage(com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsg.PARSER, extensionRegistry));
               break;
             }
+            case 16: {
+              bitField0_ |= 0x00000001;
+              onlineTime_ = input.readInt32();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -162,13 +184,14 @@ public final class AllWelfareMsgProto {
       return PARSER;
     }
 
+    private int bitField0_;
     public static final int LIST_FIELD_NUMBER = 1;
     private java.util.List<com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsg> list_;
     /**
      * <code>repeated .OneWelfareMsg list = 1;</code>
      *
      * <pre>
-     *福利配置表ID
+     *所有福利状态信息
      * </pre>
      */
     public java.util.List<com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsg> getListList() {
@@ -178,7 +201,7 @@ public final class AllWelfareMsgProto {
      * <code>repeated .OneWelfareMsg list = 1;</code>
      *
      * <pre>
-     *福利配置表ID
+     *所有福利状态信息
      * </pre>
      */
     public java.util.List<? extends com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsgOrBuilder> 
@@ -189,7 +212,7 @@ public final class AllWelfareMsgProto {
      * <code>repeated .OneWelfareMsg list = 1;</code>
      *
      * <pre>
-     *福利配置表ID
+     *所有福利状态信息
      * </pre>
      */
     public int getListCount() {
@@ -199,7 +222,7 @@ public final class AllWelfareMsgProto {
      * <code>repeated .OneWelfareMsg list = 1;</code>
      *
      * <pre>
-     *福利配置表ID
+     *所有福利状态信息
      * </pre>
      */
     public com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsg getList(int index) {
@@ -209,7 +232,7 @@ public final class AllWelfareMsgProto {
      * <code>repeated .OneWelfareMsg list = 1;</code>
      *
      * <pre>
-     *福利配置表ID
+     *所有福利状态信息
      * </pre>
      */
     public com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsgOrBuilder getListOrBuilder(
@@ -217,8 +240,32 @@ public final class AllWelfareMsgProto {
       return list_.get(index);
     }
 
+    public static final int ONLINETIME_FIELD_NUMBER = 2;
+    private int onlineTime_;
+    /**
+     * <code>optional int32 onlineTime = 2;</code>
+     *
+     * <pre>
+     *达到相应等级以后在线时间
+     * </pre>
+     */
+    public boolean hasOnlineTime() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional int32 onlineTime = 2;</code>
+     *
+     * <pre>
+     *达到相应等级以后在线时间
+     * </pre>
+     */
+    public int getOnlineTime() {
+      return onlineTime_;
+    }
+
     private void initFields() {
       list_ = java.util.Collections.emptyList();
+      onlineTime_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -236,6 +283,9 @@ public final class AllWelfareMsgProto {
       for (int i = 0; i < list_.size(); i++) {
         output.writeMessage(1, list_.get(i));
       }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(2, onlineTime_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -248,6 +298,10 @@ public final class AllWelfareMsgProto {
       for (int i = 0; i < list_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, list_.get(i));
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, onlineTime_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -377,6 +431,8 @@ public final class AllWelfareMsgProto {
         } else {
           listBuilder_.clear();
         }
+        onlineTime_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -404,6 +460,7 @@ public final class AllWelfareMsgProto {
       public com.chuangyou.common.protobuf.pb.welfare.AllWelfareMsgProto.AllWelfareMsg buildPartial() {
         com.chuangyou.common.protobuf.pb.welfare.AllWelfareMsgProto.AllWelfareMsg result = new com.chuangyou.common.protobuf.pb.welfare.AllWelfareMsgProto.AllWelfareMsg(this);
         int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         if (listBuilder_ == null) {
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
             list_ = java.util.Collections.unmodifiableList(list_);
@@ -413,6 +470,11 @@ public final class AllWelfareMsgProto {
         } else {
           result.list_ = listBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.onlineTime_ = onlineTime_;
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -453,6 +515,9 @@ public final class AllWelfareMsgProto {
               listBuilder_.addAllMessages(other.list_);
             }
           }
+        }
+        if (other.hasOnlineTime()) {
+          setOnlineTime(other.getOnlineTime());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -497,7 +562,7 @@ public final class AllWelfareMsgProto {
        * <code>repeated .OneWelfareMsg list = 1;</code>
        *
        * <pre>
-       *福利配置表ID
+       *所有福利状态信息
        * </pre>
        */
       public java.util.List<com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsg> getListList() {
@@ -511,7 +576,7 @@ public final class AllWelfareMsgProto {
        * <code>repeated .OneWelfareMsg list = 1;</code>
        *
        * <pre>
-       *福利配置表ID
+       *所有福利状态信息
        * </pre>
        */
       public int getListCount() {
@@ -525,7 +590,7 @@ public final class AllWelfareMsgProto {
        * <code>repeated .OneWelfareMsg list = 1;</code>
        *
        * <pre>
-       *福利配置表ID
+       *所有福利状态信息
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsg getList(int index) {
@@ -539,7 +604,7 @@ public final class AllWelfareMsgProto {
        * <code>repeated .OneWelfareMsg list = 1;</code>
        *
        * <pre>
-       *福利配置表ID
+       *所有福利状态信息
        * </pre>
        */
       public Builder setList(
@@ -560,7 +625,7 @@ public final class AllWelfareMsgProto {
        * <code>repeated .OneWelfareMsg list = 1;</code>
        *
        * <pre>
-       *福利配置表ID
+       *所有福利状态信息
        * </pre>
        */
       public Builder setList(
@@ -578,7 +643,7 @@ public final class AllWelfareMsgProto {
        * <code>repeated .OneWelfareMsg list = 1;</code>
        *
        * <pre>
-       *福利配置表ID
+       *所有福利状态信息
        * </pre>
        */
       public Builder addList(com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsg value) {
@@ -598,7 +663,7 @@ public final class AllWelfareMsgProto {
        * <code>repeated .OneWelfareMsg list = 1;</code>
        *
        * <pre>
-       *福利配置表ID
+       *所有福利状态信息
        * </pre>
        */
       public Builder addList(
@@ -619,7 +684,7 @@ public final class AllWelfareMsgProto {
        * <code>repeated .OneWelfareMsg list = 1;</code>
        *
        * <pre>
-       *福利配置表ID
+       *所有福利状态信息
        * </pre>
        */
       public Builder addList(
@@ -637,7 +702,7 @@ public final class AllWelfareMsgProto {
        * <code>repeated .OneWelfareMsg list = 1;</code>
        *
        * <pre>
-       *福利配置表ID
+       *所有福利状态信息
        * </pre>
        */
       public Builder addList(
@@ -655,7 +720,7 @@ public final class AllWelfareMsgProto {
        * <code>repeated .OneWelfareMsg list = 1;</code>
        *
        * <pre>
-       *福利配置表ID
+       *所有福利状态信息
        * </pre>
        */
       public Builder addAllList(
@@ -674,7 +739,7 @@ public final class AllWelfareMsgProto {
        * <code>repeated .OneWelfareMsg list = 1;</code>
        *
        * <pre>
-       *福利配置表ID
+       *所有福利状态信息
        * </pre>
        */
       public Builder clearList() {
@@ -691,7 +756,7 @@ public final class AllWelfareMsgProto {
        * <code>repeated .OneWelfareMsg list = 1;</code>
        *
        * <pre>
-       *福利配置表ID
+       *所有福利状态信息
        * </pre>
        */
       public Builder removeList(int index) {
@@ -708,7 +773,7 @@ public final class AllWelfareMsgProto {
        * <code>repeated .OneWelfareMsg list = 1;</code>
        *
        * <pre>
-       *福利配置表ID
+       *所有福利状态信息
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsg.Builder getListBuilder(
@@ -719,7 +784,7 @@ public final class AllWelfareMsgProto {
        * <code>repeated .OneWelfareMsg list = 1;</code>
        *
        * <pre>
-       *福利配置表ID
+       *所有福利状态信息
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsgOrBuilder getListOrBuilder(
@@ -733,7 +798,7 @@ public final class AllWelfareMsgProto {
        * <code>repeated .OneWelfareMsg list = 1;</code>
        *
        * <pre>
-       *福利配置表ID
+       *所有福利状态信息
        * </pre>
        */
       public java.util.List<? extends com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsgOrBuilder> 
@@ -748,7 +813,7 @@ public final class AllWelfareMsgProto {
        * <code>repeated .OneWelfareMsg list = 1;</code>
        *
        * <pre>
-       *福利配置表ID
+       *所有福利状态信息
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsg.Builder addListBuilder() {
@@ -759,7 +824,7 @@ public final class AllWelfareMsgProto {
        * <code>repeated .OneWelfareMsg list = 1;</code>
        *
        * <pre>
-       *福利配置表ID
+       *所有福利状态信息
        * </pre>
        */
       public com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsg.Builder addListBuilder(
@@ -771,7 +836,7 @@ public final class AllWelfareMsgProto {
        * <code>repeated .OneWelfareMsg list = 1;</code>
        *
        * <pre>
-       *福利配置表ID
+       *所有福利状态信息
        * </pre>
        */
       public java.util.List<com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.OneWelfareMsg.Builder> 
@@ -791,6 +856,54 @@ public final class AllWelfareMsgProto {
           list_ = null;
         }
         return listBuilder_;
+      }
+
+      private int onlineTime_ ;
+      /**
+       * <code>optional int32 onlineTime = 2;</code>
+       *
+       * <pre>
+       *达到相应等级以后在线时间
+       * </pre>
+       */
+      public boolean hasOnlineTime() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional int32 onlineTime = 2;</code>
+       *
+       * <pre>
+       *达到相应等级以后在线时间
+       * </pre>
+       */
+      public int getOnlineTime() {
+        return onlineTime_;
+      }
+      /**
+       * <code>optional int32 onlineTime = 2;</code>
+       *
+       * <pre>
+       *达到相应等级以后在线时间
+       * </pre>
+       */
+      public Builder setOnlineTime(int value) {
+        bitField0_ |= 0x00000002;
+        onlineTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 onlineTime = 2;</code>
+       *
+       * <pre>
+       *达到相应等级以后在线时间
+       * </pre>
+       */
+      public Builder clearOnlineTime() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        onlineTime_ = 0;
+        onChanged();
+        return this;
       }
 
       // @@protoc_insertion_point(builder_scope:AllWelfareMsg)
@@ -819,9 +932,10 @@ public final class AllWelfareMsgProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\023AllWelfareMsg.proto\032\023OneWelfareMsg.pro" +
-      "to\"-\n\rAllWelfareMsg\022\034\n\004list\030\001 \003(\0132\016.OneW" +
-      "elfareMsgB>\n(com.chuangyou.common.protob" +
-      "uf.pb.welfareB\022AllWelfareMsgProto"
+      "to\"A\n\rAllWelfareMsg\022\034\n\004list\030\001 \003(\0132\016.OneW" +
+      "elfareMsg\022\022\n\nonlineTime\030\002 \001(\005B>\n(com.chu" +
+      "angyou.common.protobuf.pb.welfareB\022AllWe" +
+      "lfareMsgProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -841,7 +955,7 @@ public final class AllWelfareMsgProto {
     internal_static_AllWelfareMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_AllWelfareMsg_descriptor,
-        new java.lang.String[] { "List", });
+        new java.lang.String[] { "List", "OnlineTime", });
     com.chuangyou.common.protobuf.pb.welfare.OneWelfareMsgProto.getDescriptor();
   }
 

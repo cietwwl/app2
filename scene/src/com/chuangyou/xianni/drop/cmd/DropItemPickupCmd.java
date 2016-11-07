@@ -2,8 +2,11 @@ package com.chuangyou.xianni.drop.cmd;
 
 import com.chuangyou.common.protobuf.pb.drop.DropItemPickupProto.DropItemPickupMsg;
 import com.chuangyou.common.protobuf.pb.drop.DropPickupCenterProto.DropPickupCenterMsg;
+import com.chuangyou.xianni.battle.magicwpban.MagicwpCompanent;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
+import com.chuangyou.xianni.constant.MagicwpBanConstant;
+import com.chuangyou.xianni.constant.CommonType.CurrencyItemType;
 import com.chuangyou.xianni.drop.objects.DropItem;
 import com.chuangyou.xianni.drop.objects.DropPackage;
 import com.chuangyou.xianni.entity.drop.DropItemInfo;
@@ -23,27 +26,35 @@ public class DropItemPickupCmd extends AbstractCommand {
 	public void execute(ArmyProxy army, PBMessage packet) throws Exception {
 		// TODO Auto-generated method stub
 		DropItemPickupMsg req = DropItemPickupMsg.parseFrom(packet.getBytes());
-		
+
 		Field field = FieldMgr.getIns().getField(army.getFieldId());
 		DropPackage drop = field.getDrop(req.getPackageId());
-		if(drop == null){
+		if (drop == null) {
 			ErrorMsgUtil.sendErrorMsg(army, ErrorCode.Item_IS_NOT_Existed, packet.getCode(), "物品不存在");
 			return;
 		}
-		
+
 		DropItem dropItem = drop.getDropItems().get(req.getDropItemId());
-		if(dropItem == null){
+		if (dropItem == null) {
 			ErrorMsgUtil.sendErrorMsg(army, ErrorCode.Item_IS_NOT_Existed, packet.getCode(), "物品不存在");
 			return;
 		}
-		
+
 		DropItemInfo dropItemInfo = drop.getDropItemTemplete(req.getDropItemId());
-		
+
 		DropPickupCenterMsg.Builder msg = DropPickupCenterMsg.newBuilder();
 		msg.setPackageId(req.getPackageId());
 		msg.setDropItemId(req.getDropItemId());
 		msg.setItemId(dropItemInfo.getItemId());
-		
+
+		// 插入代码：巨富禁制，提升灵石掉落数量
+		int dropCount = dropItemInfo.getCount();
+		if (dropItemInfo.getItemId() == CurrencyItemType.MONEY_ITEM) {
+			MagicwpCompanent companent = army.getPlayer().getMagicwpCompanent(MagicwpBanConstant.ADD_GOLD);
+			if (companent != null && companent.isEffect()) {
+				dropCount = dropCount + companent.getEffectValue() * dropCount / 100;
+			}
+		}
 		msg.setCount(dropItemInfo.getCount());
 		army.sendPbMessage(MessageUtil.buildMessage(Protocol.C_DROP_PICKUP, msg));
 	}

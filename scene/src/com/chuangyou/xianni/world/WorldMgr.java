@@ -21,9 +21,9 @@ public class WorldMgr {
 		if (players.containsKey(playerId)) {
 			synchronized (players) {
 				ArmyProxy army = players.get(playerId);
-				players.remove(playerId);
 				army.unload();
 				army.setOnlineStatu(PlayerState.OFFLINE);
+				players.remove(playerId);
 			}
 		}
 	}

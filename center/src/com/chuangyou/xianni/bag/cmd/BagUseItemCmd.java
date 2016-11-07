@@ -45,10 +45,13 @@ public class BagUseItemCmd extends AbstractCommand {
 			}
 			
 			BaseItem baseItem = playerBag.getItemByPos(pos);
+			if(baseItem.getItemInfo().getCount() < count){
+				return;
+			}
 			if(baseItem.getItemTempInfo() == null){
 				return;
 			}
-			IItemScript script = (IItemScript)ScriptManager.getScriptById(baseItem.getItemTempInfo().getId());
+			IItemScript script = (IItemScript)ScriptManager.getScriptById(baseItem.getItemTempInfo().getScriptId());
 			if(script == null){
 				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.ITEM_CANNOT_USE, packet.getCode(), "物品不能使用");
 				return;

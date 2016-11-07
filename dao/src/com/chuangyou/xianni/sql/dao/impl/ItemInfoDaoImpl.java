@@ -100,7 +100,7 @@ public class ItemInfoDaoImpl extends BaseDao implements ItemInfoDao {
 		para.put(22, new DbParameter(Types.INTEGER, info.getStone()));
 
 		result = execNoneQuery(sql, para) > -1 ? true : false;
-		if(result == true){
+		if (result == true) {
 			info.setOp(Option.None);
 		}
 		return result;
@@ -150,12 +150,12 @@ public class ItemInfoDaoImpl extends BaseDao implements ItemInfoDao {
 					info.setBinds(rs.getBoolean("isBinds"));
 					info.setUsed(rs.getBoolean("isUsed"));
 					info.setValidDate(rs.getInt("validDate"));
-					
+
 					Timestamp tt = rs.getTimestamp("beginDate");
 					if (tt != null) {
 						info.setBeginDate(new Date(tt.getTime()));
 					}
-					
+
 					info.setCount(rs.getInt("count"));
 					info.setRemoveType(rs.getShort("removeType"));
 					tt = rs.getTimestamp("removeDate");
@@ -167,15 +167,15 @@ public class ItemInfoDaoImpl extends BaseDao implements ItemInfoDao {
 					if (tt != null) {
 						info.setAddDate(new Date(tt.getTime()));
 					}
-					
+
 					info.setPro(rs.getInt("pro"));
 					info.setQualityCoefficient(rs.getInt("qualityCoefficient"));
 					info.setGrow(rs.getInt("grow"));
-					
+
 					info.setAwaken(rs.getInt("awaken"));
 					info.setAwakenPoint(rs.getInt("awakenPoint"));
 					info.setStone(rs.getInt("stone"));
-					
+
 					infos.add(info);
 					info.setOp(Option.None);
 				}
@@ -187,6 +187,62 @@ public class ItemInfoDaoImpl extends BaseDao implements ItemInfoDao {
 			}
 		}
 		return infos;
+	}
+
+	@Override
+	public List<ItemInfo> getAllItem(long playerId, List<Integer> tempId, int page, int pageSize) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT * FROM tb_u_item_info WHERE isExist =1 and count>0 and playerId = " + playerId);
+		if (tempId.size() > 0) {
+			sql.append(" and templateId in (");
+			for (int i = 0; i < tempId.size(); i++) {
+				sql.append(tempId.get(i));
+				if (i != tempId.size() - 1) {
+					sql.append(",");
+				}
+			}
+			sql.append(")");
+		}
+		sql.append(" limit ");
+		sql.append((page - 1) * pageSize);
+		sql.append(",");
+		sql.append(pageSize);
+		sql.append(";");
+		List<ItemInfo> all = read(sql.toString(), null);
+		return all;
+	}
+
+	public int getCount(long playerId, List<Integer> tempId) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT count(*) as countData FROM tb_u_item_info WHERE isExist =1 and count>0 and playerId = " + playerId);
+		if (tempId.size() > 0) {
+			sql.append(" and templateId in (");
+			for (int i = 0; i < tempId.size(); i++) {
+				sql.append(tempId.get(i));
+				if (i != tempId.size() - 1) {
+					sql.append(",");
+				}
+			}
+			sql.append(")");
+		}
+		sql.append(";");
+		PreparedStatement pstmt = execQuery(sql.toString(), null);
+		ResultSet rs = null;
+		try {
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				return rs.getInt("countData");
+			}
+		} catch (SQLException e) {
+			Log.error("执行出错" + sql.toString(), e);
+		} finally {
+			closeConn(pstmt, rs);
+		}
+		return 0;
+
+		// System.out.println(sql.toString());
+		// List<ItemInfo> all = read(sql.toString(), null);
+		// return all;
 	}
 
 }

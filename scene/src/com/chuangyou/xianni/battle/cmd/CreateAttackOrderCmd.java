@@ -33,7 +33,7 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 	public void execute(ArmyProxy army, PBMessage packet) throws Exception {
 		AttackOrderMsg orderMsg = AttackOrderMsg.parseFrom(packet.toByteArray());
 		int skillActionId = orderMsg.getSkillActionId();
-		//System.out.println(orderMsg);
+		// System.out.println(orderMsg);
 		// 该玩家是否具有此技能
 		Player player = army.getPlayer();
 		Skill skill = player.getSkill(skillActionId);
@@ -61,7 +61,7 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 			Living living = field.getLiving(targetId);
 			if (living != null) {
 				// PK判定
-				if ((living instanceof Player) && !OrderFactory.attackCheck(field, player, (Player) living)) {
+				if (!OrderFactory.attackCheck(field, player, living)) {
 					continue;
 				}
 				// 怪物AI触发

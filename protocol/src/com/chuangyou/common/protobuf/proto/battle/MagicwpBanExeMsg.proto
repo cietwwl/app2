@@ -1,0 +1,10 @@
+option java_package = "com.chuangyou.common.protobuf.pb.battle";
+option java_outer_classname = "MagicwpBanExeMsgProto";
+import "battle/DamageMsg.proto";
+message MagicwpBanExeMsg {
+	optional int64 livingId = 1; //释放人
+	optional int32 banSkillId = 2; //禁制ID
+	optional int32 banlv = 3; //禁制等级
+	repeated DamageMsg damages = 4; //产生的伤害
+}
+

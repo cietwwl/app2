@@ -2,6 +2,8 @@ package com.chuangyou.xianni.bag.cmd;
 
 import com.chuangyou.common.protobuf.pb.item.ItemMoveMsgProto.ItemMoveMsg;
 import com.chuangyou.xianni.base.AbstractCommand;
+import com.chuangyou.xianni.event.EventNameType;
+import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
@@ -24,6 +26,7 @@ public class BagMoveReceiveCmd extends AbstractCommand {
 			return;
 		}
 		player.getBagInventory().equimentOption(beginBagType, beginPos);
+		player.notifyListeners(new ObjectEvent(this, null, EventNameType.EQUIP));
 		
 	}
 

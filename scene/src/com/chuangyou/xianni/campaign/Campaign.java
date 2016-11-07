@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
 import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLivingInfoMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CampaignInfoMsgProto.CampaignInfoMsg;
 import com.chuangyou.common.protobuf.pb.campaign.CampaignStatuMsgProto.CampaignStatuMsg;
@@ -48,7 +47,6 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.ClientProtocol;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
-import com.chuangyou.xianni.role.objects.Avatar;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.warfield.FieldMgr;
@@ -157,12 +155,13 @@ public class Campaign extends AbstractActionQueue implements ICampaignStateWork 
 		CampainOverLeaveAction action = new CampainOverLeaveAction(this, army);
 		enqueue(action);
 	}
-	
+
 	/**
 	 * 玩家彻底退出副本，被踢出副本
+	 * 
 	 * @param army
 	 */
-	public void onPlayerExit(ArmyProxy army){
+	public void onPlayerExit(ArmyProxy army) {
 		CampaignExitAction action = new CampaignExitAction(this, army);
 		enqueue(action);
 	}
@@ -390,8 +389,8 @@ public class Campaign extends AbstractActionQueue implements ICampaignStateWork 
 			this.getActionQueue().enDelayQueue(this);
 		}
 	}
-	
-	public void pollingCheck(){
+
+	public void pollingCheck() {
 		notifyTaskEvent(CTBaseCondition.PASS_TIME_LIMIT, 1);
 	}
 
@@ -565,21 +564,21 @@ public class Campaign extends AbstractActionQueue implements ICampaignStateWork 
 	// }
 	// }
 
-//	private void createAvatar(RobotInfoMsg msg) {
-//		Avatar robot = null;
-//		ArmyProxy army = WorldMgr.getArmy(msg.getSimpInfo().getPlayerId());
-//		if (army == null) {
-//			return;
-//		}
-//		if (army.getAvatars(msg.getSimpInfo().getSkinId()) == null) {
-//			robot = new Avatar(army);
-//			robot.instill(msg);
-//			army.addAvatar(robot);
-//		} else {
-//			robot = army.getAvatars(msg.getSimpInfo().getSkinId());
-//		}
-//		robot.setCampaignId(getIndexId());
-//	}
+	// private void createAvatar(RobotInfoMsg msg) {
+	// Avatar robot = null;
+	// ArmyProxy army = WorldMgr.getArmy(msg.getSimpInfo().getPlayerId());
+	// if (army == null) {
+	// return;
+	// }
+	// if (army.getAvatars(msg.getSimpInfo().getSkinId()) == null) {
+	// robot = new Avatar(army);
+	// robot.instill(msg);
+	// army.addAvatar(robot);
+	// } else {
+	// robot = army.getAvatars(msg.getSimpInfo().getSkinId());
+	// }
+	// robot.setCampaignId(getIndexId());
+	// }
 
 	/**
 	 * 节点触发（外部调用）
@@ -663,11 +662,11 @@ public class Campaign extends AbstractActionQueue implements ICampaignStateWork 
 		}
 		return WorldMgr.getArmy(creater);
 	}
-	
-	public long getCreaterId(){
+
+	public long getCreaterId() {
 		return creater;
 	}
-	
+
 	// public void addAvatars(List<Avatar> avatars) {
 	// for (Avatar avatar : avatars) {
 	//

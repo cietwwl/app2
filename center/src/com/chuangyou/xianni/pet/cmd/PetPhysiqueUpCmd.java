@@ -16,8 +16,8 @@ import com.chuangyou.xianni.player.PlayerInfoSendCmd;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.retask.event.PetStateEvent;
 import com.chuangyou.xianni.socket.Cmd;
-import com.chuangyou.xianni.state.event.PetStateEvent;
 
 @Cmd(code = Protocol.C_PET_PHYSIQUE_UP, desc = "宠物炼体")
 public class PetPhysiqueUpCmd extends AbstractCommand {

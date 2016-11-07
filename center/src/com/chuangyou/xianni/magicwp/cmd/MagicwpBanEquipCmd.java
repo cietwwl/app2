@@ -41,6 +41,8 @@ public class MagicwpBanEquipCmd extends AbstractCommand {
 			msg.setPosition(curBan.getPosition());
 			PBMessage p = MessageUtil.buildMessage(Protocol.U_MAGICWP_BAN_EQUIP, msg);
 			player.sendPbMessage(p);
+			
+			player.getMagicwpInventory().writeMagicwpMsg2Scene();
 			return;
 		}
 
@@ -94,6 +96,7 @@ public class MagicwpBanEquipCmd extends AbstractCommand {
 			PBMessage pTarget = MessageUtil.buildMessage(Protocol.U_MAGICWP_BAN_EQUIP, targetMsg);
 			player.sendPbMessage(pTarget);
 		}
+		player.getMagicwpInventory().writeMagicwpMsg2Scene();
 	}
 
 }

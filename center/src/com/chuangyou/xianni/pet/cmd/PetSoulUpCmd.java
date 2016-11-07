@@ -16,8 +16,8 @@ import com.chuangyou.xianni.player.PlayerInfoSendCmd;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.retask.event.PetStateEvent;
 import com.chuangyou.xianni.socket.Cmd;
-import com.chuangyou.xianni.state.event.PetStateEvent;
 
 @Cmd(code = Protocol.C_PET_SOUL_UP, desc = "宠物炼魂")
 public class PetSoulUpCmd extends AbstractCommand {

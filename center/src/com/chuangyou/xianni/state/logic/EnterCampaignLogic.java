@@ -10,7 +10,7 @@ import com.chuangyou.xianni.entity.state.StateConfig;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.state.trigger.StateTrigger;
+import com.chuangyou.xianni.retask.vo.StateTask;
 
 /**
  * 进入渡节副本逻辑
@@ -66,8 +66,8 @@ public class EnterCampaignLogic extends BaseStateLogic{
 	 * @return
 	 */
 	private boolean check(GamePlayer player){
-		for (StateTrigger trigger : player.getStateInventory().getStateTriggers().values()) {
-			if(trigger.getCondition().isComplete() == false){
+		for (StateTask trigger : player.getStateInventory().getStateTasks().values()) {
+			if(trigger.isFinish() == false){
 				return false;
 			}
 		}

@@ -40,16 +40,16 @@ function finishTask(playerId,taskId){
 	case 10005:
 		changeMap(playerId,1009,4054,247,5936);
 		break;	
-	case 10026:
+	case 10025:
 		changeMap(playerId,1008,5811,-4,4873);
 		break;
-	case 10034:
+	case 10035:
 		changeMap(playerId,1009,4735,18,6978);
 		break;
-	case 10050:
+	case 10051:
 		changeMap(playerId,1009,5603,14,7282);
 		break;	
-	case 10057:
+	case 10058:
 		changeMap(playerId,1014,134,236,1003);
 		break;
 	}

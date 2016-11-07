@@ -2,14 +2,15 @@
 
 #######################################CenterServer######################################
 CenterServer.test.testAlert=语言包测试
+CenterServer.email.systemTitle=系统邮件
 CenterServer.guild.emailTitle=门派消息
 CenterServer.guild.emailSender=发件人：
 CenterServer.guild.warehouseEmailContent=你收到来自掌门分配的道具奖励，请查收
-CenterServer.email.systemTitle=系统邮件
 CenterServer.fieldBoss.mostDamageAward=你在挑战首领活动中对@bossName@造成的伤害最高，获得了以下奖励，请查收
 CenterServer.fieldBoss.firstDamageAward=你在挑战首领活动中对@bossName@造成了首次伤害，获得了以下奖励，请查收
 CenterServer.fieldBoss.shieldAward=你在挑战首领活动中击破@bossName@的护体，获得了以下奖励，请查收
 CenterServer.fieldBoss.normalAward=你在挑战首领@bossName@活动中获得了以下奖励，请查收
+CenterServer.fieldBoss.worldBossTreasureAward=你在夺宝活动中获得了以下奖励，请尽快取出。
 #######################################SenceServer######################################
 
 #######################################COMMON######################################

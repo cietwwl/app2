@@ -24,8 +24,7 @@ public class WeightRandomUtil {
 			int r = new Random().nextInt(total);
 			int flag = 0;
 			for (IWeight iWeight : list) {
-				
-				if (r > flag && r <= flag+iWeight.getWeight()) {
+				if (r >= flag && r < flag+iWeight.getWeight()) {
 					return iWeight;
 				}
 				flag += iWeight.getWeight();

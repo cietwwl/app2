@@ -9,9 +9,12 @@ import com.chuangyou.common.protobuf.pb.map.TransferTriggerProto.TransferTrigger
 import com.chuangyou.common.protobuf.pb.npcDialog.HintRespProto.HintRespMsg;
 import com.chuangyou.common.util.ChangeCharsetUtil;
 import com.chuangyou.common.util.Log;
+import com.chuangyou.xianni.bag.ItemManager;
+import com.chuangyou.xianni.chat.manager.ChatManager;
 import com.chuangyou.xianni.constant.DamageEffecterType;
 import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.entity.item.ItemAddType;
+import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
 import com.chuangyou.xianni.entity.task.TaskInfo;
 import com.chuangyou.xianni.map.MapProxyManager;
 import com.chuangyou.xianni.netty.GatewayLinkedSet;
@@ -21,7 +24,7 @@ import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.task.TaskTriggerInfo;
+import com.chuangyou.xianni.retask.vo.RealTask;
 import com.chuangyou.xianni.word.WorldMgr;
 
 public class ScriptInterfaceManager {
@@ -75,9 +78,8 @@ public class ScriptInterfaceManager {
 	 */
 	public static boolean isHasTask(long playerId, int taskId) {
 		GamePlayer player = WorldMgr.getPlayer(playerId);
-		if (player == null)
-			return false;
-		TaskTriggerInfo info = player.getTaskInventory().getTaskInfos().get(taskId);
+		if(player==null)return false;
+		RealTask info = player.getTaskInventory().getTaskInfos().get(taskId);
 		if (info == null) {
 			return false;
 		} else {
@@ -308,5 +310,49 @@ public class ScriptInterfaceManager {
 			return;
 		}
 		player.getArmyInventory().addBuff(buffTempId);
+	}
+	
+	/**
+	 * 发送公告
+	 * @param channel
+	 * @param content
+	 */
+	public static void sendNotice(int channel, String content){
+		ChatManager.sendSystemChatMsg(channel, content);
+	}
+	
+	/**
+	 * 发送触发者所在场景中才能收到的公告
+	 * @param playerId
+	 * @param channel
+	 * @param content
+	 */
+	public static void sendSceneNotice(long playerId, int channel, String content){
+		ChatManager.sendSceneSystemChatMsg(playerId, channel, content);
+	}
+	
+	/**
+	 * 获取物品颜色
+	 * @param itemTempId
+	 */
+	public static byte getItemColor(int itemTempId){
+		ItemTemplateInfo itemTempInfo = ItemManager.findItemTempInfo(itemTempId);
+		if(itemTempInfo == null){
+			return 0;
+		}
+		return itemTempInfo.getItemcolor();
+	}
+	
+	/**
+	 * 获取物品名字
+	 * @param itemTempId
+	 * @return
+	 */
+	public static String getItemName(int itemTempId){
+		ItemTemplateInfo itemTempInfo = ItemManager.findItemTempInfo(itemTempId);
+		if(itemTempInfo == null){
+			return "";
+		}
+		return itemTempInfo.getName();
 	}
 }

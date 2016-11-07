@@ -13,6 +13,7 @@ import com.chuangyou.xianni.battle.buffer.specialbuf.RealRestoreOrDamageBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.SoulAttackConvertAttackBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.SoulDefenceBreakBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.TruckAttributesBuffer;
+import com.chuangyou.xianni.battle.buffer.specialbuf.TruckHideNameBuffer;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.role.objects.Living;
 
@@ -73,6 +74,8 @@ public class BufferFactory {
 			case BufferType.BE_ATTACK_DAMAGE_EFFECT:
 				buffer = new BeAttackDamageEffectBuffer(source, target, bufferInfo);
 				break;
+			case BufferType.TRUCE_HIDE_NAME:
+				buffer = new TruckHideNameBuffer(source, target, bufferInfo);
 			default:
 				buffer = new LivingDamageBuffer(source, target, bufferInfo);
 		}

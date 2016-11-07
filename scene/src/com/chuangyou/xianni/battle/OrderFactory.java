@@ -13,6 +13,8 @@ import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Player;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.helper.FieldConstants.FieldAttackRule;
+import com.chuangyou.xianni.world.ArmyProxy;
+import com.chuangyou.xianni.world.WorldMgr;
 
 /**
  * 战斗指令工厂类
@@ -43,23 +45,36 @@ public class OrderFactory {
 		return attackOrder;
 	}
 
-	public static boolean attackCheck(Field field, Player player, Player target) {
+	public static boolean attackCheck(Field field, Player player, Living living) {
 		try {
-			if (player.getArmyId() != 0 && player.getArmyId() == target.getArmyId()) {
+			if (player.getArmyId() != 0 && player.getArmyId() == living.getArmyId()) {
 				return false;
 			}
-
-			int fieldAttackRule = field.getAttackRule(player, target);
-//			if (field.getFieldInfo().getBattleType() == FieldConstants.BattleType.ARENA) {
-//				return true; // 竞技地图，任意PK
-//			}
-			if(fieldAttackRule == FieldAttackRule.ATTACK){
+			// 无部队目标，锁定为可攻击
+			if (living.getArmyId() == 0) {
 				return true;
 			}
-			if(fieldAttackRule == FieldAttackRule.UNATTACK){
+			int fieldAttackRule = field.getAttackRule(player, living);
+
+			if (fieldAttackRule == FieldAttackRule.ATTACK) {
+				return true;
+			}
+			if (fieldAttackRule == FieldAttackRule.UNATTACK) {
 				return false;
 			}
-			
+			Player target = null;
+			if (living instanceof Player) {
+				target = (Player) living;
+			} else {
+				ArmyProxy army = WorldMgr.getArmy(living.getArmyId());
+				if (army != null) {
+					target = army.getPlayer();
+				}
+			}
+			if (target == null) {
+				return true;
+			}
+
 			String startTime = field.getFieldInfo().getStartBattleTime();
 			String endTime = field.getFieldInfo().getEndBattleTime();
 			if (fieldAttackRule == FieldAttackRule.USEPLAYERMODE) {// pk 地图才能攻击
@@ -73,9 +88,9 @@ public class OrderFactory {
 				if (player.getTeamId() != 0 && player.getTeamId() == target.getTeamId()) {// 队友
 					return false;
 				}
-				if (player.getBattleMode() == BattleModeCode.sectsBattleMode) {//帮派模式同帮派的不能对砍
-					if(player.getSimpleInfo() != null || target.getSimpleInfo() != null){
-						if(player.getSimpleInfo().getGuildId() != 0 && player.getSimpleInfo().getGuildId() == target.getSimpleInfo().getGuildId()){
+				if (player.getBattleMode() == BattleModeCode.sectsBattleMode) {// 帮派模式同帮派的不能对砍
+					if (player.getSimpleInfo() != null || target.getSimpleInfo() != null) {
+						if (player.getSimpleInfo().getGuildId() != 0 && player.getSimpleInfo().getGuildId() == target.getSimpleInfo().getGuildId()) {
 							return false;
 						}
 					}

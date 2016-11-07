@@ -156,7 +156,7 @@ public class SceneServer extends BaseServer {
 		if (!initComponent(TruckTempMgr.init(), "运镖")) {
 			return false;
 		}
-		if (!initComponent(StateTemplateMgr.init(), "消耗模板数据")) {
+		if (!initComponent(StateTemplateMgr.init(), "境界模板数据")) {
 			return false;
 		}
 		if (!initComponent(AvatarTempManager.init(), "分身默契模板")) {

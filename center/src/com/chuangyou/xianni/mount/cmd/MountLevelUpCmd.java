@@ -19,8 +19,8 @@ import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.retask.event.MountStateEvent;
 import com.chuangyou.xianni.socket.Cmd;
-import com.chuangyou.xianni.state.event.MountStateEvent;
 
 @Cmd(code = Protocol.C_MOUNT_LEVEL_UP, desc = "坐骑升级")
 public class MountLevelUpCmd extends AbstractCommand {

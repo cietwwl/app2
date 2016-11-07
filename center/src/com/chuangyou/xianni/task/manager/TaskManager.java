@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import com.chuangyou.common.protobuf.pb.task.TaskInfoProto.TaskInfoMsg;
 import com.chuangyou.common.protobuf.pb.task.TaskUpdateRespProto.TaskUpdateRespMsg;
 import com.chuangyou.common.util.TimeUtil;
+import com.chuangyou.xianni.activeSystem.cmd.ClearDayAndWeekActive;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.task.TaskCfg;
 import com.chuangyou.xianni.entity.task.TaskInfo;
@@ -18,7 +19,7 @@ import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.task.TaskTriggerInfo;
+import com.chuangyou.xianni.retask.vo.RealTask;
 import com.chuangyou.xianni.task.cmd.ClearDayTaskCmd;
 import com.chuangyou.xianni.task.template.TaskTemplateMgr;
 import com.chuangyou.xianni.word.WorldMgr;
@@ -37,6 +38,11 @@ public class TaskManager {
 				//将任务模拟进队列
 				player.enqueue(new CmdTask(new ClearDayTaskCmd(), null, pkg, player.getCmdTaskQueue()));
 			}
+			if(player.getActiveInventory().isReady()){
+				PBMessage pkg = MessageUtil.buildMessage((short)-1,player.getPlayerId());
+				//将任务模拟进队列
+				player.enqueue(new CmdTask(new ClearDayAndWeekActive(), null, pkg, player.getCmdTaskQueue()));
+			}
 		}
 	}
 	
@@ -47,16 +53,16 @@ public class TaskManager {
 	 * @param info
 	 */
 	public static void clearDayTask(GamePlayer player,boolean isNotify){
-		Map<Integer, TaskTriggerInfo> infos = player.getTaskInventory().getTaskInfos();
-		Iterator<Entry<Integer, TaskTriggerInfo>> it = infos.entrySet().iterator();
-		List<TaskInfo> list = new ArrayList<>();		
+		Map<Integer, RealTask> infos = player.getTaskInventory().getTaskInfos();
+		Iterator<Entry<Integer, RealTask>> it = infos.entrySet().iterator();
+		List<RealTask> list = new ArrayList<>();		
 		List<TaskInfo> removeList = new ArrayList<>();
 		while(it.hasNext()){
 			TaskInfo t = it.next().getValue().getInfo();
 			TaskCfg cfg = TaskTemplateMgr.getTaskCfg(t.getTaskId());
 			if(cfg==null)continue;
 			if(cfg.getTaskType() == TaskCfg.DAY){
-				if(!TimeUtil.dataCompare6(t.getUpdateTime())){//跨天
+				if(!TimeUtil.dataCompare5(t.getUpdateTime())){//跨天
 					TaskCfg pre = TaskTemplateMgr.getLinkHead(cfg.getTaskLink());
 					TaskInfo updateT = new TaskInfo();
 					updateT.setPlayerId(player.getPlayerId());
@@ -66,7 +72,8 @@ public class TaskManager {
 					updateT.setUpdateTime(new Date());
 					updateT.setCreateTime(new Date());
 					updateT.setOp(Option.Insert);
-					list.add(updateT);
+					RealTask task = new RealTask(cfg, updateT, player);
+					list.add(task);
 					if(isNotify){	
 						TaskUpdateRespMsg.Builder resp = TaskUpdateRespMsg.newBuilder();
 						resp.setInfo(TaskManager.getTaskMsg(updateT));
@@ -77,16 +84,15 @@ public class TaskManager {
 				}
 			}			
 		}
-		
-		
+			
 		if(removeList.size()>0){
 			for (TaskInfo taskInfo : removeList) {
-				player.getTaskInventory().del(taskInfo);
+				player.getTaskInventory().del(taskInfo.getTaskId());
 			}
 		}
 		if(list.size()>0){			
-			for (TaskInfo taskInfo : list) {
-				player.getTaskInventory().add(new TaskTriggerInfo(player, taskInfo));
+			for (RealTask task : list) {
+				player.getTaskInventory().add(task);
 			}
 		}
 				

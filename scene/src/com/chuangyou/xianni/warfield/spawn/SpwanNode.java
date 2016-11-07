@@ -27,10 +27,11 @@ public class SpwanNode {
 	protected int					blood;				// 节点血量（适用于需要循环开闭的节点，如传送阵）
 
 	protected long					refreshTime;		// 刷新时间 10:00
-	protected long					timeControlerTime;	// 定时刷新时间
 	static final int				WAKE_OVER	= 0;	// 结束时唤醒下一个
 	static final int				WAKE_START	= 1;	// 激活时唤醒下一个
 	protected Map<Long, Living>		children;			// 子孙们
+
+	private long					timerControlerTime;	// 定时刷新点，刷新时间
 
 	public SpwanNode(SpawnInfo spwanInfo, Field field) {
 		this.spwanInfo = spwanInfo;
@@ -125,15 +126,15 @@ public class SpwanNode {
 			if (spwanInfo.getRestType() == SpwanInfoIntervalType.DIE_SIGN) {
 				refreshTime = currentTimeMillis;
 			}
-			//刷新间隔
+			// 刷新间隔
 			long refreshInterval = spwanInfo.getRestSecs() * 60L * 1000;
-			//经历完整间隔时间次数+1
-			long restCount = (long)Math.floor((currentTimeMillis - refreshTime)/refreshInterval) + 1;
-			
-			//复活时间
+			// 经历完整间隔时间次数+1
+			long restCount = (long) Math.floor((currentTimeMillis - refreshTime) / refreshInterval) + 1;
+
+			// 复活时间
 			long relive = refreshTime + restCount * spwanInfo.getRestSecs() * 60L * 1000;
 			long leftTime = relive - currentTimeMillis;
-			
+
 			if (leftTime <= 0) {
 				this.revive();
 			} else {
@@ -151,9 +152,9 @@ public class SpwanNode {
 			if (l.getField() != null) {
 				l.getField().leaveField(l);
 			}
-			l.destory();
 			l.clearData();
 		}
+		children.clear();
 		Campaign campaign = CampaignMgr.getCampagin(campaignId);
 		// @atuo 2016-09-05 副本进度指引
 		if (campaign != null) {
@@ -301,12 +302,11 @@ public class SpwanNode {
 		}
 	}
 
-	public long getTimeControlerTime() {
-		return timeControlerTime;
+	public long getTimerControlerTime() {
+		return timerControlerTime;
 	}
 
-	public void setTimeControlerTime(long timeControlerTime) {
-		this.timeControlerTime = timeControlerTime;
+	public void setTimerControlerTime(long timerControlerTime) {
+		this.timerControlerTime = timerControlerTime;
 	}
-
 }

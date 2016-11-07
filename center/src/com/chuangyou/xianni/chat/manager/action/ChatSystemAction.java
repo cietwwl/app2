@@ -7,7 +7,10 @@ import com.chuangyou.xianni.constant.ChatConstant;
 import com.chuangyou.xianni.entity.chat.ChatMsgInfo;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.BroadcastUtil;
+import com.chuangyou.xianni.proto.MessageUtil;
+import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.word.WorldMgr;
 
 public class ChatSystemAction extends ChatBaseAction {
 	
@@ -18,12 +21,23 @@ public class ChatSystemAction extends ChatBaseAction {
 		msg.setChannel(sendMsg.getChannel());
 		msg.setSendTime(System.currentTimeMillis());
 		msg.setChatContent(sendMsg.getChatContent());
-		BroadcastUtil.sendBroadcasePacketToAll(Protocol.U_CHAT_RECEIVE, msg.build());
+		if(sendMsg.getSenderId() > 0 && sendMsg.getParam1() > 0){
+			msg.setSenderId(sendMsg.getSenderId());
+			msg.setParam1(sendMsg.getParam1());
+			
+			sender = WorldMgr.getPlayerFromCache(sendMsg.getSenderId());
+			if(sender != null){
+				PBMessage p = MessageUtil.buildMessage(Protocol.S_CHAT_INNER_SEND, msg);
+				sender.sendPbMessage(p);
+			}
+		}else{
+			BroadcastUtil.sendBroadcasePacketToAll(Protocol.U_CHAT_RECEIVE, msg.build());
+		}
 		return true;
 	}
 	
 	@Override
-	public List<Long> getReceivers(GamePlayer sender, ChatMsgInfo sendMsg) {
+	protected List<Long> getReceivers(GamePlayer sender, ChatMsgInfo sendMsg) {
 		// TODO Auto-generated method stub
 		return null;
 	}

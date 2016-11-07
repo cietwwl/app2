@@ -1,0 +1,12 @@
+//protocol=1626;
+option java_package = "com.chuangyou.common.protobuf.pb.soul";
+option java_outer_classname = "DrawCardRespProto";
+
+import "soul/CardPieceMsg.proto";
+
+//请求抽卡
+message DrawCardRespMsg{
+	required int32 type = 1;//抽卡类型    1：免费抽卡一次  2：付费抽卡一次   3：付费抽卡10次
+	required int32 time = 2;//已经抽卡次数
+	repeated CardPieceMsg infos =3;//获得的卡牌碎片
+}

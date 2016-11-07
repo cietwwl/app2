@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.chuangyou.xianni.entity.soul.CardComboConfig;
 import com.chuangyou.xianni.entity.soul.CardLvConfig;
+import com.chuangyou.xianni.entity.soul.CardRateConfig;
 import com.chuangyou.xianni.entity.soul.CardSkillConfig;
 import com.chuangyou.xianni.entity.soul.CardStarConfig;
 import com.chuangyou.xianni.entity.soul.FuseItemConfig;
@@ -48,5 +49,6 @@ public interface SoulDao {
 	public Map<Integer, SoulFuseSkillConfig> getFuseSkillConfig();
 	public Map<Integer, FuseItemConfig> getFuseItemConfig();
 	public Map<Integer, CardComboConfig> getCardComboConfig();
+	public Map<Integer, CardRateConfig> getCardRateConfig();
 	
 }

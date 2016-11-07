@@ -1,0 +1,11 @@
+//protocol=1628;
+option java_package = "com.chuangyou.common.protobuf.pb.activeSystem";
+option java_outer_classname = "ActiveInfoProto";
+
+//进度消息结构
+//进度更新消息
+message ActiveInfoMsg{
+	required int32 active = 1;  //任务ID
+	required int32 process = 2;  //任务进度
+	optional int32 reward = 3;//已经领奖的进度值
+}

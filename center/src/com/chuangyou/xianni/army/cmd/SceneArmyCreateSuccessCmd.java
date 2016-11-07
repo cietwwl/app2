@@ -23,6 +23,11 @@ public class SceneArmyCreateSuccessCmd extends AbstractCommand {
 			player.getAvatarInventory().writeAvatarMsg2Scene();
 		}
 
+		// 发送法定数据
+		if (player.getMagicwpInventory() != null) {
+			player.getMagicwpInventory().writeMagicwpMsg2Scene();
+		}
+
 	}
 
 }

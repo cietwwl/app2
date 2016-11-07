@@ -5,7 +5,7 @@ import java.util.Date;
 import com.chuangyou.xianni.entity.DataObject;
 import com.chuangyou.xianni.entity.Option;
 
-public class TaskInfo extends DataObject {
+public class TaskInfo extends DataObject implements ITaskInfo{
 	
 
 	////////////////////////////////////////////////////

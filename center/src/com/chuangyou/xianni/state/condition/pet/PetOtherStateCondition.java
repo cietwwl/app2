@@ -9,8 +9,8 @@ import com.chuangyou.xianni.event.EventNameType;
 import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.event.ObjectListener;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.retask.event.PetStateEvent;
 import com.chuangyou.xianni.state.condition.BaseStateCondition;
-import com.chuangyou.xianni.state.event.PetStateEvent;
 
 public class PetOtherStateCondition extends BaseStateCondition {
 

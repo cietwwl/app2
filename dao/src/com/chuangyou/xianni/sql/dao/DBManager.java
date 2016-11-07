@@ -1,5 +1,6 @@
 package com.chuangyou.xianni.sql.dao;
 
+import com.chuangyou.xianni.sql.dao.impl.ActiveDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.ActivityDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.AiConfigDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.ArenaInfoDaoImpl;
@@ -91,6 +92,8 @@ import com.chuangyou.xianni.sql.dao.impl.UserDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.VipBagTemplateDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.VipLevelTemplateDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.VipTemDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.WelfareConditionRecordDaoImpl;
+import com.chuangyou.xianni.sql.dao.impl.WelfareConditionTemplateDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.WelfareDaoImpl;
 import com.chuangyou.xianni.sql.dao.impl.WelfareTemplateDaoImpl;
 
@@ -852,6 +855,16 @@ public class DBManager {
 	public static FieldBossInfoDao getFieldBossInfoDao() {
 		return fieldBossInfoDao;
 	}
+	
+	
+	/**
+	 * 活跃系统
+	 */
+	public static final ActiveDao activeDao = new ActiveDaoImpl();
+	
+	public static ActiveDao getActiveDao(){
+		return activeDao;
+	}
 
 	/**
 	 * 福利信息
@@ -879,4 +892,22 @@ public class DBManager {
 	public static NoticeConfigDao getNoticeConfigDao(){
 		return noticeConfigDao;
 	}
+	
+	/**
+	 * 福利条件配置
+	 */
+	private static final WelfareConditionTemplateDao WELFARE_CONDITION_TEMPLATE_DAO = new WelfareConditionTemplateDaoImpl();
+	public static WelfareConditionTemplateDao getWelfareConditionTemplateDao() {
+		return WELFARE_CONDITION_TEMPLATE_DAO;
+	}
+	
+	/**
+	 * 7天登录礼包
+	 */
+	private static final WelfareConditionRecordDao WELFARE_CONDITION_RECORD_DAO = new WelfareConditionRecordDaoImpl();
+
+	public static WelfareConditionRecordDao getWelfareConditionRecordDao() {
+		return WELFARE_CONDITION_RECORD_DAO;
+	}
+	
 }

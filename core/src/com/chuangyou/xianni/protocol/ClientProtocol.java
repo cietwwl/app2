@@ -30,6 +30,9 @@ public interface ClientProtocol {
 	// ===========================>msgBegin<===========================
 	public static final short	U_ALERT_MSG							= 26;	// 弹出消息
 	// ===========================>msgEnd<==============================
+	// ===========================>battle<==============================
+	public static final short	U_MAGICWP_BAN_EXE					= 27;	// 法宝禁制是否
+	// ===========================>battle<==============================
 
 	// ===========================>campaign<==============================
 	public static final short	U_CAMPAIGN_RESP						= 601;	// 副本返回状态
@@ -276,6 +279,16 @@ public interface ClientProtocol {
 	 */
 	public static final short	U_RESP_SOUL_FUSE					= 1611;
 
+	/**
+	 * 请求抽卡信息
+	 */
+	public static final short	U_RESP_SOUL_GET_LUCK_INFO			= 1625;
+
+	/**
+	 * 抽卡
+	 */
+	public static final short	U_RESP_SOUL_DRAW_CARD				= 1626;
+
 	// ==========================>日常活动<====================================
 	/**
 	 * 活动总数据
@@ -332,16 +345,36 @@ public interface ClientProtocol {
 	 * 
 	 */
 	public static final short	U_RESP_STATE_QTE					= 1620;
-	
+
 	/**
 	 * 境界副本进度通知
 	 */
-	public static final short U_RESP_STATE_FB_PROCESS				= 1623;
-	
+	public static final short	U_RESP_STATE_FB_PROCESS				= 1623;
+
 	/**
 	 * 通知有事件触发
 	 */
-	public static final short U_RESP_STATE_NOTIFY_EVENT				= 1624;
+	public static final short	U_RESP_STATE_NOTIFY_EVENT			= 1624;
+
+	// ==========================>兑换<=======================================
+
+	public static final short	U_RESP_EXCHANGE						= 1627;
+
+	// ==========================>活跃系统<=======================================
+
+	/**
+	 * 进度通知
+	 */
+	public static final short	U_NOTIFY_ACTIVE_PROCESS				= 1628;
+
+	/**
+	 * 获奖
+	 */
+	public static final short	U_RESP_ACTIVE_REWARD				= 1629;
+	/**
+	 * 获得所有的进度
+	 */
+	public static final short	U_RESP_ACTIVE_GET_ALL				= 1630;
 
 	// =========================>坐骑<===================================
 	/** 返回坐骑信息 */
@@ -520,22 +553,21 @@ public interface ClientProtocol {
 
 	/** 玩家帮派信息同步更新 */
 	public static final short	U_PLAYER_GUILD_NOTIFY				= 171;
-	
+
 	/**
 	 * 野外BOSS信息列表
 	 */
 	public static final short	U_FIELD_BOSS_LIST					= 172;
-	
+
 	/**
 	 * 世界BOSS夺宝中玩家箱子数量
 	 */
 	public static final short	U_TREASURE_COUNT					= 173;
-	
+
 	/**
 	 * 帮派快照信息
 	 */
 	public static final short	U_GUILD_SNAP						= 174;
-	
 
 	/** 获取时装信息 */
 	public static short			U_FASHION_GET						= 201;
@@ -621,10 +653,10 @@ public interface ClientProtocol {
 	public static final short	U_RESP_TRUCK_REWARD					= 2624;
 	/** 帮派成员护镖运镖时间 */
 	public static final short	U_RESP_TRUCK_PROT_TIMER				= 2625;
-	//福利相关协议
+	// 福利相关协议
 	/** 推送全部福利信息 */
 	public static final short	U_ALL_WELFARE_INFO					= 2626;
 	/** 更新单个福利信息 */
-	public static final short	U_ONE_WELFARE_INFO				= 2627;
+	public static final short	U_ONE_WELFARE_INFO					= 2627;
 
 }

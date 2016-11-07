@@ -1,0 +1,13 @@
+//protocol=1627;
+
+option java_package = "com.chuangyou.common.protobuf.pb.exchange";
+option java_outer_classname = "ExchangeRespProto";
+
+ //兑换
+message ExchangeRespMsg{
+	required int32 exchangeType =1; //兑换次数  1:兑换1次   2：兑换10次
+	required int32 curDayTime = 2; //当天已经兑换次数
+	required int32 totalTime = 3;  //总兑换次数
+	required int64 awardMoney = 4; //兑换获得
+	required int64 awardMoneyAdd = 5;//额外奖励
+}

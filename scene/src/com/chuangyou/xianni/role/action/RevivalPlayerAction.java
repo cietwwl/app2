@@ -28,7 +28,7 @@ public class RevivalPlayerAction extends DelayAction {
 	private ArmyProxy			army;
 
 	public RevivalPlayerAction(ArmyProxy army) {
-		super(army, DeathCD + 100000);
+		super(army, DeathCD);
 		this.army = army;
 	}
 

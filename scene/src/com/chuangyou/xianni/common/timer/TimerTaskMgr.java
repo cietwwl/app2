@@ -1,11 +1,11 @@
 package com.chuangyou.xianni.common.timer;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.battle.snare.SnareCreateFilter;
@@ -46,19 +46,16 @@ public class TimerTaskMgr {
 		clearTaskMonsterTimer.schedule(clearMonsterTask, beginDate, MINTIME * 5);
 
 		// 凌晨5点定时清理
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:m'0:00'");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String timeStr = sdf.format(new Date());
+		Date startTime = TimeUtil.parseDate(timeStr.substring(0, timeStr.length() - 4) + "0:01");
+
 		day_reset_clearTimer = new Timer("scence_day_reset_clearTimer");
 		day_reset_Data = new Day_5ClearData();
 		timeControlerNode = new TimeControlerNode();
-		try {
-			Date startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(new Date()));
-			day_reset_clearTimer.scheduleAtFixedRate(day_reset_Data, startTime, MINTIME * 60);
-			day_reset_clearTimer.scheduleAtFixedRate(timeControlerNode, startTime, MINTIME * 5);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			Log.error("定时器 taskDayClearTimer,taskDayClearTimer 异常", e);
-			e.printStackTrace();
-		}
+
+		day_reset_clearTimer.scheduleAtFixedRate(day_reset_Data, startTime, MINTIME * 60);
+		day_reset_clearTimer.scheduleAtFixedRate(timeControlerNode, startTime, MINTIME * 5);
 
 		return true;
 	}
@@ -100,7 +97,7 @@ class ClearCampaignData extends Task {
 
 	@Override
 	public void exec() {
-		System.err.println(TimeUtil.getDateFormat(new Date()));
+		// Log.error(TimeUtil.getDateFormat(new Date()));
 		CampaignMgr.clearInvalid();
 
 	}
@@ -139,6 +136,7 @@ class TimeControlerNode extends Task {
 
 	@Override
 	public void exec() {
+		Log.error("执行TimeControlerNode" + TimeUtil.getDateFormat(new Date()));
 		TimeControlerNodeMgr.check();
 	}
 

@@ -11,9 +11,9 @@ import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
+import com.chuangyou.xianni.retask.vo.RealTask;
 import com.chuangyou.xianni.socket.Cmd;
 import com.chuangyou.xianni.socket.Command;
-import com.chuangyou.xianni.task.TaskTriggerInfo;
 import com.chuangyou.xianni.task.manager.TaskManager;
 import com.chuangyou.xianni.word.WorldMgr;
 
@@ -30,7 +30,7 @@ public class SearchPrivateMonsterCmd implements Command {
 		GamePlayer player = WorldMgr.getPlayer(playerId);
 		if(msg.getIsExisted()==false){
 			if(player!=null && player.getPlayerState() == PlayerState.ONLINE){
-				TaskTriggerInfo info = player.getTaskInventory().getTaskInfos().get(msg.getTaskId());
+				RealTask info = player.getTaskInventory().getTaskInfos().get(msg.getTaskId());
 				if(info!=null){
 					info.getInfo().setOp(Option.Update);
 					info.getInfo().setUpdateTime(new Date());

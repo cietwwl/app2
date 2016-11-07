@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TaskCfg {
+public class TaskCfg implements ITaskCfg{
 
 	/** 主线任务 */
 	public static final byte MAIN = 1;
@@ -24,7 +24,9 @@ public class TaskCfg {
 	private String acceptScriptId;
 	private byte taskTarget;
 	private int targetId;
+	private int targetId1;
 	private int targetNum;
+	private int targetTrigger;
 	private String completeScriptId;
 	private int exp;
 	private String items;
@@ -258,6 +260,22 @@ public class TaskCfg {
 
 	public void setDropId(int dropId) {
 		this.dropId = dropId;
+	}
+
+	public int getTargetId1() {
+		return targetId1;
+	}
+
+	public void setTargetId1(int targetId1) {
+		this.targetId1 = targetId1;
+	}
+
+	public int getTargetTrigger() {
+		return targetTrigger;
+	}
+
+	public void setTargetTrigger(int targetTrigger) {
+		this.targetTrigger = targetTrigger;
 	}
 
 }

@@ -44,6 +44,10 @@ public class BombBuffer extends Buffer {
 			if (target == null) {
 				continue;
 			}
+			if (target.getArmyId() == source.getArmyId()) {
+				continue;
+			}
+			
 			// 半径3M范围内
 			float i = MathUtils.getDistByXZ(source.getPostion(), target.getPostion());
 			if (i > 3) {

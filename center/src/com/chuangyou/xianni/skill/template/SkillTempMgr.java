@@ -20,7 +20,6 @@ public class SkillTempMgr {
 	 * 技能配置数据
 	 */
 	private static Map<Integer, SkillTempateInfo>	skillTemp	= new HashMap<Integer, SkillTempateInfo>();
-	
 
 	// /**
 	// * 技能属性配置
@@ -43,7 +42,7 @@ public class SkillTempMgr {
 		List<SkillTempateInfo> skillTempInfos = DBManager.getSkillTempateInfoDao().load();
 		if (skillTempInfos != null && skillTempInfos.size() > 0) {
 			for (SkillTempateInfo stemp : skillTempInfos) {
-				skillTemp.put(stemp.getTemplateId(), stemp);				
+				skillTemp.put(stemp.getTemplateId(), stemp);
 			}
 		}
 		// 加载技能属性模板
@@ -66,8 +65,8 @@ public class SkillTempMgr {
 		// }
 		return true;
 	}
-	
-	public static boolean reloadSkillStage(){
+
+	public static boolean reloadSkillStage() {
 		List<SkillStage> skillStageList = DBManager.getSkillStageDao().load();
 		if (skillStageList != null && !skillStageList.isEmpty()) {
 			for (SkillStage stage : skillStageList) {
@@ -108,28 +107,18 @@ public class SkillTempMgr {
 		return list;
 	}
 
-	// /**
-	// * 获取技能属性模板
-	// *
-	// * @param templateId
-	// * @return
-	// */
-	// public static SkillPropertyTemplateInfo getSkillProTemp(int templateId) {
-	// if (skillProTemp.containsKey(templateId)) {
-	// return skillProTemp.get(templateId);
-	// } else {
-	// SimpleProperty simp = readPro(templateId);
-	// SkillPropertyTemplateInfo tempModel = new SkillPropertyTemplateInfo();
-	// tempModel.setTemplateId(templateId);
-	// assignPro(tempModel, simp.getType(), simp.getValue());
-	// if (simp.getDataType() == SimpleProperty.PERCENTAGE || simp.getDataType()
-	// == SimpleProperty.DECR_PERCENTAGE) {
-	// tempModel.setType(1);// 百分比数值
-	// }
-	// skillProTemp.put(templateId, tempModel);
-	// return tempModel;
-	// }
-	// }
+	/**
+	 * 根据类型获取技能模板列表
+	 */
+	public static Map<Integer, SkillTempateInfo> getSkillTempByType(int skillType) {
+		Map<Integer, SkillTempateInfo> list = new HashMap<Integer, SkillTempateInfo>();
+		for (Entry<Integer, SkillTempateInfo> entry : skillTemp.entrySet()) {
+			SkillTempateInfo temp = entry.getValue();
+			if (temp.getMasterType() == skillType)
+				list.put(entry.getKey(), temp);
+		}
+		return list;
+	}
 
 	/**
 	 * 获取技能阶段模板

@@ -51,6 +51,7 @@ public class CampaignStatuChangeCmd implements Command {
 
 	/** 通关副本事件 */
 	private void passCampaign(GamePlayer player, int campaignId) {
+		System.out.println("===================>通关副本ID："+campaignId);
 		player.notifyListeners(new ObjectEvent(this, campaignId, EventNameType.TASK_PASS_FB));
 		player.getStateInventory().passFb(campaignId);
 	}

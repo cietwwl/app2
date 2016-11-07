@@ -70,7 +70,7 @@ public class StarAndLvAddAttLogic extends ConcreteComponent {
 	private void calcSimpleProperty(int attInit, int attAdd, Map<Integer, SimpleProperty> map, SoulCardInfo cardInfo) {
 		if (attInit > 0) {
 			SimpleProperty pro = SkillUtil.readPro(attInit);
-			int temp = (pro.getValue() + (cardInfo.getLv()-1) * attAdd);
+			int temp = (pro.getValue() + (int)(cardInfo.getLv()-1) * attAdd/10000);
 			temp = calcStarAdd(temp, cardInfo);
 			pro.setValue(temp);
 			if (map.containsKey(pro.getType())) {

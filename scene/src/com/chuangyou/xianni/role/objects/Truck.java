@@ -30,6 +30,7 @@ import com.chuangyou.xianni.truck.objects.CheckPointMaterial;
 
 /**
  * 镖车
+ * 
  * @author wkghost
  *
  */
@@ -38,32 +39,33 @@ public class Truck extends ActiveLiving {
 	/**
 	 * 个人
 	 */
-	public static final int TRUCK_P = 1;
+	public static final int						TRUCK_P					= 1;
 	/**
 	 * 帮派
 	 */
-	public static final int TRUCK_G = 2;
-	
-	//镖车状态，等待
-	public static final int TRUCK_STATE_WAIT = 1;
-	//镖车状态，运镖中
-	public static final int TRUCK_STATE_RUN = 2;
-	//镖车状态，到达终点
-	public static final int TRUCK_STATE_ARRIALFINAL = 3;
-	//镖车状态，镖车超时
-	public static final int TRUCK_STATE_TIMEOUT	= 5;
-	
+	public static final int						TRUCK_G					= 2;
+
+	// 镖车状态，等待
+	public static final int						TRUCK_STATE_WAIT		= 1;
+	// 镖车状态，运镖中
+	public static final int						TRUCK_STATE_RUN			= 2;
+	// 镖车状态，到达终点
+	public static final int						TRUCK_STATE_ARRIALFINAL	= 3;
+	// 镖车状态，镖车超时
+	public static final int						TRUCK_STATE_TIMEOUT		= 5;
+
 	/** 镖车技能 */
-	private Map<Integer, List<TruckSkillInfo>> skills;
+	private Map<Integer, List<TruckSkillInfo>>	skills;
 	/** 技能次数 */
-	private Map<Integer, Integer> truckSkillCount;
+	private Map<Integer, Integer>				truckSkillCount;
 	/** 护镖人的时长 */
-	private Map<Long, Integer> protectorTimer;
-	
+	private Map<Long, Integer>					protectorTimer;
+
 	/**
 	 * 护镖人
 	 */
-	private Set<Long> protectors;
+	private Set<Long>							protectors;
+
 	public Set<Long> getProtectors() {
 		return protectors;
 	}
@@ -75,11 +77,12 @@ public class Truck extends ActiveLiving {
 	/**
 	 * 劫镖者
 	 */
-	private Set<Long> robbers;
+	private Set<Long>	robbers;
 	/**
 	 * 镖车类型
 	 */
-	private int trucktype;
+	private int			trucktype;
+
 	public int getTrucktype() {
 		return trucktype;
 	}
@@ -87,28 +90,28 @@ public class Truck extends ActiveLiving {
 	/**
 	 * 目标路点的ID
 	 */
-	private int targetCheckPoint;
+	private int									targetCheckPoint;
 	/**
 	 * 镖车状态
 	 */
-	private int truckState;
+	private int									truckState;
 	/**
 	 * 检查点的物质
 	 */
-	private Map<Integer, CheckPointMaterial> checkPointMaterials;
+	private Map<Integer, CheckPointMaterial>	checkPointMaterials;
 	/**
 	 * 被结果镖
 	 */
-	private boolean robbed;
+	private boolean								robbed;
 	/**
 	 * 暗标时间戳
 	 */
-	private long hideTimestamp = 0;
+	private long								hideTimestamp	= 0;
 	/**
 	 * 暗标市场
 	 */
-	private int hideTimer = 0;
-	
+	private int									hideTimer		= 0;
+
 	public int getTruckState() {
 		return truckState;
 	}
@@ -126,44 +129,38 @@ public class Truck extends ActiveLiving {
 		truckState = TRUCK_STATE_WAIT;
 		robbed = false;
 		this.trucktype = trucktype;
-		if(this.trucktype == TRUCK_P)
-		{
-			this.enDelayQueue(new TruckDelayAutoDestory(this, 60 * 60 * 1000));	//帮派1小时超时
-			//this.enDelayQueue(new TruckDelayAutoDestory(this, 10 * 1000));	//帮派10s超时
-		}
-		else
-		{
-			this.enDelayQueue(new TruckDelayAutoDestory(this, 2 * 60 * 60 * 1000)); //帮派2小时超时
+		if (this.trucktype == TRUCK_P) {
+			this.enDelayQueue(new TruckDelayAutoDestory(this, 60 * 60 * 1000)); // 帮派1小时超时
+			// this.enDelayQueue(new TruckDelayAutoDestory(this, 10 * 1000));
+			// //帮派10s超时
+		} else {
+			this.enDelayQueue(new TruckDelayAutoDestory(this, 2 * 60 * 60 * 1000)); // 帮派2小时超时
 			this.enDelayQueue(new GuildTruckDelayCount(this, 1 * 1000));
 		}
 		protectors = new HashSet<Long>();
 		robbers = new HashSet<Long>();
 		protectorTimer = new HashMap<Long, Integer>();
 		setType(RoleType.truck);
-		TruckRelationshipMgr.setRelation(playerId, id);	//设置关系
-		TruckRelationshipMgr.setOwnership(playerId, id);//设置从属
+		TruckRelationshipMgr.setRelation(playerId, id); // 设置关系
+		TruckRelationshipMgr.setOwnership(playerId, id);// 设置从属
 		TruckMgr.addTruck(this);
 	}
-	
-	public void createCheckPoint()
-	{
+
+	public void createCheckPoint() {
 		Iterator<Entry<Integer, TruckCheckPointConfig>> it = TruckTempMgr.getCheckPoints().entrySet().iterator();
 		checkPointMaterials = new HashMap<Integer, CheckPointMaterial>();
-		while(it.hasNext())
-		{
+		while (it.hasNext()) {
 			Entry<Integer, TruckCheckPointConfig> entry = it.next();
-			if(entry.getValue().getPointType() == TruckTempMgr.FRIST || entry.getValue().getPointType() == TruckTempMgr.LAST) continue;
+			if (entry.getValue().getPointType() == TruckTempMgr.FRIST || entry.getValue().getPointType() == TruckTempMgr.LAST)
+				continue;
 			CheckPointMaterial mat = new CheckPointMaterial();
 			mat.setId(entry.getValue().getId());
 			int baseRemian = 0;
 			int basePrice = 0;
-			if(this.trucktype == 1)
-			{
+			if (this.trucktype == 1) {
 				baseRemian = entry.getValue().getIndividualNum();
 				basePrice = SystemConfigTemplateMgr.getIntValue("EscortSupplies.Individual.Price");
-			}
-			else
-			{
+			} else {
 				baseRemian = entry.getValue().getFactionNum();
 				basePrice = SystemConfigTemplateMgr.getIntValue("EscortSupplies.Faction.Price");
 			}
@@ -172,7 +169,7 @@ public class Truck extends ActiveLiving {
 			checkPointMaterials.put(mat.getId(), mat);
 		}
 	}
-	
+
 	/**
 	 * 获取场景对象的快照信息
 	 * 
@@ -180,8 +177,7 @@ public class Truck extends ActiveLiving {
 	 */
 	@Override
 	public PlayerAttSnapMsg.Builder getAttSnapMsg() {
-		if (cacheAttSnapPacker == null)
-			cacheAttSnapPacker = PlayerAttSnapMsg.newBuilder();
+		PlayerAttSnapMsg.Builder cacheAttSnapPacker = PlayerAttSnapMsg.newBuilder();
 		cacheAttSnapPacker.setPlayerId(id);
 		cacheAttSnapPacker.setType(getType());
 		cacheAttSnapPacker.setSkinId(getTrucktype());
@@ -196,41 +192,41 @@ public class Truck extends ActiveLiving {
 	 */
 	@Override
 	public Builder getBattlePlayerInfoMsg() {
-		cachBattleInfoPacket = BattleLivingInfoMsg.newBuilder();
+		BattleLivingInfoMsg.Builder cachBattleInfoPacket = BattleLivingInfoMsg.newBuilder();
 		cachBattleInfoPacket.setLivingId(getId());
 		cachBattleInfoPacket.setPlayerId(getArmyId());
 		cachBattleInfoPacket.setNickName(simpleInfo.getNickName());
 		cachBattleInfoPacket.setType(getType());
-		cachBattleInfoPacket.setSkinId(getTrucktype());	//镖车类型
-		cachBattleInfoPacket.setLiveState(getTruckState());	//镖车状态
-		cachBattleInfoPacket.setLevel(simpleInfo.getLevel());//等级
-		cachBattleInfoPacket.setVipLevel(getTruckState());//当前状态
-		//当前检查点
+		cachBattleInfoPacket.setSkinId(getTrucktype()); // 镖车类型
+		cachBattleInfoPacket.setLiveState(getTruckState()); // 镖车状态
+		cachBattleInfoPacket.setLevel(simpleInfo.getLevel());// 等级
+		cachBattleInfoPacket.setVipLevel(getTruckState());// 当前状态
+		// 当前检查点
 		PropertyMsg.Builder pmsg = PropertyMsg.newBuilder();
 		pmsg.setType(EnumAttr.Exp.getValue());
 		pmsg.setTotalPoint(simpleInfo.getExp());
 		cachBattleInfoPacket.addPropertis(pmsg);
-		//劫镖进度
+		// 劫镖进度
 		pmsg = PropertyMsg.newBuilder();
 		pmsg.setType(EnumAttr.WOOD.getValue());
 		pmsg.setTotalPoint(getProperty(EnumAttr.WOOD.getValue()));
 		cachBattleInfoPacket.addPropertis(pmsg);
-		//物资
+		// 物资
 		pmsg = PropertyMsg.newBuilder();
 		pmsg.setType(EnumAttr.METAL.getValue());
 		pmsg.setTotalPoint(getProperty(EnumAttr.METAL.getValue()));
 		cachBattleInfoPacket.addPropertis(pmsg);
-		
+
 		pmsg = PropertyMsg.newBuilder();
 		pmsg.setType(EnumAttr.WATER.getValue());
 		pmsg.setTotalPoint(getProperty(EnumAttr.WATER.getValue()));
 		cachBattleInfoPacket.addPropertis(pmsg);
-		
+
 		pmsg = PropertyMsg.newBuilder();
 		pmsg.setType(EnumAttr.SPEED.getValue());
 		pmsg.setTotalPoint(getProperty(EnumAttr.SPEED.getValue()));
 		cachBattleInfoPacket.addPropertis(pmsg);
-		
+
 		if (getPostion() != null) {
 			cachBattleInfoPacket.setPostion(Vector3BuilderHelper.build(getPostion()));
 		} else {
@@ -238,208 +234,187 @@ public class Truck extends ActiveLiving {
 		}
 		return cachBattleInfoPacket;
 	}
-	
+
 	/**
 	 * 添加一个护镖者
+	 * 
 	 * @param id
 	 */
-	public void addProtector(long id)
-	{
+	public void addProtector(long id) {
 		synchronized (protectors) {
 			protectors.add(id);
 		}
 	}
-	
+
 	/**
 	 * 清楚护镖者
 	 */
-	public void clearProtector()
-	{
+	public void clearProtector() {
 		synchronized (protectors) {
 			protectors.clear();
 		}
 	}
-	
+
 	/**
 	 * 移除一个护镖者
+	 * 
 	 * @param id
 	 */
-	public void removeProtector(long id)
-	{
+	public void removeProtector(long id) {
 		synchronized (protectors) {
 			protectors.remove(id);
 		}
 	}
-	
+
 	/**
 	 * 添加一个劫镖者
+	 * 
 	 * @param id
 	 */
-	public void addRobber(long id)
-	{
+	public void addRobber(long id) {
 		synchronized (robbers) {
 			robbers.add(id);
 		}
 	}
-	
+
 	/**
 	 * 清除劫镖者
 	 */
-	public void clearRobber()
-	{
+	public void clearRobber() {
 		synchronized (robbers) {
 			robbers.clear();
 		}
 	}
-	
+
 	/**
 	 * 移除一个劫镖者
+	 * 
 	 * @param id
 	 */
-	public void removeRobber(long id)
-	{
+	public void removeRobber(long id) {
 		synchronized (robbers) {
 			robbers.remove(id);
 		}
 	}
-	
+
 	/**
-	 *  开始起运
-	 * 	每个检查点开始起运
+	 *  开始起运 每个检查点开始起运
 	 */
-	public void startRun(int next)
-	{
+	public void startRun(int next) {
 		truckState = TRUCK_STATE_RUN;
 		targetCheckPoint = next;
 		simpleInfo.setExp(targetCheckPoint);
 	}
-	
+
 	/**
 	 * 到底检查点
 	 */
-	public void arrialCheckPoint()
-	{
+	public void arrialCheckPoint() {
 		truckState = TRUCK_STATE_WAIT;
 	}
-	
+
 	/**
 	 * 镖车送到目的地
 	 */
-	public void arrialGoal()
-	{
+	public void arrialGoal() {
 		truckState = TRUCK_STATE_ARRIALFINAL;
 	}
-	
+
 	/**
 	 * 是否在破坏保护中
+	 * 
 	 * @return
 	 */
-	public boolean isBrokenProtect()
-	{
+	public boolean isBrokenProtect() {
 		return getProperty(EnumAttr.METAL.getValue()) < SystemConfigTemplateMgr.getIntValue("EscortSupplies.ProtectedMaterial");
 	}
-	
+
 	/**
 	 * 获取当前目标检查点的物质剩余数
+	 * 
 	 * @return
 	 */
-	public int getTargetCheckPointMatRemain()
-	{
-		if(checkPointMaterials.containsKey(targetCheckPoint))
+	public int getTargetCheckPointMatRemain() {
+		if (checkPointMaterials.containsKey(targetCheckPoint))
 			return checkPointMaterials.get(targetCheckPoint).getRemain();
 		return 0;
 	}
-	
+
 	/**
 	 * 获取当前目标检查点的物质的单价
+	 * 
 	 * @return
 	 */
-	public int getTargetCheckPointMatPrice()
-	{
-		if(checkPointMaterials.containsKey(targetCheckPoint))
+	public int getTargetCheckPointMatPrice() {
+		if (checkPointMaterials.containsKey(targetCheckPoint))
 			return checkPointMaterials.get(targetCheckPoint).getPrice();
 		return 0;
 	}
-	
+
 	/**
 	 * 扣除检查点的可购买的物质
+	 * 
 	 * @param checkpointID
 	 * @param cut
 	 */
-	public void cutCheckPointMatRemain(int checkpointID, int cut)
-	{
-		if(checkPointMaterials.containsKey(targetCheckPoint))
-		{
+	public void cutCheckPointMatRemain(int checkpointID, int cut) {
+		if (checkPointMaterials.containsKey(targetCheckPoint)) {
 			CheckPointMaterial mat = checkPointMaterials.get(checkpointID);
 			mat.setRemain(mat.getRemain() - cut);
 		}
 	}
-	
+
 	/**
 	 * 更新暗标时间戳
 	 */
-	public void updateHideTimestramp(long timestramp, int hideTimer)
-	{
+	public void updateHideTimestramp(long timestramp, int hideTimer) {
 		this.hideTimestamp = timestramp;
 		this.hideTimer = hideTimer;
 	}
-	
+
 	/**
 	 * 在暗标中
 	 */
-	public boolean hasHiding()
-	{
+	public boolean hasHiding() {
 		return (System.currentTimeMillis() - this.hideTimestamp) < this.hideTimer;
 	}
-	
+
 	/**
 	 * 掉落物质
 	 */
-	public void dropMatrials(long relationId)
-	{
-		if(isBrokenProtect()) return;
+	public void dropMatrials(long relationId) {
+		if (isBrokenProtect())
+			return;
 		int cutRob = 0;
-		if(relationId == getId())
-		{
-			if(getTrucktype() == TRUCK_P)
-			{
+		if (relationId == getId()) {
+			if (getTrucktype() == TRUCK_P) {
 				cutRob = SystemConfigTemplateMgr.getIntValue("EscortSupplies.Individual.LeaderKill");
-			}
-			else
-			{
+			} else {
 				cutRob = SystemConfigTemplateMgr.getIntValue("EscortSupplies.Faction.LeaderKill");
 			}
-		}
-		else
-		{
-			//死亡人是护镖者
-			if(protectors.contains(relationId))
-			{
-				if(getTrucktype() == TRUCK_P)
-				{
+		} else {
+			// 死亡人是护镖者
+			if (protectors.contains(relationId)) {
+				if (getTrucktype() == TRUCK_P) {
 					cutRob = SystemConfigTemplateMgr.getIntValue("EscortSupplies.Individual.GuardKill");
-				}
-				else
-				{
+				} else {
 					cutRob = SystemConfigTemplateMgr.getIntValue("EscortSupplies.Faction.GuardKill");
 				}
 			}
 		}
 		RobHelper.robByKill(this, cutRob);
 	}
-	
+
 	/**
 	 * 更新护镖者的护镖时长
 	 */
-	public void updateProtectorTimer(long id, int timer)
-	{
-		if(!protectorTimer.containsKey(id))
-		{
+	public void updateProtectorTimer(long id, int timer) {
+		if (!protectorTimer.containsKey(id)) {
 			protectorTimer.put(id, 0);
 		}
 		protectorTimer.put(id, protectorTimer.get(id) + timer);
 	}
-	
+
 	@Override
 	public void destory() {
 		// TODO Auto-generated method stub
@@ -478,5 +453,4 @@ public class Truck extends ActiveLiving {
 		return protectorTimer;
 	}
 
-	
 }

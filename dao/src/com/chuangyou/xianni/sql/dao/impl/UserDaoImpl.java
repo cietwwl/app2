@@ -122,7 +122,6 @@ public class UserDaoImpl extends BaseDao implements UserInfoDao {
 
 	@Override
 	public UserInfo getUser(long userid) {
-
 		String sql = "SELECT * FROM tb_u_user_info WHERE userId = ?";
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
 		para.put(1, new DbParameter(Types.BIGINT, userid));

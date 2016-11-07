@@ -6,6 +6,7 @@ import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.NetConfigSet;
 import com.chuangyou.common.util.NetConfigXml;
 import com.chuangyou.common.util.ServerType;
+import com.chuangyou.xianni.activeSystem.template.ActiveTemplateMgr;
 import com.chuangyou.xianni.activity.template.ActivityTemplateMgr;
 import com.chuangyou.xianni.army.template.MonsterInfoTemplateMgr;
 import com.chuangyou.xianni.artifact.template.ArtifactTemplateMgr;
@@ -243,6 +244,10 @@ public class CenterServer extends BaseServer {
 		}
 		
 		if(!initComponent(GuildManager.getIns().init(), "初始化帮派模块")){
+			return false;
+		}
+		
+		if(!initComponent(ActiveTemplateMgr.init(), "初始化活跃系统配置文件")){
 			return false;
 		}
 		

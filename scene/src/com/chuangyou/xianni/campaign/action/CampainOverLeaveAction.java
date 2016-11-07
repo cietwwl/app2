@@ -24,7 +24,7 @@ public class CampainOverLeaveAction extends Action {
 		army.getPlayer().removeCampaignBuffer();
 
 		if (campaign instanceof PlaneCampaign) {
-			int outFiledId = campaign.getTemp().getTemplateId() % Field.MAX_ID;
+			int outFiledId = campaign.getTemp().getTemplateId() % (Field.MAX_ID);
 			EnterFieldAction action = new EnterFieldAction(army, outFiledId, outFiledId, army.getPlayer().getPostion());
 			army.enqueue(action);
 		} else {

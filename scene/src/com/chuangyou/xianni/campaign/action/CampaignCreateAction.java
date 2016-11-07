@@ -54,7 +54,7 @@ public class CampaignCreateAction extends Action {
 			return;
 		}
 
-		if (temp.getType() == CampaignType.THE_PLANE && army.getPlayer().getField().id != campaignId % Field.MAX_ID) {
+		if (temp.getType() == CampaignType.THE_PLANE && army.getPlayer().getField().id != campaignId % (Field.MAX_ID)) {
 			Log.error("playerId: " + army.getPlayerId() + " create plane  fail ,campaignId:" + campaignId);
 			return;
 		}
@@ -67,6 +67,7 @@ public class CampaignCreateAction extends Action {
 		CampaignMgr.add(campaign);
 		campaign.stateTransition(new StartState(campaign));
 		campaign.onPlayerEnter(army);
+		
 		if (campaign.getTemp().getType() == CampaignType.TEAM) {
 			Team team = TeamMgr.getTeamByPlayerId(army.getPlayerId());
 			if (team == null) {

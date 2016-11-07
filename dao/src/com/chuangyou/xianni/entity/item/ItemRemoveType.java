@@ -250,10 +250,23 @@ public interface ItemRemoveType {
 	 * 运镖技能消耗
 	 */
 	public static final short	TRUCK_SKILL				= 1067;
+	/**
+	 * 抽卡消耗
+	 */
+	public static final short	DRAW_CARD				= 1068;
+	/**
+	 * 兑换
+	 */
+	public static final short	EXCHANGE				= 1069;
 
 	/**
 	 * 添加分身能量消耗
 	 */
 	public static final short	ADD_AVATAR_ENERGY		= 1068;
+
+	/**
+	 * 技能升级使用
+	 */
+	public static final short	UPDATA_SKILL_USE		= 1069;
 
 }

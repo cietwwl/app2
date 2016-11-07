@@ -27,7 +27,7 @@ import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.state.event.ArtifactStateEvent;
+import com.chuangyou.xianni.retask.event.ArtifactStateEvent;
 
 public class ArtifactManager {
 

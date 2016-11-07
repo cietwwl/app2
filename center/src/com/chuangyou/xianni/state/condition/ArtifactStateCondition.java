@@ -11,7 +11,7 @@ import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.event.ObjectListener;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.rank.RankServerManager;
-import com.chuangyou.xianni.state.event.ArtifactStateEvent;
+import com.chuangyou.xianni.retask.event.ArtifactStateEvent;
 
 /**
  * 神器

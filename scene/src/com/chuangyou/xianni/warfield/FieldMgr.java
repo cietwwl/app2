@@ -35,6 +35,7 @@ import com.chuangyou.xianni.warfield.spawn.MonsterSpawnNode;
 import com.chuangyou.xianni.warfield.spawn.NpcSpawnNode;
 import com.chuangyou.xianni.warfield.spawn.PerareState;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
+import com.chuangyou.xianni.warfield.spawn.TimeControlerNodeMgr;
 import com.chuangyou.xianni.warfield.spawn.TriggerPointSpwanNode;
 import com.chuangyou.xianni.warfield.spawn.WorkingState;
 import com.chuangyou.xianni.warfield.spawn.WorldBossSpawnNode;
@@ -255,6 +256,7 @@ public class FieldMgr {
 					node = new SpwanNode(sf, f);
 			}
 			f.addSpawnNode(node);
+			TimeControlerNodeMgr.addNode(node);
 			node.build();
 			if (node.getSpawnInfo().getInitStatu() == 1) {
 				node.stateTransition(new WorkingState(node));

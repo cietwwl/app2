@@ -5,7 +5,7 @@ import com.chuangyou.xianni.entity.state.StateConditionInfo;
 import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.event.ObjectListener;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.task.constant.ConditionType;
+import com.chuangyou.xianni.retask.constant.ConditionType;
 
 /**
  *  杀怪境界任务

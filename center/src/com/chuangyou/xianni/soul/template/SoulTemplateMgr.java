@@ -2,11 +2,13 @@ package com.chuangyou.xianni.soul.template;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import com.chuangyou.xianni.entity.soul.CardComboConfig;
 import com.chuangyou.xianni.entity.soul.CardLvConfig;
+import com.chuangyou.xianni.entity.soul.CardRateConfig;
 import com.chuangyou.xianni.entity.soul.CardSkillConfig;
 import com.chuangyou.xianni.entity.soul.CardStarConfig;
 import com.chuangyou.xianni.entity.soul.FuseItemConfig;
@@ -22,6 +24,7 @@ public class SoulTemplateMgr {
 	private static Map<Integer, CardLvConfig> lvMap; 
 		
 	private static Map<Integer, CardStarConfig> starMap;
+	
 	/**
 	 * 卡牌技能配置
 	 */
@@ -58,6 +61,18 @@ public class SoulTemplateMgr {
 	private static Map<Integer, CardComboConfig> cardComboMap;
 	
 	/**
+	 * 抽卡概率配置表
+	 */
+	private static Map<Integer, CardRateConfig> cardRateCofig;
+	
+	/**
+	 * 卡牌颜色池
+	 */
+	private static Map<Integer, List<SoulCardConfig>> colorPoolsMap;
+	
+	 
+	
+	/**
 	 * 最大卡牌等级
 	 */
 	public static int MAX_CARD_LV;
@@ -71,6 +86,11 @@ public class SoulTemplateMgr {
 	 * QTE——CD时间
 	 */
 	public static final int QTE_CD = 5*60*1000;
+	
+	/**
+	 * 每天免费可抽卡次数
+	 */
+	public static final int FREE_DRAW_CARD_TIME_DAY = 10;
  	
 	public static boolean init(){
 		return reloadTemplateData();
@@ -80,7 +100,21 @@ public class SoulTemplateMgr {
 		skillPool = new ArrayList<>();
 		fuseSkillPoolMap = new HashMap<>();
 		map = DBManager.getSoulDao().getCardConfigs();
-		if(map == null)return false;
+		if(map == null || map.size()==0){
+			return false;
+		}
+		
+		colorPoolsMap = new HashMap<Integer, List<SoulCardConfig>>();
+		Iterator<SoulCardConfig> it = map.values().iterator();
+		while(it.hasNext()){
+			SoulCardConfig config = it.next();
+			if(!colorPoolsMap.containsKey(config.getQuality())){
+				colorPoolsMap.put(config.getQuality(), new ArrayList<>());
+			}
+			colorPoolsMap.get(config.getQuality()).add(config);
+		}
+		
+		
 		lvMap = DBManager.getSoulDao().getCardLvConfigs();
 		if(lvMap == null)return false;
 		for (int lv : lvMap.keySet()) {
@@ -113,6 +147,12 @@ public class SoulTemplateMgr {
 		if(cardComboMap == null || cardComboMap.values().size()==0){
 			return false;
 		}
+		
+		cardRateCofig = DBManager.getSoulDao().getCardRateConfig();
+		if(cardRateCofig == null || cardRateCofig.values().size()==0){
+			return false;
+		}
+				
 		return true;
 	}
 	
@@ -176,6 +216,14 @@ public class SoulTemplateMgr {
 
 	public static Map<Integer, CardComboConfig> getCardComboMap() {
 		return cardComboMap;
+	}
+
+	public static Map<Integer, CardRateConfig> getCardRateCofig() {
+		return cardRateCofig;
+	}
+
+	public static Map<Integer, List<SoulCardConfig>> getColorPoolsMap() {
+		return colorPoolsMap;
 	}
 	
 }

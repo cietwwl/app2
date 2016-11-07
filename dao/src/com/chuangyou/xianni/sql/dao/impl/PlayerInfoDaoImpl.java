@@ -55,7 +55,6 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		playerInfo.beginAdd();
 		String sql = "INSERT INTO tb_u_player_info (playerId,userId,job,nickname,level,exp,totalExp,money,bindCash,cash,vipLevel"
 				+ ",fight,skinId,pBagCount,mountId,magicWeaponId,skillStage,repair,battleMode,pkVal,changeBattleModeTime,fashionId,"
-
 				+ "weaponId,wingId,points,vipTimeLimit,vipInterimTimeLimit,vipExp,equipExp,stateLv,avatarEnergy,createTime) "
 				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
@@ -94,7 +93,7 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		para.put(29, new DbParameter(Types.BIGINT, playerInfo.getEquipExp()));
 		para.put(30, new DbParameter(Types.INTEGER, playerInfo.getStateLv()));
 		para.put(31, new DbParameter(Types.INTEGER, playerInfo.getAvatarEnergy()));
-		para.put(31, new DbParameter(Types.DATE, playerInfo.getCreateTime()));
+		para.put(32, new DbParameter(Types.DATE, playerInfo.getCreateTime()));
 
 		result = execNoneQuery(sql, para) > -1 ? true : false;
 		playerInfo.commitAdd(result);
@@ -214,9 +213,8 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 
 					info.setStateLv(rs.getInt("stateLv"));
 					info.setAvatarEnergy(rs.getInt("avatarEnergy"));
-
+					info.setCreateTime(rs.getDate("createTime"));
 					info.setOp(Option.None);
-					info.setCreateTime(rs.getDate("createDateTime"));
 					infos.add(info);
 				}
 			} catch (SQLException e) {
@@ -409,7 +407,9 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 	public boolean addTimeInfo(PlayerTimeInfo playerTimeInfo) {
 		// TODO Auto-generated method stub
 		boolean result = false;
-		String sql = "replace into tb_u_player_time_info(playerId,sigleCampCount,challengeCampCount,personalTruckerProtCount,presonalTruckerExtReward,presonalTruckerExtExp,addExpByTruckBroken,resetTime,offlineTime) values(?,?,?,?,?,?,?,?,?)";
+		String sql = "replace into tb_u_player_time_info(playerId,sigleCampCount,challengeCampCount,personalTruckerProtCount,presonalTruckerExtReward,"
+				+ "presonalTruckerExtExp,addExpByTruckBroken,personalLuckCardFreeTime,personalLuckCardMoneyTime,personalExchangeTime,personalExchangeTotalTime,"
+				+ "resetTime,offlineTime) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		Map<Integer, DbParameter> params = new HashMap<Integer, DbParameter>();
 		params.put(1, new DbParameter(Types.BIGINT, playerTimeInfo.getPlayerId()));
 		params.put(2, new DbParameter(Types.INTEGER, playerTimeInfo.getSigleCampCount()));
@@ -418,8 +418,12 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		params.put(5, new DbParameter(Types.INTEGER, playerTimeInfo.getPresonalTruckerExtReward()));
 		params.put(6, new DbParameter(Types.INTEGER, playerTimeInfo.getPresonalTruckerExtExp()));
 		params.put(7, new DbParameter(Types.INTEGER, playerTimeInfo.getAddExpByTruckBroken()));
-		params.put(8, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getResetTime()));
-		params.put(9, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getOfflineTime()));
+		params.put(8, new DbParameter(Types.INTEGER, playerTimeInfo.getPersonalLuckCardFreeTime()));
+		params.put(9, new DbParameter(Types.INTEGER, playerTimeInfo.getPersonalLuckCardMoneyTime()));
+		params.put(10, new DbParameter(Types.INTEGER, playerTimeInfo.getPersonalExchangeTime()));
+		params.put(11, new DbParameter(Types.INTEGER, playerTimeInfo.getPersonalExchangeTotalTime()));
+		params.put(12, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getResetTime()));
+		params.put(13, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getOfflineTime()));
 		result = execNoneQuery(sql, params) > -1 ? true : false;
 		playerTimeInfo.setOp(Option.None);
 		return result;
@@ -430,7 +434,8 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		// TODO Auto-generated method stub
 		boolean result = false;
 		playerTimeInfo.beginUpdate();
-		String sql = "update tb_u_player_time_info set sigleCampCount=?,challengeCampCount=?,personalTruckerProtCount=?,presonalTruckerExtReward=?,presonalTruckerExtExp=?,addExpByTruckBroken=?,resetTime=?,offlineTime=? where playerId=?";
+		String sql = "update tb_u_player_time_info set sigleCampCount=?,challengeCampCount=?,personalTruckerProtCount=?," + "presonalTruckerExtReward=?,presonalTruckerExtExp=?,addExpByTruckBroken=?,"
+				+ "personalLuckCardFreeTime=?,personalLuckCardMoneyTime=?,personalExchangeTime=?,personalExchangeTotalTime=?," + "resetTime=?,offlineTime=? where playerId=?";
 		Map<Integer, DbParameter> params = new HashMap<Integer, DbParameter>();
 		params.put(1, new DbParameter(Types.INTEGER, playerTimeInfo.getSigleCampCount()));
 		params.put(2, new DbParameter(Types.INTEGER, playerTimeInfo.getChallengeCampCount()));
@@ -438,9 +443,13 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		params.put(4, new DbParameter(Types.INTEGER, playerTimeInfo.getPresonalTruckerExtReward()));
 		params.put(5, new DbParameter(Types.INTEGER, playerTimeInfo.getPresonalTruckerExtExp()));
 		params.put(6, new DbParameter(Types.INTEGER, playerTimeInfo.getAddExpByTruckBroken()));
-		params.put(7, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getResetTime()));
-		params.put(8, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getOfflineTime()));
-		params.put(9, new DbParameter(Types.BIGINT, playerTimeInfo.getPlayerId()));
+		params.put(7, new DbParameter(Types.INTEGER, playerTimeInfo.getPersonalLuckCardFreeTime()));
+		params.put(8, new DbParameter(Types.INTEGER, playerTimeInfo.getPersonalLuckCardMoneyTime()));
+		params.put(9, new DbParameter(Types.INTEGER, playerTimeInfo.getPersonalExchangeTime()));
+		params.put(10, new DbParameter(Types.INTEGER, playerTimeInfo.getPersonalExchangeTotalTime()));
+		params.put(11, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getResetTime()));
+		params.put(12, new DbParameter(Types.TIMESTAMP, playerTimeInfo.getOfflineTime()));
+		params.put(13, new DbParameter(Types.BIGINT, playerTimeInfo.getPlayerId()));
 		result = execNoneQuery(sql, params) > -1 ? true : false;
 		playerTimeInfo.commitUpdate(result);
 		return result;
@@ -471,6 +480,10 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 					info.setPresonalTruckerExtExp(rs.getInt("presonalTruckerExtExp"));
 					info.setPresonalTruckerExtReward(rs.getInt("presonalTruckerExtReward"));
 					info.setAddExpByTruckBroken(rs.getInt("addExpByTruckBroken"));
+					info.setPersonalLuckCardFreeTime(rs.getInt("personalLuckCardFreeTime"));
+					info.setPersonalLuckCardMoneyTime(rs.getInt("personalLuckCardMoneyTime"));
+					info.setPersonalExchangeTime(rs.getInt("personalExchangeTime"));
+					info.setPersonalExchangeTotalTime(rs.getInt("personalExchangeTotalTime"));
 					Timestamp time = rs.getTimestamp("resetTime");
 					if (time != null) {
 						info.setResetTime(new Date(time.getTime()));
@@ -536,13 +549,13 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 			if (where.length() > 0) {
 				where.append(" and");
 			}
-			where.append(" createTime>='" + TimeUtil.getDateFormat(regBeginTime) + "'");
+			where.append(" a.createTime>='" + TimeUtil.getDateFormat(regBeginTime) + "'");
 		}
 		if (regEndTime != null) {
 			if (where.length() > 0) {
 				where.append(" and");
 			}
-			where.append(" createTime<='" + TimeUtil.getDateFormat(regEndTime) + "'");
+			where.append(" a.createTime<='" + TimeUtil.getDateFormat(regEndTime) + "'");
 		}
 		if (startLv >= 0) {
 			if (where.length() > 0) {
@@ -564,7 +577,7 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 
 		strSql.append(" limit " + (page - 1) * pageSize + "," + pageSize);
 		strSql.append(";");
-
+		 System.out.println(strSql.toString());
 		PreparedStatement pstmt = execQuery(strSql.toString(), null);
 		ResultSet rs = null;
 		PlayerInfo info = null;
@@ -603,7 +616,7 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 					info.setVipInterimTimeLimit(rs.getDate("vipInterimTimeLimit"));
 					info.setVipExp(rs.getInt("vipExp"));
 					info.setStateLv(rs.getInt("stateLv"));
-					info.setCreateTime(rs.getDate("createDateTime"));
+					info.setCreateTime(rs.getDate("createTime"));
 					info.setAccount(rs.getString("userName"));
 					infos.add(info);
 				}
@@ -614,7 +627,6 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 				closeConn(pstmt, rs);
 			}
 		}
-		System.out.println(strSql);
 		return infos;
 	}
 
@@ -639,13 +651,13 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 			if (where.length() > 0) {
 				where.append(" and");
 			}
-			where.append(" createTime>='" + TimeUtil.getDateFormat(regBeginTime) + "'");
+			where.append(" a.createTime>='" + TimeUtil.getDateFormat(regBeginTime) + "'");
 		}
 		if (regEndTime != null) {
 			if (where.length() > 0) {
 				where.append(" and");
 			}
-			where.append(" createTime<='" + TimeUtil.getDateFormat(regEndTime) + "'");
+			where.append(" a.createTime<='" + TimeUtil.getDateFormat(regEndTime) + "'");
 		}
 		if (startLv >= 0) {
 			if (where.length() > 0) {

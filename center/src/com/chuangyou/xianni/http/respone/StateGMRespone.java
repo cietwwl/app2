@@ -8,7 +8,7 @@ import com.chuangyou.xianni.http.HttpCmd;
 import com.chuangyou.xianni.http.HttpResult;
 import com.chuangyou.xianni.http.HttpResult.Code;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.state.trigger.StateTrigger;
+import com.chuangyou.xianni.retask.vo.StateTask;
 import com.chuangyou.xianni.word.WorldMgr;
 
 @HttpCmd(command="state",desc="调整境界任务GM命令")
@@ -24,10 +24,9 @@ public class StateGMRespone implements BaseRespone {
 		
 		GamePlayer player = WorldMgr.getPlayerFromCache(playerId);
 		if (player != null && player.getPlayerState() == PlayerState.ONLINE) {
-			StateTrigger trigger =  player.getStateInventory().getStateTriggers().get(stateId);
+			StateTask trigger =  player.getStateInventory().getStateTasks().get(stateId);
 			if(trigger!=null){
-				trigger.getInfo().setProcess(targetNum);
-				trigger.getCondition().doNotifyUpdate();
+				trigger.updateProcess(targetNum);
 				return HttpResult.getResult(Code.SUCCESS, "*_*stateGm exec success*_*");
 			}		
 		}

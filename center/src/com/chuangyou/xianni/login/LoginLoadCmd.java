@@ -5,6 +5,7 @@ import com.chuangyou.common.protobuf.pb.PlayerLoadDataMsgProto.PlayerLoadDataMsg
 import com.chuangyou.common.protobuf.pb.campaign.CampaignOptionMsgProto.CampaignOptionMsg;
 import com.chuangyou.common.protobuf.pb.space.GetSpaceInfoRespProto.GetSpaceInfoRespMsg;
 import com.chuangyou.common.util.Log;
+import com.chuangyou.xianni.activeSystem.logic.GetAllActiveLogic;
 import com.chuangyou.xianni.activity.template.ActivityTemplateMgr;
 import com.chuangyou.xianni.army.ArmyInventory;
 import com.chuangyou.xianni.bag.BagInventory;
@@ -28,6 +29,7 @@ import com.chuangyou.xianni.soul.logic.make.SoulMakeTaskLogic;
 import com.chuangyou.xianni.task.logic.GetTaskLogic;
 import com.chuangyou.xianni.team.reaction.GetTeamInfoAction;
 import com.chuangyou.xianni.vip.manager.VipManager;
+import com.chuangyou.xianni.welfare.WelfareManager;
 
 /**
  * <pre>
@@ -55,6 +57,12 @@ public class LoginLoadCmd extends AbstractCommand {
 	static final int	GUILD_INFO		= 16;
 	/** 分身 */
 	static final int	AVATAR			= 17;
+	/**
+	 * 活跃系统
+	 */
+	static final int    ATIVE_SYSTEM    = 19;
+	/** 福利 */
+	static final int	WELFARE			= 18;
 
 	@Override
 	public void execute(GamePlayer player, PBMessage packet) throws Exception {
@@ -173,11 +181,24 @@ public class LoginLoadCmd extends AbstractCommand {
 					player.getAvatarInventory().sendAllAvatarInfos();
 				}
 			}
+			//活跃系统
+			if(dataType.getDataType() == ATIVE_SYSTEM){
+				if(player.getActiveInventory() !=null){
+					new GetAllActiveLogic().process(player);
+				}
+			}
+			// 福利
+			if (dataType.getDataType() == WELFARE && player.getWelfareConditionRecordInventory() != null) {
+				//推送福利信息
+				WelfareManager.sendAllWelfareInfo(player);
+			}
 
 		} catch (Exception e) {
 			Log.error("发送用户数据 失败,nickname " + player.getNickName() + ", userId " + player.getPlayerId(), e);
 		} finally {
-			//Log.error("Protocol.U_G_DATA_LOAD_STATU = " + Protocol.U_G_DATA_LOAD_STATU + " type = " + dataType.getDataType());
+			// Log.error("Protocol.U_G_DATA_LOAD_STATU = " +
+			// Protocol.U_G_DATA_LOAD_STATU + " type = " +
+			// dataType.getDataType());
 			PlayerLoadDataMsg.Builder builder = PlayerLoadDataMsg.newBuilder();
 			builder.setLoadDataType(dataType.getDataType());
 			PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DATA_LOAD_STATU, builder);
@@ -186,7 +207,7 @@ public class LoginLoadCmd extends AbstractCommand {
 	}
 
 	private void checkLoginState(GamePlayer player) {
-
+		
 	}
 
 }

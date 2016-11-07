@@ -1,0 +1,8 @@
+//protocol=1629;
+option java_package = "com.chuangyou.common.protobuf.pb.activeSystem";
+option java_outer_classname = "ActiveRewardRespProto";
+
+//领奖
+message ActiveRewardRespMsg{
+	required int32 type =1;//1：日常   2：周常
+}

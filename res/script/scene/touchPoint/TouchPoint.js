@@ -27,14 +27,6 @@ function action(playerId, npcType) {
 		case 1008302:
 			changeMap(playerId,1009,5111,60,6081,1);
 			break;
-		//恒岳派后山->山间泉眼
-		case 1009305:
-			changeMap(playerId,1009,3795,168,6041,1);
-			break;
-		//山间泉眼->恒岳派后山
-		case 1009306:
-			changeMap(playerId,1009,3717,264,5809,1);
-			break;	
 		//赵国野外->藤家城
 		case 1009307:
 			changeMap(playerId,1008,5800,-4.8,5099);
@@ -46,6 +38,22 @@ function action(playerId, npcType) {
 		//决明谷->域外战场
 		case 1009303:
 			changeMap(playerId,1014,134,236,1003);
+			break;	
+		//域外战场->修魔海	
+		case 1014302:
+			changeMap(playerId,1010,2791,-22,2443);
+			break;
+		//修魔海->域外战场	
+		case 1010001:
+			changeMap(playerId,1014,520,282,570);
+			break;	
+		//修魔海->古神之心	
+		case 1010002:
+			changeMap(playerId,1011,-179,-17,80);
+			break;	
+		//修魔海->洞府	
+		case 1010003:
+			changeMap(playerId,1015,-700,83,-564);
 			break;	
 		/*case 91001:
 			//createCampaign(playerId, 1);

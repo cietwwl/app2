@@ -1,12 +1,17 @@
 package com.chuangyou.xianni.battle;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
 import com.chuangyou.common.protobuf.pb.battle.AttackBroadcastMsgProto.AttackBroadcastMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
+import com.chuangyou.common.util.AccessTextFile;
+import com.chuangyou.common.util.JSONUtil;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.battle.action.AddDelayBuffAction;
@@ -16,8 +21,11 @@ import com.chuangyou.xianni.battle.buffer.BufferTargetType;
 import com.chuangyou.xianni.battle.buffer.ExecWayType;
 import com.chuangyou.xianni.battle.calc.SkillCalc;
 import com.chuangyou.xianni.battle.damage.Damage;
+import com.chuangyou.xianni.battle.magicwpban.MagicwpCompanent;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.skill.Skill;
+import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.constant.MagicwpBanConstant;
 import com.chuangyou.xianni.constant.RoleConstants.RoleType;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
@@ -50,6 +58,8 @@ public class AttackOrder {
 
 	private PBVector3					current;								// 施法前位置
 	private PBVector3					postion;								// 施法后位置
+
+	private int							toalBloodDamage;						// 技能造成的所有气血伤害
 
 	public AttackOrder(Living source, Skill skill, long attackId) {
 		this.source = source;
@@ -112,7 +122,65 @@ public class AttackOrder {
 		coolDown();
 		// 执行结束，广播伤害
 		sendDamages();
+		// 法宝禁制生效
+		calMagicwpCompanent();
 		return true;
+	}
+
+	private void calMagicwpCompanent() {
+		if (!(source instanceof Player)) {
+			return;
+		}
+		Player ps = (Player) source;
+		// 吸血禁制
+		MagicwpCompanent suck_blood = ps.getMagicwpCompanent(MagicwpBanConstant.SUCK_BLOOD);
+		if (suck_blood != null && suck_blood.isEffect()) {
+			suck_blood.exe(toalBloodDamage);
+		}
+		// 朱雀羽
+		MagicwpCompanent burning = ps.getMagicwpCompanent(MagicwpBanConstant.BURNING);
+		if (burning != null && burning.isEffect()) {
+			burning.exe();
+		}
+
+		// 定身
+		MagicwpCompanent fixBody = ps.getMagicwpCompanent(MagicwpBanConstant.FIXED_BODY);
+		if (fixBody != null && fixBody.isEffect()) {
+			for (Living target : targets) {
+				fixBody.exe(target);
+			}
+		}
+		// 沉默目标
+		MagicwpCompanent silent = ps.getMagicwpCompanent(MagicwpBanConstant.DISABLE_SKILL);
+		if (silent != null && silent.isEffect()) {
+			for (Living target : targets) {
+				silent.exe(target);
+			}
+		}
+		// 兵解体
+		MagicwpCompanent weapon = ps.getMagicwpCompanent(MagicwpBanConstant.WEAPON);
+		if (weapon != null && weapon.isEffect()) {
+			weapon.exe();
+		}
+
+		// 百胜
+		MagicwpCompanent invincible = ps.getMagicwpCompanent(MagicwpBanConstant.INVINCIBLE);
+		if (invincible != null && invincible.isEffect()) {
+			invincible.exe();
+		}
+
+		// 攻击自己的敌人,有可能被冻住
+		for (Living target : targets) {
+			if (target instanceof Player) {
+				Player tplayer = (Player) target;
+				MagicwpCompanent frozen = tplayer.getMagicwpCompanent(MagicwpBanConstant.FROZEN);
+				if (frozen != null && frozen.isEffect()) {
+					frozen.exe(source);
+					break;
+				}
+			}
+		}
+
 	}
 
 	/**
@@ -148,7 +216,7 @@ public class AttackOrder {
 			return;
 		}
 		for (Damage damage : damages) {
-			if (damage.getDamageValue() == 0) {
+			if (damage.getDamageValue() == 0 && damage.getTipType() != Damage.MISS) {
 				continue;
 			}
 			DamageMsg.Builder dmsg = DamageMsg.newBuilder();
@@ -201,9 +269,41 @@ public class AttackOrder {
 		// 攻击者行动BUFFER执行
 		source.execWayBuffer(this, ExecWayType.ATTACT);
 
+		Set<Long> invincible = new HashSet<>();
+		Set<Long> bites = new HashSet<>();
 		for (Damage damage : damages) {
 			Living target = damage.getTarget();
 			if (target != null) {
+				// 法宝禁制--是否豁免伤害
+				if (target instanceof Player && !damage.isRestore()) {
+					Player p = (Player) target;
+
+					// 免疫并反弹收到伤害
+					MagicwpCompanent bite = p.getMagicwpCompanent(MagicwpBanConstant.BITE);
+					if (bites.contains(target.getId())) {
+						bite.exe(damage);
+						damage.setDamageValue(0);
+						continue;
+					}
+					if (bite != null && bite.isEffect()) {
+						bite.exe(damage);
+						damage.setDamageValue(0);
+						bites.add(target.getId());
+						continue;
+					}
+
+					// 免疫但不反弹
+					if (invincible.contains(target.getId())) {
+						damage.setDamageValue(0);
+						continue;
+					}
+					MagicwpCompanent companent = p.getMagicwpCompanent(MagicwpBanConstant.IMMUNE_DAMAGE);
+					if (companent != null && companent.isEffect()) {
+						damage.setDamageValue(0);
+						invincible.add(target.getId());
+						continue;
+					}
+				}
 				// 受伤时
 				if (damage.isHurt()) {
 					target.execWayBuffer(this, ExecWayType.HURT);
@@ -212,10 +312,50 @@ public class AttackOrder {
 				if (damage.isRestore()) {
 
 				}
-				target.takeDamage(damage);
-
+				int bloodHurt = target.takeDamage(damage);
+				if (damage.getDamageType() == EnumAttr.CUR_BLOOD.getValue()) {
+					addBloodDamage(bloodHurt);
+				}
 			}
 		}
+
+		// 伤害并包--同对象同类型伤害，合并数值
+		Map<Long, Damage> bloodDamage = new HashMap<>();
+		Map<Long, Damage> soulDamage = new HashMap<>();
+		for (Damage damage : damages) {
+			Damage matrix = null;
+			if (damage.getDamageType() == EnumAttr.CUR_BLOOD.getValue()) {
+				matrix = bloodDamage.get(damage.getTargetId());
+				if (matrix != null) {
+					matrix.setDamageValue(damage.getDamageValue() + matrix.getDamageValue());
+					if (matrix.getLeftValue() >= damage.getLeftValue()) {
+						matrix.setLeftValue(damage.getLeftValue());
+					}
+				} else {
+					bloodDamage.put(damage.getTargetId(), damage);
+				}
+			} else if (damage.getDamageType() == EnumAttr.CUR_SOUL.getValue()) {
+				matrix = soulDamage.get(damage.getTargetId());
+				if (matrix != null) {
+					matrix.setDamageValue(damage.getDamageValue() + matrix.getDamageValue());
+					if (matrix.getLeftValue() >= damage.getLeftValue()) {
+						matrix.setLeftValue(damage.getLeftValue());
+					}
+				} else {
+					soulDamage.put(damage.getTargetId(), damage);
+				}
+			} else {
+				Log.error("出现不属错误属性的伤害包:" + damage.getDamageType() + "  --" + damage.getFromType() + "---" + damage.getFromId());
+			}
+		}
+
+		bites.clear();
+		invincible.clear();
+		damages.clear();
+		damages.addAll(bloodDamage.values());
+		damages.addAll(soulDamage.values());
+		bloodDamage.clear();
+		soulDamage.clear();
 	}
 
 	/**
@@ -380,6 +520,10 @@ public class AttackOrder {
 
 	public void setPostion(PBVector3 postion) {
 		this.postion = postion;
+	}
+
+	public void addBloodDamage(int bloodDamageValue) {
+		this.toalBloodDamage += bloodDamageValue;
 	}
 
 }

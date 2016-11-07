@@ -197,3 +197,37 @@ function addCurSoulOrBlood(playerId, addNum){
 function addBuff(playerId, buffTempId){
 	com.chuangyou.xianni.script.manager.ScriptInterfaceManager.addBuff(playerId, buffTempId);
 }
+
+/**
+ * 发送公告
+ * @param channel 频道号 1系统消息  9滚屏公告 10可被顶的滚屏公告
+ * @param content 公告内容
+ */
+function sendNotice(channel, content){
+	com.chuangyou.xianni.script.manager.ScriptInterfaceManager.sendNotice(channel, content);
+}
+
+/**
+ * 发送场景内公告
+ * @param channel
+ * @param content
+ */
+function sendSceneNotice(playerId, channel, content){
+	com.chuangyou.xianni.script.manager.ScriptInterfaceManager.sendSceneNotice(playerId, channel, content);
+}
+
+/**
+ * 获取物品颜色
+ * @param itemTempId
+ */
+function getItemColor(itemTempId){
+	return com.chuangyou.xianni.script.manager.ScriptInterfaceManager.getItemColor(itemTempId);
+}
+
+/**
+ * 获取物品名字
+ * @param itemTempId
+ */
+function getItemName(itemTempId){
+	return com.chuangyou.xianni.script.manager.ScriptInterfaceManager.getItemName(itemTempId);
+}

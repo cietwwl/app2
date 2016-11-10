@@ -1,18 +1,28 @@
 package com.chuangyou.xianni.pet;
 
 import java.util.Map;
+
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
+import com.chuangyou.common.protobuf.pb.pet.PetActivateRespProto.PetActivateRespMsg;
+import com.chuangyou.common.protobuf.pb.pet.PetInfoBeanProto.PetInfoBeanMsg;
 import com.chuangyou.common.protobuf.pb.player.OtherPetProto.OtherPetMsg;
 import com.chuangyou.xianni.army.Hero;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.pet.PetAtt;
 import com.chuangyou.xianni.entity.pet.PetInfo;
+import com.chuangyou.xianni.entity.pet.PetInfoCfg;
 import com.chuangyou.xianni.entity.pet.PetSkill;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.event.AbstractEvent;
+import com.chuangyou.xianni.event.EventNameType;
+import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.interfaces.IInventory;
 import com.chuangyou.xianni.pet.manager.PetManager;
+import com.chuangyou.xianni.pet.template.PetTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.proto.MessageUtil;
+import com.chuangyou.xianni.proto.PBMessage;
+import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.skill.SkillUtil;
 import com.chuangyou.xianni.skill.template.SimpleProperty;
 import com.chuangyou.xianni.sql.dao.DBManager;
@@ -29,7 +39,6 @@ public class PetInventory extends AbstractEvent implements IInventory {
 
 	public PetInventory(GamePlayer player) {
 		// TODO Auto-generated constructor stub
-
 		this.player = player;
 	}
 
@@ -224,6 +233,51 @@ public class PetInventory extends AbstractEvent implements IInventory {
 		return petSkillMap;
 	}
 
+	/**
+	 * 激活宠物
+	 * @param petTemplateId
+	 */
+	public void activePet(int petTemplateId){
+		PetInfo pet = player.getPetInventory().getPetInfo(petTemplateId);
+		
+		if(pet != null){
+			return;
+		}
+		
+		PetInfoCfg petCfg = PetTemplateMgr.getPetTemps().get(petTemplateId);
+		
+		if(petCfg == null){
+			return;
+		}
+		
+		pet = new PetInfo(player.getPlayerId(), petTemplateId);
+		addPetInfo(pet);
+		
+		PetActivateRespMsg.Builder msg = PetActivateRespMsg.newBuilder();
+		
+		PetInfoBeanMsg.Builder bean = PetInfoBeanMsg.newBuilder();
+		bean.setPetId(pet.getPetId());
+		bean.setTalent(pet.getTalent());
+		bean.setLevel(pet.getLevel());
+		bean.setLevelExp(pet.getLevelExp());
+		bean.setPhysique(pet.getPhysique());
+		bean.setQuality(pet.getQuality());
+		bean.setQualityBless(pet.getQualityBless());
+		bean.setGrade(pet.getGrade());
+		bean.setGradeBless(pet.getGradeBless());
+		msg.setPetInfo(bean);
+		PBMessage p = MessageUtil.buildMessage(Protocol.U_PET_ACTIVATE, msg);
+		player.sendPbMessage(p);
+		
+		//宠物总属性改变
+//		PetManager.changePetAtt(roleId);
+		//影响人物属性改变
+		player.getPetInventory().updataProperty();
+		
+		player.notifyListeners(new ObjectEvent(this, pet.getPetId(), EventNameType.PET_ACTIVE));
+	}
+	
+	
 	/**
 	 * 计算玩家宠物属性
 	 * 

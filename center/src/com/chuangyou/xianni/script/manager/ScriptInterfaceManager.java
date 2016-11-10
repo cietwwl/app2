@@ -65,8 +65,8 @@ public class ScriptInterfaceManager {
 	 * @param y
 	 * @param z
 	 */
-	public static void changeMap(long playerId, int mapId, int x, int y, int z) {
-		MapProxyManager.changeMap(playerId, mapId, x, y, z);
+	public static void changeMap(long playerId, int mapId, int x, int y, int z, int angle) {
+		MapProxyManager.changeMap(playerId, mapId, x, y, z, angle);
 	}
 
 	/**
@@ -78,7 +78,8 @@ public class ScriptInterfaceManager {
 	 */
 	public static boolean isHasTask(long playerId, int taskId) {
 		GamePlayer player = WorldMgr.getPlayer(playerId);
-		if(player==null)return false;
+		if (player == null)
+			return false;
 		RealTask info = player.getTaskInventory().getTaskInfos().get(taskId);
 		if (info == null) {
 			return false;
@@ -106,16 +107,17 @@ public class ScriptInterfaceManager {
 			return false;
 		return player.getBagInventory().addItem(templateId, count, ItemAddType.GATHER_ADD, isBind);
 	}
-	
+
 	/**
 	 * 开箱子获得物品
+	 * 
 	 * @param playerId
 	 * @param templateId
 	 * @param count
 	 * @param isBind
 	 * @return
 	 */
-	public static boolean addItemFromOpenItem(long playerId, int templateId, int count, boolean isBind){
+	public static boolean addItemFromOpenItem(long playerId, int templateId, int count, boolean isBind) {
 		GamePlayer player = WorldMgr.getPlayer(playerId);
 		if (player == null)
 			return false;
@@ -179,180 +181,241 @@ public class ScriptInterfaceManager {
 
 	}
 
-	
 	/**
 	 * 触发动态传送点
+	 * 
 	 * @param playerId
 	 * @param npcEntityId
 	 */
-	public static void triggerTransferNpc(long playerId, long npcEntityId){
+	public static void triggerTransferNpc(long playerId, long npcEntityId) {
 		GamePlayer player = WorldMgr.getPlayerFromCache(playerId);
-		if(player != null && player.getPlayerState() == PlayerState.ONLINE){
+		if (player != null && player.getPlayerState() == PlayerState.ONLINE) {
 			TransferTriggerMsg.Builder transferMsg = TransferTriggerMsg.newBuilder();
 			transferMsg.setId(npcEntityId);
-			
+
 			PBMessage pkg = MessageUtil.buildMessage(Protocol.S_TRANSFER_TRIGGER, transferMsg);
 			player.sendPbMessage(pkg);
 		}
 	}
-	
+
 	/**
 	 * 获取玩家等级
+	 * 
 	 * @param playerId
 	 */
-	public static int getPlayerLevel(long playerId){
+	public static int getPlayerLevel(long playerId) {
 		GamePlayer player = WorldMgr.getPlayer(playerId);
-		if(player == null){
+		if (player == null) {
 			return 0;
 		}
 		return player.getLevel();
 	}
-	
+
 	/**
 	 * 获取玩家名字
+	 * 
 	 * @param playerId
 	 * @return
 	 */
-	public static String getPlayerName(long playerId){
+	public static String getPlayerName(long playerId) {
 		GamePlayer player = WorldMgr.getPlayer(playerId);
-		if(player == null){
+		if (player == null) {
 			return "";
 		}
 		return player.getNickName();
 	}
-	
+
 	/**
 	 * 获取玩家职业
+	 * 
 	 * @param playerId
 	 * @return
 	 */
-	public static int getPlayerJob(long playerId){
+	public static int getPlayerJob(long playerId) {
 		GamePlayer player = WorldMgr.getPlayer(playerId);
-		if(player == null || player.getBasePlayer() == null || player.getBasePlayer().getPlayerInfo() == null){
+		if (player == null || player.getBasePlayer() == null || player.getBasePlayer().getPlayerInfo() == null) {
 			return 0;
 		}
 		return player.getBasePlayer().getPlayerInfo().getJob();
 	}
-	
+
 	/**
 	 * 获取玩家境界等级
+	 * 
 	 * @param playerId
 	 * @return
 	 */
-	public static int getPlayerState(long playerId){
+	public static int getPlayerState(long playerId) {
 		GamePlayer player = WorldMgr.getPlayer(playerId);
-		if(player == null || player.getBasePlayer() == null || player.getBasePlayer().getPlayerInfo() == null){
+		if (player == null || player.getBasePlayer() == null || player.getBasePlayer().getPlayerInfo() == null) {
 			return 0;
 		}
 		return player.getBasePlayer().getPlayerInfo().getStateLv();
 	}
-	
+
 	/**
 	 * 获取玩家背包剩余空间
+	 * 
 	 * @param playerId
 	 * @return
 	 */
-	public static int getPlayerBagSpace(long playerId){
+	public static int getPlayerBagSpace(long playerId) {
 		GamePlayer player = WorldMgr.getPlayer(playerId);
-		if(player == null || player.getBagInventory() == null){
+		if (player == null || player.getBagInventory() == null) {
 			return 0;
 		}
 		return player.getBagInventory().getEmptyCount();
 	}
-	
+
 	/**
 	 * 只加气血
+	 * 
 	 * @param playerId
 	 * @param addNum
 	 */
-	public static void addCurBlood(long playerId, int addNum){
+	public static void addCurBlood(long playerId, int addNum) {
 		GamePlayer player = WorldMgr.getPlayer(playerId);
-		if(player == null || player.getArmyInventory() == null){
+		if (player == null || player.getArmyInventory() == null) {
 			return;
 		}
 		player.getArmyInventory().addSoulAndBlood(addNum, DamageEffecterType.BLOOD);
 	}
-	
+
 	/**
 	 * 只加魂血
+	 * 
 	 * @param playerId
 	 * @param addNum
 	 */
-	public static void addCurSoul(long playerId, int addNum){
+	public static void addCurSoul(long playerId, int addNum) {
 		GamePlayer player = WorldMgr.getPlayer(playerId);
-		if(player == null || player.getArmyInventory() == null){
+		if (player == null || player.getArmyInventory() == null) {
 			return;
 		}
 		player.getArmyInventory().addSoulAndBlood(addNum, DamageEffecterType.SOUL);
 	}
-	
+
 	/**
 	 * 加血，先提升元魂，再提升气血
+	 * 
 	 * @param playerId
 	 * @param addNum
 	 */
-	public static void addCurSoulOrBlood(long playerId, int addNum){
+	public static void addCurSoulOrBlood(long playerId, int addNum) {
 		GamePlayer player = WorldMgr.getPlayer(playerId);
-		if(player == null || player.getArmyInventory() == null){
+		if (player == null || player.getArmyInventory() == null) {
 			return;
 		}
 		player.getArmyInventory().addSoulAndBlood(addNum, DamageEffecterType.COMMON);
 	}
-	
+
 	/**
 	 * 给玩家加buff
+	 * 
 	 * @param playerId
 	 * @param buffTempId
 	 */
-	public static void addBuff(long playerId, int buffTempId){
+	public static void addBuff(long playerId, int buffTempId) {
 		GamePlayer player = WorldMgr.getPlayer(playerId);
-		if(player == null || player.getArmyInventory() == null){
+		if (player == null || player.getArmyInventory() == null) {
 			return;
 		}
 		player.getArmyInventory().addBuff(buffTempId);
 	}
-	
+
 	/**
 	 * 发送公告
+	 * 
 	 * @param channel
 	 * @param content
 	 */
-	public static void sendNotice(int channel, String content){
+	public static void sendNotice(int channel, String content) {
 		ChatManager.sendSystemChatMsg(channel, content);
 	}
-	
+
 	/**
 	 * 发送触发者所在场景中才能收到的公告
+	 * 
 	 * @param playerId
 	 * @param channel
 	 * @param content
 	 */
-	public static void sendSceneNotice(long playerId, int channel, String content){
+	public static void sendSceneNotice(long playerId, int channel, String content) {
 		ChatManager.sendSceneSystemChatMsg(playerId, channel, content);
 	}
-	
+
 	/**
 	 * 获取物品颜色
+	 * 
 	 * @param itemTempId
 	 */
-	public static byte getItemColor(int itemTempId){
+	public static byte getItemColor(int itemTempId) {
 		ItemTemplateInfo itemTempInfo = ItemManager.findItemTempInfo(itemTempId);
-		if(itemTempInfo == null){
+		if (itemTempInfo == null) {
 			return 0;
 		}
 		return itemTempInfo.getItemcolor();
 	}
-	
+
 	/**
 	 * 获取物品名字
+	 * 
 	 * @param itemTempId
 	 * @return
 	 */
-	public static String getItemName(int itemTempId){
+	public static String getItemName(int itemTempId) {
 		ItemTemplateInfo itemTempInfo = ItemManager.findItemTempInfo(itemTempId);
-		if(itemTempInfo == null){
+		if (itemTempInfo == null) {
 			return "";
 		}
 		return itemTempInfo.getName();
 	}
+	
+	
+	/**
+	 * 激活指定分身
+	 * @param playerId
+	 * @param tempId
+	 * @return
+	 */
+	public static boolean activeAvatar(long playerId,int tempId){
+		GamePlayer player = WorldMgr.getPlayer(playerId);
+		if (player == null || player.getArmyInventory() == null) {
+			return false;
+		}
+		player.getAvatarInventory().scriptActiveAvatar(tempId);
+		return true;
+	}
+	
+	/**
+	 * 激活指定宠物
+	 * @param playerId
+	 * @param tempId
+	 * @return
+	 */
+	public static boolean activePet(long playerId,int tempId){
+		GamePlayer player = WorldMgr.getPlayer(playerId);
+		if (player == null || player.getArmyInventory() == null) {
+			return false;
+		}
+		player.getPetInventory().activePet(tempId);
+		return true;
+	}
+	
+	/**
+	 * 激活指定法宝
+	 * @param playerId
+	 * @param tempId
+	 * @return
+	 */
+	public static boolean activeMagicwp(long playerId,int tempId){
+		GamePlayer player = WorldMgr.getPlayer(playerId);
+		if (player == null || player.getArmyInventory() == null) {
+			return false;
+		}
+		player.getMagicwpInventory().activeMagicwp(tempId);
+		return true;
+	}
+	
+	
 }

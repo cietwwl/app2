@@ -17,7 +17,7 @@ public class SkillActionTemplateInfo {
 	private int		attackTimes;	// 攻击次数
 	private int		costType;		// 使用消耗类型 0 无消耗，1 魂 2 血等
 	private int		costCount;		// 消耗数量
-	private int		attackType;		// 攻击类型
+//	private int		attackType;		// 攻击类型
 	private int		paramValue1;	// 攻击参数（固定数值）气血
 	private int		paramValue2;	// 攻击参数（固定数值）元魂
 	private int		paramValue3;	// 攻击参数
@@ -34,6 +34,8 @@ public class SkillActionTemplateInfo {
 	private int		combo;			// 连击
 	private int		maxCombo;		// 最大连接数
 	private int		animation;		// 动作
+	
+	private int		targetMode;		// 目标模式 1敌方 2友方
 
 	private int[]	bufferIdArr;	// buffer数组
 	private int[]	snareIdArr;		// 陷阱数组
@@ -298,6 +300,14 @@ public class SkillActionTemplateInfo {
 
 	public void setMove(int move) {
 		this.move = move;
+	}
+
+	public int getTargetMode() {
+		return targetMode;
+	}
+
+	public void setTargetMode(int targetMode) {
+		this.targetMode = targetMode;
 	}
 
 	public String getSnareIds() {

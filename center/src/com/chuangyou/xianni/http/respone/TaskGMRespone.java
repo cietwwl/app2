@@ -39,6 +39,7 @@ public class TaskGMRespone implements BaseRespone {
 				task.updateProcess(process);
 			}else{
 				TaskCfg cfg = TaskTemplateMgr.getTaskCfg(taskId);
+				
 				if(cfg!=null){
 					List<Integer> ids = new ArrayList<>();
 					for (RealTask t: player.getTaskInventory().getTaskInfos().values()) {
@@ -55,19 +56,22 @@ public class TaskGMRespone implements BaseRespone {
 						PBMessage pkg = MessageUtil.buildMessage(Protocol.U_RESP_TASKOPERATE, resp);
 						player.sendPbMessage(pkg);
 					}
+					
+					TaskInfo updateT = new TaskInfo();
+					updateT.setPlayerId(player.getPlayerId());
+					updateT.setProcess(0);
+					updateT.setTaskId(cfg.getTaskId());
+					updateT.setState(TaskInfo.UN_ACCEPT);
+					updateT.setUpdateTime(new Date());
+					updateT.setCreateTime(new Date());
+					updateT.setOp(Option.Insert);
+					RealTask newTask = new RealTask(cfg, updateT, player);
+					player.getTaskInventory().add(newTask);
+					newTask.doAccept();
+					newTask.updateProcess(process);
+					return HttpResult.getResult(Code.SUCCESS, "*_*taskGm exec success*_*");
 				}
-				TaskInfo updateT = new TaskInfo();
-				updateT.setPlayerId(player.getPlayerId());
-				updateT.setProcess(0);
-				updateT.setTaskId(cfg.getTaskId());
-				updateT.setState(TaskInfo.UN_ACCEPT);
-				updateT.setUpdateTime(new Date());
-				updateT.setCreateTime(new Date());
-				updateT.setOp(Option.Insert);
-				RealTask newTask = new RealTask(cfg, updateT, player);
-				player.getTaskInventory().add(newTask);
-				newTask.doAccept();
-				newTask.updateProcess(process);
+				
 			}
 			
 		}

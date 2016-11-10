@@ -23,7 +23,7 @@ public class ChangeMapCmd extends AbstractCommand {
 		ReqChangeMapMsg msg = ReqChangeMapMsg.parseFrom(packet.getBytes());
 
 		// 记录玩家在副本，但是玩家下线后副本已经结束
-		if (msg.getPostionMsg().getMapId() > 100000 && player.getCurCampaign() == 0) {
+		if (msg.getPostionMsg().getMapId() > 1000000 && player.getCurCampaign() == 0) {
 			ReqChangeMapMsg.Builder builder = ReqChangeMapMsg.newBuilder();
 			PostionMsg.Builder pos = PostionMsg.newBuilder();
 			pos.setMapId(pinfo.getPreMapId());

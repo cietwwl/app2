@@ -15,6 +15,8 @@ import com.chuangyou.xianni.battle.skill.Skill;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.constant.RoleConstants;
+import com.chuangyou.xianni.entity.pet.PetInfoCfg;
+import com.chuangyou.xianni.pet.template.PetTemplateMgr;
 
 public class Pet extends ActiveLiving {
 
@@ -129,5 +131,46 @@ public class Pet extends ActiveLiving {
 
 	public void setPetQuality(int petQuality) {
 		this.petQuality = petQuality;
+	}
+	
+	public PetInfoCfg getPetTemplate(){
+		if(PetTemplateMgr.getPetTemps() == null){
+			return null;
+		}
+		return PetTemplateMgr.getPetTemps().get(skin);
+	}
+	
+	@Override
+	public void setSkin(int skin) {
+		// TODO Auto-generated method stub
+		super.setSkin(skin);
+		
+//		if(this.drivingSkills != null){
+//			this.drivingSkills.clear();
+//		}
+//		this.drivingSkills = new HashMap<>();
+//		PetInfoCfg petTemp = PetTemplateMgr.getPetTemps().get(skin);
+//		if(petTemp != null){
+//			Set<Integer> skills = petTemp.getSkillSet();
+//			for(int skillId: skills){
+//				SkillTempateInfo skillTempateInfo = BattleTempMgr.getBSkillInfo(skillId);
+//				if (skillTempateInfo == null) {
+//					return;
+//				}
+//				SkillActionTemplateInfo actionTemp = BattleTempMgr.getActionInfo(skillTempateInfo.getActionId());
+//				if (actionTemp == null) {
+//					return;
+//				}
+//				Skill petSkill = new Skill(actionTemp);
+//				petSkill.setSkillTempateInfo(skillTempateInfo);
+//				this.addSkill(petSkill);
+//			}
+//		}
+	}
+	
+	@Override
+	public synchronized boolean isDie() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

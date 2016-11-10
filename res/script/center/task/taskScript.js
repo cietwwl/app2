@@ -23,8 +23,27 @@ function acceptTask(playerId,taskId){
 	case 10014:
 	    createPrivateMonster(playerId,24001,900000);
 		break;
+	case 10024:
+		createCampaingByOnceNpc(playerId,1011009,-1);
+		break;
+	case 10045:
+		createCampaingByOnceNpc(playerId,1021009,-1);
+		break;
+	case 10052:
+		createCampaingByOnceNpc(playerId,1031009,-1);
+		break;
+	case 10054:
+		createCampaingByOnceNpc(playerId,1041009,-1);
+		break;
+	case 10063:
+		createCampaingByOnceNpc(playerId,1011014,-1);
+		break;
+	case 10067:
+		createCampaingByOnceNpc(playerId,1021014,-1);
+		break;
 	}
-}
+
+}	
 
 /**
  * 完成任务执行脚本
@@ -35,22 +54,22 @@ function finishTask(playerId,taskId){
 
 	switch (taskId) {
 	case 10002:
-		changeMap(playerId,1007,2724,721,4059);
+		changeMap(playerId,1007,2724,721,4059,90);
 		break;
 	case 10005:
-		changeMap(playerId,1009,4054,247,5936);
+		changeMap(playerId,1009,4054,247,5936,0);
 		break;	
 	case 10025:
-		changeMap(playerId,1008,5811,-4,4873);
+		changeMap(playerId,1008,5811,-4,4873,0);
 		break;
 	case 10035:
-		changeMap(playerId,1009,4735,18,6978);
+		changeMap(playerId,1009,4735,18,6978,0);
 		break;
 	case 10051:
-		changeMap(playerId,1009,5603,14,7282);
+		changeMap(playerId,1009,5603,14,7282,0);
 		break;	
 	case 10058:
-		changeMap(playerId,1014,134,236,1003);
+		changeMap(playerId,1014,134,236,1003,0);
 		break;
 	}
 }

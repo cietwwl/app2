@@ -1,19 +1,15 @@
 package com.chuangyou.xianni.pet.cmd;
 
 import com.chuangyou.common.protobuf.pb.pet.PetActivateReqProto.PetActivateReqMsg;
-import com.chuangyou.common.protobuf.pb.pet.PetActivateRespProto.PetActivateRespMsg;
-import com.chuangyou.common.protobuf.pb.pet.PetInfoBeanProto.PetInfoBeanMsg;
+import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.pet.PetInfo;
 import com.chuangyou.xianni.entity.pet.PetInfoCfg;
-import com.chuangyou.xianni.event.EventNameType;
-import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.pet.template.PetTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
@@ -40,40 +36,29 @@ public class PetActivateCmd extends AbstractCommand {
 			return;
 		}
 		
-		int needItem = petCfg.getNeedItem();
-		
-		//扣物品
-		if(player.getBagInventory().getPlayerBagItemCount(needItem) < 1){
-			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, packet.getCode());
+		if(petCfg.getActivateType() == PetInfoCfg.ACTIVATE_BY_ITEM){
+			int needItem = petCfg.getNeedItem();
+			
+			//扣物品
+			if(player.getBagInventory().getPlayerBagItemCount(needItem) < 1){
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Prop_Is_Not_Enougth, packet.getCode());
+				return;
+			}
+			if(!player.getBagInventory().removeItemFromPlayerBag(needItem, 1, ItemRemoveType.PET_ACTIVATE)) return;
+		}else if(petCfg.getActivateType() == PetInfoCfg.ACTIVATE_BY_STATE){
+			int needStateLv = petCfg.getJingjieLv();
+			
+			//判断玩家境界等级
+			if(player.getBasePlayer().getPlayerInfo().getStateLv() < needStateLv){
+				return;
+			}
+		}else{
+			Log.error("宠物激活错误：tb_z_pet_info配置错误，petId = " + petCfg.getId());
 			return;
 		}
-		if(!player.getBagInventory().removeItemFromPlayerBag(needItem, 1, ItemRemoveType.PET_ACTIVATE)) return;
 		
-		pet = new PetInfo(player.getPlayerId(), req.getPetId());
-		player.getPetInventory().addPetInfo(pet);
+		player.getPetInventory().activePet(req.getPetId());
 		
-		PetActivateRespMsg.Builder msg = PetActivateRespMsg.newBuilder();
-		
-		PetInfoBeanMsg.Builder bean = PetInfoBeanMsg.newBuilder();
-		bean.setPetId(pet.getPetId());
-		bean.setTalent(pet.getTalent());
-		bean.setLevel(pet.getLevel());
-		bean.setLevelExp(pet.getLevelExp());
-		bean.setPhysique(pet.getPhysique());
-		bean.setQuality(pet.getQuality());
-		bean.setQualityBless(pet.getQualityBless());
-		bean.setGrade(pet.getGrade());
-		bean.setGradeBless(pet.getGradeBless());
-		msg.setPetInfo(bean);
-		PBMessage p = MessageUtil.buildMessage(Protocol.U_PET_ACTIVATE, msg);
-		player.sendPbMessage(p);
-		
-		//宠物总属性改变
-//		PetManager.changePetAtt(roleId);
-		//影响人物属性改变
-		player.getPetInventory().updataProperty();
-		
-		player.notifyListeners(new ObjectEvent(this, pet.getPetId(), EventNameType.PET_ACTIVE));
 	}
 
 }

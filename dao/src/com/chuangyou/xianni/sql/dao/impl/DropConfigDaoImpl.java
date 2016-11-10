@@ -41,6 +41,7 @@ public class DropConfigDaoImpl extends BaseDao implements DropConfigDao {
 					info.setId(rs.getInt("id"));
 					info.setType(rs.getShort("type"));
 					info.setRepeat(rs.getInt("repeat"));
+					info.setTotalWeight(rs.getInt("totalWeight"));
 					info.setLimitType(rs.getShort("limitType"));
 					info.setStartTime(rs.getString("startTime"));
 					info.setEndTime(rs.getString("endTime"));

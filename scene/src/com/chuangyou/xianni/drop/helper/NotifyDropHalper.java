@@ -23,16 +23,16 @@ public class NotifyDropHalper {
 		if (army == null) {
 			return;
 		}
-		short actionType = DropItemConstant.notifyAction.addDrop;
+		short actionType = DropItemConstant.notifyAction.ADDDROP;
 		if (drop.getDropRoleId() == -1) {
-			actionType = DropItemConstant.notifyAction.synchronizationDrop;
+			actionType = DropItemConstant.notifyAction.SYNCHRONIZATIONDROP;
 		}
 
 		Field field = FieldMgr.getIns().getField(army.getFieldId());
 
 		DropInfo dropPoolTemp = DropTempleteMgr.getDropPool().get(drop.getPoolId());
 		army.sendPbMessage(MessageUtil.buildMessage(Protocol.U_DROP_ITEM_PACKAGE, drop.buildProto(actionType)));
-		if (dropPoolTemp.getVisibleType() == DropItemConstant.VisibleType.publicVisible) {
+		if (dropPoolTemp.getVisibleType() == DropItemConstant.VisibleType.PUBLICVISIBLE) {
 			List<Long> players = field.getLivings();
 			for (long id : players) {
 				ArmyProxy mapArmy = WorldMgr.getArmy(id);
@@ -50,9 +50,9 @@ public class NotifyDropHalper {
 	public static void notifyPlayerFieldDropItems(Field field, Living living) {
 		Map<Integer, DropPackage> dropItems = field.getDropItems();
 		for (DropPackage drop : dropItems.values()) {
-			if (drop.getPlayerId() == living.getArmyId() || drop.getDropTemplete().getVisibleType() == DropItemConstant.VisibleType.publicVisible) {
+			if (drop.getPlayerId() == living.getArmyId() || drop.getDropTemplete().getVisibleType() == DropItemConstant.VisibleType.PUBLICVISIBLE) {
 				ArmyProxy army = WorldMgr.getArmy(living.getArmyId());
-				army.sendPbMessage(MessageUtil.buildMessage(Protocol.U_DROP_ITEM_PACKAGE, drop.buildProto(DropItemConstant.notifyAction.synchronizationDrop)));
+				army.sendPbMessage(MessageUtil.buildMessage(Protocol.U_DROP_ITEM_PACKAGE, drop.buildProto(DropItemConstant.notifyAction.SYNCHRONIZATIONDROP)));
 			}
 		}
 	}
@@ -74,7 +74,7 @@ public class NotifyDropHalper {
 		army.sendPbMessage(MessageUtil.buildMessage(Protocol.U_DROP_ITEM_REMOVE, msg));
 
 		DropInfo dropTemp = DropTempleteMgr.getDropPool().get(drop.getPoolId());
-		if (dropTemp.getVisibleType() == DropItemConstant.VisibleType.publicVisible) {
+		if (dropTemp.getVisibleType() == DropItemConstant.VisibleType.PUBLICVISIBLE) {
 			List<Long> players = field.getLivings();
 			for (long id : players) {
 				ArmyProxy mapArmy = WorldMgr.getArmy(id);
@@ -103,7 +103,7 @@ public class NotifyDropHalper {
 		army.sendPbMessage(MessageUtil.buildMessage(Protocol.U_DROP_ITEM_REMOVE, msg));
 
 		DropInfo dropTemp = DropTempleteMgr.getDropPool().get(drop.getPoolId());
-		if (dropTemp.getVisibleType() == DropItemConstant.VisibleType.publicVisible) {
+		if (dropTemp.getVisibleType() == DropItemConstant.VisibleType.PUBLICVISIBLE) {
 			List<Long> players = field.getLivings();
 			for (long id : players) {
 				ArmyProxy mapArmy = WorldMgr.getArmy(id);

@@ -33,10 +33,15 @@ public class ScriptManager
  
     
     public static boolean init(){
-    	ROOT = Config.getValue("script_path");
-    	File dir = new File(ROOT);
-        lastModified = dir.lastModified();
-        loadFiles(dir);
+    	try {
+    		ROOT = Config.getValue("script_path");
+    		File dir = new File(ROOT);
+    		lastModified = dir.lastModified();
+    		loadFiles(dir);
+		} catch (Exception e) {
+			// TODO: handle exception
+			return false;
+		}
         return true;
          
     }

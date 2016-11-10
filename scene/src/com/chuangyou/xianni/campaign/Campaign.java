@@ -67,6 +67,7 @@ public class Campaign extends AbstractActionQueue implements ICampaignStateWork 
 	public static final int									MONSTER_CALLER		= 4;	// 召唤阵
 	public static final int									GROUP_CREATER_NODE	= 5;	// 分组节点
 	public static final int									TERMINATOR			= 6;	// 副本终结者
+	public static final int									END_POIN_2			= 7;	// 副本结束点，出现则副本结束
 
 	protected ThreadSafeRandom								random;						// 副本随机
 	protected int											id;							// 唯一ID
@@ -494,12 +495,12 @@ public class Campaign extends AbstractActionQueue implements ICampaignStateWork 
 
 	@Override
 	public void success() {
-		endTime = System.currentTimeMillis() + 60 * 1000;// 60秒后结束副本
+		endTime = System.currentTimeMillis() + 5 * 1000;// 60秒后结束副本
 	}
 
 	@Override
 	public void fail() {
-		endTime = System.currentTimeMillis() + 10 * 1000;// 10秒后结束副本
+		endTime = System.currentTimeMillis() + 5 * 1000;// 10秒后结束副本
 	}
 
 	@Override
@@ -554,31 +555,6 @@ public class Campaign extends AbstractActionQueue implements ICampaignStateWork 
 	public int getProgress() {
 		return this.progress;
 	}
-
-	// 添加分身进入副本
-	// public void addAvatars(List<RobotInfoMsg> avatars) {
-	// if (avatars != null && avatars.size() > 0) {
-	// for (RobotInfoMsg msg : avatars) {
-	// createAvatar(msg);
-	// }
-	// }
-	// }
-
-	// private void createAvatar(RobotInfoMsg msg) {
-	// Avatar robot = null;
-	// ArmyProxy army = WorldMgr.getArmy(msg.getSimpInfo().getPlayerId());
-	// if (army == null) {
-	// return;
-	// }
-	// if (army.getAvatars(msg.getSimpInfo().getSkinId()) == null) {
-	// robot = new Avatar(army);
-	// robot.instill(msg);
-	// army.addAvatar(robot);
-	// } else {
-	// robot = army.getAvatars(msg.getSimpInfo().getSkinId());
-	// }
-	// robot.setCampaignId(getIndexId());
-	// }
 
 	/**
 	 * 节点触发（外部调用）
@@ -667,36 +643,6 @@ public class Campaign extends AbstractActionQueue implements ICampaignStateWork 
 		return creater;
 	}
 
-	// public void addAvatars(List<Avatar> avatars) {
-	// for (Avatar avatar : avatars) {
-	//
-	// }
-	// }
-
-	// 添加分身进入副本
-	// public void addAvatars(List<RobotInfoMsg> avatars) {
-	// if (avatars != null && avatars.size() > 0) {
-	// for (RobotInfoMsg msg : avatars) {
-	// createAvatar(msg);
-	// }
-	// }
-	// }
-	//
-	// private void createAvatar(RobotInfoMsg msg) {
-	// Avatar robot = null;
-	// ArmyProxy army = WorldMgr.getArmy(msg.getSimpInfo().getPlayerId());
-	// if (army == null) {
-	// return;
-	// }
-	// if (army.getAvatars(msg.getSimpInfo().getSkinId()) == null) {
-	// robot = new Avatar();
-	// robot.instill(msg);
-	// army.addAvatar(robot);
-	// } else {
-	// robot = army.getAvatars(msg.getSimpInfo().getSkinId());
-	// }
-	// robot.setCampaignId(getIndexId());
-	// }
 	public void addCampaignBuff(ArmyProxy army) {
 		// 如果有副本任务，则添加副本buff
 		if (getTask() != null && getTask().getConditionType() == CTBaseCondition.ADD_BUFF_PLAYER) {

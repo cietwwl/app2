@@ -19,6 +19,8 @@ public class CampaignNodeDecorator {
 				return new GroupCreaterNode();
 			case Campaign.TERMINATOR:
 				return new TerminatorNode();
+			case Campaign.END_POIN_2:
+				return new CampainOverHelperNode();
 			default:
 				break;
 		}

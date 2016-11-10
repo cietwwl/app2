@@ -20,6 +20,7 @@ import com.chuangyou.xianni.netty.codec.PBMessageEncoder;
 import com.chuangyou.xianni.netty.server.SceneInboundHandler;
 import com.chuangyou.xianni.netty.server.SceneOutboundHandler;
 import com.chuangyou.xianni.notice.template.NoticeTemplateMgr;
+import com.chuangyou.xianni.pet.template.PetTemplateMgr;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.robot.RobotManager;
 import com.chuangyou.xianni.role.template.AiConfigTemplateMgr;
@@ -163,6 +164,9 @@ public class SceneServer extends BaseServer {
 			return false;
 		}
 		if (!initComponent(RobotManager.init(), "剧情机器人")) {
+			return false;
+		}
+		if(!initComponent(PetTemplateMgr.init(), "宠物模板数据")){
 			return false;
 		}
 		return true;

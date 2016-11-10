@@ -63,10 +63,8 @@ public class WelfareConditionRecordInventory extends AbstractEvent implements II
 		}
 		int op = info.getOp();
 		if (op == Option.Update) {
-			info.setOp(Option.None);
 			return DBManager.getWelfareConditionRecordDao().update(info);
 		} else if (op == Option.Insert) {
-			info.setOp(Option.None);
 			return DBManager.getWelfareConditionRecordDao().add(info);
 		}
 		return true;
@@ -115,8 +113,9 @@ public class WelfareConditionRecordInventory extends AbstractEvent implements II
 	 */
 	public void login() {
 		// 初始化开始记录在线时间的时间点
-		if (player.getLevel() >= SystemConfigTemplateMgr.getSystemTemps().get("welfare.newPlayerOpenLevel").getValue())
+		if (player.getLevel() >= SystemConfigTemplateMgr.getSystemTemps().get("welfare.newPlayerOpenLevel").getValue()) {
 			onlineStartTime = System.currentTimeMillis();
+		}
 		// 检查是否是新的一天
 		if (checkIsNewDay()) {
 			addDay();

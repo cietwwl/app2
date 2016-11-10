@@ -50,25 +50,25 @@ import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.WorldMgr;
 
 public class Monster extends ActiveLiving {
-	private MonsterInfo		monsterInfo;
-	private AiConfig		aiConfig;
+	private MonsterInfo monsterInfo;
+	private AiConfig aiConfig;
 
 	// 怪物攻击的初始技能，固定写死
-	private int				skillId;
+	private int skillId;
 	// 初始位置
-	private Vector3			initPosition;
+	private Vector3 initPosition;
 	// 仇恨列表
-	private List<Hatred>	hatreds	= Collections.synchronizedList(new ArrayList<Hatred>());
+	private List<Hatred> hatreds = Collections.synchronizedList(new ArrayList<Hatred>());
 	// 攻击目标
-	private Long			target;
+	private Long target;
 	// 当前使用的技能id
-	private int				curSkillID;
+	private int curSkillID;
 
 	// 攻击者
-	private Long			attacker;
+	private Long attacker;
 
 	// 参与者
-	private Set<Long>		joiners	= new HashSet<>();
+	private Set<Long> joiners = new HashSet<>();
 
 	public int getCurSkillID() {
 		return curSkillID;
@@ -99,7 +99,8 @@ public class Monster extends ActiveLiving {
 		setType(RoleType.monster);
 		this.node = node;
 
-		enDelayQueue(new MonsterPollingAction(this, new MonsterAI(this), new UpdatePositionAction(this, new PlayerSelectorHelper(this))));
+		enDelayQueue(new MonsterPollingAction(this, new MonsterAI(this),
+				new UpdatePositionAction(this, new PlayerSelectorHelper(this))));
 	}
 
 	public boolean onDie(Living killer) {
@@ -135,8 +136,8 @@ public class Monster extends ActiveLiving {
 	}
 
 	class DieAction extends DelayAction {
-		Living	deather;
-		Living	killer;
+		Living deather;
+		Living killer;
 
 		public DieAction(Living deather, Living killer, int delay) {
 			super(killer, delay);
@@ -165,14 +166,16 @@ public class Monster extends ActiveLiving {
 	protected void calculationProfit(int tempId, Living killer) {
 		// 无论什么类型，击杀者必定掉落
 		if (killer != null && this.getField() != null) {
-			DropManager.dropFromMonster(this.getSkin(), killer.getArmyId(), this.getId(), this.getField().id, this.getPostion());
+			DropManager.dropFromMonster(this.getSkin(), killer.getArmyId(), this.getId(), this.getField().id,
+					this.getPostion());
 		}
 		// 当怪物类型为2时，参与者也掉落物品
 		if (getMonsterInfo().getDropType() == 2) {
 			for (Long id : joiners) {
 				Living l = getField().getLiving(id);
 				if (l != null) {
-					DropManager.dropFromMonster(this.getSkin(), l.getArmyId(), this.getId(), this.getField().id, this.getPostion());
+					DropManager.dropFromMonster(this.getSkin(), l.getArmyId(), this.getId(), this.getField().id,
+							this.getPostion());
 				}
 			}
 		}
@@ -485,16 +488,17 @@ public class Monster extends ActiveLiving {
 	 * 恢复初始满状态
 	 */
 	public boolean fullState() {
+		
 		List<Damage> damages = new ArrayList<>();
 		Damage curSoul = new Damage(this, this);
 		curSoul.setDamageType(EnumAttr.CUR_SOUL.getValue());
-		curSoul.setDamageValue(getCurSoul() - getInitSoul());
+		curSoul.setDamageValue(Math.min(getCurSoul() - getMaxSoul(), 0));
 		damages.add(curSoul);
 		takeDamage(curSoul);
 
 		Damage curBlood = new Damage(this, this);
 		curBlood.setDamageType(EnumAttr.CUR_BLOOD.getValue());
-		curBlood.setDamageValue(getCurSoul() - getInitBlood());
+		curBlood.setDamageValue(Math.min(getCurBlood() - getMaxBlood(), 0));
 		damages.add(curBlood);
 		takeDamage(curBlood);
 

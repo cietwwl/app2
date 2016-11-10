@@ -3,6 +3,7 @@ package com.chuangyou.xianni.battle.damage.effect;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.damage.DamageType;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.role.objects.Living;
 
 /** 普通伤害：【 扣血，优先气血，元魂态扣元魂】 */
@@ -15,9 +16,13 @@ public class CommonDamageEffecter implements DamageEffecter {
 		if (target.isSoulState() && !target.otherDamageCalWay()) {
 			// 转换伤害类型
 			damage.setDamageType(DamageType.CUR_SOUL);
+			if (!target.checkStatus(LivingState.SUB_SOUL))
+				value = 0;
 		}
 		if (target.otherDamageCalWay()) {
 			damage.setDamageType(DamageType.CUR_BLOOD);
+			if (!target.checkStatus(LivingState.SUB_SOUL))
+				value = 0;
 		}
 		// 初始元魂
 		int oldValue = target.getProperty(damage.getDamageType());

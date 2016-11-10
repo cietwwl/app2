@@ -1,18 +1,14 @@
 package com.chuangyou.xianni.magicwp.cmd;
 
 import com.chuangyou.common.protobuf.pb.magicwp.MagicwpOpenReqProto.MagicwpOpenReqMsg;
-import com.chuangyou.common.protobuf.pb.magicwp.MagicwpOpenRespProto.MagicwpOpenRespMsg;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.magicwp.MagicwpCfg;
 import com.chuangyou.xianni.entity.magicwp.MagicwpInfo;
-import com.chuangyou.xianni.event.EventNameType;
-import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.magicwp.template.MagicwpTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
-import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
@@ -60,22 +56,7 @@ public class MagicwpOpenCmd extends AbstractCommand {
 			}
 		}
 		
-		magicwp = new MagicwpInfo(player.getPlayerId(), req.getMagicwpId());
-		magicwp.setLevel(1);
-		player.getMagicwpInventory().addMagicwpInfo(magicwp);
-		
-		MagicwpOpenRespMsg.Builder msg = MagicwpOpenRespMsg.newBuilder();
-		msg.setMagicwpId(magicwp.getMagicwpId());
-		msg.setLevel(magicwp.getLevel());
-		PBMessage p = MessageUtil.buildMessage(Protocol.U_MAGICWP_OPEN, msg);
-		player.sendPbMessage(p);
-		
-		//法宝总属性改变
-//		MagicwpManager.changeMagicwpAtt(roleId);
-		//影响人物属性变更
-		player.getMagicwpInventory().updataProperty();
-		
-		player.notifyListeners(new ObjectEvent(this, magicwp.getMagicwpId(), EventNameType.MAGICWP_ACTIVE));
+		player.getMagicwpInventory().activeMagicwp(req.getMagicwpId());
 		
 	}
 

@@ -6,7 +6,9 @@ import java.util.List;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.ai.AIState;
 import com.chuangyou.xianni.battle.skill.Skill;
+import com.chuangyou.xianni.constant.SkillConstant.SkillMainType;
 import com.chuangyou.xianni.cooldown.CoolDownTypes;
+import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
 
@@ -15,17 +17,17 @@ public class Attack extends MonsterBaseBehavior {
 	private boolean needChase = false;
 	// 本次攻击处理无效，切换到IDLE走下一次轮询
 	private boolean needIdle = false;
-	// 攻击目标
-	private List<Living> targets;
 
 	public Attack(Monster m) {
 		super(AIState.ATTACK, m);
-		targets = new ArrayList<Living>();
 		// getMonster().setCurSkillID(1001);
 	}
 
 	@Override
 	public void exe() {
+		// 攻击目标
+		List<Living> targets = new ArrayList<Living>();
+		
 		needChase = false;
 		needIdle = false;
 		// 获取进攻目标
@@ -68,13 +70,24 @@ public class Attack extends MonsterBaseBehavior {
 
 		// Skill test = new Skill(BattleTempMgr.getActionInfo(1001));
 		// getMonster().addSkill(test);
-		targets.clear();
+		// targets.clear();
 		targets.add(tmpTarget);
 		// System.out.println(tmpTarget.getPostion());
 		// AttackOrderControler.attackOrder(getMonster(), getMonster().getCurSkillID(), targets, getMonster().getPostion(), tmpTarget.getPostion());
 		Skill skill = getMonster().getAttackSkill();
 		if(skill==null)
 			return;
+		// 判断技能是否被冻结
+		int type = skill.getSkillTempateInfo().getMasterType();
+		if (type == SkillMainType.COMMON_ATTACK && !getMonster().checkStatus(LivingState.NORMAL_ATTACK)) {
+			return;
+		}
+		if (type == SkillMainType.ACTIVE && !getMonster().checkStatus(LivingState.SKILL_ATTAK)) {
+			return;
+		}
+		if (type == SkillMainType.PASSIVE && !getMonster().checkStatus(LivingState.PERKS)) {
+			return;
+		}
 		getMonster().stop(true);
 		AttackOrderControler.attackOrder(getMonster(), skill.getActionId(), targets, getMonster().getPostion(), tmpTarget.getPostion());
 		// SceneManagers.cooldownManager.addCooldown(getMonster(), CoolDownTypes.SKILL, null, SceneGlobal.AI_MONSTER_ATTACK_COOL_DOWN);

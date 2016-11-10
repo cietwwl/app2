@@ -26,6 +26,7 @@ import com.chuangyou.xianni.constant.EnterMapResult;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.entity.field.FieldInfo;
+import com.chuangyou.xianni.entity.pet.PetInfoCfg;
 import com.chuangyou.xianni.exec.AbstractActionQueue;
 import com.chuangyou.xianni.exec.AbstractCmdTaskQueue;
 import com.chuangyou.xianni.exec.CmdTask;
@@ -208,16 +209,21 @@ public class ArmyProxy extends AbstractActionQueue {
 			pet.setPostion(player.getPostion());
 
 			player.getField().enterField(pet);
-
+			
+			updatePetSkill(true);
 		} else {
 			if (pet.getSkin() != petInfo.getPetTempId()) {
 				pet.getField().leaveField(pet);
+				pet.clearData();
 				pet.destory();
+				
 				pet = new Pet(playerId, IDMakerHelper.nextID());
 				pet.readPetInfo(petInfo);
 				pet.setPostion(player.getPostion());
 
-				player.getField().enterField(pet);;
+				player.getField().enterField(pet);
+				
+				updatePetSkill(true);
 			} else {
 				PlayerAttUpdateMsg.Builder attUpdateMsg = PlayerAttUpdateMsg.newBuilder();
 				if (petInfo.getPetSoul() != pet.getPetSoul()) {
@@ -248,6 +254,18 @@ public class ArmyProxy extends AbstractActionQueue {
 				}
 			}
 		}
+	}
+	
+	private void updatePetSkill(boolean isNotify){
+		int skillId = 0;
+		if(this.pet != null){
+			PetInfoCfg petCfg = pet.getPetTemplate();
+			if(petCfg != null){
+				skillId = petCfg.getSkillId();
+				player.updatePetUseSkills(petCfg);
+			}
+		}
+		player.setPetSkillId(skillId, isNotify);
 	}
 
 	public void notifyMana() {
@@ -528,6 +546,7 @@ public class ArmyProxy extends AbstractActionQueue {
 
 	public void setPet(Pet pet) {
 		this.pet = pet;
+		updatePetSkill(false);
 	}
 
 	public short getOnlineStatu() {

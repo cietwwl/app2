@@ -45,8 +45,8 @@ public class StateTaskProcessBehavior implements ITaskProcessBehavior {
 		if(!task.isFinish()){	
 			if(task.getTaskInfo().getProcess()<num){  //只有增加才会更新（境界任务特有的）		
 				task.getTaskInfo().setProcess(num);	
-				if(task instanceof StateConditionInfo){
-					player.sendPbMessage(MessageUtil.buildMessage(Protocol.U_RESP_STATE_UPDATE,((StateConditionInfo)task).getMsg()));
+				if(task.getTaskInfo() instanceof StateConditionInfo){
+					player.sendPbMessage(MessageUtil.buildMessage(Protocol.U_RESP_STATE_UPDATE,((StateConditionInfo)task.getTaskInfo()).getMsg()));
 				}
 				if(task.isFinish()){
 					this.player.notifyListeners(new ObjectEvent(this, null, EventNameType.STATE_TAKS_FINISH));

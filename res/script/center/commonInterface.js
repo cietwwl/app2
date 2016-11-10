@@ -37,8 +37,8 @@ function sendHintToClient(roleId,content){
  * @param y
  * @param z
  */
-function changeMap(roleId,mapId,x,y,z){
-	com.chuangyou.xianni.map.MapProxyManager.changeMap(roleId,mapId,x,y,z);
+function changeMap(roleId,mapId,x,y,z,angle){
+	com.chuangyou.xianni.map.MapProxyManager.changeMap(roleId,mapId,x,y,z,angle);
 }
 
 
@@ -230,4 +230,37 @@ function getItemColor(itemTempId){
  */
 function getItemName(itemTempId){
 	return com.chuangyou.xianni.script.manager.ScriptInterfaceManager.getItemName(itemTempId);
+}
+
+
+
+/**
+ * 激活指定分身
+ * @param playerId
+ * @param tempId
+ * @return
+ */
+function activeAvatar(playerId,tempId){
+	return com.chuangyou.xianni.script.manager.ScriptInterfaceManager.activeAvatar(playerId,tempId);
+}
+
+/**
+ * 激活指定宠物
+ * @param playerId
+ * @param tempId
+ * @return
+ */
+function activePet(playerId,tempId){
+	return com.chuangyou.xianni.script.manager.ScriptInterfaceManager.activePet(playerId,tempId);
+}
+
+/**
+ * 激活指定法宝
+ * @param playerId
+ * @param tempId
+ * @return
+ */
+function activeMagicwp(playerId,tempId){
+	return com.chuangyou.xianni.script.manager.ScriptInterfaceManager.activeMagicwp(playerId,tempId);
+	
 }

@@ -8,7 +8,6 @@ import com.chuangyou.xianni.entity.active.ActiveInfo;
 import com.chuangyou.xianni.entity.task.ITaskCfg;
 import com.chuangyou.xianni.entity.task.ITaskInfo;
 import com.chuangyou.xianni.event.EventNameType;
-import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.retask.behavior.process.ActiveProcessBehavior;
 import com.chuangyou.xianni.retask.event.ActiveEvent;

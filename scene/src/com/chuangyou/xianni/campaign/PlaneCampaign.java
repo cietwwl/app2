@@ -24,11 +24,12 @@ public class PlaneCampaign extends Campaign {
 		if (army.getPlayer().getField().id != tempId % Field.MAX_ID) {
 			return false;
 		}
-		return false;
+		return true;
 	}
 
 	public Vector3 getBornNode(ArmyProxy player) {
-		if (player.getPlayer().getPostion() != null && player.getPlayer().getPostion() != Vector3.Invalid) {
+		if (player.getPlayer().getField().id == tempId % Field.MAX_ID && player.getPlayer().getPostion() != null
+				&& player.getPlayer().getPostion() != Vector3.Invalid) {
 			return player.getPlayer().getPostion();
 		}
 		return super.getBornNode(player);

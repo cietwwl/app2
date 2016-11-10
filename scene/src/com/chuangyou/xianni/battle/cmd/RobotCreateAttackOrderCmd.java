@@ -2,6 +2,7 @@ package com.chuangyou.xianni.battle.cmd;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.chuangyou.common.protobuf.pb.battle.RobotAttackOrderProto.RobotAttackOrderMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.Vector3;
@@ -11,6 +12,7 @@ import com.chuangyou.xianni.battle.action.OrderExecAction;
 import com.chuangyou.xianni.battle.skill.Skill;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.constant.RoleConstants.RoleType;
+import com.chuangyou.xianni.constant.SkillConstant.SkillMainType;
 import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
@@ -47,6 +49,18 @@ public class RobotCreateAttackOrderCmd extends AbstractCommand {
 		Skill skill = robot.getSkill(skillActionId);
 		if (skill == null) {
 			Log.error("skill is null,playerId : " + robot.getArmyId() + "  skillActionId:" + skillActionId);
+			return;
+		}
+		
+		// 判断技能是否被冻结
+		int type = skill.getSkillTempateInfo().getMasterType();
+		if (type == SkillMainType.COMMON_ATTACK && !robot.checkStatus(LivingState.NORMAL_ATTACK)) {
+			return;
+		}
+		if (type == SkillMainType.ACTIVE && !robot.checkStatus(LivingState.SKILL_ATTAK)) {
+			return;
+		}
+		if (type == SkillMainType.PASSIVE && !robot.checkStatus(LivingState.PERKS)) {
 			return;
 		}
 		// 技能是否在CD中

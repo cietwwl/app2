@@ -11,4 +11,5 @@ public interface WelfareDao {
 	void update(List<WelfareInfo> welfareInfo);
 	List<WelfareInfo> getWelfareInfosByPlayerId(long playerId);
 	boolean updateStatus(WelfareInfo welfareInfo);
+	boolean remove(WelfareInfo welfareInfo);
 }

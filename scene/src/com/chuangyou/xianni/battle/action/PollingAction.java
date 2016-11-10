@@ -66,28 +66,29 @@ public abstract class PollingAction extends DelayAction {
 
 			living.setRestoreTime(now);
 			List<Damage> damages = new ArrayList<>();
+
 			if (living.lessSoul() > 0) {
 				Damage soulDamage = new Damage(living, living);
 				soulDamage.setDamageType(EnumAttr.CUR_SOUL.getValue());
 				soulDamage.setCalcType(DamageEffecterType.SOUL);
-//				int restore = Math.min(living.getRegainSoul(), living.lessSoul());
-//				if (restore > 0) {
-//					soulDamage.setDamageValue(0 - restore);
-//					damages.add(soulDamage);
-//					living.takeDamage(soulDamage);
-//				}
+				int restore = Math.min(living.getRegainSoul(), living.lessSoul());
+				if (restore > 0) {
+					soulDamage.setDamageValue(0 - restore);
+					damages.add(soulDamage);
+					living.takeDamage(soulDamage);
+				}
 
 			}
 			if (living.lessBlood() > 0) {
 				Damage bloodDamage = new Damage(living, living);
 				bloodDamage.setDamageType(EnumAttr.CUR_BLOOD.getValue());
 				bloodDamage.setCalcType(DamageEffecterType.BLOOD);
-//				int restore = Math.min(living.getRegainBlood(), living.lessBlood());
-//				if (restore > 0) {
-//					bloodDamage.setDamageValue(0 - restore);
-//					damages.add(bloodDamage);
-//					living.takeDamage(bloodDamage);
-//				}
+				int restore = Math.min(living.getRegainBlood(), living.lessBlood());
+				if (restore > 0) {
+					bloodDamage.setDamageValue(0 - restore);
+					damages.add(bloodDamage);
+					living.takeDamage(bloodDamage);
+				}
 			}
 
 			if (damages.size() > 0) {

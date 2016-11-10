@@ -104,4 +104,17 @@ public class WelfareDaoImpl extends BaseDao implements WelfareDao {
 		}
 	}
 
+	@Override
+	public boolean remove(WelfareInfo welfareInfo) {
+		boolean result = false;
+		
+		String sql = "DELETE FROM tb_u_welfare where playerId = ? and welfareId = ?";
+		Map<Integer, DbParameter> params = new HashMap<>();
+		params.put(1, new DbParameter(Types.BIGINT, welfareInfo.getPlayerId()));
+		params.put(2, new DbParameter(Types.INTEGER, welfareInfo.getWelfareId()));
+		result = execNoneQuery(sql, params) > -1? true: false;
+		
+		return result;
+	}
+
 }

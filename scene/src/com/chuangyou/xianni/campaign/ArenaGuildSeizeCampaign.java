@@ -16,7 +16,7 @@ public class ArenaGuildSeizeCampaign extends ArenaBattleCampaign {
 		super(tempInfo, creater, robotDATA);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	@Override
 	public void win() {
 		// TODO Auto-generated method stub
@@ -35,10 +35,9 @@ public class ArenaGuildSeizeCampaign extends ArenaBattleCampaign {
 		OverDelayAction action = new OverDelayAction(this);
 		enDelayQueue(action);
 	}
-	
+
 	@Override
 	public void playerFail() {
-		// TODO Auto-generated method stub
 		if (isOver) {
 			return;
 		}

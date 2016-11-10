@@ -6,18 +6,6 @@ public class BattleSettlementConstant {
 	// 参与
 	public static final int	JOINER	= 2;
 
-	public static interface RoleType {
-		int	player	= 1;	// 玩家
-		int	monster	= 2;	// 怪物
-		int	pet		= 3;	// 宠物
-		int	npc		= 4;	// NPC
-		int	gather	= 5;	// 采集物
-		int	snare	= 6;	// 陷阱
-		int	truck	= 7;	// 镖车
-		int	robot	= 8;	// 机器人
-		int	matrial	= 9;	// 物资
-		int	avatar	= 10;	// 分身
-	}
 
 	public static interface MonsterDropType {
 		/** 仅击杀 */

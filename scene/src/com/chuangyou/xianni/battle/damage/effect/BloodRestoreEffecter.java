@@ -4,6 +4,7 @@ import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.damage.DamageType;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.role.objects.Living;
 
 /** 只恢复气血 */
@@ -20,7 +21,7 @@ public class BloodRestoreEffecter implements DamageEffecter {
 
 		// 当前缺失气血
 		int lessBlood = target.lessBlood();
-		if (lessBlood > 0) {
+		if (lessBlood > 0 && target.checkStatus(LivingState.ADD_BLOOD)) {
 			damage.setDamageType(DamageType.CUR_BLOOD);
 			value = Math.max(0 - lessBlood, value);
 		} else {

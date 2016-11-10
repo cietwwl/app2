@@ -28,7 +28,7 @@ public class WelfareConditionRecordInfo extends DataObject implements java.io.Se
     /** 人物ID */
     private long playerId;
     
-    /** 玩家触发登录天数的时间 */
+    /** 玩家触发登录天数的时间(从1970年1月1日凌晨到现在的天数) */
     private int time;
     
     /** 登录天数 */

@@ -16,9 +16,9 @@ public class AddSoulAndBloodCmd extends AbstractCommand {
 		// TODO Auto-generated method stub
 
 		AddSoulAndBloodMsg req = AddSoulAndBloodMsg.parseFrom(packet.getBytes());
-		if(req.getAddType() == DamageEffecterType.BLOOD){
+		if (req.getAddType() == DamageEffecterType.BLOOD) {
 			army.getPlayer().addCurBlood(req.getAddNum(), req.getAddType(), 0, 0);
-		}else{
+		} else {
 			army.getPlayer().addCurSoul(req.getAddNum(), req.getAddType(), 0, 0);
 		}
 	}

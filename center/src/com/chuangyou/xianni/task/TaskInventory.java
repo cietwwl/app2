@@ -56,9 +56,17 @@ public class TaskInventory extends AbstractEvent implements IInventory {
 	@Override
 	public boolean loadFromDataBase() {
 		// TODO Auto-generated method stub
+//		Map<Integer, TaskInfo> infos = DBManager.getTaskdao().get(player.getPlayerId());
+//		if (infos == null) {
+//			return false;
+//		}
+		return true;
+	}
+	
+	private void doLoadDataBase(){
 		Map<Integer, TaskInfo> infos = DBManager.getTaskdao().get(player.getPlayerId());
 		if (infos == null) {
-			return false;
+			return;
 		}
 		taskInfos = new HashMap<>();
 		for (TaskInfo info : infos.values()) {
@@ -73,16 +81,17 @@ public class TaskInventory extends AbstractEvent implements IInventory {
 				realTask.initTask();
 			}
 		}
-		return true;
 	}
 
 	@Override
 	public boolean unloadData() {
 		// TODO Auto-generated method stub
-		for (RealTask info : taskInfos.values()) {
-			info.removeTrigger();
+		if(this.taskInfos != null){			
+			for (RealTask info : taskInfos.values()) {
+				info.removeTrigger();
+			}
+			taskInfos.clear();
 		}
-		taskInfos.clear();
 		taskInfos = null;
 		player = null;
 		return true;
@@ -107,6 +116,9 @@ public class TaskInventory extends AbstractEvent implements IInventory {
 	}
 
 	public Map<Integer, RealTask> getTaskInfos() {
+		if(taskInfos == null){
+			doLoadDataBase();
+		}
 		return taskInfos;
 	}
 

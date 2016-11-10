@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.chuangyou.common.util.AttributeUtil;
 import com.chuangyou.xianni.artifact.manager.ArtifactManager;
@@ -17,7 +18,9 @@ import com.chuangyou.xianni.entity.artifact.ArtifactJewelSuitCfg;
 import com.chuangyou.xianni.entity.artifact.ArtifactLevelupCfg;
 import com.chuangyou.xianni.entity.artifact.ArtifactSuitCfg;
 import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
+import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.skill.SkillUtil;
 
 public class CalArtifact extends ArtifactManager {
 
@@ -109,14 +112,18 @@ public class CalArtifact extends ArtifactManager {
 		// 神器总属性和宝石总属性都放入属性最终属性列表
 		AttributeUtil.putAttToMap(attMap, artifactTotalAttMap);
 		AttributeUtil.putAttToMap(attMap, stoneTotalAttMap);
-
-		data.put("totalPro", attMap);
 		data.put("list", list);
+		BaseProperty property = new BaseProperty();
+		Map<String, Integer> attMap2 = new HashMap<String, Integer>();
+		for (Entry<Integer, Integer> integer : attMap.entrySet()) {
+			attMap2.put(integer.getKey() + "", integer.getValue());
+			SkillUtil.joinPro(property, integer.getKey(), integer.getValue());
+		}
 		CalFighting calFighting = new CalFighting();
-		calFighting.addBag(attMap, attMap);
+		calFighting.addBag(property, property);
 		long fighting = calFighting.getFighting();
+		data.put("totalPro", attMap2);
 		data.put("fighting", fighting);
-		
 		
 		return data;
 	}

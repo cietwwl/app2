@@ -14,6 +14,7 @@ import com.chuangyou.xianni.event.AbstractEvent;
 import com.chuangyou.xianni.interfaces.IInventory;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.sql.dao.DBManager;
+import com.chuangyou.xianni.sql.dao.WelfareDao;
 import com.chuangyou.xianni.welfare.conditionHandle.BaseConditionHandle;
 import com.chuangyou.xianni.welfare.conditionHandle.LoginDaysCondition;
 import com.chuangyou.xianni.welfare.conditionHandle.MaxTimeCondition;
@@ -67,14 +68,19 @@ public class WelfareInventory extends AbstractEvent implements IInventory {
 	@Override
 	public boolean loadFromDataBase() {
 		// 加载数据库数据
-		List<WelfareInfo> welfareInfos = DBManager.getWelfaredao().getWelfareInfosByPlayerId(player.getPlayerId());
+		WelfareDao dao = DBManager.getWelfaredao();
+		List<WelfareInfo> welfareInfos = dao.getWelfareInfosByPlayerId(player.getPlayerId());
+		Map<Integer, WelfareTemplate> temMap = WelfareManager.getConfigId();
 		for (WelfareInfo welfareInfo : welfareInfos) {
-			welfareInfoMap.put(welfareInfo.getWelfareId(), welfareInfo);
+			if (temMap.containsKey(welfareInfo.getWelfareId())) {
+				welfareInfoMap.put(welfareInfo.getWelfareId(), welfareInfo);
+			} else {
+				dao.remove(welfareInfo);
+			}
 		}
-		// 配置表数据并与数据库数据进行比较，达到动态添加福利的目的
+		// 配置表数据并与数据库数据进行比较，达到动态添加或删除福利的目的
 		List<WelfareInfo> infos = new ArrayList<>();
-		for (List<WelfareTemplate> templates : WelfareManager.getConfigType().values()) {
-			for (WelfareTemplate template : templates) {
+		for (WelfareTemplate template : temMap.values()) {
 				int id = template.getId();
 				if (!welfareInfoMap.containsKey(id)) {
 					WelfareInfo welfareInfo = new WelfareInfo();
@@ -84,7 +90,6 @@ public class WelfareInventory extends AbstractEvent implements IInventory {
 					welfareInfo.setOp(Option.Insert);
 					infos.add(welfareInfo);
 					welfareInfoMap.put(id, welfareInfo);
-				}
 			}
 		}
 		DBManager.getWelfaredao().addAll(infos);

@@ -50,6 +50,7 @@ import com.chuangyou.xianni.entity.avatar.AvatarCorrespondTemplateInfo;
 import com.chuangyou.xianni.entity.buffer.SkillBufferTemplateInfo;
 import com.chuangyou.xianni.entity.equip.EquipAwakenCfg;
 import com.chuangyou.xianni.entity.mount.MountGradeCfg;
+import com.chuangyou.xianni.entity.pet.PetInfoCfg;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.entity.skill.SkillActionTemplateInfo;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
@@ -102,6 +103,12 @@ public class Player extends ActiveLiving {
 
 	/** 法宝禁制 */
 	private Map<MagicwpBanConstant, MagicwpCompanent>	magicwps				= new HashMap<>();
+	
+	/** 宠物激活的玩家技能 */
+	protected Skill										petSkill				= null;
+	/** 宠物自己使用的技能 */
+	protected Map<Integer, Skill>						petUseSkills			= new HashMap<>();
+	
 	/**
 	 * 魂幡等级
 	 */
@@ -391,6 +398,10 @@ public class Player extends ActiveLiving {
 				temp.addSkills(skill.getSkillId());
 			}
 		}
+		// 宠物技能
+		if(petSkill != null && petSkill.getSkillId() > 0){
+			temp.addSkills(petSkill.getSkillId());
+		}
 		if (field != null && field.getCampaignId() > 0) {
 			Campaign campaign = CampaignMgr.getCampagin(field.getCampaignId());
 			if (campaign != null) {
@@ -403,6 +414,12 @@ public class Player extends ActiveLiving {
 
 	// 获取技能
 	public Skill getSkill(int skillId) {
+		if(petSkill != null && petSkill.getSkillId() == skillId){
+			return petSkill;
+		}
+		if(petUseSkills.containsKey(skillId)){
+			return petUseSkills.get(skillId);
+		}
 		if (!isCorrespondStatu() || skillId == TRANS_SKILL_ID || skillId == UN_TRANS_SKILL_ID) {
 			return drivingSkills.get(skillId);
 		}
@@ -612,6 +629,69 @@ public class Player extends ActiveLiving {
 
 	public void setSoulLv(int soulLv) {
 		this.soulLv = soulLv;
+	}
+	
+
+	/**
+	 * 设置宠物激活的玩家技能
+	 * @param petSkillId
+	 * @param isNotify
+	 */
+	public void setPetSkillId(int petSkillId, boolean isNotify) {
+		if(this.petSkill != null && this.petSkill.getSkillTempateInfo().getTemplateId() == petSkillId){
+			return;
+		}
+		petSkill = null;
+		if(petSkillId > 0){
+			SkillTempateInfo skillTempateInfo = BattleTempMgr.getBSkillInfo(petSkillId);
+			if (skillTempateInfo == null) {
+				return;
+			}
+			SkillActionTemplateInfo actionTemp = BattleTempMgr.getActionInfo(skillTempateInfo.getActionId());
+			if (actionTemp == null) {
+				return;
+			}
+			petSkill = new Skill(actionTemp);
+			petSkill.setSkillTempateInfo(skillTempateInfo);
+		}
+		if(isNotify == true){
+			notifyLivingSelf();
+		}
+	}
+	
+	/**
+	 * 更新宠物自己用的技能
+	 * @param petTemp
+	 */
+	public void updatePetUseSkills(PetInfoCfg petTemp){
+		if(this.petUseSkills == null){
+			petUseSkills = new HashMap<>();
+		}
+		this.petUseSkills.clear();
+		if(petTemp != null){
+			Set<Integer> skills = petTemp.getSkillSet();
+			for(int skillId: skills){
+				SkillTempateInfo skillTempateInfo = BattleTempMgr.getBSkillInfo(skillId);
+				if (skillTempateInfo == null) {
+					return;
+				}
+				SkillActionTemplateInfo actionTemp = BattleTempMgr.getActionInfo(skillTempateInfo.getActionId());
+				if (actionTemp == null) {
+					return;
+				}
+				Skill skill = new Skill(actionTemp);
+				skill.setSkillTempateInfo(skillTempateInfo);
+				this.petUseSkills.put(skill.getSkillId(), skill);
+			}
+		}
+	}
+	
+	public void notifyLivingSelf(){
+		ArmyProxy army = WorldMgr.getArmy(getId());
+		if(army != null){
+			PBMessage pkg = MessageUtil.buildMessage(Protocol.U_G_BATTLEPLAYERINFO, getBattlePlayerInfoMsg().build());
+			army.sendPbMessage(pkg);
+		}
 	}
 
 	/**
@@ -902,6 +982,22 @@ public class Player extends ActiveLiving {
 		if (curBlood >= getMaxBlood() && isSoulState() == true) {
 			changeSoulState(false);
 		}
+	}
+	
+	@Override
+	public void clearData() {
+		// TODO Auto-generated method stub
+		super.clearData();
+		
+		monsterRefreshIdList.clear();
+		campaignBuffers.clear();
+		fuseSkillVos.clear();
+		fuseSkillBuffers = new Buffer[4];
+		weaponBuffer = null;
+		magicwps.clear();
+		petSkill = null;
+		petUseSkills.clear();
+		avatarSkills.clear();
 	}
 
 	/** 判断是否死亡 */

@@ -212,7 +212,7 @@ public class UpdatePositionAction {// extends DelayAction {
 					}
 					List<Hatred> hatreds = monster.getHatreds();
 					for (int i = 0; i < hatreds.size(); i++) {
-						if (i < hatreds.size() && hatreds.get(i).getTarget() == id) {
+						if (i < hatreds.size() && hatreds.get(i).getTarget().longValue() == id.longValue()) {
 							return;
 						}
 					}

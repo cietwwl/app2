@@ -18,6 +18,11 @@ public class DropInfo {
 	private int repeat;
 	
 	/**
+	 * 总权重
+	 */
+	private int totalWeight;
+	
+	/**
 	 * 限时掉落时间类型
 	 */
 	private short limitType;
@@ -59,6 +64,14 @@ public class DropInfo {
 
 	public void setRepeat(int repeat) {
 		this.repeat = repeat;
+	}
+
+	public int getTotalWeight() {
+		return totalWeight;
+	}
+
+	public void setTotalWeight(int totalWeight) {
+		this.totalWeight = totalWeight;
 	}
 
 	public short getLimitType() {

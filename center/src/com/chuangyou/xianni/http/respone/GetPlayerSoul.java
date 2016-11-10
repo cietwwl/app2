@@ -3,6 +3,7 @@ package com.chuangyou.xianni.http.respone;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.chuangyou.xianni.bag.BagInventory;
 import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.player.PlayerJoinInfo;
@@ -46,6 +47,12 @@ public class GetPlayerSoul implements BaseRespone {
 					SoulInventory soulInventory = new SoulInventory(player);
 					player.setSoulInventory(soulInventory);
 					soulInventory.loadFromDataBase();
+					
+					
+					BagInventory bagInventory = new BagInventory(player);
+					bagInventory.loadFromDataBase();
+					player.setBagInventory(bagInventory);
+					
 					data = CalSoul.computeSoulAtt(player);
 				}
 			}

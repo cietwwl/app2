@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.chuangyou.common.util.ThreadSafeRandom;
+import com.chuangyou.common.util.random.WeightRandomUtil;
 import com.chuangyou.xianni.constant.DropItemConstant;
 import com.chuangyou.xianni.drop.templete.DropTempleteMgr;
 import com.chuangyou.xianni.entity.drop.DropInfo;
@@ -22,7 +23,7 @@ public class DropManager {
 		Map<Integer, DropItemInfo> items = DropTempleteMgr.getDropItemMap().get(id);
 
 		ThreadSafeRandom random = new ThreadSafeRandom();
-		if (pool.getType() == DropItemConstant.DropType.probability) {
+		if (pool.getType() == DropItemConstant.DropType.PROBABILITY) {
 			for (int i = 0; i < pool.getRepeat(); i++) {
 				for (DropItemInfo item : items.values()) {
 					int rate = item.getWeight();
@@ -31,26 +32,26 @@ public class DropManager {
 					}
 				}
 			}
-		} else if (pool.getType() == DropItemConstant.DropType.weight) {
+		} else if (pool.getType() == DropItemConstant.DropType.WEIGHT) {
 			for (int i = 0; i < pool.getRepeat(); i++) {
 
-				int totalWeight = 0;
-				List<Integer> itemIds = new ArrayList<>();
-				for (DropItemInfo item : items.values()) {
-					totalWeight += item.getWeight();
-					itemIds.add(item.getId());
+				List<DropItemInfo> itemList = new ArrayList<>();
+				itemList.addAll(items.values());
+				
+				DropItemInfo resultItem = WeightRandomUtil.getRandomWeight(itemList);
+				if(resultItem != null){
+					dropItems.add(resultItem);
 				}
+			}
+		} else if (pool.getType() == DropItemConstant.DropType.SPECIAL_WEIGHT){
+			for (int i = 0; i < pool.getRepeat(); i++) {
 
-				int randomNum = random.next(1, totalWeight);
-
-				int flag = 0;
-				for (int itemId : itemIds) {
-					DropItemInfo item = items.get(itemId);
-					if (randomNum > flag && randomNum <= item.getWeight()) {
-						dropItems.add(item);
-						break;
-					}
-					flag += item.getWeight();
+				List<DropItemInfo> itemList = new ArrayList<>();
+				itemList.addAll(items.values());
+				
+				DropItemInfo resultItem = WeightRandomUtil.getRandomWeight(pool.getTotalWeight(), itemList);
+				if(resultItem != null){
+					dropItems.add(resultItem);
 				}
 			}
 		}

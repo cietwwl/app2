@@ -3,6 +3,7 @@ package com.chuangyou.xianni.battle.damage.effect;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.damage.DamageType;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.role.objects.Living;
 
 /** 【加血，先提升元魂，再提升气血】 */
@@ -15,10 +16,10 @@ public class CommonRestoreEffecter implements DamageEffecter {
 		int lessSoul = target.lessSoul();
 		// 当前缺失气血
 		int lessBlood = target.lessBlood();
-		if (lessSoul > 0) {
+		if (lessSoul > 0 && target.checkStatus(LivingState.ADD_SOUL)) {
 			damage.setDamageType(DamageType.CUR_SOUL);
 			value = Math.max(0 - lessSoul, value);
-		} else if (lessBlood > 0) {
+		} else if (lessBlood > 0 && target.checkStatus(LivingState.ADD_BLOOD)) {
 			damage.setDamageType(DamageType.CUR_BLOOD);
 			value = Math.max(0 - lessBlood, value);
 		} else {

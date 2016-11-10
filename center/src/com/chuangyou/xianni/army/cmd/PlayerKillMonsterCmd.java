@@ -8,7 +8,7 @@ import com.chuangyou.xianni.battleMode.manager.BattleModeManager;
 import com.chuangyou.xianni.constant.BattleModeCode;
 import com.chuangyou.xianni.constant.BattleSettlementConstant;
 import com.chuangyou.xianni.constant.BattleSettlementConstant.MonsterDropType;
-import com.chuangyou.xianni.constant.BattleSettlementConstant.RoleType;
+import com.chuangyou.xianni.constant.RoleConstants.RoleType;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 import com.chuangyou.xianni.event.EventNameType;
@@ -18,8 +18,6 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
 import com.chuangyou.xianni.socket.Command;
-import com.chuangyou.xianni.welfare.WelfareConditionHandleFactory;
-import com.chuangyou.xianni.welfare.WelfareManager;
 import com.chuangyou.xianni.word.WorldMgr;
 
 import io.netty.channel.Channel;

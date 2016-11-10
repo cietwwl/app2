@@ -36,9 +36,9 @@ message RankInfoMsg{
 	 * playerName：玩家名字  playerId：玩家ID  param1：人气值    param2：鲜花  param3：鸡蛋
 	 *
 	 * 401 - 1 (境界1阶日榜)
-	 * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+	 * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为） param2:等级
 	 * 402 - 1 (境界2阶日榜)
-	 * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）
+	 * playerName：玩家名字  playerId：玩家ID  param1：战力值（修为）param2:等级
 	 * .........
 	 * ........
 	 */

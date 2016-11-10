@@ -2,13 +2,17 @@ package com.chuangyou.xianni.battle.buffer;
 
 import com.chuangyou.xianni.battle.buffer.specialbuf.AttackConvertSoulAttackBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.AttributesBuffer;
+import com.chuangyou.xianni.battle.buffer.specialbuf.BanRestoreBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.BeAttackDamageEffectBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.BombBuffer;
+import com.chuangyou.xianni.battle.buffer.specialbuf.BuffOrDebuffImmuneBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.BufferCreaterBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.CasterDamageEffectBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.CritEffectBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.DefenceBreakBuffer;
+import com.chuangyou.xianni.battle.buffer.specialbuf.DoAndContinuedRestoreBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.PurifyBuffer;
+import com.chuangyou.xianni.battle.buffer.specialbuf.RealRestoreOrDamage1Buffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.RealRestoreOrDamageBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.SoulAttackConvertAttackBuffer;
 import com.chuangyou.xianni.battle.buffer.specialbuf.SoulDefenceBreakBuffer;
@@ -76,6 +80,20 @@ public class BufferFactory {
 				break;
 			case BufferType.TRUCE_HIDE_NAME:
 				buffer = new TruckHideNameBuffer(source, target, bufferInfo);
+				break;
+			case BufferType.DO_AND_CONTINUED_RESTORE:
+				buffer = new DoAndContinuedRestoreBuffer(source, target, bufferInfo);
+				break;
+			case BufferType.BAN_RESTORE:
+				buffer = new BanRestoreBuffer(source, target, bufferInfo);
+				break;
+			case BufferType.BUFF_OR_DEBUFF_IMMUNE:
+				buffer = new BuffOrDebuffImmuneBuffer(source, target, bufferInfo);
+				break;
+			case BufferType.REAL_RESTORE_OR_DAMAGE1:
+				buffer = new RealRestoreOrDamage1Buffer(source, target, bufferInfo);
+				break;
+
 			default:
 				buffer = new LivingDamageBuffer(source, target, bufferInfo);
 		}

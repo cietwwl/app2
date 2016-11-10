@@ -268,5 +268,9 @@ public interface ItemRemoveType {
 	 * 技能升级使用
 	 */
 	public static final short	UPDATA_SKILL_USE		= 1069;
-
+	
+	/**
+	 * 福利背包满了退还操作
+	 */
+	public static final short	WELFARE_RECOVERY		= 1070;
 }

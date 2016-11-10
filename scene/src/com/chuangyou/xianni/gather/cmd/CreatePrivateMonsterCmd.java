@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
 import com.chuangyou.common.protobuf.pb.gather.CreatePrivateMonsterInnerProto.CreatePrivateMonsterInnerMsg;
-import com.chuangyou.common.protobuf.pb.gather.SearchPrivateMonsterInnerProto.SearchPrivateMonsterInnerMsg;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -33,6 +32,12 @@ public class CreatePrivateMonsterCmd implements Command {
 		int leaveTime = msg.getLeaveTime();
 		int mapId     = msg.getMapId();
 		
+		//分压地图
+		ArmyProxy army = WorldMgr.getArmy(playerId);
+		if(mapId==1007){
+			mapId = army.getPlayer().getField().id;
+		}
+		
 		//检测一下此种怪物其它的时间 是否到了.因为检测细度问题.可能会有一些误差.这个地方做一个特殊处理
 		List<PrivateMonster> list = PrivateMonsterMgr.get(playerId);
 		if(list.size()>0){
@@ -48,7 +53,6 @@ public class CreatePrivateMonsterCmd implements Command {
 			}
 		}
 		
-		ArmyProxy army = WorldMgr.getArmy(playerId);
 		MonsterInfo monsterInfo = MonsterInfoTemplateMgr.get(monsterId);
 		if(army!=null && monsterInfo!=null){	
 			CreatePrivateMonsterAction action= null;

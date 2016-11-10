@@ -9,7 +9,7 @@ import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
 
-@Cmd(code=Protocol.C_REQ_TASK_CHANGEMAP,desc="跨地图飞行")
+@Cmd(code = Protocol.C_REQ_TASK_CHANGEMAP, desc = "跨地图飞行")
 public class TaskChangeMapCmd extends AbstractCommand {
 
 	@Override
@@ -18,9 +18,8 @@ public class TaskChangeMapCmd extends AbstractCommand {
 		TaskChangeMapReqMsg msg = TaskChangeMapReqMsg.parseFrom(packet.getBytes());
 		int mapId = msg.getMapId();
 		PBVector3 pos = msg.getPos();
-		
-		MapProxyManager.changeMap(player.getPlayerId(), mapId, pos.getX(), pos.getY(), pos.getZ());
-	
-	}
 
+		MapProxyManager.changeMap(player.getPlayerId(), mapId, pos.getX(), pos.getY(), pos.getZ(), pos.getAngle());
+
+	}
 }

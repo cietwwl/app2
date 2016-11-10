@@ -32,4 +32,17 @@ public class SkillConstant {
 		/** 宠物给主角技能 */
 		public static final int	PET_SKILL				= 9;
 	}
+	
+	/**
+	 * 技能目标模式
+	 *
+	 */
+	public interface SkillTargetMode{
+		
+		/** 敌方 */
+		public static final int ENEMY = 1;
+		
+		/** 友方 */
+		public static final int FRIENDLY = 2;
+	}
 }

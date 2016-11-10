@@ -45,6 +45,8 @@ public class WelfareConditionRecordDaoImpl extends BaseDao implements WelfareCon
 
 	@Override
 	public boolean update(WelfareConditionRecordInfo sevenDaysGiftPackageInfo) {
+		if (!sevenDaysGiftPackageInfo.beginUpdate())
+			return false;
 		boolean result;
 		String sql = "UPDATE tb_u_welfare_condition SET time = ?, days = ?, onlineTime = ? WHERE playerId = ?";
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();
@@ -59,7 +61,8 @@ public class WelfareConditionRecordDaoImpl extends BaseDao implements WelfareCon
 
 	@Override
 	public boolean add(WelfareConditionRecordInfo sevenDaysGiftPackageInfo) {
-
+		if (!sevenDaysGiftPackageInfo.beginAdd())
+			return false;
 		boolean result;
 		String sql = "INSERT INTO tb_u_welfare_condition VALUES(?, ?, ?, ?)";
 		Map<Integer, DbParameter> para = new HashMap<Integer, DbParameter>();

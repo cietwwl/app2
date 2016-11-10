@@ -15,7 +15,7 @@ public class WeightRandomUtil {
 	 * @param list
 	 * @return
 	 */
-	public static IWeight getRandomWeight(List<IWeight> list){		
+	public static <T extends IWeight> T getRandomWeight(List<T> list){		
 		int total = 0;
 		for (IWeight iWeight : list) {
 			total += iWeight.getWeight();
@@ -23,7 +23,7 @@ public class WeightRandomUtil {
 		if(total>0){
 			int r = new Random().nextInt(total);
 			int flag = 0;
-			for (IWeight iWeight : list) {
+			for (T iWeight : list) {
 				if (r >= flag && r < flag+iWeight.getWeight()) {
 					return iWeight;
 				}
@@ -33,4 +33,23 @@ public class WeightRandomUtil {
 		return null;
 	}
 	
+	/**
+	 * 获取带权重的随机出来的元素,总权重值固定
+	 * @param total
+	 * @param list
+	 * @return
+	 */
+	public static <T extends IWeight> T getRandomWeight(int total, List<T> list){
+		if(total>0){
+			int r = new Random().nextInt(total);
+			int flag = 0;
+			for (T iWeight : list) {
+				if (r >= flag && r < flag+iWeight.getWeight()) {
+					return iWeight;
+				}
+				flag += iWeight.getWeight();
+			}
+		}
+		return null;
+	}
 }

@@ -43,7 +43,7 @@ public class LoginLoadCmd extends AbstractCommand {
 	static final int	USER			= 2;
 	static final int	ARMY			= 3;
 	static final int	BAG				= 4;
-	static final int	TASK			= 5;
+//	static final int	TASK			= 5;
 	static final int	CAMPAIGN		= 6;
 	static final int	TEAM			= 7;
 	static final int	SHOP			= 8;
@@ -94,9 +94,9 @@ public class LoginLoadCmd extends AbstractCommand {
 					bagInventory.updateAll();
 				}
 			}
-			if (dataType.getDataType() == TASK) {
-				new GetTaskLogic().process(player);
-			}
+//			if (dataType.getDataType() == TASK) {
+//				new GetTaskLogic().process(player);
+//			}
 			if (dataType.getDataType() == CAMPAIGN) {
 				if (player.getCurCampaign() > 0) {
 					CampaignOptionMsg.Builder builder = CampaignOptionMsg.newBuilder();

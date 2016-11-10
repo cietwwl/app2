@@ -7,6 +7,7 @@ import java.util.Map;
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
 import com.chuangyou.common.protobuf.pb.magicwp.MagicwpBanGetInfoRespProto.MagicwpBanGetInfoRespMsg;
 import com.chuangyou.common.protobuf.pb.magicwp.MagicwpBanInfoBeanProto.MagicwpBanInfoBeanMsg;
+import com.chuangyou.common.protobuf.pb.magicwp.MagicwpOpenRespProto.MagicwpOpenRespMsg;
 import com.chuangyou.common.protobuf.pb.player.OtherMagicwpMsgProto.OtherMagicwpMsg;
 import com.chuangyou.xianni.army.Hero;
 import com.chuangyou.xianni.bag.ItemManager;
@@ -19,10 +20,13 @@ import com.chuangyou.xianni.entity.magicwp.MagicwpAtt;
 import com.chuangyou.xianni.entity.magicwp.MagicwpBanCfg;
 import com.chuangyou.xianni.entity.magicwp.MagicwpBanInfo;
 import com.chuangyou.xianni.entity.magicwp.MagicwpBanLevelCfg;
+import com.chuangyou.xianni.entity.magicwp.MagicwpCfg;
 import com.chuangyou.xianni.entity.magicwp.MagicwpInfo;
 import com.chuangyou.xianni.entity.magicwp.MagicwpLevelCfg;
 import com.chuangyou.xianni.entity.property.BaseProperty;
 import com.chuangyou.xianni.event.AbstractEvent;
+import com.chuangyou.xianni.event.EventNameType;
+import com.chuangyou.xianni.event.ObjectEvent;
 import com.chuangyou.xianni.interfaces.IInventory;
 import com.chuangyou.xianni.magicwp.manager.MagicwpRefineManager;
 import com.chuangyou.xianni.magicwp.template.MagicwpTemplateMgr;
@@ -407,4 +411,41 @@ public class MagicwpInventory extends AbstractEvent implements IInventory {
 		proto.setPropertitys(propertyMsgs);
 		tempHero = null;
 	}
+	
+	/**
+	 * 激活法宝
+	 * @param tempId
+	 */
+	public void activeMagicwp(int tempId){
+	
+		MagicwpCfg magicwpCfg = MagicwpTemplateMgr.getMagicwpTemps().get(tempId);
+		
+		if(magicwpCfg == null){
+			return;
+		}
+		
+		MagicwpInfo magicwp = player.getMagicwpInventory().getMagicwpInfo(tempId);
+		
+		if(magicwp != null){
+			return;
+		}
+		
+		magicwp = new MagicwpInfo(player.getPlayerId(),tempId);
+		magicwp.setLevel(1);
+		addMagicwpInfo(magicwp);
+		
+		MagicwpOpenRespMsg.Builder msg = MagicwpOpenRespMsg.newBuilder();
+		msg.setMagicwpId(magicwp.getMagicwpId());
+		msg.setLevel(magicwp.getLevel());
+		PBMessage p = MessageUtil.buildMessage(Protocol.U_MAGICWP_OPEN, msg);
+		player.sendPbMessage(p);
+		
+		//法宝总属性改变
+//		MagicwpManager.changeMagicwpAtt(roleId);
+		//影响人物属性变更
+		updataProperty();
+		
+		player.notifyListeners(new ObjectEvent(this, magicwp.getMagicwpId(), EventNameType.MAGICWP_ACTIVE));
+	}
+	
 }

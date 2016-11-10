@@ -91,7 +91,7 @@ public class MapProxyManager {
 	 * @param y
 	 * @param z
 	 */
-	public static void changeMap(long playerId, int mapId, int x, int y, int z) {
+	public static void changeMap(long playerId, int mapId, int x, int y, int z, int angle) {
 		FieldInfo info = getFieldTempInfo(mapId);
 		if (info == null) {
 			ErrorMsgUtil.sendErrorMsg(playerId, ErrorCode.UNKNOW_ERROR, (short) -100, "地图不存在:" + mapId);
@@ -106,6 +106,8 @@ public class MapProxyManager {
 		pos.setX(x);
 		pos.setY(y);
 		pos.setZ(z);
+		pos.setAngle(angle);
+		
 		PostionMsg.Builder postion = PostionMsg.newBuilder();
 		postion.setPostion(pos);
 		PBMessage pkg;

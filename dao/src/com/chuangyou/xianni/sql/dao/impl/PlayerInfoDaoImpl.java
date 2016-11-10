@@ -213,6 +213,7 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 
 					info.setStateLv(rs.getInt("stateLv"));
 					info.setAvatarEnergy(rs.getInt("avatarEnergy"));
+
 					info.setCreateTime(rs.getDate("createTime"));
 					info.setOp(Option.None);
 					infos.add(info);
@@ -434,8 +435,10 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 		// TODO Auto-generated method stub
 		boolean result = false;
 		playerTimeInfo.beginUpdate();
-		String sql = "update tb_u_player_time_info set sigleCampCount=?,challengeCampCount=?,personalTruckerProtCount=?," + "presonalTruckerExtReward=?,presonalTruckerExtExp=?,addExpByTruckBroken=?,"
-				+ "personalLuckCardFreeTime=?,personalLuckCardMoneyTime=?,personalExchangeTime=?,personalExchangeTotalTime=?," + "resetTime=?,offlineTime=? where playerId=?";
+		String sql = "update tb_u_player_time_info set sigleCampCount=?,challengeCampCount=?,personalTruckerProtCount=?,"
+				+ "presonalTruckerExtReward=?,presonalTruckerExtExp=?,addExpByTruckBroken=?,"
+				+ "personalLuckCardFreeTime=?,personalLuckCardMoneyTime=?,personalExchangeTime=?,personalExchangeTotalTime=?,"
+				+ "resetTime=?,offlineTime=? where playerId=?";
 		Map<Integer, DbParameter> params = new HashMap<Integer, DbParameter>();
 		params.put(1, new DbParameter(Types.INTEGER, playerTimeInfo.getSigleCampCount()));
 		params.put(2, new DbParameter(Types.INTEGER, playerTimeInfo.getChallengeCampCount()));
@@ -577,7 +580,6 @@ public class PlayerInfoDaoImpl extends BaseDao implements PlayerInfoDao {
 
 		strSql.append(" limit " + (page - 1) * pageSize + "," + pageSize);
 		strSql.append(";");
-		 System.out.println(strSql.toString());
 		PreparedStatement pstmt = execQuery(strSql.toString(), null);
 		ResultSet rs = null;
 		PlayerInfo info = null;

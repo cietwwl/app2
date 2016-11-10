@@ -412,115 +412,114 @@ public class ErrorCode {
 
 	/** 玩家未设置城市 */
 	public static final int	PLAYER_NO_CITY							= 1972;
-	
+
 	/** 玩家已经在帮派里了 */
-	public static final int PLAYER_ALREAD_IN_GUILD						= 1973;
-	
+	public static final int	PLAYER_ALREAD_IN_GUILD					= 1973;
+
 	/** 玩家还没有加入帮派 */
-	public static final int PLAYER_NO_GUILD								= 1974;
-	
+	public static final int	PLAYER_NO_GUILD							= 1974;
+
 	/** 帮派不存在 */
-	public static final int GUILD_NOT_EXIST								= 1975;
-	
+	public static final int	GUILD_NOT_EXIST							= 1975;
+
 	/** 在帮派中的权限不足 */
-	public static final int GUILD_POWER_UNENOUGH						= 1976;
-	
+	public static final int	GUILD_POWER_UNENOUGH					= 1976;
+
 	/** 玩家没有申请 */
-	public static final int GUILD_APPLY_NOT_EXIST						= 1977;
-	
+	public static final int	GUILD_APPLY_NOT_EXIST					= 1977;
+
 	/** 帮派有人的情况下帮主不能退出帮派，请先移交给其他成员 */
-	public static final int GUILD_LEADER_EXIT							= 1978;
-	
+	public static final int	GUILD_LEADER_EXIT						= 1978;
+
 	/** 帮派名字过长 */
-	public static final int GUILD_NAME_MAXLENGTH						= 1979;
-	
+	public static final int	GUILD_NAME_MAXLENGTH					= 1979;
+
 	/** 帮派名字重复 */
-	public static final int GUILD_NAME_REPEAT							= 1980;
-	
+	public static final int	GUILD_NAME_REPEAT						= 1980;
+
 	/** 帮派公告过长 */
-	public static final int GUILD_NOTICE_MAXLENGTH						= 1981;
-	
+	public static final int	GUILD_NOTICE_MAXLENGTH					= 1981;
+
 	/** 要设置的职位已满 */
-	public static final int GUILD_JOB_FULL								= 1982;
-	
+	public static final int	GUILD_JOB_FULL							= 1982;
+
 	/** 帮派主殿已达到最高等级 */
-	public static final int GUILD_MAINGUILD_MAXLEVEL					= 1983;
-	
+	public static final int	GUILD_MAINGUILD_MAXLEVEL				= 1983;
+
 	/** 帮派物资不足 */
-	public static final int GUILD_SUPPLY_UNENOUGH						= 1984;
-	
+	public static final int	GUILD_SUPPLY_UNENOUGH					= 1984;
+
 	/** 蒧经阁达到最高等级 */
-	public static final int GUILD_SKILLSHOP_MAXLEVEL					= 1985;
-	
+	public static final int	GUILD_SKILLSHOP_MAXLEVEL				= 1985;
+
 	/** 帮派商店达到最高等级 */
-	public static final int GUILD_SHOP_MAXLEVEL							= 1986;
-	
+	public static final int	GUILD_SHOP_MAXLEVEL						= 1986;
+
 	/** 帮派仓库达到最高等级 */
-	public static final int GUILD_WAREHOUSE_MAXLEVEL					= 1987;
-	
+	public static final int	GUILD_WAREHOUSE_MAXLEVEL				= 1987;
+
 	/** 重复申请 */
-	public static final int GUILD_APPLY_REPEAT							= 1988;
-	
+	public static final int	GUILD_APPLY_REPEAT						= 1988;
+
 	/** 申请人已经加入了一个帮派 */
-	public static final int GUILD_APPLY_ALREADY_JOIN					= 1989;
-	
+	public static final int	GUILD_APPLY_ALREADY_JOIN				= 1989;
+
 	/** 帮派成员数量已满 */
-	public static final int GUILD_MEMBER_MAX							= 1990;
-	
+	public static final int	GUILD_MEMBER_MAX						= 1990;
+
 	/** 帮派商店等级不足 */
-	public static final int GUILD_SHOP_LEVEL_LIMIT						= 1991;
-	
+	public static final int	GUILD_SHOP_LEVEL_LIMIT					= 1991;
+
 	/** 帮派贡献不足 */
-	public static final int GUILD_CONTRIBUTION_UNENOUGH					= 1992;
-	
+	public static final int	GUILD_CONTRIBUTION_UNENOUGH				= 1992;
+
 	/** 技能等级不能超过蒧经阁等级 */
-	public static final int GUILD_SKILLSHOP_UNENOUGH					= 1993;
-	
+	public static final int	GUILD_SKILLSHOP_UNENOUGH				= 1993;
+
 	/** 库存不足 */
-	public static final int GUILD_WAREHOUSE_ITEM_UNENOUGH				= 1994;
-	
+	public static final int	GUILD_WAREHOUSE_ITEM_UNENOUGH			= 1994;
+
 	/** 成员无效 */
-	public static final int GUILD_MEMBER_INVALID						= 1995;
-	
+	public static final int	GUILD_MEMBER_INVALID					= 1995;
+
 	/** 邮件内容长度太长 */
-	public static final int MAIL_CONTENT_MAX							= 1996;
-	
+	public static final int	MAIL_CONTENT_MAX						= 1996;
+
 	/** 物品不能存入帮派仓库 */
-	public static final int ITEM_NOT_SAVE_GUILD							= 1997;
-	
+	public static final int	ITEM_NOT_SAVE_GUILD						= 1997;
+
 	/** 玩家境界不足 */
-	public static final int PLAYER_STATELV_UNENOUGH						= 1998;
-	
+	public static final int	PLAYER_STATELV_UNENOUGH					= 1998;
+
 	/** 帮派中正在进行夺权,只能同时进行一场夺权挑战 */
-	public static final int GUILD_SEIZE_DOING							= 1999;
-	
+	public static final int	GUILD_SEIZE_DOING						= 1999;
+
 	/** 你已经在副本中，不能进行夺权 */
-	public static final int GUILD_SEIZE_ALREADY_INCAMPAIGN				= 2000;
-	
+	public static final int	GUILD_SEIZE_ALREADY_INCAMPAIGN			= 2000;
+
 	/** 夺权目标的职位不能夺权 */
-	public static final int GUILD_JOB_NO_SEIZE							= 2001;
-	
+	public static final int	GUILD_JOB_NO_SEIZE						= 2001;
+
 	/** 夺权目标当前未达到夺权条件 */
-	public static final int GUILD_TARGET_NOT_SEIZE						= 2002;
-	
+	public static final int	GUILD_TARGET_NOT_SEIZE					= 2002;
+
 	/** 夺权目标上位时间不足5分钟 */
-	public static final int GUILD_TARGET_SEIZE_WIN_CD					= 2003;
-	
+	public static final int	GUILD_TARGET_SEIZE_WIN_CD				= 2003;
+
 	/** 夺权无法开始 */
-	public static final int GUILD_SEIZE_UNKNOWN_ERROR					= 2004;
-	
+	public static final int	GUILD_SEIZE_UNKNOWN_ERROR				= 2004;
+
 	/** 有成员正在夺权，不能转让掌门 */
-	public static final int GUILD_APPOINT_LEADER_SEIZE					= 2005;
-	
+	public static final int	GUILD_APPOINT_LEADER_SEIZE				= 2005;
+
 	/** 该成员正在夺权，不能踢出门派 */
-	public static final int GUILD_REMOVE_MEMBER_SEIZE					= 2006;
-	
+	public static final int	GUILD_REMOVE_MEMBER_SEIZE				= 2006;
+
 	/** 请先升级门派等级 */
-	public static final int GUILD_LEVEL_UNENOUGH						= 2007;
-	
+	public static final int	GUILD_LEVEL_UNENOUGH					= 2007;
+
 	/** 物品不能使用 */
-	public static final int ITEM_CANNOT_USE								= 2008;
-	
+	public static final int	ITEM_CANNOT_USE							= 2008;
 
 	/** 此NPC未绑定脚本 */
 	public static final int	NPC_NO_HAVE_SCRIPT						= 2501;
@@ -559,8 +558,8 @@ public class ErrorCode {
 	public static final int	CHAT_PRIVATE_TARGET_NOT_EXIST			= 5009;
 
 	/** 聊天内容过长 */
-	public static final int CHAT_CONTENT_MAXLENGTH					= 5010;
-	
+	public static final int	CHAT_CONTENT_MAXLENGTH					= 5010;
+
 	/** 不可跳级 **/
 	public static final int	SKILL_UP_ERROR							= 6001;
 	/** 技能配置数据不足 **/
@@ -609,13 +608,15 @@ public class ErrorCode {
 	public static final int	VIPBAG_ERROR6							= 6025;
 	/** 点赞每天只能一次 */
 	public static final int	LIKE_ONLY_ONE							= 6026;
-	
+
 	/** 巅峰之战尚未开启 */
 	public static final int	PVP_1V1_NOT_OPTEN						= 7001;
 	/**
 	 * 空间主人禁止你留言
 	 */
-	public static final int SPACE_NO_MSG_ERROR                      = 7002;
+	public static final int	SPACE_NO_MSG_ERROR						= 7002;
+	/** 福利领取条件不足 */
+	public static final int	WELFARE_INSUFFICIENT_CONDITION_ERROR	= 7003;
 
 	// public static final int CHANGE_BATTLE3 = 6009;
 	// public static final int CHANGE_BATTLE4 = 6009;

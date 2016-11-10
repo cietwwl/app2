@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.chuangyou.xianni.constant.PlayerState;
+import com.chuangyou.xianni.constant.SkillConstant.SkillMainType;
 import com.chuangyou.xianni.entity.hero.HeroSkill;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
@@ -40,9 +41,15 @@ public class GetPlayerSkillRespone implements BaseRespone {
 			List<Map<String, Object>> list = new ArrayList<>();
 			for (Entry<Integer, HeroSkill> heroSkill : heroSkills.entrySet()) {
 				SkillTempateInfo temp = SkillTempMgr.getSkillTemp(heroSkill.getValue().getSkillId());// 技能配置
+				if (temp.getMasterType() == SkillMainType.PASSIVE) {
+					continue;
+				}
 				Map<String, Object> m = new HashMap<String, Object>();
 				m.put("skillLv", temp.getLevel());
 				m.put("skillName", temp.getTemplateName());
+				m.put("masterType", temp.getMasterType());
+				m.put("grandsonType", temp.getGrandsonType());
+				m.put("sonType", temp.getSonType());
 				list.add(m);
 			}
 			data.put("list", list);

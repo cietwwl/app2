@@ -106,28 +106,31 @@ public class RealTask extends SimpleTask {
 		
 		//刷私有怪----特殊处理
 		if(getTaskCfg().getTaskTarget() == ConditionType.KILL_PRIVATE_MONSTER){
-			ArrayList<Integer> posList = getConfig().toMapPos();
-			if(posList.size() == 4){
-				if(getConfig().getTaskTime()<=0){
-					Log.error("任务 ID:"+getConfig().getTaskId()+"刷私有怪任务任务时间不能填0");
-					return;
-				}
-				for(int i=0;i<getConfig().getTargetNum();i++){				
-					ScriptInterfaceManager.createPrivateMonster(player.getPlayerId(),cfg.getTargetId(),posList.get(1),
-							posList.get(2),
-							posList.get(3),
-							getConfig().getTaskTime()*1000, posList.get(0));
-				}
-			}
+			doCreatePrivateMonster();
 		}else{			
 			this.initTask();
 		}
-		
 		
 		notifyMsg();
 		
 		this.addTrigger();		
 		
+	}
+	
+	private void doCreatePrivateMonster(){
+		ArrayList<Integer> posList = getConfig().toMapPos();
+		if(posList.size() == 4){
+			if(getConfig().getTaskTime()<=0){
+				Log.error("任务 ID:"+getConfig().getTaskId()+"刷私有怪任务任务时间不能填0");
+				return;
+			}
+			for(int i=0;i<getConfig().getTargetNum();i++){				
+				ScriptInterfaceManager.createPrivateMonster(player.getPlayerId(),cfg.getTargetId(),posList.get(1),
+						posList.get(2),
+						posList.get(3),
+						getConfig().getTaskTime()*1000, posList.get(0));
+			}
+		}
 	}
 	
 	/**

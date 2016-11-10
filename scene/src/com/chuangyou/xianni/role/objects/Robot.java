@@ -1,16 +1,14 @@
 package com.chuangyou.xianni.role.objects;
 
-import java.util.ArrayList;
 import java.util.List;
+
 import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
-import com.chuangyou.common.util.StringUtils;
 import com.chuangyou.xianni.battle.action.RobotPollingAction;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.skill.Skill;
 import com.chuangyou.xianni.campaign.ArenaBattleCampaign;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.constant.RoleConstants.RoleType;
-import com.chuangyou.xianni.entity.robot.RobotTemplate;
 import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.world.ArmyProxy;

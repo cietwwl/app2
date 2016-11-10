@@ -15,7 +15,7 @@ public class MonsterInfo {
 
 	private int		alertRange;			// 警戒范围
 
-	private int		seekEnemyRange;		// 索敌范围
+	private int		seekEnemyRange;		// 巡逻范围
 
 	private int		attackRange;		// 攻击范围
 

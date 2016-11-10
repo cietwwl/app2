@@ -32,6 +32,9 @@ public class PassFbLogic extends BaseStateLogic{
 		//送物品
 		player.getBagInventory().addItemInBagOrEmail(stateConfig.getAwardItem(), 1, ItemAddType.STATE, false);
 		
+		//同步给客户端
+		player.getStateInventory().sendAllStateTriggers();
+		
 		
 	}
 }	

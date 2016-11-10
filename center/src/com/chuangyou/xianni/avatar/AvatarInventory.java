@@ -347,8 +347,16 @@ public class AvatarInventory implements IInventory {
 		if (!player.getBagInventory().removeItem(temp.getNeedItem(), 1, ItemRemoveType.ACTIVE_AVATAR_COST)) {
 			return;
 		}
+		doActive(temp);
+	}
+	
+	/**
+	 *  执行激活
+	 * @param temp
+	 */
+	private void doActive(AvatarTemplateInfo temp){
 		// 激活分身
-		AvatarInfo ainfo = new AvatarInfo(EntityIdBuilder.avatarIdBuilder(), player.getPlayerId(), avatarTempId, temp.getSkillId());
+		AvatarInfo ainfo = new AvatarInfo(EntityIdBuilder.avatarIdBuilder(), player.getPlayerId(), temp.getId(), temp.getSkillId());
 		avatarInfos.put(ainfo.getTempId(), ainfo);
 
 		// 当有未出战位置时,默认选取一个
@@ -362,6 +370,25 @@ public class AvatarInventory implements IInventory {
 		updataProperty();
 		sendSingleAvatarInfo(ainfo);
 	}
+	
+	/**
+	 * 脚本激活一个分身。直接激活不需要消耗
+	 * 1：主要用于任务中系统赠送
+	 * @param avatarTempId
+	 */
+	public void scriptActiveAvatar(int avatarTempId){
+		AvatarTemplateInfo temp = AvatarTempManager.getAvatarTemplateInfo(avatarTempId);
+		// 模板不存在
+		if (temp == null) {
+			return;
+		}
+		// 是否已经激活
+		if (avatarInfos.containsKey(avatarTempId)) {
+			return;
+		}
+		this.doActive(temp);
+	}
+	
 
 	// 发送所有分身信息
 	public void sendAllAvatarInfos() {

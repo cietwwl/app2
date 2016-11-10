@@ -13,7 +13,10 @@ import com.chuangyou.xianni.battle.skill.Skill;
 import com.chuangyou.xianni.constant.BattleModeCode;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.constant.RoleConstants.RoleType;
+import com.chuangyou.xianni.constant.SkillConstant.SkillTargetMode;
+import com.chuangyou.xianni.constant.SkillConstant.SkillMainType;
 import com.chuangyou.xianni.drop.manager.DropManager;
+import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
@@ -37,8 +40,21 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 		// 该玩家是否具有此技能
 		Player player = army.getPlayer();
 		Skill skill = player.getSkill(skillActionId);
+		
 		if (skill == null) {
 			Log.error("skill is null,playerId : " + player.getArmyId() + "  skillActionId:" + skillActionId);
+			return;
+		}
+		
+		// 判断技能是否被冻结
+		int type = skill.getSkillTempateInfo().getMasterType();
+		if (type == SkillMainType.COMMON_ATTACK && !player.checkStatus(LivingState.NORMAL_ATTACK)) {
+			return;
+		}
+		if (type == SkillMainType.ACTIVE && !player.checkStatus(LivingState.SKILL_ATTAK)) {
+			return;
+		}
+		if (type == SkillMainType.PASSIVE && !player.checkStatus(LivingState.PERKS)) {
 			return;
 		}
 		// 技能是否在CD中
@@ -60,9 +76,19 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 		for (long targetId : orderMsg.getTargetsList()) {
 			Living living = field.getLiving(targetId);
 			if (living != null) {
-				// PK判定
-				if (!OrderFactory.attackCheck(field, player, living)) {
+				if(skill.getTemplateInfo() == null){
 					continue;
+				}
+				// PK判定
+				// 敌方去掉不可攻击的，友方去掉可攻击的
+				if(skill.getTemplateInfo().getTargetMode() == SkillTargetMode.ENEMY){
+					if (false == OrderFactory.attackCheck(field, player, living)) {
+						continue;
+					}
+				}else if(skill.getTemplateInfo().getTargetMode() == SkillTargetMode.FRIENDLY){
+					if (true == OrderFactory.attackCheck(field, player, living)) {
+						continue;
+					}
 				}
 				// 怪物AI触发
 				if (living.getType() == RoleType.monster) {

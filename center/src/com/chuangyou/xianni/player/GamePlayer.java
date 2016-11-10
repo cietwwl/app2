@@ -167,7 +167,7 @@ public class GamePlayer extends AbstractEvent {
 	/** 福利信息 */
 	private WelfareInventory				welfareInventory;
 
-	/** 7天登录奖励信息 */
+	/** 福利条件信息 (比如7天登录需要记录天数，在线奖励需要记录登录时间等等)*/
 	private WelfareConditionRecordInventory	welfareConditionRecordInventory;
 	
 	private Channel							channel;						// 服务器持有连接

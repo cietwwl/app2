@@ -1,6 +1,8 @@
 package com.chuangyou.xianni.entity.drop;
 
-public class DropItemInfo {
+import com.chuangyou.common.util.random.IWeight;
+
+public class DropItemInfo implements IWeight {
 
 	/**
 	 * 掉落物ID

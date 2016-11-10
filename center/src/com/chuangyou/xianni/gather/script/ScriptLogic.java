@@ -13,7 +13,7 @@ public class ScriptLogic {
 	 */
 	public static void doScript(String scriptID,GamePlayer player,int id){
 		//执行脚本
-		if(!StringUtils.isNullOrEmpty(scriptID)){
+		if(!StringUtils.isNullOrEmpty(scriptID) && !scriptID.trim().equals("0")){
 			IGatherScript script= (IGatherScript) ScriptManager.getScriptById(scriptID);
 			if(script!=null){
 				script.doScript(player.getPlayerId(), id);

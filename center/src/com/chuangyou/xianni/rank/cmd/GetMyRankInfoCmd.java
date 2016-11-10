@@ -35,8 +35,9 @@ public class GetMyRankInfoCmd extends AbstractCommand {
 				resp.setParam(info.getMagicwp());
 			}
 			
-		
-			player.sendPbMessage(MessageUtil.buildMessage(Protocol.U_RESP_RANK_MYRANK,resp));
+			if(resp.hasParam()){				
+				player.sendPbMessage(MessageUtil.buildMessage(Protocol.U_RESP_RANK_MYRANK,resp));
+			}
 		}
 		
 		

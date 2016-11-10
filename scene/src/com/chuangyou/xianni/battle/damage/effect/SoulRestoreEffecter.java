@@ -4,6 +4,7 @@ import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.damage.DamageType;
 import com.chuangyou.xianni.constant.EnumAttr;
+import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.role.objects.Living;
 
 public class SoulRestoreEffecter implements DamageEffecter {
@@ -19,7 +20,7 @@ public class SoulRestoreEffecter implements DamageEffecter {
 
 		// 当前缺失气血
 		int lessSoul = target.lessSoul();
-		if (lessSoul > 0) {
+		if (lessSoul > 0 && target.checkStatus(LivingState.ADD_SOUL)) {
 			damage.setDamageType(DamageType.CUR_SOUL);
 			value = Math.max(0 - lessSoul, value);
 		} else {

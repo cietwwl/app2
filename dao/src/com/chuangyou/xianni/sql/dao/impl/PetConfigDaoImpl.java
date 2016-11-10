@@ -46,12 +46,15 @@ public class PetConfigDaoImpl extends BaseDao implements PetConfigDao {
 					info.setModel(rs.getString("model"));
 					info.setIsSpecial(rs.getByte("isSpecial"));
 					info.setNeedItem(rs.getInt("needItem"));
+					info.setSkills(rs.getString("skills"));
 					info.setSkillId(rs.getInt("skillId"));
 					info.setZizhiItem1(rs.getInt("zizhiItem1"));
 					info.setZizhiItem2(rs.getInt("zizhiItem2"));
 					info.setAddZizhi(rs.getInt("addZizhi"));
 					info.setDes(rs.getString("des"));
 					info.setZizhiMax(rs.getInt("zizhiMax"));
+					info.setActivateType(rs.getInt("activateType"));
+					info.setJingjieLv(rs.getInt("jingjieLv"));
 					infos.put(info.getId(), info);
 				}
 			} catch (Exception e) {

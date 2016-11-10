@@ -46,6 +46,7 @@ public class SkillActionTemplateInfoDaoImpl extends BaseDao implements SkillActi
 					skillTemp.setRandom(rs.getInt("random"));
 					skillTemp.setIsCrit(rs.getInt("isCrit"));
 					skillTemp.setCooldown(rs.getInt("cooldown"));// 10秒CD时间
+					skillTemp.setTargetMode(rs.getInt("targetMode"));
 					list.add(skillTemp);
 				}
 			} catch (SQLException e) {

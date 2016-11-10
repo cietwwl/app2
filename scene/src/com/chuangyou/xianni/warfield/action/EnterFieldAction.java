@@ -25,7 +25,7 @@ public class EnterFieldAction extends Action {
 	Vector3				postion;
 
 	static final int	NOVICE_MAP	= 1007;
-	static final int	MAX_SIZE	= 2;
+	static final int	MAX_SIZE	= 21000;
 
 	public EnterFieldAction(ArmyProxy army, int mapId, int mapKey, Vector3 postion) {
 		super(army);
@@ -91,6 +91,9 @@ public class EnterFieldAction extends Action {
 
 	/** 地图分压，获取镜像地图ID */
 	public int getImageField(int mapKey) {
+		if(true){
+			return mapKey;
+		}
 		if (mapKey != NOVICE_MAP) {
 			return mapKey;
 		}

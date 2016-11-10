@@ -18,11 +18,13 @@ public class CreateCampaingByNpcCmd extends AbstractCommand {
 		if (army.getPlayer().getField() == null) {
 			return;
 		}
-		Living npc = army.getPlayer().getField().getLiving(msg.getNpcId());
-		if (npc == null) {
-			return;
+		if (msg.getNpcId() > 0) {
+			Living npc = army.getPlayer().getField().getLiving(msg.getNpcId());
+			if (npc == null) {
+				return;
+			}
+			army.getPlayer().getField().leaveField(npc);
 		}
-		army.getPlayer().getField().leaveField(npc);
 		CampaignCreateAction createAction = new CampaignCreateAction(army, msg.getCampaignId(), -1);
 		army.enqueue(createAction);
 	}

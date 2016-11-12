@@ -73,7 +73,7 @@ function addItemFromGather(playerId,templateId,count,isBind){
  * @param isBind
  * @returns
  */
-function addItemFromOpenBox(playerId,templateId,count,isBind){
+function addItemFromOpenItem(playerId,templateId,count,isBind){
 	return com.chuangyou.xianni.script.manager.ScriptInterfaceManager.addItemFromOpenItem(playerId,templateId,count,isBind);
 }
 

@@ -8,13 +8,12 @@ import com.chuangyou.common.protobuf.pb.state.NotifyStateProcessProto.NotifyStat
 import com.chuangyou.common.protobuf.pb.state.NotifyStateQteProto.NotifyStateQteMsg;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.campaign.state.CampaignState;
+import com.chuangyou.xianni.campaign.state.FailState;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.entity.state.StateConfig;
 import com.chuangyou.xianni.entity.state.StateEventConfig;
-import com.chuangyou.xianni.exec.ThreadManager;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.role.action.StateRevivalPlayerAction;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
 import com.chuangyou.xianni.state.QteTemp;
@@ -99,10 +98,21 @@ public class StateCampaign extends SingleCampaign {
 	public void failOver() {
 		ArmyProxy army = WorldMgr.getArmy(this.creater);
 		if (army != null) {
-			StateRevivalPlayerAction revival = new StateRevivalPlayerAction(army);
-			ThreadManager.actionExecutor.enDelayQueue(revival);
+		//	army.getPlayer().renascence();
+//			StateRevivalPlayerAction revival = new StateRevivalPlayerAction(army);
+//			ThreadManager.actionExecutor.enDelayQueue(revival);
 		}
-		this.stop();
+		stateTransition(new FailState(this));
+	//	this.stop();
+	}
+	
+	@Override
+	public void stop() {
+		ArmyProxy army = WorldMgr.getArmy(this.creater);
+		if (army != null) {
+			army.getPlayer().renascence();
+			onOverLeave(army);
+		}
 	}
 
 	/**

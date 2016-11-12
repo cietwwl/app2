@@ -63,7 +63,7 @@ public class SoulDamageCalculator implements DamageCalculator {
 		}
 
 		damageValue = damageValue - changeValue;
-		return damageValue == 0 ? 1 : damageValue;
+		return damageValue;
 	}
 
 }

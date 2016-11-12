@@ -23,24 +23,6 @@ function acceptTask(playerId,taskId){
 	case 10014:
 	    createPrivateMonster(playerId,24001,900000);
 		break;
-	case 10024:
-		createCampaingByOnceNpc(playerId,1011009,-1);
-		break;
-	case 10045:
-		createCampaingByOnceNpc(playerId,1021009,-1);
-		break;
-	case 10052:
-		createCampaingByOnceNpc(playerId,1031009,-1);
-		break;
-	case 10054:
-		createCampaingByOnceNpc(playerId,1041009,-1);
-		break;
-	case 10063:
-		createCampaingByOnceNpc(playerId,1011014,-1);
-		break;
-	case 10067:
-		createCampaingByOnceNpc(playerId,1021014,-1);
-		break;
 	}
 
 }	
@@ -54,7 +36,7 @@ function finishTask(playerId,taskId){
 
 	switch (taskId) {
 	case 10002:
-		changeMap(playerId,1007,2724,721,4059,90);
+		changeMap(playerId,1007,2724,721,4059,0);
 		break;
 	case 10005:
 		changeMap(playerId,1009,4054,247,5936,0);
@@ -85,6 +67,9 @@ function commitTask(playerId,taskId){
 	case 10005:
 		changeMap(playerId,1009,-7612,172,5265);
 		break;
+	case 10016:
+	    activeMagicwp(playerId,100001)
+		break;
 	case 10031:
 		changeMap(playerId,1009,-5211,8.9,5351);
 		break;
@@ -93,6 +78,9 @@ function commitTask(playerId,taskId){
 		break;
 	case 10040:
 		changeMap(playerId,1009,-7913,-34,7672);
+		break;
+	case 10049:
+	    activePet(playerId,100001)
 		break;
 	case 10080:
 		changeMap(playerId,1009,-5591,-30,7259);

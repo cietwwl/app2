@@ -10,8 +10,6 @@ import java.util.Set;
 import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
 import com.chuangyou.common.protobuf.pb.battle.AttackBroadcastMsgProto.AttackBroadcastMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
-import com.chuangyou.common.util.AccessTextFile;
-import com.chuangyou.common.util.JSONUtil;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.ThreadSafeRandom;
 import com.chuangyou.xianni.battle.action.AddDelayBuffAction;
@@ -92,7 +90,7 @@ public class AttackOrder {
 		// 如果是变身技能,执行变身
 		if (skill.getSkillId() == Player.UN_TRANS_SKILL_ID && source instanceof Player) {
 			Player ps = (Player) source;
-			ps.unTransfiguration();;
+			ps.unTransfiguration();
 		}
 
 		if (targets == null || targets.size() == 0) {

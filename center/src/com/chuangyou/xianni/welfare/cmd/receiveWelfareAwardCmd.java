@@ -35,21 +35,19 @@ public class receiveWelfareAwardCmd extends AbstractCommand {
 			return;
 		}
 		WelfareTemplate template = WelfareManager.getConfigId().get(id);
-		//新手在线时间没有监听事件，所以只在客户端认为可以领取奖励的时候加判断
+		// 新手在线时间没有监听事件，所以只在客户端认为可以领取奖励的时候加判断
 		if (template.getType() == WelfareInventory.TYPE_NEW) {
 			if (player.getWelfareInventory().getWelfareConditionHandleMap().get(WelfareConditionHandleFactory.ONLINE_TIME).judgeOneWelfare(info)) {
 				info.setStatus(WelfareInventory.STATE_1);
-				player.getWelfareConditionRecordInventory().setOnlineStartTime(System.currentTimeMillis());
-				player.getWelfareConditionRecordInventory().getInfo().setOnLineTime(0);
 			}
 		}
 		if (info.getStatus() != WelfareInventory.STATE_1) {
-			//没达到领取条件
+			// 没达到领取条件
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.WELFARE_INSUFFICIENT_CONDITION_ERROR, Protocol.C_RECEIVE_WELFARE_AWARD, "福利条件未达到！");
 			return;
 		}
-		//检查完毕
-		//给奖励
+		// (除背包容量是否足够外)检查完毕
+		// 给奖励
 		List<Reward> rewards = new ArrayList<>(8);// 所有奖励
 		List<Reward> alreadyAddrewards = new ArrayList<>(8);// 已经加入背包的奖励
 		rewards.add(new Reward(template.getItem1(), template.getNum1(), 1 == template.getBind1()));
@@ -63,28 +61,33 @@ public class receiveWelfareAwardCmd extends AbstractCommand {
 		for (Reward reward : rewards) {
 			if (reward.itemId == 0)
 				continue;
-			
-			if(player.getBagInventory().addItem(reward.itemId, reward.number, ItemAddType.WELFARE, reward.bind)) {
+
+			if (player.getBagInventory().addItem(reward.itemId, reward.number, ItemAddType.WELFARE, reward.bind)) {
 				alreadyAddrewards.add(reward);
 			} else {
 				for (Reward reward2 : alreadyAddrewards) {
 					player.getBagInventory().removeItem(BagType.Play, reward2.itemId, reward2.number, reward2.bind ? BindType.BIND : BindType.NOBIND, ItemRemoveType.WELFARE_RECOVERY);
 				}
-				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.BAG_IS_FULL, Protocol.C_RECEIVE_WELFARE_AWARD, "背包已满！");
 				return;
 			}
 		}
-		
-		//改变领取状态
-		info.setStatus(WelfareInventory.STATE_2);
-		//更新客户端状态
+
+		// 更新客户端状态
 		WelfareManager.updateOneWelfare(id, WelfareInventory.STATE_2, player);
+		// 改变领取状态
+		info.setStatus(WelfareInventory.STATE_2);
+		// 如果是在线奖励需要重置在线时间重新计时
+		if (template.getType() == WelfareInventory.TYPE_NEW) {
+			player.getWelfareConditionRecordInventory().setOnlineStartTime(System.currentTimeMillis());
+			player.getWelfareConditionRecordInventory().getInfo().setOnLineTime(0);
+		}
 	}
 
-	private class Reward{
-		int itemId;
-		int number;
-		boolean bind;
+	private class Reward {
+		int		itemId;
+		int		number;
+		boolean	bind;
+
 		public Reward(int itemId, int number, boolean bind) {
 			this.itemId = itemId;
 			this.number = number;

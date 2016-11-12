@@ -3,6 +3,7 @@ package com.chuangyou.xianni.skill;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import com.chuangyou.xianni.constant.SkillConstant.SkillMainType;
 import com.chuangyou.xianni.entity.Option;
@@ -105,6 +106,21 @@ public class SkillInventory extends AbstractEvent implements IInventory {
 	 * @return
 	 */
 	public boolean addOrUpdate(HeroSkill skill) {
+		List<Integer> id = new ArrayList<>();
+		for (Entry<Integer, HeroSkill> skillEntry : this.heroSkill.entrySet()) {
+			HeroSkill s = skillEntry.getValue();
+			if(s.getType() == skill.getType() && s.getSubType() == skill.getSubType() && s.getGrandsonType() == skill.getGrandsonType()){
+				skill.setOp(Option.Update);
+				id.add(skillEntry.getKey());
+			}
+		}
+		if(id.size() > 0){
+			for (Integer integer : id) {
+				this.heroSkill.remove(integer);
+			}
+		}else{
+			skill.setOp(Option.Insert);
+		}
 		this.heroSkill.put(skill.getSkillId(), skill);
 		return true;
 	}

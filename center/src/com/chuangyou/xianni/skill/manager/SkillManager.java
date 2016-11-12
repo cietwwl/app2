@@ -89,6 +89,7 @@ public class SkillManager {
 			olderSkill.setSkillLV(skillInfo.getLevel());
 			olderSkill.setGrandsonType(skillInfo.getGrandsonType());
 		} else {
+			olderSkill.setSkillLV(nextTemplate.getLevel());
 			olderSkill.setSkillId(nextTemplate.getTemplateId());
 		}
 

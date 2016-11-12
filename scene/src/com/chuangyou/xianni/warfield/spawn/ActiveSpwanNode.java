@@ -1,6 +1,11 @@
 package com.chuangyou.xianni.warfield.spawn;
 
+import com.chuangyou.common.protobuf.pb.gather.TriggerReqProto.TriggerReqMsg;
 import com.chuangyou.xianni.entity.spawn.SpawnInfo;
+import com.chuangyou.xianni.netty.GatewayLinkedSet;
+import com.chuangyou.xianni.proto.MessageUtil;
+import com.chuangyou.xianni.proto.PBMessage;
+import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.world.ArmyProxy;
 
@@ -24,6 +29,12 @@ public class ActiveSpwanNode extends SpwanNode {
 	}
 
 	public void active(ArmyProxy army) {
+		TriggerReqMsg.Builder req = TriggerReqMsg.newBuilder();
+		req.setId(spwanInfo.getEntityId());
+		req.setPlayerId(army.getPlayerId());
+
+		PBMessage pkg = MessageUtil.buildMessage(Protocol.C_REQ_TRIGGER, req);
+		GatewayLinkedSet.send2Server(pkg);
 		super.active(army);
 	}
 

@@ -103,12 +103,12 @@ public class Player extends ActiveLiving {
 
 	/** 法宝禁制 */
 	private Map<MagicwpBanConstant, MagicwpCompanent>	magicwps				= new HashMap<>();
-	
+
 	/** 宠物激活的玩家技能 */
 	protected Skill										petSkill				= null;
 	/** 宠物自己使用的技能 */
 	protected Map<Integer, Skill>						petUseSkills			= new HashMap<>();
-	
+
 	/**
 	 * 魂幡等级
 	 */
@@ -219,13 +219,13 @@ public class Player extends ActiveLiving {
 		List<Damage> damages = new ArrayList<>();
 		Damage curSoul = new Damage(this, this);
 		curSoul.setDamageType(EnumAttr.CUR_SOUL.getValue());
-		curSoul.setDamageValue(0 - getInitSoul());
+		curSoul.setDamageValue(0 - getMaxSoul());
 		damages.add(curSoul);
 		takeDamage(curSoul);
 
 		Damage curBlood = new Damage(this, this);
 		curBlood.setDamageType(EnumAttr.CUR_BLOOD.getValue());
-		curBlood.setDamageValue(0 - getInitBlood());
+		curBlood.setDamageValue(0 - getMaxBlood());
 		damages.add(curBlood);
 		takeDamage(curBlood);
 
@@ -248,7 +248,6 @@ public class Player extends ActiveLiving {
 				}
 			}
 		}
-
 		this.isSoulState = false;
 		this.revivaling = false;
 		this.dieTime = 0;
@@ -399,7 +398,7 @@ public class Player extends ActiveLiving {
 			}
 		}
 		// 宠物技能
-		if(petSkill != null && petSkill.getSkillId() > 0){
+		if (petSkill != null && petSkill.getSkillId() > 0) {
 			temp.addSkills(petSkill.getSkillId());
 		}
 		if (field != null && field.getCampaignId() > 0) {
@@ -414,10 +413,10 @@ public class Player extends ActiveLiving {
 
 	// 获取技能
 	public Skill getSkill(int skillId) {
-		if(petSkill != null && petSkill.getSkillId() == skillId){
+		if (petSkill != null && petSkill.getSkillId() == skillId) {
 			return petSkill;
 		}
-		if(petUseSkills.containsKey(skillId)){
+		if (petUseSkills.containsKey(skillId)) {
 			return petUseSkills.get(skillId);
 		}
 		if (!isCorrespondStatu() || skillId == TRANS_SKILL_ID || skillId == UN_TRANS_SKILL_ID) {
@@ -630,19 +629,19 @@ public class Player extends ActiveLiving {
 	public void setSoulLv(int soulLv) {
 		this.soulLv = soulLv;
 	}
-	
 
 	/**
 	 * 设置宠物激活的玩家技能
+	 * 
 	 * @param petSkillId
 	 * @param isNotify
 	 */
 	public void setPetSkillId(int petSkillId, boolean isNotify) {
-		if(this.petSkill != null && this.petSkill.getSkillTempateInfo().getTemplateId() == petSkillId){
+		if (this.petSkill != null && this.petSkill.getSkillTempateInfo().getTemplateId() == petSkillId) {
 			return;
 		}
 		petSkill = null;
-		if(petSkillId > 0){
+		if (petSkillId > 0) {
 			SkillTempateInfo skillTempateInfo = BattleTempMgr.getBSkillInfo(petSkillId);
 			if (skillTempateInfo == null) {
 				return;
@@ -654,23 +653,24 @@ public class Player extends ActiveLiving {
 			petSkill = new Skill(actionTemp);
 			petSkill.setSkillTempateInfo(skillTempateInfo);
 		}
-		if(isNotify == true){
+		if (isNotify == true) {
 			notifyLivingSelf();
 		}
 	}
-	
+
 	/**
 	 * 更新宠物自己用的技能
+	 * 
 	 * @param petTemp
 	 */
-	public void updatePetUseSkills(PetInfoCfg petTemp){
-		if(this.petUseSkills == null){
+	public void updatePetUseSkills(PetInfoCfg petTemp) {
+		if (this.petUseSkills == null) {
 			petUseSkills = new HashMap<>();
 		}
 		this.petUseSkills.clear();
-		if(petTemp != null){
+		if (petTemp != null) {
 			Set<Integer> skills = petTemp.getSkillSet();
-			for(int skillId: skills){
+			for (int skillId : skills) {
 				SkillTempateInfo skillTempateInfo = BattleTempMgr.getBSkillInfo(skillId);
 				if (skillTempateInfo == null) {
 					return;
@@ -685,10 +685,10 @@ public class Player extends ActiveLiving {
 			}
 		}
 	}
-	
-	public void notifyLivingSelf(){
+
+	public void notifyLivingSelf() {
 		ArmyProxy army = WorldMgr.getArmy(getId());
-		if(army != null){
+		if (army != null) {
 			PBMessage pkg = MessageUtil.buildMessage(Protocol.U_G_BATTLEPLAYERINFO, getBattlePlayerInfoMsg().build());
 			army.sendPbMessage(pkg);
 		}
@@ -983,12 +983,12 @@ public class Player extends ActiveLiving {
 			changeSoulState(false);
 		}
 	}
-	
+
 	@Override
 	public void clearData() {
 		// TODO Auto-generated method stub
 		super.clearData();
-		
+
 		monsterRefreshIdList.clear();
 		campaignBuffers.clear();
 		fuseSkillVos.clear();

@@ -1,6 +1,6 @@
 // 脚本id 唯一
 function getScriptId() {
-	return "item_test";   //对应跟NPC配置表配置的脚本ID
+	return "item";   //对应跟NPC配置表配置的脚本ID
 }
 
 // 脚本类型
@@ -19,35 +19,55 @@ function useItem(playerId, itemTempId, count){
 	var blankNum 		= getPlayerBagSpace(playerId);
 	var playerName 		= getPlayerName(playerId);
 	var playerLev 		= getPlayerLevel(playerId);
+	var playerJob		= getPlayerJob(playerId);
 	var itemTempName 	= getItemName(itemTempId);
 
 	//如果道具使用失败，一定要返回fasle
 
 
-
-	if (itemTempId >= 5190101 && itemTempId <= 5199902){
+	//元婴橙色武器箱子
+	if (itemTempId == 5110405){
 		
 		if (blankNum < 1) {
 			sendHintToClient(playerId,"背包剩余空间不足");
 			return false;
 		}
 
-		var awardSet 		= [4100601,4100602,4100603,4100604,4100605,4100606,4100607,4100608,4100609,4100610];
-		var awardItem 		= awardSet[getRandNum(awardSet.length)];
-		var awardItemName 	= getItemName(awardItem);
-		var awardItemColor 	= getItemColor(awardItem);
-		
-		var chanel 	= awardItemColor >= 4 ? 9:10;
-		var content = '<color=#00BFFF>'+playerName+'</color>从<color='+getColorVal(itemTempId)+'>【'+itemTempName+'】</color>获得了<color='+getColorVal(awardItem)+'>【'+awardItemName+'】</color>';
-		sendNotice(chanel,content);
+		var awardItem;
+
+		if (playerJob == 1){
+			awardItem = 1111551;
+		}else if (playerJob == 2){
+			awardItem = 1111552;
+		}else if (playerJob == 3){
+			awardItem = 1111553;
+		}
+
 		addItemFromOpenItem(playerId,awardItem,1,1);
 		
+		//使用成功返回true,服务器会删除物品
+		return true;
 	}
-
 	
-
-	//使用成功返回true,服务器会删除物品
-	return true;
+	if (itemTempId >= 5110405 && itemTempId <= 5111008){
+		var	itemSet = {
+			'5111000' : {count:10},	//器化灵石·凡
+			'5111001' : {count:20},	//器化灵石·良
+			'5111002' : {count:50},	//器化灵石·中
+			'5111003' : {count:100},	//器化灵石·上
+			'5111004' : {count:200},	//器化灵石·极
+			'5111005' : {count:500},	//器化灵石·王
+			'5111006' : {count:1000},	//器化灵石·仙
+			'5111007' : {count:2000},	//器化灵石·尊
+			'5111008' : {count:10000},	//器化灵石·无
+		}
+		var templateId = 7140000	//装备经验
+		var count = itemSet[itemTempId].count
+		var isBind = 1	//绑定状态
+		addItemFromOpenItem(playerId,templateId,count,isBind)
+		//使用成功返回true,服务器会删除物品
+	}
+	
 }
 
 //常用方法

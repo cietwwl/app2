@@ -4,7 +4,6 @@ import com.chuangyou.common.protobuf.pb.TouchPointProto.TouchPointMsg;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
-import com.chuangyou.xianni.touchPoint.TouchPointSpwanNode;
 import com.chuangyou.xianni.warfield.FieldMgr;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;

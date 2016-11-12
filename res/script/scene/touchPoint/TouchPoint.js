@@ -17,71 +17,71 @@ function action(playerId, npcType) {
 			break;
 		//月星->赵国传送点
 		case 1005301:
-			changeMap(playerId,1009,3717,264,5809,1);
+			changeMap(playerId,1009,3717,264,5809,0);
 			break;
 		//赵国->月星传送点
 		case 1009301:
-			changeMap(playerId,1005,669,679,-974,1);
+			changeMap(playerId,1005,669,679,-974,0);
 			break;
 		//藤家城->赵国野外
 		case 1008302:
-			changeMap(playerId,1009,5111,60,6081,1);
+			changeMap(playerId,1009,5111,60,6081,0);
 			break;
 		//赵国野外->藤家城
 		case 1009307:
-			changeMap(playerId,1008,5800,-4.8,5099);
+			changeMap(playerId,1008,5800,-5,5099,0);
 			break;	
 		//域外战场->决明谷
 		case 1014301:
-			changeMap(playerId,1009,5753,-13,7476);
+			changeMap(playerId,1009,5753,-13,7476,0);
 			break;		
 		//决明谷->域外战场
 		case 1009303:
-			changeMap(playerId,1014,134,236,1003);
+			changeMap(playerId,1014,134,236,1003,0);
 			break;	
 		//域外战场->修魔海	
 		case 1014302:
-			changeMap(playerId,1010,2808,158,2447);
+			changeMap(playerId,1010,2808,158,2447,0);
 			break;
 		//修魔海->域外战场	
 		case 1010001:
-			changeMap(playerId,1014,520,282,570);
+			changeMap(playerId,1014,520,282,570,180,0);
 			break;	
 		//修魔海->古神之心	
 		case 1010002:
-			changeMap(playerId,1011,1350,891,383);
+			changeMap(playerId,1011,1350,891,383,0);
 			break;	
 		//修魔海->洞府	
 		case 1010003:
-			changeMap(playerId,1015,-700,83,-564);
+			changeMap(playerId,1015,-700,86,-564,0);
 			break;	
 		//古神之心->修魔海
 		case 1011001:
-			changeMap(playerId,1010,2225,131,2389);
+			changeMap(playerId,1010,2225,131,2389,0);
 			break;	
 		//古神之心上->古神之心中
 		case 1011002:
-			changeMap(playerId,1011,-118,791,624);
+			changeMap(playerId,1011,-118,791,624,0);
 			break;	
 		//古神之心中->古神之心上
 		case 1011003:
-			changeMap(playerId,1011,411,764,833);
+			changeMap(playerId,1011,411,764,833,0);
 			break;	
 		//古神之心中->古神之心下
 		case 1011004:
-			changeMap(playerId,1011,117,428,-1120);
+			changeMap(playerId,1011,117,428,-1120,0);
 			break;	
 		//古神之心下->古神之心中
 		case 1011005:
-			changeMap(playerId,1011,-441,527,-763);
+			changeMap(playerId,1011,-441,527,-763,0);
 			break;	
 		//古神之心下->古神之心底
 		case 1011006:
-			changeMap(playerId,1011,687,116,-157);
+			changeMap(playerId,1011,687,116,-157,0);
 			break;			
 		//古神之心底->古神之心下
 		case 1011007:
-			changeMap(playerId,1011,1192,340,-882);
+			changeMap(playerId,1011,1192,340,-882,0);
 			break;				
 		/*case 91001:
 			//createCampaign(playerId, 1);

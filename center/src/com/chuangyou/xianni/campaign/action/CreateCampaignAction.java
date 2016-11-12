@@ -29,17 +29,15 @@ public class CreateCampaignAction extends Action {
 	public void execute() {
 		CampaignTemplateInfo temp = CampaignTempMgr.getTempInfo(campaignId);
 		int rspCode = CampaignRspCode.SUCCESS;
-		if (temp == null) {
-			rspCode = CampaignRspCode.TEMP_NOT_EXISTS;
-		}
 
 		// 等级次数等等判断
 		if (player.getCampaignCount() >= count) {
 			rspCode = CampaignRspCode.COUNT_LESS;
 		}
 
-		// 扣除进入副本消耗物品
-		if (costItem(temp) == false) {
+		if (temp == null) {
+			rspCode = CampaignRspCode.TEMP_NOT_EXISTS;
+		} else if (costItem(temp) == false) {// 扣除进入副本消耗物品
 			rspCode = CampaignRspCode.ITEM_NOT_ENOUGHT;
 		}
 		// 如果在副本内，不允许创建副本
@@ -54,6 +52,7 @@ public class CreateCampaignAction extends Action {
 			player.sendPbMessage(pbMessage);
 			return;
 		}
+
 		CreateCampaignMsg.Builder builder = CreateCampaignMsg.newBuilder();
 		builder.setCampaign(campaignId);
 		builder.setTaskId(taskId);

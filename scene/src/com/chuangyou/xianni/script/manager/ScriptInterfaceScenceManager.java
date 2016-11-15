@@ -3,6 +3,8 @@ package com.chuangyou.xianni.script.manager;
 import com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg;
 import com.chuangyou.common.protobuf.pb.ReqChangeMapMsgProto.ReqChangeMapMsg;
 import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
+import com.chuangyou.common.protobuf.pb.npcDialog.HintRespProto.HintRespMsg;
+import com.chuangyou.common.util.ChangeCharsetUtil;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.campaign.action.CampaignCreateAction;
 import com.chuangyou.xianni.entity.field.FieldInfo;
@@ -64,4 +66,34 @@ public class ScriptInterfaceScenceManager {
 		MonsterInfo monsterInfo = MonsterInfoTemplateMgr.get(monsterId);
 
 	}
+	
+	/**
+	 * 获取人物等级
+	 * @param playerId
+	 * @return
+	 */
+	public static int getPlayerLevel(long playerId){
+		ArmyProxy army = WorldMgr.getArmy(playerId);
+		if(army!=null){
+			return army.getPlayer().getSimpleInfo().getLevel();
+		}
+		return 0;
+	}
+	
+	/**
+	 * 发送提示消息给客户端
+	 * 
+	 * @param playerId
+	 * @param content
+	 */
+	public static void sendHintToClient(long playerId, String content) {
+		ArmyProxy player = WorldMgr.getArmy(playerId);
+		if (player == null)
+			return;
+		HintRespMsg.Builder resp = HintRespMsg.newBuilder();
+		resp.setContent(ChangeCharsetUtil.toUTF_8(content));
+		PBMessage pkg = MessageUtil.buildMessage(Protocol.U_RESP_SENDHINT, resp);
+		player.sendPbMessage(pkg);
+	}
+	
 }

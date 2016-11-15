@@ -110,6 +110,11 @@ public interface ConditionType {
 	 */
 	public static final byte ACTIVE = 24;
 	
+	/**
+	 * 渡节任务(每升一阶完成一个任务)
+	 */
+	public static final byte STATE_TASK = 25;
+	
 	
 	
 	/////////////////////////////////////////////////////

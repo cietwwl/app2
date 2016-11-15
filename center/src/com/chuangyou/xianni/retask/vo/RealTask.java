@@ -98,6 +98,7 @@ public class RealTask extends SimpleTask {
 	 */
 	public void doAccept(){
 		
+		System.out.println("接收任务==============》"+getConfig().getTaskId());
 		getInfo().setUpdateTime(new Date());
 		getInfo().setState(TaskInfo.ACCEPT);
 		getInfo().setOp(Option.Update);
@@ -124,6 +125,7 @@ public class RealTask extends SimpleTask {
 				Log.error("任务 ID:"+getConfig().getTaskId()+"刷私有怪任务任务时间不能填0");
 				return;
 			}
+			System.out.println("刷任务怪一只："+player.getPlayerId());
 			for(int i=0;i<getConfig().getTargetNum();i++){				
 				ScriptInterfaceManager.createPrivateMonster(player.getPlayerId(),cfg.getTargetId(),posList.get(1),
 						posList.get(2),
@@ -166,6 +168,8 @@ public class RealTask extends SimpleTask {
 	public TaskCfg getConfig(){
 		return (TaskCfg) this.cfg;
 	}
+	
+	
 	/**
 	 * 发奖
 	 */
@@ -262,6 +266,16 @@ public class RealTask extends SimpleTask {
 		super.removeTrigger();
 		if(this.dropObserver!=null){
 			this.dropObserver.removeTrigger();
+		}
+	}
+
+
+	@Override
+	public void initTask() {
+		// TODO Auto-generated method stub
+		super.initTask();
+		if(this.isFinish()){
+			this.doFinish();
 		}
 	}
 

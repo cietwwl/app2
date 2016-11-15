@@ -135,8 +135,12 @@ public class PvP1v1Campaign extends Campaign {
 			campaign.stateTransition(new StopState(campaign));
 			for (ArmyProxy army : JoinArmys) {
 				Player cp = army.getPlayer();
-				if (cp != null && cp.isDie()) {
-					cp.renascence();
+				if (cp != null) {
+					if (cp.isDie()) {
+						cp.renascence();
+					} else {
+						cp.fullOfBlood();
+					}
 				}
 			}
 		}

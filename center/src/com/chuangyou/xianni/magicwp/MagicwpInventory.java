@@ -7,6 +7,7 @@ import java.util.Map;
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
 import com.chuangyou.common.protobuf.pb.magicwp.MagicwpBanGetInfoRespProto.MagicwpBanGetInfoRespMsg;
 import com.chuangyou.common.protobuf.pb.magicwp.MagicwpBanInfoBeanProto.MagicwpBanInfoBeanMsg;
+import com.chuangyou.common.protobuf.pb.magicwp.MagicwpFightUseRespProto.MagicwpFightUseRespMsg;
 import com.chuangyou.common.protobuf.pb.magicwp.MagicwpOpenRespProto.MagicwpOpenRespMsg;
 import com.chuangyou.common.protobuf.pb.player.OtherMagicwpMsgProto.OtherMagicwpMsg;
 import com.chuangyou.xianni.army.Hero;
@@ -235,14 +236,14 @@ public class MagicwpInventory extends AbstractEvent implements IInventory {
 
 	public boolean saveToDatabase() {
 
-		boolean result = false;
+//		boolean result = false;
 
 		if (magicwpAtt != null) {
 			short option = magicwpAtt.getOp();
 			if (option == Option.Update) {
-				result = DBManager.getMagicwpAttDao().update(magicwpAtt);
+				DBManager.getMagicwpAttDao().update(magicwpAtt);
 			} else if (option == Option.Insert) {
-				result = DBManager.getMagicwpAttDao().add(magicwpAtt);
+				DBManager.getMagicwpAttDao().add(magicwpAtt);
 			}
 		}
 
@@ -250,9 +251,9 @@ public class MagicwpInventory extends AbstractEvent implements IInventory {
 			for (MagicwpInfo info : magicwpInfoMap.values()) {
 				short option = info.getOp();
 				if (option == Option.Update) {
-					result = DBManager.getMagicwpInfoDao().update(info);
+					DBManager.getMagicwpInfoDao().update(info);
 				} else if (option == Option.Insert) {
-					result = DBManager.getMagicwpInfoDao().add(info);
+					DBManager.getMagicwpInfoDao().add(info);
 				}
 			}
 		}
@@ -261,9 +262,9 @@ public class MagicwpInventory extends AbstractEvent implements IInventory {
 			for (MagicwpBanInfo info : banInfoMap.values()) {
 				short option = info.getOp();
 				if (option == Option.Update) {
-					result = DBManager.getMagicwpBanInfoDao().update(info);
+					DBManager.getMagicwpBanInfoDao().update(info);
 				} else if (option == Option.Insert) {
-					result = DBManager.getMagicwpBanInfoDao().add(info);
+					DBManager.getMagicwpBanInfoDao().add(info);
 				}
 			}
 		}
@@ -298,8 +299,8 @@ public class MagicwpInventory extends AbstractEvent implements IInventory {
 		for (MagicwpInfo magicwp : roleMagicwpMap.values()) {
 			// 等级加成
 			MagicwpLevelCfg magicwpLevelCfg = MagicwpTemplateMgr.getLevelTemps().get(magicwp.getMagicwpId() * 1000 + magicwp.getLevel());
-			if(magicwpLevelCfg == null){
-				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, (short)0, "配置错误：" + (magicwp.getMagicwpId() * 1000 + magicwp.getLevel()));
+			if (magicwpLevelCfg == null) {
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.UNKNOW_ERROR, (short) 0, "配置错误：" + (magicwp.getMagicwpId() * 1000 + magicwp.getLevel()));
 				return;
 			}
 			toalPro.addAll(magicwpLevelCfg.getAtts());
@@ -364,15 +365,15 @@ public class MagicwpInventory extends AbstractEvent implements IInventory {
 			player.getArmyInventory().updateProperty();
 		}
 	}
-	
+
 	/**
 	 * 通知scene服已装备禁制更新
 	 */
-	public void writeMagicwpMsg2Scene(){
+	public void writeMagicwpMsg2Scene() {
 		MagicwpBanGetInfoRespMsg.Builder msg = MagicwpBanGetInfoRespMsg.newBuilder();
-		
-		for(MagicwpBanInfo ban:getBanInfoMap().values()){
-			if(ban.getPosition() > 0){
+
+		for (MagicwpBanInfo ban : getBanInfoMap().values()) {
+			if (ban.getPosition() > 0) {
 				MagicwpBanInfoBeanMsg.Builder bean = MagicwpBanInfoBeanMsg.newBuilder();
 				bean.setBanId(ban.getBanId());
 				bean.setPosition(ban.getPosition());
@@ -411,41 +412,67 @@ public class MagicwpInventory extends AbstractEvent implements IInventory {
 		proto.setPropertitys(propertyMsgs);
 		tempHero = null;
 	}
-	
+
 	/**
 	 * 激活法宝
+	 * 
 	 * @param tempId
 	 */
-	public void activeMagicwp(int tempId){
-	
+	public void activeMagicwp(int tempId) {
+
 		MagicwpCfg magicwpCfg = MagicwpTemplateMgr.getMagicwpTemps().get(tempId);
-		
-		if(magicwpCfg == null){
+
+		if (magicwpCfg == null) {
 			return;
 		}
-		
-		MagicwpInfo magicwp = player.getMagicwpInventory().getMagicwpInfo(tempId);
-		
-		if(magicwp != null){
+
+		MagicwpInfo magicwp = getMagicwpInfo(tempId);
+
+		if (magicwp != null) {
 			return;
 		}
-		
-		magicwp = new MagicwpInfo(player.getPlayerId(),tempId);
+
+		magicwp = new MagicwpInfo(player.getPlayerId(), tempId);
 		magicwp.setLevel(1);
 		addMagicwpInfo(magicwp);
-		
+
 		MagicwpOpenRespMsg.Builder msg = MagicwpOpenRespMsg.newBuilder();
 		msg.setMagicwpId(magicwp.getMagicwpId());
 		msg.setLevel(magicwp.getLevel());
 		PBMessage p = MessageUtil.buildMessage(Protocol.U_MAGICWP_OPEN, msg);
 		player.sendPbMessage(p);
-		
-		//法宝总属性改变
-//		MagicwpManager.changeMagicwpAtt(roleId);
-		//影响人物属性变更
+
+		// 法宝总属性改变
+		// MagicwpManager.changeMagicwpAtt(roleId);
+		// 影响人物属性变更
 		updataProperty();
 		
+		magicwpFight(tempId, false);
+
 		player.notifyListeners(new ObjectEvent(this, magicwp.getMagicwpId(), EventNameType.MAGICWP_ACTIVE));
 	}
-	
+
+	public void magicwpFight(int magicwpId, boolean sendErrorCode) {
+
+		MagicwpInfo magicwpInfo = getMagicwpInfo(magicwpId);
+		if (magicwpInfo == null) {
+			if (sendErrorCode == true) {
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Magicwp_UnGet, Protocol.C_MAGICWP_FIGHT_USE);
+			}
+			return;
+		}
+		MagicwpAtt mwpAtt = getMagicwpAtt();
+
+		mwpAtt.setCurMagicwpId(magicwpId);
+		updateMagicwpAtt(mwpAtt);
+
+		MagicwpFightUseRespMsg.Builder msg = MagicwpFightUseRespMsg.newBuilder();
+		msg.setMagicwpId(mwpAtt.getCurMagicwpId());
+
+		PBMessage p = MessageUtil.buildMessage(Protocol.U_MAGICWP_FIGHT_USE, msg);
+		player.sendPbMessage(p);
+
+		player.getBasePlayer().updateMagicwpId(mwpAtt.getCurMagicwpId());
+	}
+
 }

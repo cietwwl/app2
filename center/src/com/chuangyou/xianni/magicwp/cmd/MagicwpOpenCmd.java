@@ -7,11 +7,13 @@ import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.magicwp.MagicwpCfg;
 import com.chuangyou.xianni.entity.magicwp.MagicwpInfo;
+import com.chuangyou.xianni.entity.sevenDaysGiftPacks.WelfareConditionRecordInfo;
 import com.chuangyou.xianni.magicwp.template.MagicwpTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.socket.Cmd;
+import com.chuangyou.xianni.welfare.WelfareConditionRecordInventory;
 
 @Cmd(code = Protocol.C_MAGICWP_OPEN, desc = "法宝激活")
 public class MagicwpOpenCmd extends AbstractCommand {
@@ -48,10 +50,18 @@ public class MagicwpOpenCmd extends AbstractCommand {
 		}else{
 		
 			//激活条件
-			magicwpCfg.getNeedDay();
+			boolean loginDayEnough = false;
+			WelfareConditionRecordInventory wcInventory = player.getWelfareConditionRecordInventory();
+			if(wcInventory != null){
+				WelfareConditionRecordInfo wcInfo = wcInventory.getInfo();
+				if(wcInfo != null && wcInfo.getDays() >= magicwpCfg.getNeedDay()){
+					loginDayEnough = true;
+				}
+			}
 			
-			if(player.getBasePlayer().getPlayerInfo().getVipLevel() < magicwpCfg.getNeedVip()){
-				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Vip_UnEnough, packet.getCode());
+			
+			if(loginDayEnough == false && player.getBasePlayer().getPlayerInfo().getVipLevel() < magicwpCfg.getNeedVip()){
+//				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Vip_UnEnough, packet.getCode());
 				return;
 			}
 		}

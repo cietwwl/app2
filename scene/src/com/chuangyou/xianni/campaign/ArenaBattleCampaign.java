@@ -5,7 +5,6 @@ import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
 import com.chuangyou.common.protobuf.pb.battle.BattleResultMsgProto.BattleResultMsg;
 import com.chuangyou.common.util.Vector3;
 import com.chuangyou.xianni.campaign.state.StopState;
-import com.chuangyou.xianni.campaign.state.SuccessState;
 import com.chuangyou.xianni.constant.CampaignConstant;
 import com.chuangyou.xianni.entity.campaign.CampaignTemplateInfo;
 import com.chuangyou.xianni.entity.field.FieldInfo;
@@ -131,8 +130,12 @@ public class ArenaBattleCampaign extends Campaign {
 			campaign.stateTransition(new StopState(campaign));
 			for (ArmyProxy army : JoinArmys) {
 				Player cp = army.getPlayer();
-				if (cp != null && cp.isDie()) {
-					cp.renascence();
+				if (cp != null) {
+					if (cp.isDie()) {
+						cp.renascence();
+					} else {
+						cp.fullOfBlood();
+					}
 				}
 			}
 		}

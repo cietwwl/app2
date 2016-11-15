@@ -26,6 +26,10 @@ public class CampaignFactory {
 				return new InverseBeadCampaign(tempInfo, creater, taskId);
 			case CampaignType.THE_PLANE:
 				return new PlaneCampaign(tempInfo, creater, taskId);
+			case CampaignType.NPC_CAM_ACTIVITY:
+				return new NpcCamActivityCampaign(tempInfo, creater, taskId);
+			case CampaignType.PLOT:
+				return new Campaign(tempInfo, creater, taskId);
 			default:
 				break;
 		}

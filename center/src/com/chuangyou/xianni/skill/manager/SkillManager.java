@@ -55,10 +55,11 @@ public class SkillManager {
 			return false;
 		}
 
-		if (nextTemplate.getLevel() > player.getBasePlayer().getPlayerInfo().getLevel()) {
+		if (nextTemplate.getNeedGrades() > player.getBasePlayer().getPlayerInfo().getLevel()) {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.SKILL_UP_ERROR5, Protocol.C_HERO_UPSKILL);
 			return false;
 		}
+		
 
 		// 判断前置技能是否满足
 //		String preTemplateId = skillInfo.getPreTemplateId();// 前置技能

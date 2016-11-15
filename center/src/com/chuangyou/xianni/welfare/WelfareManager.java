@@ -17,7 +17,6 @@ import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.sql.dao.DBManager;
 import com.chuangyou.xianni.sql.dao.WelfareConditionTemplateDao;
 import com.chuangyou.xianni.sql.dao.WelfareTemplateDao;
-import com.chuangyou.xianni.welfare.conditionHandle.BaseConditionHandle;
 import com.chuangyou.xianni.word.WorldMgr;
 
 public class WelfareManager {
@@ -104,6 +103,7 @@ public class WelfareManager {
 		AllWelfareMsg.Builder builder = AllWelfareMsg.newBuilder();
 		WelfareConditionRecordInventory inventory = player.getWelfareConditionRecordInventory();
 		builder.setOnlineTime(inventory.getInfo().getOnLineTime());
+		builder.setDays(inventory.getInfo().getDays());
 		for (WelfareInfo welfareInfo : player.getWelfareInventory().getWelfareInfoMap().values()) {
 			OneWelfareMsg.Builder builder2 = OneWelfareMsg.newBuilder();
 			builder2.setId(welfareInfo.getWelfareId());

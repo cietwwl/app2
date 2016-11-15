@@ -19,7 +19,7 @@ public interface ItemAddType {
 		public static final int	AVATAR_CAMPAIGN	= 10104;
 	}
 
-	/** 测试添加 */
+	/** GM添加 */
 	public static final short	TEST_ADD		= 2999;
 
 	/** 叠加增加 */
@@ -97,9 +97,9 @@ public interface ItemAddType {
 	public static final short	COST_ITEM		= 3017;
 	
 	/**
-	 * 开箱子
+	 * 使用物品(开箱子)
 	 */
-	public static final short	OPEN_BOX		= 3018;
+	public static final short	OPEN_ITEM		= 3018;
 
 	/**
 	 * 福利领取物品

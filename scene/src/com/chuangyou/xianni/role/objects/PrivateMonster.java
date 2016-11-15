@@ -66,12 +66,11 @@ public class PrivateMonster extends Monster {
 				MonsterSpawnNode mnode = (MonsterSpawnNode) node;
 				mnode.lvingDie(this);
 			}
-			calculationProfit(this.getSkin(), killer);
+		//	calculationProfit(this.getSkin(), killer);
 			this.clear();
 			PrivateMonsterMgr.remove(this);
 		}
 		return true;
-
 	}
 
 	public long getBornTime() {

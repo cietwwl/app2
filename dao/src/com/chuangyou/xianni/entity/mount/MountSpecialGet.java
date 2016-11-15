@@ -3,6 +3,13 @@ package com.chuangyou.xianni.entity.mount;
 import com.chuangyou.xianni.entity.DataObject;
 
 public class MountSpecialGet extends DataObject {
+	
+	/** 激活结果-激活成功 */
+	public static final int ACTIVATE_SUCCESS = 0;
+	/** 激活结果-失败，坐骑不是特殊坐骑不可激活 */
+	public static final int NOT_SPECIAL = 1;
+	/** 激活结果-失败，坐骑已经激活 */
+	public static final int ALREADY_ACTIVATED = 2;
 
 	private long playerId;
 	private int mountId;

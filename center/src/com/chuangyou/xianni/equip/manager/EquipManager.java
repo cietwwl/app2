@@ -12,7 +12,6 @@ import com.chuangyou.xianni.bag.ItemLogHelper;
 import com.chuangyou.xianni.bag.ItemManager;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
-import com.chuangyou.xianni.constant.CommonType;
 import com.chuangyou.xianni.constant.CommonType.CurrencyItemType;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.constant.EquipConstant;

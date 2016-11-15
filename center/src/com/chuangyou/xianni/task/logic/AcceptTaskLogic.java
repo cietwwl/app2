@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.chuangyou.common.protobuf.pb.task.TaskOperateRespProto.TaskOperateRespMsg;
 import com.chuangyou.common.protobuf.pb.task.TaskUpdateRespProto.TaskUpdateRespMsg;
+import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.Option;
@@ -37,6 +38,10 @@ public class AcceptTaskLogic {
 		}
 		Date current = new Date();
 		if (task != null) {
+			if(task.getInfo().getState() != TaskInfo.UN_ACCEPT){
+				Log.warn("重复接任务：taskId = " + task.getInfo().getTaskId() + "  playerId = " + task.getInfo().getPlayerId());
+				return;
+			}
 			task.doAccept();
 		} else {  //如果任务列表中没有要接的任务数据。就新建
 			// 检查是否有前置任务，如果有。前缀任务必须为完成状态

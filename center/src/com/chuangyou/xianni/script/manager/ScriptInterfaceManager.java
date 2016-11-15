@@ -11,10 +11,12 @@ import com.chuangyou.common.util.ChangeCharsetUtil;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.bag.ItemManager;
 import com.chuangyou.xianni.chat.manager.ChatManager;
+import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.constant.DamageEffecterType;
 import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.entity.item.ItemAddType;
 import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
+import com.chuangyou.xianni.entity.mount.MountSpecialGet;
 import com.chuangyou.xianni.entity.task.TaskInfo;
 import com.chuangyou.xianni.map.MapProxyManager;
 import com.chuangyou.xianni.netty.GatewayLinkedSet;
@@ -25,6 +27,9 @@ import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.retask.vo.RealTask;
+import com.chuangyou.xianni.team.TeamMgr;
+import com.chuangyou.xianni.team.struct.Team;
+import com.chuangyou.xianni.team.struct.TeamMember;
 import com.chuangyou.xianni.word.WorldMgr;
 
 public class ScriptInterfaceManager {
@@ -121,7 +126,7 @@ public class ScriptInterfaceManager {
 		GamePlayer player = WorldMgr.getPlayer(playerId);
 		if (player == null)
 			return false;
-		return player.getBagInventory().addItem(templateId, count, ItemAddType.OPEN_BOX, isBind);
+		return player.getBagInventory().addItem(templateId, count, ItemAddType.OPEN_ITEM, isBind);
 	}
 
 	/**
@@ -380,7 +385,7 @@ public class ScriptInterfaceManager {
 	 */
 	public static boolean activeAvatar(long playerId,int tempId){
 		GamePlayer player = WorldMgr.getPlayer(playerId);
-		if (player == null || player.getArmyInventory() == null) {
+		if (player == null || player.getAvatarInventory() == null) {
 			return false;
 		}
 		player.getAvatarInventory().scriptActiveAvatar(tempId);
@@ -395,7 +400,7 @@ public class ScriptInterfaceManager {
 	 */
 	public static boolean activePet(long playerId,int tempId){
 		GamePlayer player = WorldMgr.getPlayer(playerId);
-		if (player == null || player.getArmyInventory() == null) {
+		if (player == null || player.getPetInventory() == null) {
 			return false;
 		}
 		player.getPetInventory().activePet(tempId);
@@ -410,12 +415,55 @@ public class ScriptInterfaceManager {
 	 */
 	public static boolean activeMagicwp(long playerId,int tempId){
 		GamePlayer player = WorldMgr.getPlayer(playerId);
-		if (player == null || player.getArmyInventory() == null) {
+		if (player == null || player.getMagicwpInventory() == null) {
 			return false;
 		}
 		player.getMagicwpInventory().activeMagicwp(tempId);
 		return true;
 	}
 	
+	/**
+	 * 激活特殊坐骑(普通坐骑不能激活)
+	 * @param playerId
+	 * @param mountId
+	 * @return 激活结果
+	 * 			MountSpecialGet.ACTIVATE_SUCCESS 激活成功
+	 * 			MountSpecialGet.NOT_SPECIAL 失败，坐骑不是特殊坐骑不可激活
+	 * 			MountSpecialGetALREADY_ACTIVATED 失败，坐骑已经激活
+	 */
+	public static int activateSpecialMount(long playerId, int mountId){
+		GamePlayer player = WorldMgr.getPlayer(playerId);
+		if (player == null || player.getMountInventory() == null) {
+			return ErrorCode.UNKNOW_ERROR;
+		}
+		return player.getMountInventory().addMountSpecial(new MountSpecialGet(playerId, mountId));
+	}
 	
+	/**
+	 * 获取玩家所在队伍的最低玩家等级
+	 * @param playerId
+	 * @return
+	 */
+	public static int getTeamMinLevel(long playerId){
+		Team team = TeamMgr.getPlayerTeam(playerId);
+		if(team == null){
+			GamePlayer player = WorldMgr.getPlayer(playerId);
+			if(player == null){
+				return 0;
+			}
+			return player.getLevel();
+		}
+		int minLevel = 0;
+		List<TeamMember> members = team.getMembers();
+		for(TeamMember member: members){
+			GamePlayer memberPlayer = WorldMgr.getPlayer(member.getPlayerId());
+			if(memberPlayer == null){
+				continue;
+			}
+			if(minLevel == 0 || memberPlayer.getLevel() < minLevel){
+				minLevel = memberPlayer.getLevel();
+			}
+		}
+		return minLevel;
+	}
 }

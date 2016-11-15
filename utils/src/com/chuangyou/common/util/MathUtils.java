@@ -136,7 +136,7 @@ public class MathUtils {
 	 * @return
 	 */
 	public static float getDistByXZ(Vector3 src, Vector3 tar) {
-		float dx = src.getX() - tar.getY();
+		float dx = src.getX() - tar.getX();
 		float dz = src.getZ() - tar.getZ();
 		return (float) Math.sqrt(dx * dx + 0 + dz * dz);
 	}

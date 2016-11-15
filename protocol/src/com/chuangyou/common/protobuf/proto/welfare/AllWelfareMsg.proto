@@ -6,4 +6,5 @@ import "welfare/OneWelfareMsg.proto";
 message AllWelfareMsg{
 	repeated OneWelfareMsg list = 1;  //所有福利状态信息
 	optional int32 onlineTime = 2;  //达到相应等级以后在线时间
+	optional int32 days = 3;  //登陆天数
 }

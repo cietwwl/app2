@@ -37,3 +37,19 @@ function createCampaign(playerId,campaignId){
 function onDie(playerId,monsterId){
 	com.chuangyou.xianni.script.manager.ScriptInterfaceScenceManager.onDie(playerId,monsterId);
 }
+
+
+/**
+ * 获取玩家等级
+ * @param playerId
+ */
+function getPlayerLevel(playerId){
+	return com.chuangyou.xianni.script.manager.ScriptInterfaceScenceManager.getPlayerLevel(playerId);
+}
+/**
+ * 给玩家发提示
+ * @param playerId
+ */
+function sendHintToClient(playerId){
+	return com.chuangyou.xianni.script.manager.ScriptInterfaceScenceManager.sendHintToClient(playerId);
+}

@@ -7,10 +7,8 @@ import com.chuangyou.common.protobuf.pb.welfare.ReceiveWelfareMsgProto.ReceiveWe
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.error.ErrorMsgUtil;
-import com.chuangyou.xianni.entity.item.BagType;
-import com.chuangyou.xianni.entity.item.BindType;
+import com.chuangyou.xianni.constant.CommonType.CurrencyItemType;
 import com.chuangyou.xianni.entity.item.ItemAddType;
-import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.entity.welfare.WelfareInfo;
 import com.chuangyou.xianni.entity.welfare.WelfareTemplate;
 import com.chuangyou.xianni.player.GamePlayer;
@@ -46,10 +44,8 @@ public class receiveWelfareAwardCmd extends AbstractCommand {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.WELFARE_INSUFFICIENT_CONDITION_ERROR, Protocol.C_RECEIVE_WELFARE_AWARD, "福利条件未达到！");
 			return;
 		}
-		// (除背包容量是否足够外)检查完毕
-		// 给奖励
+		// 检查背包是否足够
 		List<Reward> rewards = new ArrayList<>(8);// 所有奖励
-		List<Reward> alreadyAddrewards = new ArrayList<>(8);// 已经加入背包的奖励
 		rewards.add(new Reward(template.getItem1(), template.getNum1(), 1 == template.getBind1()));
 		rewards.add(new Reward(template.getItem2(), template.getNum2(), 1 == template.getBind2()));
 		rewards.add(new Reward(template.getItem3(), template.getNum3(), 1 == template.getBind3()));
@@ -58,20 +54,26 @@ public class receiveWelfareAwardCmd extends AbstractCommand {
 		rewards.add(new Reward(template.getItem6(), template.getNum6(), 1 == template.getBind6()));
 		rewards.add(new Reward(template.getItem7(), template.getNum7(), 1 == template.getBind7()));
 		rewards.add(new Reward(template.getItem8(), template.getNum8(), 1 == template.getBind8()));
+		int needSpace = 0;
 		for (Reward reward : rewards) {
-			if (reward.itemId == 0)
+			int itemId = reward.itemId;
+			if (itemId == 0)
 				continue;
-
-			if (player.getBagInventory().addItem(reward.itemId, reward.number, ItemAddType.WELFARE, reward.bind)) {
-				alreadyAddrewards.add(reward);
-			} else {
-				for (Reward reward2 : alreadyAddrewards) {
-					player.getBagInventory().removeItem(BagType.Play, reward2.itemId, reward2.number, reward2.bind ? BindType.BIND : BindType.NOBIND, ItemRemoveType.WELFARE_RECOVERY);
-				}
-				return;
+			if (itemId == CurrencyItemType.MONEY_ITEM || itemId == CurrencyItemType.CASH_ITEM || itemId == CurrencyItemType.CASH_BIND_ITEM || itemId == CurrencyItemType.EQUIP_EXP
+					|| itemId == CurrencyItemType.REPAIR_ITEM || itemId == CurrencyItemType.POINTS || itemId == CurrencyItemType.EXP || itemId == CurrencyItemType.VIP_EXP
+					|| itemId == CurrencyItemType.VIP_TEMPORARY) {
+				continue;
 			}
+			needSpace++;
 		}
-
+		if (player.getBagInventory().getEmptyCount() < needSpace) {
+			ErrorMsgUtil.sendErrorMsg(player.getPlayerId(), ErrorCode.BAG_IS_FULL, (short) 0, "背包已满");
+			return;
+		}
+		// 给奖励
+		for (Reward reward : rewards) {
+			player.getBagInventory().addItem(reward.itemId, reward.number, ItemAddType.WELFARE, reward.bind);
+		}
 		// 更新客户端状态
 		WelfareManager.updateOneWelfare(id, WelfareInventory.STATE_2, player);
 		// 改变领取状态

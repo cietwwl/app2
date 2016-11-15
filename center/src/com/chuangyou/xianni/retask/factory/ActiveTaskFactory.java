@@ -20,6 +20,7 @@ import com.chuangyou.xianni.retask.trigger.PlayerFightTaskTrigger;
 import com.chuangyou.xianni.retask.trigger.PlayerLvTaskTrigger;
 import com.chuangyou.xianni.retask.trigger.QteTaskTrigger;
 import com.chuangyou.xianni.retask.trigger.SkillLvTaskTrigger;
+import com.chuangyou.xianni.retask.trigger.StateLvTaskTrigger;
 import com.chuangyou.xianni.retask.trigger.StateTaskTrigger;
 import com.chuangyou.xianni.retask.trigger.TriggerTaskTrigger;
 import com.chuangyou.xianni.retask.trigger.magicwp.MagicWpTaskTrigger;
@@ -108,6 +109,9 @@ public class ActiveTaskFactory extends AbstractTaskTriggerFactory {
 			case ConditionType.ACTIVE:
 				trigger = new ActiveTaskTrigger(player, task);
 				break;
+			case ConditionType.STATE_TASK:
+				trigger = new StateLvTaskTrigger(player, task);
+				break;
 		}
 		if(trigger == null){
 			Log.error("ActiveTaskFactory工厂里没有此类型监听器："+cfg.getTaskTarget());
@@ -176,6 +180,9 @@ public class ActiveTaskFactory extends AbstractTaskTriggerFactory {
 			case ConditionType.ACTIVE:
 				trigger = new ZeroInitBehavior(player, task);
 				break;
+			case ConditionType.STATE_TASK:
+				trigger = new StateLvTaskTrigger(player, task);
+				break;	
 		}
 		if(trigger == null){
 			Log.error("ActiveTaskFactory工厂里没有此类型初始化形为处理器："+cfg.getTaskTarget());

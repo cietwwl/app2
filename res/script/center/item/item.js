@@ -37,9 +37,11 @@ function useItem(playerId, itemTempId, count){
 
 		if (playerJob == 1){
 			awardItem = 1111551;
-		}else if (playerJob == 2){
+		}
+		else if (playerJob == 2){
 			awardItem = 1111552;
-		}else if (playerJob == 3){
+		}
+		else if (playerJob == 3){
 			awardItem = 1111553;
 		}
 
@@ -66,8 +68,44 @@ function useItem(playerId, itemTempId, count){
 		var isBind = 1	//绑定状态
 		addItemFromOpenItem(playerId,templateId,count,isBind)
 		//使用成功返回true,服务器会删除物品
+		return true;
 	}
-	
+		//使用道具激活特殊坐骑蚊兽
+	if (itemTempId == 6100010){
+		
+		if (activateSpecialMount(playerId,170008) == 0){
+			sendHintToClient(playerId,'激活成功');
+			return true;
+		}
+		if ( activateSpecialMount(playerId,170008)== 1){
+			sendHintToClient(playerId,'激活失败，不是特殊坐骑');
+			return false;
+		}	
+		if (activateSpecialMount(playerId,170008) == 2){
+			sendHintToClient(playerId,'激活失败，坐骑已激活');
+			return false;
+		}	
+		
+	}
+		//使用道具激活特殊坐骑铁傀儡
+	if (itemTempId == 6100011){
+		
+		if (activateSpecialMount(playerId,180009) == 0){
+			sendHintToClient(playerId,'激活成功');
+			return true;
+		}
+		if ( activateSpecialMount(playerId,180009)== 1){
+			sendHintToClient(playerId,'激活失败，不是特殊坐骑');
+			return false;
+		}	
+		if (activateSpecialMount(playerId,180009) == 2){
+			sendHintToClient(playerId,'激活失败，坐骑已激活');
+			return false;
+		}	
+		
+	}
+
+	return true;
 }
 
 //常用方法

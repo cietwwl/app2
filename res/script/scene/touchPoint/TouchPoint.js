@@ -9,55 +9,78 @@ function getInterfaceName() {
 }
 
 function action(playerId, npcType) {
-
+		
 		switch (npcType) {
 
 		case 241:
-			createCampaign(playerId, 1);
+			createCampaign(playerId,1);
 			break;
 		//月星->赵国传送点
 		case 1005301:
-			changeMap(playerId,1009,3717,264,5809,0);
+			if (getPlayerLevel(playerId) >=1){
+				changeMap(playerId,1009,3717,264,5809,0);
+			}
 			break;
 		//赵国->月星传送点
 		case 1009301:
-			changeMap(playerId,1005,669,679,-974,0);
+		    if (getPlayerLevel(playerId) >=400){
+				changeMap(playerId,1005,669,679,-974,0);
+			}
 			break;
 		//藤家城->赵国野外
 		case 1008302:
-			changeMap(playerId,1009,5111,60,6081,0);
+			if (getPlayerLevel(playerId) >=1){
+				changeMap(playerId,1009,5111,60,6081,0);
+			}
+			
 			break;
 		//赵国野外->藤家城
 		case 1009307:
-			changeMap(playerId,1008,5800,-5,5099,0);
+			if (getPlayerLevel(playerId) >=15){
+				changeMap(playerId,1008,5800,-5,5099,0);
+			}
 			break;	
 		//域外战场->决明谷
 		case 1014301:
-			changeMap(playerId,1009,5753,-13,7476,0);
+			if (getPlayerLevel(playerId) >=15){
+				changeMap(playerId,1009,5753,-13,7476,0);
+			}
 			break;		
 		//决明谷->域外战场
 		case 1009303:
-			changeMap(playerId,1014,134,236,1003,0);
+			if (getPlayerLevel(playerId) >=25){
+				changeMap(playerId,1014,134,236,1003,0);
+			}
 			break;	
 		//域外战场->修魔海	
 		case 1014302:
-			changeMap(playerId,1010,2808,158,2447,0);
+			if (getPlayerLevel(playerId) >=35){
+				changeMap(playerId,1010,2808,158,2447,0);
+			}
 			break;
 		//修魔海->域外战场	
 		case 1010001:
-			changeMap(playerId,1014,520,282,570,180,0);
+			if (getPlayerLevel(playerId) >=25){
+				changeMap(playerId,1010,2808,158,2447,0);
+			}
 			break;	
 		//修魔海->古神之心	
 		case 1010002:
-			changeMap(playerId,1011,1350,891,383,0);
+			if (getPlayerLevel(playerId) >=45){
+				changeMap(playerId,1010,2808,158,2447,0);
+			}		
 			break;	
 		//修魔海->洞府	
 		case 1010003:
-			changeMap(playerId,1015,-700,86,-564,0);
+			if (getPlayerLevel(playerId) >=35){
+				changeMap(playerId,1015,-700,86,-564,0);
+			}		
 			break;	
 		//古神之心->修魔海
 		case 1011001:
-			changeMap(playerId,1010,2225,131,2389,0);
+			if (getPlayerLevel(playerId) >=35){
+				changeMap(playerId,1010,2225,131,2389,0);
+			}		
 			break;	
 		//古神之心上->古神之心中
 		case 1011002:

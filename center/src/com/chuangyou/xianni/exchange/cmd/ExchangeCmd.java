@@ -4,6 +4,7 @@ import com.chuangyou.common.protobuf.pb.exchange.ExchangeReqProto.ExchangeReqMsg
 import com.chuangyou.common.protobuf.pb.exchange.ExchangeRespProto.ExchangeRespMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.base.AbstractCommand;
+import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.entity.item.ItemAddType;
 import com.chuangyou.xianni.entity.item.ItemRemoveType;
 import com.chuangyou.xianni.player.GamePlayer;
@@ -30,10 +31,10 @@ public class ExchangeCmd extends AbstractCommand {
 		ExchangeReqMsg msg = ExchangeReqMsg.parseFrom(packet.getBytes());
 		int comsume = 0;
 		int n = player.getBasePlayer().getPlayerTimeInfo().getPersonalExchangeTime();
-		final int A = 20;
-		final int A1 = 5000;
-		final int B = 200;
-		final int C = 50;
+		final int A = SystemConfigTemplateMgr.getExchangeParam1();
+		final int A1 = SystemConfigTemplateMgr.getExchangeParam2();
+		final int B = SystemConfigTemplateMgr.getExchangeParam3();
+		final int C = SystemConfigTemplateMgr.getExchangeParam4();
 		int time = 1;
 		int m =  player.getBasePlayer().getPlayerTimeInfo().getPersonalExchangeTotalTime();
 		long award = 0;

@@ -118,6 +118,19 @@ public class Vector3 {
 	}
 
 	/**
+	 * 求两个向量平面距离
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public static float planeDistance(Vector3 a, Vector3 b) {
+		float dx = a.x - b.x;
+		float dz = a.z - b.z;
+		return (float) Math.sqrt(dx * dx + dz * dz);
+	}
+
+	/**
 	 * 向量减法
 	 * 
 	 * @param a
@@ -238,5 +251,9 @@ public class Vector3 {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return "[" + x + "," + y + "," + z + "]";
+	}
+
+	public boolean equals(Vector3 v3) {
+		return distance(this, v3) <= 1;
 	}
 }

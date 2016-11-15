@@ -25,7 +25,7 @@ public class CreateCampaingByNpcCmd extends AbstractCommand {
 			}
 			army.getPlayer().getField().leaveField(npc);
 		}
-		CampaignCreateAction createAction = new CampaignCreateAction(army, msg.getCampaignId(), -1);
+		CampaignCreateAction createAction = new CampaignCreateAction(army, msg.getCampaignId(), true);
 		army.enqueue(createAction);
 	}
 

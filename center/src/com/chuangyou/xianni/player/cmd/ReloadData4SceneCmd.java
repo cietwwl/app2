@@ -4,6 +4,8 @@ import com.chuangyou.common.protobuf.pb.PostionMsgProto.PostionMsg;
 import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
 import com.chuangyou.common.protobuf.pb.army.ArmyInfoReloadMsgProto.ArmyInfoReloadMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
+import com.chuangyou.xianni.army.ArmyInventory;
+import com.chuangyou.xianni.army.Hero;
 import com.chuangyou.xianni.base.AbstractCommand;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.field.FieldInfo;
@@ -62,6 +64,11 @@ public class ReloadData4SceneCmd extends AbstractCommand {
 
 			}
 		}
+		
+		ArmyInventory armyInventory = player.getArmyInventory();
+		Hero hero = armyInventory.getHero();
+		hero.setCurBlood(join.getCurBlood());
+		hero.setCurSoul(join.getCurSoul());
 	}
 
 }

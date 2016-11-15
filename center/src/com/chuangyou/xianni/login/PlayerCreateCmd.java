@@ -3,7 +3,6 @@ package com.chuangyou.xianni.login;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import com.chuangyou.common.protobuf.pb.PlayerCreateInnerProto.PlayerCreateInnerMsg;
 import com.chuangyou.common.protobuf.pb.PlayerCreateResultInnerProto.PlayerCreateResultInnerMsg;
@@ -14,7 +13,6 @@ import com.chuangyou.xianni.common.ErrorCode;
 import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.entity.field.FieldInfo;
 import com.chuangyou.xianni.entity.hero.HeroSkill;
-import com.chuangyou.xianni.entity.mount.MountGradeCfg;
 import com.chuangyou.xianni.entity.player.PlayerInfo;
 import com.chuangyou.xianni.entity.player.PlayerJoinInfo;
 import com.chuangyou.xianni.entity.player.PlayerPositionInfo;
@@ -25,7 +23,6 @@ import com.chuangyou.xianni.entity.skill.SkillTempateInfo;
 import com.chuangyou.xianni.entity_id.EntityIdBuilder;
 import com.chuangyou.xianni.login.template.RoleConfigMgr;
 import com.chuangyou.xianni.map.MapProxyManager;
-import com.chuangyou.xianni.mount.template.MountTemplateMgr;
 import com.chuangyou.xianni.player.NickNameCheckResult;
 import com.chuangyou.xianni.player.manager.PlayerManager;
 import com.chuangyou.xianni.proto.MessageUtil;
@@ -95,13 +92,13 @@ public class PlayerCreateCmd implements Command {
 			playerInfo.setSkinId(roleConfig.getModelId());
 			playerInfo.setpBagCount(0);
 			int initMountId = 0;
-			Map<Integer, MountGradeCfg> gradeCfgMap = MountTemplateMgr.getGradeTemps();
-			for (MountGradeCfg grade : gradeCfgMap.values()) {
-				if (grade.getGrade() == 1) {
-					initMountId = grade.getId();
-					break;
-				}
-			}
+//			Map<Integer, MountGradeCfg> gradeCfgMap = MountTemplateMgr.getGradeTemps();
+//			for (MountGradeCfg grade : gradeCfgMap.values()) {
+//				if (grade.getGrade() == 1) {
+//					initMountId = grade.getId();
+//					break;
+//				}
+//			}
 			playerInfo.setMountId(initMountId);
 			playerInfo.setMagicWeaponId(0);
 			playerInfo.setFashionId(0);

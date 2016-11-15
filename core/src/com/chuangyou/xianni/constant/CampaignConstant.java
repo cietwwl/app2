@@ -14,6 +14,9 @@ public class CampaignConstant {
 	public static final int	JOIN_TEAM	= 4;
 	/** 清除副本 */
 	public static final int	DETORY		= 5;
+	
+	/** 副本相关内容中需要触发脚本的id */
+	public static final String SCRIPTID	= "campaign";
 
 	// ----------------scene副本通知center状态--------------------//
 	public static class CampaignStatu {
@@ -34,8 +37,10 @@ public class CampaignConstant {
 		public static final int	PVP_1V1				= 7;	// PVP11副本
 		public static final int	GUILD_SEIZE			= 8;	// 帮派夺权副本
 		public static final int	ELITE_BOSS_TRIGGER	= 9;	// 精英BOSS触发副本
+		public static final int NPC_CAM_ACTIVITY	= 10;	// 定点进本活动副本
 		public static final int	WORLD_BOSS_TRIGGER	= 11;	// 世界BOSS触发副本
 		public static final int	THE_PLANE			= 12;	// 位面副本
+		public static final int PLOT				= 13;	// 剧情副本
 	}
 
 	public static class ChallengeResult {

@@ -264,3 +264,25 @@ function activeMagicwp(playerId,tempId){
 	return com.chuangyou.xianni.script.manager.ScriptInterfaceManager.activeMagicwp(playerId,tempId);
 	
 }
+
+/**
+ * 激活特殊坐骑
+ * @param playerId 玩家ID
+ * @param mountId 坐骑模板ID（只能是特殊坐骑，普通升阶坐骑不可激活）
+ * return 激活结果
+ * 		0 激活成功	MountSpecialGet.ACTIVATE_SUCCESS
+ * 		1 失败，坐骑不是特殊坐骑不可激活	MountSpecialGet.NOT_SPECIAL
+ * 		2 失败，坐骑已经激活	MountSpecialGetALREADY_ACTIVATED
+ * 		-1 未知错误
+ */
+function activateSpecialMount(playerId, mountId){
+	return com.chuangyou.xianni.script.manager.ScriptInterfaceManager.activateSpecialMount(playerId, mountId);
+}
+
+/**
+ * 获取玩家所在队伍最低等级
+ * @param playerId
+ */
+function getTeamMinLevel(playerId){
+	return com.chuangyou.xianni.script.manager.ScriptInterfaceManager.getTeamMinLevel(playerId);
+}

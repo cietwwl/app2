@@ -4,9 +4,12 @@ import java.util.Map;
 
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
 import com.chuangyou.common.protobuf.pb.pet.PetActivateRespProto.PetActivateRespMsg;
+import com.chuangyou.common.protobuf.pb.pet.PetFightRespProto.PetFightRespMsg;
 import com.chuangyou.common.protobuf.pb.pet.PetInfoBeanProto.PetInfoBeanMsg;
 import com.chuangyou.common.protobuf.pb.player.OtherPetProto.OtherPetMsg;
 import com.chuangyou.xianni.army.Hero;
+import com.chuangyou.xianni.common.ErrorCode;
+import com.chuangyou.xianni.common.error.ErrorMsgUtil;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.pet.PetAtt;
 import com.chuangyou.xianni.entity.pet.PetInfo;
@@ -20,6 +23,7 @@ import com.chuangyou.xianni.interfaces.IInventory;
 import com.chuangyou.xianni.pet.manager.PetManager;
 import com.chuangyou.xianni.pet.template.PetTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.player.PlayerInfoSendCmd;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
@@ -238,7 +242,7 @@ public class PetInventory extends AbstractEvent implements IInventory {
 	 * @param petTemplateId
 	 */
 	public void activePet(int petTemplateId){
-		PetInfo pet = player.getPetInventory().getPetInfo(petTemplateId);
+		PetInfo pet = getPetInfo(petTemplateId);
 		
 		if(pet != null){
 			return;
@@ -272,9 +276,37 @@ public class PetInventory extends AbstractEvent implements IInventory {
 		//宠物总属性改变
 //		PetManager.changePetAtt(roleId);
 		//影响人物属性改变
-		player.getPetInventory().updataProperty();
+		updataProperty();
+		
+		petFight(petTemplateId, false);
 		
 		player.notifyListeners(new ObjectEvent(this, pet.getPetId(), EventNameType.PET_ACTIVE));
+	}
+	
+	public void petFight(int petId, boolean sendErrorCode){
+		PetInfo pet = getPetInfo(petId);
+		
+		if(pet == null){
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Pet_UnGet, Protocol.C_PET_FIGHT);
+			return;
+		}
+		
+		PetAtt petAtt = getPetAtt();
+		
+		//请求出战的宠物已经是当前出战宠物则不处理
+		if(petAtt.getFightPetId() == petId) return;
+		
+		petAtt.setFightPetId(petId);
+		updatePetAtt(petAtt);
+		
+		PetFightRespMsg.Builder msg = PetFightRespMsg.newBuilder();
+		msg.setFightPetId(petAtt.getFightPetId());
+		PBMessage p = MessageUtil.buildMessage(Protocol.U_PET_FIGHT, msg);
+		player.sendPbMessage(p);
+		
+		//同步玩家场景中的宠物更换
+		PBMessage petSnapMsg = MessageUtil.buildMessage(Protocol.S_PET_INFO_UPDATE, PlayerInfoSendCmd.getPetInfoPacket(player));
+		player.sendPbMessage(petSnapMsg);
 	}
 	
 	

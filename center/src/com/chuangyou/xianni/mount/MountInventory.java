@@ -6,8 +6,12 @@ import java.util.Set;
 
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
+import com.chuangyou.common.protobuf.pb.mount.MountFightChooseRespProto.MountFightChooseRespMsg;
 import com.chuangyou.common.protobuf.pb.player.OtherMountProto.OtherMountMsg;
 import com.chuangyou.xianni.army.Hero;
+import com.chuangyou.xianni.common.ErrorCode;
+import com.chuangyou.xianni.common.error.ErrorMsgUtil;
+import com.chuangyou.xianni.common.template.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.mount.MountEquipInfo;
@@ -20,6 +24,9 @@ import com.chuangyou.xianni.interfaces.IInventory;
 import com.chuangyou.xianni.mount.manager.MountManager;
 import com.chuangyou.xianni.mount.template.MountTemplateMgr;
 import com.chuangyou.xianni.player.GamePlayer;
+import com.chuangyou.xianni.proto.MessageUtil;
+import com.chuangyou.xianni.proto.PBMessage;
+import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.skill.SkillUtil;
 import com.chuangyou.xianni.skill.template.SimpleProperty;
 import com.chuangyou.xianni.sql.dao.DBManager;
@@ -59,13 +66,13 @@ public class MountInventory extends AbstractEvent implements IInventory {
 	public MountInfo getMount() {
 		if (this.mountInfo == null) {
 			int initMountId = 0;
-			Map<Integer, MountGradeCfg> gradeCfgMap = MountTemplateMgr.getGradeTemps();
-			for (MountGradeCfg grade : gradeCfgMap.values()) {
-				if (grade.getGrade() == 1) {
-					initMountId = grade.getId();
-					break;
-				}
-			}
+//			Map<Integer, MountGradeCfg> gradeCfgMap = MountTemplateMgr.getGradeTemps();
+//			for (MountGradeCfg grade : gradeCfgMap.values()) {
+//				if (grade.getGrade() == 1) {
+//					initMountId = grade.getId();
+//					break;
+//				}
+//			}
 			mountInfo = new MountInfo(player.getPlayerId(), initMountId);
 			mountInfo.setOp(Option.Insert);
 		}
@@ -133,19 +140,77 @@ public class MountInventory extends AbstractEvent implements IInventory {
 	 * @param info
 	 * @return
 	 */
-	public boolean addMountSpecial(MountSpecialGet info) {
+	public int addMountSpecial(MountSpecialGet info) {
 		if (info.getPlayerId() != player.getPlayerId())
-			return false;
-		if (this.mountSpecialMap == null)
-			this.mountSpecialMap = new HashMap<Integer, MountSpecialGet>();
-		if (this.mountSpecialMap.get(info.getMountId()) == null) {
-			this.mountSpecialMap.put(info.getMountId(), info);
-			info.setOp(Option.Insert);
+			return ErrorCode.UNKNOW_ERROR;
 
-			// 影响人物属性变更
-			updataProperty();
+		MountGradeCfg mountCfg = MountTemplateMgr.getMountTemps().get(info.getMountId());
+		int specialGrade = SystemConfigTemplateMgr.getIntValue("mount.grade.specialMount");
+		if (mountCfg.getGrade() != specialGrade) {
+			return MountSpecialGet.NOT_SPECIAL;
 		}
-		return true;
+		if (this.mountSpecialMap == null) {
+			this.mountSpecialMap = new HashMap<Integer, MountSpecialGet>();
+		}
+		if (this.mountSpecialMap.get(info.getMountId()) != null) {
+			return MountSpecialGet.ALREADY_ACTIVATED;
+		}
+
+		this.mountSpecialMap.put(info.getMountId(), info);
+		info.setOp(Option.Insert);
+
+		// 影响人物属性变更
+		updataProperty();
+		mountFight(info.getMountId(), false);
+
+		return MountSpecialGet.ACTIVATE_SUCCESS;
+	}
+	
+	/**
+	 * 坐骑出战
+	 * @param mountId
+	 * @param sendErrorCode
+	 */
+	public void mountFight(int mountId, boolean sendErrorCode){
+		MountInfo mount = getMount();
+		if(mountId == mount.getMountId()){
+			if(sendErrorCode == true){
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.MOUNT_FIGHT_ALREADY, Protocol.C_MOUNT_FIGHT_CHOOSE);
+			}
+			return;
+		}
+		
+		MountGradeCfg mountGrade = MountTemplateMgr.getMountTemps().get(mountId);
+		
+		int specialGrade = SystemConfigTemplateMgr.getIntValue("mount.grade.specialMount");
+		
+		if(specialGrade == mountGrade.getGrade()){
+			MountSpecialGet mountGet = getMountSpecialMap().get(mountId);
+			if(mountGet == null){
+				if(sendErrorCode == true){
+					ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Mount_Special_UnGet, Protocol.C_MOUNT_FIGHT_CHOOSE);
+				}
+				return;
+			}
+		}
+		
+		if(specialGrade != mountGrade.getGrade() && mountGrade.getGrade() > mount.getGrade()){
+			if(sendErrorCode == true){
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.Mount_Grade_UnGet, Protocol.C_MOUNT_FIGHT_CHOOSE);
+			}
+			return;
+		}
+		
+		mount.setMountId(mountId);
+		updateMount(mount);
+		
+		MountFightChooseRespMsg.Builder msg = MountFightChooseRespMsg.newBuilder();
+		msg.setMountId(mount.getMountId());
+		
+		PBMessage p = MessageUtil.buildMessage(Protocol.U_MOUNT_FIGHT_CHOOSE, msg);
+		player.sendPbMessage(p);
+		
+		player.getBasePlayer().updateMountId(mount.getMountId());
 	}
 
 	public boolean loadFromDataBase() {

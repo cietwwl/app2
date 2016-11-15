@@ -117,6 +117,45 @@ public class SystemConfigTemplateMgr {
 		return cfg.getValue();
 	}
 
+	public static int getExchangeParam1() {
+		SystemConfig cfg = systemTemps.get("exchange.param1");
+		if (cfg == null) {
+			Log.error("getIntValue is null ,key : exchange.param1");
+			return 0;
+		}
+		return cfg.getValue();
+	}
+	
+	public static int getExchangeParam2() {
+		SystemConfig cfg = systemTemps.get("exchange.param2");
+		if (cfg == null) {
+			Log.error("getIntValue is null ,key : exchange.param2");
+			return 0;
+		}
+		return cfg.getValue();
+	}
+	
+	public static int getExchangeParam3() {
+		SystemConfig cfg = systemTemps.get("exchange.param3");
+		if (cfg == null) {
+			Log.error("getIntValue is null ,key : exchange.param3");
+			return 0;
+		}
+		return cfg.getValue();
+	}
+	
+	public static int getExchangeParam4() {
+		SystemConfig cfg = systemTemps.get("exchange.param4");
+		if (cfg == null) {
+			Log.error("getIntValue is null ,key : exchange.param4");
+			return 0;
+		}
+		return cfg.getValue();
+	}
+	
+	
+	
+	
 	public static Map<Integer, Integer> getSoulItemExp() {
 		SystemConfig cfg1 = systemTemps.get("soul.hunpo.spenditem");
 		SystemConfig cfg2 = systemTemps.get("soul.hunpo.addvalue");

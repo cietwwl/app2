@@ -43,6 +43,10 @@ function doScript(playerId,id){
 		'1014503' : {taskId : 10067,campingId : 1021014},
 	} 
 	//踩到某个触发器时如果有该触发器对应的任务则进入指定的位面副本
+
+	if (taskCampaingSet[id] == undefined || taskCampaingSet[id] == null) {
+		return;
+	}
 	if (isHasTask(playerId,taskCampaingSet[id].taskId)){
 		createCampaingByOnceNpc(playerId,taskCampaingSet[id].campingId,-1);
 	}

@@ -8,10 +8,12 @@ import com.chuangyou.common.protobuf.pb.email.EmailInfoProto.EmailInfo;
 import com.chuangyou.common.protobuf.pb.email.OperationEmailRespProto.OperationEmailRespMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.StringUtils;
+import com.chuangyou.xianni.bag.ItemManager;
 import com.chuangyou.xianni.constant.PlayerState;
 import com.chuangyou.xianni.email.vo.EmailItemVo;
 import com.chuangyou.xianni.entity.Option;
 import com.chuangyou.xianni.entity.email.Email;
+import com.chuangyou.xianni.entity.item.ItemTemplateInfo;
 import com.chuangyou.xianni.player.GamePlayer;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -131,6 +133,11 @@ public class EmailManager {
 					insertEmail(playerId, title, content, attachment.toString());
 					attachment = new StringBuffer("");
 				} else {
+					ItemTemplateInfo cfg = ItemManager.findItemTempInfo(emailItems.get(i).getItemTemplateId());			
+					if(cfg==null){
+						Log.error("插入邮件找不到物品配置表1：playerId"+playerId+":itemTemplateId:"+emailItems.get(i).getItemTemplateId());
+						continue;
+					}
 					attachment.append(emailItems.get(i).attachmentStr());
 				}
 			}
@@ -149,13 +156,20 @@ public class EmailManager {
 	 * @param emailItems
 	 */
 	public static void insertEmail(long playerId, String title, String content, EmailItemVo item) {
+		
 		if (item == null) {
 			insertEmail(playerId, title, content, "");
 		} else {
+			ItemTemplateInfo cfg = ItemManager.findItemTempInfo(item.getItemTemplateId());			
+			if(cfg==null){
+				Log.error("插入邮件找不到物品配置表：playerId"+playerId+":itemTemplateId:"+item.getItemTemplateId());
+				return;
+			}
 			insertEmail(playerId, title, content, item.attachmentStr());
 		}
 	}
 
+	
 	/**
 	 * 插入邮件
 	 * 

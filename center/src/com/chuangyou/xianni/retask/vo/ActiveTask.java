@@ -81,6 +81,9 @@ public class ActiveTask extends SimpleTask {
 		// TODO Auto-generated method stub
 		if(this.isCanStart()){			
 			super.initTask();
+			if(this.isFinish()){
+				this.doTaskFinish();
+			}
 		}
 	}
 

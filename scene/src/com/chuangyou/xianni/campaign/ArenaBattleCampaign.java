@@ -134,7 +134,7 @@ public class ArenaBattleCampaign extends Campaign {
 					if (cp.isDie()) {
 						cp.renascence();
 					} else {
-						cp.fullOfBlood();
+						cp.recovery();
 					}
 				}
 			}

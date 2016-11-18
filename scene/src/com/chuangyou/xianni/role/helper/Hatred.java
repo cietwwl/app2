@@ -5,13 +5,11 @@ import com.chuangyou.xianni.pool.MemoryObject;
 public class Hatred implements MemoryObject, Comparable<Hatred> {
 
 	// 仇恨度
-	private int hatred;
+	private int		hatred;
 	// 仇恨对象
-	private Long target;
-	// 第一次攻击时间
-	private long firstAttack;
+	private long	target;
 	// 最后一次攻击时间
-	private long lastAttack;
+	private long	lastAttack;
 
 	public int getHatred() {
 		return hatred;
@@ -21,20 +19,12 @@ public class Hatred implements MemoryObject, Comparable<Hatred> {
 		this.hatred = hatred;
 	}
 
-	public Long getTarget() {
+	public long getTarget() {
 		return target;
 	}
 
 	public void setTarget(Long target) {
 		this.target = target;
-	}
-
-	public long getFirstAttack() {
-		return firstAttack;
-	}
-
-	public void setFirstAttack(long firstAttack) {
-		this.firstAttack = firstAttack;
 	}
 
 	public long getLastAttack() {
@@ -52,10 +42,9 @@ public class Hatred implements MemoryObject, Comparable<Hatred> {
 
 	@Override
 	public void release() {
-		this.firstAttack = 0;
 		this.hatred = 0;
 		this.lastAttack = 0;
-		this.target = null;
+		this.target = 0;
 	}
 
 }

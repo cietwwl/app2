@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import com.chuangyou.common.protobuf.pb.Vector3Proto.PBVector3;
 import com.chuangyou.common.protobuf.pb.battle.AttackBroadcastMsgProto.AttackBroadcastMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
@@ -132,7 +131,7 @@ public class AttackOrder {
 		Player ps = (Player) source;
 		// 吸血禁制
 		MagicwpCompanent suck_blood = ps.getMagicwpCompanent(MagicwpBanConstant.SUCK_BLOOD);
-		if (suck_blood != null && suck_blood.isEffect()) {
+		if (suck_blood != null && suck_blood.isEffect() && toalBloodDamage > 0) {
 			suck_blood.exe(toalBloodDamage);
 		}
 		// 朱雀羽

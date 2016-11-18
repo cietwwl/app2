@@ -6,15 +6,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
 import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
 import com.chuangyou.common.protobuf.pb.scene.PlayerKillMonsterListProto.PlayerKillMonsterListMsg;
 import com.chuangyou.common.protobuf.pb.scene.PlayerKillMonsterProto.PlayerKillMonsterMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.Vector3;
-import com.chuangyou.xianni.ai.proxy.MonsterAI;
-import com.chuangyou.xianni.battle.action.MonsterPollingAction;
+import com.chuangyou.xianni.ai2.proxy.MonsterAI;
+import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.magicwpban.MagicwpCompanent;
 import com.chuangyou.xianni.campaign.Campaign;
@@ -34,7 +33,6 @@ import com.chuangyou.xianni.netty.GatewayLinkedSet;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.role.action.UpdatePositionAction;
 import com.chuangyou.xianni.role.helper.Hatred;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.role.script.IMonsterDie;
@@ -50,25 +48,31 @@ import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.WorldMgr;
 
 public class Monster extends ActiveLiving {
-	private MonsterInfo monsterInfo;
-	private AiConfig aiConfig;
+	private MonsterInfo		monsterInfo;
+	private AiConfig		aiConfig;
 
 	// 怪物攻击的初始技能，固定写死
-	private int skillId;
+	private int				skillId;
 	// 初始位置
-	private Vector3 initPosition;
+	private Vector3			initPosition;
 	// 仇恨列表
-	private List<Hatred> hatreds = Collections.synchronizedList(new ArrayList<Hatred>());
+	private List<Hatred>	hatreds		= Collections.synchronizedList(new ArrayList<Hatred>());
 	// 攻击目标
-	private Long target;
+	private long			target;
+	// 攻击目标位置
+	private Vector3			targetPos;
 	// 当前使用的技能id
-	private int curSkillID;
-
+	private int				curSkillID;
 	// 攻击者
-	private Long attacker;
-
+	private long			attacker;
+	// 攻击时间
+	private long			attackTime;
+	// 寻找敌人时间
+	private long			findEnemyTime;
 	// 参与者
-	private Set<Long> joiners = new HashSet<>();
+	private Set<Long>		joiners		= new HashSet<>();
+
+
 
 	public int getCurSkillID() {
 		return curSkillID;
@@ -78,11 +82,11 @@ public class Monster extends ActiveLiving {
 		this.curSkillID = curSkillID;
 	}
 
-	public Long getTarget() {
+	public long getTarget() {
 		return target;
 	}
 
-	public void setTarget(Long target) {
+	public void setTarget(long target) {
 		this.target = target;
 	}
 
@@ -94,23 +98,24 @@ public class Monster extends ActiveLiving {
 		return initPosition;
 	}
 
-	public Monster(MonsterSpawnNode node) {
+	public static int COUNT = 1;
+
+	public Monster(MonsterSpawnNode node, MonsterInfo monsterInfo) {
 		super(IDMakerHelper.nextID());
 		setType(RoleType.monster);
 		this.node = node;
-
-		enDelayQueue(new MonsterPollingAction(this, new MonsterAI(this),
-				new UpdatePositionAction(this, new PlayerSelectorHelper(this))));
+		this.monsterInfo = monsterInfo;
+		this.ai = new MonsterAI(this);
+		COUNT++;
+		System.out.println("生成怪物数量:" + COUNT);
 	}
 
 	public boolean onDie(Living killer) {
 		if (super.onDie(killer)) {
-
 			if (node != null) {
 				MonsterSpawnNode mnode = (MonsterSpawnNode) node;
 				mnode.lvingDie(this);
 			}
-
 			DieAction die = new DieAction(this, killer, 1000);
 			die.getActionQueue().enDelayQueue(die);
 
@@ -124,6 +129,7 @@ public class Monster extends ActiveLiving {
 					Log.error("-------------getAiConfig().getScript()-------------" + getAiConfig().getScript());
 				}
 			}
+
 			if (field != null && field.getCampaignId() > 0) {
 				Campaign campaign = CampaignMgr.getCampagin(field.getCampaignId());
 				if (campaign != null) {
@@ -136,8 +142,8 @@ public class Monster extends ActiveLiving {
 	}
 
 	class DieAction extends DelayAction {
-		Living deather;
-		Living killer;
+		Living	deather;
+		Living	killer;
 
 		public DieAction(Living deather, Living killer, int delay) {
 			super(killer, delay);
@@ -166,16 +172,15 @@ public class Monster extends ActiveLiving {
 	protected void calculationProfit(int tempId, Living killer) {
 		// 无论什么类型，击杀者必定掉落
 		if (killer != null && this.getField() != null) {
-			DropManager.dropFromMonster(this.getSkin(), killer.getArmyId(), this.getId(), this.getField().id,
-					this.getPostion());
+			DropManager.dropFromMonster(this.getSkin(), killer.getArmyId(), this.getId(), this.getField().id, this.getPostion());
 		}
+
 		// 当怪物类型为2时，参与者也掉落物品
 		if (getMonsterInfo().getDropType() == 2) {
 			for (Long id : joiners) {
 				Living l = getField().getLiving(id);
 				if (l != null) {
-					DropManager.dropFromMonster(this.getSkin(), l.getArmyId(), this.getId(), this.getField().id,
-							this.getPostion());
+					DropManager.dropFromMonster(this.getSkin(), l.getArmyId(), this.getId(), this.getField().id, this.getPostion());
 				}
 			}
 		}
@@ -217,12 +222,20 @@ public class Monster extends ActiveLiving {
 		this.skillId = skillId;
 	}
 
-	public Long getAttacker() {
+	public long getAttacker() {
 		return attacker;
 	}
 
-	public void setAttacker(Long attacker) {
+	public void setAttacker(long attacker) {
 		this.attacker = attacker;
+	}
+
+	public long getAttackTime() {
+		return attackTime;
+	}
+
+	public void setAttackTime(long attackTime) {
+		this.attackTime = attackTime;
 	}
 
 	@Override
@@ -272,7 +285,7 @@ public class Monster extends ActiveLiving {
 			List<Hatred> hatreds = getHatreds();
 			synchronized (this.hatreds) {
 				for (int i = 0; i < hatreds.size(); i++) {
-					if (hatreds.get(i).getTarget() != null && hatreds.get(i).getTarget() == damage.getSource().id) {
+					if (hatreds.get(i).getTarget() != 0 && hatreds.get(i).getTarget() == damage.getSource().id) {
 						hatred = hatreds.remove(i);
 						break;
 					}
@@ -280,7 +293,6 @@ public class Monster extends ActiveLiving {
 				if (hatred == null) {
 					hatred = SceneManagers.hatredManager.getHatred();
 					hatred.setTarget(damage.getSource().id);
-					hatred.setFirstAttack(System.currentTimeMillis());
 				}
 				// 增加仇恨值
 				hatred.setHatred(hatred.getHatred() + damage.getDamageValue());
@@ -293,6 +305,7 @@ public class Monster extends ActiveLiving {
 					}
 				}
 				hatreds.add(hatred);
+
 			}
 		}
 	}
@@ -342,7 +355,7 @@ public class Monster extends ActiveLiving {
 	 * 
 	 * @return
 	 */
-	public Long getAttackTarget() {
+	public long getAttackTarget() {
 		return getDefaultAttackTarget();
 	}
 
@@ -351,24 +364,27 @@ public class Monster extends ActiveLiving {
 	 * 
 	 * @return
 	 */
-	public Long getDefaultAttackTarget() {
+	public long getDefaultAttackTarget() {
 		if (this.getHatreds().size() > 0) {
 			synchronized (this.getHatreds()) {
 				Iterator<Hatred> iter = this.getHatreds().iterator();
 				while (iter.hasNext()) {
 					Hatred hatred = (Hatred) iter.next();
-					if (hatred == null || hatred.getTarget() == null)
+					if (hatred == null || hatred.getTarget() == 0) {
 						continue;
+					}
 					Living target = getField().getLiving(hatred.getTarget());
-					if (target == null)
+					if (target == null) {
 						continue;
-					if (target.isDie())
+					}
+					if (target.isDie()) {
 						continue;
+					}
 					return hatred.getTarget();
 				}
 			}
 		}
-		return -1l;
+		return 0l;
 	}
 
 	/**
@@ -401,7 +417,7 @@ public class Monster extends ActiveLiving {
 				Iterator<Hatred> iter = this.getHatreds().iterator();
 				while (iter.hasNext()) {
 					Hatred hatred = (Hatred) iter.next();
-					if (hatred != null && hatred.getTarget() == null) {
+					if (hatred != null && hatred.getTarget() == 0) {
 						SceneManagers.hatredManager.removeHatred(hatred);
 						iter.remove();
 						continue;
@@ -436,6 +452,7 @@ public class Monster extends ActiveLiving {
 				SceneManagers.hatredManager.removeHatred(lastOverHatred);
 				this.getHatreds().remove(lastOverHatred);
 			}
+			setTarget(getDefaultAttackTarget());
 		}
 	}
 
@@ -453,8 +470,24 @@ public class Monster extends ActiveLiving {
 		this.aiConfig = AiConfigTemplateMgr.get(aiId);
 	}
 
+	public Vector3 getTargetPos() {
+		return targetPos;
+	}
+
+	public void setTargetPos(Vector3 targetPos) {
+		this.targetPos = targetPos;
+	}
+
 	public AiConfig getAiConfig() {
 		return aiConfig;
+	}
+
+	public long getFindEnemyTime() {
+		return findEnemyTime;
+	}
+
+	public void setFindEnemyTime(long findEnemyTime) {
+		this.findEnemyTime = findEnemyTime;
 	}
 
 	/** 受伤 */
@@ -479,7 +512,6 @@ public class Monster extends ActiveLiving {
 					joiners.addAll(team.getMembers());
 				}
 			}
-
 		}
 		return super.takeDamage(damage);
 	}
@@ -488,7 +520,6 @@ public class Monster extends ActiveLiving {
 	 * 恢复初始满状态
 	 */
 	public boolean fullState() {
-		
 		List<Damage> damages = new ArrayList<>();
 		Damage curSoul = new Damage(this, this);
 		curSoul.setDamageType(EnumAttr.CUR_SOUL.getValue());
@@ -526,4 +557,28 @@ public class Monster extends ActiveLiving {
 		clearWorkBuffer();
 		return true;
 	}
+
+	public void moveto(Vector3 goal) {
+		super.moveto(goal);
+		removeInvincibleBuffer();
+	}
+
+	public void stop(boolean need2Client) {
+		super.stop(need2Client);
+		removeInvincibleBuffer();
+	}
+
+	public void addInvincibleBuffer(Buffer invincibleBuffer) {
+		if (this.invincibleBuffer != null) {
+			Log.error("触发了两次速归");
+		}
+		isRunBack = true;
+		this.addBuffer(invincibleBuffer);
+		this.invincibleBuffer = invincibleBuffer;
+	}
+
+	public boolean isRunBack() {
+		return isRunBack;
+	}
+
 }

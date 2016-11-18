@@ -14,8 +14,8 @@ public class CreatePrivateMonsterAction extends Action {
 	private Field		field;
 	private Vector3		v3;
 	private MonsterInfo	monsterInfo;
-	/** 怪物过期时间  */
-	private int leaveTime = 1*60*1000;
+	/** 怪物过期时间 */
+	private int			leaveTime	= 1 * 60 * 1000;
 
 	public CreatePrivateMonsterAction(ArmyProxy army, MonsterInfo monsterInfo, Field field, Vector3 v3) {
 		super(army);
@@ -24,9 +24,8 @@ public class CreatePrivateMonsterAction extends Action {
 		this.v3 = v3;
 		this.monsterInfo = monsterInfo;
 	}
-	
 
-	public CreatePrivateMonsterAction(ArmyProxy army,MonsterInfo monsterInfo,Vector3 v3,int leaveTime,int mapId) {
+	public CreatePrivateMonsterAction(ArmyProxy army, MonsterInfo monsterInfo, Vector3 v3, int leaveTime, int mapId) {
 		super(army);
 		this.army = army;
 		this.v3 = v3;
@@ -35,10 +34,7 @@ public class CreatePrivateMonsterAction extends Action {
 		this.leaveTime = leaveTime;
 	}
 
-
-
-
-	public CreatePrivateMonsterAction(ArmyProxy army, MonsterInfo monsterInfo,int leaveTime) {
+	public CreatePrivateMonsterAction(ArmyProxy army, MonsterInfo monsterInfo, int leaveTime) {
 		super(army);
 		this.army = army;
 		this.field = army.getPlayer().getField();
@@ -49,7 +45,7 @@ public class CreatePrivateMonsterAction extends Action {
 
 	@Override
 	public void execute() {
-		PrivateMonster monster = new PrivateMonster(army.getPlayerId(),leaveTime);
+		PrivateMonster monster = new PrivateMonster(army.getPlayerId(), leaveTime, monsterInfo);
 		monster.setPostion(v3);
 		MonsterSpawnNode.instill(monster, monsterInfo);
 		field.enterField(monster);

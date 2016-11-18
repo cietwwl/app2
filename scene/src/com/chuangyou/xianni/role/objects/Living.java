@@ -1,8 +1,6 @@
 package com.chuangyou.xianni.role.objects;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -12,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import com.chuangyou.common.protobuf.pb.PlayerAttSnapProto.PlayerAttSnapMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyListMsgProto.PropertyListMsg;
 import com.chuangyou.common.protobuf.pb.army.PropertyMsgProto.PropertyMsg;
@@ -23,6 +22,7 @@ import com.chuangyou.common.protobuf.pb.battle.LivingStateChangeMsgProto.LivingS
 import com.chuangyou.common.protobuf.pb.player.PlayerAttUpdateProto.PlayerAttUpdateMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.Vector3;
+import com.chuangyou.xianni.ai2.proxy.AI;
 import com.chuangyou.xianni.battle.AttackOrder;
 import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.buffer.BufferOverlayType;
@@ -63,6 +63,7 @@ import com.chuangyou.xianni.warfield.helper.Selector;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
 import com.chuangyou.xianni.world.ArmyProxy;
+import com.chuangyou.xianni.world.HeartbeatWorldMgr;
 import com.chuangyou.xianni.world.SimplePlayerInfo;
 import com.chuangyou.xianni.world.WorldMgr;
 
@@ -205,6 +206,7 @@ public class Living extends LivingProperties {
 	protected HashMap<String, CoolDown>	cooldowns	= new HashMap<String, CoolDown>();
 
 	protected Object					dieLock		= new Object();
+	protected AI						ai;
 
 	static {
 		propertys = new EnumAttr[] { EnumAttr.CUR_SOUL, EnumAttr.MAX_SOUL, EnumAttr.SOUL, EnumAttr.BLOOD, EnumAttr.MAX_BLOOD, EnumAttr.CUR_BLOOD, EnumAttr.ATTACK, EnumAttr.DEFENCE,
@@ -648,16 +650,13 @@ public class Living extends LivingProperties {
 
 	/** 计算伤害 */
 	public int takeDamage(Damage damage) {
+
+		if (this.armyId == 102010000864l) {
+			Log.error("受伤：" + damage.getDamageValue());
+			damage.setDamageValue(1);
+		}
 		DamageEffecter effecter = DamageEffecterFactory.effecterBuilder(damage);
-		// if (damage.getSource().getType() == RoleType.monster &&
-		// damage.getTarget().getType() == RoleType.monster) {
-		// Log.error("damageV1 :" + damage.getDamageValue(), new Exception());
-		// }
 		effecter.exec(this, damage);
-		// if (damage.getSource().getType() == RoleType.monster &&
-		// damage.getTarget().getType() == RoleType.monster) {
-		// Log.error("damageV2 :" + damage.getDamageValue(), new Exception());
-		// }
 		if (isDie()) {
 			onDie(damage.getSource());
 		}
@@ -860,6 +859,7 @@ public class Living extends LivingProperties {
 
 	public void destory() {
 		this.livingState = DISTORY;
+		removeAI();
 	}
 
 	public void setProperty(EnumAttr attr, long value) {
@@ -1363,25 +1363,16 @@ public class Living extends LivingProperties {
 	 * @return
 	 */
 	public Skill getAttackSkill() {
-		Skill skill = null;
 		if (this.drivingSkills.isEmpty()) {
 			return null;
 		}
-		List<Map.Entry<Integer, Skill>> skills = new ArrayList<Map.Entry<Integer, Skill>>(this.drivingSkills.entrySet());
-
-		Collections.sort(skills, new Comparator<Map.Entry<Integer, Skill>>() {
-			public int compare(Map.Entry<Integer, Skill> o1, Map.Entry<Integer, Skill> o2) {
-				return (o2.getValue().getTemplateInfo().getCooldown() - o1.getValue().getTemplateInfo().getCooldown());
-			}
-		});
-
-		for (int i = 0; i < skills.size(); i++) {
-			if (!isCooldowning(CoolDownTypes.SKILL, skills.get(i).getValue().getActionId() + "")) {
-				skill = skills.get(i).getValue();
-				break;
+		for (Entry<Integer, Skill> entry : this.drivingSkills.entrySet()) {
+			Skill skill = entry.getValue();
+			if (skill.canUse()) {
+				return skill;
 			}
 		}
-		return skill;
+		return null;
 	}
 
 	/** buffer替换 */
@@ -1437,6 +1428,9 @@ public class Living extends LivingProperties {
 	}
 
 	public void addLivingState(int stateId) {
+		if (stateId == 0) {
+			return;
+		}
 		LivingStatusTemplateInfo temp = BattleTempMgr.getLSInfo(stateId);
 		// 模板不存在
 		if (temp == null) {
@@ -1877,9 +1871,14 @@ public class Living extends LivingProperties {
 	public void setLivingState(int livingState) {
 		if (this.livingState == DISTORY) {
 			Log.error("-----------重要调试日志，发现请通知---------------" + " livingId :" + this.getId(), new Exception());
+			removeAI();
 			return;
 		}
 		this.livingState = livingState;
+	}
+
+	public void removeAI() {
+		HeartbeatWorldMgr.removeAI(ai);
 	}
 
 	public long getRestoreTime() {
@@ -1929,7 +1928,8 @@ public class Living extends LivingProperties {
 		allBuffers.clear();
 		livingStatus.clear();
 		cooldowns.clear();
-		setLivingState(DISTORY);
+		super.clear();
+		destory();
 	}
 
 	public long getSoulExp() {
@@ -1942,6 +1942,11 @@ public class Living extends LivingProperties {
 
 	protected void notityState(LivingState state) {
 
+	}
+
+	public boolean isArrial() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

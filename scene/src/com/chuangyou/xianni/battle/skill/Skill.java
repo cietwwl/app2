@@ -14,7 +14,7 @@ public class Skill {
 	private int						skillId;			// 技能ID
 	private long					lastUsed;			// 最后一次使用时间
 	private int						level;
-	
+
 	public Skill(SkillActionTemplateInfo templateInfo) {
 		this(templateInfo, 1);
 	}
@@ -70,7 +70,7 @@ public class Skill {
 	}
 
 	public boolean canUse() {
-		if (System.currentTimeMillis() - this.lastUsed >= (templateInfo.getCooldown() * 1000 - 1000)) {
+		if (System.currentTimeMillis() - this.lastUsed >= (templateInfo.getCooldown() * 1000)) {
 			this.lastUsed = System.currentTimeMillis();
 			return true;
 		}

@@ -188,4 +188,9 @@ public class Damage {
 		this.calcType = calcType;
 	}
 
+	public String toString() {
+		return "[ target:" + target.getId() + "  source:" + source.getId() + "  damageType:" + damageType + " damageValue:" + damageValue + " leftValue:" + leftValue + " tipType :" + tipType
+				+ "  fromType:" + fromType + " fromId:" + fromId + " order:" + order + " deadly:" + deadly + " calcType:" + calcType + "]";
+
+	}
 }

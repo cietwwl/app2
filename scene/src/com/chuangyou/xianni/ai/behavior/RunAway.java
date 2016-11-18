@@ -26,10 +26,11 @@ public class RunAway extends MonsterBaseBehavior {
 			if (!isValidPoint(target))
 				return;
 		}
-//		System.out.println("postion: " + living.getPostion() + " target: " + target);
+		// System.out.println("postion: " + living.getPostion() + " target: " +
+		// target);
 		getMonster().stop(false);
 		getMonster().moveto(target);
-		getMonster().setAttacker(null);
+		getMonster().setAttacker(0);
 
 	}
 

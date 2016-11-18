@@ -15,9 +15,9 @@ public class SpwanInfoType {
 	public static final int	COMMON_TRIGGER	= 6;
 	/** 野外地图复活点 */
 	public static final int	REVIVAL_NODE	= 7;
-	
+
 	/** 精英首领 */
-	public static final int BOSS_ELITE		= 8;
+	public static final int	BOSS_ELITE		= 8;
 	/** 世界首领 */
-	public static final int BOSS_WORLD		= 9;
+	public static final int	BOSS_WORLD		= 9;
 }

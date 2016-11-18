@@ -22,7 +22,7 @@ import com.chuangyou.common.protobuf.pb.soul.FuseSkillProto.FuseSkillMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.ThreadSafeRandom;
-import com.chuangyou.xianni.battle.action.HeroPollingAction;
+import com.chuangyou.xianni.ai2.proxy.PlayerAI;
 import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.buffer.BufferFactory;
 import com.chuangyou.xianni.battle.damage.Damage;
@@ -74,6 +74,7 @@ import com.chuangyou.xianni.warfield.spawn.PerareState;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
 import com.chuangyou.xianni.warfield.template.SpawnTemplateMgr;
 import com.chuangyou.xianni.world.ArmyProxy;
+import com.chuangyou.xianni.world.HeartbeatWorldMgr;
 import com.chuangyou.xianni.world.WorldMgr;
 
 public class Player extends ActiveLiving {
@@ -131,6 +132,8 @@ public class Player extends ActiveLiving {
 
 	/** pk 值计算时间 */
 	private long										pkValCalTime			= 0;
+	protected PlayerAI									ai;
+
 	static {
 		avatarAttrs = new EnumAttr[] { EnumAttr.BLOOD, EnumAttr.SOUL, EnumAttr.ATTACK, EnumAttr.DEFENCE, EnumAttr.ACCURATE, EnumAttr.DODGE, EnumAttr.CRIT, EnumAttr.CRIT_DEFENCE };
 	}
@@ -139,8 +142,9 @@ public class Player extends ActiveLiving {
 		super(playerId, playerId);
 		// 每个人物身上有自调度，人物退出时候清理。(注意：添加此调度，必须有对应的销毁对象后清理)
 		setType(RoleType.player);
-		HeroPollingAction heroAction = new HeroPollingAction(this);
-		this.enDelayQueue(heroAction);
+		// HeroPollingAction heroAction = new HeroPollingAction(this);
+		// this.enDelayQueue(heroAction);
+		this.ai = new PlayerAI(this);
 	}
 
 	public void readHeroInfo(HeroInfoMsg hero) {
@@ -208,14 +212,13 @@ public class Player extends ActiveLiving {
 
 	/* 满血复活 */
 	public synchronized boolean renascence() {
-		if (getLivingState() == ALIVE) {
-			return false;
-		}
 		if (getLivingState() == DISTORY) {
 			return false;
 		}
-		setLivingState(ALIVE);
-		sendChangeStatuMsg(LIVING, getLivingState());
+		if (getLivingState() != ALIVE) {
+			setLivingState(ALIVE);
+			sendChangeStatuMsg(LIVING, getLivingState());
+		}
 		List<Damage> damages = new ArrayList<>();
 		Damage curSoul = new Damage(this, this);
 		curSoul.setDamageType(EnumAttr.CUR_SOUL.getValue());
@@ -251,53 +254,9 @@ public class Player extends ActiveLiving {
 		this.isSoulState = false;
 		this.revivaling = false;
 		this.dieTime = 0;
-		HeroPollingAction heroAction = new HeroPollingAction(this);
-		this.enDelayQueue(heroAction);
 		return true;
 	}
 
-	/**
-	 * 恢复满血满魂血
-	 */
-	public synchronized boolean fullOfBlood() {
-		if (getLivingState() == DISTORY) {
-			return false;
-		}
-		List<Damage> damages = new ArrayList<>();
-		Damage curSoul = new Damage(this, this);
-		curSoul.setDamageType(EnumAttr.CUR_SOUL.getValue());
-		curSoul.setDamageValue(this.curSoul - getMaxSoul());
-		damages.add(curSoul);
-		takeDamage(curSoul);
-
-		Damage curBlood = new Damage(this, this);
-		curBlood.setDamageType(EnumAttr.CUR_BLOOD.getValue());
-		curBlood.setDamageValue(this.curBlood - getMaxBlood());
-		damages.add(curBlood);
-		takeDamage(curBlood);
-
-		if (damages.size() > 0) {
-			DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
-			damagesPb.setAttackId(-1);
-			for (Damage d : damages) {
-				DamageMsg.Builder dmsg = DamageMsg.newBuilder();
-				d.writeProto(dmsg);
-				damagesPb.addDamages(dmsg);
-			}
-			Set<Long> players = getNears(new PlayerSelectorHelper(this));
-			// 添加自己
-			players.add(getArmyId());
-			for (Long armyId : players) {
-				ArmyProxy army = WorldMgr.getArmy(armyId);
-				PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
-				if (army != null) {
-					army.sendPbMessage(message);
-				}
-			}
-		}
-		this.isSoulState = false;
-		return true;
-	}
 
 	public List<Buffer> getExeWayBuffers(int exeWay) {
 		List<Buffer> buffers = super.getExeWayBuffers(exeWay);
@@ -966,6 +925,10 @@ public class Player extends ActiveLiving {
 
 	public long getPkValCalTime() {
 		return pkValCalTime;
+	}
+
+	public void removeAI() {
+		HeartbeatWorldMgr.removePlayerAI(ai);
 	}
 
 	public void calPkVal() {

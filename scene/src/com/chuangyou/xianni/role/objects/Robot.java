@@ -3,7 +3,7 @@ package com.chuangyou.xianni.role.objects;
 import java.util.List;
 
 import com.chuangyou.common.protobuf.pb.army.RobotInfoProto.RobotInfoMsg;
-import com.chuangyou.xianni.battle.action.RobotPollingAction;
+import com.chuangyou.xianni.ai2.proxy.RobotAI;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
 import com.chuangyou.xianni.battle.skill.Skill;
 import com.chuangyou.xianni.campaign.ArenaBattleCampaign;
@@ -28,8 +28,7 @@ public class Robot extends ActiveLiving {
 		super(IDMakerHelper.nextID());
 		this.campaign = campaign;
 		setType(RoleType.robot);
-		RobotPollingAction robotAction = new RobotPollingAction(this);
-		this.enDelayQueue(robotAction);
+		new RobotAI(this);
 	}
 
 	public boolean onDie(Living killer) {

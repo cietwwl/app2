@@ -5,10 +5,15 @@ import java.util.List;
 import java.util.Set;
 import com.chuangyou.common.protobuf.pb.PlayerMoveBoardcastProto.PlayerMoveBoardcastMsg;
 import com.chuangyou.common.protobuf.pb.PlayerStopBoardcastProto.PlayerStopBoardcastMsg;
+import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
+import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.MathUtils;
 import com.chuangyou.common.util.Vector3;
+import com.chuangyou.xianni.battle.buffer.Buffer;
+import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
+import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
@@ -34,10 +39,12 @@ public class ActiveLiving extends Living {
 	// 移动计数
 	protected long			moveCounter;
 	/// 寻路等待中
-	protected boolean		navWaiting	= false;
-	private boolean			navFail		= false;
+	protected boolean		navWaiting			= false;
+	private boolean			navFail				= false;
 
-	protected List<Snare>	snares		= new ArrayList<>();
+	protected List<Snare>	snares				= new ArrayList<>();
+	protected Buffer		invincibleBuffer	= null;
+	protected boolean		isRunBack			= false;
 
 	public boolean isNavFail() {
 		return navFail;
@@ -60,9 +67,14 @@ public class ActiveLiving extends Living {
 	}
 
 	public Vector3 getGoal() {
-		if(goal == null)
+		if (goal == null) {
 			goal = Vector3.Invalid;
+		}
 		return goal;
+	}
+
+	public void setGoal(Vector3 v3) {
+		this.goal = v3;
 	}
 
 	/**
@@ -82,7 +94,8 @@ public class ActiveLiving extends Living {
 	 * @param goal
 	 */
 	public void moveto(Vector3 goal) {
-		this.goal = goal;
+		setGoal(goal);
+		setMoveCounter(System.currentTimeMillis());
 		// @auto living.setSpeed*100
 		if (getPostion() == null) {
 			Log.error("当前位置为null," + this.getSkin());
@@ -99,8 +112,9 @@ public class ActiveLiving extends Living {
 		Set<Long> nearPlayers = getNears(new PlayerSelectorHelper(this));
 		for (Long id : nearPlayers) {
 			ArmyProxy neararmy = WorldMgr.getArmy(id);
-			if (neararmy == null)
+			if (neararmy == null) {
 				continue;
+			}
 			PlayerMoveBoardcastMsg.Builder msg = PlayerMoveBoardcastMsg.newBuilder();
 			msg.setId(getId());
 			msg.setCur(Vector3BuilderHelper.build(getPostion()));
@@ -136,17 +150,22 @@ public class ActiveLiving extends Living {
 	 */
 	public void stop(boolean need2Client) {
 		this.moveTime = 0;
-		if(Vector3.IsInvalid(getGoal())) return;
-		this.goal = Vector3.Invalid;
+		this.moveCounter = 0;
+		if (Vector3.IsInvalid(getGoal())) {
+			return;
+		}
+		setGoal(Vector3.Invalid);
 		this.targetPostion = Vector3.Invalid;
-		if (this.path != null)
+		if (this.path != null) {
 			this.path.clear();
+		}
 		if (need2Client) {
 			Set<Long> nearPlayers = getNears(new PlayerSelectorHelper(this));
 			for (Long id : nearPlayers) {
 				ArmyProxy neararmy = WorldMgr.getArmy(id);
-				if (neararmy == null)
+				if (neararmy == null) {
 					continue;
+				}
 				PlayerStopBoardcastMsg.Builder msg = PlayerStopBoardcastMsg.newBuilder();
 				msg.setId(getId());
 				msg.setCur(Vector3BuilderHelper.build(getPostion()));
@@ -162,9 +181,6 @@ public class ActiveLiving extends Living {
 	 * @return
 	 */
 	public boolean isArrial() {
-		// if (id == 1000000000035L)
-		// System.out.println("isArrial this.moveTime = "+id+" " +
-		// this.moveTime);
 		return this.moveTime <= 0;
 	}
 
@@ -292,4 +308,54 @@ public class ActiveLiving extends Living {
 		clearSnare();
 	}
 
+	/**
+	 * 恢复初始满状态
+	 */
+	public boolean fullState() {
+		List<Damage> damages = new ArrayList<>();
+		Damage curSoul = new Damage(this, this);
+		curSoul.setDamageType(EnumAttr.CUR_SOUL.getValue());
+		curSoul.setDamageValue(getCurSoul() - getInitSoul());
+		damages.add(curSoul);
+		takeDamage(curSoul);
+
+		Damage curBlood = new Damage(this, this);
+		curBlood.setDamageType(EnumAttr.CUR_BLOOD.getValue());
+		curBlood.setDamageValue(getCurSoul() - getInitBlood());
+		damages.add(curBlood);
+		takeDamage(curBlood);
+
+		if (damages.size() > 0) {
+			DamageListMsg.Builder damagesPb = DamageListMsg.newBuilder();
+			damagesPb.setAttackId(-1);
+			for (Damage d : damages) {
+				DamageMsg.Builder dmsg = DamageMsg.newBuilder();
+				d.writeProto(dmsg);
+				damagesPb.addDamages(dmsg);
+			}
+			Set<Long> players = getNears(new PlayerSelectorHelper(this));
+			// players.add(getArmyId());
+			for (Long armyId : players) {
+				ArmyProxy army = WorldMgr.getArmy(armyId);
+				PBMessage message = MessageUtil.buildMessage(Protocol.U_G_DAMAGE, damagesPb.build());
+				if (army != null) {
+					army.sendPbMessage(message);
+				}
+			}
+			// BroadcastUtil.sendBroadcastPacket(players,
+			// Protocol.U_G_DAMAGE,damagesPb.build());
+		}
+
+		clearWorkBuffer();
+		return true;
+	}
+
+	public void removeInvincibleBuffer() {
+		if (isRunBack) {
+			isRunBack = false;
+		}
+		if (invincibleBuffer != null) {
+			this.removeBuffer(invincibleBuffer);
+		}
+	}
 }

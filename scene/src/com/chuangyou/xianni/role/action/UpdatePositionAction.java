@@ -27,16 +27,12 @@ import com.chuangyou.xianni.warfield.navi.seeker.NavmeshTriangle;
 import com.chuangyou.xianni.world.ArmyProxy;
 import com.chuangyou.xianni.world.WorldMgr;
 
-public class UpdatePositionAction {// extends DelayAction {
-
-	// private static final int TICK = 100;
+public class UpdatePositionAction {
 	private ActiveLiving	activeLiving;
 	private Selector		playerSelector;
 	private Selector		monsterSelector;
-	// private int Speed = 6;
 
 	public UpdatePositionAction(ActiveLiving living, Selector playerSelector) {
-		// super(living, TICK);
 		this.activeLiving = living;
 		this.playerSelector = playerSelector;
 		this.monsterSelector = new MonsterSelectPlayerSelectorHelper(this.activeLiving);
@@ -49,47 +45,32 @@ public class UpdatePositionAction {// extends DelayAction {
 		if (!activeLiving.isArrial()) {
 			long moveTime = System.currentTimeMillis() - this.activeLiving.getMoveCounter();
 			Vector3 target = MathUtils.GetVector3InDistance(activeLiving.getPostion(), activeLiving.getGoal(), getStep(activeLiving.getSpeed() / 100, (int) moveTime));
-			// System.out.println(activeLiving.getPostion() + " - " +
-			// activeLiving.getGoal() + " target = " + target + " step = " +
-			// getStep(activeLiving.getSpeed() / 100, (int) moveTime));
 			this.activeLiving.setMoveTime(this.activeLiving.getMoveTime() - (int) moveTime);
 			if (!isValidPoint(target) && this.activeLiving.isNavFail()) { // 不可站立的点
 				this.activeLiving.stop(true);
-				// activeLiving.navigateto(activeLiving.getGoal());
-				// setUpdate();
 				return;
 			}
-			// if (activeLiving.getId() == 1000000000001l) {
-			// System.out.println(System.currentTimeMillis() + "---- moveTime:"
-			// + moveTime);
-			// }
-
 			if (this.activeLiving.getMoveTime() <= 0) {
 				setPostion(activeLiving.getGoal(), playerSelector);
 				this.activeLiving.arrial();
 			} else {
-				// activeLiving.setNavFail(false);
 				setPostion(target, playerSelector);
 			}
-			autoAddHatred();
+			// autoAddHatred();
 		} else if (activeLiving instanceof Monster) {
-			if(((Monster) activeLiving).getMonsterInfo() == null)
+			if (((Monster) activeLiving).getMonsterInfo() == null) {
 				return;
+			}
 			if (((Monster) activeLiving).getMonsterInfo().getSeekEnemyRange() == 0) {
-				autoAddHatred();
+				// autoAddHatred();
 			}
 		}
 		this.activeLiving.setMoveCounter(System.currentTimeMillis());
-		// setUpdate();
 	}
 
 	public void setExecTime(long beginTime) {
-	}
 
-	// private void setUpdate() {
-	// this.execTime = System.currentTimeMillis() + TICK;
-	// this.getActionQueue().enDelayQueue(this);
-	// }
+	}
 
 	/**
 	 * AI对象通知附近的对象
@@ -174,57 +155,62 @@ public class UpdatePositionAction {// extends DelayAction {
 	 * @return
 	 */
 	protected float getStep(float speed, int moveTime) {
-		// System.out.println("speed = " + speed + " moveTime = " + moveTime);
 		return speed * moveTime * 0.001f;
 	}
 
-	/**
-	 * 将警戒内的对象加入仇恨列表
-	 */
-	protected void autoAddHatred() {
-
-		if (this.activeLiving.getType() == RoleType.monster) {
-			Monster monster = (Monster) this.activeLiving;
-			if (monster.getAiConfig() == null)
-				return;
-			boolean activeAttackPlayer = monster.getAiConfig().isActiveAttackPlayer();
-			boolean activeAttackSameMonster = monster.getAiConfig().isActiveAttackSameMonster();
-			boolean activeAttackNotSameMonster = monster.getAiConfig().isActiveAttackNotSameMonster();
-			if (activeAttackPlayer || activeAttackSameMonster || activeAttackNotSameMonster) {
-				Set<Long> ids = monster.getNears(this.monsterSelector);// 获得警戒范围内的玩家
-				for (Long id : ids) {
-					Field f = this.activeLiving.getField();
-					Living nearLiving = f.getLiving(id);
-					if (nearLiving == null)
-						continue;
-
-					if (nearLiving.getType() == RoleType.player) {
-						if (!activeAttackPlayer)
-							continue;
-					} else if (nearLiving.getType() == RoleType.monster) {
-						if (monster.getMonsterInfo().getMonsterType() == ((Monster) nearLiving).getMonsterInfo().getMonsterType()) {
-							if (!activeAttackSameMonster)
-								continue;
-						} else {
-							if (!activeAttackNotSameMonster)
-								continue;
-						}
-					}
-					List<Hatred> hatreds = monster.getHatreds();
-					for (int i = 0; i < hatreds.size(); i++) {
-						if (i < hatreds.size() && hatreds.get(i).getTarget().longValue() == id.longValue()) {
-							return;
-						}
-					}
-					Hatred hatred = SceneManagers.hatredManager.getHatred();
-					hatred.setTarget(id);
-					hatred.setFirstAttack(System.currentTimeMillis());
-					hatred.setHatred(0);
-					hatred.setLastAttack(System.currentTimeMillis());
-					hatreds.add(hatred);
-				}
-			}
-		}
-	}
+	// /**
+	// * 将警戒内的对象加入仇恨列表
+	// */
+	// protected void autoAddHatred() {
+	//
+	// if (this.activeLiving.getType() == RoleType.monster) {
+	// Monster monster = (Monster) this.activeLiving;
+	// if (monster.getAiConfig() == null)
+	// return;
+	// boolean activeAttackPlayer =
+	// monster.getAiConfig().isActiveAttackPlayer();
+	// boolean activeAttackSameMonster =
+	// monster.getAiConfig().isActiveAttackSameMonster();
+	// boolean activeAttackNotSameMonster =
+	// monster.getAiConfig().isActiveAttackNotSameMonster();
+	// if (activeAttackPlayer || activeAttackSameMonster ||
+	// activeAttackNotSameMonster) {
+	// Set<Long> ids = monster.getNears(this.monsterSelector);// 获得警戒范围内的玩家
+	// for (Long id : ids) {
+	// Field f = this.activeLiving.getField();
+	// Living nearLiving = f.getLiving(id);
+	// if (nearLiving == null)
+	// continue;
+	//
+	// if (nearLiving.getType() == RoleType.player) {
+	// if (!activeAttackPlayer)
+	// continue;
+	// } else if (nearLiving.getType() == RoleType.monster) {
+	// if (monster.getMonsterInfo().getMonsterType() == ((Monster)
+	// nearLiving).getMonsterInfo().getMonsterType()) {
+	// if (!activeAttackSameMonster)
+	// continue;
+	// } else {
+	// if (!activeAttackNotSameMonster)
+	// continue;
+	// }
+	// }
+	// List<Hatred> hatreds = monster.getHatreds();
+	// for (int i = 0; i < hatreds.size(); i++) {
+	// if (i < hatreds.size() && hatreds.get(i).getTarget().longValue() ==
+	// id.longValue()) {
+	// return;
+	// }
+	// }
+	// Hatred hatred = SceneManagers.hatredManager.getHatred();
+	// hatred.setTarget(id);
+	// hatred.setHatred(0);
+	// hatred.setLastAttack(System.currentTimeMillis());
+	// hatreds.add(hatred);
+	// Log.error("添加警戒对象");
+	// }
+	// }
+	// }
+	// }
 
 }

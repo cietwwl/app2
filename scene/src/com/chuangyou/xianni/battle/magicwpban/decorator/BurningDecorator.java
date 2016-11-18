@@ -47,7 +47,7 @@ public class BurningDecorator extends MagicwpBanBaseDecorator {
 			}
 			// 半径3M范围内
 			float i = MathUtils.getDistByXZ(master.getPostion(), target.getPostion());
-			if (i > 3) {
+			if (i > 10) {
 				continue;
 			}
 			beChoosers.add(target);

@@ -44,10 +44,10 @@ public class CampaignConstant {
 	}
 
 	public static class ChallengeResult {
-		/** 赢 */
-		public static final int	WIN					= 1;
 		/** 输 */
 		public static final int	FAIL				= 0;
+		/** 赢 */
+		public static final int	WIN					= 1;
 
 		/** 挑战未开始，玩家已经在副本中，不能开始挑战 */
 		public static final int	ALREADY_IN_CAMPAIGN	= 2;

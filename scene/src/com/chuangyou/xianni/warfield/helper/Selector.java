@@ -87,6 +87,8 @@ public abstract class Selector {
 	
 	public boolean canSee(Living other) {
 		int relation = RoleConstants.TruckTimerRelation[master.getType()-1][other.getType()-1];
+		// 0:不需要处理 1:总数显示 2:需要判断运镖时间和镖车关系 (在运镖时间不显示，和自己无关的运镖不显示) 3:需要判断运镖时间
+		// * (在运镖时间不显示) 4:需要判断玩家和主人运镖时间和镖车关系
 		switch (relation) {
 			case 0:
 				return true;

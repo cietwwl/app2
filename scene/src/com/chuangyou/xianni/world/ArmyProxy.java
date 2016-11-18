@@ -404,7 +404,7 @@ public class ArmyProxy extends AbstractActionQueue {
 		keeper.clear();
 	}
 
-	/** 获取分身数据 */
+	/** 补入分身 */
 	public void instillAvatar(Field field, Vector3 postion) {
 		if (field != null && field.getCampaignId() != 0 && !getPlayer().isCorrespondStatu()) {
 			Campaign campaign = CampaignMgr.getCampagin(field.getCampaignId());
@@ -418,14 +418,22 @@ public class ArmyProxy extends AbstractActionQueue {
 			count = count > avatars.size() ? avatars.size() : count;
 			int i = 1;
 			for (Avatar avatar : avatars.values()) {
+
 				if (i > count) {
 					break;
 				}
 				if (avatar.getField() != null || avatar.getField() != field) {
+					if (avatar.getLivingState() != Living.ALIVE) {
+						avatar.renascence();
+					} else {
+						avatar.fullState();
+					}
+					avatar.fullState();
 					avatar.setPostion(postion);
 					avatar.setProtection(true);
 					field.enterField(avatar);
 					avatar.setCampaignId(field.getCampaignId());
+					i++;
 				}
 			}
 		}

@@ -349,12 +349,13 @@ public class AvatarInventory implements IInventory {
 		}
 		doActive(temp);
 	}
-	
+
 	/**
-	 *  执行激活
+	 * 执行激活
+	 * 
 	 * @param temp
 	 */
-	private void doActive(AvatarTemplateInfo temp){
+	private void doActive(AvatarTemplateInfo temp) {
 		// 激活分身
 		AvatarInfo ainfo = new AvatarInfo(EntityIdBuilder.avatarIdBuilder(), player.getPlayerId(), temp.getId(), temp.getSkillId());
 		avatarInfos.put(ainfo.getTempId(), ainfo);
@@ -370,13 +371,13 @@ public class AvatarInventory implements IInventory {
 		updataProperty();
 		sendSingleAvatarInfo(ainfo);
 	}
-	
+
 	/**
-	 * 脚本激活一个分身。直接激活不需要消耗
-	 * 1：主要用于任务中系统赠送
+	 * 脚本激活一个分身。直接激活不需要消耗 1：主要用于任务中系统赠送
+	 * 
 	 * @param avatarTempId
 	 */
-	public void scriptActiveAvatar(int avatarTempId){
+	public void scriptActiveAvatar(int avatarTempId) {
 		AvatarTemplateInfo temp = AvatarTempManager.getAvatarTemplateInfo(avatarTempId);
 		// 模板不存在
 		if (temp == null) {
@@ -388,7 +389,6 @@ public class AvatarInventory implements IInventory {
 		}
 		this.doActive(temp);
 	}
-	
 
 	// 发送所有分身信息
 	public void sendAllAvatarInfos() {
@@ -414,46 +414,55 @@ public class AvatarInventory implements IInventory {
 	// 分身系统添加属性
 	public void computeProperty(BaseProperty avatarData, BaseProperty avatarPer) {
 		for (AvatarInfo ainfo : avatarInfos.values()) {
-			writeProperty(ainfo, avatarData);
+			writeProperty(ainfo, avatarData, true);
 		}
 	}
 
-	private void writeProperty(AvatarInfo ainfo, BaseProperty avatarData) {
+	private void writeProperty(AvatarInfo ainfo, BaseProperty avatarData, boolean calPercent) {
+		AvatarTemplateInfo temp = AvatarTempManager.getAvatarTemplateInfo(ainfo.getTempId());
+		if (temp == null) {
+			Log.error("not find avatarTempInfo :" + ainfo.getTempId());
+			return;
+		}
+		int percent = 100;
+		if (calPercent) {
+			percent = temp.getAddtionPercent();
+		}
 		// 升级模板加成
 		AvatarUpGradeTemplate upgTemp = AvatarTempManager.getAvatarUpGradeTemplate(ainfo.getTempId(), ainfo.getGrade());
 		if (upgTemp != null) {
-			avatarData.addBlood(upgTemp.getBlood());
-			avatarData.addSoul(upgTemp.getSoul());
-			avatarData.addAttack(upgTemp.getAttack());
-			avatarData.addDefence(upgTemp.getDefence());
-			avatarData.addAccurate(upgTemp.getAccurate());
-			avatarData.addDodge(upgTemp.getDodge());
-			avatarData.addCrit(upgTemp.getCrit());
-			avatarData.addCritDefence(upgTemp.getCritDefence());
+			avatarData.addBlood(upgTemp.getBlood() * percent / 100);
+			avatarData.addSoul(upgTemp.getSoul() * percent / 100);
+			avatarData.addAttack(upgTemp.getAttack() * percent / 100);
+			avatarData.addDefence(upgTemp.getDefence() * percent / 100);
+			avatarData.addAccurate(upgTemp.getAccurate() * percent / 100);
+			avatarData.addDodge(upgTemp.getDodge() * percent / 100);
+			avatarData.addCrit(upgTemp.getCrit() * percent / 100);
+			avatarData.addCritDefence(upgTemp.getCritDefence() * percent / 100);
 		}
 		// 升星属性加成
 		AvatarStarTemplate starTemp = AvatarTempManager.getAvatarStarTemplate(ainfo.getTempId(), ainfo.getStar());
 		if (starTemp != null) {
-			avatarData.addBlood(starTemp.getBlood());
-			avatarData.addSoul(starTemp.getSoul());
-			avatarData.addAttack(starTemp.getAttack());
-			avatarData.addDefence(starTemp.getDefence());
-			avatarData.addAccurate(starTemp.getAccurate());
-			avatarData.addDodge(starTemp.getDodge());
-			avatarData.addCrit(starTemp.getCrit());
-			avatarData.addCritDefence(starTemp.getCritDefence());
+			avatarData.addBlood(starTemp.getBlood() * percent / 100);
+			avatarData.addSoul(starTemp.getSoul() * percent / 100);
+			avatarData.addAttack(starTemp.getAttack() * percent / 100);
+			avatarData.addDefence(starTemp.getDefence() * percent / 100);
+			avatarData.addAccurate(starTemp.getAccurate() * percent / 100);
+			avatarData.addDodge(starTemp.getDodge() * percent / 100);
+			avatarData.addCrit(starTemp.getCrit() * percent / 100);
+			avatarData.addCritDefence(starTemp.getCritDefence() * percent / 100);
 		}
 		// 默契加成
 		AvatarCorrespondTemplateInfo actemp = AvatarTempManager.getAvatarCorrespondTemplateInfo(ainfo.getTempId(), ainfo.getCorrespond());
 		if (actemp != null) {
-			avatarData.addBlood(actemp.getBlood());
-			avatarData.addSoul(actemp.getSoul());
-			avatarData.addAttack(actemp.getAttack());
-			avatarData.addDefence(actemp.getDefence());
-			avatarData.addAccurate(actemp.getAccurate());
-			avatarData.addDodge(actemp.getDodge());
-			avatarData.addCrit(actemp.getCrit());
-			avatarData.addCritDefence(actemp.getCritDefence());
+			avatarData.addBlood(actemp.getBlood() * percent / 100);
+			avatarData.addSoul(actemp.getSoul() * percent / 100);
+			avatarData.addAttack(actemp.getAttack() * percent / 100);
+			avatarData.addDefence(actemp.getDefence() * percent / 100);
+			avatarData.addAccurate(actemp.getAccurate() * percent / 100);
+			avatarData.addDodge(actemp.getDodge() * percent / 100);
+			avatarData.addCrit(actemp.getCrit() * percent / 100);
+			avatarData.addCritDefence(actemp.getCritDefence() * percent / 100);
 		}
 	}
 
@@ -485,7 +494,7 @@ public class AvatarInventory implements IInventory {
 		RobotInfoMsg.Builder builder = RobotInfoMsg.newBuilder();
 
 		BaseProperty avatarData = new BaseProperty();
-		writeProperty(ainfo, avatarData);
+		writeProperty(ainfo, avatarData, false);
 
 		PlayerInfoMsg.Builder simpleInfo = PlayerInfoMsg.newBuilder();
 		simpleInfo.setPlayerId(ainfo.getPlayerId());

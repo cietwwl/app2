@@ -12,6 +12,7 @@ import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.spawn.ActiveSpwanNode;
 import com.chuangyou.xianni.warfield.spawn.BeadMonsterSpawnNode;
 import com.chuangyou.xianni.warfield.spawn.GatherSpawnNode;
+import com.chuangyou.xianni.warfield.spawn.NodeState;
 import com.chuangyou.xianni.warfield.spawn.NpcSpawnNode;
 import com.chuangyou.xianni.warfield.spawn.PerareState;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
@@ -77,7 +78,7 @@ public class BeadFieldManager extends FieldMgr {
 			f.addSpawnNode(node);
 			// System.out.println("nodenode--:"+node);
 			node.build();
-			if (node.getSpawnInfo().getInitStatu() == 1) {
+			if (node.getSpawnInfo().getInitStatu() == NodeState.WORK) {
 				node.stateTransition(new WorkingState(node));
 			} else {
 				node.stateTransition(new PerareState(node));

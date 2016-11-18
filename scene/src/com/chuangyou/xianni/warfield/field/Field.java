@@ -8,8 +8,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
 import com.chuangyou.common.util.Log;
-import com.chuangyou.xianni.battle.action.FieldPollingAction;
+import com.chuangyou.xianni.ai2.proxy.FieldPolling;
 import com.chuangyou.xianni.constant.RoleConstants.RoleType;
 import com.chuangyou.xianni.drop.helper.NotifyDropHalper;
 import com.chuangyou.xianni.drop.objects.DropPackage;
@@ -20,15 +21,17 @@ import com.chuangyou.xianni.proto.BroadcastUtil;
 import com.chuangyou.xianni.protocol.Protocol;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Player;
+import com.chuangyou.xianni.role.objects.Robot;
 import com.chuangyou.xianni.warfield.FieldMgr;
 import com.chuangyou.xianni.warfield.grid.Grid;
-import com.chuangyou.xianni.warfield.helper.NotifyNearHelper;
 import com.chuangyou.xianni.warfield.helper.FieldConstants.BattleType;
 import com.chuangyou.xianni.warfield.helper.FieldConstants.FieldAttackRule;
+import com.chuangyou.xianni.warfield.helper.NotifyNearHelper;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.warfield.navi.seeker.NavmeshSeeker;
 import com.chuangyou.xianni.warfield.spawn.SpwanNode;
 import com.chuangyou.xianni.warfield.template.FieldTemplateMgr;
+import com.chuangyou.xianni.world.HeartbeatWorldMgr;
 
 /**
  * 地图基类
@@ -66,7 +69,7 @@ public class Field extends AbstractActionQueue {
 	/**
 	 * 轮循自调度，每个地图都有，副本销毁时必须清理
 	 */
-	protected FieldPollingAction						pollingAction;
+	protected FieldPolling								pollingAction;
 
 	/**
 	 * 存在的对象
@@ -96,8 +99,8 @@ public class Field extends AbstractActionQueue {
 	public Field() {
 		// TODO Auto-generated constructor stub
 		super(ThreadManager.actionExecutor);
-		pollingAction = new FieldPollingAction(this);
-		ThreadManager.actionExecutor.enDelayQueue(pollingAction);
+		pollingAction = new FieldPolling(this);
+		HeartbeatWorldMgr.addFieldPolling(pollingAction);
 	}
 
 	/**
@@ -202,8 +205,9 @@ public class Field extends AbstractActionQueue {
 	}
 
 	public Living getLiving(long id) {
-		if (livings.containsKey(id))
+		if (livings.containsKey(id)) {
 			return livings.get(id);
+		}
 		return null;
 	}
 
@@ -230,6 +234,37 @@ public class Field extends AbstractActionQueue {
 		if (fieldInfo.getBattleType() == BattleType.GUILD) {
 			if (player.getSimpleInfo() != null || target.getSimpleInfo() != null) {
 				if (player.getSimpleInfo().getGuildId() != 0 && player.getSimpleInfo().getGuildId() == target.getSimpleInfo().getGuildId()) {
+					return FieldAttackRule.UNATTACK;
+				}
+			}
+			return FieldAttackRule.ATTACK;
+		}
+		return FieldAttackRule.UNATTACK;
+	}
+
+	/**
+	 * 是否地图强制可以攻击，该判断优先级高于玩家的pk模式 返回true时，直接判定可以攻击，返回false时才判断pk模式
+	 * 
+	 * @param robot
+	 * @param target
+	 * @return
+	 */
+	public int getRobotAttackRule(Robot robot, Living target) {
+		if (fieldInfo.getBattleType() == BattleType.ARENA) {
+			return FieldAttackRule.ATTACK;
+		}
+		if (fieldInfo.getBattleType() == BattleType.FIGHT) {
+			return FieldAttackRule.USEPLAYERMODE;
+		}
+		if (robot == null || target == null) {
+			return FieldAttackRule.UNATTACK;
+		}
+		if (robot.getTeamId() != 0 && robot.getTeamId() == target.getTeamId()) {// 队友
+			return FieldAttackRule.UNATTACK;
+		}
+		if (fieldInfo.getBattleType() == BattleType.GUILD) {
+			if (robot.getSimpleInfo() != null || target.getSimpleInfo() != null) {
+				if (robot.getSimpleInfo().getGuildId() != 0 && robot.getSimpleInfo().getGuildId() == target.getSimpleInfo().getGuildId()) {
 					return FieldAttackRule.UNATTACK;
 				}
 			}
@@ -378,16 +413,14 @@ public class Field extends AbstractActionQueue {
 	 * 销毁地图
 	 */
 	public void destroy() {
-		this.pollingAction.destroy();
 		this.spwanNodes.clear();
-		this.pollingAction = null;
 		FieldMgr.getIns().clear(id);
-
 		for (Living l : livings.values()) {
 			if (l.getType() != RoleType.player) {
 				l.destory();
 			}
 		}
+		HeartbeatWorldMgr.removeFieldPolling(pollingAction);
 		this.livings.clear();
 		this.deathLiving.clear();
 	}

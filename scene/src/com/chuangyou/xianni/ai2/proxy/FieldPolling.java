@@ -1,44 +1,32 @@
-package com.chuangyou.xianni.battle.action;
+package com.chuangyou.xianni.ai2.proxy;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import com.chuangyou.common.util.JSONUtil;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.TimeUtil;
 import com.chuangyou.xianni.common.templete.SystemConfigTemplateMgr;
 import com.chuangyou.xianni.drop.objects.DropPackage;
-import com.chuangyou.xianni.exec.DelayAction;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.warfield.field.Field;
 
-public class FieldPollingAction extends DelayAction {
+public class FieldPolling {
 
-	private Field				field;
-	private boolean				hasDestroy	= false;
-	private static final int	delay		= 1000;
+	private Field	field;
+	private boolean	hasDestroy	= false;
+	private int		clearTime	= 0;
 
-	private int					clearTime	= 0;
-
-	public FieldPollingAction(Field queue) {
-		// TODO Auto-generated constructor stub
-		super(queue, delay);
+	public FieldPolling(Field queue) {
 		this.field = queue;
 	}
 
-	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
 		if (this.hasDestroy == true) {
 			return;
 		}
-
 		exec();
-		this.execTime = System.currentTimeMillis() + delay;
-		this.getActionQueue().enDelayQueue(this);
 	}
 
 	public void exec() {
@@ -48,7 +36,7 @@ public class FieldPollingAction extends DelayAction {
 
 	/** 清理死亡对象 */
 	private void clearDeathLiving() {
-		if (clearTime <= 5) { // 每10秒清理一次
+		if (clearTime <= 5) { // 每5秒清理一次
 			clearTime++;
 			return;
 		}
@@ -93,7 +81,6 @@ public class FieldPollingAction extends DelayAction {
 
 	public void destroy() {
 		this.hasDestroy = true;
-
 		this.field = null;
 	}
 }

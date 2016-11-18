@@ -40,44 +40,42 @@ public class WorldBossSpawnNode extends FieldBossSpawnNode {
 		// TODO Auto-generated constructor stub
 		this.nodeType = SpwanInfoType.BOSS_WORLD;
 	}
-	
-	
+
 	@Override
 	public void prepare() {
-		
-		//准备阶段不作处理，等待世界BOSS管理器WorldBossManager刷新BOSS
+
+		// 准备阶段不作处理，等待世界BOSS管理器WorldBossManager刷新BOSS
 	}
-	
+
 	@Override
 	public void over() {
 		super.over();
 		WorldBossManager.nodeOver();
 	}
-	
+
 	@Override
-	protected void createBoss(){
-		if(state.getCode() != NodeState.WORK){
+	protected void createBoss() {
+		if (state.getCode() != NodeState.WORK) {
 			return;
 		}
 		int randomx = spwanInfo.getBound_x();
 		int randomy = spwanInfo.getBound_y();
 		int randomz = spwanInfo.getBound_z();
 
-		FieldBoss monster = new FieldBoss(this);
 		MonsterInfo monsterInfo = MonsterInfoTemplateMgr.get(spwanInfo.getEntityId());
-		if (monsterInfo != null) {
-			monster.setPostion(new Vector3(randomx / Vector3.Accuracy, randomy / Vector3.Accuracy, randomz / Vector3.Accuracy));
-			instill(monster, monsterInfo);
-			this.monster = monster;
-			field.enterField(monster);
-			
-			System.out.println("世界BOSS：" + monster.getId() + "  mapId:" + field.getMapKey() + "  position:" + monster.getPostion());
-		} else {
+		if (monsterInfo == null) {
 			Log.error(spwanInfo.getId() + "----" + spwanInfo.getEntityId() + " 在MonsterInfo里面未找到配置");
+			return;
 		}
+		FieldBoss monster = new FieldBoss(this, monsterInfo);
+		monster.setPostion(new Vector3(randomx / Vector3.Accuracy, randomy / Vector3.Accuracy, randomz / Vector3.Accuracy));
+		instill(monster, monsterInfo);
+		this.monster = monster;
+		field.enterField(monster);
+		System.out.println("世界BOSS：" + monster.getId() + "  mapId:" + field.getMapKey() + "  position:" + monster.getPostion());
 		System.out.println("monster:" + monster + "  skinId :" + monster.getSkin());
 	}
-	
+
 	/** 浸染(属性缩小，测试用 ) */
 	public static void instill(Monster monster, MonsterInfo monsterInfo) {
 		monster.setMonsterInfo(monsterInfo);
@@ -85,27 +83,27 @@ public class WorldBossSpawnNode extends FieldBossSpawnNode {
 		// monster.setSpeed(monsterInfo.getMoveSpeed() * 100);
 		monster.setSkin(monsterInfo.getMonsterId());
 
-		monster.setProperty(EnumAttr.MAX_BLOOD, monsterInfo.getHp()/10000);
-		monster.setProperty(EnumAttr.BLOOD, monsterInfo.getHp()/10000);
-		monster.setProperty(EnumAttr.CUR_BLOOD, monsterInfo.getHp()/10000);
+		monster.setProperty(EnumAttr.MAX_BLOOD, monsterInfo.getHp() / 10000);
+		monster.setProperty(EnumAttr.BLOOD, monsterInfo.getHp() / 10000);
+		monster.setProperty(EnumAttr.CUR_BLOOD, monsterInfo.getHp() / 10000);
 
-		monster.setProperty(EnumAttr.MAX_SOUL, monsterInfo.getSoulHpValue()/10000);
-		monster.setProperty(EnumAttr.SOUL, monsterInfo.getSoulHpValue()/10000);
-		monster.setProperty(EnumAttr.CUR_SOUL, monsterInfo.getSoulHpValue()/10000);
+		monster.setProperty(EnumAttr.MAX_SOUL, monsterInfo.getSoulHpValue() / 10000);
+		monster.setProperty(EnumAttr.SOUL, monsterInfo.getSoulHpValue() / 10000);
+		monster.setProperty(EnumAttr.CUR_SOUL, monsterInfo.getSoulHpValue() / 10000);
 
-		monster.setProperty(EnumAttr.ATTACK, monsterInfo.getHurtValue()/10000);
-		//monster.setInitAttack(monsterInfo.getHurtValue());
-		monster.setProperty(EnumAttr.DEFENCE, monsterInfo.getArmorValue()/10000);
-		//monster.setInitDefence(monsterInfo.getArmorValue());
-		monster.setProperty(EnumAttr.SOUL_ATTACK, monsterInfo.getSoulHurtValue()/10000);
-		//monster.setInitSoulAttack(monsterInfo.getSoulHurtValue());
-		monster.setProperty(EnumAttr.SOUL_DEFENCE, monsterInfo.getSoulArmorValue()/10000);
-		//monster.setInitSoulDefence(monsterInfo.getSoulArmorValue());
+		monster.setProperty(EnumAttr.ATTACK, monsterInfo.getHurtValue() / 10000);
+		// monster.setInitAttack(monsterInfo.getHurtValue());
+		monster.setProperty(EnumAttr.DEFENCE, monsterInfo.getArmorValue() / 10000);
+		// monster.setInitDefence(monsterInfo.getArmorValue());
+		monster.setProperty(EnumAttr.SOUL_ATTACK, monsterInfo.getSoulHurtValue() / 10000);
+		// monster.setInitSoulAttack(monsterInfo.getSoulHurtValue());
+		monster.setProperty(EnumAttr.SOUL_DEFENCE, monsterInfo.getSoulArmorValue() / 10000);
+		// monster.setInitSoulDefence(monsterInfo.getSoulArmorValue());
 
-		monster.setProperty(EnumAttr.ACCURATE, monsterInfo.getHitRateValue()/10000);
-		monster.setProperty(EnumAttr.DODGE, monsterInfo.getDodgeValue()/10000);
-		monster.setProperty(EnumAttr.CRIT, monsterInfo.getCritValue()/10000);
-		monster.setProperty(EnumAttr.CRIT_DEFENCE, monsterInfo.getToughnessValue()/10000);
+		monster.setProperty(EnumAttr.ACCURATE, monsterInfo.getHitRateValue() / 10000);
+		monster.setProperty(EnumAttr.DODGE, monsterInfo.getDodgeValue() / 10000);
+		monster.setProperty(EnumAttr.CRIT, monsterInfo.getCritValue() / 10000);
+		monster.setProperty(EnumAttr.CRIT_DEFENCE, monsterInfo.getToughnessValue() / 10000);
 
 		if (monsterInfo.getHp() <= 0) {
 			monster.setSoulState(true);
@@ -134,45 +132,44 @@ public class WorldBossSpawnNode extends FieldBossSpawnNode {
 		}
 
 	}
-	
-	
-	protected void dieTrigger(Living living){
+
+	protected void dieTrigger(Living living) {
 		FieldBossCfg bossCfg = FieldBossTemplateMgr.getWorldBossCfg();
-		if(bossCfg == null) return;
-		
-		//创建副本
+		if (bossCfg == null)
+			return;
+
+		// 创建副本
 		CampaignTemplateInfo tempInfo = CampaignTempMgr.get(bossCfg.getOpenCampaignId());
-		if(tempInfo == null){
+		if (tempInfo == null) {
 			Log.error("世界BOSS死亡触发副本配置错误：bossMonsterId = " + bossCfg.getMonsterId() + "  campaignId = " + bossCfg.getOpenCampaignId());
 			return;
 		}
-		
-		//创建传送门
+
+		// 创建传送门
 		Transfer transfer = new Transfer(IDMakerHelper.nextID(), Transfer.CAMPAIGN_TRANSFER);
 		transfer.setPostion(living.getPostion());
 		transfer.setSkin(bossCfg.getTransferNpcId());
 		FieldBoss boss = (FieldBoss) living;
-		if(boss != null){
+		if (boss != null) {
 			DamageStatistic statistic = boss.getStatistic();
-			if(statistic != null){
+			if (statistic != null) {
 				Set<Long> canEnterIds = new HashSet<>();
 				canEnterIds.addAll(statistic.getDamageMap().keySet());
 				transfer.setCanEnterIds(canEnterIds);
 			}
 		}
-		
-		//创建副本
+
+		// 创建副本
 		Campaign campaign = CampaignFactory.createWorldBossTriggerCampaign(tempInfo, transfer);
 		CampaignMgr.add(campaign);
 		campaign.stateTransition(new StartState(campaign));
-		
+
 		transfer.setTargetId(campaign.getIndexId());
 		field.enterField(transfer);
-		
+
 		NoticeCfg noticeCfg = NoticeTemplateMgr.getNoticeCfg(bossCfg.getDeadNotice());
 		dieNotice(noticeCfg, noticeCfg.getContent());
 	}
-
 
 	@Override
 	public FieldBossCfg getBossCfg() {

@@ -13,13 +13,13 @@ public class MonsterInfo {
 
 	private int		dynamic;			// 动态怪物，会根据玩家等级来刷新不同怪物
 
-	private int		alertRange;			// 警戒范围
+	private int		alertRange;			// 警戒范围 (进入范围内玩家纳入仇恨)
 
-	private int		seekEnemyRange;		// 巡逻范围
+	private int		seekEnemyRange;		// 巡逻范围（仅判断是否巡逻）
 
-	private int		attackRange;		// 攻击范围
+	private int		attackRange;		// 攻击范围(普通攻击距离)
 
-	private int		followUpDistance;	// 追击距离
+	private int		followUpDistance;	// 追击距离(追击仇恨距离玩家)
 
 	private int		moveSpeed;			// 移动速度
 

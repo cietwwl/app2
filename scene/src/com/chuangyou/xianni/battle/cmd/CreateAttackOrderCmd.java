@@ -40,14 +40,15 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 		// 该玩家是否具有此技能
 		Player player = army.getPlayer();
 		Skill skill = player.getSkill(skillActionId);
-		
+
 		if (skill == null) {
 			Log.error("skill is null,playerId : " + player.getArmyId() + "  skillActionId:" + skillActionId);
 			return;
 		}
-		
+
 		// 判断技能是否被冻结
 		int type = skill.getSkillTempateInfo().getMasterType();
+
 		if (type == SkillMainType.COMMON_ATTACK && !player.checkStatus(LivingState.NORMAL_ATTACK)) {
 			return;
 		}
@@ -76,16 +77,16 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 		for (long targetId : orderMsg.getTargetsList()) {
 			Living living = field.getLiving(targetId);
 			if (living != null) {
-				if(skill.getTemplateInfo() == null){
+				if (skill.getTemplateInfo() == null) {
 					continue;
 				}
 				// PK判定
 				// 敌方去掉不可攻击的，友方去掉可攻击的
-				if(skill.getTemplateInfo().getTargetMode() == SkillTargetMode.ENEMY){
+				if (skill.getTemplateInfo().getTargetMode() == SkillTargetMode.ENEMY) {
 					if (false == OrderFactory.attackCheck(field, player, living)) {
 						continue;
 					}
-				}else if(skill.getTemplateInfo().getTargetMode() == SkillTargetMode.FRIENDLY){
+				} else if (skill.getTemplateInfo().getTargetMode() == SkillTargetMode.FRIENDLY) {
 					if (true == OrderFactory.attackCheck(field, player, living)) {
 						continue;
 					}
@@ -116,15 +117,6 @@ public class CreateAttackOrderCmd extends AbstractCommand {
 		order.setPostion(orderMsg.getPosition());
 		OrderExecAction oaction = new OrderExecAction(player, order);
 		player.enqueue(oaction);
-		// System.err.println("触发攻击包 - skillActionId - " + skillActionId);
-		// Vector3 current = Vector3BuilderHelper.get(orderMsg.getCurrent());
-		// Vector3 target = Vector3BuilderHelper.get(orderMsg.getPosition());
-		//
-		// if (!Vector3.Equal(current, target) &&
-		// player.checkStatus(LivingState.ATTACK_MOVE))
-		// NotifyNearHelper.notifyHelper(field, player, target, new
-		// AllSelectorHelper(army.getPlayer()));
-
 	}
 
 	private void monsterAiEvent(Player source, Monster target) {

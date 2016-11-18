@@ -1,6 +1,7 @@
 package com.chuangyou.xianni.role.objects;
 
 import com.chuangyou.common.protobuf.pb.PlayerLeaveGridProto.PlayerLeaveGridMsg;
+import com.chuangyou.xianni.entity.spawn.MonsterInfo;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
@@ -16,8 +17,8 @@ public class PrivateMonster extends Monster {
 	private long	bornTime;
 	private long	expiredTime;
 
-	public PrivateMonster(long creater, int liveTime) {
-		super(null);
+	public PrivateMonster(long creater, int liveTime, MonsterInfo monsterInfo) {
+		super(null, monsterInfo);
 		this.creater = creater;
 		PrivateMonsterMgr.add(this);
 		bornTime = System.currentTimeMillis();

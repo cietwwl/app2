@@ -23,7 +23,7 @@ public class Idle extends MonsterBaseBehavior {
 	@Override
 	public AIState next() {
 		if (getMonster().getAiConfig() != null && getMonster().getAiConfig().isRunAway()) {// 是否逃跑
-			if (getMonster().getAttacker() != null)
+			if (getMonster().getAttacker() != 0)
 				return AIState.RUNAWAY;
 		}
 

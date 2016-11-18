@@ -55,7 +55,7 @@ public interface SceneProtocol {
 	// ===========================>campaign<=========================
 	public static final short	S_CREATE_CAMPAIGN				= 20050;	// 请求创建副本
 	public static final short	S_CAMPAIGN_OPTION				= 20051;	// 副本操作
-	public static final short	S_CREATE_CAMPAIGN_BY_NPC		= 20052;	// 根据NPCID创建NPC
+	public static final short	S_CREATE_CAMPAIGN_BY_NPC		= 20052;	// 根据NPCID创建副本
 	public static final short	S_CREATE_PLOT					= 20053;	// 创建剧情人物
 	// ===========================>end<==============================
 	public static final short	S_PLAYER_REVIVAL				= 20101;	// 复活

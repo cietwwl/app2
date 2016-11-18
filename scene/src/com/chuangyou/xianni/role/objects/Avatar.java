@@ -11,7 +11,7 @@ import com.chuangyou.common.protobuf.pb.battle.BattleLivingInfoMsgProto.BattleLi
 import com.chuangyou.common.protobuf.pb.battle.DamageListMsgProtocol.DamageListMsg;
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
 import com.chuangyou.common.util.Log;
-import com.chuangyou.xianni.battle.action.AvatarPollingAction;
+import com.chuangyou.xianni.ai2.proxy.AvatarAI;
 import com.chuangyou.xianni.battle.damage.Damage;
 import com.chuangyou.xianni.battle.mgr.AvatarTempManager;
 import com.chuangyou.xianni.battle.mgr.BattleTempMgr;
@@ -30,6 +30,7 @@ import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.warfield.field.Field;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.world.ArmyProxy;
+import com.chuangyou.xianni.world.HeartbeatWorldMgr;
 import com.chuangyou.xianni.world.SimplePlayerInfo;
 import com.chuangyou.xianni.world.WorldMgr;
 
@@ -40,12 +41,13 @@ public class Avatar extends Robot {
 	protected boolean			correspondStatu	= false;	// 变身状态 0 未合体 1 合体
 	private int					campaignId;					// 所在副本ID
 	private volatile boolean	revivaling		= false;
+	private AvatarAI			ai;
 
 	public Avatar() {
 		super(IDMakerHelper.nextID());
 		setType(RoleType.avatar);
-		AvatarPollingAction robotAction = new AvatarPollingAction(this);
-		this.enDelayQueue(robotAction);
+		this.ai = new AvatarAI(this);
+		HeartbeatWorldMgr.addAI(ai);
 	}
 
 	public PlayerAttSnapMsg.Builder getAttSnapMsg() {
@@ -195,14 +197,13 @@ public class Avatar extends Robot {
 
 	/* 满血复活 */
 	public boolean renascence() {
-		if (getLivingState() == ALIVE) {
-			return false;
-		}
 		if (getLivingState() == DISTORY) {
 			return false;
 		}
-		setLivingState(ALIVE);
-		sendChangeStatuMsg(LIVING, getLivingState());
+		if (getLivingState() != ALIVE) {
+			setLivingState(ALIVE);
+			sendChangeStatuMsg(LIVING, getLivingState());
+		}
 		List<Damage> damages = new ArrayList<>();
 		Damage curSoul = new Damage(this, this);
 		curSoul.setDamageType(EnumAttr.CUR_SOUL.getValue());
@@ -242,8 +243,6 @@ public class Avatar extends Robot {
 		}
 		this.isSoulState = false;
 		this.revivaling = false;
-		AvatarPollingAction robotAction = new AvatarPollingAction(this);
-		this.enDelayQueue(robotAction);
 		return true;
 	}
 

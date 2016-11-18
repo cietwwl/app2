@@ -52,6 +52,7 @@ public class EnterSceneMapResultCmd extends AbstractCommand {
 			player.sendPbMessage(message);
 			Log.error((TimeUtil.getDateFormat(new Date()) + "---------通知客户端修改地图-------playerId:-----" + player.getPlayerId() + " msg:" + msg.toString()));
 			player.setCurMapId(postionMsg.getMapId());
+
 		} else {
 			// 当用户登录请求地图失败，则直接回到出生点
 			player.backBornPoint();

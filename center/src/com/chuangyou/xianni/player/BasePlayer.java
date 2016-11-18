@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.chuangyou.common.util.AccessTextFile;
 import com.chuangyou.common.util.LockData;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.common.template.LevelUpTempleteMgr;
@@ -682,7 +683,7 @@ public class BasePlayer extends AbstractEvent {
 		if (addValue == 0)
 			return false;
 		beginChanges();
-
+		AccessTextFile.saveRecord("添加基础经验:" + addValue);
 		Map<Integer, Long> changeMap = new HashMap<>();
 		boolean hasLevelUp = false;
 		try {
@@ -696,6 +697,7 @@ public class BasePlayer extends AbstractEvent {
 				this.playerInfo.setExp(exp);
 				this.playerInfo.setTotalExp(totalExp);
 			}
+			AccessTextFile.saveRecord("实际添加经验:" + addValue);
 
 			if (addExpLogic.isCanUpLevel(this)) {
 				hasLevelUp = true;
@@ -730,7 +732,8 @@ public class BasePlayer extends AbstractEvent {
 				// 福利等级限制监听
 				GamePlayer player = WorldMgr.getPlayer(this.playerInfo.getPlayerId());
 				player.getWelfareInventory().getWelfareConditionHandleMap().get(WelfareConditionHandleFactory.LEVEL_MIN).listen();
-				if (playerInfo.getLevel() >= SystemConfigTemplateMgr.getSystemTemps().get("welfare.newPlayerOpenLevel").getValue() && player.getWelfareConditionRecordInventory().getOnlineStartTime() == -1) {
+				if (playerInfo.getLevel() >= SystemConfigTemplateMgr.getSystemTemps().get("welfare.newPlayerOpenLevel").getValue()
+						&& player.getWelfareConditionRecordInventory().getOnlineStartTime() == -1) {
 					player.getWelfareConditionRecordInventory().setOnlineStartTime(System.currentTimeMillis());
 				}
 				beginChanges();

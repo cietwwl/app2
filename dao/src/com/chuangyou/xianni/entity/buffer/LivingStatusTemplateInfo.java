@@ -21,7 +21,7 @@ public class LivingStatusTemplateInfo {
 	private int					skillAttack;					// 释放主动技能
 	private int					perks;							// 触发型技能
 	private int					beControl;						// 是否吃控制
-	
+
 	/** 一般 */
 	public static final int		COMMON		= 0;
 	/** 有益 */

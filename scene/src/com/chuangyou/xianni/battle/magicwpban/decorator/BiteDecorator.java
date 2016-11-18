@@ -1,8 +1,7 @@
 package com.chuangyou.xianni.battle.magicwpban.decorator;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
+
 import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
 import com.chuangyou.common.protobuf.pb.battle.MagicwpBanExeMsgProto.MagicwpBanExeMsg;
 import com.chuangyou.xianni.battle.damage.Damage;

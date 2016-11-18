@@ -118,13 +118,11 @@ public class MonsterSpawnNode extends SpwanNode { // 刷怪模板
 				monsterInfo = next;
 			}
 		}
-
-		Monster monster = new Monster(this);
+		Monster monster = new Monster(this, monsterInfo);
 		monster.setPostion(new Vector3(randomx / Vector3.Accuracy, randomy / Vector3.Accuracy, randomz / Vector3.Accuracy));
 		instill(monster, monsterInfo);
 		children.put(monster.getId(), monster);
 		field.enterField(monster);
-
 		if (campaign != null && campaign.getTask() != null && campaign.getTask().getConditionType() == CTBaseCondition.ADD_BUFF_MONSTER) {
 			String bufferIds = campaign.getTask().getTemp().getStrParam1();
 			if (StringUtils.isNullOrEmpty(bufferIds)) {

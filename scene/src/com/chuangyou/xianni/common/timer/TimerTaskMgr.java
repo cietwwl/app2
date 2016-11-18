@@ -12,6 +12,7 @@ import com.chuangyou.xianni.battle.snare.SnareCreateFilter;
 import com.chuangyou.xianni.campaign.CampaignMgr;
 import com.chuangyou.xianni.role.PrivateMonsterMgr;
 import com.chuangyou.xianni.warfield.spawn.TimeControlerNodeMgr;
+import com.chuangyou.xianni.world.HeartbeatWorldMgr;
 
 public class TimerTaskMgr {
 
@@ -57,6 +58,7 @@ public class TimerTaskMgr {
 		day_reset_clearTimer.scheduleAtFixedRate(day_reset_Data, startTime, MINTIME * 60);
 		day_reset_clearTimer.scheduleAtFixedRate(timeControlerNode, startTime, MINTIME * 5);
 
+		day_reset_clearTimer.scheduleAtFixedRate(new AITask(), startTime, 1000);
 		return true;
 	}
 }
@@ -136,8 +138,23 @@ class TimeControlerNode extends Task {
 
 	@Override
 	public void exec() {
-		Log.error("执行TimeControlerNode" + TimeUtil.getDateFormat(new Date()));
 		TimeControlerNodeMgr.check();
+	}
+
+}
+
+class AITask extends Task {
+
+	public AITask() {
+		super("控制根据时间来刷新的节点状态变更");
+	}
+
+	@Override
+	public void exec() {
+		HeartbeatWorldMgr.exe();
+		HeartbeatWorldMgr.exePlayer();
+		HeartbeatWorldMgr.exeFpolling();
+
 	}
 
 }

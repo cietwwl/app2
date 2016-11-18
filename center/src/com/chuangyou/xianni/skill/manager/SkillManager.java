@@ -36,9 +36,13 @@ public class SkillManager {
 	 * 英雄技能升级
 	 */
 	public static boolean upSkill1(GamePlayer player, int skillId) {
-		SkillTempateInfo skillInfo = SkillTempMgr.getSkillTemp(skillId);// 要学习的技能配置
+		SkillTempateInfo skillInfo = SkillTempMgr.getSkillTemp(skillId);
 		if (skillInfo == null) {
 			Log.error("upSkill but curSkill is not find template :" + skillId);
+			return false;
+		}
+		if (skillInfo.getNeedGrades() > player.getBasePlayer().getPlayerInfo().getLevel()) {
+			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.SKILL_UP_ERROR5, Protocol.C_HERO_UPSKILL);
 			return false;
 		}
 		// 当技能为1级技能，并且没有学，判定为学习初始技能
@@ -47,6 +51,10 @@ public class SkillManager {
 		if (skillInfo.getLevel() == 1 && olderSkill == null) {
 			nextTemplate = skillInfo;
 		} else {
+			if (olderSkill == null) {
+				ErrorMsgUtil.sendErrorMsg(player, ErrorCode.SKILL_UP_ERROR, Protocol.C_HERO_UPSKILL);
+				return false;
+			}
 			nextTemplate = SkillTempMgr.getSkillTemp(skillInfo.getNextTempId());
 		}
 		// 是否存在下个技能
@@ -54,26 +62,6 @@ public class SkillManager {
 			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.SKILL_UP_ERROR5, Protocol.C_HERO_UPSKILL);
 			return false;
 		}
-
-		if (nextTemplate.getNeedGrades() > player.getBasePlayer().getPlayerInfo().getLevel()) {
-			ErrorMsgUtil.sendErrorMsg(player, ErrorCode.SKILL_UP_ERROR5, Protocol.C_HERO_UPSKILL);
-			return false;
-		}
-		
-
-		// 判断前置技能是否满足
-//		String preTemplateId = skillInfo.getPreTemplateId();// 前置技能
-//		if (preTemplateId != null && !preTemplateId.isEmpty()) {
-//			String[] preTemplateIds = preTemplateId.split(",");
-//			for (String id : preTemplateIds) {
-//				int tempId = Integer.valueOf(id);
-//				HeroSkill studied = player.getSkillInventory().getHeroSkill(tempId);
-//				if (studied == null) {
-//					ErrorMsgUtil.sendErrorMsg(player, ErrorCode.SKILL_UP_ERROR2, Protocol.C_HERO_UPSKILL);
-//					return false;
-//				}
-//			}
-//		}
 
 		// 判定是否足够支付技能升级消耗
 		int payCode = upSkillPay(player, skillInfo);
@@ -381,7 +369,6 @@ public class SkillManager {
 		if (needRepair > 0)
 			player.getBasePlayer().consumeRepair(needRepair);
 		// 扣道具
-		// 检测物品
 		for (Entry<Integer, Integer> entry : costItems.entrySet()) {
 			player.getBagInventory().removeItemFromPlayerBag(entry.getKey(), entry.getValue(), ItemRemoveType.UPDATA_SKILL_USE);
 		}

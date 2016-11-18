@@ -1,6 +1,7 @@
 package com.chuangyou.xianni.welfare.conditionHandle;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import com.chuangyou.xianni.entity.welfare.WelfareConditionTemplate;
@@ -48,7 +49,13 @@ public abstract class BaseConditionHandle {
 	 */
 	public void listen() {
 		Set<Integer> result = new HashSet<>();
-		for (WelfareInfo welfareInfo : listenList) {
+		Iterator<WelfareInfo> it = listenList.iterator();
+		while (it.hasNext()) {
+			WelfareInfo welfareInfo = it.next();
+			if (welfareInfo.getStatus() == WelfareInventory.STATE_2) {
+				it.remove();
+				continue;
+			}
 			if (judgeOneWelfare(welfareInfo)) {
 				result.add(welfareInfo.getWelfareId());
 			}

@@ -2,6 +2,8 @@ package com.chuangyou.xianni.role.objects;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.chuangyou.common.util.Log;
 import com.chuangyou.xianni.constant.EnumAttr;
 import com.chuangyou.xianni.exec.AbstractActionQueue;
 import com.chuangyou.xianni.exec.ActionExecutor;
@@ -9,7 +11,7 @@ import com.chuangyou.xianni.exec.ThreadManager;
 
 public class LivingProperties extends AbstractActionQueue {
 	/* 修改成map结构，避免 出现不新增不连续属性时，无法纳入 */
-	protected Map<EnumAttr, Property>	properties				= new HashMap<>();	// 所有基础属性
+	protected Map<EnumAttr, Property> properties = new HashMap<>(); // 所有基础属性
 
 	public LivingProperties(ActionExecutor executor) {
 		super(ThreadManager.actionExecutor);
@@ -107,6 +109,10 @@ public class LivingProperties extends AbstractActionQueue {
 		Property property = properties.get(type);
 		if (property != null) {
 			property.clearBuff();
+		}
+		if (property == null) {
+			Log.error("Type :" + type + "  value:" + value);
+			return;
 		}
 		property.setBuffData(value);
 	}

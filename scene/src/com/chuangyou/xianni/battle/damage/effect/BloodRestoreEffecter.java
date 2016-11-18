@@ -35,6 +35,7 @@ public class BloodRestoreEffecter implements DamageEffecter {
 		int curValue = oldValue - value;
 		target.setProperty(attr, curValue);
 		damage.setLeftValue(curValue);
+		
 		return damage;
 	}
 

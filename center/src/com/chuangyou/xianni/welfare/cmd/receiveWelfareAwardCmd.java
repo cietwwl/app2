@@ -1,6 +1,7 @@
 package com.chuangyou.xianni.welfare.cmd;
 
-import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.chuangyou.common.protobuf.pb.welfare.ReceiveWelfareMsgProto.ReceiveWelfareMsg;
@@ -45,7 +46,7 @@ public class receiveWelfareAwardCmd extends AbstractCommand {
 			return;
 		}
 		// 检查背包是否足够
-		List<Reward> rewards = new ArrayList<>(8);// 所有奖励
+		List<Reward> rewards = new LinkedList<>();// 所有奖励
 		rewards.add(new Reward(template.getItem1(), template.getNum1(), 1 == template.getBind1()));
 		rewards.add(new Reward(template.getItem2(), template.getNum2(), 1 == template.getBind2()));
 		rewards.add(new Reward(template.getItem3(), template.getNum3(), 1 == template.getBind3()));
@@ -55,10 +56,14 @@ public class receiveWelfareAwardCmd extends AbstractCommand {
 		rewards.add(new Reward(template.getItem7(), template.getNum7(), 1 == template.getBind7()));
 		rewards.add(new Reward(template.getItem8(), template.getNum8(), 1 == template.getBind8()));
 		int needSpace = 0;
-		for (Reward reward : rewards) {
+		Iterator<Reward> iterator = rewards.iterator();
+		while (iterator.hasNext()) {
+			Reward reward = iterator.next();
 			int itemId = reward.itemId;
-			if (itemId == 0)
+			if (itemId == 0) {
+				iterator.remove();
 				continue;
+			}
 			if (itemId == CurrencyItemType.MONEY_ITEM || itemId == CurrencyItemType.CASH_ITEM || itemId == CurrencyItemType.CASH_BIND_ITEM || itemId == CurrencyItemType.EQUIP_EXP
 					|| itemId == CurrencyItemType.REPAIR_ITEM || itemId == CurrencyItemType.POINTS || itemId == CurrencyItemType.EXP || itemId == CurrencyItemType.VIP_EXP
 					|| itemId == CurrencyItemType.VIP_TEMPORARY) {

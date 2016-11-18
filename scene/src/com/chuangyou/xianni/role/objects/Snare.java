@@ -11,10 +11,9 @@ import com.chuangyou.common.protobuf.pb.battle.DamageMsgProto.DamageMsg;
 import com.chuangyou.common.protobuf.pb.battle.SnareTargetsChangeMsgProto.SnareTargetsChangeMsg;
 import com.chuangyou.common.util.Log;
 import com.chuangyou.common.util.Vector3;
-import com.chuangyou.xianni.ai.proxy.SnareAI;
+import com.chuangyou.xianni.ai2.proxy.SnareAI;
 import com.chuangyou.xianni.battle.OrderFactory;
 import com.chuangyou.xianni.battle.action.AddDelayBuffAction;
-import com.chuangyou.xianni.battle.action.SnarePollingAction;
 import com.chuangyou.xianni.battle.buffer.Buffer;
 import com.chuangyou.xianni.battle.buffer.BufferFactory;
 import com.chuangyou.xianni.battle.buffer.BufferTargetType;
@@ -34,7 +33,6 @@ import com.chuangyou.xianni.entity.skill.SnareTemplateInfo;
 import com.chuangyou.xianni.proto.MessageUtil;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
-import com.chuangyou.xianni.role.action.UpdatePositionAction;
 import com.chuangyou.xianni.role.helper.IDMakerHelper;
 import com.chuangyou.xianni.warfield.helper.selectors.PlayerSelectorHelper;
 import com.chuangyou.xianni.world.ArmyProxy;
@@ -55,7 +53,6 @@ public class Snare extends ActiveLiving {
 	private Living			locking;
 
 	public static final int	ACTION_EXE		= 101;			// 陷阱执行
-
 	public static final int	STYPE_COMMON	= 1;			// 普通陷阱
 	public static final int	STYPE_AVE		= 2;			// 平摊伤害
 
@@ -78,8 +75,7 @@ public class Snare extends ActiveLiving {
 			locking = target;
 		}
 		this.target = target;
-
-		enDelayQueue(new SnarePollingAction(this, new SnareAI(this), new UpdatePositionAction(this, new PlayerSelectorHelper(this))));
+		new SnareAI(this);
 	}
 
 	// 陷阱执行 -- 对范围内玩家生效
@@ -165,7 +161,9 @@ public class Snare extends ActiveLiving {
 			if (!canExe(creater, living)) {
 				return;
 			}
-			inRange.add(living);
+			synchronized (inRange) {
+				inRange.add(living);
+			}
 			if (snareInfo.getStateId() != 0) {
 				living.addLivingState(snareInfo.getStateId());
 				affectingState.add(living);
@@ -182,7 +180,9 @@ public class Snare extends ActiveLiving {
 	// 离开
 	public void out(Living living) {
 		synchronized (lock) {
-			inRange.remove(living);
+			synchronized (inRange) {
+				inRange.remove(living);
+			}
 			targetChange();
 			if (isDie()) {
 				return;

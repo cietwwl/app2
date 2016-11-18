@@ -17,7 +17,7 @@ import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.role.objects.Living;
 import com.chuangyou.xianni.role.objects.Monster;
 
-public class MonsterAI implements AI {// extends BaseProxy {
+public class MonsterAI implements AI {
 	protected Map<AIState, MonsterBaseBehavior>	behaviors;
 	protected AIState							current	= AIState.IDLE;
 	protected Living							living;
@@ -31,9 +31,6 @@ public class MonsterAI implements AI {// extends BaseProxy {
 		this.living = m;
 		behaviors = new HashMap<AIState, MonsterBaseBehavior>();
 		createStates();
-		// super(m, SceneGlobal.AI_MONSTER_DELAY);
-		// recountHatred.setRate(SceneGlobal.AI_MONSTER_HETRED_RECOUNT);
-
 	}
 
 	// @Override

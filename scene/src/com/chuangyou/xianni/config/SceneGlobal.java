@@ -25,7 +25,17 @@ public class SceneGlobal {
 	/**
 	 * 仇恨计算频率
 	 */
-	public static final int	AI_MONSTER_HETRED_RECOUNT	= 1000;
+	public static final int	AI_MONSTER_HETRED_RECOUNT	= 5000;
+
+	/**
+	 * 搜索敌对频率
+	 */
+	public static final int	AI_MONSTER_FIND_ENEMY		= 2000;
+
+	/**
+	 * 单次巡逻时间
+	 */
+	public static final int	AI_MONSTER_PATROL			= 5000;
 
 	/**
 	 * 空闲时间

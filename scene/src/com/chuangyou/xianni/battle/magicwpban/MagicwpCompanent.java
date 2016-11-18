@@ -15,7 +15,13 @@ public class MagicwpCompanent {
 	public boolean isEffect() {
 		try {
 			long cur_now = System.currentTimeMillis();
-			if (decorator.isEffect() && cur_now >= exeTime + decorator.getCd() * 1000) {
+			// if (decorator.isEffect() && cur_now >= exeTime +
+			// decorator.getCd() * 1000) {
+			// exeTime = cur_now;
+			// return true;
+			// }
+			// TEST
+			if (true && cur_now >= exeTime + 2 * 1000) {
 				exeTime = cur_now;
 				return true;
 			}

@@ -28,7 +28,6 @@ public class CampaignStatuChangeCmd implements Command {
 		// 进入
 		if (smsg.getStatu() == CampaignStatu.NOTITY2C_IN) {
 			player.setCurCampaign(smsg.getIndexId());
-			Log.error("=============================================" + smsg.getIndexId());
 		}
 		// 只退出
 		if (smsg.getStatu() == CampaignStatu.NOTITY2C_OUT) {
@@ -51,7 +50,7 @@ public class CampaignStatuChangeCmd implements Command {
 
 	/** 通关副本事件 */
 	private void passCampaign(GamePlayer player, int campaignId) {
-		System.out.println("===================>通关副本ID："+campaignId);
+		System.out.println("===================>通关副本ID：" + campaignId);
 		player.notifyListeners(new ObjectEvent(this, campaignId, EventNameType.TASK_PASS_FB));
 		player.getStateInventory().passFb(campaignId);
 	}

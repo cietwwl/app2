@@ -13,6 +13,7 @@ import com.chuangyou.xianni.battle.skill.Skill;
 import com.chuangyou.xianni.common.Vector3BuilderHelper;
 import com.chuangyou.xianni.constant.RoleConstants.RoleType;
 import com.chuangyou.xianni.constant.SkillConstant.SkillMainType;
+import com.chuangyou.xianni.constant.SkillConstant.SkillTargetMode;
 import com.chuangyou.xianni.entity.buffer.LivingState;
 import com.chuangyou.xianni.proto.PBMessage;
 import com.chuangyou.xianni.protocol.Protocol;
@@ -80,6 +81,20 @@ public class RobotCreateAttackOrderCmd extends AbstractCommand {
 		for (long targetId : orderMsg.getTargetsList()) {
 			Living living = field.getLiving(targetId);
 			if (living != null) {
+				if(skill.getTemplateInfo() == null){
+					continue;
+				}
+				// PK判定
+				// 敌方去掉不可攻击的，友方去掉可攻击的
+				if(skill.getTemplateInfo().getTargetMode() == SkillTargetMode.ENEMY){
+					if (false == OrderFactory.attackCheck(field, robot, living)) {
+						continue;
+					}
+				}else if(skill.getTemplateInfo().getTargetMode() == SkillTargetMode.FRIENDLY){
+					if (true == OrderFactory.attackCheck(field, robot, living)) {
+						continue;
+					}
+				}
 				targets.add(living);
 			}
 		}
